@@ -201,6 +201,9 @@ extract:
 
 # Ontology buffer settings
 ontology_buffer:
+  seed_from: null                    # OWL/RDF file to seed the buffer (optional)
+  seed_depth: 2                      # max subclass depth to import from OWL
+  seed_filter: null                  # restrict OWL import to branch (e.g., "BiologicalEntity")
   refine_every_n_docs: 5             # trigger refinement after N documents
   coverage_threshold: 0.5            # low coverage triggers looser extraction
   min_frequency_to_confirm: 2        # type must appear in N+ documents to be confirmed
@@ -235,7 +238,48 @@ AWS_ACCESS_KEY_ID=...               # optional, if not using AWS profile
 AWS_SECRET_ACCESS_KEY=...           # optional, if not using AWS profile
 ```
 
-### Ontology File Format
+### Ontology Sources
+
+The ontology buffer can be initialized from three sources, in order of precedence:
+
+1. **OWL/RDF seed** (`ontology_buffer.seed_from`): an existing formal ontology loaded via owlready2. Classes become entity types, object properties become relationship types, data properties become property schemas. The `seed_depth` parameter controls how deep into the class hierarchy to import (default 2), and `seed_filter` restricts import to a specific branch. The OWL file is read-only input - it is never modified
+2. **YAML ontology** (`paths.ontology`): the lightweight application schema in our custom format. If both OWL seed and YAML are provided, the YAML takes precedence for any overlapping type definitions - OWL fills in the gaps
+3. **Empty** (free extraction): no seed, no YAML. The buffer starts empty and builds the ontology from scratch during extraction
+
+After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source. This means an OWL-seeded run produces a YAML ontology as a side effect - distilled from the formal ontology and refined by what the documents actually contained.
+
+### OWL Seed Import
+
+When `seed_from` points to an OWL/RDF file, owlready2 extracts:
+
+| OWL concept | Maps to | Notes |
+|-------------|---------|-------|
+| `owl:Class` | entity type | Name from class, description from `rdfs:comment` |
+| `rdfs:subClassOf` | type hierarchy | Used for prompt context, depth limited by `seed_depth` |
+| `owl:ObjectProperty` | relationship type | `rdfs:domain` -> source type, `rdfs:range` -> target type |
+| `owl:DatatypeProperty` | property schema | Attached to the entity type from `rdfs:domain` |
+| `owl:TransitiveProperty` | relationship flag | Marked for post-load inference via reasoner |
+| `owl:disjointWith` | validation constraint | Used to detect extraction errors |
+
+Large reference ontologies (NCIt has 170,000+ classes, SNOMED has 350,000+) are not suitable for direct use as extraction constraints. The `seed_depth` and `seed_filter` parameters ensure only a manageable subset is imported. The Dynamic Ontology reference makes this point clearly: reference ontologies are great for standard IDs and relationships, but they're too large and complex to serve as application schemas.
+
+### Post-Load OWL Reasoning
+
+When an OWL seed is configured, the pipeline can optionally run a post-load reasoning pass using the owlready2 HermiT reasoner. This materializes implicit relationships in Neo4J that were not explicitly extracted:
+
+- **Subclass propagation**: if Rex is a Dog and Dog is subclass of Animal, Rex gets an `INSTANCE_OF` edge to Animal
+- **Transitive closure**: if A `REPORTS_TO` B and B `REPORTS_TO` C, infer A `REPORTS_TO` C
+- **Consistency checking**: flag entities assigned to disjoint classes
+
+This is configured in `config.yml`:
+
+```yaml
+ontology_buffer:
+  seed_from: .kg-builder/domain-ontology.owl
+  post_load_reasoning: true          # run OWL inference after loading into Neo4J
+```
+
+### YAML Ontology Format
 
 YAML file defining allowed entity types, relationship types, and optional property schemas. Default location: `.kg-builder/ontology.yml`.
 
@@ -325,3 +369,4 @@ Extraction files are written to `.kg-builder/extractions/` with timestamped file
 - `pymupdf` - PDF text extraction
 - `python-docx` - DOCX parsing
 - `pyyaml` - YAML config and ontology parsing
+- `owlready2` - OWL/RDF ontology loading and HermiT reasoning

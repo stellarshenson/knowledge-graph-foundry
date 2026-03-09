@@ -56,18 +56,23 @@ The ontology buffer is the central mechanism that makes the extraction pipeline 
 
 ### Initialization
 
-The buffer is initialized from one of two states:
+The buffer is initialized from one of three sources:
 
-- **From file** (constrained mode): loads `.kg-builder/ontology.yml` as the starting schema. The buffer begins with a known set of entity types and relationship types. New types discovered during extraction can still be proposed, but require higher confidence to be accepted
+- **From OWL seed** (domain-informed mode): an existing OWL/RDF ontology is loaded via owlready2. Classes are imported as entity types (with `rdfs:comment` as descriptions), object properties as relationship types (with domain/range as source/target constraints), and data properties as property schemas. Import depth is limited by `seed_depth` (default 2 levels of subclass hierarchy) and optionally filtered to a specific branch via `seed_filter`. This gives the buffer a strong starting vocabulary grounded in established domain knowledge without inheriting the full complexity of the reference ontology. The OWL file is read-only - never modified
+- **From YAML** (constrained mode): loads `.kg-builder/ontology.yml` as the starting schema. The buffer begins with a known set of entity types and relationship types. New types discovered during extraction can still be proposed, but require higher confidence to be accepted
 - **Empty** (free extraction mode): the buffer starts with no types defined. The first few documents establish the initial ontology, which then stabilizes as more documents are processed
+
+When both OWL seed and YAML are configured, the YAML takes precedence for overlapping type definitions. The OWL seed fills in types not covered by the YAML - this allows using a broad domain ontology as background knowledge while maintaining a curated application schema on top.
 
 ### Buffer Contents
 
 The buffer tracks:
 
-- **Entity types**: name, description, frequency count (how often this type has appeared across chunks)
-- **Relationship types**: name, source type, target type, frequency count
+- **Entity types**: name, description, frequency count (how often this type has appeared across chunks), source (`owl_seed`, `yaml`, `discovered`)
+- **Relationship types**: name, source type, target type, frequency count, transitive flag (from OWL `TransitiveProperty`)
+- **Type hierarchy**: parent-child relationships between entity types (from OWL `subClassOf`), used as context in extraction prompts
 - **Type variants**: raw type labels the LLM has produced that map to a canonical type (e.g., "Human" -> "Person", "Corp" -> "Organization")
+- **Disjoint constraints**: type pairs that cannot co-occur on the same entity (from OWL `disjointWith`), used for extraction validation
 - **Coverage score**: fraction of recently extracted types that match existing buffer entries, measured per document
 
 ### Schema Signal Extraction (pre-flight)
@@ -269,3 +274,51 @@ SET r.description = $description
 **Indexing**: auto-create indexes on `Entity.id` and per-type label indexes for efficient MERGE operations. Without indexes, MERGE degrades to full scans as the graph grows.
 
 **Batch size**: configurable (default 500), balancing transaction overhead against memory usage. Deadlock retries (3 attempts with backoff) handle concurrent write conflicts.
+
+## Post-Load OWL Reasoning
+
+When the ontology buffer was seeded from an OWL file and `post_load_reasoning` is enabled, an inference pass runs after loading the graph into Neo4J. This materializes implicit relationships that the LLM did not explicitly extract but that follow logically from the ontology's formal semantics.
+
+### What the Reasoner Does
+
+The owlready2 HermiT reasoner operates on the OWL ontology augmented with individuals (entities) from the extracted graph. It produces:
+
+- **Subclass propagation**: if an entity is typed as `Dog` and the ontology defines `Dog rdfs:subClassOf Mammal rdfs:subClassOf Animal`, the reasoner infers `INSTANCE_OF` edges to `Mammal` and `Animal`. These are materialized as additional relationships in Neo4J
+- **Transitive closure**: for properties marked as `owl:TransitiveProperty` (e.g., `REPORTS_TO`, `PART_OF`), the reasoner computes the full transitive chain. If A `REPORTS_TO` B and B `REPORTS_TO` C, the inferred edge A `REPORTS_TO` C is added
+- **Consistency checking**: disjoint class constraints from the OWL ontology flag entities that were incorrectly assigned to incompatible types during extraction. These are logged as warnings rather than silently corrected
+
+### Pipeline
+
+1. Export the loaded Neo4J graph as RDF triples (using n10s or direct serialization)
+2. Load the RDF into owlready2 alongside the original OWL ontology
+3. Run the HermiT reasoner via `sync_reasoner()`
+4. Collect inferred triples that are new (not already in the graph)
+5. Import the inferred relationships back into Neo4J
+
+Alternatively, for simpler inference patterns (subclass propagation only), a Cypher-based approach avoids the RDF export round-trip:
+
+```cypher
+MATCH (i)-[:INSTANCE_OF]->(c)-[:SUBCLASS_OF*]->(sup)
+MERGE (i)-[:INSTANCE_OF]->(sup)
+```
+
+For lightweight continuous inference, APOC periodic rules can run inside Neo4J:
+
+```cypher
+CALL apoc.periodic.repeat(
+  "subclassRule",
+  "MATCH (i)-[:INSTANCE_OF]->(c)-[:SUBCLASS_OF]->(sup)
+   MERGE (i)-[:INSTANCE_OF]->(sup)",
+  60
+);
+```
+
+### When to Use
+
+Post-load reasoning is most valuable when:
+- The domain has deep type hierarchies (biomedical, industrial, organizational)
+- Downstream queries need to find entities by ancestor type (e.g., "all Animals" should include Dogs)
+- Transitive relationships are important for graph traversal (reporting chains, part-of hierarchies)
+- Consistency validation is needed to catch extraction errors
+
+It adds processing time and is not necessary for flat ontologies with no subclass relationships or transitivity. Default is off.
