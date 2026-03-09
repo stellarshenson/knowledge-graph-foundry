@@ -6,7 +6,16 @@ from pathlib import Path
 import typer
 from loguru import logger
 
-app = typer.Typer(name="kg", help="Knowledge Graph Builder CLI")
+app = typer.Typer(name="kg", help="Knowledge Graph Builder CLI", invoke_without_command=True)
+
+
+@app.callback(invoke_without_command=True)
+def main_callback(ctx: typer.Context):
+    """Launch TUI when no subcommand is given."""
+    if ctx.invoked_subcommand is None:
+        from kg_builder_cli.tui.app import KGBuilderApp
+        tui_app = KGBuilderApp()
+        tui_app.run()
 
 
 @app.command()
@@ -23,8 +32,9 @@ def ingest(
     from kg_builder_cli.config import load_config
     from kg_builder_cli.extraction.unstructured import ingest_document
     from kg_builder_cli.loading.loader import load_extraction
+    from kg_builder_cli.ontology.buffer import OntologyBuffer
 
-    logger.info(f"Ingesting from {source}")
+    logger.info("ingesting from {}", source)
 
     # Build CLI overrides
     overrides = {}
@@ -36,7 +46,15 @@ def ingest(
         overrides.setdefault("extract", {})["concurrency"] = concurrency
 
     config = load_config(config_path=config_path, overrides=overrides if overrides else None)
-    logger.info(f"Config loaded: model={config.llm.model}, neo4j={config.neo4j.uri}")
+    logger.info("config loaded: model={}, neo4j={}", config.llm.model, config.neo4j.uri)
+
+    # Initialize ontology buffer
+    buffer = None
+    if ontology and ontology.suffix in (".yml", ".yaml"):
+        buffer = OntologyBuffer.from_yaml(ontology, config.ontology_buffer)
+        logger.info("ontology buffer loaded from {}", ontology)
+    elif ontology is None:
+        buffer = OntologyBuffer(config.ontology_buffer)
 
     # Collect files to process
     if source.is_dir():
@@ -48,29 +66,37 @@ def ingest(
         files = [source]
 
     if not files:
-        logger.error(f"No supported files found in {source}")
+        logger.error("no supported files found in {}", source)
         raise typer.Exit(1)
 
-    logger.info(f"Found {len(files)} file(s) to ingest")
+    logger.info("found {} file(s) to ingest", len(files))
 
     for file_path in files:
-        logger.info(f"Processing: {file_path.name}")
-        result = ingest_document(file_path, config)
+        logger.info("processing: {}", file_path.name)
+        result = ingest_document(file_path, config, buffer=buffer)
         logger.info(
-            f"Extracted {len(result.entities)} entities, "
-            f"{len(result.relationships)} relationships, "
-            f"{len(result.facts)} facts"
+            "extracted {} entities, {} relationships, {} facts",
+            len(result.entities),
+            len(result.relationships),
+            len(result.facts),
         )
 
         # Load into Neo4j
         load_result = load_extraction(result, config)
         logger.info(
-            f"Loaded: {load_result.nodes_created} created, "
-            f"{load_result.nodes_merged} merged, "
-            f"{load_result.relationships_created} relationships"
+            "loaded: {} created, {} merged, {} relationships",
+            load_result.nodes_created,
+            load_result.nodes_merged,
+            load_result.relationships_created,
         )
 
-    logger.info("Ingestion complete")
+    # Flush ontology buffer after all files
+    if buffer and config.ontology_buffer.flush_on_complete:
+        flush_path = Path.cwd() / ".kg-builder" / "ontology.yml"
+        buffer.flush(flush_path)
+        logger.info("ontology buffer flushed: coverage={:.0%}", buffer.coverage())
+
+    logger.info("ingestion complete")
 
 
 @app.command()
@@ -78,7 +104,7 @@ def query(
     question: str = typer.Argument(..., help="Natural language question about the graph"),
 ):
     """Query the knowledge graph."""
-    logger.info(f"Query: {question}")
+    logger.info("query: {}", question)
     logger.warning("Query agent not yet implemented")
 
 
@@ -103,7 +129,7 @@ def init():
 
     config_path = kg_dir / "config.yml"
     config_path.write_text(yaml.dump(DEFAULTS, default_flow_style=False, sort_keys=False))
-    logger.info(f"Created {kg_dir} with default config")
+    logger.info("created {} with default config", kg_dir)
 
 
 def main():

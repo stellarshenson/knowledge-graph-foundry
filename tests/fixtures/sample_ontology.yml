@@ -1,0 +1,48 @@
+entity_types:
+  - name: Product
+    description: Medical device or product model
+    properties:
+      model_name:
+        type: string
+        description: Product model name
+      weight:
+        type: number
+        description: Weight in specified unit
+        unit: lbs
+  - name: Specification
+    description: Technical specification with numeric value
+    properties:
+      value:
+        type: string
+        description: Specification value
+      unit:
+        type: string
+        description: Unit of measurement
+      min_value:
+        type: number
+        description: Minimum value if range
+      max_value:
+        type: number
+        description: Maximum value if range
+  - name: Feature
+    description: Product feature or capability
+    properties:
+      configurable:
+        type: boolean
+        description: Whether the feature is user-configurable
+  - name: Organization
+    description: Company or manufacturer
+
+relationship_types:
+  - name: MANUFACTURES
+    source_type: Organization
+    target_type: Product
+    description: Organization manufactures product
+  - name: HAS_SPECIFICATION
+    source_type: Product
+    target_type: Specification
+    description: Product has technical specification
+  - name: HAS_FEATURE
+    source_type: Product
+    target_type: Feature
+    description: Product includes feature

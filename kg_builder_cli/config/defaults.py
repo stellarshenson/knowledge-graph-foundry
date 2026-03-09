@@ -11,7 +11,9 @@ DEFAULTS: dict = {
         "model": "eu.anthropic.claude-sonnet-4-20250514-v1:0",
         "temperature": 0.0,
         "region": "eu-central-1",
-        "profile": "kolomolo",
+        "profile": None,
+        "max_retries": 3,
+        "timeout": 120,
     },
     "extract": {
         "chunking_strategy": "token",
@@ -25,6 +27,7 @@ DEFAULTS: dict = {
         "vision_model": None,
         "subgraph_splitting": False,
         "rolling_context_window": 0,
+        "resolution_threshold": 0.85,
     },
     "ontology_buffer": {
         "seed_from": None,

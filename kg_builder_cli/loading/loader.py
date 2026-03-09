@@ -12,6 +12,9 @@ from kg_builder_cli.types.config import AppConfig
 from kg_builder_cli.types.extraction import ExtractionResult
 from kg_builder_cli.types.loading import LoadResult
 
+from .indexes import create_indexes
+from .validation import validate_graph
+
 
 _MAX_RETRIES = 3
 _BACKOFF_BASE = 0.5
@@ -117,25 +120,36 @@ def _create_entity_nodes(
 def _create_chunk_nodes(
     session, result: ExtractionResult, batch_size: int
 ) -> None:
-    """Create Chunk nodes and link them to the Document node."""
-    chunks = result.metadata.chunk_count
-    if chunks == 0:
-        return
+    """Create Chunk nodes with content and link them to the Document node."""
+    chunks = result.chunks
+    if not chunks:
+        # Fallback: build chunk records from entity source_chunks references
+        chunk_ids: set[str] = set()
+        for entity in result.entities:
+            chunk_ids.update(entity.source_chunks)
+        for rel in result.relationships:
+            chunk_ids.update(rel.source_chunks)
+        if not chunk_ids:
+            return
+        chunk_list = [
+            {"id": cid, "text": None, "page": None, "token_count": 0}
+            for cid in chunk_ids
+        ]
+    else:
+        chunk_list = [
+            {
+                "id": c.id,
+                "text": c.text,
+                "page": c.metadata.page,
+                "token_count": c.token_count,
+            }
+            for c in chunks
+        ]
 
-    # build chunk records from entity source_chunks references
-    chunk_ids: set[str] = set()
-    for entity in result.entities:
-        chunk_ids.update(entity.source_chunks)
-    for rel in result.relationships:
-        chunk_ids.update(rel.source_chunks)
-
-    if not chunk_ids:
-        return
-
-    chunk_list = [{"id": cid} for cid in chunk_ids]
     merge_query = (
         "UNWIND $batch AS row "
-        "MERGE (c:Chunk {id: row.id})"
+        "MERGE (c:Chunk {id: row.id}) "
+        "SET c.text = row.text, c.page = row.page, c.token_count = row.token_count"
     )
     link_query = (
         "UNWIND $batch AS row "
@@ -149,6 +163,28 @@ def _create_chunk_nodes(
         _run_with_retry(
             session, link_query, {"batch": batch, "doc_name": result.metadata.source}
         )
+
+
+def _create_chunk_chain(session, result: ExtractionResult) -> None:
+    """Create NEXT_CHUNK relationships between sequential chunks."""
+    chunks = result.chunks
+    if len(chunks) < 2:
+        return
+
+    # Sort by index to ensure correct ordering
+    sorted_chunks = sorted(chunks, key=lambda c: c.index)
+    pairs = [
+        {"from_id": sorted_chunks[i].id, "to_id": sorted_chunks[i + 1].id}
+        for i in range(len(sorted_chunks) - 1)
+    ]
+
+    query = (
+        "UNWIND $pairs AS row "
+        "MATCH (a:Chunk {id: row.from_id}), (b:Chunk {id: row.to_id}) "
+        "MERGE (a)-[:NEXT_CHUNK]->(b)"
+    )
+    _run_with_retry(session, query, {"pairs": pairs})
+    logger.debug("created {} NEXT_CHUNK links", len(pairs))
 
 
 def _create_has_entity_relationships(
@@ -247,6 +283,7 @@ def load_extraction(result: ExtractionResult, config: AppConfig) -> LoadResult:
             _create_has_entity_relationships(
                 session, result, config.load.batch_size
             )
+            _create_chunk_chain(session, result)
 
             rels_created = _create_relationships(
                 session, result, config.load.batch_size
@@ -259,6 +296,24 @@ def load_extraction(result: ExtractionResult, config: AppConfig) -> LoadResult:
         rels_created = 0
     finally:
         driver.close()
+
+    # Post-load steps
+    if not errors and config.load.create_indexes:
+        try:
+            create_indexes(config)
+        except Exception as exc:
+            logger.error("index creation failed: {}", exc)
+            errors.append(f"index creation: {exc}")
+
+    validation_report = None
+    if not errors and config.load.validate_graph:
+        try:
+            validation_report = validate_graph(config)
+            if validation_report.warnings:
+                errors.extend(validation_report.warnings)
+        except Exception as exc:
+            logger.error("validation failed: {}", exc)
+            errors.append(f"validation: {exc}")
 
     elapsed_ms = int((time.monotonic() - start) * 1000)
     load_result = LoadResult(

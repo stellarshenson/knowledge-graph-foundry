@@ -5,6 +5,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from kg_builder_cli.types.document import Chunk
+
 
 class Entity(BaseModel):
     id: str
@@ -15,6 +17,7 @@ class Entity(BaseModel):
     source_chunks: list[str] = Field(default_factory=list)
     confidence: float = 1.0
     extraction_model: str = ""
+    embedding: list[float] | None = None
 
 
 class Relationship(BaseModel):
@@ -49,4 +52,5 @@ class ExtractionResult(BaseModel):
     entities: list[Entity] = Field(default_factory=list)
     relationships: list[Relationship] = Field(default_factory=list)
     facts: list[Fact] = Field(default_factory=list)
+    chunks: list[Chunk] = Field(default_factory=list)
     validation: dict = Field(default_factory=dict)

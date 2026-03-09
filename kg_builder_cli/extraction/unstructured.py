@@ -1,7 +1,7 @@
 """Unstructured document ingestion pipeline orchestrator."""
-
 from __future__ import annotations
 
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
@@ -10,10 +10,13 @@ from loguru import logger
 
 from kg_builder_cli.extraction.chunking import chunk_text
 from kg_builder_cli.extraction.dedup import deduplicate
-from kg_builder_cli.extraction.extract import extract_chunk
+from kg_builder_cli.extraction.extract import create_extraction_client, extract_chunk
 from kg_builder_cli.extraction.parsing import parse_document
 from kg_builder_cli.extraction.prompts import build_extraction_prompt
-from kg_builder_cli.types.config import AppConfig
+from kg_builder_cli.extraction.resolution import resolve_entities
+from kg_builder_cli.extraction.response_models import build_response_model
+from kg_builder_cli.ontology.buffer import OntologyBuffer
+from kg_builder_cli.types.config import AppConfig, LLMConfig
 from kg_builder_cli.types.document import Chunk
 from kg_builder_cli.types.extraction import (
     Entity,
@@ -24,10 +27,26 @@ from kg_builder_cli.types.extraction import (
 from kg_builder_cli.types.ontology import OntologyState
 
 
+def _litellm_model_id(config: LLMConfig) -> str:
+    """Build litellm model string from provider config."""
+    if config.provider == "bedrock":
+        return f"bedrock/{config.model}"
+    return config.model
+
+
+def _configure_aws_env(config: LLMConfig) -> None:
+    """Set AWS environment variables from config for litellm."""
+    if config.region:
+        os.environ["AWS_REGION_NAME"] = config.region
+    if config.profile:
+        os.environ["AWS_PROFILE"] = config.profile
+
+
 def ingest_document(
     file_path: Path,
     config: AppConfig,
     ontology: OntologyState | None = None,
+    buffer: OntologyBuffer | None = None,
 ) -> ExtractionResult:
     """Run the full unstructured ingestion pipeline.
 
@@ -59,10 +78,21 @@ def ingest_document(
     all_entities: list[Entity] = []
     all_relationships: list[Relationship] = []
 
-    model_id = config.llm.model
-    region = config.llm.region or "us-east-1"
-    profile = config.llm.profile or ""
+    model_id = _litellm_model_id(config.llm)
+    temperature = config.llm.temperature
+    max_retries = config.llm.max_retries
     concurrency = max(1, config.extract.concurrency)
+
+    # Configure AWS env and create litellm+instructor client
+    _configure_aws_env(config.llm)
+    client = create_extraction_client()
+
+    # Use buffer snapshot as ontology if buffer is available
+    if buffer:
+        ontology = buffer.snapshot()
+
+    # Build response model (constrained if ontology has types)
+    response_model = build_response_model(ontology)
 
     intent = config.ontology_buffer.intent
     prompts_and_chunks: list[tuple[Chunk, str]] = [
@@ -75,7 +105,8 @@ def ingest_document(
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
         futures = {
             executor.submit(
-                extract_chunk, chunk, prompt, model_id, region, profile
+                extract_chunk, chunk, prompt, model_id, client,
+                temperature, max_retries, response_model,
             ): chunk.id
             for chunk, prompt in prompts_and_chunks
         }
@@ -98,6 +129,14 @@ def ingest_document(
         all_entities, all_relationships
     )
 
+    # Step 5b: Entity resolution (fuzzy merge near-duplicates)
+    resolution_threshold = config.extract.resolution_threshold
+    deduped_entities = resolve_entities(deduped_entities, threshold=resolution_threshold)
+
+    # Step 5c: Feed back into ontology buffer
+    if buffer:
+        buffer.accumulate_from_result(deduped_entities, deduped_relationships)
+
     # Step 6: Build result
     result = ExtractionResult(
         metadata=ExtractionMetadata(
@@ -109,6 +148,7 @@ def ingest_document(
         ),
         entities=deduped_entities,
         relationships=deduped_relationships,
+        chunks=chunks,
     )
 
     logger.info(

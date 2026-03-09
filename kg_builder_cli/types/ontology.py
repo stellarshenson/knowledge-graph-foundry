@@ -5,10 +5,25 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
+class PropertyDef(BaseModel):
+    """Property definition with validation rules."""
+
+    name: str
+    type: str = "string"
+    description: str = ""
+    required: bool = False
+    allowed_values: list[str] = Field(default_factory=list)
+    pattern: Optional[str] = None
+    min_value: Optional[float] = None
+    max_value: Optional[float] = None
+
+
 class TypeDef(BaseModel):
     name: str
     description: str = ""
     properties: dict = Field(default_factory=dict)
+    property_defs: list[PropertyDef] = Field(default_factory=list)
+    aliases: list[str] = Field(default_factory=list)
     parent: Optional[str] = None
 
 

@@ -22,6 +22,7 @@ from .loading import LoadBatch, LoadResult, ValidationReport
 from .ontology import (
     NormDiagnostic,
     OntologyState,
+    PropertyDef,
     RelationshipDef,
     TypeDef,
     TypeSignal,
@@ -57,6 +58,7 @@ __all__ = [
     # ontology
     "NormDiagnostic",
     "OntologyState",
+    "PropertyDef",
     "RelationshipDef",
     "TypeDef",
     "TypeSignal",
