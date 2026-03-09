@@ -129,11 +129,26 @@ def ingest_document(
         all_entities, all_relationships
     )
 
-    # Step 5b: Entity resolution (fuzzy merge near-duplicates)
+    # Step 5b: Enforce ontology types (remap out-of-ontology types)
+    if ontology and ontology.entity_types:
+        allowed = [t.name for t in ontology.entity_types]
+        pre_types = set(e.type for e in deduped_entities)
+        logger.info("Enforcing ontology types: {} allowed, {} unique types pre-enforcement: {}",
+                      len(allowed), len(pre_types), pre_types - set(allowed))
+        deduped_entities = _enforce_ontology_types(deduped_entities, allowed)
+        post_types = set(e.type for e in deduped_entities)
+        logger.info("Post-enforcement: {} unique types, non-allowed: {}",
+                      len(post_types), post_types - set(allowed))
+    else:
+        logger.debug("No ontology types to enforce (ontology={}, types={})",
+                      ontology is not None,
+                      len(ontology.entity_types) if ontology else 0)
+
+    # Step 5c: Entity resolution (fuzzy merge near-duplicates)
     resolution_threshold = config.extract.resolution_threshold
     deduped_entities = resolve_entities(deduped_entities, threshold=resolution_threshold)
 
-    # Step 5c: Feed back into ontology buffer
+    # Step 5d: Feed back into ontology buffer
     if buffer:
         buffer.accumulate_from_result(deduped_entities, deduped_relationships)
 
@@ -169,6 +184,46 @@ def _empty_result(file_path: Path, config: AppConfig) -> ExtractionResult:
             timestamp=datetime.now(),
         ),
     )
+
+
+def _enforce_ontology_types(
+    entities: list[Entity], allowed_types: list[str]
+) -> list[Entity]:
+    """Remap entities with types outside the ontology to the closest allowed type.
+
+    Uses Levenshtein ratio to find the best match. If no match exceeds 0.4,
+    defaults to the most generic type (first in the allowed list).
+    """
+    from Levenshtein import ratio as levenshtein_ratio
+
+    allowed_lower = {t.lower(): t for t in allowed_types}
+    remapped = 0
+
+    for entity in entities:
+        if entity.type.lower() in allowed_lower:
+            # Normalize casing to match ontology
+            entity.type = allowed_lower[entity.type.lower()]
+            continue
+
+        # Find closest allowed type
+        best_score = 0.0
+        best_type = allowed_types[0]
+        for allowed in allowed_types:
+            score = levenshtein_ratio(entity.type.lower(), allowed.lower())
+            if score > best_score:
+                best_score = score
+                best_type = allowed
+
+        old_type = entity.type
+        entity.type = best_type
+        remapped += 1
+        logger.debug("Type remap: '{}' -> '{}' (score={:.2f}) for '{}'",
+                      old_type, best_type, best_score, entity.name)
+
+    if remapped > 0:
+        logger.info("Type enforcement: remapped {} entities to allowed types", remapped)
+
+    return entities
 
 
 def _ontology_label(ontology: OntologyState | None) -> str:

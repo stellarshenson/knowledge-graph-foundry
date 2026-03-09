@@ -437,9 +437,9 @@ SCORECARD: list[ScoreItem] = [
     ),
     ScoreItem(
         dimension="property_completeness",
-        name="Some entities have properties",
-        query="MATCH (n:Entity) WHERE n.properties IS NOT NULL AND n.properties <> '{}' AND n.properties <> 'null' RETURN count(n) AS cnt",
-        expected="Entities with properties",
+        name="Some entities have extra properties",
+        query="MATCH (n:Entity) WHERE size([k IN keys(n) WHERE NOT k IN ['id', 'name', 'type', 'description', 'confidence', 'embedding']]) > 0 RETURN count(n) AS cnt",
+        expected="Entities with properties beyond standard fields",
         check_fn="count_gte", expected_value=1,
     ),
     ScoreItem(
@@ -458,7 +458,7 @@ SCORECARD: list[ScoreItem] = [
 
 GENERATIVE_PROMPTS = {
     "entity_coverage": {
-        "query": "MATCH (n:Entity) RETURN n.name, n.type, substring(n.description, 0, 100) AS desc ORDER BY n.type, n.name",
+        "query": "MATCH (n:Entity) RETURN n.name, n.type, n.description ORDER BY n.type, n.name",
         "prompt": """Evaluate entity coverage of a knowledge graph from the BMC RESmart Auto CPAP User Manual.
 
 Entities in graph:
@@ -502,7 +502,7 @@ Rate 1-5: 1=severe duplication, 3=some duplicates but core is clean, 5=no meanin
 Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
     "query_answerability": {
-        "query": "MATCH (n:Entity) WHERE toLower(n.description) CONTAINS 'hpa' OR toLower(n.description) CONTAINS 'kg' OR toLower(n.description) CONTAINS 'db' OR toLower(n.name) CONTAINS 'bmc' OR toLower(n.type) CONTAINS 'feature' OR toLower(n.type) CONTAINS 'mode' RETURN n.name, n.type, substring(n.description, 0, 150) AS desc ORDER BY n.type LIMIT 30",
+        "query": "MATCH (n:Entity) WHERE toLower(n.description) CONTAINS 'hpa' OR toLower(n.description) CONTAINS 'kg' OR toLower(n.description) CONTAINS 'db' OR toLower(n.name) CONTAINS 'bmc' OR toLower(n.type) CONTAINS 'feature' OR toLower(n.type) CONTAINS 'mode' OR toLower(n.type) CONTAINS 'spec' RETURN n.name, n.type, n.description ORDER BY n.type LIMIT 40",
         "prompt": """Evaluate if these graph entities can answer real questions about a CPAP device:
 {data}
 
