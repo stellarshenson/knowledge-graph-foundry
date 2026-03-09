@@ -16,8 +16,8 @@ For each entity, provide:
 - id: lowercase with underscores, prefixed by type (e.g., person_john_smith)
 - name: the canonical name as it appears in the text
 - type: MUST be exactly one of the allowed entity types listed above - no exceptions
-- description: MUST include specific numeric values, measurements, ranges, and units from the text. Never use generic descriptions like "a specification" - always include the actual values (e.g., "Weight: 1.6 kg (3.5 lbs) without humidifier" not "weight specification")
-- properties: dict of any additional attributes mentioned, including numeric values as separate keys
+- description: MUST include specific numeric values, measurements, ranges, and units from the text. Never use generic descriptions like "a specification" - always include the actual values (e.g., "Weight: 1.6 kg (3.5 lbs) without humidifier" not "weight specification"). For specifications, always state the value, unit, and any conditions or ranges
+- properties: dict of structured attributes with numeric values as separate keys (e.g., {{"value": 1.6, "unit": "kg", "min": 4, "max": 20}}). Include at minimum: value/range, unit, and any relevant conditions
 - confidence: 0.0 to 1.0
 
 For each relationship, provide:
