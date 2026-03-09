@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kg_builder_cli"
-version = "0.1.1"
+version = "0.1.4"
 description = "Knowledge Graph Builder for Neo4J DB (for now) heavily inspired by the Neo4J Graph Builder, with free or constrained ontology and straightforward execution"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -16,18 +16,35 @@ classifiers = [
 ]
 
 dependencies = [
-    "loguru",
-    "tqdm",
+    # CLI and TUI
     "typer",
-    "python-dotenv",
-    "botocore",
+    "textual",
+    # LLM integration
+    "litellm",
+    "instructor",
+    # Agent orchestration
     "strands-agents",
     "strands-agents-tools",
+    # Document parsing
+    "pymupdf4llm",
+    "python-docx",
+    # Chunking
+    "tiktoken",
+    "langchain-text-splitters",
+    "chonkie",
+    # Graph database
     "neo4j",
+    "langchain-neo4j",
+    # Ontology
+    "owlready2",
+    # Entity resolution
+    "python-Levenshtein",
+    # Configuration and validation
     "pydantic>=2.0",
     "pyyaml",
-    "pymupdf4llm",
-    "tiktoken",
+    "python-dotenv",
+    # Logging
+    "loguru",
 ]
 
 [project.optional-dependencies]
@@ -39,6 +56,7 @@ dev = [
     "pip",
     "pytest",
     "pytest-cov",
+    "pytest-mock",
     "ruff",
     "awscli",
 ]

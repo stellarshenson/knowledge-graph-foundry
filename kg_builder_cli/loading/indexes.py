@@ -15,6 +15,18 @@ _INDEXES = [
         "entity_name_idx",
         "CREATE INDEX entity_name_idx IF NOT EXISTS FOR (n:Entity) ON (n.name)",
     ),
+    (
+        "entity_embeddings",
+        "CREATE VECTOR INDEX entity_embeddings IF NOT EXISTS "
+        "FOR (n:Entity) ON (n.embedding) "
+        "OPTIONS {indexConfig: {`vector.dimensions`: 1536, "
+        "`vector.similarity_function`: 'cosine'}}",
+    ),
+    (
+        "entity_names",
+        "CREATE FULLTEXT INDEX entity_names IF NOT EXISTS "
+        "FOR (n:Entity) ON EACH [n.name]",
+    ),
 ]
 
 

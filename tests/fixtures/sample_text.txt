@@ -1,0 +1,23 @@
+The RESmart CPAP System by BMC Medical Co., Ltd. is designed for the treatment of Obstructive Sleep Apnea (OSA). This device provides continuous positive airway pressure to maintain an open airway during sleep.
+
+The RESmart CPAP features an integrated heated humidifier that provides optimal moisture levels for patient comfort. The humidifier chamber is easy to clean and features a snap-on design for quick attachment and removal.
+
+Technical Specifications:
+- Pressure Range: 4-20 cmH2O (in 0.5 cmH2O increments)
+- Sound Level: less than 30 dB(A) at 10 cmH2O
+- Dimensions (without humidifier): 8.66 x 7.60 x 4.40 inches (220 x 194 x 112 mm)
+- Dimensions (with humidifier): 12.3 x 7.60 x 4.40 inches (313 x 194 x 112 mm)
+- Weight (without humidifier): 3.5 lbs (1.6 kg)
+- Weight (with humidifier): 5.3 lbs (2.4 kg)
+- Power Supply: 100-240V AC, 50/60Hz, 1.0A max
+- Operating Temperature: 41-95 degrees F (5-35 degrees C)
+- Operating Humidity: up to 80% relative humidity, non-condensing
+- Storage Temperature: -4 to 131 degrees F (-20 to 55 degrees C)
+
+The Auto-CPAP model (RESmart Auto) includes advanced features such as automatic pressure adjustment based on detected respiratory events, SmartFlex expiratory pressure relief, and an optional heated tube for condensation prevention.
+
+BMC Medical Co., Ltd. (also known as 3B Products or 3B Medical in some markets) is a leading manufacturer of sleep therapy devices. The company produces a range of CPAP, Auto-CPAP, and BiLevel devices for the global market.
+
+EPR (Expiratory Pressure Relief) Technology reduces pressure during exhalation by a configurable amount (1-3 cmH2O), improving patient comfort and therapy compliance. This is similar to SmartFlex technology used in the Auto-CPAP models.
+
+The device connects to a data management system via SD card or optional Wi-Fi module for therapy compliance monitoring. Clinicians can review usage data including AHI (Apnea-Hypopnea Index), leak rates, and pressure profiles through the companion software.

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://kg-builder-cli.example.org/cpap#"
+     xml:base="http://kg-builder-cli.example.org/cpap"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+
+    <owl:Ontology rdf:about="http://kg-builder-cli.example.org/cpap">
+        <rdfs:comment>CPAP domain ontology for kg-builder-cli testing</rdfs:comment>
+    </owl:Ontology>
+
+    <!-- Entity types (owl:Class) -->
+
+    <owl:Class rdf:about="#MedicalDevice">
+        <rdfs:comment>Any medical device used in sleep therapy</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="#CPAPDevice">
+        <rdfs:subClassOf rdf:resource="#MedicalDevice"/>
+        <rdfs:comment>Continuous Positive Airway Pressure device</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="#AutoCPAP">
+        <rdfs:subClassOf rdf:resource="#CPAPDevice"/>
+        <rdfs:comment>Auto-titrating CPAP that adjusts pressure automatically</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="#Organization">
+        <rdfs:comment>Company or manufacturer of medical devices</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="#Specification">
+        <rdfs:comment>Technical specification with numeric value and unit</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="#Feature">
+        <rdfs:comment>Product feature or therapy capability</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="#Component">
+        <rdfs:comment>Physical component or accessory of a device</rdfs:comment>
+    </owl:Class>
+
+    <!-- Relationship types (owl:ObjectProperty) -->
+
+    <owl:ObjectProperty rdf:about="#manufactures">
+        <rdfs:domain rdf:resource="#Organization"/>
+        <rdfs:range rdf:resource="#MedicalDevice"/>
+        <rdfs:comment>Organization manufactures a medical device</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#hasSpecification">
+        <rdfs:domain rdf:resource="#MedicalDevice"/>
+        <rdfs:range rdf:resource="#Specification"/>
+        <rdfs:comment>Device has a technical specification</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#hasFeature">
+        <rdfs:domain rdf:resource="#MedicalDevice"/>
+        <rdfs:range rdf:resource="#Feature"/>
+        <rdfs:comment>Device includes a feature</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#hasComponent">
+        <rdfs:domain rdf:resource="#MedicalDevice"/>
+        <rdfs:range rdf:resource="#Component"/>
+        <rdfs:comment>Device contains a physical component</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- Datatype properties -->
+
+    <owl:DatatypeProperty rdf:about="#pressureMin">
+        <rdfs:domain rdf:resource="#Specification"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+        <rdfs:comment>Minimum pressure value in cmH2O</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="#pressureMax">
+        <rdfs:domain rdf:resource="#Specification"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+        <rdfs:comment>Maximum pressure value in cmH2O</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="#unit">
+        <rdfs:domain rdf:resource="#Specification"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Unit of measurement</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="#weight">
+        <rdfs:domain rdf:resource="#MedicalDevice"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+        <rdfs:comment>Device weight</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Disjoint classes -->
+
+    <rdf:Description rdf:about="#Organization">
+        <owl:disjointWith rdf:resource="#MedicalDevice"/>
+    </rdf:Description>
+
+</rdf:RDF>

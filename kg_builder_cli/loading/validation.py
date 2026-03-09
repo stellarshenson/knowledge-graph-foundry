@@ -1,5 +1,7 @@
 """Post-load graph validation for kg-builder-cli."""
 
+from __future__ import annotations
+
 from loguru import logger
 from neo4j import GraphDatabase
 
@@ -7,17 +9,27 @@ from kg_builder_cli.types.config import AppConfig
 from kg_builder_cli.types.loading import ValidationReport
 
 
-def validate_graph(config: AppConfig) -> ValidationReport:
-    """Run integrity checks against the loaded graph and return a report."""
-    driver = GraphDatabase.driver(
-        config.neo4j.uri,
-        auth=(config.neo4j.user, config.neo4j.password),
-    )
+def validate_graph(
+    config: AppConfig, *, driver: object | None = None
+) -> ValidationReport:
+    """Run integrity checks against the loaded graph and return a report.
+
+    If ``driver`` is provided it will be used directly (caller owns
+    lifecycle).  Otherwise a new driver is created and closed when done.
+    """
+    owns_driver = driver is None
+    if owns_driver:
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+
     orphan_ids: list[str] = []
     warnings: list[str] = []
     total_entities = 0
     total_relationships = 0
     type_distribution: dict[str, int] = {}
+    types_with_rels: set[str] = set()
 
     try:
         with driver.session() as session:
@@ -47,25 +59,16 @@ def validate_graph(config: AppConfig) -> ValidationReport:
             type_distribution = {
                 record["type"]: record["cnt"] for record in result
             }
-    finally:
-        driver.close()
 
-    # compute type coverage as fraction of entity types that have at least one
-    # relationship - a rough proxy for ontology completeness
-    types_with_rels = set()
-    if type_distribution:
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
-        try:
-            with driver.session() as session:
+            # types that participate in at least one relationship
+            if type_distribution:
                 result = session.run(
                     "MATCH (n:Entity)-[]-() "
                     "RETURN DISTINCT n.type AS type"
                 )
                 types_with_rels = {record["type"] for record in result}
-        finally:
+    finally:
+        if owns_driver:
             driver.close()
 
     all_types = set(type_distribution.keys())

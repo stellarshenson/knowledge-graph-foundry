@@ -16,7 +16,9 @@ class LLMConfig(BaseModel):
     model: str = "eu.anthropic.claude-sonnet-4-20250514-v1:0"
     temperature: float = 0.0
     region: str = "eu-central-1"
-    profile: str = "kolomolo"
+    profile: Optional[str] = None
+    max_retries: int = 3
+    timeout: int = 120
 
 
 class ExtractConfig(BaseModel):
@@ -31,6 +33,7 @@ class ExtractConfig(BaseModel):
     vision_model: Optional[str] = None
     subgraph_splitting: bool = False
     rolling_context_window: int = 0
+    resolution_threshold: float = 0.85
 
 
 class OntologyBufferConfig(BaseModel):
