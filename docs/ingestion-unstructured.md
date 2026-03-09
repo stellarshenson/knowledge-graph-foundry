@@ -130,21 +130,21 @@ The ontology buffer is the central mechanism that makes the extraction pipeline 
 
 The buffer is initialized from one of three sources:
 
-- **From OWL seed** (domain-informed mode): an existing OWL/RDF ontology is loaded via owlready2. Classes are imported as entity types (with `rdfs:comment` as descriptions), object properties as relationship types (with domain/range as source/target constraints), and data properties as property schemas. Import depth is limited by `seed_depth` (default 2 levels of subclass hierarchy) and optionally filtered to a specific branch via `seed_filter`. This gives the buffer a strong starting vocabulary grounded in established domain knowledge without inheriting the full complexity of the reference ontology. **The OWL seed is suggestive, not prescriptive** - it provides initial vocabulary and domain context, but the extraction is explicitly allowed to go beyond it. The resulting ontology may contain types, relationships, and connection patterns the OWL source never defined. The OWL file is read-only - never modified
+- **From seed** (domain-informed mode): an ontology seed file in any format - OWL/RDF, JSON, markdown, plain text, or any other human-readable description of domain knowledge. All non-YAML, non-OWL inputs pass through an LLM normalization step that converts freeform content into the canonical YAML ontology format (see Ontology Normalization in SPEC.md). OWL/RDF files are normalized programmatically via owlready2. The normalized output is validated against Pydantic models before loading into the buffer. **The seed is suggestive, not prescriptive** - it provides initial vocabulary and domain context, but extraction is explicitly allowed to go beyond it. The resulting ontology may contain types, relationships, and connection patterns the seed never defined. The seed file is read-only - never modified
 - **From YAML** (constrained mode): loads `.kg-builder/ontology.yml` as the starting schema. The buffer begins with a known set of entity types and relationship types. New types discovered during extraction can still be proposed, but require higher confidence to be accepted
 - **Empty** (free extraction mode): the buffer starts with no types defined. The first few documents establish the initial ontology, which then stabilizes as more documents are processed
 
-When both OWL seed and YAML are configured, the YAML takes precedence for overlapping type definitions. The OWL seed fills in types not covered by the YAML - this allows using a broad domain ontology as background knowledge while maintaining a curated application schema on top. In all cases, the buffer is free to evolve beyond its initial state. OWL-sourced types carry higher initial confidence but discovered types that appear consistently across documents are promoted equally. The final flushed ontology represents what the data actually contains, not what the OWL source prescribed.
+When both seed and YAML are configured, the YAML takes precedence for overlapping type definitions. The seed fills in types not covered by the YAML - this allows using a broad domain description as background knowledge while maintaining a curated application schema on top. In all cases, the buffer is free to evolve beyond its initial state. Seed-sourced types carry higher initial confidence but discovered types that appear consistently across documents are promoted equally. The final flushed ontology represents what the data actually contains, not what the seed prescribed.
 
 ### Buffer Contents
 
 The buffer tracks:
 
-- **Entity types**: name, description, frequency count (how often this type has appeared across chunks), source (`owl_seed`, `yaml`, `discovered`)
-- **Relationship types**: name, source type, target type, frequency count, transitive flag (from OWL `TransitiveProperty`)
-- **Type hierarchy**: parent-child relationships between entity types (from OWL `subClassOf`), used as context in extraction prompts
+- **Entity types**: name, description, frequency count (how often this type has appeared across chunks), source (`seed`, `seed_normalized`, `yaml`, `discovered`), confidence (`high`, `medium`, `low` - normalized seeds carry confidence from the LLM normalization step)
+- **Relationship types**: name, source type, target type, frequency count, transitive flag (from OWL `TransitiveProperty` if OWL seed)
+- **Type hierarchy**: parent-child relationships between entity types (from OWL `subClassOf` or inferred by normalizer), used as context in extraction prompts
 - **Type variants**: raw type labels the LLM has produced that map to a canonical type (e.g., "Human" -> "Person", "Corp" -> "Organization")
-- **Disjoint constraints**: type pairs that the OWL source considers incompatible (from `disjointWith`), logged as warnings during extraction but not enforced - the data may legitimately contain entities that bridge OWL-defined boundaries
+- **Disjoint constraints**: type pairs the seed considers incompatible (from OWL `disjointWith` or normalizer inference), logged as warnings during extraction but not enforced - the data may legitimately contain entities that bridge seed-defined boundaries
 - **Coverage score**: fraction of recently extracted types that match existing buffer entries, measured per document
 
 ### Schema Signal Extraction (pre-flight)
@@ -205,6 +205,19 @@ Based on the extraction evidence so far, propose refinements:
 
 Return the updated ontology as JSON.
 ```
+
+### DAG Validation
+
+The ontology type hierarchy must be a directed acyclic graph - cycles in IS_A relationships are nonsensical (A is-a B is-a A). The buffer runs a topological sort on the type hierarchy at each refinement checkpoint. Detection is programmatic (no LLM cost), but resolution is LLM-assisted.
+
+When a cycle is detected, the cycle edges and their participating types are passed to the LLM with context about each type's description, frequency, and source origin. The LLM decides which edge to remove or reclassify - it may determine that one IS_A relationship should actually be a HAS_PART or RELATED_TO, or that two types were incorrectly distinguished and should be merged. The LLM's resolution is presented to the user for confirmation in interactive mode, or applied automatically in batch mode with a warning logged.
+
+DAG validation runs:
+- After ontology normalization (when a freeform seed is converted to canonical YAML)
+- After each buffer refinement pass
+- Before the final buffer flush
+
+Relationship type constraints (source/target type pairs) are not required to be acyclic - a `REPORTS_TO` relationship from Person to Person is valid. DAG enforcement applies only to the type hierarchy (IS_A edges between entity types).
 
 ### Buffer Flush
 

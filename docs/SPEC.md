@@ -1,6 +1,6 @@
 # kg-builder-cli Specification
 
-CLI tool for building knowledge graphs from structured and unstructured data, loading them into Neo4J. Uses LLMs to identify entities and relationships, with optional ontology constraints to control graph structure. Designed as a simpler, CLI-driven alternative to the Neo4J LLM Graph Builder web application.
+CLI tool for building knowledge graphs from structured and unstructured data, loading them into Neo4J. Uses LLMs to identify entities and relationships, with optional ontology constraints to control graph structure. Built on the Strands Agents SDK - each CLI command is an autonomous agent with tools for data inspection, graph operations, and interactive user collaboration. Designed as a simpler, CLI-driven alternative to the Neo4J LLM Graph Builder web application.
 
 ## Resource Directory
 
@@ -17,6 +17,11 @@ my-project/
     extractions/            # extraction output files
       2026-03-09_document.json
       2026-03-09_records.json
+    memory/                 # agent memory (data profiles, user preferences, resolution history)
+      source_employees.yml
+      source_documents.yml
+    migrations/             # schema migration history
+      2026-03-09_employees_v2.yml
   data/
     raw/
       documents/
@@ -35,12 +40,12 @@ Free-form text documents (PDF, TXT, MD, DOCX). The LLM extracts entities and rel
 
 ### Structured Data
 
-JSON or JSONL files containing records that follow a known schema. The schema is not embedded in the data itself - it is described in a separate schema description file (markdown, YAML, or plain text) that the LLM interprets generatively to understand field meanings, entity mappings, and relationship patterns.
+JSON or JSONL files containing records that follow a known schema. The schema is described in a separate schema description file (markdown, YAML, or plain text) that the LLM interprets generatively to understand field meanings, entity mappings, and relationship patterns.
 
 The `--schema` option points to this description file. The LLM reads the schema description alongside each record and determines how to map fields to graph entities and relationships. This means the schema description does not need to follow a rigid format - it can be a markdown document explaining what each field represents, a YAML with field descriptions, or any human-readable source that conveys the structure.
 
 ```
-kg extract data/records.jsonl --schema .kg-builder/schemas/employees.md
+kg ingest data/records.jsonl --schema .kg-builder/schemas/employees.md
 ```
 
 **Example schema description** (`.kg-builder/schemas/employees.md`):
@@ -65,114 +70,188 @@ Each JSON record represents an employee entry.
 
 For structured data, chunking options (`--chunk-size`, `--chunk-overlap`) do not apply. Each JSON record (or batch of records for efficiency) is sent to the LLM as a discrete unit alongside the schema description.
 
+### Schema Inference
+
+When no `--schema` is provided for structured data, the ingest agent infers a schema from a sample of the data. The agent uses its `py-repl` tool to load and inspect the first N records (default 20), analyses field types, cardinality, value distributions, and nesting patterns, then proposes a schema description.
+
+The inference runs in interactive mode - the agent presents its proposed schema to the user and enters a collaborative loop:
+
+1. **Sample** - agent loads N records via `py-repl`, computes field statistics (types, null rates, unique counts, value samples)
+2. **Propose** - agent generates a schema description explaining each field's semantics, entity mappings, and relationship patterns
+3. **Review** - user reviews the proposal, requests changes ("make `location` a separate entity", "ignore the `internal_id` field", "the `tags` array should create `Topic` entities")
+4. **Refine** - agent updates the schema based on feedback, may re-inspect data to validate changes
+5. **Confirm** - user approves the schema, agent saves it to `.kg-builder/schemas/`
+
+The saved schema becomes the input for all subsequent ingestion runs against this data source. This means a user can start with zero configuration - point the tool at a JSONL file and the agent builds the schema collaboratively before ingesting.
+
+```
+kg ingest data/records.jsonl                    # no --schema triggers inference
+kg ingest data/records.jsonl --infer-schema     # explicit inference even if schema exists
+```
+
+### Schema Update
+
+Schemas evolve as data sources change - fields are added, renamed, or restructured. The `kg update schema` command handles schema evolution with migration awareness.
+
+When a schema update is triggered (new fields detected, user requests reclassification, or explicit `--update-schema` flag), the update agent:
+
+1. **Diff** - compares the current schema against a fresh sample of the data, identifies new fields, removed fields, type changes, and structural shifts
+2. **Impact** - queries the existing graph via `neo4j-mcp` to assess what entities and relationships would be affected by schema changes
+3. **Propose migration** - generates a migration plan: new entity types to create, relationships to add or retype, properties to migrate, and any data transformations needed
+4. **Interactive review** - presents the migration plan to the user for approval or modification
+5. **Execute** - runs the approved migration via `neo4j-driver` (direct Cypher for bulk operations) or re-ingests affected records with the updated schema
+
+The migration plan is saved to `.kg-builder/migrations/` with a timestamp for auditability.
+
+## Agent Architecture
+
+The CLI is built on the Strands Agents SDK. Each command spawns an autonomous agent with a defined set of tools and a system prompt tailored to its workflow. Agents maintain conversational context for interactive operations (schema inference, migration review) and execute multi-step pipelines autonomously for batch operations.
+
+### Agent Tools
+
+Every agent has access to a shared tool registry:
+
+| Tool | Purpose |
+|------|---------|
+| `py-repl` | Python REPL for data inspection, sampling, statistical analysis, transformation |
+| `neo4j-mcp` | MCP server providing graph query, schema inspection, and index management |
+| `neo4j-driver` | Direct Neo4J Python driver for bulk Cypher operations, batch loading, transactions |
+| `file-ops` | Read/write files in `.kg-builder/` directory (schemas, extractions, ontology, migrations) |
+
+The `neo4j-mcp` tool exposes the graph as a conversational resource - agents can ask questions about the current graph state, inspect node counts, and validate relationships without writing raw Cypher. The `neo4j-driver` tool is used when performance matters - bulk MERGE operations, index creation, and transactional writes that need direct driver access.
+
+### Agent Memory
+
+Each agent has access to persistent memory stored in `.kg-builder/memory/`. Memory operates alongside the ontology buffer as a complementary persistence layer - the buffer tracks schema-level knowledge (entity types, relationship types, coverage scores, variant mappings), while memory tracks operational knowledge accumulated across runs.
+
+Agent memory captures:
+- **Data source profiles** - field distributions, quality patterns, anomalies observed in previous runs
+- **User preferences** - schema decisions, entity mapping choices, fields marked for exclusion
+- **Resolution history** - entity normalization decisions, disambiguation choices, merge/split outcomes
+- **Pipeline context** - extraction parameters that worked well for specific data shapes, batch sizes, model performance observations
+
+Memory is consulted at the start of each agent invocation and updated at completion. When the ingest agent encounters a new JSONL file, it checks memory for prior schema inference sessions on similar data. When the update agent proposes a migration, it references previous migration outcomes to calibrate its recommendations. Memory is stored as structured YAML files organized by data source and operation type.
+
+The ontology buffer and memory share a read path but write independently. The buffer is authoritative for type definitions and constraints - memory never overrides buffer decisions. Memory provides contextual hints that influence agent behaviour but do not hard-constrain it.
+
 ## CLI Commands
 
-The CLI is built with typer and exposes a single entry point `kg` with subcommands grouped by workflow stage.
+The CLI exposes three entry points corresponding to the primary knowledge graph workflows: ingest, query, and update. Each command is backed by a Strands agent with tools appropriate to its workflow.
 
-### `kg init`
+### `kg ingest`
 
-Initialize the `.kg-builder/` directory and generate a configuration file.
-
-```
-kg init [options]
-```
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--interactive` | `False` | LLM-driven Q&A session to build the config generatively |
-
-**Two modes**:
-
-- **Template mode** (default): creates `.kg-builder/` directory and writes a commented `config.yml` template with all available options and sensible defaults. The user fills in or adjusts values manually
-- **Interactive mode** (`--interactive`): the LLM asks a series of questions about the user's data, target graph structure, Neo4J setup, and preferred extraction behaviour, then generates a tailored `config.yml` from the answers
-
-Both modes also create the `schemas/` and `extractions/` subdirectories.
-
-### `kg extract`
-
-Extract entities and relationships from source documents using an LLM.
+Build the knowledge graph from source data. Handles initialization, extraction, loading, and schema inference as a unified workflow.
 
 ```
-kg extract <source> [options]
+kg ingest <source> [options]
 ```
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--source` | required | Path to file or directory of documents to process |
-| `--output` | `.kg-builder/extractions/` | Output path for extracted graph data |
-| `--ontology` | from config | Path to ontology YAML file (free extraction if omitted) |
+| `<source>` | required | Path to file or directory of documents to process |
 | `--schema` | from config | Path to schema description file for structured data |
+| `--infer-schema` | `False` | Force schema inference even if schema exists |
+| `--ontology` | from config | Path to ontology YAML file (free extraction if omitted) |
 | `--model` | from config | LLM model identifier |
 | `--chunk-size` | from config | Token chunk size for document splitting (unstructured only) |
 | `--chunk-overlap` | from config | Token overlap between chunks (unstructured only) |
 | `--concurrency` | from config | Parallel LLM requests |
-
-**Behaviour**:
-- Input type detected by file extension: `.json`/`.jsonl` -> structured, everything else -> unstructured
-- Without `--ontology`: free extraction - the LLM discovers entity and relationship types, building the ontology progressively via the ontology buffer. The resulting ontology is flushed to `.kg-builder/ontology.yml` at the end of the run
-- With `--ontology`: constrained extraction - starts from the provided ontology but refines it during processing. New types discovered with sufficient evidence are proposed for inclusion. The refined ontology is written back to the file
-- The ontology buffer tracks type frequencies, variant mappings, and coverage scores across documents. See `docs/ingestion-unstructured.md` for the full buffered ontology mechanism
-- `--schema` is required for structured data - provides the human-readable description the LLM uses to interpret record fields as graph entities and relationships
-- Unstructured: processes PDF, TXT, MD, and DOCX formats with chunking
-- Structured: processes each JSON record (or batch) as a discrete unit, no chunking
-- Outputs structured JSON with entities, relationships, and source references
-
-### `kg load`
-
-Load extracted graph data into Neo4J.
-
-```
-kg load [input] [options]
-```
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `input` | latest file in `.kg-builder/extractions/` | Path to extraction JSON |
 | `--merge-strategy` | from config | How to handle existing nodes: `merge`, `replace`, `skip` |
 | `--batch-size` | from config | Cypher batch size for bulk loading |
-| `--create-indexes` | from config | Auto-create indexes for entity labels |
+| `--extract-only` | `False` | Run extraction without loading into Neo4J |
+| `--keep-extractions` | `False` | Save extraction JSON to `.kg-builder/extractions/` |
 
 **Behaviour**:
-- Connects to Neo4J using credentials from config (`${VAR}` resolved from `.env` or environment)
-- Creates nodes with properties (name, type, description, source_chunk)
-- Creates typed relationships between nodes
-- Deduplicates entities by name+type before loading
 
-### `kg pipeline`
+The ingest agent runs the full pipeline: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J.
 
-Run extract + load as a single pipeline.
+- **Initialization**: if `.kg-builder/` does not exist, the agent creates it with default `config.yml`, `schemas/`, `extractions/`, `memory/`, and `migrations/` directories. In interactive mode the agent asks questions about the target graph and generates tailored configuration
+- **Input detection**: file extension determines pipeline - `.json`/`.jsonl` -> structured, everything else -> unstructured
+- **Schema inference**: for structured data without `--schema`, the agent samples records via `py-repl`, proposes a schema interactively, and saves it to `.kg-builder/schemas/` before proceeding (see Schema Inference section)
+- **Ontology buffer**: without `--ontology` the agent runs free extraction, building the ontology progressively. With `--ontology` it starts constrained but refines during processing. The buffer tracks type frequencies, variant mappings, and coverage scores. See `docs/ingestion-unstructured.md` for the full mechanism
+- **Extract + load**: by default the agent extracts and loads in a single run. Use `--extract-only` to stop after extraction, or `--keep-extractions` to save intermediate JSON alongside loading
+
+### `kg query`
+
+Query the knowledge graph using natural language or Cypher.
 
 ```
-kg pipeline <source> [options]
+kg query [question] [options]
 ```
-
-Accepts all options from `extract` and `load`. Runs extraction then immediately loads results into Neo4J without writing intermediate files to disk (unless `--keep-extractions` is set).
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--keep-extractions` | `False` | Save intermediate extraction JSON to `.kg-builder/extractions/` |
+| `[question]` | none | Natural language question (interactive mode if omitted) |
+| `--cypher` | `False` | Pass raw Cypher instead of natural language |
+| `--format` | `table` | Output format: `table`, `json`, `graph`, `text` |
+| `--limit` | `25` | Maximum result rows |
 
-### `kg schema`
+**Behaviour**:
 
-Inspect or generate ontology files.
+The query agent translates natural language questions to Cypher queries using the current graph schema as context. It queries the graph via `neo4j-mcp`, formats results, and can enter an interactive conversational loop where follow-up questions build on previous context.
+
+- **Schema-aware** - the agent inspects the graph schema (labels, relationship types, property keys) before generating queries, ensuring valid Cypher
+- **Dual retrieval** - uses vector index for semantic similarity and fulltext index for keyword matching, choosing the appropriate path based on the question type
+- **Interactive mode** - when invoked without a question, enters a conversational loop where the agent maintains context across questions. "Show me all engineers" followed by "what skills do they have?" works as expected
+- **Status** - `kg query --status` displays node counts by label, relationship counts by type, and index statistics
+
+### `kg update`
+
+Evolve the knowledge graph - update schemas, run migrations, re-process data, and refine the ontology.
 
 ```
-kg schema show [ontology-file]
-kg schema generate <source> [--output <path>]
+kg update <subcommand> [options]
 ```
 
-- `show`: renders the ontology as a table of entity types, relationship types, and constraints. Defaults to `.kg-builder/ontology.yml` if no file specified
-- `generate`: uses the LLM to propose an ontology from sample documents, saved as YAML for review and editing. Defaults output to `.kg-builder/ontology.yml`
+#### `kg update schema`
 
-### `kg status`
-
-Show current Neo4J database statistics.
+Update an existing schema for structured data.
 
 ```
-kg status
+kg update schema <schema-file> [options]
 ```
 
-Displays node count by label, relationship count by type, and total graph size.
+| Option | Default | Description |
+|--------|---------|-------------|
+| `<schema-file>` | required | Path to the schema file to update |
+| `--source` | from config | Data source to re-sample for schema comparison |
+| `--dry-run` | `False` | Show proposed changes without applying |
+| `--migrate` | `True` | Generate and execute migration plan for the graph |
+
+The update agent diffs the current schema against fresh data samples, proposes changes interactively, and optionally generates a migration plan for the existing graph. See Schema Update section for the full workflow.
+
+#### `kg update ontology`
+
+Refine the ontology based on accumulated extraction evidence.
+
+```
+kg update ontology [options]
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--source` | from config | Re-process source data to gather fresh type evidence |
+| `--prune` | `False` | Remove low-frequency types that did not reach confirmation threshold |
+| `--merge-variants` | `True` | Apply variant detection to consolidate similar types |
+
+Triggers an ontology refinement pass using the buffer's accumulated frequency and coverage data. Can optionally re-process source data to gather fresh evidence.
+
+#### `kg update graph`
+
+Re-process previously ingested data with updated schema or ontology.
+
+```
+kg update graph [options]
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--source` | from config | Data source to re-ingest |
+| `--schema` | from config | Updated schema to apply |
+| `--incremental` | `True` | Only process records affected by schema changes |
+| `--full` | `False` | Re-process all records from scratch |
+
+The update agent uses the migration plan from `kg update schema` to selectively re-process affected records rather than re-ingesting everything. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
 
 ## Configuration
 
@@ -207,7 +286,7 @@ extract:
 
 # Ontology buffer settings
 ontology_buffer:
-  seed_from: null                    # OWL/RDF file to seed the buffer (optional)
+  seed_from: null                    # ontology seed file in any format (OWL, JSON, MD, TXT, YAML)
   seed_depth: 2                      # max subclass depth to import from OWL
   seed_filter: null                  # restrict OWL import to branch (e.g., "BiologicalEntity")
   refine_every_n_docs: 5             # trigger refinement after N documents
@@ -222,10 +301,18 @@ load:
   create_indexes: true               # auto-create indexes for entity labels
   validate: true                     # run post-load validation checks (orphan nodes, relationship counts)
 
+# Agent memory
+memory:
+  enabled: true                      # persist operational knowledge across runs
+  max_entries_per_source: 100        # cap memory entries per data source
+  ttl_days: 90                       # expire stale memory entries after N days
+
 # Paths (relative to project root)
 paths:
   ontology: null                     # path to ontology YAML (free extraction if null)
   schema: null                       # path to schema description for structured data
+  memory: .kg-builder/memory/        # agent memory storage directory
+  migrations: .kg-builder/migrations/ # schema migration history
 ```
 
 Neo4J connection details are stored directly in `config.yml`. The password uses `${VAR}` interpolation so it can be kept in `.env` rather than in plaintext, but URI, user, and database name are committed with the config.
@@ -247,17 +334,106 @@ AWS_SECRET_ACCESS_KEY=...           # optional, if not using AWS profile
 
 ### Ontology Sources
 
-The ontology buffer can be initialized from three sources, in order of precedence:
+The ontology buffer accepts input in any format - the only requirement is that the input conveys domain knowledge about entity types, relationships, or graph structure. The system normalizes all inputs to the canonical YAML ontology format before the buffer consumes them.
 
-1. **OWL/RDF seed** (`ontology_buffer.seed_from`): an existing formal ontology loaded via owlready2. Classes become entity types, object properties become relationship types, data properties become property schemas. The `seed_depth` parameter controls how deep into the class hierarchy to import (default 2), and `seed_filter` restricts import to a specific branch. The OWL file is read-only input - it is never modified. **The OWL seed is suggestive, not prescriptive** - it provides starting vocabulary and domain context, but the extraction is free to discover entity types, relationship types, and connections that the original OWL ontology did not anticipate. The resulting application ontology may diverge significantly from the OWL source
-2. **YAML ontology** (`paths.ontology`): the lightweight application schema in our custom format. If both OWL seed and YAML are provided, the YAML takes precedence for any overlapping type definitions - OWL fills in the gaps
-3. **Empty** (free extraction): no seed, no YAML. The buffer starts empty and builds the ontology from scratch during extraction
+**Supported input formats**:
 
-After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source. This means an OWL-seeded run produces a YAML ontology as a side effect - informed by the formal ontology but shaped by what the documents actually contained. The output ontology is the system's own schema, not a subset of the OWL input.
+| Format | Detection | Normalization method |
+|--------|-----------|---------------------|
+| OWL/RDF (`.owl`, `.rdf`, `.ttl`) | File extension | Programmatic via owlready2 - classes, properties, hierarchy extracted directly |
+| YAML (`.yml`, `.yaml`) | File extension | Validated against canonical schema, passed through if conforming |
+| JSON (`.json`) | File extension | LLM interprets structure, maps to canonical YAML |
+| Markdown (`.md`) | File extension | LLM interprets prose, extracts entity types, relationships, constraints |
+| Plain text (`.txt`) | File extension | LLM interprets free-form description, extracts ontology elements |
+| Any other | Fallback | LLM reads content as-is, attempts ontology extraction |
 
-### OWL Seed Import
+The normalization pipeline ensures that regardless of input format, the buffer always receives a well-defined schema it can formally deconstruct and interpret.
 
-When `seed_from` points to an OWL/RDF file, owlready2 extracts:
+**Source precedence** (highest wins):
+
+1. **Ontology seed** (`ontology_buffer.seed_from`): any file in any supported format. The system detects the format and normalizes accordingly. Read-only input - never modified. **The seed is suggestive, not prescriptive** - it provides starting vocabulary and domain context, but extraction is free to discover types and connections the seed did not anticipate
+2. **YAML ontology** (`paths.ontology`): the canonical application schema. If both seed and YAML are provided, the YAML takes precedence for overlapping type definitions
+3. **Empty** (free extraction): no seed, no YAML. The buffer starts empty and builds the ontology from scratch
+
+After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source format. A markdown description of a medical domain produces the same canonical YAML output as a formal OWL ontology of the same domain. The output is the system's own schema shaped by what the data actually contained.
+
+### Ontology Normalization
+
+All non-YAML, non-OWL inputs pass through an LLM normalization step that converts freeform domain knowledge into the canonical YAML ontology format. This is a structured extraction task - the LLM reads the input and produces a Pydantic-validated ontology definition.
+
+**What the normalizer extracts**:
+- Entity types with descriptions and aliases
+- Relationship types with source/target constraints
+- Property schemas with types and validation rules
+- Type hierarchies (parent-child, IS_A relationships)
+- Constraints and cardinality hints
+
+**Normalization prompt structure**:
+
+The LLM receives the raw input alongside the canonical YAML schema definition (as a Pydantic model) and instructions to map every identifiable domain concept to the schema. Instructor enforces the output structure with retry on validation failure. The normalizer is conservative - it only emits types and relationships it can confidently identify from the input. Ambiguous concepts are flagged with `confidence: low` for user review.
+
+**Example**: a markdown file describing a healthcare domain -
+
+```markdown
+Patients visit hospitals and are treated by doctors. Each patient has a diagnosis
+which links to a condition from the ICD-10 catalogue. Doctors specialize in one or
+more medical fields. Medications are prescribed for specific conditions.
+```
+
+Normalizes to:
+
+```yaml
+entity_types:
+  - name: Patient
+    description: A person receiving medical care
+    source: seed_normalized
+    confidence: high
+  - name: Hospital
+    description: A healthcare facility where patients are treated
+    source: seed_normalized
+    confidence: high
+  - name: Doctor
+    description: A medical professional who treats patients
+    source: seed_normalized
+    confidence: high
+  - name: Condition
+    description: A medical condition or diagnosis from ICD-10
+    source: seed_normalized
+    confidence: high
+  - name: Medication
+    description: A pharmaceutical prescribed for conditions
+    source: seed_normalized
+    confidence: high
+  - name: MedicalField
+    description: A medical specialty area
+    source: seed_normalized
+    confidence: medium
+
+relationship_types:
+  - name: VISITS
+    source: Patient
+    target: Hospital
+  - name: TREATED_BY
+    source: Patient
+    target: Doctor
+  - name: HAS_DIAGNOSIS
+    source: Patient
+    target: Condition
+  - name: SPECIALIZES_IN
+    source: Doctor
+    target: MedicalField
+  - name: PRESCRIBED_FOR
+    source: Medication
+    target: Condition
+```
+
+After normalization, the system validates that the type hierarchy forms a directed acyclic graph (DAG). Cycle detection is a programmatic topological sort, but resolution is LLM-assisted - the LLM examines the cycle's types and edges, then proposes which edge to remove, reclassify (e.g., IS_A to HAS_PART), or which types to merge. The resolution is presented for user confirmation.
+
+The normalized output is presented to the user for review before being loaded into the buffer. The user can adjust, add, or remove types in the interactive session. Once confirmed, the normalized ontology is saved alongside the original source file for auditability.
+
+### OWL/RDF Import
+
+When the seed is an OWL/RDF file, owlready2 extracts the ontology programmatically without LLM involvement:
 
 | OWL concept | Maps to | Notes |
 |-------------|---------|-------|
@@ -268,9 +444,9 @@ When `seed_from` points to an OWL/RDF file, owlready2 extracts:
 | `owl:TransitiveProperty` | relationship flag | Marked for post-load inference via reasoner |
 | `owl:disjointWith` | advisory warning | Logged when violated, not enforced - data may bridge OWL boundaries |
 
-Large reference ontologies (NCIt has 170,000+ classes, SNOMED has 350,000+) are not suitable for direct use as extraction constraints. The `seed_depth` and `seed_filter` parameters ensure only a manageable subset is imported. The Dynamic Ontology reference makes this point clearly: reference ontologies are great for standard IDs and relationships, but they're too large and complex to serve as application schemas.
+Large reference ontologies (NCIt has 170,000+ classes, SNOMED has 350,000+) are not suitable for direct use as extraction constraints. The `seed_depth` and `seed_filter` parameters ensure only a manageable subset is imported.
 
-**The OWL seed is advisory, not binding.** The extraction pipeline treats OWL-sourced types as suggestions with higher initial confidence, but the buffer will promote discovered types that appear consistently in the data even if they have no OWL counterpart. This means the final ontology can contain entity types, relationship types, and connection patterns that the OWL source never defined. The OWL gives the system a head start and domain vocabulary - the documents determine the actual schema.
+**The seed is advisory, not binding.** The extraction pipeline treats seed-sourced types as suggestions with higher initial confidence, but the buffer promotes discovered types that appear consistently in the data even without a seed counterpart. The final ontology can contain types and connections the seed never defined.
 
 ### Post-Load OWL Reasoning
 
@@ -429,7 +605,9 @@ Both indexes are created automatically when `create_indexes: true` in config. Th
 
 ## Dependencies (beyond current pyproject.toml)
 
-- `neo4j` - Neo4J Python driver
+- `strands-agents` - Strands Agents SDK for agent orchestration, tool registry, and conversational loops
+- `strands-agents-tools` - standard tool implementations (py-repl, file operations)
+- `neo4j` - Neo4J Python driver (direct driver for bulk operations)
 - `boto3` - AWS Bedrock access
 - `langchain-text-splitters` - document chunking
 - `langchain-aws` - Bedrock LLM integration (or direct `boto3` invoke)
