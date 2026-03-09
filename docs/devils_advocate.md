@@ -161,3 +161,33 @@
 3. **#9 - No scale targets** (residual 3.6) - targets present but no benchmarking strategy or performance test plan
 4. **#2 - Optional features as core** (residual 3.0) - core vs extensions defined but no phased implementation roadmap
 5. **#1 - Agent overuse** (residual 2.0) - well addressed, minor gap: no example of batch run report format
+
+---
+
+## Scorecard - v3 (DESIGN_v03_23.md, 2161 lines)
+
+**Correction applied**: #10 module structure rewrite with shared `types/` module, interface contracts, dependency graph
+
+| # | Concern | Risk | v2 Score | v3 Score | v3 Residual | How addressed in v3 |
+|---|---------|------|----------|----------|-------------|---------------------|
+| 1 | Agent overuse | 20 | 90% | 90% | 2.0 | Unchanged from v2 |
+| 2 | Optional features as core | 15 | 80% | 80% | 3.0 | Unchanged from v2 |
+| 3 | LLM normalization risk | 16 | 90% | 90% | 1.6 | Unchanged from v2 |
+| 4 | Schema inference instability | 12 | 60% | 60% | 4.8 | Unchanged from v2 |
+| 5 | Missing confidence model | 25 | 92% | 92% | 2.0 | Unchanged from v2 |
+| 6 | Levenshtein/similarity details | 12 | 85% | 85% | 1.8 | Unchanged from v2 |
+| 7 | No concurrency model | 9 | 80% | 80% | 1.8 | Unchanged from v2 |
+| 8 | OWL reasoning complexity | 6 | 70% | 70% | 1.8 | Unchanged from v2 |
+| 9 | No scale targets | 12 | 70% | 70% | 3.6 | Unchanged from v2 |
+| 10 | Module structure lacks interfaces | 9 | 40% | 82% | 1.6 | Section 16 fully rewritten. New `types/` module with 10 Pydantic contract files (config, document, extraction, ontology, resolution, loading, query, pipeline, migration). Mermaid dependency graph showing module relationships. Interface contracts table listing 12 boundary crossings with named types and key fields. Every submodule annotated with accepts/returns types. Dependency rules per module. Frozen `OntologyState` snapshot pattern prevents extraction/ontology circular coupling |
+
+**v3 document score (total residual risk)**: 22.6 (lower = better, max 136)
+
+**Score change**: 27.8 -> 22.6 (improvement of 5.2)
+
+**Top gaps** (highest residual risk):
+1. **#4 - Schema inference instability** (residual 4.8) - no explicit schema-as-configuration principle
+2. **#9 - No scale targets** (residual 3.6) - targets present but no benchmarking strategy
+3. **#2 - Optional features as core** (residual 3.0) - no phased implementation roadmap
+4. **#1 - Agent overuse** (residual 2.0) - no batch run report format example
+5. **#5 - Confidence model** (residual 2.0) - well addressed
