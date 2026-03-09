@@ -80,6 +80,9 @@ def _create_entity_nodes(
         "RETURN count(node)"
     )
 
+    # Keys that must not be overwritten by entity properties
+    _RESERVED_KEYS = {"id", "name", "type", "description", "confidence", "embedding"}
+
     total = 0
     for offset in range(0, len(entities), batch_size):
         batch = [
@@ -89,7 +92,10 @@ def _create_entity_nodes(
                 "type": e.type,
                 "description": e.description,
                 "confidence": e.confidence,
-                "properties": e.properties,
+                "properties": {
+                    k: v for k, v in e.properties.items()
+                    if k not in _RESERVED_KEYS
+                },
             }
             for e in entities[offset : offset + batch_size]
         ]

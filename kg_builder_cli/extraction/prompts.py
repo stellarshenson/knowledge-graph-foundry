@@ -10,10 +10,12 @@ Extract entities and relationships from the following text.
 
 **Allowed entity types**: {entity_types}
 
+IMPORTANT: You MUST only use entity types from the list above. Do NOT invent new types.
+
 For each entity, provide:
 - id: lowercase with underscores, prefixed by type (e.g., person_john_smith)
 - name: the canonical name as it appears in the text
-- type: one of the allowed entity types listed above
+- type: MUST be exactly one of the allowed entity types listed above - no exceptions
 - description: MUST include specific numeric values, measurements, ranges, and units from the text. Never use generic descriptions like "a specification" - always include the actual values (e.g., "Weight: 1.6 kg (3.5 lbs) without humidifier" not "weight specification")
 - properties: dict of any additional attributes mentioned, including numeric values as separate keys
 - confidence: 0.0 to 1.0
