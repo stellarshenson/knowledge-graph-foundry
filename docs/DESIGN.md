@@ -20,14 +20,39 @@ Where Neo4J LLM Graph Builder provides a web-based UI with minimal structured da
 
 The system follows an agent-centric design where each CLI command spawns an autonomous Strands agent. Agents orchestrate multi-step pipelines using a shared tool registry, maintaining conversational context for interactive operations and executing batch operations autonomously.
 
-### Agent vs Deterministic Pipeline Boundary
+### Interactive vs Autonomous Agent Mode
 
-Not all operations require agent orchestration. The system distinguishes between two execution modes:
+The agent is always present in all modes - it orchestrates the full pipeline regardless of configuration. The `--batch` flag controls whether the agent pauses for user input or proceeds with autonomous decisions at interactive checkpoints.
 
-- **Interactive mode** - the agent drives the workflow, maintaining conversational context for schema inference, ontology review, migration approval, and query follow-ups. This is where the agent model adds genuine value
-- **Batch mode** - extraction, deduplication, resolution, and loading run as deterministic pipeline steps called directly as functions. The agent is not in the loop for these operations. When `kg ingest` runs non-interactively (no schema inference needed, ontology already configured), the pipeline executes without agent mediation
+- **Interactive mode** (default) - the agent pauses at defined checkpoints to present proposals, diagnostics, and Y/n confirmations. The user reviews and directs decisions through conversation: schema inference proposals, ontology normalization diagnostics, ontology buffer refinement reviews, migration plan approvals, and first-run initialization questions
+- **Autonomous mode** (`--batch`) - the agent makes all decisions at interactive checkpoints without pausing. It applies sensible defaults, accepts proposals automatically, and logs every autonomous decision to a run report for post-run review
 
-This means the agent layer is an orchestration wrapper, not a mandatory intermediary. Individual pipeline functions (parse, chunk, extract, dedup, resolve, load) are importable and testable independently of the agent framework.
+Activities across the pipeline fall into two categories:
+
+**Interactive checkpoints** (agent pauses in interactive mode, decides autonomously in batch mode):
+- Schema inference proposal and confirmation (Section 7.3)
+- Ontology normalization diagnostic and confirmation (Section 5.2)
+- Ontology buffer refinement review (Section 5.5)
+- Migration plan approval (Section 11.3)
+- First-run initialization questions (Section 3)
+
+**Direct execution** (no agent interaction in either mode):
+- Document parsing, chunking, schema signal extraction
+- LLM extraction per chunk, atomic facts extraction
+- Entity deduplication, entity resolution
+- Ontology buffer accumulation (type frequencies, variant detection)
+- Batch Cypher loading, index creation
+- Post-load validation, ontology buffer flush
+
+Individual pipeline functions (parse, chunk, extract, dedup, resolve, load) are importable and testable independently of the agent framework. The agent orchestrates their sequencing and handles interactive checkpoints, but the functions themselves are deterministic.
+
+### Batch Decision Logging
+
+In autonomous mode (`--batch`), all decisions the agent makes at interactive checkpoints are logged to a run report at `.kg-builder/runs/<timestamp>.yml`. The report captures:
+- Schema inferred (Y/N) with summary of proposed and accepted schema
+- Ontology normalization tier used (1/2/3) with diagnostic output
+- Refinement decisions applied (types promoted, variants merged, candidates pruned)
+- Validation results (orphan counts, coverage scores, type distribution)
 
 ### Scale and Performance Targets
 
@@ -39,6 +64,47 @@ The architecture targets small-to-medium scale knowledge graph construction:
 - **Loading throughput**: 500-entity batches, typically 1,000-5,000 entities/second depending on Neo4J configuration
 
 At larger scales (100,000+ documents, 1M+ entities), architectural changes would be needed: streaming extraction instead of in-memory accumulation, distributed entity resolution with ANN indexing, and incremental loading with write-ahead logs. These are out of scope for v1.
+
+### Reference Benchmark Dataset
+
+All performance and quality evaluation uses a single reference dataset: 23 PDF documents about CPAP (Continuous Positive Airway Pressure) devices, stored at `data/external/cpap-datasheets-and-manuals.zip` (~63 MB). The collection covers datasheets, product brochures, user manuals, clinical guides, and product catalogues from multiple manufacturers - providing variety in document structure, page count, and content density.
+
+The dataset remains zipped in `data/external/` and is extracted to `data/raw/cpap-benchmark/` only during benchmark runs. Raw data is never modified.
+
+#### Performance Metrics
+
+Each benchmark run records timing and throughput for every pipeline stage:
+
+- **Parse** - wall time per document, pages parsed, images extracted
+- **Chunk** - chunks produced per document, average chunk token count
+- **Extract** - wall time per chunk, LLM calls, tokens consumed (input + output), entities and relationships per chunk
+- **Dedup/Resolve** - candidate pairs evaluated, merges performed, wall time
+- **Load** - batches sent, entities/second, relationships/second, total Neo4J transaction time
+- **End-to-end** - total wall time from `kg ingest` invocation to completion, peak memory usage
+
+Results are saved to `.kg-builder/runs/<timestamp>_benchmark.yml` alongside the standard batch decision log. The `--benchmark` flag on `kg ingest` enables extended timing instrumentation.
+
+#### Quality Metrics
+
+Quality evaluation measures the graph output against the source documents:
+
+- **Entity coverage** - ratio of domain-relevant concepts in the source documents that appear as entities in the graph (manual spot-check against a curated entity list per document)
+- **Relationship accuracy** - sample of 50 relationships checked against source text for correctness (true positive rate)
+- **Duplicate rate** - percentage of entity pairs in the graph that refer to the same real-world concept (lower is better, measured after resolution)
+- **Ontology coherence** - percentage of entity types in the graph that map to confirmed ontology types vs `NEW_`-prefixed types
+- **Confidence distribution** - histogram of confidence scores across entities and relationships, flagging bimodal or uniformly high distributions as suspect
+
+Quality results are saved to `.kg-builder/runs/<timestamp>_quality.yml`. A baseline quality profile is established on the first benchmark run and subsequent runs compare against it to detect regressions.
+
+#### Benchmark Workflow
+
+Running the benchmark is a single command:
+
+```
+kg ingest data/raw/cpap-benchmark/ --benchmark --batch
+```
+
+This runs the full pipeline in autonomous mode with extended instrumentation. The benchmark flag adds timing hooks around each pipeline stage and produces both performance and quality output files. Quality metrics that require manual evaluation (entity coverage spot-check, relationship accuracy sampling) are flagged in the output for human review.
 
 ```mermaid
 graph LR
@@ -153,13 +219,17 @@ kg ingest <source> [options]
 | `--merge-strategy` | from config | How to handle existing nodes: `merge`, `replace`, `skip` |
 | `--batch-size` | from config | Cypher batch size for bulk loading |
 | `--extract-only` | `False` | Run extraction without loading into Neo4J |
+| `--batch` | `False` | Autonomous mode - agent makes all decisions without prompting |
 | `--keep-extractions` | `False` | Save extraction JSON to `.kg-builder/extractions/` |
 
 **Workflow**:
 
 The ingest agent runs the full pipeline: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J.
 
-- **Initialization**: if `.kg-builder/` does not exist, the agent creates it with default `config.yml`, `schemas/`, `extractions/`, `memory/`, and `migrations/` directories. In interactive mode the agent asks questions about the target graph and generates tailored configuration
+- **Initialization**: three scenarios depending on current state:
+  - **No `.kg-builder/`, no graph** - fresh setup. The agent creates `.kg-builder/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the agent asks questions about the target graph and generates tailored configuration
+  - **No `.kg-builder/`, graph exists** - recovery. The agent introspects the Neo4J graph (labels, relationship types, property keys, `OntologyType` nodes, `SchemaVersion` nodes) and reconstructs the schema and ontology YAML files. Presents the recovered schema to the user: "recovered schema from existing graph with N entity types and M relationship types"
+  - **`.kg-builder/` exists, graph exists** - validation. The agent compares the schema file against the current graph state and reports drift: new labels in graph not in schema, properties on entities not described in schema, `SchemaVersion` mismatches. Drift is reported as warnings, not errors
 - **Input detection**: file extension determines pipeline - `.json`/`.jsonl` -> structured, everything else -> unstructured
 - **Schema inference**: for structured data without `--schema`, the agent samples records via `py-repl`, proposes a schema interactively, and saves it to `.kg-builder/schemas/` before proceeding (see Section 7.3)
 - **Ontology buffer**: without `--ontology` the agent runs free extraction, building the ontology progressively. With `--ontology` it starts constrained but refines during processing. The buffer tracks type frequencies, variant mappings, and coverage scores (see Section 5)
@@ -247,6 +317,26 @@ kg update graph [options]
 
 The update agent uses the migration plan from `kg update schema` to selectively re-process affected records rather than re-ingesting everything. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
 
+## 3.1 Terminal UI Harness
+
+The CLI renders all output through a terminal UI harness built with `textual` (Textualize). The harness replaces plain loguru terminal output with a structured layout that provides live pipeline visibility and interactive agent communication.
+
+### Layout
+
+Three-panel design:
+
+- **Left panel (chat/log)** - scrollable area showing agent messages, pipeline progress, and user interaction. In interactive mode, accepts user input at interactive checkpoints. In autonomous mode (`--batch`), becomes a read-only scrolling log of autonomous decisions and pipeline progress
+- **Top-right panel (live stats)** - updated per-chunk and per-document. Counters: documents processed (N/M), chunks processed, entities extracted (running total), relationships extracted, facts extracted, coverage score (current), LLM calls made, tokens consumed, elapsed time
+- **Bottom-right panel (ontology buffer)** - current buffer state showing confirmed types with frequency counts, pending candidates, variant mappings. Updated after each document's feedback loop
+
+### Interactive Mode
+
+The chat panel accepts user input at interactive checkpoints. The agent presents proposals, diagnostics, and Y/n prompts inline. The user types responses directly in the chat panel. Between checkpoints, the panel shows pipeline progress messages.
+
+### Autonomous Mode
+
+The chat panel becomes a scrolling log of autonomous decisions and pipeline progress. No input accepted - the panel is read-only. Each autonomous decision is prefixed with `[AUTO]` for visual distinction.
+
 ## 4. Resource Directory and Configuration
 
 ### `.kg-builder/` Directory Structure
@@ -269,6 +359,8 @@ my-project/
       source_documents.yml
     migrations/             # schema migration history
       2026-03-09_employees_v2.yml
+    runs/                   # batch mode run reports (autonomous decision logs)
+      2026-03-09T14-30-00Z.yml
   data/
     raw/
       documents/
@@ -303,6 +395,8 @@ extract:
   extraction_mode: hybrid             # entity_relationship | graph_reader | hybrid
   subgraph_splitting: false           # split large schemas into subgraph extractions per chunk
   rolling_context_window: 0           # pass N most recent extractions as context for sequential chunks
+  evidence_spans: false               # request character offsets (start, end) into chunk text for each extracted element
+  source_frequency: false             # count independent chunks and documents corroborating each triple
   describe_images: false              # run vision model on extracted PDF images
   vision_model: null                  # vision model for image description (e.g., llava:7b, gpt-4o)
 
@@ -377,7 +471,7 @@ The ontology buffer accepts input in any format - the only requirement is that t
 |--------|-----------|---------------------|
 | OWL/RDF (`.owl`, `.rdf`, `.ttl`) | File extension | Programmatic via owlready2 - classes, properties, hierarchy extracted directly |
 | YAML (`.yml`, `.yaml`) | File extension | Validated against canonical schema, passed through if conforming |
-| JSON (`.json`) | File extension | LLM interprets structure, maps to canonical YAML |
+| JSON (`.json`) | File extension | Programmatic parse via py-repl (Tier 1), LLM repair if validation fails (Tier 2) |
 | Markdown (`.md`) | File extension | LLM interprets prose, extracts entity types, relationships, constraints |
 | Plain text (`.txt`) | File extension | LLM interprets free-form description, extracts ontology elements |
 | Any other | Fallback | LLM reads content as-is, attempts ontology extraction |
@@ -390,9 +484,9 @@ The ontology buffer accepts input in any format - the only requirement is that t
 
 After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source format.
 
-### 5.2 Normalization Pipeline
+### 5.2 Three-Tier Normalization Pipeline
 
-All non-YAML, non-OWL inputs pass through an LLM normalization step that converts freeform domain knowledge into the canonical YAML ontology format. This is a structured extraction task - the LLM reads the input and produces a Pydantic-validated ontology definition.
+All non-YAML, non-OWL inputs pass through a normalization pipeline that converts domain knowledge into the canonical YAML ontology format. The end goal is a functioning ontology tree that is proper, acyclic, and ready to be enhanced during generative discovery. The pipeline uses three tiers of increasing LLM involvement, selecting the cheapest tier that succeeds for each input format.
 
 **What the normalizer extracts**:
 - Entity types with descriptions and aliases
@@ -401,9 +495,37 @@ All non-YAML, non-OWL inputs pass through an LLM normalization step that convert
 - Type hierarchies (parent-child, IS_A relationships)
 - Constraints and cardinality hints
 
-The LLM receives the raw input alongside the canonical YAML schema definition (as a Pydantic model) and instructions to map every identifiable domain concept to the schema. Instructor enforces the output structure with retry on validation failure. The normalizer is conservative - it only emits types and relationships it can confidently identify from the input. Ambiguous concepts are flagged with `confidence: low` for user review.
+#### Tier 1 - Programmatic Parse (py-repl)
 
-**Worked example** - a markdown file describing a healthcare domain:
+For JSON and other structured formats, the agent uses `py-repl` to write a format-specific parser. The parser extracts entity types, relationship types, properties, and hierarchy from the input. If the parser fails, the agent iterates - adjusts parsing code, retries up to 3 attempts. This handles well-structured inputs without LLM involvement.
+
+Tier 1 is the default path for JSON, YAML-like structures, and any input with recognizable programmatic structure. The agent examines the input, writes a parser in Python, executes it, and validates the output against the canonical Pydantic schema.
+
+#### Tier 2 - LLM-Assisted Repair
+
+If Tier 1 succeeds but validation fails (cycles in IS_A hierarchy, dangling relationship targets, orphan types, inconsistent constraints, incomplete property schemas), the LLM receives only the specific issues for targeted repair - not the entire input for re-interpretation. Surgical fixes: "these types form a cycle, which edge to remove?" or "this relationship references type X which does not exist, should it be created or is this a variant?"
+
+Hallucination risk is minimal because the LLM is constrained to fixing validated issues, not generating an ontology from scratch. The repair prompt includes the full parsed ontology for context but asks only about the specific validation failures.
+
+#### Tier 3 - Full LLM Interpretation
+
+For markdown, plain text, prose descriptions, or formats where all Tier 1 parsing attempts failed, the LLM interprets the whole input. This is the most expensive path with the highest hallucination risk. The LLM receives the raw input alongside the canonical YAML schema definition (as a Pydantic model) and instructions to map every identifiable domain concept to the schema. Instructor enforces the output structure with retry on validation failure. The normalizer is conservative - it only emits types and relationships it can confidently identify from the input. Ambiguous concepts are flagged with `confidence: low` for user review.
+
+Post-normalization validation compares output against source to flag potential hallucinations: type count mismatch (LLM produced significantly more types than the source text mentions), relationship types not mentioned in source text, and property schemas with no textual basis.
+
+#### Diagnostic Output
+
+After any tier completes, the engine outputs a diagnostic report:
+- Source format detected (JSON, markdown, plain text, etc.)
+- Tier used (1, 2, or 3)
+- Entity types extracted (count)
+- Relationship types extracted (count)
+- Hierarchy depth
+- Validation issues found and how resolved (cycles removed, missing targets created, variants merged)
+
+In interactive mode, the diagnostic is presented to the user with a continue Y/n prompt. In autonomous mode (`--batch`), the diagnostic is logged to the run report and auto-accepted.
+
+**Worked example** - a markdown file describing a healthcare domain (Tier 3):
 
 ```markdown
 Patients visit hospitals and are treated by doctors. Each patient has a diagnosis
@@ -458,7 +580,9 @@ relationship_types:
     target: Condition
 ```
 
-The normalized output is presented to the user for review before being loaded into the buffer. The user can adjust, add, or remove types in the interactive session. Once confirmed, the normalized ontology is saved alongside the original source file for auditability.
+Diagnostic output: `Tier 3 | 6 entity types | 5 relationship types | depth 1 | 0 validation issues`
+
+The normalized output is presented to the user for review before being loaded into the buffer (interactive checkpoint). The user can adjust, add, or remove types in the interactive session. Once confirmed, the normalized ontology is saved alongside the original source file for auditability.
 
 ### 5.3 OWL/RDF Programmatic Import
 
@@ -778,7 +902,7 @@ PDFs containing charts, plots, diagrams, or photographs lose critical informatio
 3. Send each image to a vision model with a description prompt
 4. Replace image references in the Markdown with the original reference plus a text description block
 
-This produces Markdown that contains both the original text and natural-language descriptions of all visual content. When this enriched text is chunked and sent to the extraction LLM, entities and relationships depicted in charts and diagrams become extractable. The vision model is configurable separately from the extraction LLM. Image description is optional - configured via `describe_images: true` in config.
+This produces Markdown that contains both the original text and natural-language descriptions of all visual content. When this enriched text is chunked and sent to the extraction LLM, entities and relationships depicted in charts and diagrams become extractable. The vision model is configurable separately from the extraction LLM. Image description is configured via `describe_images: true` in config.
 
 #### Tables and Images as Graph Elements
 
@@ -786,7 +910,7 @@ Tables and images extracted from PDFs can be stored as separate element nodes (`
 
 Tables are stored as markdown or HTML text in a node property. Images can be stored as base64 in a node property or as an external file path. Both element types can carry their own embeddings for similarity search - images use multimodal embedding (CLIP) for visual similarity, while tables use text embedding of their markdown representation.
 
-This is optional - simpler pipelines can inline table text and image descriptions directly into chunk text during parsing. Element nodes add graph complexity but improve retrieval precision when documents contain many tables or figures.
+Simpler pipelines can inline table text and image descriptions directly into chunk text during parsing. Element nodes improve retrieval precision when documents contain many tables or figures.
 
 ### 6.3 Chunking Strategies
 
@@ -799,7 +923,7 @@ Default strategy using `langchain-text-splitters.TokenTextSplitter`. Character-b
 
 **Chunk identity**: each chunk gets a deterministic ID derived from SHA1 of its content. This allows idempotent re-processing - re-running extraction on the same document produces the same chunk IDs and can be merged cleanly.
 
-**Chunk linking**: chunks maintain sequential order via metadata (chunk index within document). This is preserved in the extraction output and optionally in Neo4J as a `NEXT_CHUNK` relationship chain.
+**Chunk linking**: chunks maintain sequential order via metadata (chunk index within document). This is preserved in the extraction output and in Neo4J as a `NEXT_CHUNK` relationship chain.
 
 #### Semantic Chunking
 
@@ -819,7 +943,7 @@ For documents with clear page boundaries (PDFs) or section headers, the lexical 
 
 Page nodes sit between Document and Chunk: `(:Document)<-[:PART_OF]-(:Page)<-[:PART_OF]-(:Chunk)` with a `NEXT_PAGE` chain. Section and Subsection nodes enable retrieval of complete document sections: `(:Document)<-[:HAS_SECTION]-(:Section)<-[:HAS_SUBSECTION]-(:Subsection)<-[:PART_OF]-(:Chunk)`.
 
-Page metadata (page number) is always preserved on chunks regardless of whether Page nodes are created. Section detection relies on title/header elements identified during parsing. These are optional enrichments to the core Document -> Chunk model.
+Page metadata (page number) is preserved on chunks and Page nodes provide page-level reconstruction via `NEXT_PAGE` chains. Section detection relies on title/header elements identified during parsing, producing `Section` and `Subsection` nodes linked to the Document.
 
 ### 6.4 LLM Extraction
 
@@ -1078,7 +1202,17 @@ All three formats are valid. The LLM reads whichever format the user provides an
 
 When no schema description is provided, the ingest agent infers one from the data itself. This eliminates the barrier to entry - a user can point the tool at a JSONL file and the agent collaborates to build the schema before ingesting.
 
-**Sampling phase**: the agent uses its `py-repl` tool to load a representative sample (default 20 records) and computes a field profile:
+#### Schema-as-Configuration Principle
+
+The conversation that produces a schema is a UX convenience. Once the schema is confirmed and saved, the conversation history has zero influence on subsequent runs. The saved schema file is the sole authority for how records are mapped to graph structure. Re-running `--infer-schema` produces a fresh proposal that is diffed against the existing schema - it is not a continuation of the previous conversation.
+
+#### Lockfile
+
+Schema inference and adaptation acquire a lockfile at `.kg-builder/schema.lock` before modifying any schema file. The lock contains the process PID and timestamp. Only one process can perform schema discovery or adaptation at a time, ensuring the schema reaches a finalized state before ingestion proceeds. The lock is released when the schema is confirmed (interactive mode) or when the agent accepts it (autonomous mode).
+
+#### Deterministic Baseline
+
+Before the agent proposes anything, the `py-repl` tool generates a deterministic field profile that is saved alongside the schema as `.kg-builder/schemas/<source_name>.profile.yml`. This profile is reproducible - the same data always produces the same profile regardless of conversation flow. It contains:
 - Field names, JSON types, and nesting depth
 - Null rates and cardinality (unique value counts vs total records)
 - Value distribution samples (first 5 unique values per field)
@@ -1090,7 +1224,7 @@ The agent checks memory for prior inference sessions on structurally similar dat
 
 **Proposal phase**: based on the field profile, the agent generates a schema description including semantic interpretation of each field, entity type assignments, relationship mappings, fields recommended for exclusion, and suggested deterministic ID derivation patterns.
 
-**Interactive refinement**: the user reviews and directs changes through natural conversation:
+**Interactive refinement** (interactive checkpoint): the user reviews and directs changes through natural conversation:
 - "Make `location` a separate entity instead of a property"
 - "Ignore the `internal_id` and `updated_at` fields"
 - "The `tags` array should create `Topic` entities with `HAS_TOPIC` relationships"
@@ -1098,7 +1232,31 @@ The agent checks memory for prior inference sessions on structurally similar dat
 
 The agent validates each change against the data sample. After each round of changes, the agent presents the updated schema for confirmation.
 
-**Persistence**: the confirmed schema is saved to `.kg-builder/schemas/<source_name>.md` and the inference session is recorded in agent memory. Running with `--infer-schema` re-triggers inference even if a schema exists.
+**Persistence**: the confirmed schema is saved to `.kg-builder/schemas/<source_name>.md` and the inference session is recorded in agent memory. Running with `--infer-schema` re-triggers inference even if a schema exists - the new proposal is diffed against the existing schema and differences are presented for review.
+
+#### Schema Versioning
+
+Every confirmed schema receives an integer version, starting at 1. When a schema changes (via `--infer-schema` or `kg update schema`), the previous version is archived to `.kg-builder/schemas/<source_name>_v<N>.md` and the current file is updated with an incremented version header. The version history enables migration when schema evolution affects existing graph data.
+
+During loading, a `SchemaVersion` node is created (or matched) in Neo4J:
+
+```cypher
+MERGE (sv:SchemaVersion {version: $version, source: $source_name})
+SET sv.timestamp = $timestamp, sv.hash = $schema_hash
+```
+
+Entities created during ingestion reference the schema version they were produced under:
+
+```cypher
+MATCH (sv:SchemaVersion {version: $version, source: $source_name})
+MERGE (e:Entity {id: $id})-[:CREATED_UNDER]->(sv)
+```
+
+This enables downstream queries like "which entities were created under schema v2?" and targeted re-processing when a schema changes - only entities linked to the old `SchemaVersion` need re-evaluation.
+
+#### Schema Recovery
+
+The schema can always be rediscovered from the graph itself. The graph contains `OntologyType` nodes with `IS_A` relationships, Entity labels and property patterns, and relationship types between entities. `kg init` uses this for recovery (see Section 3, Initialization).
 
 ### 7.4 LLM Mapping
 
@@ -1190,18 +1348,18 @@ The graph model distinguishes between unstructured and structured provenance whi
 Unstructured provenance:
 
   (:Document {name, source, processed_at})
-    <-[:PART_OF]- (:Page {number})                                          # optional
+    <-[:PART_OF]- (:Page {number})
       <-[:PART_OF]- (:Chunk {id, text, index, page})
         -[:HAS_ENTITY]-> (:Entity:Person {id, name, embedding, description, ...})
         -[:HAS_ENTITY]-> (:Entity:Organization {id, name, embedding, description, ...})
         -[:HAS_FACT]-> (:FactNode {id, text, embedding})
-        -[:HAS_ELEMENT]-> (:TableElement {markdown, embedding})             # optional
-        -[:HAS_ELEMENT]-> (:ImageElement {description, path, embedding})    # optional
-        -[:HAS_CHILD]-> (:Chunk {text, embedding, is_child: true})          # optional
+        -[:HAS_ELEMENT]-> (:TableElement {markdown, embedding})
+        -[:HAS_ELEMENT]-> (:ImageElement {description, path, embedding})
+        -[:HAS_CHILD]-> (:Chunk {text, embedding, is_child: true})
 
   (:Page)-[:NEXT_PAGE]->(:Page)
   (:Chunk)-[:NEXT_CHUNK]->(:Chunk)
-  (:Document)<-[:HAS_SECTION]-(:Section)<-[:HAS_SUBSECTION]-(:Subsection)   # optional
+  (:Document)<-[:HAS_SECTION]-(:Section)<-[:HAS_SUBSECTION]-(:Subsection)
 
 Structured provenance:
 
@@ -1220,36 +1378,34 @@ Ontology hierarchy:
   (:Entity)-[:INSTANCE_OF]->(:OntologyType {name, description})
   (:OntologyType)-[:IS_A]->(:OntologyType)
 
+Schema versioning:
+
+  (:Entity)-[:CREATED_UNDER]->(:SchemaVersion {version, source, timestamp, hash})
+
 Indexes:
 
   Vector index: entity_embeddings ON Entity.embedding (cosine, 1536d)
   Fulltext index: entity_names ON Entity.name
 ```
 
-### Core vs Extension Node Types
+### Node Types
 
-The graph model distinguishes between core nodes required for a working v1 and extension nodes that add optional enrichment:
+All node types are part of the core graph model:
 
-**Core** (required): `Document`, `Chunk`, `Entity`, `FactNode`, `OntologyType`, `Source`
-
-**Extensions** (optional, incrementally adoptable):
-- `Page`, `Section`, `Subsection` - document structural hierarchy
-- `TableElement`, `ImageElement` - extracted media as separate graph elements
-- Child `Chunk` nodes - parent-child retrieval optimization
-
-Extensions are enabled by configuration and can be added to an existing graph without migration. A minimal deployment uses only core node types.
+`Document`, `Chunk`, `Entity`, `FactNode`, `OntologyType`, `Source`, `SchemaVersion`, `Page`, `Section`, `Subsection`, `TableElement`, `ImageElement`
 
 **Key design points**:
 
 - `Document` nodes track source file metadata for unstructured provenance
 - `Source` nodes track input file metadata for structured provenance - no `Chunk` nodes since structured records do not need chunk-level provenance
-- `Page` nodes (optional) sit between Document and Chunk, linked by `NEXT_PAGE` chain for page-level reconstruction
+- `Page` nodes sit between Document and Chunk, linked by `NEXT_PAGE` chain for page-level reconstruction
 - `Chunk` nodes store original text and link to their parent document (or parent page)
+- Child chunks are sub-chunks used for parent-child retrieval - embeddings live on child nodes only
 - Entity nodes carry both the base `Entity` label and their type label (e.g., `Person`, `Organization`)
 - `FactNode` stores atomic facts extracted from chunks (hybrid or graph_reader mode), each carrying an embedding for semantic search
-- `TableElement` and `ImageElement` nodes (optional) store extracted tables and images linked to their source chunk
-- Child chunks (optional) are sub-chunks used for parent-child retrieval - embeddings live on child nodes only
+- `TableElement` and `ImageElement` nodes store extracted tables and images linked to their source chunk
 - `OntologyType` nodes represent the type hierarchy with `IS_A` edges and `INSTANCE_OF` links from entities
+- `Section` and `Subsection` nodes capture document structural hierarchy
 - Typed relationships connect entities as extracted by the LLM
 - `HAS_ENTITY` relationships from chunks to entities enable provenance queries
 - Dual indexing supports both semantic (vector) and keyword (fulltext) retrieval
@@ -1623,90 +1779,283 @@ Extraction outputs written to `.kg-builder/extractions/` may contain entity prop
 
 ## 16. Module Structure
 
-The package is organized by domain responsibility, with clear interface boundaries between modules. Each module has a focused scope and communicates through well-defined interfaces.
+The package is organized by domain responsibility with explicit interface contracts between modules. A shared `types/` module defines all Pydantic models that cross module boundaries, ensuring every data handoff is typed and validated. The dependency graph is acyclic - modules import types and call downstream, never upstream.
+
+```mermaid
+graph LR
+    subgraph FOUNDATION["Foundation"]
+        direction TB
+        CONFIG["config/"]
+        TYPES["types/"]
+    end
+
+    subgraph INFRA["Infrastructure"]
+        direction TB
+        TOOLS["tools/"]
+        MEMORY["memory/"]
+        TUI["tui/"]
+    end
+
+    subgraph DOMAIN["Domain"]
+        direction TB
+        ONT["ontology/"]
+        EXTRACT["extraction/"]
+    end
+
+    subgraph OUTPUT["Output"]
+        direction TB
+        LOADING["loading/"]
+        QUERY["query/"]
+        UPDATE["update/"]
+    end
+
+    subgraph ORCH["Orchestration"]
+        direction TB
+        AGENTS["agents/"]
+        CLI["cli.py"]
+    end
+
+    CONFIG --> TYPES
+    TYPES --> ONT
+    TYPES --> EXTRACT
+    TYPES --> LOADING
+    TYPES --> QUERY
+    TYPES --> UPDATE
+    TYPES --> AGENTS
+
+    CONFIG --> TOOLS
+    CONFIG --> MEMORY
+    CONFIG --> TUI
+
+    ONT -->|"OntologyState"| EXTRACT
+    EXTRACT -->|"TypeSignal"| ONT
+    EXTRACT -->|"ExtractionResult"| LOADING
+    EXTRACT -->|"ExtractionResult"| UPDATE
+
+    TOOLS --> AGENTS
+    TOOLS --> LOADING
+    TOOLS --> QUERY
+
+    MEMORY --> AGENTS
+
+    AGENTS --> CLI
+
+    QUERY -->|"QueryResult"| TUI
+    EXTRACT -->|"PipelineEvent"| TUI
+
+    UPDATE -->|"MigrationPlan"| LOADING
+
+    style FOUNDATION stroke:#f59e0b,stroke-width:3px
+    style INFRA stroke:#10b981,stroke-width:2px
+    style DOMAIN stroke:#a855f7,stroke-width:3px
+    style OUTPUT stroke:#3b82f6,stroke-width:2px
+    style ORCH stroke:#0284c7,stroke-width:2px
+    style CONFIG stroke:#f59e0b,stroke-width:2px
+    style TYPES stroke:#f59e0b,stroke-width:2px
+    style TOOLS stroke:#10b981,stroke-width:2px
+    style MEMORY stroke:#10b981,stroke-width:2px
+    style TUI stroke:#10b981,stroke-width:2px
+    style ONT stroke:#a855f7,stroke-width:2px
+    style EXTRACT stroke:#a855f7,stroke-width:2px
+    style LOADING stroke:#3b82f6,stroke-width:2px
+    style QUERY stroke:#3b82f6,stroke-width:2px
+    style UPDATE stroke:#3b82f6,stroke-width:2px
+    style AGENTS stroke:#0284c7,stroke-width:2px
+    style CLI stroke:#0284c7,stroke-width:2px
+```
+
+The only bidirectional data flow is between `ontology/` and `extraction/` - mediated through distinct types (`OntologyState` downstream, `TypeSignal` upstream) with no circular imports.
+
+### Package Layout
 
 ```
 kg_builder_cli/
   __init__.py
-  cli.py                        # typer entry points, argument parsing, agent spawning
-  config/
+  cli.py                          # typer entry points, argument parsing, agent spawning
+
+  types/                          # shared Pydantic models - zero logic, pure data contracts
+    __init__.py                   # re-exports all types for convenience
+    config.py                     # AppConfig, Neo4jConfig, LLMConfig, ExtractConfig, LoadConfig
+    document.py                   # TextSegment, Chunk, ChunkMetadata, DocumentMetadata
+    extraction.py                 # Entity, Relationship, Fact, ExtractionResult, ExtractionMetadata
+    ontology.py                   # OntologyState, TypeDef, RelationshipDef, TypeSignal, NormDiagnostic
+    resolution.py                 # ResolvedEntity, NormalizationMeta (method, scores)
+    loading.py                    # LoadBatch, LoadResult, ValidationReport
+    query.py                      # QueryResult, QueryContext (conversation state for follow-ups)
+    pipeline.py                   # PipelineEvent, PipelineStats, RunReport (for TUI and batch logging)
+    migration.py                  # MigrationPlan, MigrationStep, RollbackStep
+
+  config/                         # configuration loading and validation
     __init__.py
-    loader.py                   # config.yml loading, .env resolution, ${VAR} interpolation
-    schema.py                   # Pydantic models for config validation
-    defaults.py                 # built-in default values
-  agents/
+    loader.py                     # config.yml loading, .env resolution, ${VAR} interpolation
+    schema.py                     # Pydantic validators that produce types/config.py models
+    defaults.py                   # built-in default values
+
+  tools/                          # external dependency wrappers
     __init__.py
-    ingest.py                   # ingest agent system prompt, tool configuration
-    query.py                    # query agent system prompt, tool configuration
-    update.py                   # update agent system prompt, tool configuration
-  tools/
+    registry.py                   # shared tool registry setup for Strands SDK
+    py_repl.py                    # py-repl tool - Python REPL for data inspection
+    neo4j_mcp.py                  # neo4j-mcp tool - graph query, schema inspection, index management
+    neo4j_driver.py               # neo4j-driver tool - bulk Cypher operations, batch loading
+    file_ops.py                   # file-ops tool - read/write .kg-builder/ directory
+
+  agents/                         # Strands agent definitions
     __init__.py
-    registry.py                 # shared tool registry setup for Strands SDK
-    py_repl.py                  # py-repl tool wrapper
-    neo4j_mcp.py                # neo4j-mcp tool wrapper
-    neo4j_driver.py             # neo4j-driver tool wrapper (bulk Cypher)
-    file_ops.py                 # file-ops tool wrapper (.kg-builder/ operations)
-  ontology/
+    ingest.py                     # ingest agent - system prompt, tool list, checkpoint logic
+    query.py                      # query agent - system prompt, conversation context management
+    update.py                     # update agent - system prompt, migration workflow
+
+  ontology/                       # ontology buffer and normalization
     __init__.py
-    buffer.py                   # ontology buffer (in-memory state, feedback loop, refinement)
-    normalizer.py               # LLM normalization (any format -> canonical YAML)
-    owl_import.py               # owlready2 OWL/RDF import
-    yaml_schema.py              # YAML ontology Pydantic models and validation
-    dag.py                      # DAG validation (topological sort, cycle detection)
-    reasoning.py                # post-load OWL reasoning (HermiT, Cypher-based)
-  extraction/
+    buffer.py                     # in-memory buffer state, feedback accumulation, refinement triggers
+                                  #   accepts: TypeSignal (from extraction)
+                                  #   exposes: OntologyState (frozen snapshot for extraction)
+    normalizer.py                 # three-tier normalization (py-repl parse -> LLM repair -> full LLM)
+                                  #   accepts: raw file content (any format)
+                                  #   returns: OntologyState + NormDiagnostic
+    owl_import.py                 # owlready2 OWL/RDF programmatic import
+                                  #   accepts: OWL file path
+                                  #   returns: OntologyState
+    yaml_schema.py                # YAML ontology validation
+                                  #   accepts: YAML file path
+                                  #   returns: OntologyState
+    dag.py                        # DAG validation - topological sort, cycle detection
+                                  #   accepts: OntologyState
+                                  #   returns: OntologyState (cleaned) + list of resolved cycles
+    reasoning.py                  # post-load OWL reasoning (HermiT, Cypher-based subclass propagation)
+                                  #   accepts: OntologyState + Neo4J connection
+                                  #   side effect: writes inferred triples to Neo4J
+
+  extraction/                     # ingestion pipelines (unstructured and structured)
     __init__.py
-    unstructured.py             # unstructured pipeline orchestration
-    structured.py               # structured pipeline orchestration
-    parsing.py                  # document parsers (PDF, TXT, MD, DOCX)
-    chunking.py                 # chunking strategies (token, semantic, parent-child)
-    prompts.py                  # extraction prompt construction
-    response_models.py          # Pydantic response model generation from ontology
-    facts.py                    # atomic facts extraction
-    dedup.py                    # entity deduplication (intra-document, cross-document)
-    resolution.py               # entity resolution (fuzzy, embedding, LLM clustering)
-  loading/
+    unstructured.py               # unstructured pipeline orchestration
+                                  #   accepts: DocumentMetadata, AppConfig, OntologyState
+                                  #   returns: ExtractionResult + List[TypeSignal]
+    structured.py                 # structured pipeline orchestration
+                                  #   accepts: file path, schema description, AppConfig, OntologyState
+                                  #   returns: ExtractionResult
+    parsing.py                    # document parsers (PDF via pymupdf4llm, TXT, MD, DOCX)
+                                  #   accepts: file path
+                                  #   returns: List[TextSegment]
+    chunking.py                   # chunking strategies (token, semantic, parent-child)
+                                  #   accepts: List[TextSegment], ExtractConfig
+                                  #   returns: List[Chunk]
+    prompts.py                    # extraction prompt construction from ontology state
+                                  #   accepts: Chunk, OntologyState, coverage score
+                                  #   returns: str (formatted prompt)
+    response_models.py            # Pydantic response model generation from ontology types
+                                  #   accepts: OntologyState
+                                  #   returns: Type[BaseModel] (dynamic Pydantic class)
+    facts.py                      # atomic facts extraction (FactNode track)
+                                  #   accepts: Chunk, AppConfig
+                                  #   returns: List[Fact]
+    dedup.py                      # entity deduplication
+                                  #   accepts: List[Entity] (from all chunks of a document)
+                                  #   returns: List[Entity] (merged by type+id)
+    resolution.py                 # entity resolution (escalating-cost pipeline)
+                                  #   accepts: List[Entity] (all documents)
+                                  #   returns: List[ResolvedEntity]
+
+  loading/                        # Neo4J graph loading
     __init__.py
-    loader.py                   # batch Cypher loading orchestration
-    indexes.py                  # index creation (structural, vector, fulltext)
-    validation.py               # post-load validation checks
-  query/
+    loader.py                     # batch Cypher loading orchestration
+                                  #   accepts: ExtractionResult (or List[ResolvedEntity]), LoadConfig
+                                  #   returns: LoadResult
+    indexes.py                    # index creation (structural, vector, fulltext)
+                                  #   accepts: LoadConfig
+                                  #   side effect: creates indexes in Neo4J
+    validation.py                 # post-load validation checks
+                                  #   accepts: LoadConfig
+                                  #   returns: ValidationReport
+
+  query/                          # graph querying
     __init__.py
-    text2cypher.py              # natural language to Cypher translation
-    retrieval.py                # dual retrieval routing (vector, fulltext, direct Cypher)
-    formatter.py                # output formatting (table, json, graph, text)
-  update/
+    text2cypher.py                # natural language to Cypher translation
+                                  #   accepts: str (question), graph schema metadata
+                                  #   returns: str (Cypher query)
+    retrieval.py                  # dual retrieval routing (vector, fulltext, direct Cypher)
+                                  #   accepts: str (question or Cypher), retrieval strategy
+                                  #   returns: QueryResult
+    formatter.py                  # output formatting
+                                  #   accepts: QueryResult, format type (table/json/graph/text)
+                                  #   returns: str (formatted output)
+
+  update/                         # schema evolution and graph re-processing
     __init__.py
-    schema_diff.py              # schema change detection
-    migration.py                # migration plan generation and execution
-    ontology_refine.py          # ontology refinement pass
-  memory/
+    schema_diff.py                # schema change detection
+                                  #   accepts: current schema, fresh data sample
+                                  #   returns: List[MigrationStep]
+    migration.py                  # migration plan generation and execution
+                                  #   accepts: List[MigrationStep], LoadConfig
+                                  #   returns: MigrationPlan (with rollback)
+    ontology_refine.py            # ontology refinement pass
+                                  #   accepts: OntologyState, refinement config
+                                  #   returns: OntologyState (refined)
+
+  memory/                         # agent operational memory
     __init__.py
-    store.py                    # YAML-based memory read/write
-    ttl.py                      # entry expiration and cap management
+    store.py                      # YAML-based memory read/write
+                                  #   accepts: source key, memory entry
+                                  #   returns: List[memory entries] by source
+    ttl.py                        # entry expiration and cap management
+                                  #   accepts: memory store, TTL config
+                                  #   side effect: prunes expired entries
+
+  tui/                            # terminal UI harness
+    __init__.py
+    app.py                        # textual App - main harness entry point
+                                  #   accepts: AppConfig, interactive/batch mode flag
+    panels.py                     # stats panel, buffer panel, chat panel widgets
+                                  #   accepts: PipelineStats, OntologyState
+    events.py                     # pipeline event handlers that update panels
+                                  #   accepts: PipelineEvent stream
 ```
 
-### Interface Boundaries
+### Interface Contracts
 
-- **`cli.py`** depends on `config/` and `agents/` only. It parses arguments, loads config, and spawns the appropriate agent
-- **`agents/`** depend on `tools/` for tool registry setup and `config/` for configuration. Each agent module defines a system prompt and tool list, then delegates to Strands SDK
-- **`tools/`** wrap external dependencies (Strands tools, Neo4J driver, MCP client). Each tool module provides a factory function that the registry calls
-- **`ontology/`** is self-contained. `buffer.py` is the primary interface consumed by extraction modules. `normalizer.py` and `owl_import.py` are used during buffer initialization
-- **`extraction/`** depends on `ontology/` for buffer state and prompt construction. `unstructured.py` and `structured.py` are the top-level orchestrators that compose parsing, chunking, prompt construction, and deduplication
-- **`loading/`** depends only on `config/` for connection details. It receives entities and relationships as data structures, not as extraction-specific types
-- **`query/`** depends on `config/` and `tools/neo4j_mcp`. It is independent of the extraction pipeline
-- **`update/`** depends on `tools/` for graph access and `extraction/` for re-processing
-- **`memory/`** is self-contained and provides read/write interfaces consumed by agents
+Every data handoff between modules uses a Pydantic model from `types/`. The table below lists each boundary crossing:
+
+| From | To | Type | Key fields |
+|------|----|------|------------|
+| `extraction/parsing` | `extraction/chunking` | `List[TextSegment]` | `text`, `page`, `section`, `source_path`, `byte_offset` |
+| `extraction/chunking` | `extraction/prompts` | `List[Chunk]` | `id` (SHA1), `text`, `index`, `metadata` |
+| `ontology/buffer` | `extraction/prompts` | `OntologyState` | `entity_types`, `relationship_types`, `coverage`, `variants` (frozen snapshot) |
+| `extraction/` | `ontology/buffer` | `List[TypeSignal]` | `type_name`, `frequency`, `source_chunk`, `is_relationship` |
+| `extraction/` | `loading/` | `ExtractionResult` | `metadata`, `entities`, `relationships`, `facts`, `validation` (Section 19 format) |
+| `extraction/resolution` | `loading/` | `List[ResolvedEntity]` | extends `Entity` with `normalized_name`, `normalized_score`, `normalized_method` |
+| `loading/validation` | caller | `ValidationReport` | `orphan_entities`, `missing_relationships`, `type_coverage`, `warnings` |
+| `query/retrieval` | `query/formatter` | `QueryResult` | `records`, `columns`, `cypher_used`, `retrieval_strategy` |
+| `update/schema_diff` | `update/migration` | `List[MigrationStep]` | `type` (add/remove/rename), `entity`, `field`, `cypher` |
+| `update/migration` | `loading/` | `MigrationPlan` | `steps`, `rollback_steps`, `re_ingest_scope`, `estimated_impact` |
+| `extraction/` | `tui/events` | `PipelineEvent` | `stage`, `document_idx`, `chunk_idx`, `entity_count`, `timestamp` |
+| `ontology/normalizer` | caller | `NormDiagnostic` | `tier_used`, `types_count`, `rels_count`, `depth`, `issues_resolved` |
+
+The `OntologyState` passed from `ontology/` to `extraction/` is a frozen snapshot - extraction reads it but cannot mutate it. Feedback flows back as `TypeSignal` objects that the buffer processes independently. This prevents race conditions during parallel chunk extraction.
+
+### Dependency Rules
+
+- **`types/`** depends on nothing except `pydantic`. Every other module may import from `types/`
+- **`config/`** depends on `types/config` for model definitions. Produces validated `AppConfig` at startup
+- **`tools/`** depends on `config/` for connection details. Wraps external libraries behind factory functions
+- **`agents/`** depends on `tools/` and `config/`. Each agent module defines a system prompt and tool list, delegates to Strands SDK
+- **`ontology/`** depends on `types/ontology` and `types/extraction` (for `TypeSignal`). Self-contained otherwise. `buffer.py` is the primary interface
+- **`extraction/`** depends on `types/` (document, extraction, ontology types) and `ontology/` (for `OntologyState`). Top-level orchestrators (`unstructured.py`, `structured.py`) compose the internal submodules
+- **`loading/`** depends on `types/` (extraction, loading types) and `tools/neo4j_driver`. Receives `ExtractionResult` - does not import from `extraction/` directly
+- **`query/`** depends on `types/query` and `tools/neo4j_mcp`. Independent of extraction pipeline
+- **`update/`** depends on `types/migration` and `tools/`. Re-processing invokes `extraction/` functions
+- **`memory/`** depends on `config/` for TTL settings. Provides read/write interfaces consumed by `agents/`
+- **`tui/`** depends on `types/pipeline` for event types and `config/` for layout preferences
+- **`cli.py`** depends on `config/` and `agents/` only. Thin entry point
 
 ### Dependency Injection Points
 
-- **LLM provider**: configured in `config/schema.py`, injected into agents and extraction modules. Swapping between Bedrock, OpenAI, and Anthropic requires no code changes
-- **Neo4J connection**: configured in `config/loader.py`, injected into `tools/neo4j_driver.py` and `tools/neo4j_mcp.py`
-- **Embedding model**: configured alongside the LLM provider, used by `extraction/resolution.py` and `loading/indexes.py`
+- **LLM provider**: configured in `types/config.LLMConfig`, loaded in `config/loader.py`, injected into agents and extraction modules. Swapping between Bedrock, OpenAI, and Anthropic requires no code changes
+- **Neo4J connection**: configured in `types/config.Neo4jConfig`, loaded in `config/loader.py`, injected into `tools/neo4j_driver.py` and `tools/neo4j_mcp.py`
+- **Embedding model**: configured alongside the LLM provider in `types/config.LLMConfig`, used by `extraction/resolution.py` and `loading/indexes.py`
 
 ### Configuration Validation
 
-All configuration is validated at startup using Pydantic models defined in `config/schema.py`. Invalid configuration fails fast with actionable error messages. The validation covers:
+All configuration is validated at startup using Pydantic models from `types/config.py`, with validators in `config/schema.py`. Invalid configuration fails fast with actionable error messages. The validation covers:
 - Required fields (Neo4J URI, LLM model)
 - Type constraints (batch_size must be positive integer)
 - Path resolution (ontology file exists if specified)
@@ -1771,6 +2120,7 @@ Test fixtures are organized in `tests/fixtures/`:
 | `instructor` | Structured LLM output with Pydantic model enforcement and retry handling |
 | `pydantic` | Entity schema definition, extraction validation, config validation, response models |
 | `chonkie` | Semantic chunking (embedding similarity-based splitting) |
+| `textual` | Terminal UI framework for live pipeline display, interactive agent communication, and progress tracking (built on `rich`) |
 | `loguru` | Structured logging |
 | `ruff` | Linting and formatting (dev dependency) |
 | `pytest` | Testing framework (dev dependency) |
@@ -1796,7 +2146,10 @@ Extraction files are written to `.kg-builder/extractions/` with timestamped file
       "properties": {"role": "CTO"},
       "source_chunks": [0, 3],
       "confidence": 0.92,
-      "extraction_model": "us.anthropic.claude-sonnet-4-20250514"
+      "extraction_model": "us.anthropic.claude-sonnet-4-20250514",
+      "evidence_span": {"start": 142, "end": 210},
+      "source_count": 2,
+      "document_count": 1
     }
   ],
   "relationships": [
@@ -1807,7 +2160,10 @@ Extraction files are written to `.kg-builder/extractions/` with timestamped file
       "properties": {},
       "source_chunks": [3],
       "confidence": 0.88,
-      "extraction_model": "us.anthropic.claude-sonnet-4-20250514"
+      "extraction_model": "us.anthropic.claude-sonnet-4-20250514",
+      "evidence_span": {"start": 315, "end": 378},
+      "source_count": 1,
+      "document_count": 1
     }
   ],
   "facts": [
@@ -1816,6 +2172,9 @@ Extraction files are written to `.kg-builder/extractions/` with timestamped file
       "source_chunks": [3],
       "confidence": 0.95,
       "extraction_model": "us.anthropic.claude-sonnet-4-20250514",
+      "evidence_span": {"start": 891, "end": 962},
+      "source_count": 1,
+      "document_count": 1,
       "triplet": {
         "subject": "person_john_doe",
         "predicate": "DIAGNOSED_WITH",
@@ -1841,6 +2200,10 @@ The `facts` array captures atomic factual statements alongside the entity-relati
 
 Confidence scores propagate to Neo4J as properties on Entity and FactNode nodes, enabling downstream query ranking ("show high-confidence relationships only") and graph pruning ("remove entities below confidence threshold").
 
+**Evidence spans** (`evidence_spans: true` in extract config): when enabled, the extraction prompt requests character offsets (`start`, `end`) into the chunk text for each extracted element. The `evidence_span` field on entities, relationships, and facts records the exact character range in the source chunk that supports the extraction. This enables exact source traceability - a consumer can slice the original chunk text to retrieve the precise passage that produced each triple. The trade-off is increased latency: the extraction prompt is larger (includes offset instructions), the LLM must produce structured offset output alongside entities, and validation must confirm offsets fall within chunk boundaries. Default is `false`. Enable when auditability and source provenance are critical.
+
+**Source frequency** (`source_frequency: true` in extract config): when enabled, a post-extraction aggregation pass counts how many independent chunks and documents corroborate each triple. The `source_count` field records the number of distinct chunks that produced the same entity or relationship. The `document_count` field records the number of distinct source documents. This adds a dedup-time computation step that cross-references all extracted elements across chunks and documents before loading. Entities mentioned in many chunks across multiple documents are more trustworthy than those appearing once. Default is `false`. Enable when extraction confidence needs cross-document corroboration signals.
+
 ## 20. Supported Input Formats
 
 | Format | Type | Library |
@@ -1850,3 +2213,25 @@ Confidence scores propagate to Neo4J as properties on Entity and FactNode nodes,
 | DOCX | unstructured | `python-docx` |
 | JSON | structured | built-in |
 | JSONL | structured | built-in |
+
+---
+
+## Document Evaluation (Devil's Advocate Scorecard)
+
+**Persona**: Senior backend engineer - skeptical of agent-heavy designs, prefers deterministic pipelines
+**Document score**: 15.5 (lower = better, max 136)
+
+| # | Concern | Risk | Score | Residual | How addressed |
+|---|---------|------|-------|----------|---------------|
+| 1 | Agent overuse | 20 | 90% | 2.0 | Section 2: interactive vs autonomous mode, `--batch` flag, checkpoint annotations, batch decision logging. Report format deferred to runtime iteration |
+| 2 | All features are core | 15 | 95% | 0.75 | Core/extension distinction removed. All node types (Document, Chunk, Entity, FactNode, Page, Section, TableElement, ImageElement, etc.) are part of the core model. No phased roadmap needed - everything ships together |
+| 3 | LLM normalization risk | 16 | 90% | 1.6 | Section 5.2 three-tier pipeline: py-repl parse -> LLM repair -> full LLM. Diagnostic output, interactive confirm |
+| 4 | Schema inference instability | 12 | 90% | 1.2 | Section 7.3: schema-as-configuration principle, lockfile, deterministic baseline, schema versioning with `SchemaVersion` nodes, `CREATED_UNDER` linking, schema recovery via `kg init` |
+| 5 | Missing confidence model | 25 | 92% | 2.0 | Confidence + extraction_model on all elements. Evidence spans and source frequency as config options |
+| 6 | Levenshtein/similarity details | 12 | 85% | 1.8 | Type blocking, Levenshtein ratio 0.85, similarity matrix, ANN for large sets |
+| 7 | No concurrency model | 9 | 80% | 1.8 | Intra-document parallel, inter-document sequential, buffer feedback at document boundary |
+| 8 | OWL reasoning complexity | 6 | 70% | 1.8 | Off by default, Cypher alternative provided |
+| 9 | No scale targets | 12 | 92% | 0.96 | Scale targets in Section 2. Reference benchmark dataset: 23 CPAP PDFs (~63MB), 6 performance metrics per pipeline stage, 5 quality metrics, `--benchmark` flag, results persistence, regression detection against baseline |
+| 10 | Module structure lacks interfaces | 9 | 82% | 1.6 | Section 16 rewritten: `types/` module with 10 Pydantic contract files, dependency graph diagram, interface contracts table with 12 boundary crossings, per-submodule accepts/returns annotations, dependency rules per module |
+
+**Top gaps**: #1 batch report format (2.0, deferred to runtime), #5 confidence (2.0), #6 Levenshtein details (1.8), #7 concurrency (1.8), #8 OWL reasoning (1.8)
