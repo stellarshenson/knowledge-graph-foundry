@@ -242,11 +242,11 @@ AWS_SECRET_ACCESS_KEY=...           # optional, if not using AWS profile
 
 The ontology buffer can be initialized from three sources, in order of precedence:
 
-1. **OWL/RDF seed** (`ontology_buffer.seed_from`): an existing formal ontology loaded via owlready2. Classes become entity types, object properties become relationship types, data properties become property schemas. The `seed_depth` parameter controls how deep into the class hierarchy to import (default 2), and `seed_filter` restricts import to a specific branch. The OWL file is read-only input - it is never modified
+1. **OWL/RDF seed** (`ontology_buffer.seed_from`): an existing formal ontology loaded via owlready2. Classes become entity types, object properties become relationship types, data properties become property schemas. The `seed_depth` parameter controls how deep into the class hierarchy to import (default 2), and `seed_filter` restricts import to a specific branch. The OWL file is read-only input - it is never modified. **The OWL seed is suggestive, not prescriptive** - it provides starting vocabulary and domain context, but the extraction is free to discover entity types, relationship types, and connections that the original OWL ontology did not anticipate. The resulting application ontology may diverge significantly from the OWL source
 2. **YAML ontology** (`paths.ontology`): the lightweight application schema in our custom format. If both OWL seed and YAML are provided, the YAML takes precedence for any overlapping type definitions - OWL fills in the gaps
 3. **Empty** (free extraction): no seed, no YAML. The buffer starts empty and builds the ontology from scratch during extraction
 
-After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source. This means an OWL-seeded run produces a YAML ontology as a side effect - distilled from the formal ontology and refined by what the documents actually contained.
+After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source. This means an OWL-seeded run produces a YAML ontology as a side effect - informed by the formal ontology but shaped by what the documents actually contained. The output ontology is the system's own schema, not a subset of the OWL input.
 
 ### OWL Seed Import
 
@@ -259,9 +259,11 @@ When `seed_from` points to an OWL/RDF file, owlready2 extracts:
 | `owl:ObjectProperty` | relationship type | `rdfs:domain` -> source type, `rdfs:range` -> target type |
 | `owl:DatatypeProperty` | property schema | Attached to the entity type from `rdfs:domain` |
 | `owl:TransitiveProperty` | relationship flag | Marked for post-load inference via reasoner |
-| `owl:disjointWith` | validation constraint | Used to detect extraction errors |
+| `owl:disjointWith` | advisory warning | Logged when violated, not enforced - data may bridge OWL boundaries |
 
 Large reference ontologies (NCIt has 170,000+ classes, SNOMED has 350,000+) are not suitable for direct use as extraction constraints. The `seed_depth` and `seed_filter` parameters ensure only a manageable subset is imported. The Dynamic Ontology reference makes this point clearly: reference ontologies are great for standard IDs and relationships, but they're too large and complex to serve as application schemas.
+
+**The OWL seed is advisory, not binding.** The extraction pipeline treats OWL-sourced types as suggestions with higher initial confidence, but the buffer will promote discovered types that appear consistently in the data even if they have no OWL counterpart. This means the final ontology can contain entity types, relationship types, and connection patterns that the OWL source never defined. The OWL gives the system a head start and domain vocabulary - the documents determine the actual schema.
 
 ### Post-Load OWL Reasoning
 
