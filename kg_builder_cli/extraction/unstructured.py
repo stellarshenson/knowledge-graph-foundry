@@ -132,13 +132,7 @@ def ingest_document(
     # Step 5b: Enforce ontology types (remap out-of-ontology types)
     if ontology and ontology.entity_types:
         allowed = [t.name for t in ontology.entity_types]
-        pre_types = set(e.type for e in deduped_entities)
-        logger.info("Enforcing ontology types: {} allowed, {} unique types pre-enforcement: {}",
-                      len(allowed), len(pre_types), pre_types - set(allowed))
         deduped_entities = _enforce_ontology_types(deduped_entities, allowed)
-        post_types = set(e.type for e in deduped_entities)
-        logger.info("Post-enforcement: {} unique types, non-allowed: {}",
-                      len(post_types), post_types - set(allowed))
     else:
         logger.debug("No ontology types to enforce (ontology={}, types={})",
                       ontology is not None,
