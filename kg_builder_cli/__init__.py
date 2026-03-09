@@ -1,1 +1,1 @@
-from kg_builder_cli import config  # noqa: F401
+"""Knowledge Graph Builder CLI."""

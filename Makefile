@@ -190,7 +190,7 @@ register_environment:
 	fi
 
 ## Install src modules (editable)
-install: create_environment requirements clean .env
+install: create_environment requirements clean .env increment_version_number
 
 	@echo "$(MSG_PREFIX) installing $(MODULE_NAME) in editable mode"
 	@uv $(UV_OPTS) pip install -q --python $(PROJECT_DIR)/.venv -e .

@@ -403,6 +403,7 @@ extract:
 # Ontology buffer settings
 ontology_buffer:
   seed_from: null                    # ontology seed file in any format (OWL, JSON, MD, TXT, YAML)
+  intent: null                       # free-text use case guiding ontology inference and extraction
   seed_depth: 2                      # max subclass depth to import from OWL
   seed_filter: null                  # restrict OWL import to branch (e.g., "BiologicalEntity")
   refine_every_n_docs: 5             # trigger refinement after N documents
@@ -483,6 +484,27 @@ The ontology buffer accepts input in any format - the only requirement is that t
 3. **Empty** (free extraction): no seed, no YAML. The buffer starts empty and builds the ontology from scratch
 
 After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source format.
+
+### 5.1a Use Case Intent
+
+The `ontology_buffer.intent` field accepts free-text describing the primary purpose of the knowledge graph. This intent guides every stage of ontology construction and extraction - from seed normalization through type discovery to entity resolution.
+
+When an intent is provided, the system injects it into LLM prompts at three points: ontology normalization (Tier 2 and Tier 3 prompts receive the intent so the LLM prioritizes types and relationships relevant to the use case), extraction prompts (the intent shapes what the LLM considers noteworthy in each chunk), and ontology refinement (the buffer uses the intent to evaluate whether discovered types serve the stated purpose during pruning and confirmation).
+
+Without an intent, extraction operates in general-purpose mode - capturing all entity types and relationships the LLM identifies without domain-specific prioritization.
+
+**Example** (CPAP device benchmark dataset):
+
+```yaml
+ontology_buffer:
+  intent: >-
+    Quantitatively and qualitatively compare CPAP devices to allow patients
+    and doctors to choose the device best suited to their needs, and to
+    diagnose issues related to sleep apnea treatment.
+  seed_from: null
+```
+
+This intent steers the system toward extracting technical specifications (pressure ranges, noise levels, humidifier capacity), clinical parameters (AHI thresholds, leak detection sensitivity), comfort features (mask compatibility, ramp settings), and comparative dimensions (weight, size, power consumption) - rather than generic entities like manufacturer addresses or regulatory body names that would dominate in general-purpose extraction.
 
 ### 5.2 Three-Tier Normalization Pipeline
 
@@ -656,6 +678,32 @@ relationship_types:
     source: Person
     target: Organization
 ```
+
+#### Schema Comments as Domain Context
+
+The ontology YAML file supports standard YAML comments (`#`). Comments serve a dual purpose: they document the intent and construction rationale for human readers, and they are parsed and included as context in LLM prompts during query generation. This means a well-commented schema file directly improves the quality of natural language queries against the graph.
+
+```yaml
+# CPAP Device Comparison Schema
+# Intent: enable quantitative and qualitative comparison of CPAP devices
+# for patient/doctor decision-making and sleep apnea diagnosis.
+# Device specifications (pressure, noise, weight) are modeled as properties
+# rather than separate entities to enable direct comparison queries.
+
+entity_types:
+  - name: CPAPDevice
+    description: A specific CPAP device model with measurable specifications
+    # Properties chosen to enable head-to-head comparison tables
+    properties:
+      - name: pressure_range_cmh2o
+        type: string         # e.g., "4-20" - stored as string for range notation
+      - name: noise_level_dba
+        type: float
+      - name: weight_kg
+        type: float
+```
+
+When the query agent generates Cypher, it includes relevant schema comments in its system prompt, giving the LLM context about why types and properties exist and how they relate to the use case. This bridges the gap between graph structure and query intent.
 
 **Entity aliases** map alternative surface forms to a canonical type. During extraction the LLM (or regex matcher) recognizes any alias and normalizes it to the parent type name. This reduces type sprawl without requiring the ontology buffer to discover variants at runtime.
 
@@ -862,15 +910,30 @@ The diagram shows the feedback loop at the center of the pipeline. The ontology 
 
 ### 6.2 Document Parsing
 
-Each format requires a different parser to extract clean text.
+Each format requires a different parser to extract clean text. Parsers are implemented behind a common adapter interface - a function that accepts a file path and returns a list of `TextSegment` objects with uniform source metadata. Adding support for a new format (XLSX, HTML, CSV, PPTX) requires only registering a new adapter function that conforms to the same contract.
+
+#### Parser Adapter Interface
+
+```python
+def parse_<format>(file_path: Path) -> list[TextSegment]:
+    """Parse a document into text segments with source metadata."""
+    ...
+```
+
+Each adapter is responsible for extracting clean text and attaching provenance metadata (file path, page number or line offset, section title where available). The dispatcher selects the adapter based on file extension, falling back to plain text for unrecognized formats. New adapters are registered in a format-to-parser mapping dict, making the system extensible without modifying the dispatcher logic.
+
+#### Format Adapters
 
 | Format | Parser | Notes |
 |--------|--------|-------|
 | PDF | `pymupdf4llm` | Converts to structured Markdown with layout, tables, and image extraction |
 | TXT / MD | built-in | Read as-is |
 | DOCX | `python-docx` | Extracts paragraph text, ignores formatting |
+| XLSX | `openpyxl` | Sheet-per-segment, row data as text or structured records |
+| CSV | built-in | Row batches as text segments |
+| HTML | `beautifulsoup4` | Extracts visible text, strips markup |
 
-The parser outputs a list of text segments with source metadata (file path, page number or line offset). This metadata propagates through chunking into the final extraction output, enabling traceability from any entity back to its source location.
+The adapter layer enables mixed-format ingestion - a directory containing PDFs, spreadsheets, and text files can be processed in a single `kg ingest` run with each file routed to the appropriate parser. This metadata propagates through chunking into the final extraction output, enabling traceability from any entity back to its source location.
 
 #### PDF Parsing with pymupdf4llm
 
@@ -1934,9 +1997,10 @@ kg_builder_cli/
     structured.py                 # structured pipeline orchestration
                                   #   accepts: file path, schema description, AppConfig, OntologyState
                                   #   returns: ExtractionResult
-    parsing.py                    # document parsers (PDF via pymupdf4llm, TXT, MD, DOCX)
+    parsing.py                    # document parser adapter layer (PDF, TXT, MD, DOCX, XLSX, CSV, HTML)
                                   #   accepts: file path
                                   #   returns: List[TextSegment]
+                                  #   extensible via format-to-parser registry dict
     chunking.py                   # chunking strategies (token, semantic, parent-child)
                                   #   accepts: List[TextSegment], ExtractConfig
                                   #   returns: List[Chunk]
@@ -2211,6 +2275,9 @@ Confidence scores propagate to Neo4J as properties on Entity and FactNode nodes,
 | PDF | unstructured | `pymupdf4llm` (structured Markdown with images, tables, layout) |
 | TXT / MD | unstructured | built-in |
 | DOCX | unstructured | `python-docx` |
+| XLSX | unstructured / structured | `openpyxl` (sheet-per-segment) |
+| CSV | unstructured / structured | built-in (row batches) |
+| HTML | unstructured | `beautifulsoup4` |
 | JSON | structured | built-in |
 | JSONL | structured | built-in |
 
