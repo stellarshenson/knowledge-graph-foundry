@@ -221,3 +221,63 @@
 3. **#1 - Agent overuse** (residual 2.0) - no batch run report format example
 4. **#5 - Confidence model** (residual 2.0) - well addressed
 5. **#6 - Levenshtein/similarity** (residual 1.8) - well addressed
+
+---
+
+## Scorecard - v5 (DESIGN_v05_18.md)
+
+**Correction applied**: #9 reference benchmark dataset and measurement methodology
+
+| # | Concern | Risk | v4 Score | v5 Score | v5 Residual | How addressed in v5 |
+|---|---------|------|----------|----------|-------------|---------------------|
+| 1 | Agent overuse | 20 | 90% | 90% | 2.0 | Unchanged from v4 |
+| 2 | Optional features as core | 15 | 80% | 80% | 3.0 | Unchanged from v4 |
+| 3 | LLM normalization risk | 16 | 90% | 90% | 1.6 | Unchanged from v4 |
+| 4 | Schema inference instability | 12 | 90% | 90% | 1.2 | Unchanged from v4 |
+| 5 | Missing confidence model | 25 | 92% | 92% | 2.0 | Unchanged from v4 |
+| 6 | Levenshtein/similarity details | 12 | 85% | 85% | 1.8 | Unchanged from v4 |
+| 7 | No concurrency model | 9 | 80% | 80% | 1.8 | Unchanged from v4 |
+| 8 | OWL reasoning complexity | 6 | 70% | 70% | 1.8 | Unchanged from v4 |
+| 9 | No scale targets | 12 | 70% | 92% | 0.96 | Section 2 expanded with "Reference Benchmark Dataset" subsection. 23 CPAP PDF documents (~63MB) from `data/external/cpap-datasheets-and-manuals.zip` as the standard evaluation corpus - datasheets, brochures, user manuals, clinical guides, product catalogues. Six performance metrics per pipeline stage (parse, chunk, extract, dedup/resolve, load, end-to-end) with wall time, throughput, token consumption, and memory. Five quality metrics: entity coverage (spot-check against curated list), relationship accuracy (50-sample true positive rate), duplicate rate, ontology coherence, confidence distribution analysis. `--benchmark` flag enables extended instrumentation. Results persisted to `.kg-builder/runs/`. Baseline quality profile established on first run, subsequent runs detect regressions |
+| 10 | Module structure lacks interfaces | 9 | 82% | 82% | 1.6 | Unchanged from v4 |
+
+**v5 document score (total residual risk)**: 17.8 (lower = better, max 136)
+
+**Score change**: 20.4 -> 17.8 (improvement of 2.6)
+
+**Top gaps** (highest residual risk):
+1. **#2 - Optional features as core** (residual 3.0) - no phased implementation roadmap
+2. **#1 - Agent overuse** (residual 2.0) - no batch run report format example
+3. **#5 - Confidence model** (residual 2.0) - well addressed
+4. **#6 - Levenshtein/similarity** (residual 1.8) - well addressed
+5. **#8 - OWL reasoning** (residual 1.8) - well addressed
+
+---
+
+## Scorecard - v6 (DESIGN_v06_16.md)
+
+**Corrections applied**: #2 removed core/extension distinction - all features are core. #1 batch report format deferred to runtime iteration (intentional design decision, not a gap)
+
+| # | Concern | Risk | v5 Score | v6 Score | v6 Residual | How addressed in v6 |
+|---|---------|------|----------|----------|-------------|---------------------|
+| 1 | Agent overuse | 20 | 90% | 90% | 2.0 | Unchanged. Batch report format intentionally deferred to runtime iteration - the system will generate reports and the format will be refined based on actual output |
+| 2 | All features are core | 15 | 80% | 95% | 0.75 | Core/extension distinction removed entirely. Section 8 "Core vs Extension Node Types" rewritten as "Node Types" - all 12 node types are part of the core model. Removed "optional" markers from graph structure diagram (Page, Section, TableElement, ImageElement, child Chunk). Removed "optional" qualifiers from narrative sections on image description, table/image elements, chunk linking, section detection. No phased roadmap needed because everything ships together |
+| 3 | LLM normalization risk | 16 | 90% | 90% | 1.6 | Unchanged from v5 |
+| 4 | Schema inference instability | 12 | 90% | 90% | 1.2 | Unchanged from v5 |
+| 5 | Missing confidence model | 25 | 92% | 92% | 2.0 | Unchanged from v5 |
+| 6 | Levenshtein/similarity details | 12 | 85% | 85% | 1.8 | Unchanged from v5 |
+| 7 | No concurrency model | 9 | 80% | 80% | 1.8 | Unchanged from v5 |
+| 8 | OWL reasoning complexity | 6 | 70% | 70% | 1.8 | Unchanged from v5 |
+| 9 | No scale targets | 12 | 92% | 92% | 0.96 | Unchanged from v5 |
+| 10 | Module structure lacks interfaces | 9 | 82% | 82% | 1.6 | Unchanged from v5 |
+
+**v6 document score (total residual risk)**: 15.5 (lower = better, max 136)
+
+**Score change**: 17.8 -> 15.5 (improvement of 2.3)
+
+**Top gaps** (highest residual risk):
+1. **#1 - Agent overuse** (residual 2.0) - batch report format deferred to runtime
+2. **#5 - Confidence model** (residual 2.0) - well addressed
+3. **#6 - Levenshtein/similarity** (residual 1.8) - well addressed
+4. **#7 - Concurrency model** (residual 1.8) - well addressed
+5. **#8 - OWL reasoning** (residual 1.8) - well addressed
