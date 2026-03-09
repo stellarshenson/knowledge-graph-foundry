@@ -174,6 +174,8 @@ Even with deterministic IDs, structured data can contain variations of the same 
 
 **Approach**: after deduplication by exact ID, the remaining entity names within each type are compared using LLM-based clustering (same approach as unstructured ingestion). Because structured records produce fewer unique entities per type (departments, skills, etc.), this pass is cheap and highly effective.
 
+For large entity sets where LLM clustering becomes expensive, embedding-based resolution provides a faster alternative at a similarity threshold of 0.85. The resolution pipeline escalates in cost: exact ID match first (free), then embedding similarity for bulk candidates (fast), then LLM clustering only for ambiguous pairs that embeddings cannot confidently resolve (expensive). This tiered approach keeps resolution tractable even for datasets producing thousands of unique entities per type.
+
 Normalized entities store:
 - `name`: original field value
 - `normalized_name`: canonical form after resolution
@@ -193,6 +195,8 @@ When both are provided, the schema description guides field interpretation while
 
 When only a schema description is provided (no ontology), the LLM infers entity and relationship types from the schema description itself.
 
+When the ontology includes type hierarchies - either from an OWL seed or manually defined in YAML - the loader creates `OntologyType` nodes with `IS_A` relationships that mirror the class hierarchy. Extracted entities receive `INSTANCE_OF` links to their corresponding `OntologyType` node. This ontology enrichment layer enables hierarchical queries: asking for all instances of "NeurologicalDisorder" returns Migraines, Epilepsy, and any other subtype without the query needing to enumerate them explicitly. The enrichment runs as a post-extraction step during loading, matching each entity's type label against the ontology hierarchy.
+
 ## Graph Structure in Neo4J
 
 ```
@@ -203,6 +207,9 @@ When only a schema description is provided (no ontology), the LLM infers entity 
 (:Entity:Person)-[:WORKS_IN {start_date}]->(:Entity:Department)
 (:Entity:Person)-[:REPORTS_TO]->(:Entity:Person)
 (:Entity:Person)-[:HAS_SKILL]->(:Entity:Skill)
+
+(:OntologyType {name: "NeurologicalDisorder"})-[:IS_A]->(:OntologyType {name: "Disease"})
+(:Entity:Disease)-[:INSTANCE_OF]->(:OntologyType {name: "Disease"})
 ```
 
 Unlike unstructured ingestion, there are no `Chunk` nodes - structured records do not need chunk-level provenance. Instead, a `Source` node tracks the input file metadata and entities link back to it via `FROM_SOURCE`.
@@ -226,6 +233,18 @@ MATCH (a:Entity {id: row.source}), (b:Entity {id: row.target})
 MERGE (a)-[r:{rel_type}]->(b)
 SET r += row.properties
 ```
+
+**Dual indexing** (vector + fulltext):
+```cypher
+CREATE VECTOR INDEX entity_embeddings IF NOT EXISTS
+FOR (n:Entity) ON (n.embedding)
+OPTIONS {indexConfig: {`vector.dimensions`: 1536, `vector.similarity_function`: 'cosine'}}
+
+CREATE FULLTEXT INDEX entity_names IF NOT EXISTS
+FOR (n:Entity) ON EACH [n.name]
+```
+
+Vector indexing supports semantic similarity search over entity embeddings, while fulltext indexing enables exact and fuzzy name lookups. Both indexes are created after the initial load completes to avoid write-time overhead during batch ingestion.
 
 ## Hybrid Scenario
 

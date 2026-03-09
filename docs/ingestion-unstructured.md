@@ -32,11 +32,57 @@ Each format requires a different parser to extract clean text.
 
 | Format | Parser | Notes |
 |--------|--------|-------|
-| PDF | `pymupdf` | Preserves page numbers per text block |
+| PDF | `pymupdf4llm` | Converts to structured Markdown with layout, tables, and image extraction |
 | TXT / MD | built-in | Read as-is |
 | DOCX | `python-docx` | Extracts paragraph text, ignores formatting |
 
 The parser outputs a list of text segments with source metadata (file path, page number or line offset). This metadata propagates through chunking into the final extraction output, enabling traceability from any entity back to its source location.
+
+### PDF Parsing with pymupdf4llm
+
+PDF parsing uses `pymupdf4llm` rather than raw `pymupdf`. Built on top of PyMuPDF, pymupdf4llm converts complex PDFs into structured Markdown with layout reconstruction, table preservation, and image handling. The key API:
+
+```python
+import pymupdf4llm
+
+# Basic text + tables as Markdown
+md_text = pymupdf4llm.to_markdown("document.pdf")
+
+# With image extraction to disk
+md_text = pymupdf4llm.to_markdown("document.pdf",
+                                  write_images=True,
+                                  image_path="extracted_images/")
+
+# Per-page chunks for RAG pipelines
+chunks = pymupdf4llm.to_markdown("document.pdf", page_chunks=True)
+```
+
+The layout model (`pymupdf.layout`) activates ONNX-based block detection for realistic table structures and figure placement. Tables are converted to Markdown table syntax, figure captions are preserved, and images are referenced by path in the output Markdown.
+
+### Image Description Enrichment
+
+PDFs containing charts, plots, diagrams, or photographs lose critical information when only text is extracted. A survival curve, an architecture diagram, or a data visualization may carry the core insight of a document section - yet plain text extraction produces only the figure caption.
+
+The image description pipeline addresses this by running extracted images through a vision model and injecting the resulting descriptions back into the parsed text before chunking:
+
+1. Extract text as Markdown with `write_images=True` (images saved to disk, referenced in Markdown)
+2. Parse image references from the Markdown output (both `![alt](path)` and `<img>` formats)
+3. Send each image to a vision model with a description prompt
+4. Replace image references in the Markdown with the original reference plus a text description block
+
+This produces Markdown that contains both the original text and natural-language descriptions of all visual content. When this enriched text is chunked and sent to the extraction LLM, entities and relationships depicted in charts and diagrams become extractable - a chart showing "Treatment A outperforms Treatment B" yields the same relationship triple that a text sentence would.
+
+The vision model is configurable separately from the extraction LLM. For local processing, smaller vision models (LLaVA 7B) provide adequate descriptions. For production quality, larger multimodal models produce richer descriptions. Image description is optional - configured via `describe_images: true` in the extract section of `config.yml`. When disabled, pymupdf4llm still extracts and references images, but they are not interpreted for text content.
+
+### Tables and Images as Graph Elements
+
+Tables and images extracted from PDFs can be stored as separate element nodes (`TableElement`, `ImageElement`) in Neo4J, linked to their parent Chunk via `HAS_ELEMENT`. Rather than folding all content into the chunk text, this preserves the original structure as a distinct graph element that downstream queries can target directly.
+
+Tables are stored as markdown or HTML text in a node property - this preserves row/column structure for downstream LLM interpretation without requiring the retrieval layer to re-parse PDF layout. Images can be stored as base64 in a node property (convenient but large) or as an external file path (lighter, requires file access at query time).
+
+Both element types can carry their own embeddings for similarity search. Images use multimodal embedding (CLIP) for visual similarity, while tables use text embedding of their markdown representation or a generated description. This enables queries like "find tables showing revenue figures" or "find diagrams of network architecture" to match against element-specific embeddings rather than the parent chunk's general embedding.
+
+This is optional - simpler pipelines can inline table text and image descriptions directly into chunk text during parsing. Element nodes add graph complexity but improve retrieval precision when documents contain many tables or figures that need to be individually addressable.
 
 ## Chunking Strategy
 
@@ -49,6 +95,32 @@ Token-based splitting using `langchain-text-splitters.TokenTextSplitter`. Charac
 **Chunk identity**: each chunk gets a deterministic ID derived from SHA1 of its content. This allows idempotent re-processing - re-running extraction on the same document produces the same chunk IDs and can be merged cleanly.
 
 **Chunk linking**: chunks maintain their sequential order via metadata (chunk index within document). This is preserved in the extraction output and optionally in Neo4J as a `NEXT_CHUNK` relationship chain for downstream retrieval tasks.
+
+### Semantic Chunking
+
+As an alternative to token-based splitting, semantic chunking uses embedding similarity to detect natural topic boundaries within a document. Instead of cutting at fixed token intervals, the chunker generates embeddings for sliding windows of text and splits where cosine similarity between consecutive windows drops below a configurable threshold - indicating a topic shift.
+
+Configured via `chunking_strategy: semantic` in `.kg-builder/config.yml`. The embeddings generated during chunking are retained on the resulting chunk objects, avoiding redundant embedding calls downstream.
+
+Semantic chunking works best for documents with clear topic transitions - research papers, structured reports, policy documents - where fixed-size splits would cut across conceptual boundaries. For homogeneous text or when predictability matters more than boundary quality, token-based splitting remains the default (`chunking_strategy: token`).
+
+### Parent-Child Chunking
+
+Large chunks may contain diverse topics producing noisy embeddings that reduce similarity search accuracy. A single 2000-token chunk covering three different concepts produces an embedding that is a weak match for any one of them individually.
+
+The parent-child model addresses this by splitting each chunk (parent) into smaller sub-chunks (children) and embedding only the children. During retrieval, similarity search matches against child embeddings for precise semantic targeting, then traverses to the parent chunk for full surrounding context. The child provides the match signal, the parent provides the context window.
+
+In Neo4J this is represented as `(:Chunk)-[:HAS_CHILD]->(:Chunk {is_child: true})` with embeddings stored on child nodes only. Parent chunks retain their text but do not carry embeddings - they serve as context containers. Configured via `parent_child_chunking: true` in config, with `child_chunk_size` controlling the sub-chunk token size (default scales relative to the parent `chunk_size`).
+
+### Page and Section Structure
+
+For documents with clear page boundaries (PDFs) or section headers (research papers, manuals), the lexical graph can include Page and Section nodes that capture the document's structural hierarchy.
+
+Page nodes sit between Document and Chunk in the graph: `(:Document)<-[:PART_OF]-(:Page)<-[:PART_OF]-(:Chunk)` with a `NEXT_PAGE` chain linking pages in order. This enables page-level reconstruction - retrieving all chunks from a specific page or page range without scanning the full chunk sequence.
+
+Section and Subsection nodes enable retrieval of complete document sections: `(:Document)<-[:HAS_SECTION]-(:Section)<-[:HAS_SUBSECTION]-(:Subsection)<-[:PART_OF]-(:Chunk)`. This is particularly useful for structured documents where users query by section title ("What does the Methods section say about...").
+
+Page metadata (page number) is always preserved on chunks regardless of whether Page nodes are created - the nodes add navigational structure on top of the existing metadata. Section detection relies on title/header elements identified during parsing - pymupdf4llm's layout model and Unstructured's `by_title` chunking both support this. These are optional enrichments to the core Document -> Chunk model, useful when retrieval needs page-level reconstruction or section-level filtering.
 
 ## Ontology Buffer
 
@@ -146,6 +218,16 @@ At the end of the ingestion run, the final buffer state is written to `.kg-build
 
 Each chunk is sent to the LLM with a prompt that instructs it to extract entities and relationships in a structured JSON format. The prompt is dynamically constructed from the current ontology buffer state.
 
+### Pydantic Response Models
+
+During extraction, ontology entity types are converted to Pydantic classes that serve as structured response models for the LLM. Each entity type becomes a class with `Field` descriptions drawn from the ontology, `field_validator` functions for property validation (lowercase normalization, pattern matching), and `json_schema_extra` providing few-shot examples that guide the LLM toward correct output structure.
+
+The Instructor library wraps LLM calls and enforces Pydantic models against the response - validation failures trigger automatic retry with the error message, allowing the LLM to self-correct without manual intervention. This produces substantially more reliable structured output than raw JSON parsing with post-hoc validation.
+
+Entity types should use distinct field names per type (e.g., `medication_name` instead of `name`, `condition` instead of `name`) to prevent LLM confusion when multiple types share the same JSON structure. These are mapped back to canonical property names during loading. For large ontologies with many entity and relationship types, a nested `ResponseModel` groups all types into a single structured response rather than a flat union list - each field is a typed list of one entity/relationship model. This reduces extraction failure rate compared to flat lists where the LLM loses track of which schema applies to which item.
+
+When the schema is very large, subgraph splitting extracts entity subgraphs in separate LLM calls per chunk - higher cost but lower failure rate because each call handles a manageable subset of the full ontology. Configured via `subgraph_splitting: true`.
+
 ### Extraction Modes
 
 The extraction prompt adapts based on buffer state and coverage:
@@ -188,9 +270,30 @@ Text:
 {chunk_text}
 ```
 
+### Atomic Facts Extraction
+
+Alongside entity-relationship extraction, the pipeline supports a parallel track that decomposes chunk text into atomic facts - the smallest indivisible statements that can stand alone as true or false claims. Where entity-relationship extraction captures the structural skeleton of the text (who, what, how connected), atomic facts capture the fine-grained detail that structure-only extraction routinely misses: specific dosages, exact dates, measurements, conditions, and qualifications.
+
+Each atomic fact is stored as a `FactNode` in Neo4J, linked to its source chunk via `HAS_FACT`. Every fact node carries an embedding vector, making the full set of extracted statements searchable via semantic similarity - this is the foundation for the Graph Reader retrieval pattern described in the reference literature (85% precision, 95% recall on detail-oriented queries).
+
+Three extraction modes control which tracks run:
+- `extraction_mode: entity_relationship` (default) - standard entity and relationship extraction only
+- `extraction_mode: graph_reader` - atomic facts only, no entity-relationship extraction
+- `extraction_mode: hybrid` - both tracks run per chunk, producing entities, relationships, and atomic facts
+
+Hybrid mode is recommended for production workloads where downstream queries need both structural graph traversal and fine-grained semantic search. The cost is roughly 2x the LLM calls per chunk compared to single-track modes.
+
 ### Chunk Batching
 
 For efficiency, multiple small chunks can be combined into a single LLM call (configurable via `concurrency`). The trade-off: larger batches reduce API calls but may reduce extraction quality as the LLM has more text to process at once. Default is one chunk per call with parallel requests controlled by `concurrency`.
+
+### Rolling Context Window
+
+For documents where extraction order matters (instructional manuals, sequential processes, step-by-step guides), later chunks may reference entities introduced in earlier chunks without restating them. Extracting each chunk independently loses these cross-chunk references - a process step mentioning "the solution from Step 3" yields nothing if the extraction prompt has no knowledge of Step 3.
+
+A rolling context window passes the N most recent extraction results as additional context in the prompt, maintaining continuity across chunks. The extraction prompt includes a summary of recently extracted entities and relationships so the LLM can resolve backward references and maintain sequential relationships. This prevents gaps in process chains, chapter references, and instructional sequences that would occur with fully independent chunk extraction.
+
+Configured via `rolling_context_window: N` in config (default 0 = disabled, each chunk extracted independently). Higher values increase prompt token usage but improve extraction completeness for sequential documents.
 
 ## Entity Deduplication
 
@@ -212,7 +315,15 @@ When loading into Neo4J, `MERGE` operations ensure `(type, id)` uniqueness acros
 
 Beyond exact ID matching, the pipeline supports a post-extraction entity resolution step to catch duplicates the LLM produced under different IDs. This is inspired by the schema-first approach described in the Dynamic Ontology reference (Akash Goyal) and the entity resolution pipeline from Brian Curry's end-to-end guide.
 
-**LLM-based clustering**: after extraction, the full list of entity names is sent to the LLM with a clustering prompt that asks it to group entities referring to the same real-world thing. For example, "Apple", "Apple Inc.", and "the Cupertino giant" would be clustered together. The LLM returns clusters, and a canonical name is chosen (typically the most complete form).
+**Resolution pipeline**: entity resolution uses an escalating-cost pipeline where cheaper methods handle easy cases before expensive LLM calls process the remainder:
+
+1. **Exact ID match** - entities sharing the same `(type, id)` tuple are merged directly (zero cost, handled during deduplication)
+2. **Embedding similarity** - entity name embeddings are compared pairwise within each type group. Pairs exceeding a configurable cosine similarity threshold (default 0.85) are flagged as candidate matches. This is substantially faster than LLM clustering for large entity sets - O(n) embedding calls plus vectorized similarity vs O(n) LLM calls
+3. **LLM-based clustering** - remaining unresolved entities (those below the embedding threshold but above a lower bound) are sent to the LLM with a clustering prompt. This catches semantic equivalences that surface-level similarity misses ("the Cupertino giant" and "Apple Inc.")
+
+A lightweight SpaCy + fuzzy string matching pre-filter runs before step 2 to group obvious lexical variants (case differences, abbreviation expansions, minor typos) without consuming embedding API calls. This pre-filter uses token overlap and Levenshtein ratio, not semantic understanding, so it is conservative - false negatives proceed to embedding comparison.
+
+The LLM clustering prompt for step 3:
 
 ```
 Given these entity names, identify which ones refer to the same
@@ -239,19 +350,37 @@ Entity resolution depends on LLM consistency and the clustering prompt's effecti
 
 ```
 (:Document {name, source, processed_at})
-  <-[:PART_OF]- (:Chunk {id, text, index, page})
-    -[:HAS_ENTITY]-> (:Entity:Person {id, name, description, ...})
-    -[:HAS_ENTITY]-> (:Entity:Organization {id, name, description, ...})
+  <-[:PART_OF]- (:Page {number})                                          # optional
+    <-[:PART_OF]- (:Chunk {id, text, index, page})
+      -[:HAS_ENTITY]-> (:Entity:Person {id, name, embedding, description, ...})
+      -[:HAS_ENTITY]-> (:Entity:Organization {id, name, embedding, description, ...})
+      -[:HAS_FACT]-> (:FactNode {id, text, embedding})
+      -[:HAS_ELEMENT]-> (:TableElement {markdown, embedding})             # optional
+      -[:HAS_ELEMENT]-> (:ImageElement {description, path, embedding})    # optional
+      -[:HAS_CHILD]-> (:Chunk {text, embedding, is_child: true})          # optional
 
-(:Entity:Person)-[:WORKS_AT]->(:Entity:Organization)
+(:Page)-[:NEXT_PAGE]->(:Page)
 (:Chunk)-[:NEXT_CHUNK]->(:Chunk)
+(:Entity:Person)-[:WORKS_AT]->(:Entity:Organization)
+(:Entity)-[:INSTANCE_OF]->(:OntologyType {name, description})
+(:OntologyType)-[:IS_A]->(:OntologyType)
+
+Vector index: entity_embeddings ON Entity.embedding (cosine, 1536d)
+Fulltext index: entity_names ON Entity.name
 ```
 
 - `Document` node tracks source file metadata
-- `Chunk` nodes store the original text and link to their parent document
+- `Page` nodes (optional) sit between Document and Chunk, linked by `NEXT_PAGE` chain for page-level reconstruction
+- `Chunk` nodes store the original text and link to their parent document (or parent page when page nodes are present)
 - Entity nodes carry both the base `Entity` label and their type label (e.g., `Person`, `Organization`)
+- `FactNode` stores atomic facts extracted from chunks (when using `graph_reader` or `hybrid` extraction mode), each carrying an embedding for semantic search
+- `TableElement` and `ImageElement` nodes (optional) store extracted tables and images as separate graph elements linked to their source chunk via `HAS_ELEMENT`
+- Child chunks (optional) are sub-chunks of a parent chunk used for parent-child retrieval - embeddings live on child nodes only
+- `OntologyType` nodes represent the type hierarchy with `IS_A` edges between types and `INSTANCE_OF` links from entities to their ontology type
 - Typed relationships connect entities as extracted by the LLM
 - `HAS_ENTITY` relationships from chunks to entities enable provenance queries
+- Vector index on `Entity.embedding` supports semantic entity search and embedding-based resolution
+- Fulltext index on `Entity.name` supports fast text-based entity lookup and fuzzy matching
 
 ## Loading Strategy
 
@@ -273,7 +402,26 @@ SET r.description = $description
 
 **Indexing**: auto-create indexes on `Entity.id` and per-type label indexes for efficient MERGE operations. Without indexes, MERGE degrades to full scans as the graph grows.
 
+**Dual indexing** for retrieval: beyond the structural indexes needed for MERGE, the loader creates a vector index and a fulltext index on entity nodes to support downstream search:
+
+```cypher
+CREATE VECTOR INDEX entity_embeddings IF NOT EXISTS
+FOR (n:Entity) ON (n.embedding)
+OPTIONS {indexConfig: {`vector.dimensions`: 1536, `vector.similarity_function`: 'cosine'}}
+
+CREATE FULLTEXT INDEX entity_names IF NOT EXISTS
+FOR (n:Entity) ON EACH [n.name]
+```
+
+The vector index enables semantic similarity search across entities (used by the embedding-based entity resolution step and by downstream retrieval queries). The fulltext index supports fast text-based lookup, autocomplete, and fuzzy name matching. Both indexes are created idempotently with `IF NOT EXISTS` so re-runs are safe.
+
 **Batch size**: configurable (default 500), balancing transaction overhead against memory usage. Deadlock retries (3 attempts with backoff) handle concurrent write conflicts.
+
+### Post-Load Validation
+
+After loading, a validation pass checks graph integrity using Cypher queries. This catches structural problems that individual entity or relationship loads would not detect - orphan entities with no relationships, missing expected relationship types per entity type, node counts by label falling outside expected ranges, and relationship type coverage against the ontology.
+
+Validation results are included in the extraction output JSON and logged as warnings. Failures do not block loading - they are advisory, allowing the user to decide whether to investigate or accept the current state. Configured via `validate: true` in the load section of config.
 
 ## Post-Load OWL Reasoning
 

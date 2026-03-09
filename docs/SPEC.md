@@ -195,9 +195,15 @@ llm:
 
 # Extraction defaults
 extract:
-  chunk_size: 2000                   # token chunk size (unstructured only)
-  chunk_overlap: 200                 # token overlap between chunks (unstructured only)
+  chunking_strategy: token            # token | semantic
+  chunk_size: 2000                   # token chunk size (unstructured only, token strategy)
+  chunk_overlap: 200                 # token overlap between chunks (unstructured only, token strategy)
   concurrency: 4                     # parallel LLM requests
+  extraction_mode: hybrid             # entity_relationship | graph_reader | hybrid
+  subgraph_splitting: false           # split large schemas into subgraph extractions per chunk
+  rolling_context_window: 0           # pass N most recent extractions as context for sequential chunks
+  describe_images: false              # run vision model on extracted PDF images
+  vision_model: null                  # vision model for image description (e.g., llava:7b, gpt-4o)
 
 # Ontology buffer settings
 ontology_buffer:
@@ -214,6 +220,7 @@ load:
   merge_strategy: merge              # merge | replace | skip
   batch_size: 500                    # Cypher batch size for bulk loading
   create_indexes: true               # auto-create indexes for entity labels
+  validate: true                     # run post-load validation checks (orphan nodes, relationship counts)
 
 # Paths (relative to project root)
 paths:
@@ -289,18 +296,39 @@ YAML file defining allowed entity types, relationship types, and optional proper
 entity_types:
   - name: Person
     description: A human individual
+    aliases: ["Individual", "Human", "Employee"]
+    extraction_strategy: llm                # llm | regex | hybrid
     properties:
       - name: role
         type: string
+      - name: age
+        type: integer
+        required: false
+        min_value: 0
+        max_value: 150
 
   - name: Organization
     description: A company, institution, or group
+    aliases: ["Company", "Institution", "Corp"]
+    extraction_strategy: hybrid
     properties:
       - name: industry
         type: string
+        allowed_values: ["Technology", "Finance", "Healthcare", "Manufacturing"]
+      - name: founded_year
+        type: integer
+        min_value: 1800
 
   - name: Technology
     description: A tool, framework, or technical concept
+    aliases: ["Tool", "Framework", "Software"]
+    extraction_strategy: llm
+
+  - name: EmailAddress
+    description: An email address extracted from text
+    extraction_strategy: regex
+    extraction_patterns:
+      - "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
 
 relationship_types:
   - name: WORKS_AT
@@ -316,7 +344,15 @@ relationship_types:
     target: Organization
 ```
 
-When `--ontology` is provided to `extract`, the LLM prompt is constrained to emit only these types. Entity descriptions are included in the prompt to guide classification.
+**Entity aliases** map alternative surface forms to a canonical type. During extraction the LLM (or regex matcher) recognizes any alias and normalizes it to the parent type name. This reduces type sprawl without requiring the ontology buffer to discover variants at runtime.
+
+**Property validation rules** constrain extracted values at parse time. Supported rules: `min_value`/`max_value` for numeric bounds, `pattern` for regex validation, `allowed_values` for enumerated strings, and `required` flag (defaults to `false`). Entities with properties that fail validation are flagged in the extraction output for review rather than silently dropped.
+
+**Extraction strategy** controls how each entity type is identified. `llm` (default) uses the language model, `regex` uses the `extraction_patterns` list for deterministic matching, and `hybrid` runs regex first then passes candidates to the LLM for classification and property extraction. Regex-only types skip the LLM entirely, reducing cost for high-confidence patterns like email addresses or identifiers.
+
+During extraction, ontology entity types are converted to Pydantic response models. Each entity type becomes a Pydantic class with `Field` descriptions drawn from the ontology, `field_validator` functions for property validation rules (min/max bounds, allowed values, regex patterns), and `json_schema_extra` for few-shot examples. The Instructor library enforces these models against LLM output with automatic retry on validation failure - if the LLM returns a malformed entity, Instructor re-prompts with the validation error until the output conforms or the retry limit is reached. Entity types should use distinct field names (e.g., `medication_name` instead of just `name`) to avoid LLM confusion when multiple types share the same property structure - these disambiguated names are mapped back to canonical property names during loading.
+
+When `--ontology` is provided to `extract`, the LLM prompt is constrained to emit only these types. Entity descriptions and aliases are included in the prompt to guide classification.
 
 ### Extraction Output Format
 
@@ -348,15 +384,44 @@ Extraction files are written to `.kg-builder/extractions/` with timestamped file
       "properties": {},
       "source_chunks": [3]
     }
-  ]
+  ],
+  "facts": [
+    {
+      "statement": "John Doe was diagnosed with Type 2 Diabetes on 2024-01-15",
+      "source_chunks": [3],
+      "triplet": {
+        "subject": "person_john_doe",
+        "predicate": "DIAGNOSED_WITH",
+        "target": "disease_type_2_diabetes"
+      }
+    }
+  ],
+  "validation": {
+    "orphan_entities": 0,
+    "missing_relationships": 2,
+    "type_coverage": 0.85
+  }
 }
 ```
+
+The `facts` array captures atomic factual statements alongside the entity-relationship graph. Each fact records a natural language statement, the source chunks it was derived from, and a triplet mapping it back to extracted entities. Facts serve as a parallel extraction track - the Graph Reader pattern from Akash Goyal's research shows atomic facts achieve 85% precision at 95% recall, complementing the entity-relationship extraction which trades higher precision for lower recall. During loading, each fact becomes a `Fact` node linked to its subject and target entities, preserving the original statement text for retrieval-augmented generation queries where verbatim source context matters.
+
+## Graph Structure in Neo4J
+
+The load step creates a graph with Document, Chunk, Entity, and Fact node types. Entities carry a `name`, `type`, `description`, and `source_chunk` reference. Relationships between entities are typed edges matching the ontology.
+
+**Dual indexing** ensures both semantic and keyword retrieval paths are available:
+
+- **Vector index** on `Entity.embedding` for semantic similarity search - embeddings are generated during load using the configured LLM provider's embedding model
+- **Fulltext index** on `Entity.name` for keyword search - enables exact and fuzzy name lookups without embedding overhead
+
+Both indexes are created automatically when `create_indexes: true` in config. The vector index supports approximate nearest neighbour queries via Neo4J's native vector search, while the fulltext index uses Apache Lucene under the hood for fast text matching.
 
 ## Supported Input Formats
 
 | Format | Type | Library |
 |--------|------|---------|
-| PDF | unstructured | `pymupdf` or `pdfplumber` |
+| PDF | unstructured | `pymupdf4llm` (structured Markdown with images, tables, layout) |
 | TXT / MD | unstructured | built-in |
 | DOCX | unstructured | `python-docx` |
 | JSON | structured | built-in |
@@ -368,7 +433,11 @@ Extraction files are written to `.kg-builder/extractions/` with timestamped file
 - `boto3` - AWS Bedrock access
 - `langchain-text-splitters` - document chunking
 - `langchain-aws` - Bedrock LLM integration (or direct `boto3` invoke)
-- `pymupdf` - PDF text extraction
+- `pymupdf4llm` - PDF to structured Markdown with layout, tables, and image extraction (built on pymupdf)
 - `python-docx` - DOCX parsing
 - `pyyaml` - YAML config and ontology parsing
 - `owlready2` - OWL/RDF ontology loading and HermiT reasoning
+- `instructor` - structured LLM output with Pydantic model enforcement and retry handling
+- `pydantic` - entity schema definition, extraction validation, response models
+- `chonkie` - semantic chunking (alternative to token-based)
+- `langchain-neo4j` - Neo4J graph/vector integration (Neo4jGraph, Neo4jVector, GraphDocument)
