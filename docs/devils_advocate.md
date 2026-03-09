@@ -115,7 +115,7 @@
 
 ---
 
-## Scorecard
+## Scorecard - v1 (DESIGN.md, 1852 lines, commit 79991e0)
 
 | # | Concern | Risk | Score | Residual | How addressed |
 |---|---------|------|-------|----------|---------------|
@@ -130,51 +130,34 @@
 | 9 | No scale targets | 12 | 5% | 11.4 | No performance targets, volume estimates, or benchmarking strategy anywhere in the document |
 | 10 | Module structure lacks interfaces | 9 | 35% | 5.9 | Prose descriptions of boundaries but no data types, function signatures, or interface contracts |
 
-**Document score (total residual risk)**: 88.9 (lower = better, max 136)
-
-**Top gaps** (highest residual risk):
-1. **#5 - Missing confidence model** (residual 21.3) - no extraction confidence on entities/relationships/facts
-2. **#1 - Agent overuse** (residual 12.0) - no distinction between interactive and batch pipeline modes
-3. **#9 - No scale targets** (residual 11.4) - no performance or volume characteristics
-4. **#6 - Missing Levenshtein/similarity matrix** (residual 9.0) - entity resolution lacks implementation detail
-5. **#3 - LLM normalization risk** (residual 7.2) - no tiered parsing strategy by format type
+**v1 document score (total residual risk)**: 88.9 (lower = better, max 136)
 
 ---
 
-## Recommended Corrections
+## Scorecard - v2 (DESIGN_v02.md, 1951 lines)
 
-### Correction 1: Add confidence model to extraction output (addresses #5)
+**Corrections applied**: #5a evidence spans, #5b source frequency, #3 three-tier normalization, #1 interactive/autonomous mode with batch logging, TUI harness
 
-Add `confidence` and `extraction_model` fields to entities, relationships, and facts in Section 19 extraction output format. Add a paragraph to Section 6.4 explaining confidence derivation (LLM self-assessment, cross-chunk corroboration, ontology match).
+| # | Concern | Risk | v1 Score | v2 Score | v2 Residual | How addressed in v2 |
+|---|---------|------|----------|----------|-------------|---------------------|
+| 1 | Agent overuse | 20 | 40% | 90% | 2.0 | Section 2 rewritten with "Interactive vs Autonomous Agent Mode". Explicit `--batch` flag added to `kg ingest`. All activities annotated as interactive checkpoints vs direct execution. Batch decision logging to `.kg-builder/runs/`. Agent always present in both modes - no bypassing |
+| 2 | Optional features as core | 15 | 45% | 80% | 3.0 | Section 8 already has "Core vs Extension Node Types" from v1 corrections. v2 unchanged - still well addressed |
+| 3 | LLM normalization risk | 16 | 55% | 90% | 1.6 | Section 5.2 rewritten as "Three-Tier Normalization Pipeline". Tier 1: programmatic parse via py-repl for structured formats (up to 3 retries). Tier 2: LLM-assisted repair for specific validation failures only. Tier 3: full LLM interpretation (fallback). JSON row in 5.1 table updated. Diagnostic output after every tier with interactive confirm |
+| 4 | Schema inference instability | 12 | 60% | 60% | 4.8 | Unchanged from v1. Schema saved to static file, memory checks for prior sessions |
+| 5 | Missing confidence model | 25 | 85% | 92% | 2.0 | v1 already added `confidence` and `extraction_model` to extraction output. v2 adds `evidence_span` (character offsets) and `source_count`/`document_count` (cross-chunk/document corroboration) as config options. Prose explains trade-offs (latency, prompt size). Both default false for opt-in complexity |
+| 6 | Missing Levenshtein/similarity matrix details | 12 | 85% | 85% | 1.8 | v1 corrections already addressed. Type-based blocking, Levenshtein ratio 0.85 threshold, similarity matrix, ANN for large sets |
+| 7 | No concurrency model | 9 | 80% | 80% | 1.8 | v1 corrections already addressed. Intra-document parallel, inter-document sequential, buffer feedback at document boundary |
+| 8 | OWL reasoning complexity | 6 | 70% | 70% | 1.8 | Unchanged from v1. Still optional, off by default, Cypher alternative provided |
+| 9 | No scale targets | 12 | 70% | 70% | 3.6 | v1 corrections already addressed. Scale targets in Section 2 |
+| 10 | Module structure lacks interfaces | 9 | 35% | 40% | 5.4 | Minor improvement: `tui/` subpackage added with 3 modules. Interface contracts still described in prose without function signatures |
 
-**Expected effect**: #5 from 15% to 85% (residual 3.8), net improvement 17.5
+**v2 document score (total residual risk)**: 27.8 (lower = better, max 136)
 
-### Correction 2: Add Levenshtein thresholds and similarity matrix to entity resolution (addresses #6)
+**Score change**: 88.9 -> 27.8 (improvement of 61.1)
 
-Expand Section 6.7 SpaCy+fuzzy step with specific thresholds, blocking strategy, and similarity matrix construction. Add ANN for embedding comparison at scale.
-
-**Expected effect**: #6 from 25% to 85% (residual 1.8), net improvement 7.2
-
-### Correction 3: Add scale targets section (addresses #9)
-
-Add a "Scale and Performance Targets" subsection to Section 2 or as a new Section 14.5 with target document counts, entity counts, and notes on where architecture decisions change at scale.
-
-**Expected effect**: #9 from 5% to 70% (residual 3.6), net improvement 7.8
-
-### Correction 4: Clarify agent vs deterministic pipeline boundary (addresses #1)
-
-Add a paragraph to Section 2 distinguishing interactive agent mode from deterministic batch mode. The agent orchestrates initialization and interactive operations; batch extraction/loading are direct function calls.
-
-**Expected effect**: #1 from 40% to 75% (residual 5.0), net improvement 7.0
-
-### Correction 5: Add concurrency model (addresses #7)
-
-Add a paragraph to Section 6.4 clarifying that concurrency applies within documents (parallel chunk extraction), buffer feedback is per-document (sequential), and documents are processed sequentially.
-
-**Expected effect**: #7 from 20% to 80% (residual 1.8), net improvement 5.4
-
-### Correction 6: Distinguish core vs extension features (addresses #2)
-
-Add a "Core vs Extensions" note to Section 8 listing the minimal graph model (Document, Chunk, Entity, FactNode, OntologyType, Source) and marking all other node types as extensions.
-
-**Expected effect**: #2 from 45% to 80% (residual 3.0), net improvement 5.3
+**Top gaps** (highest residual risk):
+1. **#10 - Module structure lacks interfaces** (residual 5.4) - still prose descriptions without function signatures or data types
+2. **#4 - Schema inference instability** (residual 4.8) - no explicit schema-as-configuration principle, conversation dependency not addressed
+3. **#9 - No scale targets** (residual 3.6) - targets present but no benchmarking strategy or performance test plan
+4. **#2 - Optional features as core** (residual 3.0) - core vs extensions defined but no phased implementation roadmap
+5. **#1 - Agent overuse** (residual 2.0) - well addressed, minor gap: no example of batch run report format
