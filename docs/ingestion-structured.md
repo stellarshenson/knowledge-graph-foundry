@@ -9,7 +9,7 @@ Records (JSON/JSONL) + Schema description -> LLM mapping -> Deduplicate -> Norma
 ```
 
 1. Read JSON/JSONL records
-2. Load the schema description file (markdown, YAML, or plain text)
+2. Load or infer the schema description (see Schema Inference below)
 3. Send records (individually or in batches) to the LLM alongside the schema description
 4. LLM interprets field semantics and produces entities and relationships
 5. Deduplicate entities across records by deterministic `(type, id)` match
@@ -99,6 +99,91 @@ exclude:
 ```
 
 All three formats are valid. The LLM reads whichever format the user provides and applies it consistently across records.
+
+## Schema Inference
+
+When no schema description is provided, the ingest agent infers one from the data itself. This eliminates the barrier to entry - a user can point the tool at a JSONL file and the agent collaborates to build the schema before ingesting.
+
+### Sampling Phase
+
+The agent uses its `py-repl` tool to load a representative sample (default 20 records, configurable) and computes a field profile:
+
+- Field names, JSON types, and nesting depth
+- Null rates and cardinality (unique value counts vs total records)
+- Value distribution samples (first 5 unique values per field)
+- Array field element types and average lengths
+- Nested object structures flattened with dot notation
+- Cross-field correlations (e.g., fields that always co-occur or are mutually exclusive)
+
+The agent checks memory for prior inference sessions on structurally similar data. If a previous schema exists for a source with matching field signatures, the agent presents it as a starting point rather than inferring from scratch.
+
+### Proposal Phase
+
+Based on the field profile, the agent generates a schema description following the same format as manually authored schemas. The proposal includes:
+
+- Semantic interpretation of each field based on name, type, and sample values
+- Entity type assignments (which fields become nodes, which become properties)
+- Relationship mappings between entity types
+- Fields recommended for exclusion (IDs, timestamps, internal metadata)
+- Suggested deterministic ID derivation patterns
+
+The agent presents the proposal in a readable format and enters interactive refinement.
+
+### Interactive Refinement
+
+The user reviews and directs changes through natural conversation:
+
+- "Make `location` a separate entity instead of a property"
+- "Ignore the `internal_id` and `updated_at` fields"
+- "The `tags` array should create `Topic` entities with `HAS_TOPIC` relationships"
+- "Merge `first_name` and `last_name` into a single `name` property on Person"
+
+The agent validates each change against the data sample - if a user asks to create entities from a field that is null in 90% of records, the agent flags this. After each round of changes, the agent presents the updated schema for confirmation.
+
+### Persistence
+
+The confirmed schema is saved to `.kg-builder/schemas/<source_name>.md` and the inference session is recorded in agent memory. Subsequent runs against the same data source use the saved schema automatically. Running with `--infer-schema` re-triggers inference even if a schema exists, presenting the current schema alongside fresh data analysis for comparison.
+
+## Schema Update
+
+Schemas evolve as data sources change. The update agent handles schema evolution by diffing current schema against fresh data, proposing changes, and generating migration plans for the existing graph.
+
+### Change Detection
+
+The update agent samples fresh data and compares against the current schema:
+
+- **New fields** - fields present in data but not described in schema
+- **Removed fields** - fields in schema but absent from data sample
+- **Type changes** - field type shifted (string to array, flat to nested)
+- **Distribution shifts** - cardinality or null rate changed significantly (e.g., a field that was always populated now has 40% nulls)
+
+### Impact Assessment
+
+Before proposing changes, the agent queries the existing graph via `neo4j-mcp` to assess impact:
+
+- How many entities and relationships are affected
+- Whether changes create orphan nodes or broken relationships
+- Whether new entity types conflict with existing labels
+
+### Migration Plan
+
+The agent generates a migration plan containing:
+
+- Cypher statements for structural changes (new labels, relationship retyping, property migration)
+- Re-ingestion scope for records that need reprocessing with the updated schema
+- Rollback instructions in case migration produces unexpected results
+- Estimated impact metrics (nodes affected, relationships modified)
+
+Migration plans are saved to `.kg-builder/migrations/` with timestamps. The user can review and approve before execution, or run with `--dry-run` to see the plan without applying it.
+
+### Execution
+
+Approved migrations execute in two phases:
+
+1. **Graph-level changes** via `neo4j-driver` - Cypher transformations that can be applied directly (rename labels, add properties, retype relationships)
+2. **Data-level changes** via re-ingestion - records affected by semantic changes (new entity mappings, restructured relationships) are re-processed through the extraction pipeline with the updated schema
+
+The agent tracks migration state in memory so interrupted migrations can be resumed.
 
 ## LLM Mapping
 

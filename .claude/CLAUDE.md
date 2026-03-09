@@ -26,7 +26,8 @@ Knowledge Graph Builder CLI (`kg-builder-cli`) - a Python CLI tool for building 
 **Technology Stack**:
 - Python 3.12 with uv package manager
 - Neo4J graph database
-- typer for CLI interface
+- Strands Agents SDK for agent orchestration
+- typer for CLI entry points
 - loguru for logging
 - python-dotenv for environment configuration
 - ruff for linting/formatting
