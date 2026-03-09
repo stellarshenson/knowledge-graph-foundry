@@ -191,3 +191,33 @@
 3. **#2 - Optional features as core** (residual 3.0) - no phased implementation roadmap
 4. **#1 - Agent overuse** (residual 2.0) - no batch run report format example
 5. **#5 - Confidence model** (residual 2.0) - well addressed
+
+---
+
+## Scorecard - v4 (DESIGN_v04_20.md)
+
+**Correction applied**: #4 schema inference stability - schema-as-configuration principle, lockfile, deterministic baseline, schema versioning with SchemaVersion nodes, CREATED_UNDER linking, schema recovery via `kg init`
+
+| # | Concern | Risk | v3 Score | v4 Score | v4 Residual | How addressed in v4 |
+|---|---------|------|----------|----------|-------------|---------------------|
+| 1 | Agent overuse | 20 | 90% | 90% | 2.0 | Unchanged from v3 |
+| 2 | Optional features as core | 15 | 80% | 80% | 3.0 | Unchanged from v3 |
+| 3 | LLM normalization risk | 16 | 90% | 90% | 1.6 | Unchanged from v3 |
+| 4 | Schema inference instability | 12 | 60% | 90% | 1.2 | Section 7.3 fully rewritten. Schema-as-configuration principle: conversation is UX convenience, saved file is sole authority. Lockfile at `.kg-builder/schema.lock` with PID and timestamp prevents concurrent mutation. Deterministic field profile baseline (`<source>.profile.yml`) from py-repl ensures reproducible starting point. Schema versioning: every confirmed schema gets integer version, materialized as `SchemaVersion` node in Neo4J with version, source, timestamp, hash. Entities linked via `CREATED_UNDER` relationship. Schema recovery via `kg init` introspects graph to reconstruct `.kg-builder/` when missing. Section 8 graph structure updated with SchemaVersion node. `kg ingest` initialization updated with three scenarios (fresh, recovery, validation) |
+| 5 | Missing confidence model | 25 | 92% | 92% | 2.0 | Unchanged from v3 |
+| 6 | Levenshtein/similarity details | 12 | 85% | 85% | 1.8 | Unchanged from v3 |
+| 7 | No concurrency model | 9 | 80% | 80% | 1.8 | Unchanged from v3 |
+| 8 | OWL reasoning complexity | 6 | 70% | 70% | 1.8 | Unchanged from v3 |
+| 9 | No scale targets | 12 | 70% | 70% | 3.6 | Unchanged from v3 |
+| 10 | Module structure lacks interfaces | 9 | 82% | 82% | 1.6 | Unchanged from v3 |
+
+**v4 document score (total residual risk)**: 20.4 (lower = better, max 136)
+
+**Score change**: 22.6 -> 20.4 (improvement of 2.2)
+
+**Top gaps** (highest residual risk):
+1. **#9 - No scale targets** (residual 3.6) - targets present but no benchmarking strategy
+2. **#2 - Optional features as core** (residual 3.0) - no phased implementation roadmap
+3. **#1 - Agent overuse** (residual 2.0) - no batch run report format example
+4. **#5 - Confidence model** (residual 2.0) - well addressed
+5. **#6 - Levenshtein/similarity** (residual 1.8) - well addressed
