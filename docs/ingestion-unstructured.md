@@ -58,11 +58,11 @@ The ontology buffer is the central mechanism that makes the extraction pipeline 
 
 The buffer is initialized from one of three sources:
 
-- **From OWL seed** (domain-informed mode): an existing OWL/RDF ontology is loaded via owlready2. Classes are imported as entity types (with `rdfs:comment` as descriptions), object properties as relationship types (with domain/range as source/target constraints), and data properties as property schemas. Import depth is limited by `seed_depth` (default 2 levels of subclass hierarchy) and optionally filtered to a specific branch via `seed_filter`. This gives the buffer a strong starting vocabulary grounded in established domain knowledge without inheriting the full complexity of the reference ontology. The OWL file is read-only - never modified
+- **From OWL seed** (domain-informed mode): an existing OWL/RDF ontology is loaded via owlready2. Classes are imported as entity types (with `rdfs:comment` as descriptions), object properties as relationship types (with domain/range as source/target constraints), and data properties as property schemas. Import depth is limited by `seed_depth` (default 2 levels of subclass hierarchy) and optionally filtered to a specific branch via `seed_filter`. This gives the buffer a strong starting vocabulary grounded in established domain knowledge without inheriting the full complexity of the reference ontology. **The OWL seed is suggestive, not prescriptive** - it provides initial vocabulary and domain context, but the extraction is explicitly allowed to go beyond it. The resulting ontology may contain types, relationships, and connection patterns the OWL source never defined. The OWL file is read-only - never modified
 - **From YAML** (constrained mode): loads `.kg-builder/ontology.yml` as the starting schema. The buffer begins with a known set of entity types and relationship types. New types discovered during extraction can still be proposed, but require higher confidence to be accepted
 - **Empty** (free extraction mode): the buffer starts with no types defined. The first few documents establish the initial ontology, which then stabilizes as more documents are processed
 
-When both OWL seed and YAML are configured, the YAML takes precedence for overlapping type definitions. The OWL seed fills in types not covered by the YAML - this allows using a broad domain ontology as background knowledge while maintaining a curated application schema on top.
+When both OWL seed and YAML are configured, the YAML takes precedence for overlapping type definitions. The OWL seed fills in types not covered by the YAML - this allows using a broad domain ontology as background knowledge while maintaining a curated application schema on top. In all cases, the buffer is free to evolve beyond its initial state. OWL-sourced types carry higher initial confidence but discovered types that appear consistently across documents are promoted equally. The final flushed ontology represents what the data actually contains, not what the OWL source prescribed.
 
 ### Buffer Contents
 
@@ -72,7 +72,7 @@ The buffer tracks:
 - **Relationship types**: name, source type, target type, frequency count, transitive flag (from OWL `TransitiveProperty`)
 - **Type hierarchy**: parent-child relationships between entity types (from OWL `subClassOf`), used as context in extraction prompts
 - **Type variants**: raw type labels the LLM has produced that map to a canonical type (e.g., "Human" -> "Person", "Corp" -> "Organization")
-- **Disjoint constraints**: type pairs that cannot co-occur on the same entity (from OWL `disjointWith`), used for extraction validation
+- **Disjoint constraints**: type pairs that the OWL source considers incompatible (from `disjointWith`), logged as warnings during extraction but not enforced - the data may legitimately contain entities that bridge OWL-defined boundaries
 - **Coverage score**: fraction of recently extracted types that match existing buffer entries, measured per document
 
 ### Schema Signal Extraction (pre-flight)
