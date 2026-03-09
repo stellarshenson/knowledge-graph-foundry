@@ -105,9 +105,53 @@ Create checkpoint tags at significant milestones using the version-based format:
 
 Push after each commit. Keep the remote up to date.
 
+## Improvement Iteration Loop
+
+After each major implementation run, enter a structured improvement cycle. Execute 5 iterations minimum per session.
+
+**Each iteration**:
+1. **Plan** - Enter planning mode. Identify gaps between current implementation and DESIGN.md. Prioritize by impact
+2. **Execute** - Implement the planned improvements. Use subagents for parallel work
+3. **Build & Test** - Run `make install` && `make test`. All tests must pass
+4. **Benchmark** - Run the query benchmark scorecard against the graph. Record scores
+5. **Devil's Advocate** - Evaluate changes against DESIGN.md and best practices. Identify what's still wrong
+6. **Commit & Push** - Commit with descriptive message, push to remote
+7. **Record** - Log iteration number, what changed, benchmark delta in JOURNAL.md
+
+**Benchmark scorecard** (query-based, not prompt-based):
+- Evaluates graph output via Cypher queries against ground truth from source documents
+- Multi-dimensional: entity coverage, relationship accuracy, specification completeness, dedup quality, numeric property extraction, query answerability
+- Scorecard is completely independent of extraction prompts - no overfitting
+- Ground truth is derived from the source PDFs, not from the system prompts
+
+**Neo4j cleanup**: Always wipe the graph with `MATCH (n) DETACH DELETE n` before each benchmark/test ingestion run
+
+**Ontology buffer**: Can be serialized to disk and versioned between iterations
+
+**Entity resolution**: Levenshtein similarity is a pre-filter for candidate identification. LLM makes the final merge/canonicalize decision generatively. Do not use deterministic merge for production - use LLM-assisted canonicalization
+
+## Benchmark Documentation
+
+Each benchmark run produces a versioned document in `docs/benchmarks/`:
+- Filename: `BENCHMARK_v<iteration>_<score>.md` (e.g. `BENCHMARK_v01_48.md` for 48% score)
+- Contains: conditions (model, config, ontology), test data, dimension scores, per-check results, reasoning about failures, improvement plan
+- Previous benchmarks are never deleted - they form the improvement history
+- `docs/benchmarks/` directory tracks the complete evolution from v01 onward
+
+## Design Feedback Loop
+
+After each benchmark run, update `docs/DESIGN.md` with lessons learned:
+- What extraction patterns work well vs poorly for the document types
+- Which entity types and relationship patterns the LLM captures reliably
+- Where the ontology needs tightening (types that get confused, relationships that get missed)
+- Specification extraction patterns that need prompt or schema changes
+- This creates a feedback cycle: benchmark results -> design updates -> implementation changes -> better benchmark scores
+
 ## Reminders
 
 - After every context compaction, re-read this file, `TASKS.md`, and `docs/DESIGN.md`
 - Do not ask for permission - execute
 - Use `make install` for every build cycle
 - Occam's razor: simplest working solution first
+- Clean Neo4j before every ingestion test run
+- Record iteration count in journal entries

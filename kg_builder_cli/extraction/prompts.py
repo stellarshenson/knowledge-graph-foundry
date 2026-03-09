@@ -14,8 +14,8 @@ For each entity, provide:
 - id: lowercase with underscores, prefixed by type (e.g., person_john_smith)
 - name: the canonical name as it appears in the text
 - type: one of the allowed entity types listed above
-- description: brief description based on context
-- properties: dict of any additional attributes mentioned
+- description: MUST include specific numeric values, measurements, ranges, and units from the text. Never use generic descriptions like "a specification" - always include the actual values (e.g., "Weight: 1.6 kg (3.5 lbs) without humidifier" not "weight specification")
+- properties: dict of any additional attributes mentioned, including numeric values as separate keys
 - confidence: 0.0 to 1.0
 
 For each relationship, provide:
@@ -45,8 +45,8 @@ For each entity, provide:
 - id: lowercase with underscores, prefixed by type (e.g., person_john_smith)
 - name: the canonical name as it appears in the text
 - type: a concise category label (e.g., Person, Organization, Location, Product)
-- description: brief description based on context
-- properties: dict of any additional attributes mentioned
+- description: MUST include specific numeric values, measurements, ranges, and units from the text. Never use generic descriptions - always include the actual values mentioned in context
+- properties: dict of any additional attributes mentioned, including numeric values as separate keys
 - confidence: 0.0 to 1.0
 
 For each relationship, provide:

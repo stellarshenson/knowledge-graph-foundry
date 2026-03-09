@@ -39,9 +39,11 @@ def _dedup_entities(entities: list[Entity]) -> list[Entity]:
     merged: dict[tuple[str, str], Entity] = {}
 
     for entity in entities:
-        key = (entity.type, entity.id)
+        key = (entity.type.lower(), entity.id.lower())
         if key not in merged:
-            merged[key] = entity.model_copy()
+            copy = entity.model_copy()
+            copy.id = entity.id.lower()
+            merged[key] = copy
             continue
 
         existing = merged[key]
@@ -75,9 +77,12 @@ def _dedup_relationships(relationships: list[Relationship]) -> list[Relationship
     merged: dict[tuple[str, str, str], Relationship] = {}
 
     for rel in relationships:
-        key = (rel.source, rel.target, rel.type)
+        key = (rel.source.lower(), rel.target.lower(), rel.type.lower())
         if key not in merged:
-            merged[key] = rel.model_copy()
+            copy = rel.model_copy()
+            copy.source = rel.source.lower()
+            copy.target = rel.target.lower()
+            merged[key] = copy
             continue
 
         existing = merged[key]
