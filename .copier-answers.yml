@@ -1,0 +1,26 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.2.16
+_src_path: https://github.com/stellarshenson/copier-data-science.git
+author_name: Stellars Henson <konrad.jelen@gmail.com>
+custom_config: ''
+dataset_storage: s3
+dependency_file: pyproject.toml
+description: Knowledge Graph Builder for Neo4J DB (for now) heavily inspired by the
+    Neo4J Graph Builder, with free or constrained ontology and straightforward execution
+docker_support: 'No'
+docs: none
+env_encryption: 'Yes'
+env_name: kg-cli
+environment_manager: uv
+git_init: 'Yes'
+jupyter_kernel_support: 'Yes'
+linting_and_formatting: ruff
+module_name: kg_builder_cli
+open_source_license: No license file
+package_repository: 'No'
+pydata_packages: none
+python_version_number: '3.12'
+repo_name: kg-builder-cli
+s3_aws_profile: kolomolo
+s3_bucket: ''
+testing_framework: pytest
