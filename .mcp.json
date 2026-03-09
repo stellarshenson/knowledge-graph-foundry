@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "neo4j": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "--network", "host",
+        "-e", "NEO4J_URI=bolt://localhost:7687",
+        "-e", "NEO4J_USERNAME=neo4j",
+        "-e", "NEO4J_PASSWORD=kg-builder-pass",
+        "mcp/neo4j"
+      ]
+    }
+  }
+}

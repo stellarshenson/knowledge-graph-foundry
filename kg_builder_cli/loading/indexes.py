@@ -1,0 +1,33 @@
+"""Neo4j index creation for kg-builder-cli."""
+
+from loguru import logger
+from neo4j import GraphDatabase
+
+from kg_builder_cli.types.config import AppConfig
+
+
+_INDEXES = [
+    (
+        "entity_id_idx",
+        "CREATE INDEX entity_id_idx IF NOT EXISTS FOR (n:Entity) ON (n.id)",
+    ),
+    (
+        "entity_name_idx",
+        "CREATE INDEX entity_name_idx IF NOT EXISTS FOR (n:Entity) ON (n.name)",
+    ),
+]
+
+
+def create_indexes(config: AppConfig) -> None:
+    """Create required indexes in Neo4j."""
+    driver = GraphDatabase.driver(
+        config.neo4j.uri,
+        auth=(config.neo4j.user, config.neo4j.password),
+    )
+    try:
+        with driver.session() as session:
+            for name, query in _INDEXES:
+                session.run(query)
+                logger.info("created index: {}", name)
+    finally:
+        driver.close()
