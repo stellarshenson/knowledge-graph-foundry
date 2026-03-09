@@ -109,8 +109,9 @@ kg extract <source> [options]
 
 **Behaviour**:
 - Input type detected by file extension: `.json`/`.jsonl` -> structured, everything else -> unstructured
-- Without `--ontology`: free extraction - the LLM decides entity types and relationship types
-- With `--ontology`: constrained extraction - the LLM must use only entity types and relationship types defined in the ontology file
+- Without `--ontology`: free extraction - the LLM discovers entity and relationship types, building the ontology progressively via the ontology buffer. The resulting ontology is flushed to `.kg-builder/ontology.yml` at the end of the run
+- With `--ontology`: constrained extraction - starts from the provided ontology but refines it during processing. New types discovered with sufficient evidence are proposed for inclusion. The refined ontology is written back to the file
+- The ontology buffer tracks type frequencies, variant mappings, and coverage scores across documents. See `docs/ingestion-unstructured.md` for the full buffered ontology mechanism
 - `--schema` is required for structured data - provides the human-readable description the LLM uses to interpret record fields as graph entities and relationships
 - Unstructured: processes PDF, TXT, MD, and DOCX formats with chunking
 - Structured: processes each JSON record (or batch) as a discrete unit, no chunking
@@ -197,6 +198,13 @@ extract:
   chunk_size: 2000                   # token chunk size (unstructured only)
   chunk_overlap: 200                 # token overlap between chunks (unstructured only)
   concurrency: 4                     # parallel LLM requests
+
+# Ontology buffer settings
+ontology_buffer:
+  refine_every_n_docs: 5             # trigger refinement after N documents
+  coverage_threshold: 0.5            # low coverage triggers looser extraction
+  min_frequency_to_confirm: 2        # type must appear in N+ documents to be confirmed
+  flush_on_complete: true            # write refined ontology to disk after run
 
 # Loading defaults
 load:
