@@ -458,15 +458,29 @@ SCORECARD: list[ScoreItem] = [
 
 GENERATIVE_PROMPTS = {
     "entity_coverage": {
-        "query": "MATCH (n:Entity) RETURN n.name, n.type, n.description ORDER BY n.type, n.name",
-        "prompt": """Evaluate entity coverage of a knowledge graph from the BMC RESmart Auto CPAP User Manual.
+        "query": (
+            "MATCH (n:Entity) "
+            "WITH n.type AS type, count(n) AS cnt, collect(n.name + ': ' + coalesce(n.description, ''))[0..5] AS samples "
+            "ORDER BY cnt DESC "
+            "RETURN type, cnt, samples"
+        ),
+        "prompt": """Evaluate entity coverage of a knowledge graph built from the BMC RESmart Auto CPAP User Manual (26 pages).
 
-Entities in graph:
+Entity types and samples (showing up to 5 per type):
 {data}
 
-Ground truth key entities: RESmart Auto CPAP System, BMC Medical Co. Ltd., Shanghai Intl Holding (EU rep), InH2 Heated Humidifier, Ramp, Reslex (pressure relief), Auto-On, Auto-Off, iCode, Delay Off, CPAP/Auto/Titrate modes, foam filter, power cord, carrying case, Obstructive Sleep Apnea, contraindications (Bullous Lung Disease, Pneumothorax).
+Ground truth key entities that MUST be present:
+- Products: RESmart Auto CPAP System
+- Organizations: BMC Medical Co. Ltd., Shanghai Intl Holding (EU rep)
+- Components: InH2 Heated Humidifier, foam filter, power cord, carrying case, tubing, mask
+- Features: Ramp, Reslex (pressure relief), Auto-On, Auto-Off, iCode, Delay Off
+- Modes: CPAP, Auto, Titrate
+- Conditions: Obstructive Sleep Apnea, contraindications (Bullous Lung Disease, Pneumothorax)
+- Specifications: pressure range, weight, dimensions, sound level, power supply
+- Standards: IEC 60601, ISO 80601
 
-Rate 1-5: 1=most missing, 3=core present but gaps, 5=comprehensive.
+Rate 1-5 based on how many ground truth entities are present with meaningful descriptions:
+1=most key entities missing, 2=under half present, 3=core present but gaps, 4=most present with good descriptions, 5=comprehensive coverage.
 Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
     "spec_extraction": {
@@ -502,13 +516,30 @@ Rate 1-5: 1=severe duplication, 3=some duplicates but core is clean, 5=no meanin
 Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
     "query_answerability": {
-        "query": "MATCH (n:Entity) WHERE toLower(n.description) CONTAINS 'hpa' OR toLower(n.description) CONTAINS 'kg' OR toLower(n.description) CONTAINS 'db' OR toLower(n.name) CONTAINS 'bmc' OR toLower(n.type) CONTAINS 'feature' OR toLower(n.type) CONTAINS 'mode' OR toLower(n.type) CONTAINS 'spec' RETURN n.name, n.type, n.description ORDER BY n.type LIMIT 40",
-        "prompt": """Evaluate if these graph entities can answer real questions about a CPAP device:
+        "query": (
+            "MATCH (n:Entity) "
+            "WHERE n.type IN ['Specification', 'Product', 'Organization', 'WorkMode', 'Feature', 'MedicalCondition'] "
+            "RETURN n.name, n.type, n.description "
+            "ORDER BY CASE n.type WHEN 'Specification' THEN 0 WHEN 'Product' THEN 1 WHEN 'Organization' THEN 2 "
+            "WHEN 'WorkMode' THEN 3 WHEN 'Feature' THEN 4 WHEN 'MedicalCondition' THEN 5 END, n.name"
+        ),
+        "prompt": """Evaluate if this knowledge graph can answer real user questions about the BMC RESmart Auto CPAP device.
+
+Graph entities (specifications, features, modes, products, organizations, conditions):
 {data}
 
-Questions: 1) Pressure range? (4-20 hPa) 2) Manufacturer? (BMC Medical) 3) Weight? (1.6 kg) 4) Sound? (<30 dB) 5) Features? (Ramp, Reslex, etc.) 6) Modes? (CPAP/Auto/Titrate) 7) Dimensions? (220x194x112mm) 8) Conditions? (OSA)
+Questions a user would ask (with expected answers from the manual):
+1) What is the pressure range? (4-20 hPa, 0.5 increments)
+2) Who manufactures it? (BMC Medical Co., Ltd.)
+3) How much does it weigh? (1.6 kg without humidifier)
+4) How loud is it? (<30 dB)
+5) What features does it have? (Ramp, Reslex/pressure relief, Auto-On/Off, iCode, Delay Off)
+6) What modes does it support? (CPAP, Auto, Titrate)
+7) What are its dimensions? (220x194x112 mm)
+8) What conditions does it treat? (Obstructive Sleep Apnea)
 
-Rate 1-5: 1=most unanswerable, 3=basic questions ok, 5=all answerable with specific values.
+For each question, check if any entity's name or description contains the answer with a specific value.
+Rate 1-5: 1=0-1 answerable, 2=2-3, 3=4-5, 4=6-7, 5=all 8 answerable with exact values.
 Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
 }
@@ -625,7 +656,7 @@ def run_generative_scoring(
                     records = list(session.run(dim_config["query"]))
                     data_str = json.dumps(
                         [dict(r) for r in records], indent=2, default=str
-                    )[:4000]
+                    )[:8000]
 
                     prompt = dim_config["prompt"].format(data=data_str)
 
@@ -640,8 +671,19 @@ def run_generative_scoring(
                     try:
                         parsed = json.loads(content)
                     except json.JSONDecodeError:
-                        match = re.search(r'\{[^}]+\}', content)
-                        parsed = json.loads(match.group()) if match else {"score": 0, "reasoning": content}
+                        # Try to find JSON with nested braces
+                        match = re.search(r'\{[^{}]*"score"\s*:\s*(\d+)[^{}]*\}', content)
+                        if match:
+                            try:
+                                parsed = json.loads(match.group())
+                            except json.JSONDecodeError:
+                                score = int(match.group(1))
+                                parsed = {"score": score, "reasoning": content[:200]}
+                        else:
+                            # Last resort: extract score number
+                            score_match = re.search(r'"score"\s*:\s*(\d+)', content)
+                            score = int(score_match.group(1)) if score_match else 0
+                            parsed = {"score": score, "reasoning": content[:200]}
 
                     gen_score = GenerativeScore(
                         dimension=dim_name,
