@@ -67,6 +67,46 @@ class CuringDetector:
 
         return True
 
+    def is_converged(self) -> bool:
+        """Check if schema has converged using metric progression.
+
+        Three conditions must ALL be true:
+        1. Minimum documents processed >= min_documents
+        2. Last stability_window JSD values all < jsd_convergence_threshold
+        3. Last stability_window entropy deltas all < entropy_delta_threshold
+        """
+        import math
+
+        if self._docs_processed < self._config.min_documents:
+            return False
+
+        window = self._config.stability_window
+        if len(self._metrics_history) < window:
+            return False
+
+        recent = self._metrics_history[-window:]
+
+        # JSD convergence
+        jsd_values = [m.get("js_divergence", float("nan")) for m in recent]
+        if any(math.isnan(v) for v in jsd_values):
+            return False
+        if any(v >= self._config.jsd_convergence_threshold for v in jsd_values):
+            return False
+
+        # Entropy delta convergence
+        ent_deltas = [m.get("entropy_shannon_delta", float("nan")) for m in recent]
+        if any(math.isnan(v) for v in ent_deltas):
+            return False
+        if any(v >= self._config.entropy_delta_threshold for v in ent_deltas):
+            return False
+
+        # Type accumulation stalled
+        tar_values = [m.get("type_accumulation_rate", 1.0) for m in recent]
+        if any(v != 0.0 for v in tar_values):
+            return False
+
+        return True
+
     def is_force_required(self) -> bool:
         """Check if max_fluid_documents reached (failsafe)."""
         return self._docs_processed >= self._config.max_fluid_documents

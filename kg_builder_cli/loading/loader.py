@@ -1,5 +1,6 @@
 """Batch Cypher loading of extraction results into Neo4j."""
 
+import hashlib
 import time
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -8,6 +9,7 @@ from loguru import logger
 from neo4j import GraphDatabase
 from neo4j.exceptions import TransientError
 
+from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.config import AppConfig
 from kg_builder_cli.types.extraction import ExtractionResult
 from kg_builder_cli.types.loading import LoadResult
@@ -271,7 +273,104 @@ def _create_relationships(
     return total
 
 
-def load_extraction(result: ExtractionResult, config: AppConfig) -> LoadResult:
+def load_doc_chunks(result: ExtractionResult, config: AppConfig) -> None:
+    """Load only Document and Chunk nodes from an ExtractionResult.
+
+    Creates the Document node, Chunk nodes, HAS_CHUNK links, and NEXT_CHUNK
+    chain. Does NOT create Entity nodes or relationships. Used to preserve
+    per-document chunk linkage during fluid-phase consolidation.
+    """
+    driver = GraphDatabase.driver(
+        config.neo4j.uri,
+        auth=(config.neo4j.user, config.neo4j.password),
+    )
+    try:
+        with driver.session() as session:
+            _create_document_node(session, result)
+            _create_chunk_nodes(session, result, config.load.batch_size)
+            _create_has_entity_relationships(session, result, config.load.batch_size)
+            _create_chunk_chain(session, result)
+    finally:
+        driver.close()
+
+
+def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> ExtractionResult:
+    """Resolve incoming entities against existing graph nodes.
+
+    For each entity in the result, query Neo4j for existing entities with the
+    same normalized name. If a match exists with a different type, remap the
+    incoming entity to adopt the existing entity's type and ID. This prevents
+    Neo4j MERGE from creating cross-type duplicates during the cured phase.
+
+    Priority goes to the existing graph entity (already through curing pipeline).
+    """
+    if not result.entities:
+        return result
+
+    # Collect normalized names for batch query
+    name_to_entities: dict[str, list] = defaultdict(list)
+    for entity in result.entities:
+        norm_name = normalize_entity_name(entity.name)
+        name_to_entities[norm_name].append(entity)
+
+    all_names = [e.name for e in result.entities]
+
+    driver = GraphDatabase.driver(
+        config.neo4j.uri,
+        auth=(config.neo4j.user, config.neo4j.password),
+    )
+    try:
+        with driver.session() as session:
+            query_result = session.run(
+                "MATCH (e:Entity) WHERE e.name IN $names "
+                "RETURN e.id AS id, e.name AS name, e.type AS type",
+                {"names": all_names},
+            )
+            existing = {record["name"]: record for record in query_result}
+    finally:
+        driver.close()
+
+    if not existing:
+        return result
+
+    # Build remap: incoming entity old_id -> new_id
+    id_remap: dict[str, str] = {}
+    remapped = 0
+
+    for entity in result.entities:
+        norm_name = normalize_entity_name(entity.name)
+        # Check all existing entities by normalized name match
+        for ex_name, ex_record in existing.items():
+            ex_norm = normalize_entity_name(ex_name)
+            if ex_norm == norm_name and ex_record["type"] != entity.type:
+                old_id = entity.id
+                entity.type = ex_record["type"]
+                entity.id = ex_record["id"]
+                if old_id != entity.id:
+                    id_remap[old_id] = entity.id
+                    remapped += 1
+                break
+
+    # Rewire relationships
+    if id_remap:
+        for rel in result.relationships:
+            if rel.source in id_remap:
+                rel.source = id_remap[rel.source]
+            if rel.target in id_remap:
+                rel.target = id_remap[rel.target]
+
+    if remapped:
+        logger.info(
+            "[resolve] remapped {} entities to match existing graph types",
+            remapped,
+        )
+
+    return result
+
+
+def load_extraction(
+    result: ExtractionResult, config: AppConfig, *, skip_doc_chunks: bool = False,
+) -> LoadResult:
     """Load an ExtractionResult into Neo4j, returning counts and timing."""
     start = time.monotonic()
     errors: list[str] = []
@@ -282,17 +381,19 @@ def load_extraction(result: ExtractionResult, config: AppConfig) -> LoadResult:
     )
     try:
         with driver.session() as session:
-            _create_document_node(session, result)
+            if not skip_doc_chunks:
+                _create_document_node(session, result)
 
             nodes_created = _create_entity_nodes(
                 session, result, config.load.batch_size
             )
 
-            _create_chunk_nodes(session, result, config.load.batch_size)
-            _create_has_entity_relationships(
-                session, result, config.load.batch_size
-            )
-            _create_chunk_chain(session, result)
+            if not skip_doc_chunks:
+                _create_chunk_nodes(session, result, config.load.batch_size)
+                _create_has_entity_relationships(
+                    session, result, config.load.batch_size
+                )
+                _create_chunk_chain(session, result)
 
             rels_created = _create_relationships(
                 session, result, config.load.batch_size

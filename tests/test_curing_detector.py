@@ -94,3 +94,104 @@ def test_not_force_required_below_max(detector):
     for i in range(5):
         detector.record(0.5, set())
     assert not detector.is_force_required()
+
+
+class TestIsConverged:
+    """Tests for metric-based convergence detection."""
+
+    def test_converged_when_metrics_stable(self):
+        """Should converge when JSD, entropy delta, and type rate all stable."""
+        config = CuringConfig(
+            enabled=True,
+            min_documents=3,
+            stability_window=3,
+            jsd_convergence_threshold=0.01,
+            entropy_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+
+        # First 3 docs build up (won't converge)
+        detector.record(0.3, {"Person"}, {
+            "js_divergence": 0.5, "entropy_shannon_delta": 0.3,
+            "type_accumulation_rate": 3.0,
+        })
+        detector.record(0.5, {"Device"}, {
+            "js_divergence": 0.1, "entropy_shannon_delta": 0.1,
+            "type_accumulation_rate": 1.0,
+        })
+        detector.record(0.6, set(), {
+            "js_divergence": 0.05, "entropy_shannon_delta": 0.08,
+            "type_accumulation_rate": 0.0,
+        })
+        assert not detector.is_converged()
+
+        # Next 3 docs with fully converged metrics
+        detector.record(0.61, set(), {
+            "js_divergence": 0.005, "entropy_shannon_delta": 0.02,
+            "type_accumulation_rate": 0.0,
+        })
+        detector.record(0.62, set(), {
+            "js_divergence": 0.003, "entropy_shannon_delta": 0.01,
+            "type_accumulation_rate": 0.0,
+        })
+        detector.record(0.62, set(), {
+            "js_divergence": 0.002, "entropy_shannon_delta": 0.01,
+            "type_accumulation_rate": 0.0,
+        })
+        assert detector.is_converged()
+
+    def test_not_converged_below_min_docs(self):
+        """Should not converge before min_documents."""
+        config = CuringConfig(
+            enabled=True, min_documents=5, stability_window=3,
+            jsd_convergence_threshold=0.01, entropy_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+        for _ in range(4):
+            detector.record(0.5, set(), {
+                "js_divergence": 0.001, "entropy_shannon_delta": 0.001,
+                "type_accumulation_rate": 0.0,
+            })
+        assert not detector.is_converged()
+
+    def test_not_converged_high_jsd(self):
+        """Should not converge when JSD exceeds threshold."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            jsd_convergence_threshold=0.01, entropy_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+        for _ in range(5):
+            detector.record(0.5, set(), {
+                "js_divergence": 0.05, "entropy_shannon_delta": 0.001,
+                "type_accumulation_rate": 0.0,
+            })
+        assert not detector.is_converged()
+
+    def test_not_converged_new_types(self):
+        """Should not converge when types still accumulating."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            jsd_convergence_threshold=0.01, entropy_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+        for _ in range(5):
+            detector.record(0.5, set(), {
+                "js_divergence": 0.001, "entropy_shannon_delta": 0.001,
+                "type_accumulation_rate": 1.0,
+            })
+        assert not detector.is_converged()
+
+    def test_not_converged_nan_metrics(self):
+        """Should not converge when metrics contain NaN."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            jsd_convergence_threshold=0.01, entropy_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+        for _ in range(5):
+            detector.record(0.5, set(), {
+                "js_divergence": float("nan"), "entropy_shannon_delta": 0.001,
+                "type_accumulation_rate": 0.0,
+            })
+        assert not detector.is_converged()
