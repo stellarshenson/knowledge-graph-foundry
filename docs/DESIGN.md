@@ -959,7 +959,7 @@ Document 1..N (fluid phase)
   -> OntologyBuffer.accumulate_from_result()
   -> StabilityMetrics.record(buffer.frequencies()) -> metrics dict
   -> CuringDetector.record(coverage, new_types, metrics)
-  -> CuringDetector.is_cured()? -> Curing Event
+  -> CuringDetector: is_converged() | is_plateau() | is_cured()? -> Curing Event
 
 Curing Event:
   -> OntologyBuffer.prune_low_frequency_types(enforcement_threshold)
@@ -1079,22 +1079,24 @@ The extraction prompt formats exemplars inline with allowed types in `_build_ent
 
 The prior `P(type)` is the buffer's type frequency distribution, normalized to probabilities. For each entity, the resolver considers only the top-k candidate types (configurable, default 3) by prior probability. This keeps the computation lightweight - with 10 types in a cured ontology, most entities have at most 2-3 plausible types.
 
-Evidence sources provide likelihood ratios that update the prior via Bayes' rule. For each entity `e` and each candidate type `t_k`, the posterior is computed as a product of independent likelihood signals:
+Evidence sources update the prior via a Naive Bayes style scoring approximation. For each entity `e` and each candidate type `t_k`, the posterior is computed as a product of likelihood signals under a conditional independence assumption:
 
 ```
 P(t_k | e) = P(t_k) * P(name | t_k) * P(rels | t_k) * P(co | t_k) * P(desc | t_k) / Z
 ```
 
-where `Z` is the normalization constant ensuring the posterior sums to 1 across all candidates. Each likelihood is designed to return values in a bounded range so that no single signal overwhelms the prior, and to return 1.0 (neutral) when evidence is absent.
+where `Z` is the normalization constant ensuring the posterior sums to 1 across all candidates. The independence assumption does not hold strictly - relationship context, co-occurrence patterns, and description semantics are correlated in practice. Despite this, the Naive Bayes decomposition works well as a scoring function because the bounded likelihood ranges (each signal returns values in [0.5, 2.0]) prevent any single correlated signal from dominating, and the posterior is used for ranking rather than calibrated probability estimation. Each likelihood returns 1.0 (neutral) when evidence is absent.
 
 The four evidence signals:
 
 1. **Exemplar similarity** `P(name | t_k)` - range [0.5, 1.5]. FAISS cosine similarity between the entity embedding and each candidate type's exemplar embeddings. The raw cosine similarity `sim` (clipped to min 0.01) is shifted by +0.5 to produce a likelihood in [0.51, 1.5]. When the candidate type has no match in the top-k results, returns 0.5 (slight penalty). When no embeddings are available, returns 1.0 (neutral - no evidence to contribute)
 2. **Relationship context** `P(rels | t_k)` - range [1.0, 2.0]. Counts relationships involving the entity whose type name contains (or is contained by) the candidate type name. Returns `1.0 + (matching_rels / total_rels)`. An entity in `HAS_COMPONENT` relationships gets a boost for `Component`. No relationships returns 1.0 (neutral)
 3. **Co-occurrence pattern** `P(co | t_k)` - range [1.0, 2.0]. Counts entities extracted from the same chunk(s) whose type matches the candidate. Returns `1.0 + (matching_entities / total_co_entities)`. A chunk with 3 Component entities and 1 Specification produces P(co|Component) = 1.75, P(co|Specification) = 1.25. Empty chunk context returns 1.0 (neutral)
-4. **Description semantics** `P(desc | t_k)` - range [1.0, 2.0]. Bag-of-words intersection between the entity's description and the descriptions stored in each candidate type's exemplars. For each exemplar, computes `|intersection| / min(|entity_words|, |exemplar_words|)` and takes the maximum overlap across exemplars. Returns `1.0 + max_overlap`. No description or no exemplar descriptions returns 1.0 (neutral)
+4. **Description semantics** `P(desc | t_k)` - range [1.0, 2.0]. Bag-of-words intersection between the entity's description and the descriptions stored in each candidate type's exemplars. Text is lowercased, split on whitespace, filtered to remove stop words (`a, an, the, is, are, of, for, in, to, and, or, with, that, this`) and tokens shorter than 3 characters before overlap scoring. For each exemplar, computes `|intersection| / min(|entity_words|, |exemplar_words|)` and takes the maximum overlap across exemplars. Returns `1.0 + max_overlap`. This is a lightweight low-weight signal - bag-of-words overlap is brittle with technical jargon, so the bounded range [1.0, 2.0] ensures it nudges rather than dominates. No description or no exemplar descriptions returns 1.0 (neutral)
 
 The posterior `P(type | evidence)` determines the resolution path. When posterior entropy is low (below `type_resolution_entropy_threshold`, default 0.8), the resolver assigns the winning type deterministically - no LLM call needed. When posterior entropy exceeds the threshold and `llm_escalation` is enabled, the resolver makes a synchronous LLM call via instructor+litellm presenting the entity, posterior probabilities, and type exemplars for a structured type choice. On LLM failure or when `llm_escalation` is disabled, falls back to argmax.
+
+**Resolution audit logging** - each Bayesian resolution is logged at DEBUG level with the prior, top-k posterior probabilities, winning signal contributions, and final entropy. This diagnostic trace enables post-hoc analysis of false type assignments without requiring full re-runs. The log format is: `entity_name | prior={...} | posteriors={...} | entropy={:.3f} | assigned={type}`.
 
 **Configuration**:
 ```yaml
