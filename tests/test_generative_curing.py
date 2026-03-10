@@ -277,7 +277,7 @@ class TestGenerativeCuringConfig:
 
     def test_patience_default(self):
         cfg = CuringConfig()
-        assert cfg.generative_patience == 3
+        assert cfg.generative_patience == 5
 
     def test_max_tool_calls_default(self):
         cfg = CuringConfig()

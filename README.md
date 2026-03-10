@@ -65,7 +65,7 @@ extract:
 curing:
   enabled: false
   generative_curing: false
-  generative_patience: 3
+  generative_patience: 5
   generative_max_tool_calls: 2
 ```
 
