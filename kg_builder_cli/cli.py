@@ -300,13 +300,6 @@ def _ingest_fluid(
         elif detector.is_cured():
             logger.info("[fluid] schema has cured naturally (heuristic)")
             should_cure = True
-        elif len(accumulator.all_entities()) >= config.curing.max_fluid_entities:
-            logger.warning(
-                "[fluid] SAFETY NET: entity budget exceeded: {} >= max_fluid_entities={} (signal-based curing did not trigger)",
-                len(accumulator.all_entities()),
-                config.curing.max_fluid_entities,
-            )
-            should_cure = True
         elif detector.is_force_required():
             logger.warning(
                 "[fluid] SAFETY NET: force-curing at max_fluid_documents={} (signal-based curing did not trigger)",
