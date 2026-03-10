@@ -1,4 +1,5 @@
 """Curing detection for fluid-to-stable ontology evolution."""
+
 from __future__ import annotations
 
 from loguru import logger
@@ -42,7 +43,9 @@ class CuringDetector:
             self._metrics_history.append(metrics)
         logger.debug(
             "Curing detector: doc={}, coverage={:.3f}, new_types={}",
-            self._docs_processed, coverage, len(new_types),
+            self._docs_processed,
+            coverage,
+            len(new_types),
         )
 
     def is_cured(self) -> bool:
@@ -141,6 +144,7 @@ class CuringDetector:
         if self._metrics_history:
             m = self._metrics_history[-1]
             import math
+
             for key, fmt in [
                 ("js_divergence", ".4f"),
                 ("chao1_coverage", ".3f"),

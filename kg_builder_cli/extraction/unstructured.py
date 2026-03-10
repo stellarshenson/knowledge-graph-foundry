@@ -1,10 +1,16 @@
 """Unstructured document ingestion pipeline orchestrator."""
+
 from __future__ import annotations
 
-import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
+import os
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from kg_builder_cli.extraction.exemplar_index import ExemplarIndex
+    from kg_builder_cli.extraction.type_resolver import BayesianTypeResolver
 
 from loguru import logger
 
@@ -48,6 +54,7 @@ def ingest_document(
     config: AppConfig,
     ontology: OntologyState | None = None,
     buffer: OntologyBuffer | None = None,
+    exemplar_index: "ExemplarIndex | None" = None,
 ) -> ExtractionResult:
     """Run the full unstructured ingestion pipeline.
 
@@ -106,8 +113,14 @@ def ingest_document(
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
         futures = {
             executor.submit(
-                extract_chunk, chunk, prompt, model_id, client,
-                temperature, max_retries, response_model,
+                extract_chunk,
+                chunk,
+                prompt,
+                model_id,
+                client,
+                temperature,
+                max_retries,
+                response_model,
             ): chunk.id
             for chunk, prompt in prompts_and_chunks
         }
@@ -125,25 +138,39 @@ def ingest_document(
             if completed % 10 == 0 or completed == total:
                 logger.info("Extraction progress: {}/{}", completed, total)
 
-    # Step 4b: Enforce ontology types BEFORE ID normalization
-    # so that remapped types produce correct IDs
+    # Step 4b: Type resolution - Bayesian or Levenshtein fallback
     if ontology and ontology.entity_types:
         allowed = [t.name for t in ontology.entity_types]
-        all_entities = _enforce_ontology_types(all_entities, allowed)
+        if config.extract.bayesian_resolution and exemplar_index:
+            from kg_builder_cli.extraction.type_resolver import (
+                BayesianTypeResolver,
+            )
+
+            resolver = BayesianTypeResolver(
+                config.ontology_buffer,
+                ontology.type_frequencies,
+                exemplar_index,
+            )
+            all_entities = _resolve_types_bayesian(
+                all_entities,
+                all_relationships,
+                resolver,
+                allowed,
+            )
+        else:
+            all_entities = _enforce_ontology_types(all_entities, allowed)
     else:
-        logger.debug("No ontology types to enforce (ontology={}, types={})",
-                      ontology is not None,
-                      len(ontology.entity_types) if ontology else 0)
+        logger.debug(
+            "No ontology types to enforce (ontology={}, types={})",
+            ontology is not None,
+            len(ontology.entity_types) if ontology else 0,
+        )
 
     # Step 4c: Normalize entity IDs AFTER type enforcement
-    all_entities, all_relationships = normalize_entity_ids(
-        all_entities, all_relationships
-    )
+    all_entities, all_relationships = normalize_entity_ids(all_entities, all_relationships)
 
     # Step 5: Deduplicate
-    deduped_entities, deduped_relationships = deduplicate(
-        all_entities, all_relationships
-    )
+    deduped_entities, deduped_relationships = deduplicate(all_entities, all_relationships)
 
     # Step 5c: Generate embeddings for semantic resolution
     use_embeddings = config.extract.use_embeddings
@@ -166,7 +193,7 @@ def ingest_document(
     )
 
     # Step 5e: Rewire relationships after cross-type entity merges
-    id_map = getattr(resolve_entities, '_last_id_map', {})
+    id_map = getattr(resolve_entities, "_last_id_map", {})
     if id_map:
         deduped_relationships = rewire_relationships(deduped_relationships, id_map)
 
@@ -208,9 +235,7 @@ def _empty_result(file_path: Path, config: AppConfig) -> ExtractionResult:
     )
 
 
-def _enforce_ontology_types(
-    entities: list[Entity], allowed_types: list[str]
-) -> list[Entity]:
+def _enforce_ontology_types(entities: list[Entity], allowed_types: list[str]) -> list[Entity]:
     """Remap entities with types outside the ontology to the closest allowed type.
 
     Uses Levenshtein ratio to find the best match. If no match exceeds 0.4,
@@ -239,11 +264,57 @@ def _enforce_ontology_types(
         old_type = entity.type
         entity.type = best_type
         remapped += 1
-        logger.debug("Type remap: '{}' -> '{}' (score={:.2f}) for '{}'",
-                      old_type, best_type, best_score, entity.name)
+        logger.debug(
+            "Type remap: '{}' -> '{}' (score={:.2f}) for '{}'",
+            old_type,
+            best_type,
+            best_score,
+            entity.name,
+        )
 
     if remapped > 0:
         logger.info("Type enforcement: remapped {} entities to allowed types", remapped)
+
+    return entities
+
+
+def _resolve_types_bayesian(
+    entities: list[Entity],
+    relationships: list[Relationship],
+    resolver: "BayesianTypeResolver",
+    allowed_types: list[str],
+) -> list[Entity]:
+    """Resolve entity types using Bayesian inference."""
+    from kg_builder_cli.extraction.type_resolver import ResolverContext
+
+    allowed_lower = {t.lower(): t for t in allowed_types}
+    resolved = 0
+
+    for entity in entities:
+        # Skip entities already in allowed types
+        if entity.type.lower() in allowed_lower:
+            entity.type = allowed_lower[entity.type.lower()]
+            continue
+
+        # Build context for this entity
+        entity_rels = [r for r in relationships if r.source == entity.id or r.target == entity.id]
+        ctx = ResolverContext(
+            relationships=entity_rels,
+            entity_embedding=entity.embedding,
+        )
+        new_type = resolver.resolve(entity, ctx)
+        if new_type != entity.type:
+            logger.debug(
+                "Bayesian type resolve: '{}' {} -> {}",
+                entity.name,
+                entity.type,
+                new_type,
+            )
+            entity.type = new_type
+            resolved += 1
+
+    if resolved > 0:
+        logger.info("Bayesian type resolution: resolved {} entities", resolved)
 
     return entities
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kg_builder_cli"
-version = "0.1.10"
+version = "0.1.11"
 description = "Knowledge Graph Builder for Neo4J DB (for now) heavily inspired by the Neo4J Graph Builder, with free or constrained ontology and straightforward execution"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -40,6 +40,7 @@ dependencies = [
     # Entity resolution
     "python-Levenshtein",
     "numpy",
+    "faiss-cpu",
     # Embeddings
     "boto3",
     # Configuration and validation

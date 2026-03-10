@@ -1,9 +1,7 @@
 """Batch Cypher loading of extraction results into Neo4j."""
 
-import hashlib
-import time
 from collections import defaultdict
-from datetime import datetime, timezone
+import time
 
 from loguru import logger
 from neo4j import GraphDatabase
@@ -16,7 +14,6 @@ from kg_builder_cli.types.loading import LoadResult
 
 from .indexes import create_indexes
 from .validation import validate_graph
-
 
 _MAX_RETRIES = 3
 _BACKOFF_BASE = 0.5
@@ -43,10 +40,7 @@ def _run_with_retry(session, query: str, parameters: dict | None = None) -> obje
 
 def _create_document_node(session, result: ExtractionResult) -> None:
     """MERGE the Document node for this extraction source."""
-    query = (
-        "MERGE (d:Document {name: $name}) "
-        "SET d.source = $source, d.processed_at = $timestamp"
-    )
+    query = "MERGE (d:Document {name: $name}) SET d.source = $source, d.processed_at = $timestamp"
     _run_with_retry(
         session,
         query,
@@ -59,9 +53,7 @@ def _create_document_node(session, result: ExtractionResult) -> None:
     logger.debug("merged Document node for '{}'", result.metadata.source)
 
 
-def _create_entity_nodes(
-    session, result: ExtractionResult, batch_size: int
-) -> int:
+def _create_entity_nodes(session, result: ExtractionResult, batch_size: int) -> int:
     """Create Entity nodes in batches and add type labels via APOC."""
     entities = result.entities
     if not entities:
@@ -97,10 +89,7 @@ def _create_entity_nodes(
                 "description": e.description,
                 "confidence": e.confidence,
                 "embedding": e.embedding,
-                "properties": {
-                    k: v for k, v in e.properties.items()
-                    if k not in _RESERVED_KEYS
-                },
+                "properties": {k: v for k, v in e.properties.items() if k not in _RESERVED_KEYS},
             }
             for e in entities[offset : offset + batch_size]
         ]
@@ -118,8 +107,7 @@ def _create_entity_nodes(
             for label, ids in types_grouped.items():
                 safe_label = label.replace("`", "``")
                 fallback_query = (
-                    "UNWIND $ids AS eid "
-                    f"MATCH (n:Entity {{id: eid}}) SET n:`{safe_label}`"
+                    f"UNWIND $ids AS eid MATCH (n:Entity {{id: eid}}) SET n:`{safe_label}`"
                 )
                 _run_with_retry(session, fallback_query, {"ids": ids})
 
@@ -128,9 +116,7 @@ def _create_entity_nodes(
     return total
 
 
-def _create_chunk_nodes(
-    session, result: ExtractionResult, batch_size: int
-) -> None:
+def _create_chunk_nodes(session, result: ExtractionResult, batch_size: int) -> None:
     """Create Chunk nodes with content and link them to the Document node."""
     chunks = result.chunks
     if not chunks:
@@ -143,8 +129,7 @@ def _create_chunk_nodes(
         if not chunk_ids:
             return
         chunk_list = [
-            {"id": cid, "text": None, "page": None, "token_count": 0}
-            for cid in chunk_ids
+            {"id": cid, "text": None, "page": None, "token_count": 0} for cid in chunk_ids
         ]
     else:
         chunk_list = [
@@ -171,9 +156,7 @@ def _create_chunk_nodes(
     for offset in range(0, len(chunk_list), batch_size):
         batch = chunk_list[offset : offset + batch_size]
         _run_with_retry(session, merge_query, {"batch": batch})
-        _run_with_retry(
-            session, link_query, {"batch": batch, "doc_name": result.metadata.source}
-        )
+        _run_with_retry(session, link_query, {"batch": batch, "doc_name": result.metadata.source})
 
 
 def _create_chunk_chain(session, result: ExtractionResult) -> None:
@@ -198,9 +181,7 @@ def _create_chunk_chain(session, result: ExtractionResult) -> None:
     logger.debug("created {} NEXT_CHUNK links", len(pairs))
 
 
-def _create_has_entity_relationships(
-    session, result: ExtractionResult, batch_size: int
-) -> None:
+def _create_has_entity_relationships(session, result: ExtractionResult, batch_size: int) -> None:
     """Create HAS_ENTITY relationships from Chunk nodes to Entity nodes."""
     rows = []
     for entity in result.entities:
@@ -221,9 +202,7 @@ def _create_has_entity_relationships(
         _run_with_retry(session, query, {"batch": batch})
 
 
-def _create_relationships(
-    session, result: ExtractionResult, batch_size: int
-) -> int:
+def _create_relationships(session, result: ExtractionResult, batch_size: int) -> int:
     """Create typed relationships between entities using APOC dynamic types."""
     relationships = result.relationships
     if not relationships:
@@ -260,15 +239,11 @@ def _create_relationships(
         try:
             _run_with_retry(session, apoc_query, {"batch": batch})
         except Exception:
-            logger.debug(
-                "APOC unavailable for relationships, falling back to RELATES_TO"
-            )
+            logger.debug("APOC unavailable for relationships, falling back to RELATES_TO")
             _run_with_retry(session, fallback_relates_query, {"batch": batch})
 
         total += len(batch)
-        logger.debug(
-            "loaded relationship batch {}-{}", offset, offset + len(batch)
-        )
+        logger.debug("loaded relationship batch {}-{}", offset, offset + len(batch))
 
     return total
 
@@ -369,7 +344,10 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
 
 
 def load_extraction(
-    result: ExtractionResult, config: AppConfig, *, skip_doc_chunks: bool = False,
+    result: ExtractionResult,
+    config: AppConfig,
+    *,
+    skip_doc_chunks: bool = False,
 ) -> LoadResult:
     """Load an ExtractionResult into Neo4j, returning counts and timing."""
     start = time.monotonic()
@@ -384,20 +362,14 @@ def load_extraction(
             if not skip_doc_chunks:
                 _create_document_node(session, result)
 
-            nodes_created = _create_entity_nodes(
-                session, result, config.load.batch_size
-            )
+            nodes_created = _create_entity_nodes(session, result, config.load.batch_size)
 
             if not skip_doc_chunks:
                 _create_chunk_nodes(session, result, config.load.batch_size)
-                _create_has_entity_relationships(
-                    session, result, config.load.batch_size
-                )
+                _create_has_entity_relationships(session, result, config.load.batch_size)
                 _create_chunk_chain(session, result)
 
-            rels_created = _create_relationships(
-                session, result, config.load.batch_size
-            )
+            rels_created = _create_relationships(session, result, config.load.batch_size)
 
     except Exception as exc:
         logger.error("loading failed: {}", exc)

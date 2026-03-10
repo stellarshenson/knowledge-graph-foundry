@@ -1,4 +1,5 @@
 """Information-theoretic stability metrics for schema curing."""
+
 from __future__ import annotations
 
 import math
@@ -160,9 +161,7 @@ class StabilityMetrics:
         """New types per document (dV/dN). 0 if first document."""
         if len(self._type_counts_history) < 2:
             return float(self._type_counts_history[-1]) if self._type_counts_history else 0.0
-        return float(
-            self._type_counts_history[-1] - self._type_counts_history[-2]
-        )
+        return float(self._type_counts_history[-1] - self._type_counts_history[-2])
 
     @staticmethod
     def _gini_coefficient(counts: list[int]) -> float:
@@ -303,7 +302,9 @@ class StabilityMetrics:
         # Coefficient of variation squared
         gamma_sq = max(
             (s_rare / c_ace)
-            * sum(i * (i - 1) * sum(1 for c in rare if c == i) for i in range(1, rare_threshold + 1))
+            * sum(
+                i * (i - 1) * sum(1 for c in rare if c == i) for i in range(1, rare_threshold + 1)
+            )
             / (n_rare * (n_rare - 1))
             - 1.0,
             0.0,
@@ -314,10 +315,7 @@ class StabilityMetrics:
     def _rolling_variance(self, key: str) -> float:
         """Variance of a metric over the last W entries in history."""
         w = self._variance_window
-        values = [
-            h[key] for h in self._history[-w:]
-            if key in h and not math.isnan(h[key])
-        ]
+        values = [h[key] for h in self._history[-w:] if key in h and not math.isnan(h[key])]
         if len(values) < 2:
             return float("nan")
         mean = sum(values) / len(values)

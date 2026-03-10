@@ -95,12 +95,20 @@ def _build_entity_types_block(ontology: OntologyState) -> str:
         freq = frequencies.get(type_def.name, 0)
         desc_suffix = f": {type_def.description}" if type_def.description else ""
 
+        # Exemplar hint
+        exemplars = ontology.type_exemplars.get(type_def.name, ())
+        if exemplars:
+            examples = ", ".join(e.name for e in exemplars[:5])
+            exemplar_hint = f" (e.g., {examples})"
+        else:
+            exemplar_hint = ""
+
         if type_def.name in confirmed:
             freq_label = f" (seen {freq}x)" if freq > 0 else ""
-            established_lines.append(f"- {type_def.name}{desc_suffix}{freq_label}")
+            established_lines.append(f"- {type_def.name}{desc_suffix}{exemplar_hint}{freq_label}")
         elif type_def.name in emerging:
             discovered_lines.append(
-                f"- {type_def.name}{desc_suffix} (seen {freq}x)"
+                f"- {type_def.name}{desc_suffix}{exemplar_hint} (seen {freq}x)"
             )
 
     parts = []
@@ -136,10 +144,7 @@ def _build_relationship_types_block(ontology: OntologyState) -> str:
             parts.append(f" ({rel_def.description})")
         lines.append("".join(parts))
 
-    return (
-        "**Allowed relationship types** (use these exact names):\n"
-        + "\n".join(lines)
-    )
+    return "**Allowed relationship types** (use these exact names):\n" + "\n".join(lines)
 
 
 def _build_property_defs_block(ontology: OntologyState) -> str:
@@ -148,9 +153,7 @@ def _build_property_defs_block(ontology: OntologyState) -> str:
     for type_def in ontology.entity_types:
         if not type_def.property_defs:
             continue
-        props = ", ".join(
-            f"{p.name} ({p.type})" for p in type_def.property_defs
-        )
+        props = ", ".join(f"{p.name} ({p.type})" for p in type_def.property_defs)
         lines.append(f"- **{type_def.name}**: {props}")
 
     if not lines:

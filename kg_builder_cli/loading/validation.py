@@ -9,9 +9,7 @@ from kg_builder_cli.types.config import AppConfig
 from kg_builder_cli.types.loading import ValidationReport
 
 
-def validate_graph(
-    config: AppConfig, *, driver: object | None = None
-) -> ValidationReport:
+def validate_graph(config: AppConfig, *, driver: object | None = None) -> ValidationReport:
     """Run integrity checks against the loaded graph and return a report.
 
     If ``driver`` is provided it will be used directly (caller owns
@@ -34,9 +32,7 @@ def validate_graph(
     try:
         with driver.session() as session:
             # orphan entities - no relationships at all
-            result = session.run(
-                "MATCH (n:Entity) WHERE NOT (n)-[]-() RETURN n.id AS id"
-            )
+            result = session.run("MATCH (n:Entity) WHERE NOT (n)-[]-() RETURN n.id AS id")
             orphan_ids = [record["id"] for record in result]
             if orphan_ids:
                 logger.warning("{} orphan entities detected", len(orphan_ids))
@@ -46,26 +42,18 @@ def validate_graph(
             total_entities = result.single()["cnt"]
 
             # total relationship count
-            result = session.run(
-                "MATCH (:Entity)-[r]-(:Entity) RETURN count(r) AS cnt"
-            )
+            result = session.run("MATCH (:Entity)-[r]-(:Entity) RETURN count(r) AS cnt")
             total_relationships = result.single()["cnt"]
 
             # type distribution
             result = session.run(
-                "MATCH (n:Entity) RETURN n.type AS type, count(n) AS cnt "
-                "ORDER BY cnt DESC"
+                "MATCH (n:Entity) RETURN n.type AS type, count(n) AS cnt ORDER BY cnt DESC"
             )
-            type_distribution = {
-                record["type"]: record["cnt"] for record in result
-            }
+            type_distribution = {record["type"]: record["cnt"] for record in result}
 
             # types that participate in at least one relationship
             if type_distribution:
-                result = session.run(
-                    "MATCH (n:Entity)-[]-() "
-                    "RETURN DISTINCT n.type AS type"
-                )
+                result = session.run("MATCH (n:Entity)-[]-() RETURN DISTINCT n.type AS type")
                 types_with_rels = {record["type"] for record in result}
     finally:
         if owns_driver:
@@ -76,13 +64,10 @@ def validate_graph(
 
     if type_coverage < 1.0:
         missing = all_types - types_with_rels
-        warnings.append(
-            f"types without relationships: {', '.join(sorted(missing))}"
-        )
+        warnings.append(f"types without relationships: {', '.join(sorted(missing))}")
 
     logger.info(
-        "validation: {} entities, {} relationships, {:.0%} type coverage, "
-        "{} orphans",
+        "validation: {} entities, {} relationships, {:.0%} type coverage, {} orphans",
         total_entities,
         total_relationships,
         type_coverage,

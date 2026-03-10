@@ -1,4 +1,5 @@
 """LLM extraction per chunk using litellm + instructor for structured output."""
+
 from __future__ import annotations
 
 import instructor

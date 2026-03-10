@@ -61,9 +61,7 @@ def chunk_text(segments: list[TextSegment], config: ExtractConfig) -> list[Chunk
 
             # Try to break on sentence boundary if not at end of text
             if end < total_tokens:
-                chunk_text_raw = _snap_to_sentence_boundary(
-                    chunk_text_raw, enc, config.chunk_size
-                )
+                chunk_text_raw = _snap_to_sentence_boundary(chunk_text_raw, enc, config.chunk_size)
 
             if not chunk_text_raw.strip():
                 start = end

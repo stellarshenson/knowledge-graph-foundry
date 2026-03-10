@@ -1041,15 +1041,14 @@ The first fluid-mode benchmark run cured naturally at document 4 of 10. Stabilit
 
 **Type exemplars for few-shot extraction guidance** - the ontology buffer stores representative entity instances per type, functioning as few-shot examples during extraction. Instead of providing the LLM with only type names ("Component", "Specification"), the extraction prompt includes concrete examples: `"Component (e.g., Humidifier, Tubing, HEPA Filter)"`. This helps the LLM infer type boundaries from instances rather than abstract labels, reducing type misassignment at extraction time rather than correcting it post-hoc.
 
-The buffer maintains `_type_exemplars: dict[str, list[str]]` - a mapping from canonical type name to a list of representative entity names, capped at `max_type_exemplars` (configurable, default 5). Exemplars accumulate during the fluid phase as entities are extracted: after each document, newly confirmed entities are considered as exemplar candidates. Selection prioritizes frequency (entities seen across multiple chunks/documents) and diversity (normalized name similarity filtering prevents near-duplicate exemplars like "HEPA Filter" and "HEPA filter"). When the schema cures, exemplars freeze alongside the ontology snapshot and are included in the extraction prompt for all cured-phase documents.
+The buffer maintains `_type_exemplars: dict[str, list[TypeExemplar]]` where `TypeExemplar` is a Pydantic model with `name`, `entity_type`, and `frequency` fields. Each type maps to up to `max_type_exemplars` (configurable, default 5) representative entities. Exemplars accumulate during the fluid phase via `accumulate_from_result()`: for each extracted entity, the buffer checks the canonical type and adds the entity as an exemplar if the slot is available, deduplicating by case-insensitive normalized name (so "HEPA Filter" and "hepa filter" count as one exemplar with combined frequency). When the exemplar list is full, the lowest-frequency exemplar is replaced if the new entity has higher frequency. When the schema cures, exemplars freeze alongside the ontology snapshot as tuples sorted by descending frequency, and are included in the extraction prompt for all cured-phase documents.
 
-The extraction prompt formats exemplars inline with allowed types: `"Component (e.g., Humidifier, Tubing, HEPA Filter), Specification (e.g., Operating Pressure, Sound Level, Weight)"`. This gives the LLM concrete anchors for each type without adding a separate few-shot section to the prompt. The `max_type_exemplars` parameter controls the tradeoff between prompt informativeness and token budget - initial value of 5 will be tuned based on benchmark experiments measuring type assignment accuracy vs exemplar count.
+The extraction prompt formats exemplars inline with allowed types in `_build_entity_types_block()`: `"- Component: A physical part (e.g., Humidifier, Tubing, HEPA Filter) (seen 42x)"`. The exemplar hint is injected between the type description and the frequency label. This gives the LLM concrete anchors for each type without adding a separate few-shot section to the prompt. The `max_type_exemplars` parameter controls the tradeoff between prompt informativeness and token budget - initial value of 5 will be tuned based on benchmark experiments measuring type assignment accuracy vs exemplar count.
 
-**Configuration**:
-```yaml
-ontology_buffer:
-  max_type_exemplars: 5              # max example entities stored per type for few-shot guidance
-```
+**TypeExemplar model** (`types/ontology.py`):
+- `name: str` - entity name (e.g., "Humidifier")
+- `entity_type: str` - canonical type (e.g., "Component")
+- `frequency: int` - occurrence count across extraction results
 
 **Data flow integration**:
 - Fluid phase: `OntologyBuffer.accumulate_from_result()` updates exemplars alongside type frequencies
@@ -1063,24 +1062,31 @@ The prior `P(type)` is the buffer's type frequency distribution, normalized to p
 
 Evidence sources provide likelihood ratios that update the prior via Bayes' rule:
 
-1. **Exemplar similarity** `P(name | type)` - embedding cosine similarity or normalized Levenshtein distance between the entity name and each candidate type's exemplar set. If "Heated Humidifier" is highly similar to Component exemplars [Humidifier, Tubing, Filter], this strongly favors Component
-2. **Relationship context** `P(relationships | type)` - the relationship types extracted alongside the entity provide a strong signal. An entity participating in `HAS_COMPONENT` relationships is likely a Component; one in `HAS_SPECIFICATION` is likely a Specification
-3. **Co-occurrence pattern** `P(co_entities | type)` - entities extracted from the same chunk as known Components are more likely to be Components. This captures local document context
-4. **Description semantics** `P(description | type)` - correlation between entity description keywords and the description patterns of existing entities of each candidate type
+1. **Exemplar similarity** `P(name | type)` - FAISS cosine similarity between the entity embedding and each candidate type's exemplar embeddings (v12 implementation). When no embeddings are available, falls back to uniform likelihood (no evidence)
+2. **Relationship context** `P(relationships | type)` - the relationship types extracted alongside the entity provide a signal. An entity participating in `HAS_COMPONENT` relationships is likely a Component; one in `HAS_SPECIFICATION` is likely a Specification. The current implementation uses a simple name-matching heuristic between relationship type names and candidate type names
+3. **Co-occurrence pattern** `P(co_entities | type)` - entities extracted from the same chunk as known Components are more likely to be Components. This captures local document context (deferred to future iteration)
+4. **Description semantics** `P(description | type)` - correlation between entity description keywords and the description patterns of existing entities of each candidate type (deferred to future iteration)
 
-The posterior `P(type | evidence)` determines the resolution path. When posterior entropy is low (one type dominates), the resolver assigns the winning type deterministically - no LLM call needed. When posterior entropy exceeds a configurable threshold, the assignment is ambiguous and the resolver escalates to a fast reasoning agent. The agent receives the entity context, the posterior distribution, exemplars for each candidate type, and graph neighborhood evidence, then makes a deliberate type choice. This two-tier approach ensures that the common case (confident assignments) is fast and cheap, while only the genuinely ambiguous entities (the source of cross-type duplicates) incur the cost of agent reasoning.
+The posterior `P(type | evidence)` determines the resolution path. When posterior entropy is low (one type dominates), the resolver assigns the winning type deterministically - no LLM call needed. When posterior entropy exceeds a configurable threshold, the resolver falls back to the highest-posterior type. LLM escalation for genuinely ambiguous cases is designed but not yet implemented - the current v12 implementation assigns the argmax type regardless of entropy, logging the uncertainty level for monitoring.
 
 **Configuration**:
 ```yaml
+extract:
+  bayesian_resolution: false         # opt-in, enables Bayesian type resolution in cured phase
 ontology_buffer:
   max_type_exemplars: 5              # max example entities stored per type for few-shot guidance
   type_resolution_top_k: 3           # candidate types considered per entity
-  type_resolution_entropy_threshold: 0.8  # posterior entropy above this triggers agent reasoning
+  type_resolution_entropy_threshold: 0.8  # posterior entropy above this triggers fallback
 ```
 
+**Cold-start behavior**: when `bayesian_resolution=true` but no exemplar index exists (first document, no buffer yet), the pipeline falls back to `_enforce_ontology_types()` (Levenshtein-based remapping). The Bayesian resolver only activates after curing when exemplars and type frequencies are available.
+
+**FAISS candidate search** - the exemplar similarity signal uses a FAISS IndexFlatIP index built at curing time from L2-normalized 1024-dimensional Amazon Titan v2 embeddings. The `ExemplarIndex` class stores one embedding per exemplar entity, organized by type. At query time, the entity name embedding is L2-normalized and searched against the index for top-k nearest neighbors - the cosine similarities (inner products on normalized vectors) serve as the `P(name|type)` likelihood. The index is CPU-only (no GPU dependency) and rebuilt per curing event from the frozen exemplar set. When embeddings are unavailable (cold start or `use_embeddings=False`), the resolver falls back to normalized Levenshtein similarity between entity names and exemplar names.
+
 **Module structure**:
-- `kg_builder_cli/extraction/type_resolver.py` - `BayesianTypeResolver` class with `resolve(entity, context) -> str` method
-- Integrates after extraction, before dedup: entities with ambiguous type assignments are resolved before ID normalization
+- `kg_builder_cli/extraction/exemplar_index.py` - `ExemplarIndex` class wrapping FAISS IndexFlatIP for embedding-based type candidate search
+- `kg_builder_cli/extraction/type_resolver.py` - `BayesianTypeResolver` class with `resolve(entity, context) -> str` method, plus `ResolverContext` dataclass carrying relationships, chunk entities, and entity embedding
+- Integrates at step 4b in `unstructured.py`: when `bayesian_resolution=true` and an exemplar index is available, replaces `_enforce_ontology_types()` with `_resolve_types_bayesian()`. The exemplar index is built at curing time in `cli.py._build_exemplar_index()` by generating embeddings for all frozen exemplar entities
 
 ## 6. Unstructured Ingestion Pipeline
 

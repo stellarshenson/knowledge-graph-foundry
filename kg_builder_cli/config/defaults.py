@@ -28,6 +28,7 @@ DEFAULTS: dict = {
         "subgraph_splitting": False,
         "rolling_context_window": 0,
         "resolution_threshold": 0.85,
+        "bayesian_resolution": False,
     },
     "ontology_buffer": {
         "seed_from": None,
@@ -38,6 +39,9 @@ DEFAULTS: dict = {
         "coverage_threshold": 0.5,
         "min_frequency_to_confirm": 2,
         "flush_on_complete": True,
+        "max_type_exemplars": 5,
+        "type_resolution_top_k": 3,
+        "type_resolution_entropy_threshold": 0.8,
     },
     "load": {
         "merge_strategy": "merge",

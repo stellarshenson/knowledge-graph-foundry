@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import copy
 import os
-import re
 from pathlib import Path
+import re
 from typing import Any
 
-import yaml
 from dotenv import load_dotenv
+import yaml
 
 from kg_builder_cli.types.config import AppConfig
 

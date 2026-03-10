@@ -1,10 +1,11 @@
 """In-memory ontology buffer that accumulates type signals during ingestion."""
+
 from __future__ import annotations
 
 from pathlib import Path
 
-import yaml
 from loguru import logger
+import yaml
 
 from kg_builder_cli.extraction.dedup import normalize_type_name
 from kg_builder_cli.types.config import OntologyBufferConfig
@@ -13,6 +14,7 @@ from kg_builder_cli.types.ontology import (
     OntologyState,
     RelationshipDef,
     TypeDef,
+    TypeExemplar,
     TypeSignal,
 )
 
@@ -34,6 +36,8 @@ class OntologyBuffer:
         self._config = config
         # Maps normalized PascalCase -> first-seen raw form
         self._canonical_map: dict[str, str] = {}
+        # Type exemplars: canonical type name -> list of representative entities
+        self._type_exemplars: dict[str, list[TypeExemplar]] = {}
 
     @classmethod
     def from_yaml(cls, path: Path, config: OntologyBufferConfig) -> OntologyBuffer:
@@ -97,35 +101,39 @@ class OntologyBuffer:
         """
         threshold = self._config.min_frequency_to_confirm
         confirmed = frozenset(
-            name for name, freq in self._frequencies.items()
+            name
+            for name, freq in self._frequencies.items()
             if freq >= threshold and name in self._entity_types
         )
         emerge_threshold = self._config.min_frequency_to_emerge
         emerging = frozenset(
-            name for name in self._entity_types
-            if name not in confirmed
-            and self._frequencies.get(name, 0) >= emerge_threshold
+            name
+            for name in self._entity_types
+            if name not in confirmed and self._frequencies.get(name, 0) >= emerge_threshold
         )
-        candidate = frozenset(
-            name for name in self._entity_types
-            if name not in confirmed
-        )
+        candidate = frozenset(name for name in self._entity_types if name not in confirmed)
 
         # Filter entity types: include confirmed + emerging, exclude noise
         included_names = confirmed | emerging
         filtered_types = tuple(
-            td for td in self._entity_types.values()
-            if td.name in included_names
+            td for td in self._entity_types.values() if td.name in included_names
         )
         # Relationship types: include seed + confirmed frequency
         filtered_rels = tuple(
-            rd for rd in self._relationship_types.values()
-            if rd.name in self._seed_rel_types
-            or self._frequencies.get(rd.name, 0) >= threshold
+            rd
+            for rd in self._relationship_types.values()
+            if rd.name in self._seed_rel_types or self._frequencies.get(rd.name, 0) >= threshold
         )
 
         total = len(self._entity_types)
         cov = len(confirmed) / total if total > 0 else 0.0
+
+        # Freeze type exemplars (only for included types)
+        frozen_exemplars: dict[str, tuple[TypeExemplar, ...]] = {}
+        for type_name in included_names:
+            exs = self._type_exemplars.get(type_name, [])
+            if exs:
+                frozen_exemplars[type_name] = tuple(sorted(exs, key=lambda e: -e.frequency))
 
         return OntologyState(
             entity_types=filtered_types,
@@ -136,6 +144,7 @@ class OntologyBuffer:
             candidate_types=candidate,
             type_frequencies=dict(self._frequencies),
             emerging_types=emerging,
+            type_exemplars=frozen_exemplars,
         )
 
     def canonical_type(self, raw: str) -> str:
@@ -173,7 +182,9 @@ class OntologyBuffer:
             if signal.is_relationship:
                 if canonical_name not in self._relationship_types:
                     self._relationship_types[canonical_name] = RelationshipDef(
-                        name=canonical_name, source_type="", target_type="",
+                        name=canonical_name,
+                        source_type="",
+                        target_type="",
                     )
             else:
                 if canonical_name not in self._entity_types:
@@ -197,11 +208,57 @@ class OntologyBuffer:
         for rel in relationships:
             rel_counts[rel.type] = rel_counts.get(rel.type, 0) + 1
         for rel_type, count in rel_counts.items():
-            signals.append(
-                TypeSignal(type_name=rel_type, frequency=count, is_relationship=True)
-            )
+            signals.append(TypeSignal(type_name=rel_type, frequency=count, is_relationship=True))
 
         self.accumulate(signals)
+
+        # Update type exemplars
+        self._update_exemplars(entities)
+
+    def _update_exemplars(self, entities: list[Entity]) -> None:
+        """Update type exemplars from extracted entities."""
+        max_exemplars = self._config.max_type_exemplars
+        # Count entity occurrences by (type, normalized_name)
+        entity_counts: dict[tuple[str, str], tuple[str, int]] = {}
+        for entity in entities:
+            canonical_type = self.canonical_type(entity.type)
+            norm_name = entity.name.strip().lower()
+            key = (canonical_type, norm_name)
+            if key in entity_counts:
+                raw_name, count = entity_counts[key]
+                entity_counts[key] = (raw_name, count + 1)
+            else:
+                entity_counts[key] = (entity.name, 1)
+
+        for (canonical_type, norm_name), (raw_name, count) in entity_counts.items():
+            if canonical_type not in self._entity_types:
+                continue
+            exemplars = self._type_exemplars.setdefault(canonical_type, [])
+            # Check if already present (deduplicate by normalized name)
+            existing = next((e for e in exemplars if e.name.strip().lower() == norm_name), None)
+            if existing:
+                existing.frequency += count
+                continue
+            if len(exemplars) < max_exemplars:
+                exemplars.append(
+                    TypeExemplar(
+                        name=raw_name,
+                        entity_type=canonical_type,
+                        frequency=count,
+                    )
+                )
+            else:
+                # Replace lowest-frequency exemplar if new entity has higher frequency
+                min_ex = min(exemplars, key=lambda e: e.frequency)
+                if count > min_ex.frequency:
+                    exemplars.remove(min_ex)
+                    exemplars.append(
+                        TypeExemplar(
+                            name=raw_name,
+                            entity_type=canonical_type,
+                            frequency=count,
+                        )
+                    )
 
     def frequencies(self) -> dict[str, int]:
         """Return copy of current type frequency counts."""
@@ -213,19 +270,14 @@ class OntologyBuffer:
 
     def entity_type_frequencies(self) -> dict[str, int]:
         """Return frequencies for entity types only (excludes relationship types)."""
-        return {
-            name: self._frequencies.get(name, 0)
-            for name in self._entity_types
-        }
+        return {name: self._frequencies.get(name, 0) for name in self._entity_types}
 
     def prune_low_frequency_types(self, threshold_pct: float) -> set[str]:
         """Remove entity types below the threshold percentage of total entities.
 
         Returns the set of pruned type names.
         """
-        total_entities = sum(
-            self._frequencies.get(name, 0) for name in self._entity_types
-        )
+        total_entities = sum(self._frequencies.get(name, 0) for name in self._entity_types)
         if total_entities == 0:
             return set()
 
@@ -241,7 +293,10 @@ class OntologyBuffer:
         if pruned:
             logger.info(
                 "Pruned {} low-frequency types (threshold={:.1f}%, min_count={:.0f}): {}",
-                len(pruned), threshold_pct, min_count, ", ".join(sorted(pruned)),
+                len(pruned),
+                threshold_pct,
+                min_count,
+                ", ".join(sorted(pruned)),
             )
 
         return pruned
@@ -253,8 +308,7 @@ class OntologyBuffer:
             return 0.0
         threshold = self._config.min_frequency_to_confirm
         confirmed = sum(
-            1 for name in self._entity_types
-            if self._frequencies.get(name, 0) >= threshold
+            1 for name in self._entity_types if self._frequencies.get(name, 0) >= threshold
         )
         return confirmed / total
 

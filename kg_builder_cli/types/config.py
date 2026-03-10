@@ -38,6 +38,7 @@ class ExtractConfig(BaseModel):
     embedding_threshold: float = 0.80
     use_embeddings: bool = False
     embedding_model: str = "amazon.titan-embed-text-v2:0"
+    bayesian_resolution: bool = False
 
 
 class OntologyBufferConfig(BaseModel):
@@ -50,6 +51,9 @@ class OntologyBufferConfig(BaseModel):
     min_frequency_to_confirm: int = 2
     min_frequency_to_emerge: int = 2
     flush_on_complete: bool = True
+    max_type_exemplars: int = 5
+    type_resolution_top_k: int = 3
+    type_resolution_entropy_threshold: float = 0.8
 
 
 class LoadConfig(BaseModel):

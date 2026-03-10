@@ -1,4 +1,5 @@
 """In-memory accumulator for fluid-phase extraction results."""
+
 from __future__ import annotations
 
 from loguru import logger
@@ -30,7 +31,9 @@ class FluidAccumulator:
         self._results.append(result)
         logger.debug(
             "Accumulated result: {} entities, {} relationships (total docs: {})",
-            len(result.entities), len(result.relationships), len(self._results),
+            len(result.entities),
+            len(result.relationships),
+            len(self._results),
         )
 
     def all_entities(self) -> list[Entity]:
@@ -50,7 +53,9 @@ class FluidAccumulator:
         return len(self._results)
 
     def consolidate(
-        self, ontology: OntologyState, config: ExtractConfig,
+        self,
+        ontology: OntologyState,
+        config: ExtractConfig,
         type_frequencies: dict[str, int] | None = None,
     ) -> ExtractionResult:
         """Consolidate all accumulated results into a single merged result.
@@ -68,12 +73,15 @@ class FluidAccumulator:
 
         logger.info(
             "Consolidating {} entities, {} relationships from {} documents",
-            len(entities), len(relationships), len(self._results),
+            len(entities),
+            len(relationships),
+            len(self._results),
         )
 
         # Step 1: Enforce ontology types
         if ontology.entity_types:
             from kg_builder_cli.extraction.unstructured import _enforce_ontology_types
+
             allowed = [t.name for t in ontology.entity_types]
             entities = _enforce_ontology_types(entities, allowed)
 
@@ -94,13 +102,14 @@ class FluidAccumulator:
         )
 
         # Step 5: Rewire relationships
-        id_map = getattr(resolve_entities, '_last_id_map', {})
+        id_map = getattr(resolve_entities, "_last_id_map", {})
         if id_map:
             relationships = rewire_relationships(relationships, id_map)
 
         logger.info(
             "Consolidation complete: {} entities, {} relationships",
-            len(entities), len(relationships),
+            len(entities),
+            len(relationships),
         )
 
         return ExtractionResult(

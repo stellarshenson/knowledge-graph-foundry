@@ -34,6 +34,14 @@ class RelationshipDef(BaseModel):
     description: str = ""
 
 
+class TypeExemplar(BaseModel):
+    """Representative entity instance for a type, used as few-shot guidance."""
+
+    name: str
+    entity_type: str
+    frequency: int = 1
+
+
 class OntologyState(BaseModel, frozen=True):
     entity_types: tuple[TypeDef, ...] = ()
     relationship_types: tuple[RelationshipDef, ...] = ()
@@ -43,6 +51,7 @@ class OntologyState(BaseModel, frozen=True):
     candidate_types: frozenset[str] = frozenset()
     type_frequencies: dict[str, int] = Field(default_factory=dict)
     emerging_types: frozenset[str] = frozenset()
+    type_exemplars: dict[str, tuple[TypeExemplar, ...]] = Field(default_factory=dict)
 
 
 class TypeSignal(BaseModel):

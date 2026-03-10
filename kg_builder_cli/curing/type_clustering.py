@@ -4,6 +4,7 @@ Makes a single LLM call to cluster discovered entity types into canonical
 forms, catching semantic synonyms that deterministic normalization misses
 (e.g. Standard vs RegulatoryStandard).
 """
+
 from __future__ import annotations
 
 import os
@@ -15,9 +16,7 @@ from pydantic import BaseModel, Field
 class TypeClusteringResult(BaseModel):
     """Mapping of discovered types to canonical forms."""
 
-    mapping: dict[str, str] = Field(
-        description="Maps each discovered type to its canonical form"
-    )
+    mapping: dict[str, str] = Field(description="Maps each discovered type to its canonical form")
 
 
 _CLUSTERING_PROMPT = """You are a knowledge graph ontology expert. Given the following discovered entity types with their frequencies, cluster them into canonical types.
@@ -59,9 +58,7 @@ async def cluster_types(
     if profile:
         os.environ["AWS_PROFILE"] = profile
 
-    type_list = "\n".join(
-        f"- {t}: {frequencies.get(t, 0)}" for t in sorted(discovered_types)
-    )
+    type_list = "\n".join(f"- {t}: {frequencies.get(t, 0)}" for t in sorted(discovered_types))
 
     prompt = _CLUSTERING_PROMPT.format(
         intent=intent or "general knowledge graph",

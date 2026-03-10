@@ -1,4 +1,5 @@
 """Textual TUI application for kg-builder-cli."""
+
 from __future__ import annotations
 
 from textual.app import App, ComposeResult
