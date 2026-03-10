@@ -86,6 +86,8 @@ class CuringConfig(BaseModel):
     auto_cure: bool = True
     metrics_variance_window: int = 5
     enforcement_threshold: float = 0.5
+    jsd_convergence_threshold: float = 0.01
+    entropy_delta_threshold: float = 0.05
 
 
 class AppConfig(BaseModel):

@@ -139,7 +139,11 @@ def _ingest_fluid(
     from kg_builder_cli.curing.detector import CuringDetector
     from kg_builder_cli.curing.metrics import StabilityMetrics
     from kg_builder_cli.extraction.unstructured import ingest_document
-    from kg_builder_cli.loading.loader import load_extraction
+    from kg_builder_cli.loading.loader import (
+        load_doc_chunks,
+        load_extraction,
+        resolve_against_graph,
+    )
 
     accumulator = FluidAccumulator()
     detector = CuringDetector(config.curing)
@@ -152,16 +156,36 @@ def _ingest_fluid(
 
     for i, file_path in enumerate(files):
         if cured:
-            # Phase 2: direct load
+            # Phase 2: direct load with graph-aware resolution
             logger.info("[cured] processing: {}", file_path.name)
             result = ingest_document(file_path, config, buffer=buffer)
             logger.info(
-                "extracted {} entities, {} relationships",
+                "[cured] extracted {} entities, {} relationships",
                 len(result.entities), len(result.relationships),
             )
+
+            # Post-cure metric tracking
+            if buffer:
+                stability = metrics_tracker.record(buffer.frequencies())
+                if stability:
+                    import math
+                    jsd = stability.get("js_divergence", float("nan"))
+                    chao1 = stability.get("chao1_coverage", float("nan"))
+                    ent_d = stability.get("entropy_shannon_delta", float("nan"))
+                    jsd_s = f"{jsd:.4f}" if not math.isnan(jsd) else "n/a"
+                    chao1_s = f"{chao1:.3f}" if not math.isnan(chao1) else "n/a"
+                    ent_d_s = f"{ent_d:.4f}" if not math.isnan(ent_d) else "n/a"
+                    logger.info(
+                        "[cured] stability: jsd={}, chao1_cov={}, entropy_delta={}",
+                        jsd_s, chao1_s, ent_d_s,
+                    )
+
+            # Graph-aware resolution: remap to existing graph types
+            result = resolve_against_graph(result, config)
+
             load_result = load_extraction(result, config)
             logger.info(
-                "loaded: {} created, {} merged, {} relationships",
+                "[cured] loaded: {} created, {} merged, {} relationships",
                 load_result.nodes_created, load_result.nodes_merged,
                 load_result.relationships_created,
             )
@@ -211,8 +235,11 @@ def _ingest_fluid(
         if force_cure:
             logger.warning("[fluid] force-cure requested after first document")
             should_cure = True
+        elif detector.is_converged():
+            logger.info("[fluid] schema converged (metric-based)")
+            should_cure = True
         elif detector.is_cured():
-            logger.info("[fluid] schema has cured naturally")
+            logger.info("[fluid] schema has cured naturally (heuristic)")
             should_cure = True
         elif len(accumulator.all_entities()) >= config.curing.max_fluid_entities:
             logger.warning(
@@ -270,6 +297,14 @@ def _ingest_fluid(
                 all_rels = accumulator.all_relationships()
                 normalize_entity_ids(all_entities, all_rels)
 
+            # Load per-document Document + Chunk nodes before consolidation
+            for individual_result in accumulator._results:
+                load_doc_chunks(individual_result, config)
+                logger.debug(
+                    "[curing] loaded doc+chunks for '{}'",
+                    individual_result.metadata.source,
+                )
+
             merged_result = accumulator.consolidate(
                 cured_ontology, config.extract,
                 type_frequencies=freqs,
@@ -279,7 +314,8 @@ def _ingest_fluid(
                 len(merged_result.entities), len(merged_result.relationships),
             )
 
-            load_result = load_extraction(merged_result, config)
+            # Load consolidated entities + relationships only (skip doc/chunks)
+            load_result = load_extraction(merged_result, config, skip_doc_chunks=True)
             logger.info(
                 "[curing] loaded: {} created, {} merged, {} relationships",
                 load_result.nodes_created, load_result.nodes_merged,
@@ -325,12 +361,21 @@ def _ingest_fluid(
             all_rels = accumulator.all_relationships()
             normalize_entity_ids(all_entities, all_rels)
 
+        # Load per-document Document + Chunk nodes before consolidation
+        for individual_result in accumulator._results:
+            load_doc_chunks(individual_result, config)
+            logger.debug(
+                "[flush] loaded doc+chunks for '{}'",
+                individual_result.metadata.source,
+            )
+
         cured_ontology = buffer.snapshot() if buffer else None
         merged_result = accumulator.consolidate(
             cured_ontology, config.extract,
             type_frequencies=freqs,
         )
-        load_result = load_extraction(merged_result, config)
+        # Load consolidated entities + relationships only (skip doc/chunks)
+        load_result = load_extraction(merged_result, config, skip_doc_chunks=True)
         logger.info(
             "[flush] loaded: {} created, {} merged, {} relationships",
             load_result.nodes_created, load_result.nodes_merged,

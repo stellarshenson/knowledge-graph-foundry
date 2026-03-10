@@ -60,6 +60,8 @@ DEFAULTS: dict = {
         "auto_cure": True,
         "metrics_variance_window": 5,
         "enforcement_threshold": 0.5,
+        "jsd_convergence_threshold": 0.01,
+        "entropy_delta_threshold": 0.05,
     },
     "paths": {
         "ontology": None,

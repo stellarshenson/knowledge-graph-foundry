@@ -34,8 +34,10 @@ Last verified: 2026-03-10 (v0.1.10, benchmark v10)
 - [x] Type clustering via single LLM call with instructor + litellm structured output
 - [x] Enforcement threshold prunes low-frequency types before clustering (default 0.5%)
 - [x] All 11 stability metrics computed: Shannon entropy, KL divergence, JS divergence, Gini, Zipf R-squared, Heaps' beta, Chao1, ACE, accumulation rate, rolling variance
-- [x] Metrics are observational only - `CuringDetector` uses the three-condition heuristic, not metrics
-- [ ] **Metrics not tracked post-cure** - design and implementation both stop tracking stability metrics once cured. Cured-phase documents produce no metric signal. This is a gap: post-cure quality degradation is invisible
+- [x] `CuringDetector.is_converged()` checks metric-based convergence (JSD, entropy delta, type accumulation rate) before heuristic fallback
+- [x] `is_cured()` heuristic fallback preserved for backward compatibility
+- [x] New config fields: `jsd_convergence_threshold` (default 0.01), `entropy_delta_threshold` (default 0.05)
+- [x] **Metrics tracked post-cure** - cured-phase loop records JSD, Chao1 coverage, and entropy delta for each document using the same `StabilityMetrics` tracker
 - [ ] **Proposed composite curing mechanism** (design lines 999-1007) - described as future work, not implemented. Would use weighted metric composite instead of three-condition heuristic
 
 ## Curing Data Flow
@@ -43,8 +45,9 @@ Last verified: 2026-03-10 (v0.1.10, benchmark v10)
 - [x] Fluid phase: extract -> accumulate -> buffer.accumulate_from_result -> metrics.record -> detector.record -> check curing
 - [x] Curing event: prune low-frequency -> snapshot -> cluster_types -> apply_type_mapping -> normalize_entity_ids -> consolidate -> load
 - [x] Consolidation order: enforce types -> normalize IDs -> deduplicate -> resolve entities -> rewire relationships
-- [x] Cured phase: per-document ingest_document -> load_extraction (direct)
-- [ ] **Cured-phase cross-document resolution** - design implies cured-phase documents should resolve against existing graph; implementation loads them directly without checking for duplicates in Neo4j. This causes cross-type duplicate count to increase post-cure (42 in v10, up from 36 in v09)
+- [x] Cured phase: per-document ingest_document -> resolve_against_graph -> load_doc_chunks + load_extraction(skip_doc_chunks=True)
+- [x] **Cured-phase cross-document resolution** - `resolve_against_graph()` queries Neo4j for existing entities with same normalized name but different types, remaps incoming entities to match existing graph types and IDs, and rewires relationships
+- [x] **Cured-phase document-chunk linkage** - `load_doc_chunks()` loads Document + Chunk nodes first, then `load_extraction(skip_doc_chunks=True)` loads entities + relationships only, preserving per-document Document-Chunk structure
 
 ## Unstructured Pipeline (Section 6)
 
@@ -76,8 +79,12 @@ Last verified: 2026-03-10 (v0.1.10, benchmark v10)
 
 ## Known Gaps (prioritized)
 
-1. **Cured-phase cross-document resolution** - highest impact gap. Cured documents load directly without entity resolution against the existing graph, causing duplicate entities across documents 5-10. Root cause of cross-type duplicate count (42) being worse than v09 (36)
-2. **Post-cure metric tracking** - metrics stop at curing event. No signal for quality degradation in cured phase. Should continue tracking JSD, Chao1, entity count growth rate post-cure
-3. **Schema signal extraction** - design describes lightweight first-pass, implementation skips this and does full extraction. Minor impact since full extraction subsumes signal extraction
-4. **OWL reasoning** - designed but disabled and unimplemented. Low priority since OWL import works for ontology seeding
-5. **max_fluid_entities prose** - design text says 50,000 but should say 150. Documentation fix only
+1. **Schema signal extraction** - design describes lightweight first-pass, implementation skips this and does full extraction. Minor impact since full extraction subsumes signal extraction
+2. **OWL reasoning** - designed but disabled and unimplemented. Low priority since OWL import works for ontology seeding
+3. **max_fluid_entities prose** - design text says 50,000 but should say 150. Documentation fix only
+
+## Resolved Gaps
+
+- **Cured-phase cross-document resolution** - resolved via `resolve_against_graph()` in `loader.py`, which queries Neo4j for existing entities and remaps types/IDs before loading
+- **Post-cure metric tracking** - resolved by continuing `StabilityMetrics.record()` and `CuringDetector.record()` calls in the cured-phase loop
+- **Progression-based curing signal** - resolved via `CuringDetector.is_converged()` using JSD, entropy delta, and type accumulation rate thresholds

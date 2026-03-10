@@ -929,10 +929,19 @@ Schema curing provides a middle path between pre-defined ontology seeds and full
 
 The ingestion loop operates in two phases. During the fluid phase, each document is extracted normally but results accumulate in a `FluidAccumulator` instead of loading to Neo4j. After each document, the `CuringDetector` evaluates three convergence conditions. When all three are met - or the failsafe triggers - a curing event fires: the accumulated results are consolidated (type enforcement, deduplication, entity resolution) and batch-flushed to Neo4j. Remaining documents process in the cured phase with direct per-document loading.
 
-**Curing detection algorithm** - three conditions must ALL be true:
-- Minimum documents processed (`min_documents`, default 3)
-- Coverage convergence: coverage delta below threshold (`coverage_delta_threshold`, default 0.05) for the last N documents
-- Type stability: no new entity types for `stability_window` (default 3) consecutive documents
+**Curing detection algorithm** - two detection paths, checked in order:
+
+1. **Metric-based convergence** (`CuringDetector.is_converged()`) - all three conditions must be true:
+   - JSD below `jsd_convergence_threshold` (default 0.01) for the last `stability_window` documents
+   - Entropy delta below `entropy_delta_threshold` (default 0.05)
+   - Type accumulation rate equals 0 (no new types appearing)
+
+2. **Heuristic fallback** (`CuringDetector.is_cured()`) - three conditions must ALL be true:
+   - Minimum documents processed (`min_documents`, default 3)
+   - Coverage convergence: coverage delta below threshold (`coverage_delta_threshold`, default 0.05) for the last N documents
+   - Type stability: no new entity types for `stability_window` (default 3) consecutive documents
+
+The CLI checks `is_converged()` first. If metric-based convergence is not met, `is_cured()` provides the heuristic fallback. This preserves backward compatibility while enabling progression-based curing as metrics mature.
 
 **Failsafes** - force-cure triggers if ANY of these are exceeded:
 - Document count: `max_fluid_documents` (default 20) reached
@@ -959,10 +968,19 @@ Curing Event:
   -> FluidAccumulator.consolidate(cured_ontology, type_frequencies)
      -> _enforce_ontology_types() (remap to cured types)
      -> normalize_entity_ids() + deduplicate() + resolve_entities(type_frequencies)
-  -> load_extraction() (single batch flush to Neo4j)
+  -> load_extraction() (single batch flush to Neo4j - Document, Chunk, Entity, and Relationship nodes)
+
+Cured-phase per-document loading:
+  -> load_doc_chunks() creates Document and Chunk nodes with HAS_CHUNK and NEXT_CHUNK relationships
+  -> load_extraction(skip_doc_chunks=True) creates Entity nodes and typed relationships only (skips Document, Chunk, HAS_CHUNK, HAS_ENTITY, NEXT_CHUNK)
+  This two-step split preserves per-document Document-Chunk linkage while using consolidated entities from resolution.
 
 Document N+1..M (cured phase)
-  -> ingest_document() -> load_extraction() (direct per-document)
+  -> ingest_document() -> ExtractionResult
+  -> resolve_against_graph() (query Neo4j for existing entities, remap types/IDs, rewire relationships)
+  -> load_doc_chunks() (load Document + Chunk nodes, preserving per-document linkage)
+  -> load_extraction(skip_doc_chunks=True) (load entities + relationships only)
+  -> StabilityMetrics.record() + CuringDetector.record() (post-cure metric tracking)
 ```
 
 **Configuration** (in `config.yml`):
@@ -977,9 +995,11 @@ curing:
   auto_cure: true
   metrics_variance_window: 5
   enforcement_threshold: 0.5          # min % of total entities for type to survive curing
+  jsd_convergence_threshold: 0.01     # JSD below this for stability_window docs triggers metric-based convergence
+  entropy_delta_threshold: 0.05       # entropy delta below this for metric-based convergence
 ```
 
-**Stability metrics** - tracked after each document for empirical evaluation of which signals best predict the right curing moment. All metrics are pure Python (`math` stdlib only). The `StabilityMetrics` class is purely computational - it does not make curing decisions. The existing `CuringDetector` remains the decision maker until analysis determines which metrics are most predictive.
+**Stability metrics** - tracked after each document in both fluid and cured phases for empirical evaluation of convergence signals. All metrics are pure Python (`math` stdlib only). The `StabilityMetrics` class is purely computational - it does not make curing decisions. During the fluid phase, metrics feed the `CuringDetector` for convergence detection. Post-cure, metrics continue to be recorded for each document (JSD, Chao1 coverage, entropy delta) using the same `StabilityMetrics` tracker, providing visibility into whether the cured schema remains stable as new documents are ingested. The `is_converged()` method on `CuringDetector` consumes JSD, entropy delta, and type accumulation rate directly from the metrics stream.
 
 | Metric | Key | What It Measures | Stability Signal |
 |--------|-----|------------------|------------------|
@@ -1008,7 +1028,7 @@ Until this analysis is complete, the existing heuristic remains the sole decisio
 
 **Module structure**:
 - `kg_builder_cli/curing/__init__.py` - module init
-- `kg_builder_cli/curing/detector.py` - `CuringDetector` class with three-condition detection
+- `kg_builder_cli/curing/detector.py` - `CuringDetector` class with `is_converged()` (metric-based) and `is_cured()` (heuristic fallback) detection
 - `kg_builder_cli/curing/accumulator.py` - `FluidAccumulator` class storing `ExtractionResult` objects
 - `kg_builder_cli/curing/metrics.py` - `StabilityMetrics` class computing information-theoretic metrics
 - `kg_builder_cli/curing/type_clustering.py` - LLM-assisted semantic type clustering at curing time
@@ -2202,7 +2222,9 @@ kg_builder_cli/
   loading/                        # Neo4J graph loading
     __init__.py
     loader.py                     # batch Cypher loading orchestration
-                                  #   accepts: ExtractionResult (or List[ResolvedEntity]), LoadConfig
+                                  #   load_extraction(): accepts ExtractionResult, LoadConfig, skip_doc_chunks flag
+                                  #   load_doc_chunks(): loads Document + Chunk nodes only (preserves per-document linkage)
+                                  #   resolve_against_graph(): queries Neo4j for existing entities, remaps types/IDs, rewires relationships
                                   #   returns: LoadResult
     indexes.py                    # index creation (structural, vector, fulltext)
                                   #   accepts: LoadConfig
