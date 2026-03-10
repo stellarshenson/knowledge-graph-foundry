@@ -29,6 +29,8 @@ DEFAULTS: dict = {
         "rolling_context_window": 0,
         "resolution_threshold": 0.85,
         "bayesian_resolution": False,
+        "llm_escalation": False,
+        "schema_signal_extraction": False,
     },
     "ontology_buffer": {
         "seed_from": None,
@@ -42,6 +44,7 @@ DEFAULTS: dict = {
         "max_type_exemplars": 5,
         "type_resolution_top_k": 3,
         "type_resolution_entropy_threshold": 0.8,
+        "post_load_reasoning": False,
     },
     "load": {
         "merge_strategy": "merge",

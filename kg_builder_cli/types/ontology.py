@@ -40,6 +40,7 @@ class TypeExemplar(BaseModel):
     name: str
     entity_type: str
     frequency: int = 1
+    description: str = ""
 
 
 class OntologyState(BaseModel, frozen=True):

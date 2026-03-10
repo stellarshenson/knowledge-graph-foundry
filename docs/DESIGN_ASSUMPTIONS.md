@@ -2,7 +2,7 @@
 
 Tracks alignment between `docs/DESIGN.md` and the actual implementation. Each item is a verifiable fact from the design document checked against code.
 
-Last verified: 2026-03-10 (v0.1.11, post v12 implementation)
+Last verified: 2026-03-10 (v0.1.11, post v12.1 - all 5 gaps closed)
 
 ## Ontology Buffer (Section 5.5)
 
@@ -19,11 +19,11 @@ Last verified: 2026-03-10 (v0.1.11, post v12 implementation)
 - [x] Exemplar accumulation via `_update_exemplars()` in `accumulate_from_result()` with case-insensitive dedup and frequency-based replacement at capacity
 - [x] Snapshot freezes exemplars as tuples sorted by descending frequency, included in `OntologyState.type_exemplars`
 - [x] `max_type_exemplars` default = 5
-- [ ] **Schema signal extraction** - design section 5.4 describes a lightweight first-pass signal extraction as a separate step; implementation integrates signals into the main extraction pipeline without a standalone function
+- [x] **Schema signal extraction** - `extract_schema_signals()` in `schema_signals.py` provides a standalone lightweight LLM pre-pass via instructor+litellm. Enabled via `extract.schema_signal_extraction` (default false). `compute_coverage()` measures buffer coverage against detected signals. New signals accumulate into buffer before full extraction
 
 ## Post-Load Reasoning (Section 5.6)
 
-- [ ] **OWL reasoning not implemented** - design describes `owlready2` sync_reasoner, RDF export, Cypher-based subclass propagation. Config has `post_load_reasoning: false` but no code executes this. Disabled by default, no implementation present
+- [x] **Cypher-based subclass propagation** - `run_subclass_propagation()` in `loading/reasoning.py` executes transitive `SUBCLASS_OF*` traversal to infer `INSTANCE_OF` edges. Integrated into `load_extraction()` when `ontology_buffer.post_load_reasoning` is enabled (default false). Full `owlready2` sync_reasoner and RDF export are not implemented - Cypher-first approach covers the transitive subclass use case
 
 ## Schema Curing (Section 5.8)
 
@@ -32,7 +32,7 @@ Last verified: 2026-03-10 (v0.1.11, post v12 implementation)
 - [x] Three-condition detection: min_documents, coverage delta convergence, type stability window
 - [x] Failsafe: `max_fluid_documents` (default 20)
 - [x] Failsafe: `max_fluid_entities` (default 150)
-- [ ] **Design prose says max_fluid_entities default 50,000** (line 939) but config example and code use 150 - prose is wrong, implementation is correct
+- [x] **Design prose max_fluid_entities** - fixed prose from 50,000 to 150 matching config and implementation
 - [x] Two-layer type normalization: deterministic (always-on) + LLM clustering (at curing time)
 - [x] `normalize_type_name()` splits on spaces, underscores, hyphens, camelCase boundaries -> PascalCase
 - [x] Type clustering via single LLM call with instructor + litellm structured output
@@ -55,9 +55,9 @@ Last verified: 2026-03-10 (v0.1.11, post v12 implementation)
 - [x] `bayesian_resolution` default = false (opt-in)
 - [x] `type_resolution_top_k` default = 3
 - [x] `type_resolution_entropy_threshold` default = 0.8
-- [ ] **Co-occurrence pattern** `P(co_entities | type)` - designed in DESIGN.md evidence source 3, deferred to future iteration
-- [ ] **Description semantics** `P(description | type)` - designed in DESIGN.md evidence source 4, deferred to future iteration
-- [ ] **LLM escalation for high-entropy cases** - designed as agent reasoning fallback, current implementation uses argmax regardless of entropy
+- [x] **Co-occurrence pattern** `P(co_entities | type)` - `_cooccurrence_likelihood()` counts same-chunk entities matching candidate type, range [1.0, 2.0]. Chunk-entity index built in `_resolve_types_bayesian()` before the entity loop
+- [x] **Description semantics** `P(description | type)` - `_description_likelihood()` computes bag-of-words overlap between entity description and type exemplar descriptions, range [1.0, 2.0]. `TypeExemplar` model extended with `description` field, populated in `buffer._update_exemplars()`
+- [x] **LLM escalation for high-entropy cases** - `_llm_resolve()` makes sync instructor+litellm call when entropy exceeds threshold and `llm_escalation=true`. Falls back to argmax on exception or invalid type. Disabled by default via `extract.llm_escalation`
 
 ## Curing Data Flow
 
@@ -103,14 +103,17 @@ Last verified: 2026-03-10 (v0.1.11, post v12 implementation)
 
 ## Known Gaps (prioritized)
 
-1. **Bayesian evidence sources incomplete** - co-occurrence pattern and description semantics likelihoods designed but deferred. Current resolver uses only prior + exemplar similarity + relationship context. Adding these would improve resolution accuracy for entities where name similarity alone is insufficient
-2. **LLM escalation for ambiguous types** - design describes agent reasoning for high-entropy posterior cases. Implementation falls back to argmax. Low priority since most entities resolve confidently via prior alone
-3. **Schema signal extraction** - design describes lightweight first-pass, implementation skips this and does full extraction. Minor impact since full extraction subsumes signal extraction
-4. **OWL reasoning** - designed but disabled and unimplemented. Low priority since OWL import works for ontology seeding
-5. **max_fluid_entities prose** - design text says 50,000 but should say 150. Documentation fix only
+1. **Composite curing mechanism** - design lines 999-1007 describe a weighted metric composite for curing detection, replacing the three-condition heuristic. Not yet implemented, current system uses `is_converged()` (metric-based) with `is_cured()` (heuristic fallback)
+2. **Full OWL reasoning** - `owlready2` sync_reasoner and RDF export are not implemented. Cypher-based subclass propagation covers the transitive case but does not handle full OWL semantics (disjointness, property restrictions, cardinality constraints)
 
 ## Resolved Gaps
 
 - **Cured-phase cross-document resolution** - resolved via `resolve_against_graph()` in `loader.py`, which queries Neo4j for existing entities and remaps types/IDs before loading
 - **Post-cure metric tracking** - resolved by continuing `StabilityMetrics.record()` and `CuringDetector.record()` calls in the cured-phase loop
 - **Progression-based curing signal** - resolved via `CuringDetector.is_converged()` using JSD, entropy delta, and type accumulation rate thresholds
+- **Bayesian co-occurrence likelihood** - resolved via `_cooccurrence_likelihood()` using chunk-entity index for same-chunk type matching
+- **Bayesian description semantics** - resolved via `_description_likelihood()` with bag-of-words overlap against type exemplar descriptions (exemplars now carry `description` field)
+- **LLM escalation for high-entropy** - resolved via `_llm_resolve()` using sync instructor+litellm call, opt-in via `extract.llm_escalation`
+- **Schema signal extraction** - resolved via standalone `extract_schema_signals()` in `schema_signals.py`, opt-in via `extract.schema_signal_extraction`
+- **OWL subclass propagation** - resolved via Cypher-based `run_subclass_propagation()` in `loading/reasoning.py`, opt-in via `ontology_buffer.post_load_reasoning`
+- **max_fluid_entities prose** - fixed design text from 50,000 to 150
