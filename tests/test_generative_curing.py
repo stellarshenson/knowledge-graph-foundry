@@ -277,7 +277,7 @@ class TestGenerativeCuringConfig:
 
     def test_patience_default(self):
         cfg = CuringConfig()
-        assert cfg.generative_patience == 5
+        assert cfg.generative_patience == 0.4
 
     def test_max_tool_calls_default(self):
         cfg = CuringConfig()
@@ -288,10 +288,13 @@ class TestEarlyStopPatience:
     """Integration test: patience-based early stopping via detector."""
 
     def test_early_stop_triggers(self):
-        """3 consecutive cure votes should exceed patience=3."""
+        """Consecutive cure votes exceeding threshold triggers early stop.
+
+        With max_fluid_documents=10 and patience=0.3, threshold = max(3, int(10*0.3)) = 3.
+        """
         from kg_builder_cli.curing.detector import CuringDetector
 
-        config = CuringConfig(enabled=True, generative_patience=3)
+        config = CuringConfig(enabled=True, max_fluid_documents=10, generative_patience=0.3)
         detector = CuringDetector(config)
 
         detector.record_llm_vote(True)
@@ -300,11 +303,24 @@ class TestEarlyStopPatience:
         detector.record_llm_vote(True)
         assert detector.patience_exceeded(config.generative_patience)
 
+    def test_early_stop_scales_with_corpus(self):
+        """With max_fluid_documents=20 and patience=0.4, need 8 consecutive votes."""
+        from kg_builder_cli.curing.detector import CuringDetector
+
+        config = CuringConfig(enabled=True, max_fluid_documents=20, generative_patience=0.4)
+        detector = CuringDetector(config)
+
+        for _ in range(7):
+            detector.record_llm_vote(True)
+        assert not detector.patience_exceeded(config.generative_patience)
+        detector.record_llm_vote(True)
+        assert detector.patience_exceeded(config.generative_patience)
+
     def test_early_stop_reset_on_continue(self):
         """A 'continue' vote resets the patience counter."""
         from kg_builder_cli.curing.detector import CuringDetector
 
-        config = CuringConfig(enabled=True, generative_patience=3)
+        config = CuringConfig(enabled=True, max_fluid_documents=10, generative_patience=0.3)
         detector = CuringDetector(config)
 
         detector.record_llm_vote(True)

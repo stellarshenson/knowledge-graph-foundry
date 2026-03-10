@@ -161,9 +161,15 @@ class CuringDetector:
         else:
             self._consecutive_cure_votes = 0
 
-    def patience_exceeded(self, patience: int) -> bool:
-        """Return True when consecutive cure votes >= patience threshold."""
-        return self._consecutive_cure_votes >= patience
+    def patience_exceeded(self, patience_fraction: float) -> bool:
+        """Return True when consecutive cure votes >= patience threshold.
+
+        Patience is a fraction of max_fluid_documents. E.g. 0.4 with
+        max_fluid_documents=20 means 8 consecutive cure votes required.
+        Minimum effective patience is 3 regardless of fraction.
+        """
+        threshold = max(3, int(self._config.max_fluid_documents * patience_fraction))
+        return self._consecutive_cure_votes >= threshold
 
     def check_drift(self, remap_rate: float) -> bool:
         """Returns True if remap rate signals schema drift."""

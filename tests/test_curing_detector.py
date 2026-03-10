@@ -341,23 +341,26 @@ class TestPatienceTracking:
         assert detector._consecutive_cure_votes == 1
 
     def test_patience_exceeded(self):
-        """Should return True when votes reach patience threshold."""
-        config = CuringConfig(enabled=True)
+        """Should return True when votes reach patience threshold.
+
+        max_fluid_documents=10, patience=0.3 -> threshold = max(3, int(10*0.3)) = 3.
+        """
+        config = CuringConfig(enabled=True, max_fluid_documents=10)
         detector = CuringDetector(config)
-        assert not detector.patience_exceeded(3)
+        assert not detector.patience_exceeded(0.3)
         detector.record_llm_vote(True)
-        assert not detector.patience_exceeded(3)
+        assert not detector.patience_exceeded(0.3)
         detector.record_llm_vote(True)
-        assert not detector.patience_exceeded(3)
+        assert not detector.patience_exceeded(0.3)
         detector.record_llm_vote(True)
-        assert detector.patience_exceeded(3)
+        assert detector.patience_exceeded(0.3)
 
     def test_patience_not_exceeded_after_reset(self):
         """Patience should not trigger after a reset."""
-        config = CuringConfig(enabled=True)
+        config = CuringConfig(enabled=True, max_fluid_documents=10)
         detector = CuringDetector(config)
         detector.record_llm_vote(True)
         detector.record_llm_vote(True)
         detector.record_llm_vote(False)  # reset
         detector.record_llm_vote(True)
-        assert not detector.patience_exceeded(3)
+        assert not detector.patience_exceeded(0.3)

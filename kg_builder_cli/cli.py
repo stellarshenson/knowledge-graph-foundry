@@ -360,9 +360,14 @@ def _ingest_fluid(
             and config.curing.generative_curing
             and detector.patience_exceeded(config.curing.generative_patience)
         ):
+            threshold = max(
+                3, int(config.curing.max_fluid_documents * config.curing.generative_patience)
+            )
             logger.info(
-                "[fluid] EARLY STOP: {} consecutive cure votes",
+                "[fluid] EARLY STOP: {} consecutive cure votes (patience {:.0%} of {} docs)",
+                threshold,
                 config.curing.generative_patience,
+                config.curing.max_fluid_documents,
             )
             should_cure = True
 

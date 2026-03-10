@@ -48,25 +48,44 @@ Configuration uses `.kg-builder/config.yml` with environment variable interpolat
 
 ```yaml
 neo4j:
-  uri: ${NEO4J_URI:bolt://localhost:7687}
+  uri: ${NEO4J_URI:bolt://localhost:7687}   # bolt or neo4j+s:// for Aura
   user: ${NEO4J_USERNAME:neo4j}
   password: ${NEO4J_PASSWORD:}
 
 llm:
-  provider: bedrock
+  provider: bedrock                          # bedrock | openai | anthropic
   model: eu.anthropic.claude-sonnet-4-20250514-v1:0
-  temperature: 0.0
+  temperature: 0.0                           # 0.0 for deterministic extraction
+  max_retries: 3                             # instructor retry on validation failure
+  timeout: 120                               # seconds per LLM call
 
 extract:
-  chunk_size: 2000
-  chunk_overlap: 200
-  concurrency: 4
+  chunk_size: 2000                           # tokens per chunk
+  chunk_overlap: 200                         # overlap between consecutive chunks
+  concurrency: 4                             # parallel extraction threads
+  extraction_mode: hybrid                    # entity_relationship | graph_reader | hybrid
+  resolution_threshold: 0.85                 # Levenshtein threshold for entity resolution
+  bayesian_resolution: false                 # Bayesian type inference with exemplar index
+  llm_escalation: false                      # LLM fallback for high-entropy type assignment
+  use_embeddings: false                      # embedding-based entity resolution (requires model)
 
 curing:
-  enabled: false
-  generative_curing: false
-  generative_patience: 5
-  generative_max_tool_calls: 2
+  enabled: false                             # fluid schema curing (two-phase ingestion)
+  min_documents: 3                           # minimum docs before curing can trigger
+  max_fluid_documents: 20                    # safety net - force-cure at this count
+  generative_curing: false                   # LLM-assisted cure/continue decisions
+  generative_patience: 0.4                   # fraction of max_fluid_documents as consecutive
+                                             # document cure votes to auto-trigger (0.4 * 20 = 8, min 3)
+  generative_max_tool_calls: 2              # max graph queries per LLM decision
+  drift_remap_threshold: 0.3                # remap rate to signal schema drift
+  re_cure_on_drift: false                    # re-enter fluid phase on sustained drift
+
+ontology_buffer:
+  seed_from: null                            # path to ontology seed (any format)
+  intent: null                               # domain intent for LLM guidance
+  refine_every_n_docs: 5                     # buffer refinement interval
+  coverage_threshold: 0.5                    # minimum coverage to confirm types
+  flush_on_complete: true                    # write final ontology to disk
 ```
 
 ## Technology Stack
