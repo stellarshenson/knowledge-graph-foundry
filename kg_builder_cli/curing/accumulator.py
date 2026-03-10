@@ -50,7 +50,8 @@ class FluidAccumulator:
         return len(self._results)
 
     def consolidate(
-        self, ontology: OntologyState, config: ExtractConfig
+        self, ontology: OntologyState, config: ExtractConfig,
+        type_frequencies: dict[str, int] | None = None,
     ) -> ExtractionResult:
         """Consolidate all accumulated results into a single merged result.
 
@@ -89,6 +90,7 @@ class FluidAccumulator:
             use_embeddings=config.use_embeddings,
             embedding_threshold=config.embedding_threshold,
             name_threshold=config.name_threshold,
+            type_frequencies=type_frequencies,
         )
 
         # Step 5: Rewire relationships

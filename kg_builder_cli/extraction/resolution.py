@@ -38,6 +38,7 @@ def resolve_entities(
     use_embeddings: bool = False,
     embedding_threshold: float = 0.80,
     name_threshold: float = 0.65,
+    type_frequencies: dict[str, int] | None = None,
 ) -> list[Entity]:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
@@ -75,7 +76,7 @@ def resolve_entities(
         resolved.extend(merged_block)
 
     # Cross-type resolution: merge entities with identical normalized names
-    resolved, id_map = _resolve_cross_type(resolved)
+    resolved, id_map = _resolve_cross_type(resolved, type_frequencies)
 
     merge_count = len(entities) - len(resolved)
     if merge_count > 0:
@@ -96,8 +97,8 @@ def resolve_entities(
 resolve_entities._last_id_map = {}
 
 
-# Type specificity: higher number = more specific, preferred when merging
-_TYPE_PRIORITY = {
+# Static fallback: higher number = more specific, preferred when merging
+_TYPE_PRIORITY_FALLBACK = {
     "Specification": 8,
     "Component": 7,
     "Feature": 6,
@@ -109,7 +110,27 @@ _TYPE_PRIORITY = {
 }
 
 
-def _resolve_cross_type(entities: list[Entity]) -> tuple[list[Entity], dict[str, str]]:
+def _build_type_priority(frequencies: dict[str, int] | None) -> dict[str, int]:
+    """Build type priority from frequency counts.
+
+    Higher frequency = higher priority. Falls back to static priority
+    when no frequencies are provided.
+    """
+    if not frequencies:
+        return _TYPE_PRIORITY_FALLBACK
+    # Sort by frequency descending, assign priority (highest freq = highest rank)
+    sorted_types = sorted(frequencies.items(), key=lambda x: x[1], reverse=True)
+    dynamic = {t: i + 1 for i, (t, _) in enumerate(reversed(sorted_types))}
+    # Merge: dynamic overrides fallback
+    merged = dict(_TYPE_PRIORITY_FALLBACK)
+    merged.update(dynamic)
+    return merged
+
+
+def _resolve_cross_type(
+    entities: list[Entity],
+    type_frequencies: dict[str, int] | None = None,
+) -> tuple[list[Entity], dict[str, str]]:
     """Merge entities with identical normalized names across different types.
 
     When two entities share the same normalized name but have different types,
@@ -119,6 +140,8 @@ def _resolve_cross_type(entities: list[Entity]) -> tuple[list[Entity], dict[str,
     IDs to their canonical entity IDs (for relationship rewiring).
     """
     from collections import defaultdict
+
+    type_priority = _build_type_priority(type_frequencies)
 
     name_groups: dict[str, list[int]] = defaultdict(list)
     for idx, entity in enumerate(entities):
@@ -136,7 +159,7 @@ def _resolve_cross_type(entities: list[Entity]) -> tuple[list[Entity], dict[str,
         # Pick the one with highest type priority as canonical
         best_idx = max(
             indices,
-            key=lambda i: _TYPE_PRIORITY.get(entities[i].type, 0),
+            key=lambda i: type_priority.get(entities[i].type, 0),
         )
 
         canonical = entities[best_idx].model_copy()

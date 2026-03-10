@@ -924,6 +924,7 @@ Schema curing provides a middle path between pre-defined ontology seeds and full
 - Disabled by default (`curing.enabled = false`) - existing seeded workflow unchanged
 - CLI flags: `--fluid` / `--no-fluid` to enable/disable, `--cure` to force-cure after first document
 - No re-extraction: post-cure type enforcement uses Levenshtein matching (existing `_enforce_ontology_types`)
+- Two-layer type normalization: deterministic surface collapsing (always-on) + LLM-assisted semantic clustering (one call at curing time)
 - No new dependencies (no NetworkX) - existing entity list operations handle cross-document merging
 
 The ingestion loop operates in two phases. During the fluid phase, each document is extracted normally but results accumulate in a `FluidAccumulator` instead of loading to Neo4j. After each document, the `CuringDetector` evaluates three convergence conditions. When all three are met - or the failsafe triggers - a curing event fires: the accumulated results are consolidated (type enforcement, deduplication, entity resolution) and batch-flushed to Neo4j. Remaining documents process in the cured phase with direct per-document loading.
@@ -951,10 +952,13 @@ Document 1..N (fluid phase)
   -> CuringDetector.is_cured()? -> Curing Event
 
 Curing Event:
+  -> OntologyBuffer.prune_low_frequency_types(enforcement_threshold)
   -> OntologyBuffer.snapshot() (cured ontology)
-  -> FluidAccumulator.consolidate(cured_ontology)
+  -> cluster_types() (single LLM call - semantic synonym clustering)
+  -> apply_type_mapping() + normalize_entity_ids() (remap types, regenerate IDs)
+  -> FluidAccumulator.consolidate(cured_ontology, type_frequencies)
      -> _enforce_ontology_types() (remap to cured types)
-     -> normalize_entity_ids() + deduplicate() + resolve_entities()
+     -> normalize_entity_ids() + deduplicate() + resolve_entities(type_frequencies)
   -> load_extraction() (single batch flush to Neo4j)
 
 Document N+1..M (cured phase)
@@ -972,6 +976,7 @@ curing:
   stability_window: 3
   auto_cure: true
   metrics_variance_window: 5
+  enforcement_threshold: 0.5          # min % of total entities for type to survive curing
 ```
 
 **Stability metrics** - tracked after each document for empirical evaluation of which signals best predict the right curing moment. All metrics are pure Python (`math` stdlib only). The `StabilityMetrics` class is purely computational - it does not make curing decisions. The existing `CuringDetector` remains the decision maker until analysis determines which metrics are most predictive.
@@ -1006,6 +1011,13 @@ Until this analysis is complete, the existing heuristic remains the sole decisio
 - `kg_builder_cli/curing/detector.py` - `CuringDetector` class with three-condition detection
 - `kg_builder_cli/curing/accumulator.py` - `FluidAccumulator` class storing `ExtractionResult` objects
 - `kg_builder_cli/curing/metrics.py` - `StabilityMetrics` class computing information-theoretic metrics
+- `kg_builder_cli/curing/type_clustering.py` - LLM-assisted semantic type clustering at curing time
+
+**Empirical results** (CPAP benchmark v09, 10 documents, fluid mode):
+
+The first fluid-mode benchmark run cured naturally at document 4 of 10. Stability metrics tracked during the fluid phase showed clear convergence patterns. JSD remained below 0.02 from doc 2, Chao1 coverage jumped from 0.881 to 0.956 at doc 4, Heaps' beta dropped from 0.037 to 0.009, and entropy delta collapsed from 0.0568 to 0.0002. These signals clustered into early indicators (JSD, new type count stable from doc 2) and confirmation signals (Chao1, Heaps' beta, entropy delta converging at doc 4). The fluid phase discovered 31 entity types and 74 relationship types - all 8 seed types from the curated ontology were independently discovered, but with type proliferation (e.g., Standard/Regulatory_Standard/SafetyStandard as 3 types for 1 concept). The benchmark scored 81% hybrid (vs 88% seeded), with the gap concentrated in cross-document resolution (type proliferation creating duplicate entities) and query answerability (diffuse type system).
+
+**Type proliferation fix (v10)** - root cause analysis identified three problems: (1) surface variants like Standard/Regulatory_Standard/SafetyStandard creating synonymous types, (2) ID normalization running before type enforcement producing stale IDs when types are remapped, and (3) cross-type resolution using a static hardcoded priority instead of data-driven frequency ranking. The fix implements two-layer type normalization. The deterministic layer adds `normalize_type_name()` - a PascalCase normalizer that splits on spaces, underscores, hyphens, and camelCase boundaries, applied everywhere type names are handled. The ontology buffer tracks a `_canonical_map` mapping normalized forms to first-seen raw forms, collapsing surface variants during accumulation (so "Safety Standard", "safety_standard", "SafetyStandard" all merge to one entry). The ID normalization ordering bug is fixed by moving `normalize_entity_ids()` after `_enforce_ontology_types()` in the extraction pipeline. Cross-type resolution now builds type priority dynamically from buffer frequency counts instead of using a static 8-type table. The LLM-assisted layer (`type_clustering.py`) makes one structured-output call at curing time with all discovered types, their frequencies, and the intent prompt - the LLM clusters semantic synonyms that deterministic normalization cannot catch (Standard vs RegulatoryStandard - different words, same concept). An enforcement threshold (`curing.enforcement_threshold`, default 0.5%) prunes types representing less than 0.5% of total entities before clustering. Expected impact: 31 types -> 8-12, cross-type duplicates 36 -> <10, benchmark score 81% -> 86-89%.
 
 ## 6. Unstructured Ingestion Pipeline
 
@@ -1250,7 +1262,7 @@ Hybrid mode is recommended for production workloads. The cost is roughly 2x the 
 
 The same entity often appears across multiple chunks and documents. Deduplication uses a three-layer pipeline that progressively catches duplicates from exact matches through fuzzy variants to cross-type conflicts.
 
-**Layer 1 - Name normalization and deterministic ID hashing** (`normalization.py`, `dedup.py`): entity names are normalized before ID generation by stripping generic suffixes (system, device, unit, equipment, therapy, machine, apparatus, instrument, module, assembly), removing articles (a, an, the), lowercasing, and collapsing whitespace. The normalized name feeds into a deterministic ID hash: `sha1("{type}:{normalized_name}")` truncated to 12 hex characters, prefixed with the lowercase type. This means "humidifier system" and "humidifier" produce the same ID and collapse during deduplication. Entities sharing the same `(type, id)` tuple are merged: longest name and description kept, `source_chunks` unioned, confidence averaged, properties merged. Relationships are deduplicated by `(source, target, type)` tuple. This layer handles 80%+ of duplicates at zero API cost.
+**Layer 1 - Name and type normalization with deterministic ID hashing** (`normalization.py`, `dedup.py`): entity names are normalized before ID generation by stripping generic suffixes (system, device, unit, equipment, therapy, machine, apparatus, instrument, module, assembly), removing articles (a, an, the), lowercasing, and collapsing whitespace. Entity types are normalized via `normalize_type_name()` which splits on spaces, underscores, hyphens, and camelCase boundaries, then reassembles as PascalCase - so "Safety Standard", "safety_standard", "SafetyStandard" all become "SafetyStandard". The normalized type and name feed into a deterministic ID hash: `sha1("{normalized_type}:{normalized_name}")` truncated to 12 hex characters, prefixed with the lowercase normalized type. This means "humidifier system" and "humidifier" produce the same ID and collapse during deduplication, and type surface variants generate identical IDs. Type enforcement runs before ID normalization so that remapped types produce correct IDs. Entities sharing the same `(type, id)` tuple are merged: longest name and description kept, `source_chunks` unioned, confidence averaged, properties merged. Relationships are deduplicated by `(source, target, type)` tuple. This layer handles 80%+ of duplicates at zero API cost.
 
 **Cross-document deduplication (at load time)**: `MERGE` operations ensure `(type, id)` uniqueness across the entire graph. Because IDs are deterministic from normalized names, the same real-world entity from different documents produces the same ID and merges cleanly on load.
 
@@ -1264,11 +1276,7 @@ Beyond exact ID matching, the pipeline runs a post-dedup resolution step to catc
 
 When embeddings are unavailable, the fallback uses normalized-name Levenshtein alone at threshold 0.85. Pairs exceeding the threshold are connected via Union-Find, and each connected component is merged into a canonical entity (longest name, longest description, unioned source chunks, averaged confidence). Brute-force pairwise comparison is used since entity counts per type block remain under 2,000 in practice.
 
-**Layer 3 - Cross-type resolution** (`resolution.py`): entities with identical normalized names across different types are merged into the most specific type. Type priority determines the surviving type:
-
-- Specification(8) > Component(7) > Feature(6) > WorkMode(5) > Product(4) > MedicalCondition(3) > Standard(2) > Organization(1)
-
-This catches entities like "ramp" extracted as both Feature and WorkMode, or "power supply" as both Component and Specification. After cross-type merging, relationship endpoints are rewired from the dropped entity's ID to the surviving canonical entity's ID.
+**Layer 3 - Cross-type resolution** (`resolution.py`): entities with identical normalized names across different types are merged into the most specific type. Type priority is built dynamically from the ontology buffer's frequency counts - higher frequency types get higher priority. This replaces the static 8-type hardcoded table that assigned priority 0 to custom types, making cross-type merges non-deterministic among ties. A static fallback table (Specification > Component > Feature > WorkMode > Product > MedicalCondition > Standard > Organization) covers cases where no frequency data is available. This catches entities like "ramp" extracted as both Feature and WorkMode, or "power supply" as both Component and Specification. After cross-type merging, relationship endpoints are rewired from the dropped entity's ID to the surviving canonical entity's ID.
 
 **Embedding generation** (`embeddings.py`): when `config.extract.use_embeddings` is enabled, entity embeddings are generated via Amazon Titan Text Embeddings v2 (`amazon.titan-embed-text-v2:0`) through Bedrock. Input text per entity follows the format `"{type}: {name} - {description[:200]}"`, producing 1024-dimensional vectors stored on the entity and persisted to Neo4j for downstream vector search. Embeddings are generated after deduplication but before resolution.
 

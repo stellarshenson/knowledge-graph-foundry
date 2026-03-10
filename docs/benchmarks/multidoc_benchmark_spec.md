@@ -205,6 +205,8 @@ Benchmark scoring: `python tests/benchmark_multidoc.py "description of iteration
 | v03 | - | - | - | Cross-doc resolution improvement |
 | v04 | - | - | - | Specification property extraction |
 | v05 | - | - | - | Query answerability and relationship completeness |
+| v06-v08 | 86-88% | 61-63/63 | 3.6-3.8 | Enriched buffer prompts, configurable thresholds |
+| v09 (fluid) | 81% | 59/63 (94%) | 3.4/5.0 | Fluid mode, empty ontology + intent prompt, cured at doc 4 |
 
 ## Iteration Targets
 
