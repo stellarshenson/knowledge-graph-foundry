@@ -31,6 +31,7 @@ DEFAULTS: dict = {
         "bayesian_resolution": False,
         "llm_escalation": False,
         "schema_signal_extraction": False,
+        "cross_type_description_threshold": 0.3,
     },
     "ontology_buffer": {
         "seed_from": None,
@@ -69,6 +70,10 @@ DEFAULTS: dict = {
         "enforcement_threshold": 0.5,
         "jsd_convergence_threshold": 0.01,
         "entropy_delta_threshold": 0.05,
+        "plateau_entropy_delta": 0.1,
+        "drift_remap_threshold": 0.3,
+        "drift_window": 3,
+        "re_cure_on_drift": False,
     },
     "paths": {
         "ontology": None,

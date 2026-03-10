@@ -40,6 +40,7 @@ def resolve_entities(
     embedding_threshold: float = 0.80,
     name_threshold: float = 0.65,
     type_frequencies: dict[str, int] | None = None,
+    description_threshold: float = 0.3,
 ) -> list[Entity]:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
@@ -77,7 +78,7 @@ def resolve_entities(
         resolved.extend(merged_block)
 
     # Cross-type resolution: merge entities with identical normalized names
-    resolved, id_map = _resolve_cross_type(resolved, type_frequencies)
+    resolved, id_map = _resolve_cross_type(resolved, type_frequencies, description_threshold)
 
     merge_count = len(entities) - len(resolved)
     if merge_count > 0:
@@ -128,9 +129,35 @@ def _build_type_priority(frequencies: dict[str, int] | None) -> dict[str, int]:
     return merged
 
 
+def _description_similarity(desc_a: str, desc_b: str) -> float:
+    """Jaccard similarity on lowercased word sets, excluding stop words."""
+    stop = {
+        "a",
+        "an",
+        "the",
+        "is",
+        "are",
+        "of",
+        "for",
+        "in",
+        "to",
+        "and",
+        "or",
+        "with",
+        "that",
+        "this",
+    }
+    words_a = {w for w in desc_a.lower().split() if w not in stop and len(w) > 2}
+    words_b = {w for w in desc_b.lower().split() if w not in stop and len(w) > 2}
+    if not words_a or not words_b:
+        return 0.0
+    return len(words_a & words_b) / len(words_a | words_b)
+
+
 def _resolve_cross_type(
     entities: list[Entity],
     type_frequencies: dict[str, int] | None = None,
+    description_threshold: float = 0.3,
 ) -> tuple[list[Entity], dict[str, str]]:
     """Merge entities with identical normalized names across different types.
 
@@ -167,6 +194,22 @@ def _resolve_cross_type(
         for idx in indices:
             if idx == best_idx:
                 continue
+            # Description similarity gate: block cross-type merge if descriptions diverge
+            if entities[idx].type != canonical.type:
+                desc_sim = _description_similarity(
+                    canonical.description, entities[idx].description
+                )
+                if desc_sim < description_threshold:
+                    logger.info(
+                        "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
+                        "description similarity {:.2f} < {}",
+                        entities[idx].name,
+                        entities[idx].type,
+                        canonical.type,
+                        desc_sim,
+                        description_threshold,
+                    )
+                    continue
             id_map[entities[idx].id] = canonical.id
             canonical = _merge_entities(canonical, entities[idx])
             merged_indices.add(idx)

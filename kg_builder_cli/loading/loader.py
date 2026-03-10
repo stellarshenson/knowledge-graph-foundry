@@ -8,6 +8,7 @@ from neo4j import GraphDatabase
 from neo4j.exceptions import TransientError
 
 from kg_builder_cli.extraction.normalization import normalize_entity_name
+from kg_builder_cli.extraction.resolution import _description_similarity
 from kg_builder_cli.types.config import AppConfig
 from kg_builder_cli.types.extraction import ExtractionResult
 from kg_builder_cli.types.loading import LoadResult
@@ -298,7 +299,7 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
         with driver.session() as session:
             query_result = session.run(
                 "MATCH (e:Entity) WHERE e.name IN $names "
-                "RETURN e.id AS id, e.name AS name, e.type AS type",
+                "RETURN e.id AS id, e.name AS name, e.type AS type, e.description AS description",
                 {"names": all_names},
             )
             existing = {record["name"]: record for record in query_result}
@@ -311,6 +312,7 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
     # Build remap: incoming entity old_id -> new_id
     id_remap: dict[str, str] = {}
     remapped = 0
+    description_threshold = config.extract.cross_type_description_threshold
 
     for entity in result.entities:
         norm_name = normalize_entity_name(entity.name)
@@ -318,6 +320,20 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
         for ex_name, ex_record in existing.items():
             ex_norm = normalize_entity_name(ex_name)
             if ex_norm == norm_name and ex_record["type"] != entity.type:
+                # Description similarity gate
+                ex_desc = ex_record.get("description") or ""
+                desc_sim = _description_similarity(entity.description, ex_desc)
+                if desc_sim < description_threshold:
+                    logger.info(
+                        "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
+                        "description similarity {:.2f} < {}",
+                        entity.name,
+                        entity.type,
+                        ex_record["type"],
+                        desc_sim,
+                        description_threshold,
+                    )
+                    break
                 old_id = entity.id
                 entity.type = ex_record["type"]
                 entity.id = ex_record["id"]

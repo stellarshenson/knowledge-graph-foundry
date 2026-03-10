@@ -83,7 +83,7 @@ class FluidAccumulator:
             from kg_builder_cli.extraction.unstructured import _enforce_ontology_types
 
             allowed = [t.name for t in ontology.entity_types]
-            entities = _enforce_ontology_types(entities, allowed)
+            entities, _ = _enforce_ontology_types(entities, allowed)
 
         # Step 2: Normalize entity IDs
         entities, relationships = normalize_entity_ids(entities, relationships)

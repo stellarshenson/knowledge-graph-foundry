@@ -171,6 +171,7 @@ def ingest_document(
                 logger.info("Extraction progress: {}/{}", completed, total)
 
     # Step 4b: Type resolution - Bayesian or Levenshtein fallback
+    remap_count = 0
     if ontology and ontology.entity_types:
         allowed = [t.name for t in ontology.entity_types]
         if config.extract.bayesian_resolution and exemplar_index:
@@ -186,14 +187,14 @@ def ingest_document(
                 llm_config=config.llm if config.extract.llm_escalation else None,
                 llm_escalation=config.extract.llm_escalation,
             )
-            all_entities = _resolve_types_bayesian(
+            all_entities, remap_count = _resolve_types_bayesian(
                 all_entities,
                 all_relationships,
                 resolver,
                 allowed,
             )
         else:
-            all_entities = _enforce_ontology_types(all_entities, allowed)
+            all_entities, remap_count = _enforce_ontology_types(all_entities, allowed)
     else:
         logger.debug(
             "No ontology types to enforce (ontology={}, types={})",
@@ -225,6 +226,7 @@ def ingest_document(
         embedding_threshold=config.extract.embedding_threshold,
         name_threshold=config.extract.name_threshold,
         type_frequencies=type_freqs,
+        description_threshold=config.extract.cross_type_description_threshold,
     )
 
     # Step 5e: Rewire relationships after cross-type entity merges
@@ -244,6 +246,7 @@ def ingest_document(
             ontology=_ontology_label(ontology),
             timestamp=datetime.now(),
             chunk_count=len(chunks),
+            remap_count=remap_count,
         ),
         entities=deduped_entities,
         relationships=deduped_relationships,
@@ -270,11 +273,15 @@ def _empty_result(file_path: Path, config: AppConfig) -> ExtractionResult:
     )
 
 
-def _enforce_ontology_types(entities: list[Entity], allowed_types: list[str]) -> list[Entity]:
+def _enforce_ontology_types(
+    entities: list[Entity], allowed_types: list[str]
+) -> tuple[list[Entity], int]:
     """Remap entities with types outside the ontology to the closest allowed type.
 
     Uses Levenshtein ratio to find the best match. If no match exceeds 0.4,
     defaults to the most generic type (first in the allowed list).
+
+    Returns (entities, remap_count).
     """
     from Levenshtein import ratio as levenshtein_ratio
 
@@ -310,7 +317,7 @@ def _enforce_ontology_types(entities: list[Entity], allowed_types: list[str]) ->
     if remapped > 0:
         logger.info("Type enforcement: remapped {} entities to allowed types", remapped)
 
-    return entities
+    return entities, remapped
 
 
 def _resolve_types_bayesian(
@@ -318,8 +325,11 @@ def _resolve_types_bayesian(
     relationships: list[Relationship],
     resolver: "BayesianTypeResolver",
     allowed_types: list[str],
-) -> list[Entity]:
-    """Resolve entity types using Bayesian inference."""
+) -> tuple[list[Entity], int]:
+    """Resolve entity types using Bayesian inference.
+
+    Returns (entities, resolved_count).
+    """
     from kg_builder_cli.extraction.type_resolver import ResolverContext
 
     allowed_lower = {t.lower(): t for t in allowed_types}
@@ -365,7 +375,7 @@ def _resolve_types_bayesian(
     if resolved > 0:
         logger.info("Bayesian type resolution: resolved {} entities", resolved)
 
-    return entities
+    return entities, resolved
 
 
 def _ontology_label(ontology: OntologyState | None) -> str:

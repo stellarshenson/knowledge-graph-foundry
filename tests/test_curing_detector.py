@@ -195,3 +195,120 @@ class TestIsConverged:
                 "type_accumulation_rate": 0.0,
             })
         assert not detector.is_converged()
+
+
+class TestIsPlateau:
+    """Tests for metric plateau detection."""
+
+    def test_plateau_on_flat_metrics(self):
+        """Should detect plateau when JSD, entropy delta, coverage all flat."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            jsd_convergence_threshold=0.01, entropy_delta_threshold=0.05,
+            plateau_entropy_delta=0.1, coverage_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+        # Build up phase
+        detector.record(0.3, {"Person"}, {
+            "js_divergence": 0.5, "entropy_shannon_delta": 0.3,
+            "type_accumulation_rate": 3.0,
+        })
+        detector.record(0.5, {"Device"}, {
+            "js_divergence": 0.1, "entropy_shannon_delta": 0.1,
+            "type_accumulation_rate": 1.0,
+        })
+        detector.record(0.6, set(), {
+            "js_divergence": 0.05, "entropy_shannon_delta": 0.08,
+            "type_accumulation_rate": 0.0,
+        })
+        assert not detector.is_plateau()
+
+        # Flat metrics with occasional new type (type_accumulation_rate > 0 is ok for plateau)
+        detector.record(0.61, {"RareType"}, {
+            "js_divergence": 0.005, "entropy_shannon_delta": 0.08,
+            "type_accumulation_rate": 0.5,
+        })
+        detector.record(0.62, set(), {
+            "js_divergence": 0.003, "entropy_shannon_delta": 0.06,
+            "type_accumulation_rate": 0.0,
+        })
+        detector.record(0.62, set(), {
+            "js_divergence": 0.002, "entropy_shannon_delta": 0.04,
+            "type_accumulation_rate": 0.0,
+        })
+        assert detector.is_plateau()
+
+    def test_no_plateau_on_shifting_metrics(self):
+        """Should not detect plateau when entropy delta is high."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            jsd_convergence_threshold=0.01, entropy_delta_threshold=0.05,
+            plateau_entropy_delta=0.1, coverage_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+        for _ in range(5):
+            detector.record(0.5, set(), {
+                "js_divergence": 0.005, "entropy_shannon_delta": 0.15,
+                "type_accumulation_rate": 0.0,
+            })
+        assert not detector.is_plateau()
+
+    def test_plateau_allows_low_type_accumulation(self):
+        """Plateau should fire even with type_accumulation_rate > 0."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            jsd_convergence_threshold=0.01, entropy_delta_threshold=0.05,
+            plateau_entropy_delta=0.1, coverage_delta_threshold=0.05,
+        )
+        detector = CuringDetector(config)
+        for i in range(3):
+            detector.record(0.5 + i * 0.01, set(), {
+                "js_divergence": 0.5, "entropy_shannon_delta": 0.3,
+                "type_accumulation_rate": 2.0,
+            })
+        # Now stable metrics but with type accumulation
+        for _ in range(3):
+            detector.record(0.61, set(), {
+                "js_divergence": 0.005, "entropy_shannon_delta": 0.05,
+                "type_accumulation_rate": 0.5,
+            })
+        assert detector.is_plateau()
+        # is_converged should NOT fire (type_accumulation_rate > 0)
+        assert not detector.is_converged()
+
+
+class TestCheckDrift:
+    """Tests for drift detection."""
+
+    def test_below_threshold_no_trigger(self):
+        """Low remap rates should not trigger drift."""
+        config = CuringConfig(
+            enabled=True, drift_remap_threshold=0.3, drift_window=3,
+        )
+        detector = CuringDetector(config)
+        assert not detector.check_drift(0.1)
+        assert not detector.check_drift(0.2)
+        assert not detector.check_drift(0.1)
+
+    def test_consecutive_window_trigger(self):
+        """Remap rate above threshold for drift_window docs should trigger."""
+        config = CuringConfig(
+            enabled=True, drift_remap_threshold=0.3, drift_window=3,
+        )
+        detector = CuringDetector(config)
+        assert not detector.check_drift(0.4)
+        assert not detector.check_drift(0.5)
+        assert detector.check_drift(0.35)
+
+    def test_reset_after_low_rate(self):
+        """Low-rate doc in the middle should reset the window."""
+        config = CuringConfig(
+            enabled=True, drift_remap_threshold=0.3, drift_window=3,
+        )
+        detector = CuringDetector(config)
+        assert not detector.check_drift(0.4)
+        assert not detector.check_drift(0.5)
+        assert not detector.check_drift(0.1)  # breaks the streak
+        assert not detector.check_drift(0.4)
+        assert not detector.check_drift(0.5)
+        assert detector.check_drift(0.35)  # now 3 consecutive

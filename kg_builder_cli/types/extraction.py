@@ -45,6 +45,7 @@ class ExtractionMetadata(BaseModel):
     ontology: str = ""
     timestamp: datetime = Field(default_factory=datetime.now)
     chunk_count: int = 0
+    remap_count: int = 0
 
 
 class ExtractionResult(BaseModel):

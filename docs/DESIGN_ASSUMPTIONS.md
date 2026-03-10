@@ -2,7 +2,7 @@
 
 Tracks alignment between `docs/DESIGN.md` and the actual implementation. Each item is a verifiable fact from the design document checked against code.
 
-Last verified: 2026-03-10 (v0.1.11, post v12.1 - all 5 gaps closed)
+Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semantic resolution, signal-driven curing)
 
 ## Ontology Buffer (Section 5.5)
 
@@ -39,9 +39,16 @@ Last verified: 2026-03-10 (v0.1.11, post v12.1 - all 5 gaps closed)
 - [x] Enforcement threshold prunes low-frequency types before clustering (default 0.5%)
 - [x] All 11 stability metrics computed: Shannon entropy, KL divergence, JS divergence, Gini, Zipf R-squared, Heaps' beta, Chao1, ACE, accumulation rate, rolling variance
 - [x] `CuringDetector.is_converged()` checks metric-based convergence (JSD, entropy delta, type accumulation rate) before heuristic fallback
+- [x] `CuringDetector.is_plateau()` checks metric plateau (JSD, entropy delta, coverage delta) without requiring type accumulation rate = 0
 - [x] `is_cured()` heuristic fallback preserved for backward compatibility
 - [x] New config fields: `jsd_convergence_threshold` (default 0.01), `entropy_delta_threshold` (default 0.05)
+- [x] `plateau_entropy_delta` (default 0.1) - looser entropy threshold for plateau detection
+- [x] Curing check order: `is_converged()` -> `is_plateau()` -> `is_cured()` -> `max_fluid_entities` (safety net) -> `is_force_required()` (safety net)
+- [x] Failsafes (`max_fluid_entities`, `max_fluid_documents`) demoted to safety nets with WARN-level logging
 - [x] **Metrics tracked post-cure** - cured-phase loop records JSD, Chao1 coverage, and entropy delta for each document using the same `StabilityMetrics` tracker
+- [x] **Post-cure drift detection** - `CuringDetector.check_drift(remap_rate)` tracks remap rate per document. When rate exceeds `drift_remap_threshold` (default 0.3) for `drift_window` (default 3) consecutive docs, drift is signaled. Warning-only by default, opt-in re-curing via `re_cure_on_drift`
+- [x] `ExtractionMetadata.remap_count` tracks entities force-remapped during type enforcement
+- [x] Drift config: `drift_remap_threshold` (0.3), `drift_window` (3), `re_cure_on_drift` (false)
 - [ ] **Proposed composite curing mechanism** (design lines 999-1007) - described as future work, not implemented. Would use weighted metric composite instead of three-condition heuristic
 
 ## Type Exemplars and Bayesian Resolution (Section 5.8)
@@ -76,7 +83,10 @@ Last verified: 2026-03-10 (v0.1.11, post v12.1 - all 5 gaps closed)
 - [x] Entity deduplication by (type, id) tuple with merge strategy
 - [x] Relationship deduplication by (source, target, type) tuple
 - [x] Entity resolution within type blocks (Levenshtein + optional embeddings)
-- [x] Cross-type resolution with dynamic frequency-based priority
+- [x] Cross-type resolution with dynamic frequency-based priority and description similarity gate
+- [x] `_description_similarity()` Jaccard similarity on lowercased word sets, excluding stop words
+- [x] `cross_type_description_threshold` (default 0.3) gates cross-type merges - empty descriptions default to no merge
+- [x] `resolve_against_graph()` applies description similarity gate before remapping entity types
 - [x] Static fallback priority: Specification(8) > Component(7) > Feature(6) > WorkMode(5) > Product(4) > MedicalCondition(3) > Standard(2) > Organization(1)
 - [x] Step 4b supports conditional Bayesian resolution (when enabled) or Levenshtein fallback
 - [x] Relationship rewiring after cross-type merges
@@ -100,10 +110,15 @@ Last verified: 2026-03-10 (v0.1.11, post v12.1 - all 5 gaps closed)
 - [x] `type_resolution_top_k` = 3
 - [x] `type_resolution_entropy_threshold` = 0.8
 - [x] `bayesian_resolution` = false
+- [x] `plateau_entropy_delta` = 0.1
+- [x] `drift_remap_threshold` = 0.3
+- [x] `drift_window` = 3
+- [x] `re_cure_on_drift` = false
+- [x] `cross_type_description_threshold` = 0.3
 
 ## Known Gaps (prioritized)
 
-1. **Composite curing mechanism** - design lines 999-1007 describe a weighted metric composite for curing detection, replacing the three-condition heuristic. Not yet implemented, current system uses `is_converged()` (metric-based) with `is_cured()` (heuristic fallback)
+1. **Composite curing mechanism** - design lines 999-1007 describe a weighted metric composite for curing detection, replacing the three-condition heuristic. Not yet implemented, current system uses `is_converged()` (metric-based) with `is_plateau()` (metric plateau) and `is_cured()` (heuristic fallback)
 2. **Full OWL reasoning** - `owlready2` sync_reasoner and RDF export are not implemented. Cypher-based subclass propagation covers the transitive case but does not handle full OWL semantics (disjointness, property restrictions, cardinality constraints)
 
 ## Resolved Gaps

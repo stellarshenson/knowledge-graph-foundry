@@ -201,6 +201,34 @@ def _ingest_fluid(
                         ent_d_s,
                     )
 
+            # Drift detection
+            remap_rate = result.metadata.remap_count / max(len(result.entities), 1)
+            if detector.check_drift(remap_rate):
+                if config.curing.re_cure_on_drift:
+                    logger.warning(
+                        "[cured] DRIFT detected: re-entering fluid phase (remap rate {:.0%} for {} consecutive docs)",
+                        remap_rate,
+                        config.curing.drift_window,
+                    )
+                    cured = False
+                    accumulator = FluidAccumulator()
+                    detector = CuringDetector(config.curing)
+                    metrics_tracker = StabilityMetrics(
+                        variance_window=config.curing.metrics_variance_window,
+                    )
+                    # Re-process this document in fluid mode on next iteration
+                    # (it's already extracted, so just add to accumulator)
+                    accumulator.add_result(result)
+                    if buffer:
+                        buffer.accumulate_from_result(result.entities, result.relationships)
+                    continue
+                else:
+                    logger.warning(
+                        "[cured] DRIFT: {:.0%} entities remapped for {} consecutive docs",
+                        remap_rate,
+                        config.curing.drift_window,
+                    )
+
             # Graph-aware resolution: remap to existing graph types
             result = resolve_against_graph(result, config)
 
@@ -266,19 +294,22 @@ def _ingest_fluid(
         elif detector.is_converged():
             logger.info("[fluid] schema converged (metric-based)")
             should_cure = True
+        elif detector.is_plateau():
+            logger.info("[fluid] schema plateau detected (metric-based)")
+            should_cure = True
         elif detector.is_cured():
             logger.info("[fluid] schema has cured naturally (heuristic)")
             should_cure = True
         elif len(accumulator.all_entities()) >= config.curing.max_fluid_entities:
             logger.warning(
-                "[fluid] entity budget exceeded: {} >= max_fluid_entities={}",
+                "[fluid] SAFETY NET: entity budget exceeded: {} >= max_fluid_entities={} (signal-based curing did not trigger)",
                 len(accumulator.all_entities()),
                 config.curing.max_fluid_entities,
             )
             should_cure = True
         elif detector.is_force_required():
             logger.warning(
-                "[fluid] force-curing at max_fluid_documents={}",
+                "[fluid] SAFETY NET: force-curing at max_fluid_documents={} (signal-based curing did not trigger)",
                 config.curing.max_fluid_documents,
             )
             should_cure = True

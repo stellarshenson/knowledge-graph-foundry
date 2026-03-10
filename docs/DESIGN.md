@@ -929,25 +929,31 @@ Schema curing provides a middle path between pre-defined ontology seeds and full
 
 The ingestion loop operates in two phases. During the fluid phase, each document is extracted normally but results accumulate in a `FluidAccumulator` instead of loading to Neo4j. After each document, the `CuringDetector` evaluates three convergence conditions. When all three are met - or the failsafe triggers - a curing event fires: the accumulated results are consolidated (type enforcement, deduplication, entity resolution) and batch-flushed to Neo4j. Remaining documents process in the cured phase with direct per-document loading.
 
-**Curing detection algorithm** - two detection paths, checked in order:
+**Curing detection algorithm** - three detection paths, checked in priority order:
 
-1. **Metric-based convergence** (`CuringDetector.is_converged()`) - all three conditions must be true:
-   - JSD below `jsd_convergence_threshold` (default 0.01) for the last `stability_window` documents
+1. **Metric-based convergence** (`CuringDetector.is_converged()`) - strongest signal, all three conditions must hold for `stability_window` consecutive documents:
+   - JSD below `jsd_convergence_threshold` (default 0.01)
    - Entropy delta below `entropy_delta_threshold` (default 0.05)
    - Type accumulation rate equals 0 (no new types appearing)
 
-2. **Heuristic fallback** (`CuringDetector.is_cured()`) - three conditions must ALL be true:
+2. **Metric plateau** (`CuringDetector.is_plateau()`) - distribution shape has stabilized even if occasional new types trickle in. All conditions must hold for `stability_window` consecutive documents:
+   - JSD below `jsd_convergence_threshold` (default 0.01)
+   - Entropy delta below `plateau_entropy_delta` (default 0.1, looser than convergence threshold)
+   - Coverage delta below `coverage_delta_threshold` (default 0.05)
+   Unlike `is_converged()`, plateau detection does not require type accumulation rate to be zero. This handles domains where most types are discovered early but a long tail of rare types continues to appear without changing the distribution shape.
+
+3. **Heuristic fallback** (`CuringDetector.is_cured()`) - three conditions must ALL be true:
    - Minimum documents processed (`min_documents`, default 3)
-   - Coverage convergence: coverage delta below threshold (`coverage_delta_threshold`, default 0.05) for the last N documents
+   - Coverage convergence: coverage delta below threshold for the last N documents
    - Type stability: no new entity types for `stability_window` (default 3) consecutive documents
 
-The CLI checks `is_converged()` first. If metric-based convergence is not met, `is_cured()` provides the heuristic fallback. This preserves backward compatibility while enabling progression-based curing as metrics mature.
+The CLI checks these in order: `is_converged()` first (strictest), then `is_plateau()` (looser), then `is_cured()` (heuristic). The first path that returns True triggers curing.
 
-**Failsafes** - force-cure triggers if ANY of these are exceeded:
+**Failsafes** - safety nets that warn loudly and force-cure when hit. These are not primary curing signals - they exist to prevent resource exhaustion when convergence detection fails:
 - Document count: `max_fluid_documents` (default 20) reached
 - Entity budget: accumulated entities exceed `max_fluid_entities` (default 150)
 
-The entity budget prevents memory exhaustion when processing large PDFs with dense extraction, multimodal content, or hybrid fact generation. When a failsafe triggers, a warning is logged identifying which limit was hit, the current ontology snapshot is taken, and consolidation proceeds normally. The entity budget is checked after each document alongside the convergence conditions.
+When a failsafe triggers, a warning is logged at WARN level identifying which limit was hit and why signal-based curing did not fire first. The entity budget prevents memory exhaustion when processing large PDFs with dense extraction. Failsafes are checked after the signal-based detectors, ensuring they only fire as a last resort.
 
 **Data flow**:
 
@@ -977,11 +983,22 @@ Cured-phase per-document loading:
 
 Document N+1..M (cured phase)
   -> ingest_document() -> ExtractionResult
-  -> resolve_against_graph() (query Neo4j for existing entities, remap types/IDs, rewire relationships)
+  -> resolve_against_graph() (query Neo4j for existing entities, apply description similarity gate, remap types/IDs, rewire relationships)
   -> load_doc_chunks() (load Document + Chunk nodes, preserving per-document linkage)
   -> load_extraction(skip_doc_chunks=True) (load entities + relationships only)
   -> StabilityMetrics.record() + CuringDetector.record() (post-cure metric tracking)
 ```
+
+**Post-cure drift detection** - once cured, the system monitors whether the cured ontology continues to fit incoming documents. During cured-phase ingestion, type enforcement remaps entities whose extracted types do not match the cured ontology. A high remap rate signals that the document's domain is drifting away from the cured schema.
+
+The `CuringDetector` tracks remap rate per document via `check_drift(remap_rate)`. When the remap rate exceeds `drift_remap_threshold` (default 0.3, meaning 30% of entities required remapping) for `drift_window` (default 3) consecutive documents, the detector signals drift. The default behavior is warning-only: a WARN log identifies the drift rate and consecutive document count, giving the operator visibility into schema mismatch. When `re_cure_on_drift` is enabled (default false), the system re-enters the fluid phase - resetting the accumulator, clearing the cured flag, and allowing the ontology to re-evolve from the current buffer state plus incoming documents.
+
+Remap count is tracked in `ExtractionMetadata.remap_count`, populated during type enforcement in `ingest_document()`. The remap rate is computed as `remap_count / max(len(entities), 1)` per document.
+
+Configuration:
+- `drift_remap_threshold: 0.3` - fraction of entities remapped that signals drift
+- `drift_window: 3` - consecutive documents above threshold to trigger drift
+- `re_cure_on_drift: false` - opt-in automatic re-curing on detected drift
 
 **Configuration** (in `config.yml`):
 ```yaml
@@ -997,6 +1014,14 @@ curing:
   enforcement_threshold: 0.5          # min % of total entities for type to survive curing
   jsd_convergence_threshold: 0.01     # JSD below this for stability_window docs triggers metric-based convergence
   entropy_delta_threshold: 0.05       # entropy delta below this for metric-based convergence
+  plateau_entropy_delta: 0.1          # entropy delta threshold for plateau detection (looser than convergence)
+  drift_remap_threshold: 0.3          # remap rate above this signals schema drift
+  drift_window: 3                     # consecutive docs above threshold to trigger drift warning
+  re_cure_on_drift: false             # opt-in re-curing when drift detected
+
+extract:
+  ...existing fields...
+  cross_type_description_threshold: 0.3  # Jaccard similarity gate for cross-type entity merges
 ```
 
 **Stability metrics** - tracked after each document in both fluid and cured phases for empirical evaluation of convergence signals. All metrics are pure Python (`math` stdlib only). The `StabilityMetrics` class is purely computational - it does not make curing decisions. During the fluid phase, metrics feed the `CuringDetector` for convergence detection. Post-cure, metrics continue to be recorded for each document (JSD, Chao1 coverage, entropy delta) using the same `StabilityMetrics` tracker, providing visibility into whether the cured schema remains stable as new documents are ingested. The `is_converged()` method on `CuringDetector` consumes JSD, entropy delta, and type accumulation rate directly from the metrics stream.
@@ -1359,7 +1384,9 @@ Beyond exact ID matching, the pipeline runs a post-dedup resolution step to catc
 
 When embeddings are unavailable, the fallback uses normalized-name Levenshtein alone at threshold 0.85. Pairs exceeding the threshold are connected via Union-Find, and each connected component is merged into a canonical entity (longest name, longest description, unioned source chunks, averaged confidence). Brute-force pairwise comparison is used since entity counts per type block remain under 2,000 in practice.
 
-**Layer 3 - Cross-type resolution** (`resolution.py`): entities with identical normalized names across different types are merged into the most specific type. Type priority is built dynamically from the ontology buffer's frequency counts - higher frequency types get higher priority. This replaces the static 8-type hardcoded table that assigned priority 0 to custom types, making cross-type merges non-deterministic among ties. A static fallback table (Specification > Component > Feature > WorkMode > Product > MedicalCondition > Standard > Organization) covers cases where no frequency data is available. This catches entities like "ramp" extracted as both Feature and WorkMode, or "power supply" as both Component and Specification. After cross-type merging, relationship endpoints are rewired from the dropped entity's ID to the surviving canonical entity's ID.
+**Layer 3 - Cross-type resolution** (`resolution.py`): entities with identical normalized names across different types are candidates for merging into the most specific type. Before merging, a description similarity gate prevents "god-node" creation - entities that share a name but have semantically divergent descriptions are kept separate. The gate computes Jaccard similarity on lowercased word sets (excluding stop words and words shorter than 3 characters) between entity descriptions. When similarity falls below `cross_type_description_threshold` (default 0.3), the merge is blocked and both entities remain as distinct nodes with their original types. When both descriptions are empty, the merge is blocked by default (safe fallback - semantic compatibility cannot be determined). Setting the threshold to 0.0 reproduces the previous behavior where all name-matching entities merge regardless of description content.
+
+Type priority for approved merges is built dynamically from the ontology buffer's frequency counts - higher frequency types get higher priority. A static fallback table (Specification > Component > Feature > WorkMode > Product > MedicalCondition > Standard > Organization) covers cases where no frequency data is available. After cross-type merging, relationship endpoints are rewired from the dropped entity's ID to the surviving canonical entity's ID.
 
 **Embedding generation** (`embeddings.py`): when `config.extract.use_embeddings` is enabled, entity embeddings are generated via Amazon Titan Text Embeddings v2 (`amazon.titan-embed-text-v2:0`) through Bedrock. Input text per entity follows the format `"{type}: {name} - {description[:200]}"`, producing 1024-dimensional vectors stored on the entity and persisted to Neo4j for downstream vector search. Embeddings are generated after deduplication but before resolution.
 
@@ -1367,7 +1394,7 @@ When embeddings are unavailable, the fallback uses normalized-name Levenshtein a
 
 **Cross-type merge review**: cross-type merges are the highest-risk resolution operation because they silently change an entity's type. To control this risk, all cross-type merges are logged to a review report at `.kg-builder/runs/<timestamp>_cross_type_merges.yml` containing the merged entity names, original types, surviving type, and the priority scores that determined the outcome. When entity names are short (3 characters or fewer) or when the priority gap between the two types is 1 (adjacent ranks), the merge is flagged as `review: true` in the report. In interactive mode, flagged merges are presented to the user for confirmation before proceeding. In batch mode, flagged merges proceed automatically but are prominently logged as warnings. This operational control catches the cases where cross-type merging is most likely to produce false merges without blocking the pipeline.
 
-**Limitations**: cross-type resolution assumes that entities with identical normalized names across types refer to the same concept - this may produce false merges in domains where the same term genuinely means different things in different type contexts. Short entity names (abbreviations, acronyms) are prone to both false matches and false negatives depending on threshold settings.
+**Limitations**: cross-type resolution uses description similarity as a semantic gate, which mitigates but does not eliminate false merges. Bag-of-words Jaccard similarity cannot detect paraphrasing or domain-specific synonymy in descriptions. Entities with no descriptions default to no merge, which is conservative but may miss valid merges. The `cross_type_description_threshold` parameter controls this tradeoff - lower values allow more merges, 0.0 reproduces pre-gate behavior.
 
 > **Note - original design**: the initial design specified a 4-step escalating-cost pipeline: (1) exact ID match, (2) SpaCy + Levenshtein pre-filter with Jaccard token overlap, (3) embedding similarity with ANN indexing (FAISS/hnswlib) for large entity sets, (4) LLM-based clustering for semantic equivalences. Benchmarking across 5 iterations (v03-v07) showed that name normalization in the ID hash eliminated 80%+ of duplicates before any fuzzy matching, making steps 2-4 largely unnecessary. The simpler three-layer approach (normalize + dual-threshold fuzzy + cross-type merge) achieved 98% deterministic accuracy and 4/5 generative quality on cross-document resolution. SpaCy, ANN indexing, and LLM clustering were not implemented. See `docs/experiments/entity_resolution_methods.md` for the full evaluation.
 
