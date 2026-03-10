@@ -31,8 +31,6 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] CLI flags: `--fluid` / `--no-fluid` and `--cure` for force-cure
 - [x] Three-condition detection: min_documents, coverage delta convergence, type stability window
 - [x] Failsafe: `max_fluid_documents` (default 20)
-- [x] Failsafe: `max_fluid_entities` (default 150)
-- [x] **Design prose max_fluid_entities** - fixed prose from 50,000 to 150 matching config and implementation
 - [x] Two-layer type normalization: deterministic (always-on) + LLM clustering (at curing time)
 - [x] `normalize_type_name()` splits on spaces, underscores, hyphens, camelCase boundaries -> PascalCase
 - [x] Type clustering via single LLM call with instructor + litellm structured output
@@ -43,8 +41,8 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] `is_cured()` heuristic fallback preserved for backward compatibility
 - [x] New config fields: `jsd_convergence_threshold` (default 0.01), `entropy_delta_threshold` (default 0.05)
 - [x] `plateau_entropy_delta` (default 0.1) - looser entropy threshold for plateau detection
-- [x] Curing check order: `is_converged()` -> `is_plateau()` -> `is_cured()` -> `max_fluid_entities` (safety net) -> `is_force_required()` (safety net)
-- [x] Failsafes (`max_fluid_entities`, `max_fluid_documents`) demoted to safety nets with WARN-level logging
+- [x] Curing check order: `is_converged()` -> `is_plateau()` -> `is_cured()` -> `is_force_required()` (safety net)
+- [x] `max_fluid_documents` is the sole safety net with WARN-level logging
 - [x] **Metrics tracked post-cure** - cured-phase loop records JSD, Chao1 coverage, and entropy delta for each document using the same `StabilityMetrics` tracker
 - [x] **Post-cure drift detection** - `CuringDetector.check_drift(remap_rate)` tracks remap rate per document. When rate exceeds `drift_remap_threshold` (default 0.3) for `drift_window` (default 3) consecutive docs, drift is signaled. Warning-only by default, opt-in re-curing via `re_cure_on_drift`
 - [x] `ExtractionMetadata.remap_count` tracks entities force-remapped during type enforcement
@@ -101,7 +99,7 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] `embedding_threshold` = 0.80
 - [x] `min_documents` = 3
 - [x] `max_fluid_documents` = 20
-- [x] `max_fluid_entities` = 150
+
 - [x] `coverage_delta_threshold` = 0.05
 - [x] `stability_window` = 3
 - [x] `metrics_variance_window` = 5
@@ -131,4 +129,4 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - **LLM escalation for high-entropy** - resolved via `_llm_resolve()` using sync instructor+litellm call, opt-in via `extract.llm_escalation`
 - **Schema signal extraction** - resolved via standalone `extract_schema_signals()` in `schema_signals.py`, opt-in via `extract.schema_signal_extraction`
 - **OWL subclass propagation** - resolved via Cypher-based `run_subclass_propagation()` in `loading/reasoning.py`, opt-in via `ontology_buffer.post_load_reasoning`
-- **max_fluid_entities prose** - fixed design text from 50,000 to 150
+- **max_fluid_entities removed** - entity count was a blunt failsafe replaced by signal-driven curing (plateau detection, metric convergence). `max_fluid_documents` remains as the sole safety net

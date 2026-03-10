@@ -88,7 +88,6 @@ class CuringConfig(BaseModel):
     enabled: bool = False
     min_documents: int = 3
     max_fluid_documents: int = 20
-    max_fluid_entities: int = 150
     coverage_delta_threshold: float = 0.05
     stability_window: int = 3
     auto_cure: bool = True

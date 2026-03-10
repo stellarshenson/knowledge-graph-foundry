@@ -456,7 +456,6 @@ curing:
   enabled: false                      # enable two-phase fluid/cured ingestion
   min_documents: 3                   # minimum docs before curing can trigger
   max_fluid_documents: 20            # force-cure failsafe after N docs
-  max_fluid_entities: 150          # force-cure if accumulated entities exceed limit
   coverage_delta_threshold: 0.05     # coverage must stabilize below this delta
   stability_window: 3                # consecutive docs with no new types required
   auto_cure: true                    # automatically cure when conditions met
@@ -949,11 +948,7 @@ The ingestion loop operates in two phases. During the fluid phase, each document
 
 The CLI checks these in order: `is_converged()` first (strictest), then `is_plateau()` (looser), then `is_cured()` (heuristic). The first path that returns True triggers curing.
 
-**Failsafes** - safety nets that warn loudly and force-cure when hit. These are not primary curing signals - they exist to prevent resource exhaustion when convergence detection fails:
-- Document count: `max_fluid_documents` (default 20) reached
-- Entity budget: accumulated entities exceed `max_fluid_entities` (default 150)
-
-When a failsafe triggers, a warning is logged at WARN level identifying which limit was hit and why signal-based curing did not fire first. The entity budget prevents memory exhaustion when processing large PDFs with dense extraction. Failsafes are checked after the signal-based detectors, ensuring they only fire as a last resort.
+**Failsafe** - `max_fluid_documents` (default 20) is a safety net that force-cures when reached. It exists to prevent resource exhaustion when signal-based convergence detection fails. When triggered, a warning is logged identifying why signal-based curing did not fire first. The failsafe is checked after all three signal-based detectors, ensuring it only fires as a last resort.
 
 **Data flow**:
 
@@ -1006,7 +1001,6 @@ curing:
   enabled: true
   min_documents: 3
   max_fluid_documents: 20
-  max_fluid_entities: 150
   coverage_delta_threshold: 0.05
   stability_window: 3
   auto_cure: true

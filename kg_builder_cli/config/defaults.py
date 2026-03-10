@@ -62,7 +62,6 @@ DEFAULTS: dict = {
         "enabled": False,
         "min_documents": 3,
         "max_fluid_documents": 20,
-        "max_fluid_entities": 150,
         "coverage_delta_threshold": 0.05,
         "stability_window": 3,
         "auto_cure": True,
