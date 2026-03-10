@@ -99,6 +99,9 @@ class CuringConfig(BaseModel):
     drift_remap_threshold: float = 0.3
     drift_window: int = 3
     re_cure_on_drift: bool = False
+    generative_curing: bool = False
+    generative_patience: int = 3
+    generative_max_tool_calls: int = 2
 
 
 class AppConfig(BaseModel):

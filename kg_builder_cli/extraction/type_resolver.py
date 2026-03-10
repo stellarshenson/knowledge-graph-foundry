@@ -45,6 +45,7 @@ class BayesianTypeResolver:
         type_exemplars: dict[str, tuple[TypeExemplar, ...]] | None = None,
         llm_config: LLMConfig | None = None,
         llm_escalation: bool = False,
+        neo4j_config=None,
     ):
         self._top_k = config.type_resolution_top_k
         self._entropy_threshold = config.type_resolution_entropy_threshold
@@ -53,6 +54,7 @@ class BayesianTypeResolver:
         self._type_exemplars = type_exemplars or {}
         self._llm_config = llm_config
         self._llm_escalation = llm_escalation
+        self._neo4j_config = neo4j_config
 
     def _build_prior(self, type_frequencies: dict[str, int]) -> dict[str, float]:
         """Build prior P(type) from normalized type frequencies."""
@@ -295,7 +297,9 @@ class BayesianTypeResolver:
     ) -> str:
         """Use LLM to resolve ambiguous type assignment.
 
-        Falls back to argmax on any exception.
+        Two-phase: if top-2 posterior gap < 0.15, entity has a description,
+        and neo4j_config is available, queries graph for similar entities
+        before the final LLM call. Falls back to argmax on any exception.
         """
         try:
             import instructor
@@ -328,6 +332,35 @@ class BayesianTypeResolver:
                 f"Which type best fits this entity? Respond with ONLY the type name, "
                 f"choosing from: {', '.join(candidate_types)}"
             )
+
+            # Graph query enrichment: two-phase when genuinely ambiguous
+            sorted_probs = sorted(posterior.values(), reverse=True)
+            top2_gap = sorted_probs[0] - sorted_probs[1] if len(sorted_probs) >= 2 else 1.0
+            if top2_gap < 0.15 and entity.description and self._neo4j_config is not None:
+                from kg_builder_cli.curing.graph_query import GraphQueryRequest, query_graph
+
+                request = GraphQueryRequest(
+                    query_type="entity_search",
+                    filter_name=entity.name,
+                )
+                try:
+                    query_result = query_graph(request, self._neo4j_config)
+                    if query_result.records:
+                        graph_context = "\n".join(
+                            f"  - {r['name']} (type: {r['type']})"
+                            for r in query_result.records[:5]
+                        )
+                        prompt += (
+                            f"\n\n**Existing graph entities matching '{entity.name}'**:\n"
+                            f"{graph_context}"
+                        )
+                        logger.debug(
+                            "LLM escalation enriched with {} graph matches for '{}'",
+                            len(query_result.records),
+                            entity.name,
+                        )
+                except Exception:
+                    logger.debug("Graph query failed during LLM escalation for '{}'", entity.name)
 
             from pydantic import BaseModel as _BM
 

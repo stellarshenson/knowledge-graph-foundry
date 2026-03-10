@@ -950,6 +950,48 @@ The CLI checks these in order: `is_converged()` first (strictest), then `is_plat
 
 **Failsafe** - `max_fluid_documents` (default 20) is a safety net that force-cures when reached. It exists to prevent resource exhaustion when signal-based convergence detection fails. When triggered, a warning is logged identifying why signal-based curing did not fire first. The failsafe is checked after all three signal-based detectors, ensuring it only fires as a last resort.
 
+**Generative curing advisory** - when `generative_curing` is enabled (default false), an LLM advisory layer replaces metric-based curing checks. After `min_documents`, the LLM receives the complete metric history as a timeline, the type list with frequencies, domain intent, and recent type discovery, then returns a structured decision `{should_cure: bool, reasoning: str}`.
+
+The LLM acts as a structured evaluator following explicit decision rules embedded in the prompt. It receives the complete metric history as a per-document timeline and applies quantitative rules that reference concrete values from that history. The LLM's unique contribution is domain understanding - judging whether the type list is semantically complete for the stated intent - which metrics alone cannot assess. All other decision rules are quantitative and verifiable from the timeline data.
+
+The metric history is presented as a per-document timeline table:
+
+```
+Doc | JSD     | Entropy D | Type Accum | Chao1 Cov | Heaps B | New Types
+  1 | 0.4523  | 0.3100    | 3.0        | 0.600     | 0.890   | Person, Device, Org
+  2 | 0.1200  | 0.0800    | 1.0        | 0.750     | 0.450   | Standard
+  3 | 0.0050  | 0.0200    | 0.0        | 0.950     | 0.120   | (none)
+```
+
+The cure prompt specifies explicit rules: CURE if the type list covers the domain intent's categories AND JSD has been below 0.05 for 2+ consecutive docs AND no more than 1 new type in the last 2 docs AND Chao1 coverage above 0.7. BLOCK if the intent implies missing categories OR type accumulation rate exceeded 1.0 in the latest doc OR Chao1 below 0.5. This structured approach makes decisions reproducible - the same metric history and type list produce the same outcome.
+
+On any LLM failure, the system transparently falls through to existing metric-based checks (`is_converged`, `is_plateau`, `is_cured`). The `max_fluid_documents` safety net always applies regardless of LLM decision, preventing infinite fluid phase.
+
+For drift decisions: when `check_drift()` flags sustained remap rates, the LLM receives the remap history timeline (per-document remap rate) and applies structured rules: RE-CURE if 3+ distinct remapped types are genuinely missing from the cured ontology AND remap rate sustained above 30%. DISMISS if remapped types are synonyms/variants of existing cured types OR remap rate dropped below 20% in the window. Returns `{should_recure: bool, reasoning: str}`. On LLM failure, falls back to the `re_cure_on_drift` boolean.
+
+Cost: one or two sync LLM calls per document in fluid phase (after `min_documents`), one per drift event in cured phase.
+
+**Graph query tool** - in ambiguous cases, the LLM may request a single graph query before deciding. During fluid phase, queries execute against the in-memory FluidAccumulator (entity counts by type, relationship pattern counts, entity name search). During cured phase (drift evaluation and LLM escalation), queries execute against Neo4j. The LLM receives a `GraphQueryResult` with a summary and up to 20 records, then makes its final decision in a second call. Maximum `generative_max_tool_calls` (default 2) queries per decision. The query is only honoured when metrics are genuinely ambiguous (JSD 0.02-0.08 or Chao1 0.5-0.75 for curing; top-2 posterior gap < 0.15 for type resolution).
+
+**Early stopping** - when generative curing is enabled, the system tracks consecutive LLM "cure" votes. If the LLM returns `should_cure=True` for `generative_patience` (default 3) consecutive documents, curing triggers automatically on the next check. This prevents indefinite deferral when the LLM is confident but the caller keeps asking. The counter resets whenever the LLM votes "don't cure".
+
+Check order (fluid phase):
+1. `force_cure` flag - user override
+2. `generative_curing` + LLM - LLM decides (sees metrics, types, intent). On failure, falls through to metric checks (3-5)
+2a. `patience_exceeded()` - early stop after N consecutive cure votes
+2b. LLM says cure - cure
+2c. LLM says don't cure - skip metrics, wait
+2d. LLM fails - fall through to metrics (3-5)
+3. `is_converged()` - metric-based convergence (when generative off or LLM failed)
+4. `is_plateau()` - metric plateau
+5. `is_cured()` - heuristic fallback
+6. `max_fluid_documents` - safety net (ALWAYS, even after LLM says no)
+
+Check order (cured phase drift):
+1. `check_drift()` false - no action
+2. `check_drift()` true + `generative_curing` - LLM decides re-cure or dismiss. On failure, falls back to `re_cure_on_drift` boolean
+3. `check_drift()` true + no generative - `re_cure_on_drift` boolean applies
+
 **Data flow**:
 
 ```
@@ -1012,6 +1054,9 @@ curing:
   drift_remap_threshold: 0.3          # remap rate above this signals schema drift
   drift_window: 3                     # consecutive docs above threshold to trigger drift warning
   re_cure_on_drift: false             # opt-in re-curing when drift detected
+  generative_curing: false            # LLM-assisted curing decisions (metrics as input)
+  generative_patience: 3              # consecutive LLM "cure" votes to auto-trigger
+  generative_max_tool_calls: 2        # max graph queries per LLM decision
 
 extract:
   ...existing fields...

@@ -312,3 +312,52 @@ class TestCheckDrift:
         assert not detector.check_drift(0.4)
         assert not detector.check_drift(0.5)
         assert detector.check_drift(0.35)  # now 3 consecutive
+
+
+class TestPatienceTracking:
+    """Tests for LLM vote patience tracking and early stopping."""
+
+    def test_record_llm_vote_consecutive(self):
+        """Counter should increment on consecutive True votes."""
+        config = CuringConfig(enabled=True)
+        detector = CuringDetector(config)
+        detector.record_llm_vote(True)
+        assert detector._consecutive_cure_votes == 1
+        detector.record_llm_vote(True)
+        assert detector._consecutive_cure_votes == 2
+        detector.record_llm_vote(True)
+        assert detector._consecutive_cure_votes == 3
+
+    def test_record_llm_vote_reset(self):
+        """Counter should reset on False vote."""
+        config = CuringConfig(enabled=True)
+        detector = CuringDetector(config)
+        detector.record_llm_vote(True)
+        detector.record_llm_vote(True)
+        assert detector._consecutive_cure_votes == 2
+        detector.record_llm_vote(False)
+        assert detector._consecutive_cure_votes == 0
+        detector.record_llm_vote(True)
+        assert detector._consecutive_cure_votes == 1
+
+    def test_patience_exceeded(self):
+        """Should return True when votes reach patience threshold."""
+        config = CuringConfig(enabled=True)
+        detector = CuringDetector(config)
+        assert not detector.patience_exceeded(3)
+        detector.record_llm_vote(True)
+        assert not detector.patience_exceeded(3)
+        detector.record_llm_vote(True)
+        assert not detector.patience_exceeded(3)
+        detector.record_llm_vote(True)
+        assert detector.patience_exceeded(3)
+
+    def test_patience_not_exceeded_after_reset(self):
+        """Patience should not trigger after a reset."""
+        config = CuringConfig(enabled=True)
+        detector = CuringDetector(config)
+        detector.record_llm_vote(True)
+        detector.record_llm_vote(True)
+        detector.record_llm_vote(False)  # reset
+        detector.record_llm_vote(True)
+        assert not detector.patience_exceeded(3)

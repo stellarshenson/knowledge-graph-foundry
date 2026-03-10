@@ -186,6 +186,7 @@ def ingest_document(
                 type_exemplars=ontology.type_exemplars,
                 llm_config=config.llm if config.extract.llm_escalation else None,
                 llm_escalation=config.extract.llm_escalation,
+                neo4j_config=config.neo4j if config.extract.llm_escalation else None,
             )
             all_entities, remap_count = _resolve_types_bayesian(
                 all_entities,

@@ -204,7 +204,37 @@ def _ingest_fluid(
             # Drift detection
             remap_rate = result.metadata.remap_count / max(len(result.entities), 1)
             if detector.check_drift(remap_rate):
-                if config.curing.re_cure_on_drift:
+                should_recure = False
+                if config.curing.generative_curing:
+                    from kg_builder_cli.curing.generative import llm_should_recure
+
+                    cured_types = list(buffer.type_names()) if buffer else []
+                    decision = llm_should_recure(
+                        cured_ontology_types=cured_types,
+                        remap_history=detector._remap_history,
+                        recent_remap_rate=remap_rate,
+                        remap_count=result.metadata.remap_count,
+                        intent=config.ontology_buffer.intent,
+                        stability=stability or {},
+                        llm_config=config.llm,
+                        neo4j_config=config.neo4j,
+                    )
+                    if decision is not None:
+                        should_recure = decision.should_recure
+                        if should_recure:
+                            logger.info("[cured] LLM advises re-cure: {}", decision.reasoning)
+                        else:
+                            logger.info("[cured] LLM dismisses drift: {}", decision.reasoning)
+                    else:
+                        logger.warning(
+                            "[cured] generative re-cure failed, falling back to re_cure_on_drift={}",
+                            config.curing.re_cure_on_drift,
+                        )
+                        should_recure = config.curing.re_cure_on_drift
+                else:
+                    should_recure = config.curing.re_cure_on_drift
+
+                if should_recure:
                     logger.warning(
                         "[cured] DRIFT detected: re-entering fluid phase (remap rate {:.0%} for {} consecutive docs)",
                         remap_rate,
@@ -291,16 +321,56 @@ def _ingest_fluid(
         if force_cure:
             logger.warning("[fluid] force-cure requested after first document")
             should_cure = True
-        elif detector.is_converged():
-            logger.info("[fluid] schema converged (metric-based)")
+        elif (
+            config.curing.generative_curing
+            and detector.docs_processed >= config.curing.min_documents
+        ):
+            from kg_builder_cli.curing.generative import llm_should_cure
+
+            decision = llm_should_cure(
+                type_names=buffer.type_names() if buffer else set(),
+                frequencies=buffer.frequencies() if buffer else {},
+                coverage=coverage,
+                intent=config.ontology_buffer.intent,
+                stability=stability or {},
+                metrics_history=detector._metrics_history,
+                new_types_history=detector._new_types_history,
+                docs_processed=detector.docs_processed,
+                total_entities=len(accumulator.all_entities()),
+                llm_config=config.llm,
+                min_documents=config.curing.min_documents,
+                accumulator=accumulator,
+                buffer=buffer,
+                max_tool_calls=config.curing.generative_max_tool_calls,
+            )
+            if decision is not None:
+                detector.record_llm_vote(decision.should_cure)
+                if decision.should_cure:
+                    logger.info("[fluid] LLM advises cure: {}", decision.reasoning)
+                    should_cure = True
+                else:
+                    logger.info("[fluid] LLM advises continue: {}", decision.reasoning)
+            else:
+                logger.warning("[fluid] generative curing failed, falling back to metrics")
+                should_cure = _check_metric_curing(detector)
+
+        # Early stopping: patience-based auto-cure
+        if (
+            not should_cure
+            and config.curing.generative_curing
+            and detector.patience_exceeded(config.curing.generative_patience)
+        ):
+            logger.info(
+                "[fluid] EARLY STOP: {} consecutive cure votes",
+                config.curing.generative_patience,
+            )
             should_cure = True
-        elif detector.is_plateau():
-            logger.info("[fluid] schema plateau detected (metric-based)")
-            should_cure = True
-        elif detector.is_cured():
-            logger.info("[fluid] schema has cured naturally (heuristic)")
-            should_cure = True
-        elif detector.is_force_required():
+
+        if not should_cure and not force_cure and not config.curing.generative_curing:
+            should_cure = _check_metric_curing(detector)
+
+        # Safety net ALWAYS applies
+        if not should_cure and detector.is_force_required():
             logger.warning(
                 "[fluid] SAFETY NET: force-curing at max_fluid_documents={} (signal-based curing did not trigger)",
                 config.curing.max_fluid_documents,
@@ -447,6 +517,20 @@ def _ingest_fluid(
             load_result.nodes_merged,
             load_result.relationships_created,
         )
+
+
+def _check_metric_curing(detector) -> bool:
+    """Check metric-based curing conditions: converged, plateau, or heuristic."""
+    if detector.is_converged():
+        logger.info("[fluid] schema converged (metric-based)")
+        return True
+    if detector.is_plateau():
+        logger.info("[fluid] schema plateau detected (metric-based)")
+        return True
+    if detector.is_cured():
+        logger.info("[fluid] schema has cured naturally (heuristic)")
+        return True
+    return False
 
 
 def _build_exemplar_index(buffer, config):
