@@ -1057,6 +1057,31 @@ ontology_buffer:
 - Extraction prompt: `_build_extraction_prompt()` includes exemplars when available
 - Cured phase: frozen exemplars guide type assignment for remaining documents
 
+**Bayesian type resolution** - a post-extraction resolution layer that models type assignment as Bayesian inference. Where type exemplars reduce ambiguity at extraction time (prevention), Bayesian resolution handles the residual ambiguity that exemplars do not catch (correction). The system maintains a prior probability distribution over types from the ontology buffer's normalized frequencies, then updates it with evidence from multiple signals to produce a posterior distribution for each entity.
+
+The prior `P(type)` is the buffer's type frequency distribution, normalized to probabilities. For each entity, the resolver considers only the top-k candidate types (configurable, default 3) by prior probability. This keeps the computation lightweight - with 10 types in a cured ontology, most entities have at most 2-3 plausible types.
+
+Evidence sources provide likelihood ratios that update the prior via Bayes' rule:
+
+1. **Exemplar similarity** `P(name | type)` - embedding cosine similarity or normalized Levenshtein distance between the entity name and each candidate type's exemplar set. If "Heated Humidifier" is highly similar to Component exemplars [Humidifier, Tubing, Filter], this strongly favors Component
+2. **Relationship context** `P(relationships | type)` - the relationship types extracted alongside the entity provide a strong signal. An entity participating in `HAS_COMPONENT` relationships is likely a Component; one in `HAS_SPECIFICATION` is likely a Specification
+3. **Co-occurrence pattern** `P(co_entities | type)` - entities extracted from the same chunk as known Components are more likely to be Components. This captures local document context
+4. **Description semantics** `P(description | type)` - correlation between entity description keywords and the description patterns of existing entities of each candidate type
+
+The posterior `P(type | evidence)` determines the resolution path. When posterior entropy is low (one type dominates), the resolver assigns the winning type deterministically - no LLM call needed. When posterior entropy exceeds a configurable threshold, the assignment is ambiguous and the resolver escalates to a fast reasoning agent. The agent receives the entity context, the posterior distribution, exemplars for each candidate type, and graph neighborhood evidence, then makes a deliberate type choice. This two-tier approach ensures that the common case (confident assignments) is fast and cheap, while only the genuinely ambiguous entities (the source of cross-type duplicates) incur the cost of agent reasoning.
+
+**Configuration**:
+```yaml
+ontology_buffer:
+  max_type_exemplars: 5              # max example entities stored per type for few-shot guidance
+  type_resolution_top_k: 3           # candidate types considered per entity
+  type_resolution_entropy_threshold: 0.8  # posterior entropy above this triggers agent reasoning
+```
+
+**Module structure**:
+- `kg_builder_cli/extraction/type_resolver.py` - `BayesianTypeResolver` class with `resolve(entity, context) -> str` method
+- Integrates after extraction, before dedup: entities with ambiguous type assignments are resolved before ID normalization
+
 ## 6. Unstructured Ingestion Pipeline
 
 The unstructured pipeline transforms free-form text documents into a knowledge graph. Documents are parsed, chunked, extracted through LLM calls constrained by the evolving ontology buffer, deduplicated, resolved, and loaded into Neo4J.
