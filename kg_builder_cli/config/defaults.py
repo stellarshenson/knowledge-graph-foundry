@@ -74,7 +74,7 @@ DEFAULTS: dict = {
         "drift_window": 3,
         "re_cure_on_drift": False,
         "generative_curing": False,
-        "generative_patience": 5,
+        "generative_patience": 0.4,
         "generative_max_tool_calls": 2,
     },
     "paths": {

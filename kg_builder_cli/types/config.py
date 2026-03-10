@@ -100,7 +100,7 @@ class CuringConfig(BaseModel):
     drift_window: int = 3
     re_cure_on_drift: bool = False
     generative_curing: bool = False
-    generative_patience: int = 5
+    generative_patience: float = 0.4
     generative_max_tool_calls: int = 2
 
 
