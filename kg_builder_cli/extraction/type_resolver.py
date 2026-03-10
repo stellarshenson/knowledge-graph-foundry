@@ -117,6 +117,18 @@ class BayesianTypeResolver:
         best_type = max(posterior, key=lambda t: posterior[t])
         best_prob = posterior[best_type]
 
+        # Audit log: prior, posteriors, entropy for diagnostic tracing
+        prior_str = " ".join(f"{t}={self._prior.get(t, 0):.3f}" for t in candidate_types)
+        post_str = " ".join(f"{t}={posterior.get(t, 0):.3f}" for t in candidate_types)
+        logger.debug(
+            "Bayesian audit: {} | prior={{{}}} | posteriors={{{}}} | entropy={:.3f} | assigned={}",
+            entity.name,
+            prior_str,
+            post_str,
+            entropy,
+            best_type,
+        )
+
         if entropy < self._entropy_threshold:
             if best_type != entity.type:
                 logger.debug(
@@ -238,7 +250,25 @@ class BayesianTypeResolver:
         if not exemplars:
             return 1.0
 
-        entity_words = set(entity.description.lower().split())
+        stop = {
+            "a",
+            "an",
+            "the",
+            "is",
+            "are",
+            "of",
+            "for",
+            "in",
+            "to",
+            "and",
+            "or",
+            "with",
+            "that",
+            "this",
+        }
+        entity_words = {
+            w for w in entity.description.lower().split() if w not in stop and len(w) > 2
+        }
         if not entity_words:
             return 1.0
 
@@ -246,7 +276,7 @@ class BayesianTypeResolver:
         for ex in exemplars:
             if not ex.description:
                 continue
-            ex_words = set(ex.description.lower().split())
+            ex_words = {w for w in ex.description.lower().split() if w not in stop and len(w) > 2}
             if not ex_words:
                 continue
             intersection = entity_words & ex_words
