@@ -137,6 +137,7 @@ Each benchmark run produces a versioned document in `docs/benchmarks/`:
 - Contains: conditions (model, config, ontology), test data, dimension scores, per-check results, reasoning about failures, improvement plan
 - Previous benchmarks are never deleted - they form the improvement history
 - `docs/benchmarks/` directory tracks the complete evolution from v01 onward
+- Benchmark results must always be saved as markdown files, not JSON
 
 ## Design Feedback Loop
 

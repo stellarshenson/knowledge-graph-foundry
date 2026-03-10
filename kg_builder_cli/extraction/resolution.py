@@ -1,8 +1,10 @@
-"""Entity resolution via fuzzy name matching within type blocks."""
+"""Entity resolution via multi-signal matching and graph-based clustering."""
 from __future__ import annotations
 
+import numpy as np
 from loguru import logger
 
+from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.extraction import Entity
 
 
@@ -31,14 +33,23 @@ class _UnionFind:
 
 
 def resolve_entities(
-    entities: list[Entity], threshold: float = 0.85
+    entities: list[Entity],
+    threshold: float = 0.85,
+    use_embeddings: bool = False,
+    embedding_threshold: float = 0.80,
+    name_threshold: float = 0.65,
 ) -> list[Entity]:
-    """Merge near-duplicate entities within type blocks using fuzzy name matching.
+    """Merge near-duplicate entities within type blocks using multi-signal matching.
 
-    Entities are grouped by type, then within each group Levenshtein ratio
-    is computed for all pairs. Pairs above threshold are merged transitively
-    via union-find. The canonical entity in each cluster gets the longest
-    name, longest description, union of source_chunks, and averaged confidence.
+    Signals:
+    1. Levenshtein ratio on normalized names (strips generic suffixes)
+    2. Cosine similarity on embeddings (if available and use_embeddings=True)
+
+    Matching logic:
+    - If embeddings available: name_sim >= name_threshold AND cosine >= embedding_threshold
+    - If no embeddings: name_sim >= threshold (backward-compatible)
+
+    Connected components on the similarity graph determine merge clusters.
     """
     if len(entities) <= 1:
         return entities
@@ -52,8 +63,19 @@ def resolve_entities(
 
     resolved: list[Entity] = []
     for entity_type, block in type_blocks.items():
-        merged_block = _resolve_block(block, threshold, levenshtein_ratio)
+        has_embeddings = use_embeddings and any(e.embedding for e in block)
+        merged_block = _resolve_block(
+            block,
+            threshold=threshold,
+            ratio_fn=levenshtein_ratio,
+            use_embeddings=has_embeddings,
+            embedding_threshold=embedding_threshold,
+            name_threshold=name_threshold,
+        )
         resolved.extend(merged_block)
+
+    # Cross-type resolution: merge entities with identical normalized names
+    resolved, id_map = _resolve_cross_type(resolved)
 
     merge_count = len(entities) - len(resolved)
     if merge_count > 0:
@@ -63,11 +85,127 @@ def resolve_entities(
             len(resolved),
             merge_count,
         )
+
+    # Store ID map on module level for caller access
+    resolve_entities._last_id_map = id_map
+
     return resolved
 
 
+# Initialize the class attribute
+resolve_entities._last_id_map = {}
+
+
+# Type specificity: higher number = more specific, preferred when merging
+_TYPE_PRIORITY = {
+    "Specification": 8,
+    "Component": 7,
+    "Feature": 6,
+    "WorkMode": 5,
+    "Product": 4,
+    "MedicalCondition": 3,
+    "Standard": 2,
+    "Organization": 1,
+}
+
+
+def _resolve_cross_type(entities: list[Entity]) -> tuple[list[Entity], dict[str, str]]:
+    """Merge entities with identical normalized names across different types.
+
+    When two entities share the same normalized name but have different types,
+    keep the more specific type (higher priority) and merge the other into it.
+
+    Returns (resolved_entities, id_mapping) where id_mapping maps merged entity
+    IDs to their canonical entity IDs (for relationship rewiring).
+    """
+    from collections import defaultdict
+
+    name_groups: dict[str, list[int]] = defaultdict(list)
+    for idx, entity in enumerate(entities):
+        norm = normalize_entity_name(entity.name)
+        name_groups[norm].append(idx)
+
+    merged_indices: set[int] = set()
+    canonicals: dict[int, Entity] = {}
+    id_map: dict[str, str] = {}
+
+    for norm_name, indices in name_groups.items():
+        if len(indices) <= 1:
+            continue
+
+        # Pick the one with highest type priority as canonical
+        best_idx = max(
+            indices,
+            key=lambda i: _TYPE_PRIORITY.get(entities[i].type, 0),
+        )
+
+        canonical = entities[best_idx].model_copy()
+        for idx in indices:
+            if idx == best_idx:
+                continue
+            id_map[entities[idx].id] = canonical.id
+            canonical = _merge_entities(canonical, entities[idx])
+            merged_indices.add(idx)
+        canonicals[best_idx] = canonical
+
+    # Build result
+    result: list[Entity] = []
+    for idx, entity in enumerate(entities):
+        if idx in merged_indices:
+            continue
+        if idx in canonicals:
+            result.append(canonicals[idx])
+        else:
+            result.append(entity)
+
+    cross_merged = len(entities) - len(result)
+    if cross_merged > 0:
+        logger.info("Cross-type resolution: merged {} entities", cross_merged)
+
+    return result, id_map
+
+
+def rewire_relationships(
+    relationships: list,
+    id_map: dict[str, str],
+) -> list:
+    """Rewire relationship endpoints after entity merges."""
+    if not id_map:
+        return relationships
+
+    rewired = 0
+    for rel in relationships:
+        if rel.source in id_map:
+            rel.source = id_map[rel.source]
+            rewired += 1
+        if rel.target in id_map:
+            rel.target = id_map[rel.target]
+            rewired += 1
+
+    if rewired > 0:
+        logger.info("Rewired {} relationship endpoints after cross-type merge", rewired)
+
+    return relationships
+
+
+def _cosine_similarity(a: list[float], b: list[float]) -> float:
+    """Compute cosine similarity between two vectors."""
+    va = np.array(a)
+    vb = np.array(b)
+    dot = np.dot(va, vb)
+    norm = np.linalg.norm(va) * np.linalg.norm(vb)
+    if norm == 0:
+        return 0.0
+    return float(dot / norm)
+
+
 def _resolve_block(
-    entities: list[Entity], threshold: float, ratio_fn
+    entities: list[Entity],
+    threshold: float,
+    ratio_fn,
+    use_embeddings: bool = False,
+    embedding_threshold: float = 0.80,
+    name_threshold: float = 0.65,
 ) -> list[Entity]:
     """Resolve near-duplicates within a single type block."""
     n = len(entities)
@@ -76,14 +214,25 @@ def _resolve_block(
 
     uf = _UnionFind(n)
 
+    # Pre-compute normalized names
+    norm_names = [normalize_entity_name(e.name) for e in entities]
+
     # Compare all pairs within block
     for i in range(n):
         for j in range(i + 1, n):
-            name_i = entities[i].name.lower().strip()
-            name_j = entities[j].name.lower().strip()
-            sim = ratio_fn(name_i, name_j)
-            if sim >= threshold:
-                uf.union(i, j)
+            name_sim = ratio_fn(norm_names[i], norm_names[j])
+
+            if use_embeddings and entities[i].embedding and entities[j].embedding:
+                cosine_sim = _cosine_similarity(
+                    entities[i].embedding, entities[j].embedding
+                )
+                # Multi-signal: both must pass their thresholds
+                if name_sim >= name_threshold and cosine_sim >= embedding_threshold:
+                    uf.union(i, j)
+            else:
+                # Fallback: name similarity only with normalized names
+                if name_sim >= threshold:
+                    uf.union(i, j)
 
     # Build clusters
     clusters: dict[int, list[int]] = {}
@@ -115,6 +264,7 @@ def _merge_entities(canonical: Entity, duplicate: Entity) -> Entity:
     - source_chunks unioned
     - Confidence averaged
     - Properties merged (later overwrites)
+    - Embedding kept from canonical (first in cluster)
     """
     # Longest name
     if len(duplicate.name) > len(canonical.name):

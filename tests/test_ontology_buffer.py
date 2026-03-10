@@ -56,11 +56,17 @@ class TestOntologyBuffer:
         assert snapshot.model_config.get("frozen") is True
 
     def test_buffer_accumulate_new_type(self, empty_buffer):
-        """New type added as candidate (below confirmation threshold)."""
+        """New type added as candidate (below confirmation threshold).
+
+        Frequency 1 types are noise-tier and excluded from snapshot entity_types
+        but still tracked in candidate_types.
+        """
         empty_buffer.accumulate([TypeSignal(type_name="NewType", frequency=1)])
         snapshot = empty_buffer.snapshot()
         assert "NewType" in snapshot.candidate_types
         assert "NewType" not in snapshot.confirmed_types
+        # Noise tier: not in entity_types (filtered from prompt)
+        assert "NewType" not in {t.name for t in snapshot.entity_types}
 
     def test_buffer_accumulate_frequency(self, empty_buffer):
         """Type becomes confirmed at threshold."""
@@ -101,7 +107,12 @@ class TestOntologyBuffer:
         assert "Candidate" not in type_names
 
     def test_buffer_accumulate_from_result(self, empty_buffer):
-        """Entity/Relationship lists produce correct signals."""
+        """Entity/Relationship lists produce correct signals.
+
+        Product has frequency 2 (confirmed), Feature has frequency 1 (noise).
+        Noise-tier types are excluded from snapshot entity_types but tracked
+        in candidate_types. Relationship types need confirmed frequency too.
+        """
         entities = [
             Entity(id="e1", name="A", type="Product", source_chunks=["c1"]),
             Entity(id="e2", name="B", type="Product", source_chunks=["c2"]),
@@ -114,7 +125,48 @@ class TestOntologyBuffer:
         empty_buffer.accumulate_from_result(entities, relationships)
         snapshot = empty_buffer.snapshot()
         type_names = {t.name for t in snapshot.entity_types}
+        # Product: freq=2, confirmed, included
         assert "Product" in type_names
-        assert "Feature" in type_names
-        rel_names = {r.name for r in snapshot.relationship_types}
-        assert "HAS_FEATURE" in rel_names
+        # Feature: freq=1, noise tier, excluded from entity_types
+        assert "Feature" not in type_names
+        assert "Feature" in snapshot.candidate_types
+        # Frequencies tracked
+        assert snapshot.type_frequencies["Product"] == 2
+        assert snapshot.type_frequencies["Feature"] == 1
+
+    def test_buffer_emerging_type(self, empty_buffer):
+        """Type with frequency 2+ but below threshold appears as emerging."""
+        config = OntologyBufferConfig(min_frequency_to_confirm=3)
+        buffer = OntologyBuffer(config)
+        buffer.accumulate([TypeSignal(type_name="Emerging", frequency=2)])
+        snapshot = buffer.snapshot()
+        assert "Emerging" in snapshot.emerging_types
+        assert "Emerging" not in snapshot.confirmed_types
+        # Emerging types are included in entity_types (shown in prompt)
+        assert "Emerging" in {t.name for t in snapshot.entity_types}
+
+    def test_buffer_seed_vs_discovered(self, tmp_path, buffer_config):
+        """Seed types are distinct from generatively discovered types."""
+        ontology_file = tmp_path / "ontology.yml"
+        ontology_file.write_text(yaml.dump({
+            "entity_types": [
+                {"name": "Product", "description": "A product"},
+            ],
+            "relationship_types": [
+                {"name": "HAS_FEATURE", "source_type": "Product",
+                 "target_type": "Feature", "description": "Product has feature"},
+            ],
+        }))
+        buffer = OntologyBuffer.from_yaml(ontology_file, buffer_config)
+        # Discover a new type generatively
+        buffer.accumulate([TypeSignal(type_name="NewType", frequency=2)])
+        snapshot = buffer.snapshot()
+        # Both in entity_types (Product confirmed, NewType confirmed)
+        type_names = {t.name for t in snapshot.entity_types}
+        assert "Product" in type_names
+        assert "NewType" in type_names
+        # Both confirmed but seed has description
+        product_td = next(t for t in snapshot.entity_types if t.name == "Product")
+        newtype_td = next(t for t in snapshot.entity_types if t.name == "NewType")
+        assert product_td.description == "A product"
+        assert newtype_td.description == ""

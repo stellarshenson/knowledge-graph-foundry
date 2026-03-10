@@ -1082,9 +1082,10 @@ wheels = [
 
 [[package]]
 name = "kg-builder-cli"
-version = "0.1.5"
+version = "0.1.6"
 source = { editable = "." }
 dependencies = [
+    { name = "boto3" },
     { name = "chonkie" },
     { name = "instructor" },
     { name = "langchain-neo4j" },
@@ -1092,6 +1093,7 @@ dependencies = [
     { name = "litellm" },
     { name = "loguru" },
     { name = "neo4j" },
+    { name = "numpy" },
     { name = "owlready2" },
     { name = "pydantic" },
     { name = "pymupdf4llm" },
@@ -1123,6 +1125,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "awscli", marker = "extra == 'dev'" },
+    { name = "boto3" },
     { name = "build", marker = "extra == 'dev'" },
     { name = "chonkie" },
     { name = "instructor" },
@@ -1134,6 +1137,7 @@ requires-dist = [
     { name = "loguru" },
     { name = "nbdime", marker = "extra == 'dev'" },
     { name = "neo4j" },
+    { name = "numpy" },
     { name = "owlready2" },
     { name = "pip", marker = "extra == 'dev'" },
     { name = "pydantic", specifier = ">=2.0" },

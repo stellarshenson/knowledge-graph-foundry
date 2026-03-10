@@ -28,6 +28,8 @@ class OntologyBuffer:
         self._relationship_types: dict[str, RelationshipDef] = {}
         self._frequencies: dict[str, int] = {}
         self._variants: dict[str, str] = {}
+        self._seed_types: set[str] = set()
+        self._seed_rel_types: set[str] = set()
         self._config = config
 
     @classmethod
@@ -53,6 +55,7 @@ class OntologyBuffer:
                 properties=type_data.get("properties", {}),
             )
             buffer._entity_types[name] = typedef
+            buffer._seed_types.add(name)
             # Pre-confirm seed types above threshold
             buffer._frequencies[name] = config.min_frequency_to_confirm
 
@@ -68,6 +71,7 @@ class OntologyBuffer:
                 description=rel_data.get("description", ""),
             )
             buffer._relationship_types[name] = reldef
+            buffer._seed_rel_types.add(name)
             buffer._frequencies[name] = config.min_frequency_to_confirm
 
         logger.info(
@@ -79,27 +83,53 @@ class OntologyBuffer:
         return buffer
 
     def snapshot(self) -> OntologyState:
-        """Return a frozen snapshot of the current ontology state."""
+        """Return a frozen snapshot of the current ontology state.
+
+        Types are tiered by frequency:
+        - confirmed: seed types OR frequency >= threshold (included in prompt)
+        - emerging: frequency >= 2 but < threshold (shown as suggestions)
+        - noise: frequency == 1 and not seed (excluded from prompt)
+        """
         threshold = self._config.min_frequency_to_confirm
         confirmed = frozenset(
             name for name, freq in self._frequencies.items()
             if freq >= threshold and name in self._entity_types
+        )
+        emerging = frozenset(
+            name for name in self._entity_types
+            if name not in confirmed
+            and self._frequencies.get(name, 0) >= 2
         )
         candidate = frozenset(
             name for name in self._entity_types
             if name not in confirmed
         )
 
+        # Filter entity types: include confirmed + emerging, exclude noise
+        included_names = confirmed | emerging
+        filtered_types = tuple(
+            td for td in self._entity_types.values()
+            if td.name in included_names
+        )
+        # Relationship types: include seed + confirmed frequency
+        filtered_rels = tuple(
+            rd for rd in self._relationship_types.values()
+            if rd.name in self._seed_rel_types
+            or self._frequencies.get(rd.name, 0) >= threshold
+        )
+
         total = len(self._entity_types)
         cov = len(confirmed) / total if total > 0 else 0.0
 
         return OntologyState(
-            entity_types=tuple(self._entity_types.values()),
-            relationship_types=tuple(self._relationship_types.values()),
+            entity_types=filtered_types,
+            relationship_types=filtered_rels,
             coverage=cov,
             variants=dict(self._variants),
             confirmed_types=confirmed,
             candidate_types=candidate,
+            type_frequencies=dict(self._frequencies),
+            emerging_types=emerging,
         )
 
     def accumulate(self, signals: list[TypeSignal]) -> None:
