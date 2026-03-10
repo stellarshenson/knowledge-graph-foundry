@@ -1039,6 +1039,24 @@ The first fluid-mode benchmark run cured naturally at document 4 of 10. Stabilit
 
 **Type proliferation fix (v10)** - root cause analysis identified three problems: (1) surface variants like Standard/Regulatory_Standard/SafetyStandard creating synonymous types, (2) ID normalization running before type enforcement producing stale IDs when types are remapped, and (3) cross-type resolution using a static hardcoded priority instead of data-driven frequency ranking. The fix implements two-layer type normalization. The deterministic layer adds `normalize_type_name()` - a PascalCase normalizer that splits on spaces, underscores, hyphens, and camelCase boundaries, applied everywhere type names are handled. The ontology buffer tracks a `_canonical_map` mapping normalized forms to first-seen raw forms, collapsing surface variants during accumulation (so "Safety Standard", "safety_standard", "SafetyStandard" all merge to one entry). The ID normalization ordering bug is fixed by moving `normalize_entity_ids()` after `_enforce_ontology_types()` in the extraction pipeline. Cross-type resolution now builds type priority dynamically from buffer frequency counts instead of using a static 8-type table. The LLM-assisted layer (`type_clustering.py`) makes one structured-output call at curing time with all discovered types, their frequencies, and the intent prompt - the LLM clusters semantic synonyms that deterministic normalization cannot catch (Standard vs RegulatoryStandard - different words, same concept). An enforcement threshold (`curing.enforcement_threshold`, default 0.5%) prunes types representing less than 0.5% of total entities before clustering. Expected impact: 31 types -> 8-12, cross-type duplicates 36 -> <10, benchmark score 81% -> 86-89%.
 
+**Type exemplars for few-shot extraction guidance** - the ontology buffer stores representative entity instances per type, functioning as few-shot examples during extraction. Instead of providing the LLM with only type names ("Component", "Specification"), the extraction prompt includes concrete examples: `"Component (e.g., Humidifier, Tubing, HEPA Filter)"`. This helps the LLM infer type boundaries from instances rather than abstract labels, reducing type misassignment at extraction time rather than correcting it post-hoc.
+
+The buffer maintains `_type_exemplars: dict[str, list[str]]` - a mapping from canonical type name to a list of representative entity names, capped at `max_type_exemplars` (configurable, default 5). Exemplars accumulate during the fluid phase as entities are extracted: after each document, newly confirmed entities are considered as exemplar candidates. Selection prioritizes frequency (entities seen across multiple chunks/documents) and diversity (normalized name similarity filtering prevents near-duplicate exemplars like "HEPA Filter" and "HEPA filter"). When the schema cures, exemplars freeze alongside the ontology snapshot and are included in the extraction prompt for all cured-phase documents.
+
+The extraction prompt formats exemplars inline with allowed types: `"Component (e.g., Humidifier, Tubing, HEPA Filter), Specification (e.g., Operating Pressure, Sound Level, Weight)"`. This gives the LLM concrete anchors for each type without adding a separate few-shot section to the prompt. The `max_type_exemplars` parameter controls the tradeoff between prompt informativeness and token budget - initial value of 5 will be tuned based on benchmark experiments measuring type assignment accuracy vs exemplar count.
+
+**Configuration**:
+```yaml
+ontology_buffer:
+  max_type_exemplars: 5              # max example entities stored per type for few-shot guidance
+```
+
+**Data flow integration**:
+- Fluid phase: `OntologyBuffer.accumulate_from_result()` updates exemplars alongside type frequencies
+- Curing event: exemplars freeze with `OntologyBuffer.snapshot()`
+- Extraction prompt: `_build_extraction_prompt()` includes exemplars when available
+- Cured phase: frozen exemplars guide type assignment for remaining documents
+
 ## 6. Unstructured Ingestion Pipeline
 
 The unstructured pipeline transforms free-form text documents into a knowledge graph. Documents are parsed, chunked, extracted through LLM calls constrained by the evolving ontology buffer, deduplicated, resolved, and loaded into Neo4J.
