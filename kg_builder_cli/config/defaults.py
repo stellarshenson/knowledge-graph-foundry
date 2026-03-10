@@ -59,6 +59,7 @@ DEFAULTS: dict = {
         "stability_window": 3,
         "auto_cure": True,
         "metrics_variance_window": 5,
+        "enforcement_threshold": 0.5,
     },
     "paths": {
         "ontology": None,

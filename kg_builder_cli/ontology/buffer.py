@@ -6,6 +6,7 @@ from pathlib import Path
 import yaml
 from loguru import logger
 
+from kg_builder_cli.extraction.dedup import normalize_type_name
 from kg_builder_cli.types.config import OntologyBufferConfig
 from kg_builder_cli.types.extraction import Entity, Relationship
 from kg_builder_cli.types.ontology import (
@@ -31,6 +32,8 @@ class OntologyBuffer:
         self._seed_types: set[str] = set()
         self._seed_rel_types: set[str] = set()
         self._config = config
+        # Maps normalized PascalCase -> first-seen raw form
+        self._canonical_map: dict[str, str] = {}
 
     @classmethod
     def from_yaml(cls, path: Path, config: OntologyBufferConfig) -> OntologyBuffer:
@@ -56,6 +59,7 @@ class OntologyBuffer:
             )
             buffer._entity_types[name] = typedef
             buffer._seed_types.add(name)
+            buffer._register_canonical(name)
             # Pre-confirm seed types above threshold
             buffer._frequencies[name] = config.min_frequency_to_confirm
 
@@ -72,6 +76,7 @@ class OntologyBuffer:
             )
             buffer._relationship_types[name] = reldef
             buffer._seed_rel_types.add(name)
+            buffer._register_canonical(name)
             buffer._frequencies[name] = config.min_frequency_to_confirm
 
         logger.info(
@@ -133,20 +138,46 @@ class OntologyBuffer:
             emerging_types=emerging,
         )
 
+    def canonical_type(self, raw: str) -> str:
+        """Return the canonical (first-seen) form for a raw type name.
+
+        If the normalized form is unknown, returns the raw name unchanged.
+        """
+        canonical = normalize_type_name(raw)
+        return self._canonical_map.get(canonical, raw)
+
+    def _register_canonical(self, raw: str) -> str:
+        """Register a raw type name and return its canonical form.
+
+        First-seen raw form wins. All subsequent surface variants are
+        collapsed to the first-seen form.
+        """
+        normalized = normalize_type_name(raw)
+        if normalized not in self._canonical_map:
+            self._canonical_map[normalized] = raw
+        return self._canonical_map[normalized]
+
     def accumulate(self, signals: list[TypeSignal]) -> None:
-        """Increment frequencies and add new types from signals."""
+        """Increment frequencies and add new types from signals.
+
+        Surface variants are collapsed via canonical mapping so that
+        e.g. "Work_Mode", "work mode", "WorkMode" all track as one type.
+        """
         for signal in signals:
-            name = signal.type_name
-            self._frequencies[name] = self._frequencies.get(name, 0) + signal.frequency
+            raw_name = signal.type_name
+            canonical_name = self._register_canonical(raw_name)
+            self._frequencies[canonical_name] = (
+                self._frequencies.get(canonical_name, 0) + signal.frequency
+            )
 
             if signal.is_relationship:
-                if name not in self._relationship_types:
-                    self._relationship_types[name] = RelationshipDef(
-                        name=name, source_type="", target_type="",
+                if canonical_name not in self._relationship_types:
+                    self._relationship_types[canonical_name] = RelationshipDef(
+                        name=canonical_name, source_type="", target_type="",
                     )
             else:
-                if name not in self._entity_types:
-                    self._entity_types[name] = TypeDef(name=name)
+                if canonical_name not in self._entity_types:
+                    self._entity_types[canonical_name] = TypeDef(name=canonical_name)
 
     def accumulate_from_result(
         self, entities: list[Entity], relationships: list[Relationship]
@@ -179,6 +210,41 @@ class OntologyBuffer:
     def type_names(self) -> set[str]:
         """Return the set of all known entity type names."""
         return set(self._entity_types.keys())
+
+    def entity_type_frequencies(self) -> dict[str, int]:
+        """Return frequencies for entity types only (excludes relationship types)."""
+        return {
+            name: self._frequencies.get(name, 0)
+            for name in self._entity_types
+        }
+
+    def prune_low_frequency_types(self, threshold_pct: float) -> set[str]:
+        """Remove entity types below the threshold percentage of total entities.
+
+        Returns the set of pruned type names.
+        """
+        total_entities = sum(
+            self._frequencies.get(name, 0) for name in self._entity_types
+        )
+        if total_entities == 0:
+            return set()
+
+        min_count = total_entities * (threshold_pct / 100.0)
+        pruned: set[str] = set()
+
+        for name in list(self._entity_types.keys()):
+            freq = self._frequencies.get(name, 0)
+            if freq < min_count and name not in self._seed_types:
+                del self._entity_types[name]
+                pruned.add(name)
+
+        if pruned:
+            logger.info(
+                "Pruned {} low-frequency types (threshold={:.1f}%, min_count={:.0f}): {}",
+                len(pruned), threshold_pct, min_count, ", ".join(sorted(pruned)),
+            )
+
+        return pruned
 
     def coverage(self) -> float:
         """Return fraction of confirmed types over total entity types."""

@@ -3,11 +3,36 @@
 from __future__ import annotations
 
 import hashlib
+import re
 
 from loguru import logger
 
 from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.extraction import Entity, Relationship
+
+
+def normalize_type_name(raw: str) -> str:
+    """Canonical form: PascalCase, no spaces/underscores/hyphens.
+
+    Examples:
+        "Operating Mode" -> "OperatingMode"
+        "operating_mode" -> "OperatingMode"
+        "OPERATING-MODE" -> "OperatingMode"
+        "WorkMode"       -> "WorkMode"
+    """
+    # First split on explicit separators
+    tokens = re.split(r"[\s_\-]+", raw.strip())
+    # Then split each token on camelCase boundaries (e.g. "WorkMode" -> ["Work", "Mode"])
+    parts: list[str] = []
+    for token in tokens:
+        if not token:
+            continue
+        # Split on camelCase: before uppercase letter preceded by lowercase
+        sub = re.sub(r"([a-z])([A-Z])", r"\1_\2", token)
+        for p in sub.split("_"):
+            if p:
+                parts.append(p.capitalize())
+    return "".join(parts)
 
 
 def normalize_entity_ids(
@@ -17,9 +42,9 @@ def normalize_entity_ids(
     """Normalize entity IDs to deterministic hashes for cross-document merging.
 
     Generates IDs as ``{type_lower}_{sha1_prefix}`` where the SHA-1 input is
-    ``{type_lower}:{name_lower_stripped}``.  This ensures the same real-world
-    entity receives the same ID regardless of which document it was extracted
-    from, so that Neo4j MERGE consolidates them on load.
+    ``{type_lower}:{name_lower_stripped}``.  The type is first normalized via
+    ``normalize_type_name()`` so surface variants (Work_Mode, work mode,
+    WORK_MODE) produce the same entity ID.
 
     Also rewrites ``relationship.source`` and ``relationship.target`` to match
     the new entity IDs.
@@ -27,9 +52,10 @@ def normalize_entity_ids(
     old_to_new: dict[str, str] = {}
 
     for entity in entities:
-        canon = f"{entity.type.lower()}:{normalize_entity_name(entity.name)}"
+        norm_type = normalize_type_name(entity.type)
+        canon = f"{norm_type.lower()}:{normalize_entity_name(entity.name)}"
         hash_prefix = hashlib.sha1(canon.encode()).hexdigest()[:12]
-        new_id = f"{entity.type.lower()}_{hash_prefix}"
+        new_id = f"{norm_type.lower()}_{hash_prefix}"
 
         if entity.id != new_id:
             old_to_new[entity.id] = new_id

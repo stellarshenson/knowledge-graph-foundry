@@ -229,7 +229,18 @@ def _ingest_fluid(
             should_cure = True
 
         if should_cure:
-            # Curing event: consolidate and flush
+            # Curing event: type clustering + consolidation + flush
+            import asyncio
+            from kg_builder_cli.curing.type_clustering import (
+                apply_type_mapping,
+                cluster_types,
+            )
+            from kg_builder_cli.extraction.dedup import normalize_entity_ids
+
+            # Prune low-frequency types before clustering
+            if buffer:
+                buffer.prune_low_frequency_types(config.curing.enforcement_threshold)
+
             cured_ontology = buffer.snapshot() if buffer else None
             logger.info(
                 "[curing] consolidating {} documents, ontology has {} types",
@@ -237,7 +248,32 @@ def _ingest_fluid(
                 len(cured_ontology.entity_types) if cured_ontology else 0,
             )
 
-            merged_result = accumulator.consolidate(cured_ontology, config.extract)
+            # LLM-assisted type clustering
+            freqs = buffer.frequencies() if buffer else {}
+            entity_type_names = list(buffer.type_names()) if buffer else []
+            if entity_type_names:
+                type_mapping = asyncio.run(cluster_types(
+                    discovered_types=entity_type_names,
+                    frequencies=freqs,
+                    intent=config.ontology_buffer.intent,
+                    model=config.llm.model,
+                    provider=config.llm.provider,
+                    region=config.llm.region,
+                    profile=config.llm.profile,
+                ))
+
+                # Apply type mapping to accumulated entities
+                all_entities = accumulator.all_entities()
+                apply_type_mapping(all_entities, type_mapping)
+
+                # Re-normalize IDs after type remapping
+                all_rels = accumulator.all_relationships()
+                normalize_entity_ids(all_entities, all_rels)
+
+            merged_result = accumulator.consolidate(
+                cured_ontology, config.extract,
+                type_frequencies=freqs,
+            )
             logger.info(
                 "[curing] merged result: {} entities, {} relationships",
                 len(merged_result.entities), len(merged_result.relationships),
@@ -255,12 +291,45 @@ def _ingest_fluid(
 
     # If never cured (all files processed in fluid phase), flush anyway
     if not cured and accumulator.doc_count > 0:
+        import asyncio
+        from kg_builder_cli.curing.type_clustering import (
+            apply_type_mapping,
+            cluster_types,
+        )
+        from kg_builder_cli.extraction.dedup import normalize_entity_ids
+
         logger.warning(
             "[fluid] ingestion complete without curing ({} docs), flushing accumulated results",
             accumulator.doc_count,
         )
+
+        # Prune low-frequency types before clustering
+        if buffer:
+            buffer.prune_low_frequency_types(config.curing.enforcement_threshold)
+
+        # LLM-assisted type clustering before flush
+        freqs = buffer.frequencies() if buffer else {}
+        entity_type_names = list(buffer.type_names()) if buffer else []
+        if entity_type_names:
+            type_mapping = asyncio.run(cluster_types(
+                discovered_types=entity_type_names,
+                frequencies=freqs,
+                intent=config.ontology_buffer.intent,
+                model=config.llm.model,
+                provider=config.llm.provider,
+                region=config.llm.region,
+                profile=config.llm.profile,
+            ))
+            all_entities = accumulator.all_entities()
+            apply_type_mapping(all_entities, type_mapping)
+            all_rels = accumulator.all_relationships()
+            normalize_entity_ids(all_entities, all_rels)
+
         cured_ontology = buffer.snapshot() if buffer else None
-        merged_result = accumulator.consolidate(cured_ontology, config.extract)
+        merged_result = accumulator.consolidate(
+            cured_ontology, config.extract,
+            type_frequencies=freqs,
+        )
         load_result = load_extraction(merged_result, config)
         logger.info(
             "[flush] loaded: {} created, {} merged, {} relationships",

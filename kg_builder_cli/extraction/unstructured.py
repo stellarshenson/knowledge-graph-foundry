@@ -125,7 +125,17 @@ def ingest_document(
             if completed % 10 == 0 or completed == total:
                 logger.info("Extraction progress: {}/{}", completed, total)
 
-    # Step 4b: Normalize entity IDs for cross-document merging
+    # Step 4b: Enforce ontology types BEFORE ID normalization
+    # so that remapped types produce correct IDs
+    if ontology and ontology.entity_types:
+        allowed = [t.name for t in ontology.entity_types]
+        all_entities = _enforce_ontology_types(all_entities, allowed)
+    else:
+        logger.debug("No ontology types to enforce (ontology={}, types={})",
+                      ontology is not None,
+                      len(ontology.entity_types) if ontology else 0)
+
+    # Step 4c: Normalize entity IDs AFTER type enforcement
     all_entities, all_relationships = normalize_entity_ids(
         all_entities, all_relationships
     )
@@ -134,15 +144,6 @@ def ingest_document(
     deduped_entities, deduped_relationships = deduplicate(
         all_entities, all_relationships
     )
-
-    # Step 5b: Enforce ontology types (remap out-of-ontology types)
-    if ontology and ontology.entity_types:
-        allowed = [t.name for t in ontology.entity_types]
-        deduped_entities = _enforce_ontology_types(deduped_entities, allowed)
-    else:
-        logger.debug("No ontology types to enforce (ontology={}, types={})",
-                      ontology is not None,
-                      len(ontology.entity_types) if ontology else 0)
 
     # Step 5c: Generate embeddings for semantic resolution
     use_embeddings = config.extract.use_embeddings
@@ -154,12 +155,14 @@ def ingest_document(
         )
 
     # Step 5d: Entity resolution (multi-signal merge near-duplicates)
+    type_freqs = buffer.frequencies() if buffer else None
     deduped_entities = resolve_entities(
         deduped_entities,
         threshold=config.extract.resolution_threshold,
         use_embeddings=use_embeddings,
         embedding_threshold=config.extract.embedding_threshold,
         name_threshold=config.extract.name_threshold,
+        type_frequencies=type_freqs,
     )
 
     # Step 5e: Rewire relationships after cross-type entity merges

@@ -85,6 +85,7 @@ class CuringConfig(BaseModel):
     stability_window: int = 3
     auto_cure: bool = True
     metrics_variance_window: int = 5
+    enforcement_threshold: float = 0.5
 
 
 class AppConfig(BaseModel):
