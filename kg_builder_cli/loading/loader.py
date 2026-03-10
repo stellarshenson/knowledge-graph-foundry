@@ -70,7 +70,9 @@ def _create_entity_nodes(
         "MERGE (n:Entity {id: row.id}) "
         "SET n.name = row.name, n.type = row.type, "
         "n.description = row.description, n.confidence = row.confidence "
-        "SET n += row.properties"
+        "SET n += row.properties "
+        "FOREACH (_ IN CASE WHEN row.embedding IS NOT NULL THEN [1] ELSE [] END | "
+        "SET n.embedding = row.embedding)"
     )
 
     label_query_apoc = (
@@ -92,6 +94,7 @@ def _create_entity_nodes(
                 "type": e.type,
                 "description": e.description,
                 "confidence": e.confidence,
+                "embedding": e.embedding,
                 "properties": {
                     k: v for k, v in e.properties.items()
                     if k not in _RESERVED_KEYS

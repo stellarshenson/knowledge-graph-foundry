@@ -9,11 +9,12 @@ from pathlib import Path
 from loguru import logger
 
 from kg_builder_cli.extraction.chunking import chunk_text
-from kg_builder_cli.extraction.dedup import deduplicate
+from kg_builder_cli.extraction.dedup import deduplicate, normalize_entity_ids
+from kg_builder_cli.extraction.embeddings import generate_embeddings
 from kg_builder_cli.extraction.extract import create_extraction_client, extract_chunk
 from kg_builder_cli.extraction.parsing import parse_document
 from kg_builder_cli.extraction.prompts import build_extraction_prompt
-from kg_builder_cli.extraction.resolution import resolve_entities
+from kg_builder_cli.extraction.resolution import resolve_entities, rewire_relationships
 from kg_builder_cli.extraction.response_models import build_response_model
 from kg_builder_cli.ontology.buffer import OntologyBuffer
 from kg_builder_cli.types.config import AppConfig, LLMConfig
@@ -124,6 +125,11 @@ def ingest_document(
             if completed % 10 == 0 or completed == total:
                 logger.info("Extraction progress: {}/{}", completed, total)
 
+    # Step 4b: Normalize entity IDs for cross-document merging
+    all_entities, all_relationships = normalize_entity_ids(
+        all_entities, all_relationships
+    )
+
     # Step 5: Deduplicate
     deduped_entities, deduped_relationships = deduplicate(
         all_entities, all_relationships
@@ -138,11 +144,29 @@ def ingest_document(
                       ontology is not None,
                       len(ontology.entity_types) if ontology else 0)
 
-    # Step 5c: Entity resolution (fuzzy merge near-duplicates)
-    resolution_threshold = config.extract.resolution_threshold
-    deduped_entities = resolve_entities(deduped_entities, threshold=resolution_threshold)
+    # Step 5c: Generate embeddings for semantic resolution
+    use_embeddings = config.extract.use_embeddings
+    if use_embeddings:
+        logger.info("Generating embeddings for {} entities", len(deduped_entities))
+        deduped_entities = generate_embeddings(
+            deduped_entities,
+            model=config.extract.embedding_model,
+        )
 
-    # Step 5d: Feed back into ontology buffer
+    # Step 5d: Entity resolution (multi-signal merge near-duplicates)
+    resolution_threshold = config.extract.resolution_threshold
+    deduped_entities = resolve_entities(
+        deduped_entities,
+        threshold=resolution_threshold,
+        use_embeddings=use_embeddings,
+    )
+
+    # Step 5e: Rewire relationships after cross-type entity merges
+    id_map = getattr(resolve_entities, '_last_id_map', {})
+    if id_map:
+        deduped_relationships = rewire_relationships(deduped_relationships, id_map)
+
+    # Step 5f: Feed back into ontology buffer
     if buffer:
         buffer.accumulate_from_result(deduped_entities, deduped_relationships)
 

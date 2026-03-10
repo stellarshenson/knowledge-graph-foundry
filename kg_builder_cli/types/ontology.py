@@ -41,6 +41,8 @@ class OntologyState(BaseModel, frozen=True):
     variants: dict[str, str] = Field(default_factory=dict)
     confirmed_types: frozenset[str] = frozenset()
     candidate_types: frozenset[str] = frozenset()
+    type_frequencies: dict[str, int] = Field(default_factory=dict)
+    emerging_types: frozenset[str] = frozenset()
 
 
 class TypeSignal(BaseModel):

@@ -34,6 +34,8 @@ class ExtractConfig(BaseModel):
     subgraph_splitting: bool = False
     rolling_context_window: int = 0
     resolution_threshold: float = 0.85
+    use_embeddings: bool = False
+    embedding_model: str = "amazon.titan-embed-text-v2:0"
 
 
 class OntologyBufferConfig(BaseModel):

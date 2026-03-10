@@ -2,9 +2,52 @@
 
 from __future__ import annotations
 
+import hashlib
+
 from loguru import logger
 
+from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.extraction import Entity, Relationship
+
+
+def normalize_entity_ids(
+    entities: list[Entity],
+    relationships: list[Relationship],
+) -> tuple[list[Entity], list[Relationship]]:
+    """Normalize entity IDs to deterministic hashes for cross-document merging.
+
+    Generates IDs as ``{type_lower}_{sha1_prefix}`` where the SHA-1 input is
+    ``{type_lower}:{name_lower_stripped}``.  This ensures the same real-world
+    entity receives the same ID regardless of which document it was extracted
+    from, so that Neo4j MERGE consolidates them on load.
+
+    Also rewrites ``relationship.source`` and ``relationship.target`` to match
+    the new entity IDs.
+    """
+    old_to_new: dict[str, str] = {}
+
+    for entity in entities:
+        canon = f"{entity.type.lower()}:{normalize_entity_name(entity.name)}"
+        hash_prefix = hashlib.sha1(canon.encode()).hexdigest()[:12]
+        new_id = f"{entity.type.lower()}_{hash_prefix}"
+
+        if entity.id != new_id:
+            old_to_new[entity.id] = new_id
+        entity.id = new_id
+
+    # Rewrite relationship endpoints
+    for rel in relationships:
+        if rel.source in old_to_new:
+            rel.source = old_to_new[rel.source]
+        if rel.target in old_to_new:
+            rel.target = old_to_new[rel.target]
+
+    if old_to_new:
+        logger.info("ID normalization: renormalized {} entity IDs", len(old_to_new))
+    else:
+        logger.debug("ID normalization: all IDs already canonical")
+
+    return entities, relationships
 
 
 def deduplicate(

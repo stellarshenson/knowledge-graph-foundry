@@ -1095,43 +1095,35 @@ Hybrid mode is recommended for production workloads. The cost is roughly 2x the 
 
 ### 6.6 Entity Deduplication
 
-The same entity often appears across multiple chunks. Deduplication happens at two levels.
+The same entity often appears across multiple chunks and documents. Deduplication uses a three-layer pipeline that progressively catches duplicates from exact matches through fuzzy variants to cross-type conflicts.
 
-**Intra-document deduplication**: after all chunks from a single document are processed, entities are merged by `(type, id)` tuple. Properties are merged (later values overwrite earlier ones), descriptions are concatenated or the longest is kept, `source_chunks` list accumulates all chunk references, and relationships are deduplicated by `(source_id, target_id, type)` tuple.
+**Layer 1 - Name normalization and deterministic ID hashing** (`normalization.py`, `dedup.py`): entity names are normalized before ID generation by stripping generic suffixes (system, device, unit, equipment, therapy, machine, apparatus, instrument, module, assembly), removing articles (a, an, the), lowercasing, and collapsing whitespace. The normalized name feeds into a deterministic ID hash: `sha1("{type}:{normalized_name}")` truncated to 12 hex characters, prefixed with the lowercase type. This means "humidifier system" and "humidifier" produce the same ID and collapse during deduplication. Entities sharing the same `(type, id)` tuple are merged: longest name and description kept, `source_chunks` unioned, confidence averaged, properties merged. Relationships are deduplicated by `(source, target, type)` tuple. This layer handles 80%+ of duplicates at zero API cost.
 
-**Cross-document deduplication (at load time)**: `MERGE` operations ensure `(type, id)` uniqueness across the entire graph. If an entity already exists from a previous document, its properties are updated rather than creating a duplicate node.
+**Cross-document deduplication (at load time)**: `MERGE` operations ensure `(type, id)` uniqueness across the entire graph. Because IDs are deterministic from normalized names, the same real-world entity from different documents produces the same ID and merges cleanly on load.
 
 ### 6.7 Entity Resolution
 
-Beyond exact ID matching, the pipeline supports a post-extraction entity resolution step to catch duplicates the LLM produced under different IDs. Resolution uses an escalating-cost pipeline where cheaper methods handle easy cases before expensive LLM calls process the remainder:
+Beyond exact ID matching, the pipeline runs a post-dedup resolution step to catch entities the LLM produced under different names that normalization alone could not collapse.
 
-1. **Exact ID match** - entities sharing the same `(type, id)` tuple are merged directly (zero cost, handled during deduplication)
-2. **SpaCy + Levenshtein pre-filter** - entities are blocked by type group (only entities of the same type are compared, reducing the candidate space). Within each block, a Levenshtein similarity matrix is computed pairwise across entity names. Pairs exceeding a Levenshtein ratio threshold (default 0.85) are flagged as candidate matches and merged. The Levenshtein ratio is computed as `1 - (edit_distance / max(len(a), len(b)))`, where values closer to 1.0 indicate higher similarity. Token overlap (Jaccard coefficient on whitespace-split tokens) acts as a secondary signal for multi-word names where character-level edit distance is less informative ("John A. Smith" vs "Smith, John A."). This step groups obvious lexical variants (case differences, abbreviation expansions, minor typos) without consuming embedding API calls. The pre-filter is conservative - false negatives proceed to step 3
-3. **Embedding similarity** - remaining unresolved entities within each type block are embedded and compared using a similarity matrix. For small entity sets (< 1,000 per type), brute-force pairwise cosine similarity is computed as a dense matrix. For larger sets, approximate nearest neighbor (ANN) indexing (e.g., FAISS or hnswlib) replaces brute-force comparison, reducing complexity from O(n^2) to O(n log n). Pairs exceeding a configurable cosine similarity threshold (default 0.85) are flagged as candidate matches. The similarity matrix is sparse - only pairs above a lower bound (default 0.6) are retained to limit memory usage
-4. **LLM-based clustering** - remaining unresolved entities (below embedding threshold but above the lower bound) are sent to the LLM with a clustering prompt. Catches semantic equivalences that surface-level similarity misses ("the Cupertino giant" and "Apple Inc.")
+**Layer 2 - Multi-signal fuzzy resolution** (`resolution.py`): entities are grouped by type, then within each type block all pairs are compared using normalized-name Levenshtein similarity. When embeddings are available (Titan v2, 1024-dim), a dual-threshold gate applies - both signals must pass for a merge:
 
-The LLM clustering prompt:
+- Name similarity >= 0.65 AND cosine similarity >= 0.80
 
-```
-Given these entity names, identify which ones refer to the same
-real-world entity. Return clusters as JSON arrays.
+When embeddings are unavailable, the fallback uses normalized-name Levenshtein alone at threshold 0.85. Pairs exceeding the threshold are connected via Union-Find, and each connected component is merged into a canonical entity (longest name, longest description, unioned source chunks, averaged confidence). Brute-force pairwise comparison is used since entity counts per type block remain under 2,000 in practice.
 
-{entity_names}
-```
+**Layer 3 - Cross-type resolution** (`resolution.py`): entities with identical normalized names across different types are merged into the most specific type. Type priority determines the surviving type:
 
-**Normalization metadata**: when entities are resolved, the original extracted name is preserved alongside normalized fields:
-- `name`: original extracted value (for traceability)
-- `normalized_name`: canonical form after resolution
-- `normalized_score`: confidence of the resolution match
-- `normalized_method`: how it was resolved (e.g., `llm_cluster`, `exact_match`, `levenshtein`, `embedding_similarity`)
-- `levenshtein_ratio`: Levenshtein similarity score when resolved by pre-filter (0.0-1.0)
-- `cosine_similarity`: embedding cosine similarity when resolved by embedding step (0.0-1.0)
+- Specification(8) > Component(7) > Feature(6) > WorkMode(5) > Product(4) > MedicalCondition(3) > Standard(2) > Organization(1)
 
-This makes resolution auditable and reversible. Each resolution method records its specific similarity score alongside the generic `normalized_score`, enabling downstream consumers to apply their own trust thresholds per method.
+This catches entities like "ramp" extracted as both Feature and WorkMode, or "power supply" as both Component and Specification. After cross-type merging, relationship endpoints are rewired from the dropped entity's ID to the surviving canonical entity's ID.
+
+**Embedding generation** (`embeddings.py`): when `config.extract.use_embeddings` is enabled, entity embeddings are generated via Amazon Titan Text Embeddings v2 (`amazon.titan-embed-text-v2:0`) through Bedrock. Input text per entity follows the format `"{type}: {name} - {description[:200]}"`, producing 1024-dimensional vectors stored on the entity and persisted to Neo4j for downstream vector search. Embeddings are generated after deduplication but before resolution.
 
 **Ontology schema consolidation**: a final consolidation pass after all documents are processed catches remaining type sprawl from the last few documents whose feedback was never refined. This pass uses the buffer's variant mappings to rename all entities to their canonical types before loading.
 
-**Limitations**: entity resolution depends on LLM consistency and the clustering prompt's effectiveness. Short entity names (abbreviations, acronyms) are particularly prone to false matches. For domains with highly ambiguous short tokens, consider domain-specific resolution passes with restricted candidate sets.
+**Limitations**: cross-type resolution assumes that entities with identical normalized names across types refer to the same concept - this may produce false merges in domains where the same term genuinely means different things in different type contexts. Short entity names (abbreviations, acronyms) are prone to both false matches and false negatives depending on threshold settings.
+
+> **Note - original design**: the initial design specified a 4-step escalating-cost pipeline: (1) exact ID match, (2) SpaCy + Levenshtein pre-filter with Jaccard token overlap, (3) embedding similarity with ANN indexing (FAISS/hnswlib) for large entity sets, (4) LLM-based clustering for semantic equivalences. Benchmarking across 5 iterations (v03-v07) showed that name normalization in the ID hash eliminated 80%+ of duplicates before any fuzzy matching, making steps 2-4 largely unnecessary. The simpler three-layer approach (normalize + dual-threshold fuzzy + cross-type merge) achieved 98% deterministic accuracy and 4/5 generative quality on cross-document resolution. SpaCy, ANN indexing, and LLM clustering were not implemented. See `docs/experiments/entity_resolution_methods.md` for the full evaluation.
 
 This entity resolution pipeline is shared between unstructured and structured ingestion (Section 7.5).
 

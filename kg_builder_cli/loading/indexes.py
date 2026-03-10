@@ -19,7 +19,7 @@ _INDEXES = [
         "entity_embeddings",
         "CREATE VECTOR INDEX entity_embeddings IF NOT EXISTS "
         "FOR (n:Entity) ON (n.embedding) "
-        "OPTIONS {indexConfig: {`vector.dimensions`: 1536, "
+        "OPTIONS {indexConfig: {`vector.dimensions`: 1024, "
         "`vector.similarity_function`: 'cosine'}}",
     ),
     (
