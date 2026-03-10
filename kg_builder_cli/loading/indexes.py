@@ -5,7 +5,6 @@ from neo4j import GraphDatabase
 
 from kg_builder_cli.types.config import AppConfig
 
-
 _INDEXES = [
     (
         "entity_id_idx",
@@ -24,8 +23,7 @@ _INDEXES = [
     ),
     (
         "entity_names",
-        "CREATE FULLTEXT INDEX entity_names IF NOT EXISTS "
-        "FOR (n:Entity) ON EACH [n.name]",
+        "CREATE FULLTEXT INDEX entity_names IF NOT EXISTS FOR (n:Entity) ON EACH [n.name]",
     ),
 ]
 

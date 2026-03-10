@@ -1,4 +1,5 @@
 """Pydantic response models for structured LLM extraction via instructor."""
+
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
@@ -6,6 +7,7 @@ from pydantic import BaseModel, Field
 
 class EntityResponse(BaseModel):
     """Single extracted entity from LLM response."""
+
     id: str = Field(description="Lowercase ID with underscores, prefixed by type")
     name: str = Field(description="Canonical name as it appears in text")
     type: str = Field(description="Entity type category")
@@ -16,6 +18,7 @@ class EntityResponse(BaseModel):
 
 class RelationshipResponse(BaseModel):
     """Single extracted relationship from LLM response."""
+
     source: str = Field(description="Source entity ID")
     target: str = Field(description="Target entity ID")
     type: str = Field(description="UPPER_SNAKE_CASE relationship type")
@@ -25,6 +28,7 @@ class RelationshipResponse(BaseModel):
 
 class ExtractionResponse(BaseModel):
     """Complete extraction response with entities and relationships."""
+
     entities: list[EntityResponse] = Field(default_factory=list)
     relationships: list[RelationshipResponse] = Field(default_factory=list)
 
@@ -40,6 +44,7 @@ def build_response_model(ontology=None) -> type[BaseModel]:
 
         class ConstrainedExtractionResponse(ExtractionResponse):
             """Extraction response constrained to specific entity types."""
+
             model_config = {
                 "json_schema_extra": {
                     "allowed_entity_types": type_names,

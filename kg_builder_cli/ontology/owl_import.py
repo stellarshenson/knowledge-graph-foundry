@@ -1,4 +1,5 @@
 """OWL/RDF ontology import via owlready2."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -157,18 +158,13 @@ def _class_depth(cls, depth_map: dict[str, int], thing_cls) -> int:
     if cls.name in depth_map:
         return depth_map[cls.name]
 
-    parents = [
-        sup for sup in cls.is_a
-        if hasattr(sup, "name") and sup is not thing_cls
-    ]
+    parents = [sup for sup in cls.is_a if hasattr(sup, "name") and sup is not thing_cls]
 
     if not parents:
         depth_map[cls.name] = 0
         return 0
 
-    max_parent_depth = max(
-        _class_depth(p, depth_map, thing_cls) for p in parents
-    )
+    max_parent_depth = max(_class_depth(p, depth_map, thing_cls) for p in parents)
     depth_map[cls.name] = max_parent_depth + 1
     return max_parent_depth + 1
 

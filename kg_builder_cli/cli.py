@@ -1,10 +1,11 @@
 """CLI entry points for kg-builder-cli."""
+
 from __future__ import annotations
 
 from pathlib import Path
 
-import typer
 from loguru import logger
+import typer
 
 app = typer.Typer(name="kg", help="Knowledge Graph Builder CLI", invoke_without_command=True)
 
@@ -14,6 +15,7 @@ def main_callback(ctx: typer.Context):
     """Launch TUI when no subcommand is given."""
     if ctx.invoked_subcommand is None:
         from kg_builder_cli.tui.app import KGBuilderApp
+
         tui_app = KGBuilderApp()
         tui_app.run()
 
@@ -21,19 +23,23 @@ def main_callback(ctx: typer.Context):
 @app.command()
 def ingest(
     source: Path = typer.Argument(..., help="Path to file or directory to ingest"),
-    batch: bool = typer.Option(False, "--batch", help="Run in autonomous mode without interactive checkpoints"),
+    batch: bool = typer.Option(
+        False, "--batch", help="Run in autonomous mode without interactive checkpoints"
+    ),
     ontology: Path | None = typer.Option(None, "--ontology", help="Path to ontology seed file"),
     config_path: Path | None = typer.Option(None, "--config", help="Path to config.yml"),
     chunk_size: int | None = typer.Option(None, "--chunk-size", help="Override chunk size"),
-    chunk_overlap: int | None = typer.Option(None, "--chunk-overlap", help="Override chunk overlap"),
+    chunk_overlap: int | None = typer.Option(
+        None, "--chunk-overlap", help="Override chunk overlap"
+    ),
     concurrency: int | None = typer.Option(None, "--concurrency", help="Override concurrency"),
-    fluid: bool | None = typer.Option(None, "--fluid/--no-fluid", help="Enable/disable fluid schema curing"),
+    fluid: bool | None = typer.Option(
+        None, "--fluid/--no-fluid", help="Enable/disable fluid schema curing"
+    ),
     cure: bool = typer.Option(False, "--cure", help="Force-cure after first document"),
 ):
     """Ingest documents into the knowledge graph."""
     from kg_builder_cli.config import load_config
-    from kg_builder_cli.extraction.unstructured import ingest_document
-    from kg_builder_cli.loading.loader import load_extraction
     from kg_builder_cli.ontology.buffer import OntologyBuffer
 
     logger.info("ingesting from {}", source)
@@ -56,7 +62,12 @@ def ingest(
         logger.warning("--fluid ignored: ontology seed provided, using seeded workflow")
         curing_enabled = False
 
-    logger.info("config loaded: model={}, neo4j={}, fluid={}", config.llm.model, config.neo4j.uri, curing_enabled)
+    logger.info(
+        "config loaded: model={}, neo4j={}, fluid={}",
+        config.llm.model,
+        config.neo4j.uri,
+        curing_enabled,
+    )
 
     # Initialize ontology buffer
     buffer = None
@@ -69,7 +80,8 @@ def ingest(
     # Collect files to process
     if source.is_dir():
         files = sorted(
-            p for p in source.iterdir()
+            p
+            for p in source.iterdir()
             if p.suffix.lower() in (".pdf", ".txt", ".md", ".docx", ".json", ".jsonl")
         )
     else:
@@ -153,15 +165,22 @@ def _ingest_fluid(
 
     cured = False
     cure_index = len(files)  # default: all files in fluid phase
+    exemplar_index = None  # built at curing time for Bayesian resolution
 
     for i, file_path in enumerate(files):
         if cured:
             # Phase 2: direct load with graph-aware resolution
             logger.info("[cured] processing: {}", file_path.name)
-            result = ingest_document(file_path, config, buffer=buffer)
+            result = ingest_document(
+                file_path,
+                config,
+                buffer=buffer,
+                exemplar_index=exemplar_index,
+            )
             logger.info(
                 "[cured] extracted {} entities, {} relationships",
-                len(result.entities), len(result.relationships),
+                len(result.entities),
+                len(result.relationships),
             )
 
             # Post-cure metric tracking
@@ -169,6 +188,7 @@ def _ingest_fluid(
                 stability = metrics_tracker.record(buffer.frequencies())
                 if stability:
                     import math
+
                     jsd = stability.get("js_divergence", float("nan"))
                     chao1 = stability.get("chao1_coverage", float("nan"))
                     ent_d = stability.get("entropy_shannon_delta", float("nan"))
@@ -177,7 +197,9 @@ def _ingest_fluid(
                     ent_d_s = f"{ent_d:.4f}" if not math.isnan(ent_d) else "n/a"
                     logger.info(
                         "[cured] stability: jsd={}, chao1_cov={}, entropy_delta={}",
-                        jsd_s, chao1_s, ent_d_s,
+                        jsd_s,
+                        chao1_s,
+                        ent_d_s,
                     )
 
             # Graph-aware resolution: remap to existing graph types
@@ -186,7 +208,8 @@ def _ingest_fluid(
             load_result = load_extraction(result, config)
             logger.info(
                 "[cured] loaded: {} created, {} merged, {} relationships",
-                load_result.nodes_created, load_result.nodes_merged,
+                load_result.nodes_created,
+                load_result.nodes_merged,
                 load_result.relationships_created,
             )
             continue
@@ -201,7 +224,9 @@ def _ingest_fluid(
         accumulator.add_result(result)
         logger.info(
             "[fluid] extracted {} entities, {} relationships (accumulated: {} docs)",
-            len(result.entities), len(result.relationships), accumulator.doc_count,
+            len(result.entities),
+            len(result.relationships),
+            accumulator.doc_count,
         )
 
         # buffer.accumulate_from_result() already called inside ingest_document
@@ -217,6 +242,7 @@ def _ingest_fluid(
         # Log key stability metrics
         if stability:
             import math
+
             jsd = stability.get("js_divergence", float("nan"))
             chao1 = stability.get("chao1_coverage", float("nan"))
             heaps = stability.get("heaps_beta", float("nan"))
@@ -227,7 +253,10 @@ def _ingest_fluid(
             ent_d_s = f"{ent_d:.4f}" if not math.isnan(ent_d) else "n/a"
             logger.info(
                 "[fluid] stability: jsd={}, chao1_cov={}, heaps_beta={}, entropy_delta={}",
-                jsd_s, chao1_s, heaps_s, ent_d_s,
+                jsd_s,
+                chao1_s,
+                heaps_s,
+                ent_d_s,
             )
 
         # Check curing conditions
@@ -258,6 +287,7 @@ def _ingest_fluid(
         if should_cure:
             # Curing event: type clustering + consolidation + flush
             import asyncio
+
             from kg_builder_cli.curing.type_clustering import (
                 apply_type_mapping,
                 cluster_types,
@@ -279,15 +309,17 @@ def _ingest_fluid(
             freqs = buffer.frequencies() if buffer else {}
             entity_type_names = list(buffer.type_names()) if buffer else []
             if entity_type_names:
-                type_mapping = asyncio.run(cluster_types(
-                    discovered_types=entity_type_names,
-                    frequencies=freqs,
-                    intent=config.ontology_buffer.intent,
-                    model=config.llm.model,
-                    provider=config.llm.provider,
-                    region=config.llm.region,
-                    profile=config.llm.profile,
-                ))
+                type_mapping = asyncio.run(
+                    cluster_types(
+                        discovered_types=entity_type_names,
+                        frequencies=freqs,
+                        intent=config.ontology_buffer.intent,
+                        model=config.llm.model,
+                        provider=config.llm.provider,
+                        region=config.llm.region,
+                        profile=config.llm.profile,
+                    )
+                )
 
                 # Apply type mapping to accumulated entities
                 all_entities = accumulator.all_entities()
@@ -306,21 +338,28 @@ def _ingest_fluid(
                 )
 
             merged_result = accumulator.consolidate(
-                cured_ontology, config.extract,
+                cured_ontology,
+                config.extract,
                 type_frequencies=freqs,
             )
             logger.info(
                 "[curing] merged result: {} entities, {} relationships",
-                len(merged_result.entities), len(merged_result.relationships),
+                len(merged_result.entities),
+                len(merged_result.relationships),
             )
 
             # Load consolidated entities + relationships only (skip doc/chunks)
             load_result = load_extraction(merged_result, config, skip_doc_chunks=True)
             logger.info(
                 "[curing] loaded: {} created, {} merged, {} relationships",
-                load_result.nodes_created, load_result.nodes_merged,
+                load_result.nodes_created,
+                load_result.nodes_merged,
                 load_result.relationships_created,
             )
+
+            # Build exemplar index for Bayesian resolution in cured phase
+            if config.extract.bayesian_resolution and buffer:
+                exemplar_index = _build_exemplar_index(buffer, config)
 
             cured = True
             cure_index = i + 1
@@ -328,6 +367,7 @@ def _ingest_fluid(
     # If never cured (all files processed in fluid phase), flush anyway
     if not cured and accumulator.doc_count > 0:
         import asyncio
+
         from kg_builder_cli.curing.type_clustering import (
             apply_type_mapping,
             cluster_types,
@@ -347,15 +387,17 @@ def _ingest_fluid(
         freqs = buffer.frequencies() if buffer else {}
         entity_type_names = list(buffer.type_names()) if buffer else []
         if entity_type_names:
-            type_mapping = asyncio.run(cluster_types(
-                discovered_types=entity_type_names,
-                frequencies=freqs,
-                intent=config.ontology_buffer.intent,
-                model=config.llm.model,
-                provider=config.llm.provider,
-                region=config.llm.region,
-                profile=config.llm.profile,
-            ))
+            type_mapping = asyncio.run(
+                cluster_types(
+                    discovered_types=entity_type_names,
+                    frequencies=freqs,
+                    intent=config.ontology_buffer.intent,
+                    model=config.llm.model,
+                    provider=config.llm.provider,
+                    region=config.llm.region,
+                    profile=config.llm.profile,
+                )
+            )
             all_entities = accumulator.all_entities()
             apply_type_mapping(all_entities, type_mapping)
             all_rels = accumulator.all_relationships()
@@ -371,16 +413,67 @@ def _ingest_fluid(
 
         cured_ontology = buffer.snapshot() if buffer else None
         merged_result = accumulator.consolidate(
-            cured_ontology, config.extract,
+            cured_ontology,
+            config.extract,
             type_frequencies=freqs,
         )
         # Load consolidated entities + relationships only (skip doc/chunks)
         load_result = load_extraction(merged_result, config, skip_doc_chunks=True)
         logger.info(
             "[flush] loaded: {} created, {} merged, {} relationships",
-            load_result.nodes_created, load_result.nodes_merged,
+            load_result.nodes_created,
+            load_result.nodes_merged,
             load_result.relationships_created,
         )
+
+
+def _build_exemplar_index(buffer, config):
+    """Build FAISS exemplar index from buffer's frozen exemplars."""
+    from kg_builder_cli.extraction.embeddings import generate_embeddings
+    from kg_builder_cli.extraction.exemplar_index import ExemplarIndex
+    from kg_builder_cli.types.extraction import Entity
+
+    snapshot = buffer.snapshot()
+    if not snapshot.type_exemplars:
+        logger.info("[curing] no exemplars available, skipping FAISS index")
+        return None
+
+    # Generate embeddings for exemplar entities
+    exemplar_entities = []
+    for type_name, exemplars in snapshot.type_exemplars.items():
+        for ex in exemplars:
+            exemplar_entities.append(
+                Entity(
+                    id=f"exemplar_{ex.name.lower().replace(' ', '_')}",
+                    name=ex.name,
+                    type=type_name,
+                    description=f"Exemplar for type {type_name}",
+                )
+            )
+
+    if not exemplar_entities:
+        return None
+
+    logger.info("[curing] generating embeddings for {} exemplars", len(exemplar_entities))
+    exemplar_entities = generate_embeddings(
+        exemplar_entities,
+        model=config.extract.embedding_model,
+    )
+
+    # Build embedding lookup
+    embeddings: dict[str, list[float]] = {}
+    for ent in exemplar_entities:
+        if ent.embedding:
+            embeddings[ent.name] = ent.embedding
+
+    index = ExemplarIndex()
+    index.build(snapshot.type_exemplars, embeddings)
+
+    if index.is_built:
+        logger.info("[curing] FAISS exemplar index built successfully")
+        return index
+
+    return None
 
 
 @app.command()

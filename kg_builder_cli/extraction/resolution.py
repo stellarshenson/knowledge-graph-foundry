@@ -1,8 +1,9 @@
 """Entity resolution via multi-signal matching and graph-based clustering."""
+
 from __future__ import annotations
 
-import numpy as np
 from loguru import logger
+import numpy as np
 
 from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.extraction import Entity
@@ -246,9 +247,7 @@ def _resolve_block(
             name_sim = ratio_fn(norm_names[i], norm_names[j])
 
             if use_embeddings and entities[i].embedding and entities[j].embedding:
-                cosine_sim = _cosine_similarity(
-                    entities[i].embedding, entities[j].embedding
-                )
+                cosine_sim = _cosine_similarity(entities[i].embedding, entities[j].embedding)
                 # Multi-signal: both must pass their thresholds
                 if name_sim >= name_threshold and cosine_sim >= embedding_threshold:
                     uf.union(i, j)

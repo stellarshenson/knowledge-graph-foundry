@@ -1,12 +1,23 @@
 """Shared name normalization utilities for entity resolution."""
+
 from __future__ import annotations
 
 import re
 
-GENERIC_SUFFIXES = frozenset({
-    "system", "device", "unit", "equipment", "therapy", "machine",
-    "apparatus", "instrument", "module", "assembly",
-})
+GENERIC_SUFFIXES = frozenset(
+    {
+        "system",
+        "device",
+        "unit",
+        "equipment",
+        "therapy",
+        "machine",
+        "apparatus",
+        "instrument",
+        "module",
+        "assembly",
+    }
+)
 
 _ARTICLES = frozenset({"a", "an", "the"})
 

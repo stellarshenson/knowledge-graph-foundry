@@ -1,4 +1,5 @@
 """Embedding generation using Amazon Titan Text Embeddings v2."""
+
 from __future__ import annotations
 
 import json
@@ -25,7 +26,9 @@ def generate_embeddings(
         return entities
 
     profile = os.environ.get("AWS_PROFILE", "kolomolo")
-    region = os.environ.get("AWS_REGION_NAME", os.environ.get("AWS_DEFAULT_REGION", "eu-central-1"))
+    region = os.environ.get(
+        "AWS_REGION_NAME", os.environ.get("AWS_DEFAULT_REGION", "eu-central-1")
+    )
 
     session = boto3.Session(profile_name=profile, region_name=region)
     client = session.client("bedrock-runtime")
