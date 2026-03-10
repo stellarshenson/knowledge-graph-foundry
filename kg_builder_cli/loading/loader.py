@@ -379,6 +379,24 @@ def load_extraction(
     finally:
         driver.close()
 
+    # Post-load reasoning (subclass propagation)
+    if not errors and config.ontology_buffer.post_load_reasoning:
+        try:
+            from kg_builder_cli.loading.reasoning import run_subclass_propagation
+
+            reasoning_driver = GraphDatabase.driver(
+                config.neo4j.uri,
+                auth=(config.neo4j.user, config.neo4j.password),
+            )
+            try:
+                with reasoning_driver.session() as reasoning_session:
+                    run_subclass_propagation(reasoning_session)
+            finally:
+                reasoning_driver.close()
+        except Exception as exc:
+            logger.error("post-load reasoning failed: {}", exc)
+            errors.append(f"reasoning: {exc}")
+
     # Post-load steps
     if not errors and config.load.create_indexes:
         try:

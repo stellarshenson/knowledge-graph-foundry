@@ -82,6 +82,38 @@ def ingest_document(
 
     logger.info("{} chunks ready for extraction", len(chunks))
 
+    # Step 2b: Schema signal extraction (optional pre-pass)
+    if config.extract.schema_signal_extraction and buffer:
+        from kg_builder_cli.extraction.schema_signals import (
+            compute_coverage,
+            extract_schema_signals,
+        )
+
+        signal_text = "\n".join(c.text for c in chunks[:3])
+        signals = extract_schema_signals(
+            signal_text,
+            model=config.llm.model,
+            provider=config.llm.provider,
+            region=config.llm.region,
+            profile=config.llm.profile,
+        )
+        known = buffer.type_names()
+        cov = compute_coverage(signals, known)
+        logger.info("Schema signal coverage: {:.1%} ({} known types)", cov, len(known))
+        # Accumulate new type signals into buffer
+        from kg_builder_cli.types.ontology import TypeSignal
+
+        new_signals = []
+        for t in signals.entity_types:
+            if t.lower() not in {k.lower() for k in known}:
+                new_signals.append(TypeSignal(type_name=t, frequency=1))
+        for t in signals.relationship_types:
+            if t.lower() not in {k.lower() for k in known}:
+                new_signals.append(TypeSignal(type_name=t, frequency=1, is_relationship=True))
+        if new_signals:
+            buffer.accumulate(new_signals)
+            logger.info("Added {} new type signals from schema extraction", len(new_signals))
+
     # Step 3 & 4: Build prompts and extract with concurrency
     all_entities: list[Entity] = []
     all_relationships: list[Relationship] = []
@@ -150,6 +182,9 @@ def ingest_document(
                 config.ontology_buffer,
                 ontology.type_frequencies,
                 exemplar_index,
+                type_exemplars=ontology.type_exemplars,
+                llm_config=config.llm if config.extract.llm_escalation else None,
+                llm_escalation=config.extract.llm_escalation,
             )
             all_entities = _resolve_types_bayesian(
                 all_entities,
@@ -290,6 +325,12 @@ def _resolve_types_bayesian(
     allowed_lower = {t.lower(): t for t in allowed_types}
     resolved = 0
 
+    # Build chunk-entity index for co-occurrence signal
+    chunk_entity_map: dict[str, list[Entity]] = {}
+    for e in entities:
+        for chunk_id in e.source_chunks:
+            chunk_entity_map.setdefault(chunk_id, []).append(e)
+
     for entity in entities:
         # Skip entities already in allowed types
         if entity.type.lower() in allowed_lower:
@@ -298,8 +339,16 @@ def _resolve_types_bayesian(
 
         # Build context for this entity
         entity_rels = [r for r in relationships if r.source == entity.id or r.target == entity.id]
+        # Collect co-occurring entities from same chunks (excluding self)
+        chunk_entities: list[Entity] = []
+        for chunk_id in entity.source_chunks:
+            for co_entity in chunk_entity_map.get(chunk_id, []):
+                if co_entity.id != entity.id:
+                    chunk_entities.append(co_entity)
+
         ctx = ResolverContext(
             relationships=entity_rels,
+            chunk_entities=chunk_entities,
             entity_embedding=entity.embedding,
         )
         new_type = resolver.resolve(entity, ctx)

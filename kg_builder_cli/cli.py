@@ -164,7 +164,6 @@ def _ingest_fluid(
     )
 
     cured = False
-    cure_index = len(files)  # default: all files in fluid phase
     exemplar_index = None  # built at curing time for Bayesian resolution
 
     for i, file_path in enumerate(files):
@@ -362,7 +361,6 @@ def _ingest_fluid(
                 exemplar_index = _build_exemplar_index(buffer, config)
 
             cured = True
-            cure_index = i + 1
 
     # If never cured (all files processed in fluid phase), flush anyway
     if not cured and accumulator.doc_count > 0:

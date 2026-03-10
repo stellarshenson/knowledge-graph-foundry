@@ -945,7 +945,7 @@ The CLI checks `is_converged()` first. If metric-based convergence is not met, `
 
 **Failsafes** - force-cure triggers if ANY of these are exceeded:
 - Document count: `max_fluid_documents` (default 20) reached
-- Entity budget: accumulated entities exceed `max_fluid_entities` (default 50,000)
+- Entity budget: accumulated entities exceed `max_fluid_entities` (default 150)
 
 The entity budget prevents memory exhaustion when processing large PDFs with dense extraction, multimodal content, or hybrid fact generation. When a failsafe triggers, a warning is logged identifying which limit was hit, the current ontology snapshot is taken, and consolidation proceeds normally. The entity budget is checked after each document alongside the convergence conditions.
 
@@ -1060,23 +1060,32 @@ The extraction prompt formats exemplars inline with allowed types in `_build_ent
 
 The prior `P(type)` is the buffer's type frequency distribution, normalized to probabilities. For each entity, the resolver considers only the top-k candidate types (configurable, default 3) by prior probability. This keeps the computation lightweight - with 10 types in a cured ontology, most entities have at most 2-3 plausible types.
 
-Evidence sources provide likelihood ratios that update the prior via Bayes' rule:
+Evidence sources provide likelihood ratios that update the prior via Bayes' rule. For each entity `e` and each candidate type `t_k`, the posterior is computed as a product of independent likelihood signals:
 
-1. **Exemplar similarity** `P(name | type)` - FAISS cosine similarity between the entity embedding and each candidate type's exemplar embeddings (v12 implementation). When no embeddings are available, falls back to uniform likelihood (no evidence)
-2. **Relationship context** `P(relationships | type)` - the relationship types extracted alongside the entity provide a signal. An entity participating in `HAS_COMPONENT` relationships is likely a Component; one in `HAS_SPECIFICATION` is likely a Specification. The current implementation uses a simple name-matching heuristic between relationship type names and candidate type names
-3. **Co-occurrence pattern** `P(co_entities | type)` - entities extracted from the same chunk as known Components are more likely to be Components. This captures local document context (deferred to future iteration)
-4. **Description semantics** `P(description | type)` - correlation between entity description keywords and the description patterns of existing entities of each candidate type (deferred to future iteration)
+```
+P(t_k | e) = P(t_k) * P(name | t_k) * P(rels | t_k) * P(co | t_k) * P(desc | t_k) / Z
+```
 
-The posterior `P(type | evidence)` determines the resolution path. When posterior entropy is low (one type dominates), the resolver assigns the winning type deterministically - no LLM call needed. When posterior entropy exceeds a configurable threshold, the resolver falls back to the highest-posterior type. LLM escalation for genuinely ambiguous cases is designed but not yet implemented - the current v12 implementation assigns the argmax type regardless of entropy, logging the uncertainty level for monitoring.
+where `Z` is the normalization constant ensuring the posterior sums to 1 across all candidates. Each likelihood is designed to return values in a bounded range so that no single signal overwhelms the prior, and to return 1.0 (neutral) when evidence is absent.
+
+The four evidence signals:
+
+1. **Exemplar similarity** `P(name | t_k)` - range [0.5, 1.5]. FAISS cosine similarity between the entity embedding and each candidate type's exemplar embeddings. The raw cosine similarity `sim` (clipped to min 0.01) is shifted by +0.5 to produce a likelihood in [0.51, 1.5]. When the candidate type has no match in the top-k results, returns 0.5 (slight penalty). When no embeddings are available, returns 1.0 (neutral - no evidence to contribute)
+2. **Relationship context** `P(rels | t_k)` - range [1.0, 2.0]. Counts relationships involving the entity whose type name contains (or is contained by) the candidate type name. Returns `1.0 + (matching_rels / total_rels)`. An entity in `HAS_COMPONENT` relationships gets a boost for `Component`. No relationships returns 1.0 (neutral)
+3. **Co-occurrence pattern** `P(co | t_k)` - range [1.0, 2.0]. Counts entities extracted from the same chunk(s) whose type matches the candidate. Returns `1.0 + (matching_entities / total_co_entities)`. A chunk with 3 Component entities and 1 Specification produces P(co|Component) = 1.75, P(co|Specification) = 1.25. Empty chunk context returns 1.0 (neutral)
+4. **Description semantics** `P(desc | t_k)` - range [1.0, 2.0]. Bag-of-words intersection between the entity's description and the descriptions stored in each candidate type's exemplars. For each exemplar, computes `|intersection| / min(|entity_words|, |exemplar_words|)` and takes the maximum overlap across exemplars. Returns `1.0 + max_overlap`. No description or no exemplar descriptions returns 1.0 (neutral)
+
+The posterior `P(type | evidence)` determines the resolution path. When posterior entropy is low (below `type_resolution_entropy_threshold`, default 0.8), the resolver assigns the winning type deterministically - no LLM call needed. When posterior entropy exceeds the threshold and `llm_escalation` is enabled, the resolver makes a synchronous LLM call via instructor+litellm presenting the entity, posterior probabilities, and type exemplars for a structured type choice. On LLM failure or when `llm_escalation` is disabled, falls back to argmax.
 
 **Configuration**:
 ```yaml
 extract:
   bayesian_resolution: false         # opt-in, enables Bayesian type resolution in cured phase
+  llm_escalation: false              # opt-in, LLM fallback for high-entropy posterior
 ontology_buffer:
   max_type_exemplars: 5              # max example entities stored per type for few-shot guidance
   type_resolution_top_k: 3           # candidate types considered per entity
-  type_resolution_entropy_threshold: 0.8  # posterior entropy above this triggers fallback
+  type_resolution_entropy_threshold: 0.8  # posterior entropy above this triggers LLM escalation or argmax
 ```
 
 **Cold-start behavior**: when `bayesian_resolution=true` but no exemplar index exists (first document, no buffer yet), the pipeline falls back to `_enforce_ontology_types()` (Levenshtein-based remapping). The Bayesian resolver only activates after curing when exemplars and type frequencies are available.
@@ -1086,7 +1095,12 @@ ontology_buffer:
 **Module structure**:
 - `kg_builder_cli/extraction/exemplar_index.py` - `ExemplarIndex` class wrapping FAISS IndexFlatIP for embedding-based type candidate search
 - `kg_builder_cli/extraction/type_resolver.py` - `BayesianTypeResolver` class with `resolve(entity, context) -> str` method, plus `ResolverContext` dataclass carrying relationships, chunk entities, and entity embedding
+- `kg_builder_cli/extraction/schema_signals.py` - `SchemaSignals` model and `extract_schema_signals()` for lightweight pre-extraction type discovery, plus `compute_coverage()` for measuring buffer coverage against detected signals
 - Integrates at step 4b in `unstructured.py`: when `bayesian_resolution=true` and an exemplar index is available, replaces `_enforce_ontology_types()` with `_resolve_types_bayesian()`. The exemplar index is built at curing time in `cli.py._build_exemplar_index()` by generating embeddings for all frozen exemplar entities
+
+**Schema signal extraction** (opt-in, `extract.schema_signal_extraction: false`) - before full extraction, each document goes through a lightweight LLM pre-pass on the first 3 chunks. The `extract_schema_signals()` function uses instructor+litellm to return `SchemaSignals` (entity_types, relationship_types) without extracting specific entities. The detected signals are compared against the ontology buffer via `compute_coverage()` to measure how well the buffer covers the document's domain. New type signals not already in the buffer are accumulated automatically. This enables the buffer to anticipate types before full extraction encounters them.
+
+**Post-load reasoning** (opt-in, `ontology_buffer.post_load_reasoning: false`) - after loading entities and relationships into Neo4j, the system can run Cypher-based subclass propagation. The `run_subclass_propagation()` function in `loading/reasoning.py` executes a single Cypher query that traverses `SUBCLASS_OF*` chains and creates missing `INSTANCE_OF` edges to ancestor classes. This provides lightweight OWL-style transitive inference without requiring an external reasoner or RDF round-trip. Returns the count of new edges inferred for logging
 
 ## 6. Unstructured Ingestion Pipeline
 

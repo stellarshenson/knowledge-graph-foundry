@@ -218,19 +218,22 @@ class OntologyBuffer:
     def _update_exemplars(self, entities: list[Entity]) -> None:
         """Update type exemplars from extracted entities."""
         max_exemplars = self._config.max_type_exemplars
-        # Count entity occurrences by (type, normalized_name)
-        entity_counts: dict[tuple[str, str], tuple[str, int]] = {}
+        # Count entity occurrences by (type, normalized_name), track description
+        entity_counts: dict[tuple[str, str], tuple[str, int, str]] = {}
         for entity in entities:
             canonical_type = self.canonical_type(entity.type)
             norm_name = entity.name.strip().lower()
             key = (canonical_type, norm_name)
             if key in entity_counts:
-                raw_name, count = entity_counts[key]
-                entity_counts[key] = (raw_name, count + 1)
+                raw_name, count, desc = entity_counts[key]
+                # Keep the longest description seen
+                if len(entity.description) > len(desc):
+                    desc = entity.description
+                entity_counts[key] = (raw_name, count + 1, desc)
             else:
-                entity_counts[key] = (entity.name, 1)
+                entity_counts[key] = (entity.name, 1, entity.description)
 
-        for (canonical_type, norm_name), (raw_name, count) in entity_counts.items():
+        for (canonical_type, norm_name), (raw_name, count, desc) in entity_counts.items():
             if canonical_type not in self._entity_types:
                 continue
             exemplars = self._type_exemplars.setdefault(canonical_type, [])
@@ -238,6 +241,8 @@ class OntologyBuffer:
             existing = next((e for e in exemplars if e.name.strip().lower() == norm_name), None)
             if existing:
                 existing.frequency += count
+                if desc and len(desc) > len(existing.description):
+                    existing.description = desc
                 continue
             if len(exemplars) < max_exemplars:
                 exemplars.append(
@@ -245,6 +250,7 @@ class OntologyBuffer:
                         name=raw_name,
                         entity_type=canonical_type,
                         frequency=count,
+                        description=desc,
                     )
                 )
             else:
@@ -257,6 +263,7 @@ class OntologyBuffer:
                             name=raw_name,
                             entity_type=canonical_type,
                             frequency=count,
+                            description=desc,
                         )
                     )
 

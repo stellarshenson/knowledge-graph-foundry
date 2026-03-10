@@ -8,8 +8,9 @@ import math
 from loguru import logger
 
 from kg_builder_cli.extraction.exemplar_index import ExemplarIndex
-from kg_builder_cli.types.config import OntologyBufferConfig
+from kg_builder_cli.types.config import LLMConfig, OntologyBufferConfig
 from kg_builder_cli.types.extraction import Entity, Relationship
+from kg_builder_cli.types.ontology import TypeExemplar
 
 
 @dataclass
@@ -21,11 +22,19 @@ class ResolverContext:
     entity_embedding: list[float] | None = None
 
 
+class TypeResolutionResult:
+    """Result from LLM-based type resolution."""
+
+    def __init__(self, chosen_type: str, reasoning: str = ""):
+        self.chosen_type = chosen_type
+        self.reasoning = reasoning
+
+
 class BayesianTypeResolver:
     """Resolve entity types using Bayesian inference over multiple evidence signals.
 
     Prior: normalized type frequencies from the ontology buffer.
-    Likelihoods: exemplar similarity and relationship context.
+    Likelihoods: exemplar similarity, relationship context, co-occurrence, description semantics.
     """
 
     def __init__(
@@ -33,11 +42,17 @@ class BayesianTypeResolver:
         config: OntologyBufferConfig,
         type_frequencies: dict[str, int],
         exemplar_index: ExemplarIndex | None = None,
+        type_exemplars: dict[str, tuple[TypeExemplar, ...]] | None = None,
+        llm_config: LLMConfig | None = None,
+        llm_escalation: bool = False,
     ):
         self._top_k = config.type_resolution_top_k
         self._entropy_threshold = config.type_resolution_entropy_threshold
         self._prior = self._build_prior(type_frequencies)
         self._index = exemplar_index
+        self._type_exemplars = type_exemplars or {}
+        self._llm_config = llm_config
+        self._llm_escalation = llm_escalation
 
     def _build_prior(self, type_frequencies: dict[str, int]) -> dict[str, float]:
         """Build prior P(type) from normalized type frequencies."""
@@ -74,7 +89,21 @@ class BayesianTypeResolver:
                 type_name,
                 context.relationships,
             )
-            posterior[type_name] = prior_p * likelihood_exemplar * likelihood_rels
+            likelihood_cooccur = self._cooccurrence_likelihood(
+                type_name,
+                context.chunk_entities,
+            )
+            likelihood_desc = self._description_likelihood(
+                entity,
+                type_name,
+            )
+            posterior[type_name] = (
+                prior_p
+                * likelihood_exemplar
+                * likelihood_rels
+                * likelihood_cooccur
+                * likelihood_desc
+            )
 
         # Normalize posterior
         total_p = sum(posterior.values())
@@ -100,17 +129,29 @@ class BayesianTypeResolver:
                 )
             return best_type
         else:
-            # High entropy - fall back to highest posterior (no LLM escalation yet)
-            if best_type != entity.type:
-                logger.debug(
-                    "Bayesian resolve (uncertain): '{}' {} -> {} (p={:.3f}, H={:.3f})",
-                    entity.name,
-                    entity.type,
-                    best_type,
-                    best_prob,
-                    entropy,
-                )
-            return best_type
+            # High entropy - LLM escalation or argmax fallback
+            if self._llm_escalation and self._llm_config:
+                resolved = self._llm_resolve(entity, posterior, candidate_types)
+                if resolved != entity.type:
+                    logger.debug(
+                        "Bayesian resolve (LLM): '{}' {} -> {} (H={:.3f})",
+                        entity.name,
+                        entity.type,
+                        resolved,
+                        entropy,
+                    )
+                return resolved
+            else:
+                if best_type != entity.type:
+                    logger.debug(
+                        "Bayesian resolve (uncertain): '{}' {} -> {} (p={:.3f}, H={:.3f})",
+                        entity.name,
+                        entity.type,
+                        best_type,
+                        best_prob,
+                        entropy,
+                    )
+                return best_type
 
     def _exemplar_likelihood(
         self,
@@ -162,6 +203,128 @@ class BayesianTypeResolver:
 
         # Scale: more matching relationships = higher likelihood
         return 1.0 + (rel_score / rel_count)
+
+    def _cooccurrence_likelihood(
+        self,
+        type_name: str,
+        chunk_entities: list[Entity],
+    ) -> float:
+        """Compute P(co_entities|type) from chunk co-occurrence.
+
+        Entities co-occurring in the same chunk as known instances of a
+        candidate type are more likely to be that type. Returns range [1.0, 2.0].
+        """
+        if not chunk_entities:
+            return 1.0
+
+        total = len(chunk_entities)
+        matching = sum(1 for e in chunk_entities if e.type == type_name)
+        return 1.0 + (matching / total)
+
+    def _description_likelihood(
+        self,
+        entity: Entity,
+        type_name: str,
+    ) -> float:
+        """Compute P(description|type) from keyword overlap with type exemplar descriptions.
+
+        Bag-of-words intersection between entity description and all exemplar
+        descriptions for the candidate type. Returns range [1.0, 2.0].
+        """
+        if not entity.description:
+            return 1.0
+
+        exemplars = self._type_exemplars.get(type_name, ())
+        if not exemplars:
+            return 1.0
+
+        entity_words = set(entity.description.lower().split())
+        if not entity_words:
+            return 1.0
+
+        max_overlap = 0.0
+        for ex in exemplars:
+            if not ex.description:
+                continue
+            ex_words = set(ex.description.lower().split())
+            if not ex_words:
+                continue
+            intersection = entity_words & ex_words
+            # Normalize by smaller set size to avoid penalizing short descriptions
+            overlap = len(intersection) / min(len(entity_words), len(ex_words))
+            if overlap > max_overlap:
+                max_overlap = overlap
+
+        return 1.0 + max_overlap
+
+    def _llm_resolve(
+        self,
+        entity: Entity,
+        posterior: dict[str, float],
+        candidate_types: list[str],
+    ) -> str:
+        """Use LLM to resolve ambiguous type assignment.
+
+        Falls back to argmax on any exception.
+        """
+        try:
+            import instructor
+            import litellm
+
+            from kg_builder_cli.extraction.unstructured import (
+                _configure_aws_env,
+                _litellm_model_id,
+            )
+
+            _configure_aws_env(self._llm_config)
+            model_id = _litellm_model_id(self._llm_config)
+            client = instructor.from_litellm(litellm.completion)
+
+            # Build prompt with entity info and posterior
+            posterior_str = ", ".join(
+                f"{t}: {p:.3f}" for t, p in sorted(posterior.items(), key=lambda x: -x[1])
+            )
+            exemplar_str = ""
+            for t in candidate_types:
+                exs = self._type_exemplars.get(t, ())
+                if exs:
+                    names = [e.name for e in exs[:3]]
+                    exemplar_str += f"\n  {t} examples: {', '.join(names)}"
+
+            prompt = (
+                f"An entity '{entity.name}' (description: '{entity.description}') "
+                f"has ambiguous type assignment. The posterior probabilities are: {posterior_str}. "
+                f"Type exemplars:{exemplar_str}\n\n"
+                f"Which type best fits this entity? Respond with ONLY the type name, "
+                f"choosing from: {', '.join(candidate_types)}"
+            )
+
+            from pydantic import BaseModel as _BM
+
+            class _TypeChoice(_BM):
+                chosen_type: str
+                reasoning: str = ""
+
+            result = client.chat.completions.create(
+                model=model_id,
+                response_model=_TypeChoice,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.0,
+                max_retries=1,
+            )
+
+            if result.chosen_type in candidate_types:
+                return result.chosen_type
+            # LLM returned invalid type, fall back to argmax
+            logger.warning(
+                "LLM escalation returned invalid type '{}', using argmax",
+                result.chosen_type,
+            )
+
+        except Exception:
+            logger.warning("LLM escalation failed for '{}', using argmax", entity.name)
+
+        return max(posterior, key=lambda t: posterior[t])
 
     @staticmethod
     def _entropy(distribution: dict[str, float]) -> float:

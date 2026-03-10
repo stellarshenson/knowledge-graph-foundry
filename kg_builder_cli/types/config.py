@@ -39,6 +39,8 @@ class ExtractConfig(BaseModel):
     use_embeddings: bool = False
     embedding_model: str = "amazon.titan-embed-text-v2:0"
     bayesian_resolution: bool = False
+    llm_escalation: bool = False
+    schema_signal_extraction: bool = False
 
 
 class OntologyBufferConfig(BaseModel):
@@ -54,6 +56,7 @@ class OntologyBufferConfig(BaseModel):
     max_type_exemplars: int = 5
     type_resolution_top_k: int = 3
     type_resolution_entropy_threshold: float = 0.8
+    post_load_reasoning: bool = False
 
 
 class LoadConfig(BaseModel):
