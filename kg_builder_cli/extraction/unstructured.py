@@ -154,11 +154,12 @@ def ingest_document(
         )
 
     # Step 5d: Entity resolution (multi-signal merge near-duplicates)
-    resolution_threshold = config.extract.resolution_threshold
     deduped_entities = resolve_entities(
         deduped_entities,
-        threshold=resolution_threshold,
+        threshold=config.extract.resolution_threshold,
         use_embeddings=use_embeddings,
+        embedding_threshold=config.extract.embedding_threshold,
+        name_threshold=config.extract.name_threshold,
     )
 
     # Step 5e: Rewire relationships after cross-type entity merges

@@ -27,6 +27,8 @@ def ingest(
     chunk_size: int | None = typer.Option(None, "--chunk-size", help="Override chunk size"),
     chunk_overlap: int | None = typer.Option(None, "--chunk-overlap", help="Override chunk overlap"),
     concurrency: int | None = typer.Option(None, "--concurrency", help="Override concurrency"),
+    fluid: bool | None = typer.Option(None, "--fluid/--no-fluid", help="Enable/disable fluid schema curing"),
+    cure: bool = typer.Option(False, "--cure", help="Force-cure after first document"),
 ):
     """Ingest documents into the knowledge graph."""
     from kg_builder_cli.config import load_config
@@ -46,7 +48,15 @@ def ingest(
         overrides.setdefault("extract", {})["concurrency"] = concurrency
 
     config = load_config(config_path=config_path, overrides=overrides if overrides else None)
-    logger.info("config loaded: model={}, neo4j={}", config.llm.model, config.neo4j.uri)
+
+    # Resolve fluid mode: CLI flag > config > default
+    curing_enabled = fluid if fluid is not None else config.curing.enabled
+    # Fluid mode only applies when no ontology seed is provided
+    if curing_enabled and ontology:
+        logger.warning("--fluid ignored: ontology seed provided, using seeded workflow")
+        curing_enabled = False
+
+    logger.info("config loaded: model={}, neo4j={}, fluid={}", config.llm.model, config.neo4j.uri, curing_enabled)
 
     # Initialize ontology buffer
     buffer = None
@@ -71,6 +81,29 @@ def ingest(
 
     logger.info("found {} file(s) to ingest", len(files))
 
+    if curing_enabled:
+        _ingest_fluid(files, config, buffer, cure)
+    else:
+        _ingest_direct(files, config, buffer)
+
+    # Flush ontology buffer after all files
+    if buffer and config.ontology_buffer.flush_on_complete:
+        flush_path = Path.cwd() / ".kg-builder" / "ontology.yml"
+        buffer.flush(flush_path)
+        logger.info("ontology buffer flushed: coverage={:.0%}", buffer.coverage())
+
+    logger.info("ingestion complete")
+
+
+def _ingest_direct(
+    files: list[Path],
+    config,
+    buffer,
+) -> None:
+    """Standard per-document ingestion with immediate Neo4j loading."""
+    from kg_builder_cli.extraction.unstructured import ingest_document
+    from kg_builder_cli.loading.loader import load_extraction
+
     for file_path in files:
         logger.info("processing: {}", file_path.name)
         result = ingest_document(file_path, config, buffer=buffer)
@@ -81,7 +114,6 @@ def ingest(
             len(result.facts),
         )
 
-        # Load into Neo4j
         load_result = load_extraction(result, config)
         logger.info(
             "loaded: {} created, {} merged, {} relationships",
@@ -90,13 +122,151 @@ def ingest(
             load_result.relationships_created,
         )
 
-    # Flush ontology buffer after all files
-    if buffer and config.ontology_buffer.flush_on_complete:
-        flush_path = Path.cwd() / ".kg-builder" / "ontology.yml"
-        buffer.flush(flush_path)
-        logger.info("ontology buffer flushed: coverage={:.0%}", buffer.coverage())
 
-    logger.info("ingestion complete")
+def _ingest_fluid(
+    files: list[Path],
+    config,
+    buffer,
+    force_cure: bool = False,
+) -> None:
+    """Two-phase ingestion: fluid accumulation then cured direct loading.
+
+    Phase 1 (fluid): Extract and accumulate in memory, evolve schema.
+    Curing event: Consolidate all accumulated results and flush to Neo4j.
+    Phase 2 (cured): Remaining files load directly per-document.
+    """
+    from kg_builder_cli.curing.accumulator import FluidAccumulator
+    from kg_builder_cli.curing.detector import CuringDetector
+    from kg_builder_cli.curing.metrics import StabilityMetrics
+    from kg_builder_cli.extraction.unstructured import ingest_document
+    from kg_builder_cli.loading.loader import load_extraction
+
+    accumulator = FluidAccumulator()
+    detector = CuringDetector(config.curing)
+    metrics_tracker = StabilityMetrics(
+        variance_window=config.curing.metrics_variance_window,
+    )
+
+    cured = False
+    cure_index = len(files)  # default: all files in fluid phase
+
+    for i, file_path in enumerate(files):
+        if cured:
+            # Phase 2: direct load
+            logger.info("[cured] processing: {}", file_path.name)
+            result = ingest_document(file_path, config, buffer=buffer)
+            logger.info(
+                "extracted {} entities, {} relationships",
+                len(result.entities), len(result.relationships),
+            )
+            load_result = load_extraction(result, config)
+            logger.info(
+                "loaded: {} created, {} merged, {} relationships",
+                load_result.nodes_created, load_result.nodes_merged,
+                load_result.relationships_created,
+            )
+            continue
+
+        # Phase 1: fluid accumulation
+        logger.info("[fluid] processing: {}", file_path.name)
+
+        # Capture types before extraction for new type detection
+        types_before = buffer.type_names() if buffer else set()
+
+        result = ingest_document(file_path, config, buffer=buffer)
+        accumulator.add_result(result)
+        logger.info(
+            "[fluid] extracted {} entities, {} relationships (accumulated: {} docs)",
+            len(result.entities), len(result.relationships), accumulator.doc_count,
+        )
+
+        # buffer.accumulate_from_result() already called inside ingest_document
+        types_after = buffer.type_names() if buffer else set()
+        new_types = types_after - types_before
+
+        # Compute stability metrics and record curing state
+        coverage = buffer.coverage() if buffer else 0.0
+        stability = metrics_tracker.record(buffer.frequencies()) if buffer else {}
+        detector.record(coverage, new_types, stability)
+        logger.info("[fluid] curing status: {}", detector.status())
+
+        # Log key stability metrics
+        if stability:
+            import math
+            jsd = stability.get("js_divergence", float("nan"))
+            chao1 = stability.get("chao1_coverage", float("nan"))
+            heaps = stability.get("heaps_beta", float("nan"))
+            ent_d = stability.get("entropy_shannon_delta", float("nan"))
+            jsd_s = f"{jsd:.4f}" if not math.isnan(jsd) else "n/a"
+            chao1_s = f"{chao1:.3f}" if not math.isnan(chao1) else "n/a"
+            heaps_s = f"{heaps:.3f}" if not math.isnan(heaps) else "n/a"
+            ent_d_s = f"{ent_d:.4f}" if not math.isnan(ent_d) else "n/a"
+            logger.info(
+                "[fluid] stability: jsd={}, chao1_cov={}, heaps_beta={}, entropy_delta={}",
+                jsd_s, chao1_s, heaps_s, ent_d_s,
+            )
+
+        # Check curing conditions
+        should_cure = False
+        if force_cure:
+            logger.warning("[fluid] force-cure requested after first document")
+            should_cure = True
+        elif detector.is_cured():
+            logger.info("[fluid] schema has cured naturally")
+            should_cure = True
+        elif len(accumulator.all_entities()) >= config.curing.max_fluid_entities:
+            logger.warning(
+                "[fluid] entity budget exceeded: {} >= max_fluid_entities={}",
+                len(accumulator.all_entities()),
+                config.curing.max_fluid_entities,
+            )
+            should_cure = True
+        elif detector.is_force_required():
+            logger.warning(
+                "[fluid] force-curing at max_fluid_documents={}",
+                config.curing.max_fluid_documents,
+            )
+            should_cure = True
+
+        if should_cure:
+            # Curing event: consolidate and flush
+            cured_ontology = buffer.snapshot() if buffer else None
+            logger.info(
+                "[curing] consolidating {} documents, ontology has {} types",
+                accumulator.doc_count,
+                len(cured_ontology.entity_types) if cured_ontology else 0,
+            )
+
+            merged_result = accumulator.consolidate(cured_ontology, config.extract)
+            logger.info(
+                "[curing] merged result: {} entities, {} relationships",
+                len(merged_result.entities), len(merged_result.relationships),
+            )
+
+            load_result = load_extraction(merged_result, config)
+            logger.info(
+                "[curing] loaded: {} created, {} merged, {} relationships",
+                load_result.nodes_created, load_result.nodes_merged,
+                load_result.relationships_created,
+            )
+
+            cured = True
+            cure_index = i + 1
+
+    # If never cured (all files processed in fluid phase), flush anyway
+    if not cured and accumulator.doc_count > 0:
+        logger.warning(
+            "[fluid] ingestion complete without curing ({} docs), flushing accumulated results",
+            accumulator.doc_count,
+        )
+        cured_ontology = buffer.snapshot() if buffer else None
+        merged_result = accumulator.consolidate(cured_ontology, config.extract)
+        load_result = load_extraction(merged_result, config)
+        logger.info(
+            "[flush] loaded: {} created, {} merged, {} relationships",
+            load_result.nodes_created, load_result.nodes_merged,
+            load_result.relationships_created,
+        )
 
 
 @app.command()
