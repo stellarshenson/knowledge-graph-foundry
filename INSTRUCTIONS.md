@@ -62,7 +62,9 @@ Do not modify or delete the zip file. Keep `data/raw/` contents reproducible.
 
 ## Stop Condition
 
-Stop when the pipeline successfully:
+Stop when the multidoc benchmark hybrid score reaches 90+. Until then, keep iterating.
+
+Pipeline prerequisites (must all be working):
 1. Parses a PDF from the CPAP dataset
 2. Chunks the parsed content
 3. Extracts entities and relationships via Claude Sonnet 4
@@ -107,16 +109,20 @@ Push after each commit. Keep the remote up to date.
 
 ## Improvement Iteration Loop
 
-After each major implementation run, enter a structured improvement cycle. Execute 5 iterations minimum per session.
+After each major implementation run, enter a structured improvement cycle. Keep iterating until hybrid score reaches 90+.
 
 **Each iteration**:
-1. **Plan** - Enter planning mode. Identify gaps between current implementation and DESIGN.md. Prioritize by impact
-2. **Execute** - Implement the planned improvements. Use subagents for parallel work
-3. **Build & Test** - Run `make install` && `make test`. All tests must pass
-4. **Benchmark** - Run the query benchmark scorecard against the graph. Record scores
-5. **Devil's Advocate** - Evaluate changes against DESIGN.md and best practices. Identify what's still wrong
-6. **Commit & Push** - Commit with descriptive message, push to remote
-7. **Record** - Log iteration number, what changed, benchmark delta in JOURNAL.md
+1. **Execute** - Implement improvements targeting the weakest benchmark dimensions. Use subagents for parallel work
+2. **Build & Test** - Run `make test` && `make lint`. All tests must pass
+3. **Wipe & Ingest** - Wipe Neo4j graph (`MATCH (n) DETACH DELETE n`), run fluid ingestion against 10-doc benchmark corpus
+4. **Benchmark** - Run `python tests/benchmark_multidoc.py vNN "description"` with deterministic + generative scoring. Save results to `docs/benchmarks/`
+5. **Analyze** - Which dimensions improved vs regressed? New failure modes? Did the fixes hit their targets?
+6. **Commit & Push** - Commit all changes with descriptive message, push to remote
+7. **Update DESIGN.md** - Document lessons learned, what worked, what didn't
+8. **Update JOURNAL.md** - Log iteration number, changes, benchmark delta
+9. **Plan next** - Based on analysis, identify next highest-impact change. Repeat from step 1
+
+**Autonomous execution**: Do not ask for permission at any step. Execute the full loop. Commit and push after each iteration. The loop terminates when hybrid score >= 90 or after exhausting feasible improvements.
 
 **Benchmark scorecard** (query-based, not prompt-based):
 - Evaluates graph output via Cypher queries against ground truth from source documents

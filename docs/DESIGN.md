@@ -971,6 +971,94 @@ For drift decisions: when `check_drift()` flags sustained remap rates, the LLM r
 
 Cost: one or two sync LLM calls per document in fluid phase (after `min_documents`), one per drift event in cured phase.
 
+### LLM advisor prompts
+
+The cure evaluator receives a structured prompt with the full metric timeline, type list with frequencies, and explicit decision rules. The prompt injects all context as formatted data - no hidden state:
+
+```
+You are an ontology curing evaluator. Given the metric history and type list
+below, decide whether to CURE (freeze the ontology) or CONTINUE (keep
+discovering types).
+
+Domain intent: {intent}
+Documents processed: {docs_processed}
+Total entities: {total_entities}
+Type count: {type_count}
+Coverage (Chao1): {coverage}
+
+Type list (sorted by frequency, descending):
+- Person: 42
+- Device: 38
+- Organization: 15
+...
+
+Metric history (one row per document):
+Doc | JSD     | Entropy D | Type Accum | Chao1 Cov | Heaps B | New Types
+----|---------|-----------|------------|-----------|---------|----------
+  1 | 0.4523  | 0.3100    | 3.0        | 0.600     | 0.890   | Person, Device, Org
+  2 | 0.1200  | 0.0800    | 1.0        | 0.750     | 0.450   | Standard
+  3 | 0.0050  | 0.0200    | 0.0        | 0.950     | 0.120   | (none)
+
+Decision rules:
+
+CURE if ALL of these are true:
+1. The type list covers the major entity categories implied by the domain intent
+2. JSD has been below 0.05 for at least 2 consecutive documents in the history
+3. No more than 1 new type appeared in the last 2 documents
+4. Chao1 coverage is above 0.7 (most types have been discovered)
+
+BLOCK CURE if ANY of these are true:
+1. The domain intent mentions entity categories not yet represented in the type list
+2. Type accumulation rate was above 1.0 in the most recent document
+3. Chao1 coverage is below 0.5 (many types remain undiscovered)
+4. Fewer than {min_documents} documents have been processed
+
+Graph query (optional):
+You may request ONE graph query if the metrics are genuinely ambiguous and
+you need to verify a hypothesis. Set needs_query=True and specify query_type.
+Only do this if the data above is insufficient to decide.
+Do NOT request a query if the metrics clearly indicate cure or continue.
+```
+
+The first-pass response uses `CureProbe` - a structured model that always includes `should_cure` (best guess) plus optional `needs_query`, `query_type`, `query_filter_type`, and `query_filter_name` fields. This avoids Optional bool issues with instructor by requiring the decision upfront while allowing the LLM to request verification. If the query is honoured (ambiguity gate passes), a second call with `CureDecision` receives the original prompt enriched with graph query results.
+
+The drift evaluator receives a separate prompt for re-cure decisions after `check_drift()` triggers:
+
+```
+You are an ontology drift evaluator. Given the remap history and cured type
+list below, decide whether to RE-CURE (re-enter fluid phase) or DISMISS the
+drift.
+
+Domain intent: {intent}
+Cured ontology types: {cured_types}
+Current stability: JSD={jsd}, entropy_delta={entropy_delta}
+
+Remap history (one row per cured-phase document):
+Doc | Remap Rate
+----|----------
+  1 | 35.00%
+  2 | 40.00%
+  3 | 38.00%
+
+Decision rules:
+
+RE-CURE if ALL of these are true:
+1. At least 3 distinct remapped entity types are NOT synonyms or surface
+   variants of any cured ontology type
+2. Remap rate has been above 30% for the entire remap history window
+3. The remapped types represent entity categories genuinely missing from
+   the cured ontology for the stated intent
+
+DISMISS DRIFT if ANY of these are true:
+1. The remapped types are synonyms, abbreviations, or formatting variants
+   of existing cured types
+2. Remap rate dropped below 20% in any document in the remap window
+3. The remapped entities are from a single anomalous document (not a
+   sustained trend)
+```
+
+The drift response uses `RecureDecision` with `should_recure: bool` and `reasoning: str`. Both prompts enforce strict decision rules with explicit thresholds - the LLM's unique contribution is semantic judgement on type list completeness and synonym detection, not threshold evaluation.
+
 **Graph query tool** - in ambiguous cases, the LLM may request a single graph query before deciding. During fluid phase, queries execute against the in-memory FluidAccumulator (entity counts by type, relationship pattern counts, entity name search). During cured phase (drift evaluation and LLM escalation), queries execute against Neo4j. The LLM receives a `GraphQueryResult` with a summary and up to 20 records, then makes its final decision in a second call. Maximum `generative_max_tool_calls` (default 2) queries per decision. The query is only honoured when metrics are genuinely ambiguous (JSD 0.02-0.08 or Chao1 0.5-0.75 for curing; top-2 posterior gap < 0.15 for type resolution).
 
 **Early stopping** - when generative curing is enabled, the system tracks consecutive LLM "cure" votes across documents. If the LLM returns `should_cure=True` for enough consecutive documents, curing triggers automatically. The threshold is `generative_patience` (default 0.4) as a fraction of `max_fluid_documents` - so 0.4 * 20 = 8 consecutive document-level cure votes, with a minimum of 3 regardless of fraction. This prevents indefinite deferral when the LLM is confident but the caller keeps asking. The counter resets whenever the LLM votes "don't cure".

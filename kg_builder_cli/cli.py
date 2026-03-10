@@ -419,8 +419,19 @@ def _ingest_fluid(
                     )
                 )
 
-                # Apply type mapping to accumulated entities
+                # Validate merges before applying
                 all_entities = accumulator.all_entities()
+                from kg_builder_cli.curing.merge_validation import validate_type_clustering
+
+                validation = validate_type_clustering(
+                    type_mapping,
+                    freqs,
+                    all_entities,
+                    threshold=config.curing.merge_confidence_threshold,
+                )
+                type_mapping = validation.approved_mapping
+
+                # Apply type mapping to accumulated entities
                 apply_type_mapping(all_entities, type_mapping)
 
                 # Re-normalize IDs after type remapping
@@ -495,7 +506,18 @@ def _ingest_fluid(
                     profile=config.llm.profile,
                 )
             )
+            # Validate merges before applying
             all_entities = accumulator.all_entities()
+            from kg_builder_cli.curing.merge_validation import validate_type_clustering
+
+            validation = validate_type_clustering(
+                type_mapping,
+                freqs,
+                all_entities,
+                threshold=config.curing.merge_confidence_threshold,
+            )
+            type_mapping = validation.approved_mapping
+
             apply_type_mapping(all_entities, type_mapping)
             all_rels = accumulator.all_relationships()
             normalize_entity_ids(all_entities, all_rels)

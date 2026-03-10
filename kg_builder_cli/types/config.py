@@ -102,6 +102,8 @@ class CuringConfig(BaseModel):
     generative_curing: bool = False
     generative_patience: float = 0.4
     generative_max_tool_calls: int = 2
+    min_chao1_coverage: float = 0.7
+    merge_confidence_threshold: float = 0.4
 
 
 class AppConfig(BaseModel):

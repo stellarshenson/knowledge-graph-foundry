@@ -364,3 +364,53 @@ class TestPatienceTracking:
         detector.record_llm_vote(False)  # reset
         detector.record_llm_vote(True)
         assert not detector.patience_exceeded(0.3)
+
+
+class TestChao1Floor:
+    """Tests for Chao1 coverage floor in is_cured()."""
+
+    def test_low_chao1_blocks_curing(self):
+        """Curing should be blocked when chao1_coverage < min_chao1_coverage."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            coverage_delta_threshold=0.05, min_chao1_coverage=0.7,
+        )
+        detector = CuringDetector(config)
+        detector.record(0.3, {"Person"}, {"chao1_coverage": 0.3})
+        detector.record(0.5, {"Device"}, {"chao1_coverage": 0.4})
+        detector.record(0.6, set(), {"chao1_coverage": 0.45})
+        # Stable coverage and no new types - would cure without Chao1 floor
+        detector.record(0.61, set(), {"chao1_coverage": 0.46})
+        detector.record(0.62, set(), {"chao1_coverage": 0.46})
+        detector.record(0.62, set(), {"chao1_coverage": 0.46})
+        assert not detector.is_cured()
+
+    def test_high_chao1_allows_curing(self):
+        """Curing should proceed when chao1_coverage >= min_chao1_coverage."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            coverage_delta_threshold=0.05, min_chao1_coverage=0.7,
+        )
+        detector = CuringDetector(config)
+        detector.record(0.3, {"Person"}, {"chao1_coverage": 0.5})
+        detector.record(0.5, {"Device"}, {"chao1_coverage": 0.6})
+        detector.record(0.6, set(), {"chao1_coverage": 0.7})
+        detector.record(0.61, set(), {"chao1_coverage": 0.75})
+        detector.record(0.62, set(), {"chao1_coverage": 0.75})
+        detector.record(0.62, set(), {"chao1_coverage": 0.75})
+        assert detector.is_cured()
+
+    def test_missing_chao1_skips_guard(self):
+        """When chao1_coverage is absent, guard should be skipped (backward compat)."""
+        config = CuringConfig(
+            enabled=True, min_documents=3, stability_window=3,
+            coverage_delta_threshold=0.05, min_chao1_coverage=0.7,
+        )
+        detector = CuringDetector(config)
+        detector.record(0.3, {"Person"})
+        detector.record(0.5, {"Device"})
+        detector.record(0.6, set())
+        detector.record(0.61, set())
+        detector.record(0.62, set())
+        detector.record(0.62, set())
+        assert detector.is_cured()

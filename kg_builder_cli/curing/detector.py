@@ -70,6 +70,19 @@ class CuringDetector:
         if any(len(types) > 0 for types in recent_types):
             return False
 
+        # Chao1 coverage floor: do not cure if species richness indicates
+        # significant undiscovered types (backward compatible: skip if None)
+        if self._metrics_history:
+            latest = self._metrics_history[-1]
+            chao1 = latest.get("chao1_coverage")
+            if chao1 is not None and chao1 < self._config.min_chao1_coverage:
+                logger.debug(
+                    "Curing blocked: chao1_coverage={:.3f} < min_chao1_coverage={:.3f}",
+                    chao1,
+                    self._config.min_chao1_coverage,
+                )
+                return False
+
         return True
 
     def is_converged(self) -> bool:

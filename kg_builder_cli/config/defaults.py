@@ -76,6 +76,8 @@ DEFAULTS: dict = {
         "generative_curing": False,
         "generative_patience": 0.4,
         "generative_max_tool_calls": 2,
+        "min_chao1_coverage": 0.7,
+        "merge_confidence_threshold": 0.4,
     },
     "paths": {
         "ontology": None,
