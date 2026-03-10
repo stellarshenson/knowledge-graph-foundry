@@ -50,7 +50,7 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] **Generative curing advisory** - `generative_curing` config (default false). When enabled, LLM replaces metric-based curing checks after `min_documents`. LLM always receives full metrics snapshot as per-document timeline. LLM failure falls through to metric-based checks (`is_converged`, `is_plateau`, `is_cured`). Safety net (`max_fluid_documents`) overrides LLM advisory. Re-cure: LLM replaces `re_cure_on_drift` boolean when enabled, falls back to boolean on LLM failure
 - [x] **Graph query tool** - two-phase structured output: first LLM call returns `CureProbe` with optional `needs_query=True`. If metrics are ambiguous (JSD 0.02-0.08 or Chao1 0.5-0.75) and accumulator available, executes `query_fluid()` against in-memory FluidAccumulator, then second call with enriched context produces `CureDecision`. For LLM escalation in type resolution, `query_graph()` executes against Neo4j when top-2 posterior gap < 0.15. Three query types: `entity_counts`, `relationship_patterns`, `entity_search`. Max `generative_max_tool_calls` (default 2) per decision
 - [x] **Early stopping patience** - `CuringDetector` tracks consecutive LLM "cure" votes via `record_llm_vote()` / `patience_exceeded()`. When counter >= `generative_patience` (default 3), auto-triggers cure regardless of latest vote. Counter resets on "don't cure" vote. Check order updated: patience check after LLM decision, before metric fallback
-- [x] Config: `generative_patience` = 3, `generative_max_tool_calls` = 2
+- [x] Config: `generative_patience` = 5, `generative_max_tool_calls` = 2
 - [ ] **Proposed composite curing mechanism** (design lines 999-1007) - described as future work, not implemented. Would use weighted metric composite instead of three-condition heuristic
 
 ## Type Exemplars and Bayesian Resolution (Section 5.8)
@@ -117,7 +117,7 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] `drift_window` = 3
 - [x] `re_cure_on_drift` = false
 - [x] `generative_curing` = false
-- [x] `generative_patience` = 3
+- [x] `generative_patience` = 5
 - [x] `generative_max_tool_calls` = 2
 - [x] `cross_type_description_threshold` = 0.3
 

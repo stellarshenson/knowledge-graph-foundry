@@ -973,7 +973,7 @@ Cost: one or two sync LLM calls per document in fluid phase (after `min_document
 
 **Graph query tool** - in ambiguous cases, the LLM may request a single graph query before deciding. During fluid phase, queries execute against the in-memory FluidAccumulator (entity counts by type, relationship pattern counts, entity name search). During cured phase (drift evaluation and LLM escalation), queries execute against Neo4j. The LLM receives a `GraphQueryResult` with a summary and up to 20 records, then makes its final decision in a second call. Maximum `generative_max_tool_calls` (default 2) queries per decision. The query is only honoured when metrics are genuinely ambiguous (JSD 0.02-0.08 or Chao1 0.5-0.75 for curing; top-2 posterior gap < 0.15 for type resolution).
 
-**Early stopping** - when generative curing is enabled, the system tracks consecutive LLM "cure" votes. If the LLM returns `should_cure=True` for `generative_patience` (default 3) consecutive documents, curing triggers automatically on the next check. This prevents indefinite deferral when the LLM is confident but the caller keeps asking. The counter resets whenever the LLM votes "don't cure".
+**Early stopping** - when generative curing is enabled, the system tracks consecutive LLM "cure" votes. If the LLM returns `should_cure=True` for `generative_patience` (default 5) consecutive documents, curing triggers automatically on the next check. This prevents indefinite deferral when the LLM is confident but the caller keeps asking. The counter resets whenever the LLM votes "don't cure".
 
 Check order (fluid phase):
 1. `force_cure` flag - user override
@@ -1055,7 +1055,7 @@ curing:
   drift_window: 3                     # consecutive docs above threshold to trigger drift warning
   re_cure_on_drift: false             # opt-in re-curing when drift detected
   generative_curing: false            # LLM-assisted curing decisions (metrics as input)
-  generative_patience: 3              # consecutive LLM "cure" votes to auto-trigger
+  generative_patience: 5              # consecutive LLM "cure" votes to auto-trigger
   generative_max_tool_calls: 2        # max graph queries per LLM decision
 
 extract:
