@@ -976,16 +976,30 @@ curing:
 
 **Stability metrics** - tracked after each document for empirical evaluation of which signals best predict the right curing moment. All metrics are pure Python (`math` stdlib only). The `StabilityMetrics` class is purely computational - it does not make curing decisions. The existing `CuringDetector` remains the decision maker until analysis determines which metrics are most predictive.
 
-Tracked metrics:
-- Shannon entropy and entropy delta - type distribution diversity and its rate of change
-- KL divergence and Jensen-Shannon divergence - distribution shift between consecutive documents (JSD is symmetric, bounded [0,1])
-- Type accumulation rate - new types per document (dV/dN)
-- Gini coefficient - frequency inequality (0=equal, 1=dominated by few types)
-- Zipf R-squared - log-log linear fit quality (mature ontologies follow power laws)
-- Heaps' beta - vocabulary growth exponent from computational linguistics (beta approaching 0 means saturation)
-- Chao1 coverage - observed/estimated total types using species richness estimator from ecology
-- ACE estimate - abundance-based coverage estimator for total type count
-- Rolling variance - variance of key metrics over a configurable window (convergence meta-signal)
+| Metric | Key | What It Measures | Stability Signal |
+|--------|-----|------------------|------------------|
+| Shannon entropy | `entropy_shannon` | Type distribution diversity | Delta approaches 0 |
+| KL divergence | `kl_divergence` | Distribution shift between consecutive docs | Approaches 0 |
+| Jensen-Shannon divergence | `js_divergence` | Symmetric bounded distribution distance [0,1] | Approaches 0 |
+| Type accumulation rate | `type_accumulation_rate` | New types per document (dV/dN) | Equals 0 |
+| Gini coefficient | `gini_coefficient` | Frequency inequality (0=equal, 1=dominated) | Delta approaches 0 |
+| Zipf R-squared | `zipf_r_squared` | Log-log linear fit quality (mature ontologies are Zipfian) | Exceeds 0.85, stabilizes |
+| Heaps' beta | `heaps_beta` | Vocabulary growth rate (V = K*N^beta) | Approaches 0 |
+| Chao1 coverage | `chao1_coverage` | Observed/estimated total types (species richness) | Approaches 1.0 |
+| ACE estimate | `ace_estimate` | Abundance-based total type estimate | Converges to observed |
+| Rolling variance | `*_var` suffixed | Variance of key metrics over last W docs | Approaches 0 |
+
+The metrics draw from three established fields. Entropy and divergences (Shannon, KL, JSD) are information theory fundamentals - JSD is the most robust being symmetric, bounded, and always defined. Gini and Zipf capture distributional maturity - real schemas have moderate Gini, and natural ontologies follow power laws with R-squared above 0.85 when mature. Heaps' beta comes from computational linguistics where vocabulary growth follows V = K*N^beta - when beta drops below ~0.1, vocabulary is saturating. Chao1 and ACE come from ecology species richness estimation - they predict "how many types exist that we haven't seen yet" based on singleton/doubleton frequencies, and when Chao1 coverage approaches 1.0, nearly all types have been discovered.
+
+**Proposed curing mechanism** - the current three-condition heuristic (coverage delta, type stability, min documents) is the production gate. The proposed replacement would use a composite score from the tracked metrics, weighted by empirical analysis of which signals best predict the right curing moment across benchmark datasets. The evaluation approach:
+
+1. Run fluid ingestion on benchmark corpora, logging all metrics after each document
+2. Identify the "ideal" curing point by comparing ontology quality at each possible curing document against the final ontology
+3. Correlate each metric's convergence pattern with proximity to the ideal curing point
+4. Select 3-5 metrics with strongest predictive power, define thresholds
+5. Replace the three-condition heuristic with a weighted composite check
+
+Until this analysis is complete, the existing heuristic remains the sole decision maker and all metrics are observational only.
 
 **Module structure**:
 - `kg_builder_cli/curing/__init__.py` - module init
