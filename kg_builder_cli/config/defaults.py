@@ -73,6 +73,9 @@ DEFAULTS: dict = {
         "drift_remap_threshold": 0.3,
         "drift_window": 3,
         "re_cure_on_drift": False,
+        "generative_curing": False,
+        "generative_patience": 3,
+        "generative_max_tool_calls": 2,
     },
     "paths": {
         "ontology": None,

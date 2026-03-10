@@ -25,6 +25,7 @@ class CuringDetector:
         self._docs_processed: int = 0
         self._metrics_history: list[dict[str, float]] = []
         self._remap_history: list[float] = []
+        self._consecutive_cure_votes: int = 0
 
     @property
     def docs_processed(self) -> int:
@@ -152,6 +153,17 @@ class CuringDetector:
             return False
 
         return True
+
+    def record_llm_vote(self, should_cure: bool) -> None:
+        """Track consecutive LLM cure votes for early stopping."""
+        if should_cure:
+            self._consecutive_cure_votes += 1
+        else:
+            self._consecutive_cure_votes = 0
+
+    def patience_exceeded(self, patience: int) -> bool:
+        """Return True when consecutive cure votes >= patience threshold."""
+        return self._consecutive_cure_votes >= patience
 
     def check_drift(self, remap_rate: float) -> bool:
         """Returns True if remap rate signals schema drift."""
