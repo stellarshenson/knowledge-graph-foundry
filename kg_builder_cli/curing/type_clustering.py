@@ -27,11 +27,11 @@ _CLUSTERING_PROMPT = """You are a knowledge graph ontology expert. Given the fol
 {type_list}
 
 **Rules**:
-1. Merge synonymous or overlapping types into the most common/general form
+1. Merge ONLY genuine synonyms or formatting variants (e.g. MedicalCondition and Medical_Condition)
 2. The canonical form should be PascalCase (e.g. "MedicalDevice", "SafetyStandard")
-3. Keep semantically distinct types separate
+3. Do NOT merge types that serve different semantic roles, even if they seem related
 4. Prefer the highest-frequency variant as the canonical name
-5. Aim for 6-12 canonical types for a typical domain
+5. When in doubt, keep types separate - false merges are worse than redundant types
 
 Return a mapping where each discovered type maps to its canonical form. Types that are already canonical map to themselves."""
 
