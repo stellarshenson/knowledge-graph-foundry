@@ -3,7 +3,11 @@ from __future__ import annotations
 
 import pytest
 
-from kg_builder_cli.extraction.resolution import resolve_entities, _cosine_similarity
+from kg_builder_cli.extraction.resolution import (
+    resolve_entities,
+    _cosine_similarity,
+    _description_similarity,
+)
 from kg_builder_cli.types.extraction import Entity
 
 
@@ -144,14 +148,14 @@ class TestResolution:
 
 
     def test_resolve_cross_type_merges(self):
-        """Entities with same normalized name but different types are merged."""
+        """Entities with same normalized name but different types are merged when descriptions overlap."""
         entities = [
             Entity(id="e1", name="ramp", type="Feature",
                    source_chunks=["c1"], confidence=0.9,
-                   description="Ramp feature for pressure adjustment"),
+                   description="gradual pressure ramp for CPAP therapy"),
             Entity(id="e2", name="ramp", type="WorkMode",
                    source_chunks=["c2"], confidence=0.85,
-                   description="Ramp mode"),
+                   description="ramp pressure mode for CPAP device"),
         ]
         resolved = resolve_entities(entities, threshold=0.85)
         assert len(resolved) == 1
@@ -164,13 +168,88 @@ class TestResolution:
         """Specification (priority 8) beats Component (priority 7)."""
         entities = [
             Entity(id="e1", name="power supply", type="Component",
-                   source_chunks=["c1"], confidence=0.9),
+                   source_chunks=["c1"], confidence=0.9,
+                   description="power supply unit for electrical delivery"),
             Entity(id="e2", name="power supply", type="Specification",
-                   source_chunks=["c2"], confidence=0.85),
+                   source_chunks=["c2"], confidence=0.85,
+                   description="power supply electrical specification"),
         ]
         resolved = resolve_entities(entities, threshold=0.85)
         assert len(resolved) == 1
         assert resolved[0].type == "Specification"
+
+
+class TestDescriptionSimilarity:
+    def test_basic_similarity(self):
+        """Word overlap produces non-zero similarity."""
+        assert _description_similarity("physical air filter component", "data smoothing algorithm") < 0.3
+
+    def test_high_similarity(self):
+        """Overlapping descriptions have high similarity."""
+        sim = _description_similarity("gradual pressure ramp mode", "ramp pressure mode for CPAP")
+        assert sim > 0.3
+
+    def test_empty_descriptions(self):
+        """Empty descriptions return 0.0."""
+        assert _description_similarity("", "") == 0.0
+        assert _description_similarity("hello world", "") == 0.0
+        assert _description_similarity("", "hello world") == 0.0
+
+    def test_identical_descriptions(self):
+        """Identical descriptions return 1.0."""
+        assert _description_similarity("pressure control system", "pressure control system") == 1.0
+
+
+class TestCrossTypeDescriptionGate:
+    def test_cross_type_blocks_divergent_descriptions(self):
+        """'Filter' (Component) vs 'Filter' (Feature) with different descriptions stay separate."""
+        entities = [
+            Entity(id="e1", name="Filter", type="Component",
+                   source_chunks=["c1"], confidence=0.9,
+                   description="physical air filter for removing particulates"),
+            Entity(id="e2", name="Filter", type="Feature",
+                   source_chunks=["c2"], confidence=0.85,
+                   description="data smoothing algorithm for signal processing"),
+        ]
+        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.3)
+        assert len(resolved) == 2
+
+    def test_cross_type_merges_similar_descriptions(self):
+        """'Ramp' with overlapping descriptions should merge."""
+        entities = [
+            Entity(id="e1", name="Ramp", type="Feature",
+                   source_chunks=["c1"], confidence=0.9,
+                   description="gradual pressure ramp for CPAP therapy"),
+            Entity(id="e2", name="Ramp", type="WorkMode",
+                   source_chunks=["c2"], confidence=0.85,
+                   description="ramp pressure mode for CPAP device"),
+        ]
+        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.3)
+        assert len(resolved) == 1
+
+    def test_cross_type_empty_descriptions_no_merge(self):
+        """Empty descriptions default to no merge (safe)."""
+        entities = [
+            Entity(id="e1", name="Filter", type="Component",
+                   source_chunks=["c1"], confidence=0.9, description=""),
+            Entity(id="e2", name="Filter", type="Feature",
+                   source_chunks=["c2"], confidence=0.85, description=""),
+        ]
+        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.3)
+        assert len(resolved) == 2
+
+    def test_cross_type_threshold_zero_always_merges(self):
+        """threshold=0.0 reproduces old behavior (always merge)."""
+        entities = [
+            Entity(id="e1", name="Filter", type="Component",
+                   source_chunks=["c1"], confidence=0.9,
+                   description="physical air filter"),
+            Entity(id="e2", name="Filter", type="Feature",
+                   source_chunks=["c2"], confidence=0.85,
+                   description="data algorithm"),
+        ]
+        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.0)
+        assert len(resolved) == 1
 
 
 class TestCosine:

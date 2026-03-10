@@ -24,6 +24,7 @@ class CuringDetector:
         self._new_types_history: list[set[str]] = []
         self._docs_processed: int = 0
         self._metrics_history: list[dict[str, float]] = []
+        self._remap_history: list[float] = []
 
     @property
     def docs_processed(self) -> int:
@@ -109,6 +110,56 @@ class CuringDetector:
             return False
 
         return True
+
+    def is_plateau(self) -> bool:
+        """Check if metrics show a plateau (distribution shape stable).
+
+        Unlike is_converged(), allows low-rate type accumulation.
+        Requires: JSD < threshold, entropy delta < plateau_entropy_delta,
+        coverage delta < coverage_delta_threshold for stability_window docs.
+        """
+        import math
+
+        if self._docs_processed < self._config.min_documents:
+            return False
+
+        window = self._config.stability_window
+        if len(self._metrics_history) < window:
+            return False
+        if len(self._coverage_history) < window + 1:
+            return False
+
+        recent = self._metrics_history[-window:]
+
+        # JSD convergence
+        jsd_values = [m.get("js_divergence", float("nan")) for m in recent]
+        if any(math.isnan(v) for v in jsd_values):
+            return False
+        if any(v >= self._config.jsd_convergence_threshold for v in jsd_values):
+            return False
+
+        # Entropy delta (plateau uses looser threshold)
+        ent_deltas = [m.get("entropy_shannon_delta", float("nan")) for m in recent]
+        if any(math.isnan(v) for v in ent_deltas):
+            return False
+        if any(v >= self._config.plateau_entropy_delta for v in ent_deltas):
+            return False
+
+        # Coverage delta convergence
+        recent_cov = self._coverage_history[-window:]
+        cov_deltas = [abs(recent_cov[i] - recent_cov[i - 1]) for i in range(1, len(recent_cov))]
+        if any(d >= self._config.coverage_delta_threshold for d in cov_deltas):
+            return False
+
+        return True
+
+    def check_drift(self, remap_rate: float) -> bool:
+        """Returns True if remap rate signals schema drift."""
+        self._remap_history.append(remap_rate)
+        if len(self._remap_history) < self._config.drift_window:
+            return False
+        recent = self._remap_history[-self._config.drift_window :]
+        return all(r >= self._config.drift_remap_threshold for r in recent)
 
     def is_force_required(self) -> bool:
         """Check if max_fluid_documents reached (failsafe)."""

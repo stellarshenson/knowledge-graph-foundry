@@ -41,6 +41,7 @@ class ExtractConfig(BaseModel):
     bayesian_resolution: bool = False
     llm_escalation: bool = False
     schema_signal_extraction: bool = False
+    cross_type_description_threshold: float = 0.3
 
 
 class OntologyBufferConfig(BaseModel):
@@ -95,6 +96,10 @@ class CuringConfig(BaseModel):
     enforcement_threshold: float = 0.5
     jsd_convergence_threshold: float = 0.01
     entropy_delta_threshold: float = 0.05
+    plateau_entropy_delta: float = 0.1
+    drift_remap_threshold: float = 0.3
+    drift_window: int = 3
+    re_cure_on_drift: bool = False
 
 
 class AppConfig(BaseModel):
