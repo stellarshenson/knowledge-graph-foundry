@@ -95,10 +95,11 @@ class OntologyBuffer:
             name for name, freq in self._frequencies.items()
             if freq >= threshold and name in self._entity_types
         )
+        emerge_threshold = self._config.min_frequency_to_emerge
         emerging = frozenset(
             name for name in self._entity_types
             if name not in confirmed
-            and self._frequencies.get(name, 0) >= 2
+            and self._frequencies.get(name, 0) >= emerge_threshold
         )
         candidate = frozenset(
             name for name in self._entity_types
@@ -170,6 +171,14 @@ class OntologyBuffer:
             )
 
         self.accumulate(signals)
+
+    def frequencies(self) -> dict[str, int]:
+        """Return copy of current type frequency counts."""
+        return dict(self._frequencies)
+
+    def type_names(self) -> set[str]:
+        """Return the set of all known entity type names."""
+        return set(self._entity_types.keys())
 
     def coverage(self) -> float:
         """Return fraction of confirmed types over total entity types."""

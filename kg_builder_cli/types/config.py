@@ -34,6 +34,8 @@ class ExtractConfig(BaseModel):
     subgraph_splitting: bool = False
     rolling_context_window: int = 0
     resolution_threshold: float = 0.85
+    name_threshold: float = 0.65
+    embedding_threshold: float = 0.80
     use_embeddings: bool = False
     embedding_model: str = "amazon.titan-embed-text-v2:0"
 
@@ -46,6 +48,7 @@ class OntologyBufferConfig(BaseModel):
     refine_every_n_docs: int = 5
     coverage_threshold: float = 0.5
     min_frequency_to_confirm: int = 2
+    min_frequency_to_emerge: int = 2
     flush_on_complete: bool = True
 
 
@@ -73,6 +76,17 @@ class PathsConfig(BaseModel):
     migrations: str = ".kg-builder/migrations/"
 
 
+class CuringConfig(BaseModel):
+    enabled: bool = False
+    min_documents: int = 3
+    max_fluid_documents: int = 20
+    max_fluid_entities: int = 150
+    coverage_delta_threshold: float = 0.05
+    stability_window: int = 3
+    auto_cure: bool = True
+    metrics_variance_window: int = 5
+
+
 class AppConfig(BaseModel):
     neo4j: Neo4jConfig = Neo4jConfig()
     llm: LLMConfig = LLMConfig()
@@ -81,3 +95,4 @@ class AppConfig(BaseModel):
     load: LoadConfig = LoadConfig()
     memory: MemoryConfig = MemoryConfig()
     paths: PathsConfig = PathsConfig()
+    curing: CuringConfig = CuringConfig()

@@ -10,32 +10,35 @@ Master task list for kg-builder-cli. Derived from `docs/DESIGN.md`.
 - [x] `config/` module - YAML loader with `${VAR}` interpolation, defaults, CLI override resolution
 - [ ] `.kg-builder/` initialization logic - create directory structure on first run
 
-## Infrastructure
-
-- [ ] `tools/neo4j_driver.py` - bulk Cypher operations, batch MERGE, transaction management, deadlock retry
-- [ ] `tools/py_repl.py` - Python REPL tool wrapper for code inspection and dynamic parsing
-- [ ] `tools/file_ops.py` - read/write `.kg-builder/` directory, YAML serialization
-
 ## Ontology
 
-- [ ] `ontology/normalizer.py` - three-tier normalization (py-repl parse -> LLM repair -> full LLM)
+- [x] `ontology/buffer.py` - in-memory ontology state, TypeSignal accumulation, coverage scoring, YAML flush, enriched prompt sections
+- [x] `ontology/owl_import.py` - OWL/RDF import via owlready2
 - [ ] `ontology/yaml_schema.py` - validate and load YAML ontology against canonical schema
-- [x] `ontology/buffer.py` - in-memory ontology state, TypeSignal accumulation, coverage scoring, YAML flush
 - [ ] `ontology/dag.py` - DAG validation, cycle detection on type hierarchies
-- [ ] `ontology/owl_import.py` - OWL/RDF import via owlready2
 - [ ] `ontology/reasoning.py` - post-load OWL reasoning / Cypher subclass propagation
 
 ## Extraction
 
 - [x] `extraction/parsing.py` - PDF (pymupdf4llm), TXT, MD, DOCX parsers returning TextSegments
 - [x] `extraction/chunking.py` - token-based chunking with overlap, deterministic chunk IDs (SHA1)
-- [x] `extraction/prompts.py` - extraction prompt construction from chunks + ontology state + intent
+- [x] `extraction/prompts.py` - extraction prompt construction from chunks + ontology state + intent, structured properties prompt
 - [x] `extraction/unstructured.py` - orchestrate parse -> chunk -> extract -> dedup -> resolve -> load (with buffer + resolution)
-- [x] `extraction/dedup.py` - exact (type, id) deduplication across chunks
-- [x] `extraction/resolution.py` - Levenshtein fuzzy entity resolution with union-find clustering
+- [x] `extraction/dedup.py` - exact (type, id) deduplication with `normalize_entity_ids` cross-document merging
+- [x] `extraction/resolution.py` - multi-signal entity resolution (Levenshtein name, type-aware, embedding similarity, cross-type)
 - [x] `extraction/response_models.py` - Pydantic response models for instructor structured output
+- [x] `extraction/embeddings.py` - Amazon Titan embedding generation for semantic entity resolution
 - [ ] `extraction/facts.py` - atomic facts extraction (FactNode track)
 - [ ] `extraction/structured.py` - structured pipeline (JSON/JSONL/CSV/XLSX)
+
+## Schema Curing
+
+- [x] `curing/detector.py` - three-condition curing detection (min docs, coverage convergence, type stability) with failsafe
+- [x] `curing/accumulator.py` - in-memory ExtractionResult accumulator with consolidation (type enforcement, dedup, resolution)
+- [x] `types/config.py` - CuringConfig model with defaults
+- [x] `cli.py` - two-phase ingestion loop with `--fluid`/`--no-fluid` and `--cure` flags
+- [x] `config/defaults.py` - curing section in DEFAULTS dict
+- [x] `ontology/buffer.py` - `type_names()` method for new type tracking
 
 ## Loading
 
@@ -69,8 +72,14 @@ Master task list for kg-builder-cli. Derived from `docs/DESIGN.md`.
 
 ## Testing
 
-- [x] Unit tests for config, chunking, dedup, prompts, resolution, response models, ontology buffer, graph quality (59 tests, 90% coverage)
+- [x] Unit tests for config, chunking, dedup, prompts, resolution, response models, ontology buffer, graph quality, embeddings, curing (109 tests, 92% coverage)
 - [ ] Integration tests for Neo4j loading (MERGE, indexes, validation)
 - [ ] End-to-end test: single CPAP PDF -> parsed -> chunked -> extracted -> loaded -> queryable
-- [ ] Query benchmark scorecard - multi-dimensional quality evaluation, comprehensive, no prompt overfitting
-- [ ] Benchmark instrumentation (`--benchmark` flag)
+- [ ] Query benchmark scorecard - multi-dimensional quality evaluation
+
+## Benchmarks
+
+- [x] Single-document benchmarks (v01-v05) - iterative improvement from 48% to 70%
+- [x] Multi-document benchmark v06 - cross-document entity resolution
+- [x] Multi-document benchmark v07 - enriched ontology buffer prompts
+- [x] Multi-document benchmark v08 - configurable thresholds, 88% score

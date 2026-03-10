@@ -65,6 +65,39 @@ The architecture targets small-to-medium scale knowledge graph construction:
 
 At larger scales (100,000+ documents, 1M+ entities), architectural changes would be needed: streaming extraction instead of in-memory accumulation, distributed entity resolution with ANN indexing, and incremental loading with write-ahead logs. These are out of scope for v1.
 
+### Non-Goals (v1)
+
+The following are explicitly out of scope for v1:
+
+- Not distributed ingestion - single-machine, single-process pipeline
+- Not internet-scale graph construction - targets 10-10,000 documents, not millions
+- Not multi-backend - Neo4j only, no pluggable graph database abstraction
+- Not perfect ontology before first run - the system is designed to discover and evolve schema
+- Not real-time streaming - batch ingestion with optional interactive checkpoints
+- Not multi-tenant - single graph per Neo4j database, no user isolation
+
+### Mode Compatibility Matrix
+
+Several modes interact across the pipeline. The table below defines allowed combinations and behavior at intersections.
+
+| Mode A | Mode B | Compatible | Behavior |
+|--------|--------|------------|----------|
+| `--batch` | `--fluid` | Yes | Fluid phase runs autonomously, curing decisions logged to run report |
+| `--batch` | `--ontology seed.yml` | Yes | Seeded extraction with autonomous decisions at checkpoints |
+| `--fluid` | `--ontology seed.yml` | No | `--fluid` ignored with warning - seeded workflow always uses direct loading |
+| `--fluid` | `--cure` | Yes | Force-cures after first document (useful for testing) |
+| `--fluid` | `extraction_mode: graph_reader` | Yes | Curing tracks entity/relationship type stability only (FactNodes not tracked) |
+| `--fluid` | `extraction_mode: hybrid` | Yes | Curing tracks entity/relationship types; facts pass through to consolidation |
+| `--fluid` | `use_embeddings: true` | Yes | Embeddings generated per-document during fluid phase, used during consolidation resolution |
+| `--ontology seed.yml` | `extraction_mode: *` | Yes | All extraction modes work with ontology seeds |
+| interactive | `--fluid` | Yes | Curing event shown to user for confirmation before flush |
+| `--batch` | `--cure` | Yes | Force-cure without user confirmation |
+
+**Key rules**:
+- Fluid curing is designed for empty-ontology discovery mode - when an ontology seed is provided, the schema is already defined and curing adds no value
+- `graph_reader` mode extracts FactNodes alongside entities - curing detection only monitors entity and relationship types, not fact stability
+- All extraction modes (`entity_relationship`, `graph_reader`, `hybrid`) work in both seeded and free extraction, with or without fluid curing
+
 ### Reference Benchmark Dataset
 
 All performance and quality evaluation uses a single reference dataset: 23 PDF documents about CPAP (Continuous Positive Airway Pressure) devices, stored at `data/external/cpap-datasheets-and-manuals.zip` (~63 MB). The collection covers datasheets, product brochures, user manuals, clinical guides, and product catalogues from multiple manufacturers - providing variety in document structure, page count, and content density.
@@ -399,6 +432,11 @@ extract:
   source_frequency: false             # count independent chunks and documents corroborating each triple
   describe_images: false              # run vision model on extracted PDF images
   vision_model: null                  # vision model for image description (e.g., llava:7b, gpt-4o)
+  use_embeddings: false               # generate entity embeddings for semantic resolution
+  embedding_model: amazon.titan-embed-text-v2:0  # embedding model ID
+  resolution_threshold: 0.85         # Levenshtein threshold for fuzzy entity resolution
+  name_threshold: 0.65               # name similarity threshold (when embeddings enabled)
+  embedding_threshold: 0.80          # cosine similarity threshold (when embeddings enabled)
 
 # Ontology buffer settings
 ontology_buffer:
@@ -409,7 +447,19 @@ ontology_buffer:
   refine_every_n_docs: 5             # trigger refinement after N documents
   coverage_threshold: 0.5            # low coverage triggers looser extraction
   min_frequency_to_confirm: 2        # type must appear in N+ documents to be confirmed
+  min_frequency_to_emerge: 2         # type must appear N+ times to surface as emerging suggestion
   flush_on_complete: true            # write refined ontology to disk after run
+  post_load_reasoning: false          # run OWL reasoning / Cypher subclass propagation after loading
+
+# Schema curing (fluid-to-stable ontology evolution)
+curing:
+  enabled: false                      # enable two-phase fluid/cured ingestion
+  min_documents: 3                   # minimum docs before curing can trigger
+  max_fluid_documents: 20            # force-cure failsafe after N docs
+  max_fluid_entities: 150          # force-cure if accumulated entities exceed limit
+  coverage_delta_threshold: 0.05     # coverage must stabilize below this delta
+  stability_window: 3                # consecutive docs with no new types required
+  auto_cure: true                    # automatically cure when conditions met
 
 # Loading defaults
 load:
@@ -737,6 +787,18 @@ The buffer tracks:
 - **Type variants**: raw type labels the LLM has produced that map to a canonical type (e.g., "Human" -> "Person", "Corp" -> "Organization")
 - **Disjoint constraints**: type pairs the seed considers incompatible (from OWL `disjointWith` or normalizer inference), logged as warnings during extraction but not enforced - the data may legitimately contain entities that bridge seed-defined boundaries
 - **Coverage score**: fraction of recently extracted types that match existing buffer entries, measured per document
+- **Property schemas**: per-type property definitions discovered during extraction, tracking property name, inferred value type (string, numeric, boolean, list), and observation frequency
+
+#### Property Schema Evolution
+
+The buffer tracks property schemas alongside entity and relationship types. When extraction produces entities with properties, the buffer records which property keys appear for each entity type and how often. Property promotion follows the same frequency logic as type confirmation:
+
+- **Frequency >= min_frequency_to_confirm**: property is promoted to the canonical schema for its type and included in extraction prompts as an expected field
+- **Frequency < threshold**: property remains a candidate, not surfaced in prompts
+- **Type inference**: property values are classified by observed type (string, numeric, boolean, list) based on majority vote across observations. When a property appears with conflicting types across documents, the most frequent type wins and a warning is logged
+- **Conflict resolution**: if two entity types define the same property name with different value types (e.g., `pressure` as numeric on Specification but string on Feature), each type maintains its own property schema independently - no cross-type property unification
+
+Property schemas are included in the ontology YAML flush and in extraction prompts via `_build_property_defs_block()`. This creates a feedback loop: early documents discover properties, later documents get prompted to extract them consistently, and the final ontology captures the full property schema per type.
 
 #### Schema Signal Extraction
 
@@ -853,6 +915,83 @@ CALL apoc.periodic.repeat(
 ```
 
 Post-load reasoning is most valuable when the domain has deep type hierarchies (biomedical, industrial, organizational), downstream queries need to find entities by ancestor type, or transitive relationships are important for graph traversal. It adds processing time and is not necessary for flat ontologies. Default is off, configured via `post_load_reasoning: true` in the ontology_buffer config section.
+
+### 5.8 Schema Curing - Fluid-to-Stable Ontology Evolution
+
+Schema curing provides a middle path between pre-defined ontology seeds and fully unconstrained free extraction. Instead of committing to a schema before seeing the data, the system starts with an empty ontology and an intent prompt, lets the schema evolve during ingestion, and holds all graph data in memory while the schema is "fluid". Only when the schema stabilizes ("cures") does the system flush everything to Neo4j.
+
+**Key facts**:
+- Disabled by default (`curing.enabled = false`) - existing seeded workflow unchanged
+- CLI flags: `--fluid` / `--no-fluid` to enable/disable, `--cure` to force-cure after first document
+- No re-extraction: post-cure type enforcement uses Levenshtein matching (existing `_enforce_ontology_types`)
+- No new dependencies (no NetworkX) - existing entity list operations handle cross-document merging
+
+The ingestion loop operates in two phases. During the fluid phase, each document is extracted normally but results accumulate in a `FluidAccumulator` instead of loading to Neo4j. After each document, the `CuringDetector` evaluates three convergence conditions. When all three are met - or the failsafe triggers - a curing event fires: the accumulated results are consolidated (type enforcement, deduplication, entity resolution) and batch-flushed to Neo4j. Remaining documents process in the cured phase with direct per-document loading.
+
+**Curing detection algorithm** - three conditions must ALL be true:
+- Minimum documents processed (`min_documents`, default 3)
+- Coverage convergence: coverage delta below threshold (`coverage_delta_threshold`, default 0.05) for the last N documents
+- Type stability: no new entity types for `stability_window` (default 3) consecutive documents
+
+**Failsafes** - force-cure triggers if ANY of these are exceeded:
+- Document count: `max_fluid_documents` (default 20) reached
+- Entity budget: accumulated entities exceed `max_fluid_entities` (default 50,000)
+
+The entity budget prevents memory exhaustion when processing large PDFs with dense extraction, multimodal content, or hybrid fact generation. When a failsafe triggers, a warning is logged identifying which limit was hit, the current ontology snapshot is taken, and consolidation proceeds normally. The entity budget is checked after each document alongside the convergence conditions.
+
+**Data flow**:
+
+```
+Document 1..N (fluid phase)
+  -> ingest_document() -> ExtractionResult
+  -> FluidAccumulator.add_result()
+  -> OntologyBuffer.accumulate_from_result()
+  -> StabilityMetrics.record(buffer.frequencies()) -> metrics dict
+  -> CuringDetector.record(coverage, new_types, metrics)
+  -> CuringDetector.is_cured()? -> Curing Event
+
+Curing Event:
+  -> OntologyBuffer.snapshot() (cured ontology)
+  -> FluidAccumulator.consolidate(cured_ontology)
+     -> _enforce_ontology_types() (remap to cured types)
+     -> normalize_entity_ids() + deduplicate() + resolve_entities()
+  -> load_extraction() (single batch flush to Neo4j)
+
+Document N+1..M (cured phase)
+  -> ingest_document() -> load_extraction() (direct per-document)
+```
+
+**Configuration** (in `config.yml`):
+```yaml
+curing:
+  enabled: true
+  min_documents: 3
+  max_fluid_documents: 20
+  max_fluid_entities: 150
+  coverage_delta_threshold: 0.05
+  stability_window: 3
+  auto_cure: true
+  metrics_variance_window: 5
+```
+
+**Stability metrics** - tracked after each document for empirical evaluation of which signals best predict the right curing moment. All metrics are pure Python (`math` stdlib only). The `StabilityMetrics` class is purely computational - it does not make curing decisions. The existing `CuringDetector` remains the decision maker until analysis determines which metrics are most predictive.
+
+Tracked metrics:
+- Shannon entropy and entropy delta - type distribution diversity and its rate of change
+- KL divergence and Jensen-Shannon divergence - distribution shift between consecutive documents (JSD is symmetric, bounded [0,1])
+- Type accumulation rate - new types per document (dV/dN)
+- Gini coefficient - frequency inequality (0=equal, 1=dominated by few types)
+- Zipf R-squared - log-log linear fit quality (mature ontologies follow power laws)
+- Heaps' beta - vocabulary growth exponent from computational linguistics (beta approaching 0 means saturation)
+- Chao1 coverage - observed/estimated total types using species richness estimator from ecology
+- ACE estimate - abundance-based coverage estimator for total type count
+- Rolling variance - variance of key metrics over a configurable window (convergence meta-signal)
+
+**Module structure**:
+- `kg_builder_cli/curing/__init__.py` - module init
+- `kg_builder_cli/curing/detector.py` - `CuringDetector` class with three-condition detection
+- `kg_builder_cli/curing/accumulator.py` - `FluidAccumulator` class storing `ExtractionResult` objects
+- `kg_builder_cli/curing/metrics.py` - `StabilityMetrics` class computing information-theoretic metrics
 
 ## 6. Unstructured Ingestion Pipeline
 
@@ -1120,6 +1259,8 @@ This catches entities like "ramp" extracted as both Feature and WorkMode, or "po
 **Embedding generation** (`embeddings.py`): when `config.extract.use_embeddings` is enabled, entity embeddings are generated via Amazon Titan Text Embeddings v2 (`amazon.titan-embed-text-v2:0`) through Bedrock. Input text per entity follows the format `"{type}: {name} - {description[:200]}"`, producing 1024-dimensional vectors stored on the entity and persisted to Neo4j for downstream vector search. Embeddings are generated after deduplication but before resolution.
 
 **Ontology schema consolidation**: a final consolidation pass after all documents are processed catches remaining type sprawl from the last few documents whose feedback was never refined. This pass uses the buffer's variant mappings to rename all entities to their canonical types before loading.
+
+**Cross-type merge review**: cross-type merges are the highest-risk resolution operation because they silently change an entity's type. To control this risk, all cross-type merges are logged to a review report at `.kg-builder/runs/<timestamp>_cross_type_merges.yml` containing the merged entity names, original types, surviving type, and the priority scores that determined the outcome. When entity names are short (3 characters or fewer) or when the priority gap between the two types is 1 (adjacent ranks), the merge is flagged as `review: true` in the report. In interactive mode, flagged merges are presented to the user for confirmation before proceeding. In batch mode, flagged merges proceed automatically but are prominently logged as warnings. This operational control catches the cases where cross-type merging is most likely to produce false merges without blocking the pipeline.
 
 **Limitations**: cross-type resolution assumes that entities with identical normalized names across types refer to the same concept - this may produce false merges in domains where the same term genuinely means different things in different type contexts. Short entity names (abbreviations, acronyms) are prone to both false matches and false negatives depending on threshold settings.
 
@@ -1396,6 +1537,30 @@ This is handled by the same LLM call - the schema description instructs the LLM 
 ## 8. Graph Structure in Neo4J
 
 The graph model distinguishes between unstructured and structured provenance while sharing common entity, ontology, and index infrastructure.
+
+### Canonical Entity Node Contract
+
+Every entity node in the graph carries these mandatory properties regardless of provenance (unstructured or structured), extraction mode, or ontology configuration:
+
+| Property | Type | Source | Description |
+|----------|------|--------|-------------|
+| `id` | string | deterministic hash (`{type}_{sha1_12}`) | Unique identifier, stable across re-ingestion |
+| `name` | string | LLM extraction | Human-readable entity name |
+| `type` | string | LLM extraction, enforced by ontology | Entity type label (also applied as Neo4j node label) |
+| `description` | string | LLM extraction | Free-text description of the entity |
+| `confidence` | float | LLM extraction, averaged on merge | Extraction confidence score (0.0-1.0) |
+| `source_chunks` | list[string] | chunk IDs | Provenance: which chunks contributed to this entity |
+
+**Optional properties** (present when enabled or applicable):
+
+| Property | Type | Condition | Description |
+|----------|------|-----------|-------------|
+| `embedding` | list[float] | `use_embeddings: true` | 1024-dim vector from Titan v2 |
+| `normalized_name` | string | post-resolution | Name after normalization (suffix stripping, lowercasing) |
+| `merged_from` | list[string] | post-resolution | IDs of entities merged into this canonical entity |
+| domain properties | varies | from extraction | Type-specific properties (e.g., `pressure`, `weight`, `frequency`) |
+
+The loading pipeline filters reserved keys (`id`, `name`, `type`, `description`, `confidence`, `embedding`) from the entity's `properties` dict before spreading domain properties onto the Neo4j node with `SET n += properties`. This prevents property name collisions with the canonical fields.
 
 ### Unified Graph Schema
 
