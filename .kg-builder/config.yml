@@ -1,0 +1,7 @@
+extract:
+  use_embeddings: true
+  bayesian_resolution: true
+ontology_buffer:
+  intent: "Compare CPAP and auto-titrating positive airway pressure therapy devices across manufacturers, focusing on product specifications, clinical features, therapy modes, regulatory compliance, and component architecture"
+curing:
+  enabled: true

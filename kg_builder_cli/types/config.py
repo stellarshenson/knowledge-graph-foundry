@@ -42,6 +42,7 @@ class ExtractConfig(BaseModel):
     llm_escalation: bool = False
     schema_signal_extraction: bool = False
     cross_type_description_threshold: float = 0.3
+    cross_type_embedding_threshold: float = 0.75
 
 
 class OntologyBufferConfig(BaseModel):
@@ -52,7 +53,7 @@ class OntologyBufferConfig(BaseModel):
     refine_every_n_docs: int = 5
     coverage_threshold: float = 0.5
     min_frequency_to_confirm: int = 2
-    min_frequency_to_emerge: int = 2
+    min_frequency_to_emerge: int = 1
     flush_on_complete: bool = True
     max_type_exemplars: int = 5
     type_resolution_top_k: int = 3
@@ -102,7 +103,7 @@ class CuringConfig(BaseModel):
     generative_curing: bool = False
     generative_patience: float = 0.4
     generative_max_tool_calls: int = 2
-    min_chao1_coverage: float = 0.7
+    min_chao1_coverage: float = 0.5
     merge_confidence_threshold: float = 0.4
 
 

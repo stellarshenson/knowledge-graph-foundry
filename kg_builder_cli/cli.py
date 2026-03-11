@@ -392,10 +392,6 @@ def _ingest_fluid(
             )
             from kg_builder_cli.extraction.dedup import normalize_entity_ids
 
-            # Prune low-frequency types before clustering
-            if buffer:
-                buffer.prune_low_frequency_types(config.curing.enforcement_threshold)
-
             cured_ontology = buffer.snapshot() if buffer else None
             logger.info(
                 "[curing] consolidating {} documents, ontology has {} types",
@@ -450,6 +446,7 @@ def _ingest_fluid(
                 cured_ontology,
                 config.extract,
                 type_frequencies=freqs,
+                skip_type_enforcement=True,
             )
             logger.info(
                 "[curing] merged result: {} entities, {} relationships",
@@ -486,10 +483,6 @@ def _ingest_fluid(
             "[fluid] ingestion complete without curing ({} docs), flushing accumulated results",
             accumulator.doc_count,
         )
-
-        # Prune low-frequency types before clustering
-        if buffer:
-            buffer.prune_low_frequency_types(config.curing.enforcement_threshold)
 
         # LLM-assisted type clustering before flush
         freqs = buffer.frequencies() if buffer else {}
@@ -535,6 +528,7 @@ def _ingest_fluid(
             cured_ontology,
             config.extract,
             type_frequencies=freqs,
+            skip_type_enforcement=True,
         )
         # Load consolidated entities + relationships only (skip doc/chunks)
         load_result = load_extraction(merged_result, config, skip_doc_chunks=True)

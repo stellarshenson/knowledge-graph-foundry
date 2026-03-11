@@ -96,8 +96,7 @@ class OntologyBuffer:
 
         Types are tiered by frequency:
         - confirmed: seed types OR frequency >= threshold (included in prompt)
-        - emerging: frequency >= 2 but < threshold (shown as suggestions)
-        - noise: frequency == 1 and not seed (excluded from prompt)
+        - emerging: frequency >= emerge threshold but < confirm threshold
         """
         threshold = self._config.min_frequency_to_confirm
         confirmed = frozenset(
@@ -118,11 +117,12 @@ class OntologyBuffer:
         filtered_types = tuple(
             td for td in self._entity_types.values() if td.name in included_names
         )
-        # Relationship types: include seed + confirmed frequency
+        # Relationship types: include seed + discovered (emerge threshold)
         filtered_rels = tuple(
             rd
             for rd in self._relationship_types.values()
-            if rd.name in self._seed_rel_types or self._frequencies.get(rd.name, 0) >= threshold
+            if rd.name in self._seed_rel_types
+            or self._frequencies.get(rd.name, 0) >= emerge_threshold
         )
 
         total = len(self._entity_types)

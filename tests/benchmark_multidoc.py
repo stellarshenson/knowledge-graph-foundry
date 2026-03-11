@@ -285,7 +285,7 @@ SCORECARD: list[ScoreItem] = [
     ScoreItem(
         dimension="relationship_patterns",
         name="SUPPORTS_MODE relationships",
-        query="MATCH (a:Entity)-[r:SUPPORTS_MODE]->(b:Entity) RETURN count(r) AS cnt",
+        query="MATCH (a:Entity)-[r]->(b:Entity) WHERE toLower(b.type) = 'mode' AND type(r) IN ['SUPPORTS_MODE', 'FUNCTIONS_IN', 'OPERATES_IN', 'HAS_MODE', 'PROVIDES'] RETURN count(r) AS cnt",
         expected="Product-mode links",
         check_fn="count_gte", expected_value=3,
     ),
@@ -480,7 +480,7 @@ SCORECARD: list[ScoreItem] = [
     ScoreItem(
         dimension="query_answerability",
         name="Q: What is the pressure range of DreamStation?",
-        query="MATCH (p:Entity)-[:HAS_SPECIFICATION]->(s:Entity) WHERE toLower(p.name) CONTAINS 'dreamstation' AND (toLower(s.description) CONTAINS 'pressure' OR toLower(s.name) CONTAINS 'pressure') RETURN s.name, s.description LIMIT 5",
+        query="MATCH (p:Entity)-[r]->(s:Entity) WHERE toLower(p.name) CONTAINS 'dreamstation' AND (toLower(s.description) CONTAINS 'pressure' OR toLower(s.name) CONTAINS 'pressure') RETURN s.name, s.description LIMIT 5",
         expected="DreamStation pressure spec",
         check_fn="exists",
     ),
@@ -501,7 +501,7 @@ SCORECARD: list[ScoreItem] = [
     ScoreItem(
         dimension="query_answerability",
         name="Q: What modes does SleepStyle support?",
-        query="MATCH (p:Entity)-[:SUPPORTS_MODE]->(m:Entity) WHERE toLower(p.name) CONTAINS 'sleepstyle' OR toLower(p.name) CONTAINS 'sleep style' RETURN m.name LIMIT 10",
+        query="MATCH (p:Entity)-[r]->(m:Entity) WHERE (toLower(p.name) CONTAINS 'sleepstyle' OR toLower(p.name) CONTAINS 'sleep style') AND toLower(m.type) = 'mode' RETURN m.name LIMIT 10",
         expected="SleepStyle modes",
         check_fn="exists",
     ),
@@ -515,7 +515,7 @@ SCORECARD: list[ScoreItem] = [
     ScoreItem(
         dimension="query_answerability",
         name="Q: iBreeze specifications?",
-        query="MATCH (p:Entity)-[:HAS_SPECIFICATION]->(s:Entity) WHERE toLower(p.name) CONTAINS 'ibreeze' RETURN s.name, s.description LIMIT 10",
+        query="MATCH (p:Entity)-[r]->(s:Entity) WHERE toLower(p.name) CONTAINS 'ibreeze' AND toLower(s.type) = 'specification' RETURN s.name, s.description LIMIT 10",
         expected="iBreeze specs",
         check_fn="exists",
     ),

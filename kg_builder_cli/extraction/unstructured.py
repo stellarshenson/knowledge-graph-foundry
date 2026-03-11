@@ -279,13 +279,15 @@ def _enforce_ontology_types(
 ) -> tuple[list[Entity], int]:
     """Remap entities with types outside the ontology to the closest allowed type.
 
-    Uses Levenshtein ratio to find the best match. If no match exceeds 0.4,
-    defaults to the most generic type (first in the allowed list).
+    Uses Levenshtein ratio to find the best match. Types are only remapped
+    when similarity >= min_score (default 0.7). Low-scoring matches are kept
+    as-is to avoid semantic corruption (e.g. Mode->Role, Gas->Accessory).
 
     Returns (entities, remap_count).
     """
     from Levenshtein import ratio as levenshtein_ratio
 
+    min_score = 0.7
     allowed_lower = {t.lower(): t for t in allowed_types}
     remapped = 0
 
@@ -303,6 +305,17 @@ def _enforce_ontology_types(
             if score > best_score:
                 best_score = score
                 best_type = allowed
+
+        if best_score < min_score:
+            logger.debug(
+                "Type kept: '{}' for '{}' (best match '{}' score={:.2f} < {:.2f})",
+                entity.type,
+                entity.name,
+                best_type,
+                best_score,
+                min_score,
+            )
+            continue
 
         old_type = entity.type
         entity.type = best_type

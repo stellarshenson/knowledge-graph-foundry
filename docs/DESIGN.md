@@ -447,7 +447,7 @@ ontology_buffer:
   refine_every_n_docs: 5             # trigger refinement after N documents
   coverage_threshold: 0.5            # low coverage triggers looser extraction
   min_frequency_to_confirm: 2        # type must appear in N+ documents to be confirmed
-  min_frequency_to_emerge: 2         # type must appear N+ times to surface as emerging suggestion
+  min_frequency_to_emerge: 1         # type appears in constrained prompt immediately after first discovery
   flush_on_complete: true            # write refined ontology to disk after run
   post_load_reasoning: false          # run OWL reasoning / Cypher subclass propagation after loading
 
@@ -922,7 +922,7 @@ Schema curing provides a middle path between pre-defined ontology seeds and full
 **Key facts**:
 - Disabled by default (`curing.enabled = false`) - existing seeded workflow unchanged
 - CLI flags: `--fluid` / `--no-fluid` to enable/disable, `--cure` to force-cure after first document
-- No re-extraction: post-cure type enforcement uses Levenshtein matching (existing `_enforce_ontology_types`)
+- No re-extraction: post-cure type enforcement uses Levenshtein matching (`_enforce_ontology_types` with min_score=0.7 - types below threshold are kept as-is to prevent semantic corruption)
 - Two-layer type normalization: deterministic surface collapsing (always-on) + LLM-assisted semantic clustering (one call at curing time)
 - No new dependencies (no NetworkX) - existing entity list operations handle cross-document merging
 
@@ -941,10 +941,11 @@ The ingestion loop operates in two phases. During the fluid phase, each document
    - Coverage delta below `coverage_delta_threshold` (default 0.05)
    Unlike `is_converged()`, plateau detection does not require type accumulation rate to be zero. This handles domains where most types are discovered early but a long tail of rare types continues to appear without changing the distribution shape.
 
-3. **Heuristic fallback** (`CuringDetector.is_cured()`) - three conditions must ALL be true:
+3. **Heuristic fallback** (`CuringDetector.is_cured()`) - four conditions must ALL be true:
    - Minimum documents processed (`min_documents`, default 3)
    - Coverage convergence: coverage delta below threshold for the last N documents
    - Type stability: no new entity types for `stability_window` (default 3) consecutive documents
+   - **Chao1 coverage floor**: `chao1_coverage >= min_chao1_coverage` (default 0.5) - blocks curing when species richness estimation indicates significant undiscovered types. Backward compatible: if Chao1 is not available in metrics, the guard is skipped. The 0.5 threshold allows curing to trigger mid-corpus (doc 6-7 in a 10-doc set) rather than only at the safety net, enabling more documents to benefit from the cured ontology. Previous default of 0.7 was never reached in 10-doc corpora (max observed: 0.394)
 
 The CLI checks these in order: `is_converged()` first (strictest), then `is_plateau()` (looser), then `is_cured()` (heuristic). The first path that returns True triggers curing.
 
@@ -1096,8 +1097,7 @@ Curing Event:
   -> OntologyBuffer.snapshot() (cured ontology)
   -> cluster_types() (single LLM call - semantic synonym clustering)
   -> apply_type_mapping() + normalize_entity_ids() (remap types, regenerate IDs)
-  -> FluidAccumulator.consolidate(cured_ontology, type_frequencies)
-     -> _enforce_ontology_types() (remap to cured types)
+  -> FluidAccumulator.consolidate(cured_ontology, type_frequencies, skip_type_enforcement=True)
      -> normalize_entity_ids() + deduplicate() + resolve_entities(type_frequencies)
   -> load_extraction() (single batch flush to Neo4j - Document, Chunk, Entity, and Relationship nodes)
 
@@ -1184,6 +1184,9 @@ Until this analysis is complete, the existing heuristic remains the sole decisio
 - `kg_builder_cli/curing/accumulator.py` - `FluidAccumulator` class storing `ExtractionResult` objects
 - `kg_builder_cli/curing/metrics.py` - `StabilityMetrics` class computing information-theoretic metrics
 - `kg_builder_cli/curing/type_clustering.py` - LLM-assisted semantic type clustering at curing time
+- `kg_builder_cli/curing/merge_validation.py` - post-LLM merge validation with 3-metric composite scorer
+
+**Merge validation** (v13) - guards against LLM over-merging at curing time. After the LLM proposes type merges via `cluster_types()`, a validation layer scores each proposed merge using three metrics: name similarity (0.55 weight, SequenceMatcher ratio + Jaccard on PascalCase word sets), description coherence (0.35 weight, Jaccard on significant words from entity descriptions), and frequency ratio (0.10 weight, min/max frequency). Merges below `merge_confidence_threshold` (default 0.4) are reverted to identity (type maps to itself). The clustering prompt was hardened to remove "aim for 6-12 canonical types" and add "merge ONLY genuine synonyms or formatting variants" with "when in doubt, keep types separate". This addresses the v12 regression where Mode->Role, Gas->Accessory, Software->Feature merges cascaded into broken relationships and 3x cross-type duplicates.
 
 **Empirical results** (CPAP benchmark v09, 10 documents, fluid mode):
 
@@ -1243,6 +1246,10 @@ ontology_buffer:
 ```
 
 **Cold-start behavior**: when `bayesian_resolution=true` but no exemplar index exists (first document, no buffer yet), the pipeline falls back to `_enforce_ontology_types()` (Levenshtein-based remapping). The Bayesian resolver only activates after curing when exemplars and type frequencies are available.
+
+**Type enforcement minimum score** (v14 fix) - `_enforce_ontology_types()` now requires a minimum Levenshtein similarity of 0.7 before remapping a type. Below this threshold, the entity keeps its original type. This prevents semantically destructive remaps observed in benchmarks v12-v14: Mode->Role (0.50), Gas->Accessory (0.33), Software->Feature (0.53), Device Type->Website (0.44), State->Substance (0.57). These low-confidence remaps created 56+ cross-type duplicates and tanked generative scores. The 0.7 threshold preserves legitimate remaps like MedicalCondition->Medical Condition (0.97) while blocking semantically wrong ones. Types that don't match any ontology type above the threshold remain in the graph with their extracted type - the type distribution check in the benchmark is flexible enough to handle ad-hoc types.
+
+**Skip double type enforcement** (v15 fix) - type clustering at curing time produces canonical type assignments via LLM-assisted semantic analysis. Previously, `FluidAccumulator.consolidate()` ran `_enforce_ontology_types()` again on the same entities, creating a double enforcement problem: the clustering output would be overridden by Levenshtein-based remapping that either produced bad merges (v14) or created 12 singleton types from types the LLM correctly identified as canonical (v15). The fix passes `skip_type_enforcement=True` to `consolidate()` when type clustering has already run, since the clustering output IS the canonical type assignment. Both consolidation call sites in `cli.py` (curing event flush and final flush) skip enforcement. The `_enforce_ontology_types()` function still runs during per-document extraction (step 4b in `unstructured.py`) where it serves as first-pass type normalization before clustering has occurred.
 
 **FAISS candidate search** - the exemplar similarity signal uses a FAISS IndexFlatIP index built at curing time from L2-normalized 1024-dimensional Amazon Titan v2 embeddings. The `ExemplarIndex` class stores one embedding per exemplar entity, organized by type. At query time, the entity name embedding is L2-normalized and searched against the index for top-k nearest neighbors - the cosine similarities (inner products on normalized vectors) serve as the `P(name|type)` likelihood. The index is CPU-only (no GPU dependency) and rebuilt per curing event from the frozen exemplar set. When embeddings are unavailable (cold start or `use_embeddings=False`), the resolver falls back to normalized Levenshtein similarity between entity names and exemplar names.
 
@@ -1523,7 +1530,9 @@ Type priority for approved merges is built dynamically from the ontology buffer'
 
 **Cross-type merge review**: cross-type merges are the highest-risk resolution operation because they silently change an entity's type. To control this risk, all cross-type merges are logged to a review report at `.kg-builder/runs/<timestamp>_cross_type_merges.yml` containing the merged entity names, original types, surviving type, and the priority scores that determined the outcome. When entity names are short (3 characters or fewer) or when the priority gap between the two types is 1 (adjacent ranks), the merge is flagged as `review: true` in the report. In interactive mode, flagged merges are presented to the user for confirmation before proceeding. In batch mode, flagged merges proceed automatically but are prominently logged as warnings. This operational control catches the cases where cross-type merging is most likely to produce false merges without blocking the pipeline.
 
-**Limitations**: cross-type resolution uses description similarity as a semantic gate, which mitigates but does not eliminate false merges. Bag-of-words Jaccard similarity cannot detect paraphrasing or domain-specific synonymy in descriptions. Entities with no descriptions default to no merge, which is conservative but may miss valid merges. The `cross_type_description_threshold` parameter controls this tradeoff - lower values allow more merges, 0.0 reproduces pre-gate behavior.
+**Embedding fallback for cross-type resolution** (v15 fix) - when description similarity falls below the threshold AND both entities have embeddings, cosine similarity on Titan v2 vectors serves as a secondary gate. If cosine similarity >= `cross_type_embedding_threshold` (default 0.75), the merge proceeds despite low description similarity. This catches entities like "Humidifier" appearing as Component, Accessory, and Setting across documents where descriptions use different vocabulary (Jaccard = 0.00) but embeddings encode the semantic relationship (cosine ~0.75+). The embedding gate only activates when the description gate blocks a merge - it never overrides a description-based block when embeddings are absent. Configuration: `extract.cross_type_embedding_threshold: 0.75`.
+
+**Limitations**: cross-type resolution uses description similarity as the primary semantic gate, with embedding cosine similarity as a fallback. Bag-of-words Jaccard similarity cannot detect paraphrasing or domain-specific synonymy in descriptions, which the embedding fallback partially addresses. Entities with no descriptions and no embeddings default to no merge, which is conservative but may miss valid merges. The `cross_type_description_threshold` parameter controls the primary gate, `cross_type_embedding_threshold` controls the fallback - lower values allow more merges.
 
 > **Note - original design**: the initial design specified a 4-step escalating-cost pipeline: (1) exact ID match, (2) SpaCy + Levenshtein pre-filter with Jaccard token overlap, (3) embedding similarity with ANN indexing (FAISS/hnswlib) for large entity sets, (4) LLM-based clustering for semantic equivalences. Benchmarking across 5 iterations (v03-v07) showed that name normalization in the ID hash eliminated 80%+ of duplicates before any fuzzy matching, making steps 2-4 largely unnecessary. The simpler three-layer approach (normalize + dual-threshold fuzzy + cross-type merge) achieved 98% deterministic accuracy and 4/5 generative quality on cross-document resolution. SpaCy, ANN indexing, and LLM clustering were not implemented. See `docs/experiments/entity_resolution_methods.md` for the full evaluation.
 
