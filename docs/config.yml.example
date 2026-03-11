@@ -1,0 +1,32 @@
+# Knowledge Graph Forge - Example Configuration
+# Copy to .kgf/config.yml and adjust values for your environment.
+# All settings below show recommended defaults for the CPAP benchmark corpus.
+# See settings/defaults.py for full parameter reference.
+
+llm:
+  provider: bedrock                                    # bedrock | openai | anthropic
+  model: "eu.anthropic.claude-sonnet-4-20250514-v1:0"  # provider-specific model ID
+  region: eu-central-1                                 # AWS region (bedrock only)
+  profile: kolomolo                                    # AWS profile (bedrock only)
+  max_retries: 3                                       # retries on transient LLM errors
+  timeout: 120                                         # request timeout in seconds
+  # rate_limit:                                        # optional: omit to disable
+  #   requests_per_second: 1.0                         # token bucket rate (req/s)
+
+extract:
+  use_embeddings: true                                 # entity embeddings for resolution
+  bayesian_resolution: true                            # Bayesian type resolver
+  deferred_dedup: true                                 # cross-type deferred dedup
+  embedding_model: "amazon.titan-embed-text-v2:0"      # embedding model ID
+  concurrency: 4                                       # parallel LLM calls per document
+
+ontology_buffer:
+  intent: "Compare CPAP and auto-titrating positive airway pressure therapy devices across manufacturers, focusing on product specifications, clinical features, therapy modes, regulatory compliance, and component architecture"
+
+curing:
+  enabled: true
+
+neo4j:
+  uri: bolt://localhost:7687
+  user: neo4j
+  password: changeme
