@@ -75,7 +75,7 @@ def _create_entity_nodes(session, result: ExtractionResult, batch_size: int) -> 
     label_query_apoc = (
         "UNWIND $batch AS row "
         "MATCH (n:Entity {id: row.id}) "
-        "CALL apoc.create.addLabels(n, [row.type]) YIELD node "
+        "CALL apoc.create.addLabels(n, row.labels) YIELD node "
         "RETURN count(node)"
     )
 
@@ -93,6 +93,7 @@ def _create_entity_nodes(session, result: ExtractionResult, batch_size: int) -> 
                 "confidence": e.confidence,
                 "embedding": e.embedding,
                 "properties": {k: v for k, v in e.properties.items() if k not in _RESERVED_KEYS},
+                "labels": e.labels if e.labels else [e.type],
             }
             for e in entities[offset : offset + batch_size]
         ]
@@ -104,15 +105,11 @@ def _create_entity_nodes(session, result: ExtractionResult, batch_size: int) -> 
             _run_with_retry(session, label_query_apoc, {"batch": batch})
         except Exception:
             logger.debug("APOC unavailable, adding labels via formatted Cypher")
-            types_grouped: dict[str, list[str]] = defaultdict(list)
             for row in batch:
-                types_grouped[row["type"]].append(row["id"])
-            for label, ids in types_grouped.items():
-                safe_label = label.replace("`", "``")
-                fallback_query = (
-                    f"UNWIND $ids AS eid MATCH (n:Entity {{id: eid}}) SET n:`{safe_label}`"
-                )
-                _run_with_retry(session, fallback_query, {"ids": ids})
+                for label in row["labels"]:
+                    safe_label = label.replace("`", "``")
+                    fallback_query = f"MATCH (n:Entity {{id: $eid}}) SET n:`{safe_label}`"
+                    _run_with_retry(session, fallback_query, {"eid": row["id"]})
 
         logger.debug("loaded entity batch {}-{}", offset, offset + len(batch))
 

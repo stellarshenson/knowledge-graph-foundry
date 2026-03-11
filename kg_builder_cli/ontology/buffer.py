@@ -15,6 +15,7 @@ from kg_builder_cli.types.ontology import (
     RelationshipDef,
     TypeDef,
     TypeExemplar,
+    TypeHierarchyEntry,
     TypeSignal,
 )
 
@@ -38,6 +39,13 @@ class OntologyBuffer:
         self._canonical_map: dict[str, str] = {}
         # Type exemplars: canonical type name -> list of representative entities
         self._type_exemplars: dict[str, list[TypeExemplar]] = {}
+        # H5g: type hierarchy, resolution intent/guide, cross-type stats
+        self._type_hierarchy: list[TypeHierarchyEntry] = []
+        self._child_to_parent: dict[str, str] = {}
+        self._resolution_intent: str = ""
+        self._resolution_guide: str = ""
+        # Cross-type stats: (norm_name, type_a, type_b) -> {doc_indices, type_a_count, type_b_count}
+        self._cross_type_stats: dict[tuple[str, str, str], dict] = {}
 
     @classmethod
     def from_yaml(cls, path: Path, config: OntologyBufferConfig) -> OntologyBuffer:
@@ -83,10 +91,45 @@ class OntologyBuffer:
             buffer._register_canonical(name)
             buffer._frequencies[name] = config.min_frequency_to_confirm
 
+        # Load type hierarchy (H5g)
+        for hier_data in data.get("type_hierarchy", []):
+            name = hier_data.get("name", "")
+            if not name:
+                continue
+            entry = TypeHierarchyEntry(
+                name=name,
+                description=hier_data.get("description", ""),
+                children=hier_data.get("children", []),
+            )
+            buffer._type_hierarchy.append(entry)
+            for child in entry.children:
+                buffer._child_to_parent[child] = name
+
+        # Load resolution intent and guide (H5g)
+        buffer._resolution_intent = data.get("resolution_intent", "") or ""
+        buffer._resolution_guide = data.get("resolution_guide", "") or ""
+
+        # Load type exemplars from YAML (H5g)
+        for type_name, exemplar_list in data.get("type_exemplars", {}).items():
+            if not isinstance(exemplar_list, list):
+                continue
+            for ex_data in exemplar_list:
+                if not isinstance(ex_data, dict):
+                    continue
+                ex = TypeExemplar(
+                    name=ex_data.get("name", ""),
+                    entity_type=type_name,
+                    frequency=ex_data.get("frequency", 1),
+                    description=ex_data.get("description", ""),
+                )
+                buffer._type_exemplars.setdefault(type_name, []).append(ex)
+
         logger.info(
-            "Loaded ontology seed: {} entity types, {} relationship types from {}",
+            "Loaded ontology seed: {} entity types, {} relationship types, "
+            "{} hierarchy entries from {}",
             len(buffer._entity_types),
             len(buffer._relationship_types),
+            len(buffer._type_hierarchy),
             path,
         )
         return buffer
@@ -145,6 +188,9 @@ class OntologyBuffer:
             type_frequencies=dict(self._frequencies),
             emerging_types=emerging,
             type_exemplars=frozen_exemplars,
+            type_hierarchy=tuple(self._type_hierarchy),
+            resolution_intent=self._resolution_intent,
+            resolution_guide=self._resolution_guide,
         )
 
     def canonical_type(self, raw: str) -> str:
@@ -342,18 +388,230 @@ class OntologyBuffer:
                 }
                 rel_types.append(entry)
 
-        data = {
+        # Type hierarchy
+        hierarchy_data = []
+        for entry in self._type_hierarchy:
+            # Only include hierarchy entries whose children are confirmed types
+            confirmed_children = [
+                c for c in entry.children if self._frequencies.get(c, 0) >= threshold
+            ]
+            if confirmed_children:
+                hierarchy_data.append(
+                    {
+                        "name": entry.name,
+                        "description": entry.description,
+                        "children": confirmed_children,
+                    }
+                )
+
+        # Type exemplars (top N per confirmed type)
+        exemplar_data: dict[str, list[dict]] = {}
+        max_exemplars = self._config.max_type_exemplars
+        confirmed_names = {
+            name
+            for name, freq in self._frequencies.items()
+            if freq >= threshold and name in self._entity_types
+        }
+        for type_name in confirmed_names:
+            exs = self._type_exemplars.get(type_name, [])
+            if exs:
+                sorted_exs = sorted(exs, key=lambda e: -e.frequency)[:max_exemplars]
+                exemplar_data[type_name] = [
+                    {"name": e.name, "frequency": e.frequency, "description": e.description}
+                    for e in sorted_exs
+                ]
+
+        data: dict = {
             "entity_types": entity_types,
             "relationship_types": rel_types,
         }
+        if hierarchy_data:
+            data["type_hierarchy"] = hierarchy_data
+        if self._resolution_intent:
+            data["resolution_intent"] = self._resolution_intent
+        if self._resolution_guide:
+            data["resolution_guide"] = self._resolution_guide
+        if exemplar_data:
+            data["type_exemplars"] = exemplar_data
 
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w") as f:
             yaml.dump(data, f, default_flow_style=False, sort_keys=False)
 
         logger.info(
-            "Flushed ontology: {} entity types, {} relationship types to {}",
+            "Flushed ontology: {} entity types, {} relationship types, "
+            "{} hierarchy entries, {} exemplar types to {}",
             len(entity_types),
             len(rel_types),
+            len(hierarchy_data),
+            len(exemplar_data),
             path,
+        )
+
+    def shared_parent(self, type_a: str, type_b: str) -> str | None:
+        """Return shared parent name if both types are siblings, else None."""
+        parent_a = self._child_to_parent.get(type_a)
+        parent_b = self._child_to_parent.get(type_b)
+        if parent_a and parent_b and parent_a == parent_b:
+            return parent_a
+        return None
+
+    def has_different_parents(self, type_a: str, type_b: str) -> bool:
+        """Return True if both types have parents but different ones."""
+        parent_a = self._child_to_parent.get(type_a)
+        parent_b = self._child_to_parent.get(type_b)
+        return bool(parent_a and parent_b and parent_a != parent_b)
+
+    def record_cross_type_stats(
+        self,
+        stats: list[tuple[str, str, str, int, str]],
+    ) -> None:
+        """Record cross-type pair observations for hierarchy/guide evolution.
+
+        Each stat is (norm_name, type_a, type_b, doc_index, action).
+        """
+        for norm_name, type_a, type_b, doc_index, action in stats:
+            # Normalize key order for consistent tracking
+            key = (norm_name, *sorted([type_a, type_b]))
+            entry = self._cross_type_stats.setdefault(
+                key, {"doc_indices": set(), "type_counts": {}}
+            )
+            entry["doc_indices"].add(doc_index)
+            entry["type_counts"][type_a] = entry["type_counts"].get(type_a, 0) + 1
+            entry["type_counts"][type_b] = entry["type_counts"].get(type_b, 0) + 1
+
+    def evolve_type_hierarchy(self) -> None:
+        """Discover parent-child groupings from recurring cross-type patterns.
+
+        Conservative: a hierarchy entry is created only when two types have been
+        observed in cross-type conflict across >= GUIDE_EVOLUTION_MIN_DOCUMENTS
+        distinct documents.
+        """
+        from kg_builder_cli.settings.defaults import GUIDE_EVOLUTION_MIN_DOCUMENTS
+
+        if not self._cross_type_stats:
+            return
+
+        # Find type pairs that co-occur in enough documents
+        pair_docs: dict[tuple[str, str], set[int]] = {}
+        for (norm_name, type_a, type_b), entry in self._cross_type_stats.items():
+            pair_key = (type_a, type_b)
+            pair_docs.setdefault(pair_key, set()).update(entry["doc_indices"])
+
+        # Build hierarchy for qualifying pairs
+        new_entries: dict[str, set[str]] = {}
+        existing_children = set(self._child_to_parent.keys())
+
+        for (type_a, type_b), docs in pair_docs.items():
+            if len(docs) < GUIDE_EVOLUTION_MIN_DOCUMENTS:
+                continue
+            # Skip if both already have parents
+            if type_a in existing_children and type_b in existing_children:
+                continue
+
+            # Generate parent name from type descriptions or simple heuristic
+            parent_name = self._infer_parent_name(type_a, type_b)
+            new_entries.setdefault(parent_name, set()).update([type_a, type_b])
+
+        if not new_entries:
+            return
+
+        for parent_name, children in new_entries.items():
+            # Check if parent already exists in hierarchy
+            existing = next((e for e in self._type_hierarchy if e.name == parent_name), None)
+            if existing:
+                for child in children:
+                    if child not in existing.children:
+                        existing.children.append(child)
+                        self._child_to_parent[child] = parent_name
+            else:
+                entry = TypeHierarchyEntry(
+                    name=parent_name,
+                    description=f"Parent category for {', '.join(sorted(children))}",
+                    children=sorted(children),
+                )
+                self._type_hierarchy.append(entry)
+                for child in children:
+                    self._child_to_parent[child] = parent_name
+
+            logger.info(
+                "[hierarchy] evolved parent '{}' with children: {}",
+                parent_name,
+                sorted(children),
+            )
+
+    def _infer_parent_name(self, type_a: str, type_b: str) -> str:
+        """Infer a parent category name for two sibling types."""
+        # Simple heuristics based on known domain patterns
+        physical_types = {"Component", "Accessory", "Part"}
+        behavior_types = {"Feature", "Setting", "WorkMode", "Mode"}
+        spec_types = {"Specification", "Parameter", "Metric"}
+
+        types = {type_a, type_b}
+        if types & physical_types:
+            return "Part"
+        if types & behavior_types:
+            return "Behavior"
+        if types & spec_types:
+            return "Measurement"
+        # Fallback: concatenate
+        return f"{type_a}Or{type_b}"
+
+    def evolve_resolution_guide(self) -> None:
+        """Generate disambiguation rules from recurring cross-type patterns.
+
+        Conservative: rules only generated when a pattern meets all thresholds
+        for document frequency, type dominance, and hierarchy coverage.
+        """
+        from kg_builder_cli.settings.defaults import (
+            GUIDE_EVOLUTION_MIN_DOCUMENTS,
+            GUIDE_EVOLUTION_MIN_DOMINANCE,
+        )
+
+        if not self._cross_type_stats:
+            return
+
+        new_rules: list[str] = []
+
+        for (norm_name, type_a, type_b), entry in self._cross_type_stats.items():
+            # Threshold 1: document frequency
+            if len(entry["doc_indices"]) < GUIDE_EVOLUTION_MIN_DOCUMENTS:
+                continue
+
+            # Threshold 2: type dominance
+            counts = entry["type_counts"]
+            total = sum(counts.values())
+            if total == 0:
+                continue
+            dominant_type = max(counts, key=lambda t: counts[t])
+            dominance = counts[dominant_type] / total
+            if dominance < GUIDE_EVOLUTION_MIN_DOMINANCE:
+                continue
+
+            # Threshold 3: hierarchy coverage (siblings only)
+            if not self.shared_parent(type_a, type_b):
+                continue
+
+            # Generate rule
+            other_type = type_b if dominant_type == type_a else type_a
+            rule = (
+                f'"{norm_name}" should be typed as {dominant_type}, not {other_type} '
+                f"({counts[dominant_type]}/{total} occurrences across "
+                f"{len(entry['doc_indices'])} documents)."
+            )
+            new_rules.append(rule)
+
+        if not new_rules:
+            return
+
+        # Append to guide with run marker
+        import datetime
+
+        stamp = datetime.datetime.now().strftime("%Y-%m-%d")
+        header = f"\n# Auto-generated rules ({stamp})\n"
+        self._resolution_guide += header + "\n".join(new_rules) + "\n"
+
+        logger.info(
+            "[guide] evolved {} new resolution guide rules",
+            len(new_rules),
         )

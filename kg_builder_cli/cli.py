@@ -6,7 +6,7 @@ from pathlib import Path
 
 import typer
 
-from kg_builder_cli.config import APP_NAME, APP_SHORT, config_dir, ontology_file, logger
+from kg_builder_cli.config import APP_NAME, APP_SHORT, config_dir, logger, ontology_file
 
 app = typer.Typer(name=APP_SHORT, help=f"{APP_NAME} CLI", invoke_without_command=True)
 
@@ -40,8 +40,8 @@ def ingest(
     cure: bool = typer.Option(False, "--cure", help="Force-cure after first document"),
 ):
     """Ingest documents into the knowledge graph."""
-    from kg_builder_cli.settings import load_config
     from kg_builder_cli.ontology.buffer import OntologyBuffer
+    from kg_builder_cli.settings import load_config
 
     logger.info("ingesting from {}", source)
 
@@ -95,6 +95,7 @@ def ingest(
     logger.info("found {} file(s) to ingest", len(files))
 
     from kg_builder_cli.extraction.extract import LLMAuthError
+    from kg_builder_cli.extraction.unstructured import ExtractionFailedError
 
     try:
         if curing_enabled:
@@ -105,6 +106,14 @@ def ingest(
         logger.error("LLM authentication failed - aborting ingestion")
         logger.error("{}", exc)
         raise typer.Exit(1) from None
+    except ExtractionFailedError as exc:
+        logger.error("extraction failed: {}", exc)
+        raise typer.Exit(1) from None
+
+    # Evolve hierarchy and resolution guide before flush (H5g)
+    if buffer and config.ontology_buffer.resolution_guide_evolution:
+        buffer.evolve_type_hierarchy()
+        buffer.evolve_resolution_guide()
 
     # Flush ontology buffer after all files
     if buffer and config.ontology_buffer.flush_on_complete:

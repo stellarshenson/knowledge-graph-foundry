@@ -18,6 +18,7 @@ class Entity(BaseModel):
     confidence: float = 1.0
     extraction_model: str = ""
     embedding: list[float] | None = None
+    labels: list[str] = Field(default_factory=list)
 
 
 class Relationship(BaseModel):

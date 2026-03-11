@@ -11,6 +11,7 @@ Extract entities and relationships from the following text.
 {entity_types_block}
 {relationship_types_block}
 {property_defs_block}
+{resolution_guidance_block}
 IMPORTANT: You MUST only use entity types from the lists above. Do NOT invent new types.
 Strongly prefer established types over discovered types.
 
@@ -173,6 +174,57 @@ def _build_property_defs_block(ontology: OntologyState) -> str:
     return "**Required properties per type**:\n" + "\n".join(lines)
 
 
+def _build_resolution_guidance_block(ontology: OntologyState) -> str:
+    """Build resolution guidance from intent (immutable) + guide (evolved).
+
+    Combined length is capped at MAX_RESOLUTION_PROMPT_TOKENS. The intent
+    is always included in full; the guide is truncated from the end if
+    the combined length exceeds the limit.
+    """
+    from kg_builder_cli.settings.defaults import MAX_RESOLUTION_PROMPT_TOKENS
+
+    intent = ontology.resolution_intent.strip()
+    guide = ontology.resolution_guide.strip()
+
+    if not intent and not guide:
+        return ""
+
+    parts = []
+    if intent:
+        parts.append(f"**Type disambiguation rules** (domain expert):\n{intent}")
+    if guide:
+        parts.append(f"**Learned disambiguation rules** (from previous runs):\n{guide}")
+
+    combined = "\n\n".join(parts)
+
+    # Approximate token count (words / 0.75)
+    word_count = len(combined.split())
+    approx_tokens = int(word_count / 0.75)
+
+    if approx_tokens > MAX_RESOLUTION_PROMPT_TOKENS and guide:
+        # Truncate guide, keep intent in full
+        if intent:
+            intent_words = len(intent.split())
+            budget = int(MAX_RESOLUTION_PROMPT_TOKENS * 0.75) - intent_words
+            if budget > 0:
+                guide_words = guide.split()[:budget]
+                guide = " ".join(guide_words) + " [truncated]"
+            else:
+                guide = ""
+        else:
+            guide_words = guide.split()[: int(MAX_RESOLUTION_PROMPT_TOKENS * 0.75)]
+            guide = " ".join(guide_words) + " [truncated]"
+
+        parts = []
+        if intent:
+            parts.append(f"**Type disambiguation rules** (domain expert):\n{intent}")
+        if guide:
+            parts.append(f"**Learned disambiguation rules** (from previous runs):\n{guide}")
+        combined = "\n\n".join(parts)
+
+    return combined
+
+
 def build_extraction_prompt(
     chunk: Chunk,
     ontology: OntologyState | None = None,
@@ -191,10 +243,12 @@ def build_extraction_prompt(
         entity_types_block = _build_entity_types_block(ontology)
         relationship_types_block = _build_relationship_types_block(ontology)
         property_defs_block = _build_property_defs_block(ontology)
+        resolution_guidance_block = _build_resolution_guidance_block(ontology)
         return prefix + _CONSTRAINED_PROMPT.format(
             entity_types_block=entity_types_block,
             relationship_types_block=relationship_types_block,
             property_defs_block=property_defs_block,
+            resolution_guidance_block=resolution_guidance_block,
             text=chunk.text,
         )
 

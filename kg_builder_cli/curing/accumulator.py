@@ -123,6 +123,8 @@ class FluidAccumulator:
             cross_type_merge_threshold=config.cross_type_merge_threshold,
             deferred_buffer=self._deferred_buffer,
             deferred_ambiguous_lower=config.deferred_dedup_ambiguous_lower,
+            ontology_state=ontology,
+            hierarchy_resolution=config.hierarchy_resolution,
         )
 
         # Step 5: Rewire relationships from Step 4 merges

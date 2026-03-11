@@ -13,6 +13,10 @@
 /data/raw/*
 !/data/raw/.gitkeep
 
+# Runtime directories
+/tmp/
+/logs/
+
 # Mac OS-specific storage files
 .DS_Store
 
