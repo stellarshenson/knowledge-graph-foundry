@@ -46,12 +46,24 @@ _FREE_PROMPT = """\
 Extract all entities and relationships from the following text.
 
 For each entity, provide:
-- id: lowercase with underscores, prefixed by type (e.g., person_john_smith)
+- id: lowercase with underscores, prefixed by type (e.g., product_dreamstation)
 - name: the canonical name as it appears in the text
-- type: a concise category label (e.g., Person, Organization, Location, Product)
+- type: a concise PascalCase category label. Prefer reusing these standard types when they fit: Product, Component, Specification, Feature, Organization, Standard, Accessory, Setting, Interface, Section, Location, MedicalCondition. Use other types only when none of these fit
 - description: MUST include specific numeric values, measurements, ranges, and units from the text. Never use generic descriptions - always include the actual values mentioned in context
-- properties: dict of any additional attributes mentioned, including numeric values as separate keys
+- properties: dict of structured attributes. For Product include {{"model_name": "..."}}, for Specification include {{"value": "...", "unit": "..."}}, for Organization include {{"role": "manufacturer"|"distributor"|...}}, for Standard include {{"standard_id": "..."}}
 - confidence: 0.0 to 1.0
+
+For each relationship, use these standard UPPER_SNAKE_CASE names when applicable:
+- MANUFACTURES: Organization -> Product
+- HAS_COMPONENT: Product -> Component
+- HAS_FEATURE: Product -> Feature
+- HAS_SPECIFICATION: Product -> Specification (link products to their technical specs)
+- SUPPORTS_MODE: Product -> Feature/Setting (operating modes like CPAP, Auto, Bilevel)
+- COMPLIES_WITH: Product -> Standard
+- TREATS: Product -> MedicalCondition
+- HAS_ACCESSORY: Product -> Accessory
+- PART_OF: Component -> Product or Section -> Document
+Use other relationship names only when none of these fit.
 
 For each relationship, provide:
 - source: entity id of the source

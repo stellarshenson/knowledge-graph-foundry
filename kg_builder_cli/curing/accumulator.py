@@ -57,6 +57,7 @@ class FluidAccumulator:
         ontology: OntologyState,
         config: ExtractConfig,
         type_frequencies: dict[str, int] | None = None,
+        skip_type_enforcement: bool = False,
     ) -> ExtractionResult:
         """Consolidate all accumulated results into a single merged result.
 
@@ -78,8 +79,8 @@ class FluidAccumulator:
             len(self._results),
         )
 
-        # Step 1: Enforce ontology types
-        if ontology.entity_types:
+        # Step 1: Enforce ontology types (skip when caller already ran clustering)
+        if ontology.entity_types and not skip_type_enforcement:
             from kg_builder_cli.extraction.unstructured import _enforce_ontology_types
 
             allowed = [t.name for t in ontology.entity_types]
@@ -99,6 +100,7 @@ class FluidAccumulator:
             embedding_threshold=config.embedding_threshold,
             name_threshold=config.name_threshold,
             type_frequencies=type_frequencies,
+            cross_type_embedding_threshold=config.cross_type_embedding_threshold,
         )
 
         # Step 5: Rewire relationships

@@ -41,6 +41,7 @@ def resolve_entities(
     name_threshold: float = 0.65,
     type_frequencies: dict[str, int] | None = None,
     description_threshold: float = 0.3,
+    cross_type_embedding_threshold: float = 0.75,
 ) -> list[Entity]:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
@@ -78,7 +79,9 @@ def resolve_entities(
         resolved.extend(merged_block)
 
     # Cross-type resolution: merge entities with identical normalized names
-    resolved, id_map = _resolve_cross_type(resolved, type_frequencies, description_threshold)
+    resolved, id_map = _resolve_cross_type(
+        resolved, type_frequencies, description_threshold, cross_type_embedding_threshold
+    )
 
     merge_count = len(entities) - len(resolved)
     if merge_count > 0:
@@ -158,6 +161,7 @@ def _resolve_cross_type(
     entities: list[Entity],
     type_frequencies: dict[str, int] | None = None,
     description_threshold: float = 0.3,
+    embedding_threshold: float = 0.75,
 ) -> tuple[list[Entity], dict[str, str]]:
     """Merge entities with identical normalized names across different types.
 
@@ -200,16 +204,44 @@ def _resolve_cross_type(
                     canonical.description, entities[idx].description
                 )
                 if desc_sim < description_threshold:
-                    logger.info(
-                        "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
-                        "description similarity {:.2f} < {}",
-                        entities[idx].name,
-                        entities[idx].type,
-                        canonical.type,
-                        desc_sim,
-                        description_threshold,
-                    )
-                    continue
+                    # Fallback: check embedding similarity
+                    if entities[idx].embedding and canonical.embedding:
+                        emb_sim = _cosine_similarity(canonical.embedding, entities[idx].embedding)
+                        if emb_sim >= embedding_threshold:
+                            logger.info(
+                                "[resolve] cross-type merge via embedding: '{}' ({}) vs ({}) - "
+                                "desc_sim={:.2f}, emb_sim={:.2f}",
+                                entities[idx].name,
+                                entities[idx].type,
+                                canonical.type,
+                                desc_sim,
+                                emb_sim,
+                            )
+                            # Fall through to merge
+                        else:
+                            logger.info(
+                                "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
+                                "desc_sim={:.2f} < {}, emb_sim={:.2f} < {}",
+                                entities[idx].name,
+                                entities[idx].type,
+                                canonical.type,
+                                desc_sim,
+                                description_threshold,
+                                emb_sim,
+                                embedding_threshold,
+                            )
+                            continue
+                    else:
+                        logger.info(
+                            "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
+                            "description similarity {:.2f} < {}",
+                            entities[idx].name,
+                            entities[idx].type,
+                            canonical.type,
+                            desc_sim,
+                            description_threshold,
+                        )
+                        continue
             id_map[entities[idx].id] = canonical.id
             canonical = _merge_entities(canonical, entities[idx])
             merged_indices.add(idx)

@@ -58,15 +58,16 @@ class TestOntologyBuffer:
     def test_buffer_accumulate_new_type(self, empty_buffer):
         """New type added as candidate (below confirmation threshold).
 
-        Frequency 1 types are noise-tier and excluded from snapshot entity_types
-        but still tracked in candidate_types.
+        With emerge threshold=1, frequency 1 types appear as emerging in
+        snapshot entity_types but remain in candidate_types (not confirmed).
         """
         empty_buffer.accumulate([TypeSignal(type_name="NewType", frequency=1)])
         snapshot = empty_buffer.snapshot()
         assert "NewType" in snapshot.candidate_types
         assert "NewType" not in snapshot.confirmed_types
-        # Noise tier: not in entity_types (filtered from prompt)
-        assert "NewType" not in {t.name for t in snapshot.entity_types}
+        # Emerge tier: included in entity_types as emerging suggestion
+        assert "NewType" in {t.name for t in snapshot.entity_types}
+        assert "NewType" in snapshot.emerging_types
 
     def test_buffer_accumulate_frequency(self, empty_buffer):
         """Type becomes confirmed at threshold."""
@@ -109,9 +110,9 @@ class TestOntologyBuffer:
     def test_buffer_accumulate_from_result(self, empty_buffer):
         """Entity/Relationship lists produce correct signals.
 
-        Product has frequency 2 (confirmed), Feature has frequency 1 (noise).
-        Noise-tier types are excluded from snapshot entity_types but tracked
-        in candidate_types. Relationship types need confirmed frequency too.
+        Product has frequency 2 (confirmed), Feature has frequency 1 (emerging).
+        With emerge threshold=1, all discovered types appear in snapshot
+        entity_types. Relationship types with freq>=1 appear in snapshot too.
         """
         entities = [
             Entity(id="e1", name="A", type="Product", source_chunks=["c1"]),
@@ -127,8 +128,9 @@ class TestOntologyBuffer:
         type_names = {t.name for t in snapshot.entity_types}
         # Product: freq=2, confirmed, included
         assert "Product" in type_names
-        # Feature: freq=1, noise tier, excluded from entity_types
-        assert "Feature" not in type_names
+        # Feature: freq=1, emerging tier, included in entity_types
+        assert "Feature" in type_names
+        assert "Feature" in snapshot.emerging_types
         assert "Feature" in snapshot.candidate_types
         # Frequencies tracked
         assert snapshot.type_frequencies["Product"] == 2

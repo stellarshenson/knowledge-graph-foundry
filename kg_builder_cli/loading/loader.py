@@ -382,9 +382,9 @@ def load_extraction(
 
             if not skip_doc_chunks:
                 _create_chunk_nodes(session, result, config.load.batch_size)
-                _create_has_entity_relationships(session, result, config.load.batch_size)
                 _create_chunk_chain(session, result)
 
+            _create_has_entity_relationships(session, result, config.load.batch_size)
             rels_created = _create_relationships(session, result, config.load.batch_size)
 
     except Exception as exc:
