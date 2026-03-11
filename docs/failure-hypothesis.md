@@ -4,14 +4,15 @@
 
 | Version | Score | Key Failures | Fix Applied |
 |---------|-------|-------------|-------------|
-| v08 | 88% | Baseline (8 curated types) | - |
-| v09 | 81% | Type proliferation (31 types) | First fluid mode |
-| v10-v13 | 76% | Singleton types, bad merges | Surface normalization, clustering, merge validation |
-| v14-v15 | 73% | Double enforcement, 12 singletons | Min-score 0.7 on type enforcement |
-| v17 | 72% | HAS_SPECIFICATION=0, SUPPORTS_MODE=1 | Clustering prompt hardening |
-| v18 | 82% | Cross-type duplicates=56 | Intent-driven discovery model |
-| v19 | 84% | Cross-type duplicates=39 | Bayesian cross-type dedup, SUPPORTS_MODE fix |
-| v20 | 88% | Cross-type duplicates=52 | Expanded judge context (no pipeline changes) |
+| v08 | 88 | Baseline (8 curated types) | - |
+| v09 | 81 | Type proliferation (31 types) | First fluid mode |
+| v10-v13 | 76 | Singleton types, bad merges | Surface normalization, clustering, merge validation |
+| v14-v15 | 73 | Double enforcement, 12 singletons | Min-score 0.7 on type enforcement |
+| v17 | 72 | HAS_SPECIFICATION=0, SUPPORTS_MODE=1 | Clustering prompt hardening |
+| v18 | 82 | Cross-type duplicates=56 | Intent-driven discovery model |
+| v19 | 84 | Cross-type duplicates=39 | Bayesian cross-type dedup, SUPPORTS_MODE fix |
+| v20 | 88 | Cross-type duplicates=52 | Expanded judge context (no pipeline changes) |
+| v21 | 88 | Cross-type duplicates=48 | H5f deferred cross-type dedup (minimal impact) |
 
 ## Resolved Hypotheses
 
@@ -103,7 +104,7 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 **Fix applied**: Replaced single-query judge with three-query approach in `tests/benchmark_multidoc.py`: (1) product/org outgoing relationships with 200-char descriptions and LIMIT 300, (2) dedicated specification detail query returning `value`, `unit` properties for all Specification entities, (3) mode and standard coverage query for Feature/Setting entities with "mode" in name plus Standard entities with compliance links. Also enriched cross_doc_resolution prompt with 120-char entity descriptions. Increased JSON truncation from 8000 to 12000 chars, max_tokens from 200 to 300.
 
-**v20 results**: query_answerability jumped from 2/5 to 4/5. Generative average rose from 3.6/5.0 to 4.0/5.0. Hybrid score: 84% -> 88%. Zero pipeline changes - purely benchmark query expansion. This confirms the v19 diagnosis that the 84% ceiling was a measurement artifact.
+**v20 results**: query_answerability jumped from 2/5 to 4/5. Generative average rose from 3.6/5.0 to 4.0/5.0. Hybrid score: 84 -> 88. Zero pipeline changes - purely benchmark query expansion. This confirms the v19 diagnosis that the 84 ceiling was a measurement artifact.
 
 ## Priority Matrix (v19 -> v20)
 
@@ -147,7 +148,7 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 ### H5f: Deferred Cross-Type Dedup with Evidence Accumulation (v21)
 
-**Status**: Implementing
+**Status**: Implemented - minimal impact
 
 **Approach**: Instead of making a permanent merge/block decision at the first encounter, pairs with posteriors in the ambiguous zone (0.4-0.6) are deferred to a buffer. Evidence accumulates across documents - co-occurrence, relationship target overlap (topology signal), and descriptions. At curing time, the buffer resolves all deferred pairs with the full evidence picture. Pairs still ambiguous after accumulation can be escalated to the LLM.
 
@@ -158,12 +159,33 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 **New evidence dimension - topology signal**: Jaccard overlap of relationship targets between the two entity type variants. Entities sharing many relationship neighbors are likely the same entity viewed from different perspectives.
 
-**Expected impact**: The 52 cross-type duplicates in v20 include ~20-30 pairs with posteriors between 0.4 and 0.6 that were permanently blocked. With evidence accumulation, some of these will cross the 0.6 threshold after seeing multiple documents. Target: cross-type duplicates < 30, hybrid score 90+.
-
-**Configuration**: `deferred_dedup: false` (opt-in), `deferred_dedup_ambiguous_lower: 0.4`, `deferred_dedup_llm_escalation: false`.
+**Configuration**: `deferred_dedup: true` (default), `deferred_dedup_ambiguous_lower: 0.4`, `deferred_dedup_llm_escalation: false`.
 
 **Implementation**: `kg_builder_cli/extraction/deferred_dedup.py` (DeferredPair, DeferredDedupBuffer, MergeDecision), integrated into `resolution.py` and `accumulator.py`.
 
-**v21 priorities**: H5f is the primary bottleneck. The cross-type duplicate count (52 in v20) keeps the deterministic cross_doc check failing and drags cross_doc generative to 3/5. H5f defers ambiguous pairs and accumulates evidence across documents rather than making permanent decisions at first encounter.
+**v21 results**: Cross-type duplicates 52 -> 48 (only 4 fewer). The deferred buffer infrastructure works but most ambiguous pairs remain below 0.6 even after evidence accumulation. The topology signal (relationship target overlap) rarely fires because entity variants with different types tend to have different relationship neighborhoods - a Component connects to other Components while an Accessory connects to Products. Co-occurrence boost is similarly weak because same-name cross-type entities are typically extracted from different chunks.
 
-Combined expected: 88 -> 90-92 hybrid score.
+**Post-mortem**: The hypothesis assumed that evidence accumulation would push ambiguous pairs above the merge threshold. In practice, the evidence signals (topology, co-occurrence, description convergence) are too weak for most cross-type pairs because the type difference genuinely manifests in different relationship patterns and descriptions. The 0.4-0.6 ambiguous zone contains mostly legitimately ambiguous entities (the entity IS both types) rather than resolution failures that more evidence would resolve. H5f adds robustness for corpora where the same entity is described consistently across documents, but for the CPAP benchmark where type ambiguity is real, the buffer accumulates evidence that confirms the ambiguity rather than resolving it.
+
+**Conclusion**: The deferred dedup infrastructure is sound but the cross-type duplicate problem is fundamentally ontological, not evidential. Next approaches should target the ontology itself (type merging, type hierarchy) or accept multi-type entities as a valid graph pattern rather than trying to force single-type resolution.
+
+## Priority Matrix (v21 -> v22)
+
+| Hypothesis | Impact | Complexity | Priority | Status |
+|-----------|--------|-----------|----------|--------|
+| H5f (deferred cross-type dedup) | +0 actual | Medium | Done | 52->48 dupes, no hybrid change |
+| H5g (ontological type merging) | +2-4 est | Medium | 1 | Merge Component/Accessory at ontology level |
+| H9 (cross_doc generative) | +1-2 est | Low | 2 | Prompt tuning or accept multi-type |
+| H10 (SleepStyle modes) | +1 est | Low | 3 | Extraction or linking gap |
+
+**v21 outcome**: H5f delivered +0 (88 -> 88), well below the +2-4 estimate. The deferred buffer resolved only 4 additional pairs. The gap between estimated and actual reflects a fundamental misdiagnosis - the cross-type duplicate problem is ontological ambiguity, not insufficient evidence. The remaining 48 duplicates include ~20 genuinely multi-typed entities and ~28 that could potentially merge with stronger type hierarchy awareness.
+
+### H5g: Ontological Type Merging (proposed)
+
+**Status**: Proposed for v22
+
+**Observation**: The dominant cross-type duplicate pattern is Component vs Accessory (7/20 distinct names). In the CPAP domain, accessories ARE components - they're physical parts that can be both internal to the device and sold separately. Rather than resolving individual entity pairs, merge the types at the ontology level: collapse Accessory into Component (or create a Component supertype).
+
+**Expected impact**: Eliminating the Component/Accessory distinction removes ~14 of 48 duplicates directly. Similar analysis could merge Feature/Setting and Feature/Interface patterns.
+
+**Risk**: Loss of semantic granularity - the distinction between "component inside the device" and "accessory sold separately" carries real meaning for some queries.
