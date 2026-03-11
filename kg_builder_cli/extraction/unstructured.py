@@ -31,6 +31,8 @@ class ExtractionFailedError(RuntimeError):
             f"All {total_chunks} chunks failed extraction for {document} "
             "- check LLM provider configuration and rate limits"
         )
+
+
 from kg_builder_cli.extraction.parsing import parse_document
 from kg_builder_cli.extraction.prompts import build_extraction_prompt
 from kg_builder_cli.extraction.resolution import resolve_entities, rewire_relationships
@@ -144,14 +146,15 @@ def ingest_document(
 
     # Use buffer snapshot as ontology if buffer is available
     if buffer:
-        ontology = buffer.snapshot()
+        ontology = buffer.snapshot(
+            resolution_intent=config.ontology_buffer.resolution_intent or "",
+        )
 
     # Build response model (constrained if ontology has types)
     response_model = build_response_model(ontology)
 
-    intent = config.ontology_buffer.intent
     prompts_and_chunks: list[tuple[Chunk, str]] = [
-        (chunk, build_extraction_prompt(chunk, ontology, intent=intent)) for chunk in chunks
+        (chunk, build_extraction_prompt(chunk, ontology)) for chunk in chunks
     ]
 
     # Rate limiter: no-op when rate_limit is not configured
@@ -163,8 +166,13 @@ def ingest_document(
     def _throttled_extract(chunk, prompt):
         rate_limiter.acquire()
         return extract_chunk(
-            chunk, prompt, model_id, client,
-            temperature, max_retries, response_model,
+            chunk,
+            prompt,
+            model_id,
+            client,
+            temperature,
+            max_retries,
+            response_model,
         )
 
     completed = 0

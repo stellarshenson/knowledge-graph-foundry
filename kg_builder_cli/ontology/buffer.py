@@ -39,10 +39,9 @@ class OntologyBuffer:
         self._canonical_map: dict[str, str] = {}
         # Type exemplars: canonical type name -> list of representative entities
         self._type_exemplars: dict[str, list[TypeExemplar]] = {}
-        # H5g: type hierarchy, resolution intent/guide, cross-type stats
+        # H5g: type hierarchy, resolution guide, cross-type stats
         self._type_hierarchy: list[TypeHierarchyEntry] = []
         self._child_to_parent: dict[str, str] = {}
-        self._resolution_intent: str = ""
         self._resolution_guide: str = ""
         # Cross-type stats: (norm_name, type_a, type_b) -> {doc_indices, type_a_count, type_b_count}
         self._cross_type_stats: dict[tuple[str, str, str], dict] = {}
@@ -107,8 +106,7 @@ class OntologyBuffer:
             for child in entry.children:
                 buffer._child_to_parent[child] = name
 
-        # Load resolution intent and guide (H5g)
-        buffer._resolution_intent = data.get("resolution_intent", "") or ""
+        # Load resolution guide (H5g) - resolution_intent lives in config.yml only
         buffer._resolution_guide = data.get("resolution_guide", "") or ""
 
         # Load type exemplars from YAML (H5g)
@@ -136,8 +134,12 @@ class OntologyBuffer:
         )
         return buffer
 
-    def snapshot(self) -> OntologyState:
+    def snapshot(self, resolution_intent: str = "") -> OntologyState:
         """Return a frozen snapshot of the current ontology state.
+
+        Args:
+            resolution_intent: User-provided extraction intent from config.yml.
+                Flows through to OntologyState for prompt injection.
 
         Types are tiered by frequency:
         - confirmed: seed types OR frequency >= threshold (included in prompt)
@@ -191,7 +193,7 @@ class OntologyBuffer:
             emerging_types=emerging,
             type_exemplars=frozen_exemplars,
             type_hierarchy=tuple(self._type_hierarchy),
-            resolution_intent=self._resolution_intent,
+            resolution_intent=resolution_intent,
             resolution_guide=self._resolution_guide,
         )
 
@@ -429,8 +431,6 @@ class OntologyBuffer:
         }
         if hierarchy_data:
             data["type_hierarchy"] = hierarchy_data
-        if self._resolution_intent:
-            data["resolution_intent"] = self._resolution_intent
         if self._resolution_guide:
             data["resolution_guide"] = self._resolution_guide
         if exemplar_data:

@@ -230,7 +230,7 @@ def _ingest_fluid(
                         remap_history=detector._remap_history,
                         recent_remap_rate=remap_rate,
                         remap_count=result.metadata.remap_count,
-                        intent=config.ontology_buffer.intent,
+                        intent=config.ontology_buffer.resolution_intent,
                         stability=stability or {},
                         llm_config=config.llm,
                         neo4j_config=config.neo4j,
@@ -354,7 +354,7 @@ def _ingest_fluid(
                 type_names=buffer.type_names() if buffer else set(),
                 frequencies=buffer.frequencies() if buffer else {},
                 coverage=coverage,
-                intent=config.ontology_buffer.intent,
+                intent=config.ontology_buffer.resolution_intent,
                 stability=stability or {},
                 metrics_history=detector._metrics_history,
                 new_types_history=detector._new_types_history,
@@ -415,7 +415,13 @@ def _ingest_fluid(
             )
             from kg_builder_cli.extraction.dedup import normalize_entity_ids
 
-            cured_ontology = buffer.snapshot() if buffer else None
+            cured_ontology = (
+                buffer.snapshot(
+                    resolution_intent=config.ontology_buffer.resolution_intent or "",
+                )
+                if buffer
+                else None
+            )
             logger.info(
                 "[curing] consolidating {} documents, ontology has {} types",
                 accumulator.doc_count,
@@ -430,7 +436,7 @@ def _ingest_fluid(
                     cluster_types(
                         discovered_types=entity_type_names,
                         frequencies=freqs,
-                        intent=config.ontology_buffer.intent,
+                        intent=config.ontology_buffer.resolution_intent,
                         model=config.llm.model,
                         provider=config.llm.provider,
                         region=config.llm.region,
@@ -517,7 +523,7 @@ def _ingest_fluid(
                 cluster_types(
                     discovered_types=entity_type_names,
                     frequencies=freqs,
-                    intent=config.ontology_buffer.intent,
+                    intent=config.ontology_buffer.resolution_intent,
                     model=config.llm.model,
                     provider=config.llm.provider,
                     region=config.llm.region,
@@ -548,7 +554,13 @@ def _ingest_fluid(
                 individual_result.metadata.source,
             )
 
-        cured_ontology = buffer.snapshot() if buffer else None
+        cured_ontology = (
+            buffer.snapshot(
+                resolution_intent=config.ontology_buffer.resolution_intent or "",
+            )
+            if buffer
+            else None
+        )
         merged_result = accumulator.consolidate(
             cured_ontology,
             config.extract,
@@ -587,7 +599,7 @@ def _build_exemplar_index(buffer, config):
     from kg_builder_cli.extraction.exemplar_index import ExemplarIndex
     from kg_builder_cli.types.extraction import Entity
 
-    snapshot = buffer.snapshot()
+    snapshot = buffer.snapshot(resolution_intent="")
     if not snapshot.type_exemplars:
         logger.info("[curing] no exemplars available, skipping FAISS index")
         return None
