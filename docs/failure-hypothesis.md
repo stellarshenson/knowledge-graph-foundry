@@ -146,6 +146,37 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 **Root cause**: The SleepStyle manual describes operating modes within general operating instructions rather than as a dedicated "modes" section. The extraction LLM may not recognize these as distinct mode entities worth extracting, or may extract them without linking to the product.
 
+### v21 Cross-Type Duplicate Analysis (Graph Query Evidence)
+
+47 duplicate groups producing 97 total nodes (50 excess). Only 1 within-type duplicate exists (`standby state` as Setting x2), confirming within-type resolution works well. The problem is entirely cross-type.
+
+**Duplicate breakdown by type pair pattern**:
+
+| Pattern | Count | Examples |
+|---------|-------|---------|
+| Component/Accessory | 21 | filter, humidifier, mask, headgear, sd card, tubing, heated tube, modem |
+| Feature/Setting | 8 | ramp, auto on, auto off, reslex, time setting, humidity setting |
+| Setting/Specification | 4 | ahi, ramp time, altitude, therapy pressure |
+| Component/Interface | 3 | display, ramp key, control dial |
+| Component/Specification | 3 | air outlet, power supply, 80w power supply |
+| Feature/Specification | 3 | flex pressure relief, supplemental oxygen, humidity |
+| Triple+ (3 types) | 2 | accessories (Component/Section/Accessory), mask fit (Interface/Feature/Setting) |
+| Other pairs | 3 | ramp button (Feature/Component), apnea (MedicalCondition/Feature), periodic breathing (MedicalCondition/Interface) |
+
+**Semantic analysis of descriptions** reveals three categories:
+
+1. **Same concept, different perspective** (mergeable - ~25 groups): Both descriptions refer to the same physical thing viewed from different angles. Example: `humidifier` as Component ("Integrated humidifier component with maximum fill level of 290 mL") vs Accessory ("Optional accessory with usage tracking"). These should be one entity
+
+2. **Same name, genuinely different aspects** (ambiguous - ~15 groups): Descriptions capture meaningfully different facets. Example: `ahi` as Specification ("Apnea/Hypopnea Index - measurement specification"), Interface ("Screen displaying nightly AHI value"), Setting ("The average AHI in the selected period"). These might warrant separate entities or a multi-faceted entity
+
+3. **Same name, clearly same thing** (resolution failure - ~7 groups): `ramp` as Feature ("gradually increases pressure") vs Setting ("displays ramp starting pressure") - these describe the same ramp feature from documentation vs UI perspectives
+
+**Topology signal analysis (Component/Accessory pairs)**:
+
+Relationship target Jaccard overlap ranges from 0% to 29%. Highest: `sd card` (29%), `integrated heated humidifier` (29%), `flexible tubing` (25%), `humidifier` (21%). Lowest: `heated tube` (0%), `circuit tubing` (0%), `breathing circuit` (0%). The topology signal is weak because Component variants connect to internal parts (heater plate, water tank) while Accessory variants connect to products (HAS_ACCESSORY). They share product targets but diverge on component-level neighbors
+
+**Name variant proliferation in Component/Accessory**: The tubing concept alone has 36 entity nodes across both types: `tube`, `tubing`, `heated tube`, `heated tubing`, `breathing tube`, `circuit tubing`, `flexible tubing`, `air tubing`, `connecting tubing`, `delivery tubes`, `standard tube`, `SlimLine tubing`, `ClimateLineAir heated tube`, plus size variants (12mm, 15mm, 19mm, 22mm). Similarly, `filter` has 38 nodes. This is a within-type synonym problem compounding the cross-type problem
+
 ### H5f: Deferred Cross-Type Dedup with Evidence Accumulation (v21)
 
 **Status**: Implemented - minimal impact
@@ -174,18 +205,46 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 | Hypothesis | Impact | Complexity | Priority | Status |
 |-----------|--------|-----------|----------|--------|
 | H5f (deferred cross-type dedup) | +0 actual | Medium | Done | 52->48 dupes, no hybrid change |
-| H5g (ontological type merging) | +2-4 est | Medium | 1 | Merge Component/Accessory at ontology level |
-| H9 (cross_doc generative) | +1-2 est | Low | 2 | Prompt tuning or accept multi-type |
-| H10 (SleepStyle modes) | +1 est | Low | 3 | Extraction or linking gap |
+| H5g-A (type hierarchy) | +4-6 est | Medium | 1 | Eliminates 29/47 groups (Component/Accessory, Feature/Setting) |
+| H5g-C (extraction type coercion) | +1-2 est | Low | 2 | Known-entity lookup prevents inconsistent type assignment |
+| H5g-B (multi-facet entities) | +1-2 est | Medium | 3 | Multi-label nodes for Setting/Specification overlap |
+| H9 (cross_doc generative) | +1-2 est | Low | 4 | Will improve automatically as duplicates drop |
+| H5g-D (synonym resolution) | +1-2 est | High | 5 | 36 tubing variants, 38 filter variants need consolidation |
+| H10 (SleepStyle modes) | +1 est | Low | 6 | Extraction or linking gap |
 
-**v21 outcome**: H5f delivered +0 (88 -> 88), well below the +2-4 estimate. The deferred buffer resolved only 4 additional pairs. The gap between estimated and actual reflects a fundamental misdiagnosis - the cross-type duplicate problem is ontological ambiguity, not insufficient evidence. The remaining 48 duplicates include ~20 genuinely multi-typed entities and ~28 that could potentially merge with stronger type hierarchy awareness.
+**v21 outcome**: H5f delivered +0 (88 -> 88), well below the +2-4 estimate. The deferred buffer resolved only 4 additional pairs. Graph query analysis revealed the problem is structural: 47 duplicate groups with 50 excess nodes, dominated by Component/Accessory (21 groups) and Feature/Setting (8 groups) where the type boundary reflects genuine dual roles rather than resolution failures. Additionally, within-type synonym proliferation (36 tubing nodes, 38 filter nodes) compounds the problem. The fix requires ontology-level changes (type hierarchy, multi-facet entities) not stronger resolution algorithms.
 
-### H5g: Ontological Type Merging (proposed)
+### H5g: Ontological Type Hierarchy (proposed)
 
 **Status**: Proposed for v22
 
-**Observation**: The dominant cross-type duplicate pattern is Component vs Accessory (7/20 distinct names). In the CPAP domain, accessories ARE components - they're physical parts that can be both internal to the device and sold separately. Rather than resolving individual entity pairs, merge the types at the ontology level: collapse Accessory into Component (or create a Component supertype).
+**Problem decomposition**: The 47 duplicate groups break into three actionable categories that need different solutions:
 
-**Expected impact**: Eliminating the Component/Accessory distinction removes ~14 of 48 duplicates directly. Similar analysis could merge Feature/Setting and Feature/Interface patterns.
+**Strategy A - Type hierarchy in ontology buffer** (targets 21 Component/Accessory + 8 Feature/Setting = 29 groups):
 
-**Risk**: Loss of semantic granularity - the distinction between "component inside the device" and "accessory sold separately" carries real meaning for some queries.
+Define parent-child type relationships in the ontology: `Part` -> `Component`, `Part` -> `Accessory`; `Behavior` -> `Feature`, `Behavior` -> `Setting`. During extraction, the LLM assigns the specific subtype. During resolution, entities with the same name under the same parent type merge automatically using the more specific type (Component wins over Accessory for physical parts, Feature wins over Setting for capabilities). This requires:
+- `ontology/buffer.py` - add `type_hierarchy: dict[str, list[str]]` mapping parent to children
+- `extraction/resolution.py` - modify `_resolve_cross_type()` to check if two types share a parent before computing the full Bayesian posterior - shared parent = auto-merge with type priority
+- Config: `type_hierarchy` in ontology_buffer config, or auto-discovered from extraction patterns
+
+Expected impact: eliminates 29 of 47 groups (62%), reducing excess nodes from 50 to ~18.
+
+**Strategy B - Multi-facet entity model** (targets 4 Setting/Specification + 3 Component/Specification + 3 Feature/Specification = 10 groups):
+
+Entities like `ramp time` (Setting: "0-60 mins in 5 min increments" vs Specification: "0 to 45 min") or `therapy pressure` (Setting: "pressure unit hPa or cmH2O" vs Specification: "current delivered pressure") represent the same concept appearing as both a configurable parameter and a measured value. Rather than merging (losing the distinction), allow entities to carry multiple type labels. During loading, create one node with multiple labels: `(:Entity:Setting:Specification {name: "ramp time"})`. This preserves queryability by either type.
+
+Expected impact: eliminates 10 groups by collapsing 20 nodes into 10 multi-labeled nodes.
+
+**Strategy C - Extraction prompt type coercion** (targets ~7 resolution failure groups):
+
+For `ramp` (Feature vs Setting), `mask fit` (3 types), `ahi` (3 types) - add a known-entity lookup to the extraction prompt. When the constrained prompt includes "Entity 'ramp' has been previously extracted as Feature", the LLM assigns the same type consistently. This is H5c from the original proposal list.
+
+Expected impact: eliminates ~7 groups where type assignment is inconsistent rather than genuinely ambiguous.
+
+**Strategy D - Within-type synonym resolution** (compounds all categories):
+
+The tubing concept has 36 nodes and filter has 38 nodes across Component/Accessory. Even after cross-type merging, name variants (`heated tube`, `heated tubing`, `Heated Tubing`, `15H tubing`) remain as separate within-type entities. Current Levenshtein resolution catches `tube`/`Tube` but not semantic synonyms like `circuit tubing`/`connecting tubing`. Options: (1) embedding-based clustering within type groups post-extraction, (2) LLM-assisted synonym detection during curing consolidation, (3) stricter normalization rules for common variant patterns (plurals, adjective prefixes).
+
+**Combined expected impact**: A+B+C addresses all 47 groups. D reduces total entity count by consolidating name variants. Target: cross-type duplicates < 10, hybrid score 90+.
+
+**Recommended execution order**: A first (biggest impact, cleanest design), then C (prompt-level fix, low complexity), then B (requires loader changes for multi-label), then D (synonym resolution is a deeper problem).
