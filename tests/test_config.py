@@ -15,7 +15,9 @@ class TestLoadConfigDefaults:
     def test_load_config_defaults_only(self, tmp_path):
         """No config file, no overrides -> AppConfig with defaults."""
         config = load_config(config_path=tmp_path / "nonexistent.yml")
-        assert config.llm.provider == "bedrock"
+        # provider and model are None by default - must be explicitly configured
+        assert config.llm.provider is None
+        assert config.llm.model is None
         assert config.extract.chunk_size == 2000
         assert config.load.batch_size == 500
 
@@ -30,7 +32,7 @@ class TestLoadConfigDefaults:
         assert config.llm.temperature == 0.5
         assert config.extract.chunk_size == 1000
         # defaults preserved
-        assert config.llm.provider == "bedrock"
+        assert config.llm.provider is None
         assert config.extract.chunk_overlap == 200
 
     def test_load_config_env_interpolation(self, tmp_path, monkeypatch):

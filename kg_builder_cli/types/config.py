@@ -12,10 +12,10 @@ class Neo4jConfig(BaseModel):
 
 
 class LLMConfig(BaseModel):
-    provider: Literal["bedrock", "openai", "anthropic"] = "bedrock"
-    model: str = "eu.anthropic.claude-sonnet-4-20250514-v1:0"
+    provider: Optional[Literal["bedrock", "openai", "anthropic"]] = None
+    model: Optional[str] = None
     temperature: float = 0.0
-    region: str = "eu-central-1"
+    region: Optional[str] = None
     profile: Optional[str] = None
     max_retries: int = 3
     timeout: int = 120
@@ -37,13 +37,16 @@ class ExtractConfig(BaseModel):
     name_threshold: float = 0.65
     embedding_threshold: float = 0.80
     use_embeddings: bool = False
-    embedding_model: str = "amazon.titan-embed-text-v2:0"
+    embedding_model: Optional[str] = None
     bayesian_resolution: bool = False
     llm_escalation: bool = False
     schema_signal_extraction: bool = False
     cross_type_description_threshold: float = 0.3
     cross_type_embedding_threshold: float = 0.75
     cross_type_merge_threshold: float = 0.6
+    deferred_dedup: bool = False
+    deferred_dedup_ambiguous_lower: float = 0.4
+    deferred_dedup_llm_escalation: bool = False
 
 
 class OntologyBufferConfig(BaseModel):

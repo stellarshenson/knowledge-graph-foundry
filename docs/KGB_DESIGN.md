@@ -1,4 +1,4 @@
-# Knowledge Graph Builder - CLI and Advanced Ingestion Engine v19
+# Knowledge Graph Builder - CLI and Advanced Ingestion Engine v21
 
 ## 1. Introduction
 
@@ -1150,7 +1150,12 @@ curing:
 extract:
   ...existing fields...
   cross_type_merge_threshold: 0.6        # Bayesian posterior threshold for cross-type entity merges
+  deferred_dedup: false                   # opt-in deferred cross-type dedup buffer
+  deferred_dedup_ambiguous_lower: 0.4     # posterior below this always blocks immediately
+  deferred_dedup_llm_escalation: false    # opt-in LLM resolves ambiguous deferred pairs at curing
 ```
+
+> **Note - config exposure policy**: Not all configuration parameters will be exposed in the user-facing config file. Expert-level tuning parameters (thresholds, likelihood ratios, boost caps) will be hardcoded in `kg_builder_cli/config/defaults.py` with detailed documentation explaining purpose, value, and meaning. Only high-level feature toggles and parameters that meaningfully affect pipeline behavior for non-expert users will appear in the config YAML. The `defaults.py` file serves as the authoritative reference for all parameter semantics. This separation is pending implementation - currently all parameters are in `ExtractConfig`.
 
 **Stability metrics** - tracked after each document in both fluid and cured phases for empirical evaluation of convergence signals. All metrics are pure Python (`math` stdlib only). The `StabilityMetrics` class is purely computational - it does not make curing decisions. During the fluid phase, metrics feed the `CuringDetector` for convergence detection. Post-cure, metrics continue to be recorded for each document (JSD, Chao1 coverage, entropy delta) using the same `StabilityMetrics` tracker, providing visibility into whether the cured schema remains stable as new documents are ingested. The `is_converged()` method on `CuringDetector` consumes JSD, entropy delta, and type accumulation rate directly from the metrics stream.
 
@@ -1540,6 +1545,20 @@ Type priority for approved merges is built dynamically from the ontology buffer'
 **Cross-type merge review**: cross-type merges are the highest-risk resolution operation because they silently change an entity's type. To control this risk, all cross-type merges are logged to a review report at `.kg-builder/runs/<timestamp>_cross_type_merges.yml` containing the merged entity names, original types, surviving type, and the priority scores that determined the outcome. When entity names are short (3 characters or fewer) or when the priority gap between the two types is 1 (adjacent ranks), the merge is flagged as `review: true` in the report. In interactive mode, flagged merges are presented to the user for confirmation before proceeding. In batch mode, flagged merges proceed automatically but are prominently logged as warnings. This operational control catches the cases where cross-type merging is most likely to produce false merges without blocking the pipeline.
 
 **Bayesian posterior details** (v19 fix) - the previous description-only gate blocked 56 cross-type duplicates in benchmark v18 because entities with different types naturally have divergent descriptions (e.g., "humidifier" as Component describes internal function, as Accessory describes purchase options). The Bayesian model treats each signal as independent evidence rather than a binary gate, so a strong name match (prior=0.8) can overcome weak description similarity. The likelihood ratio for descriptions is floored at 0.3 (never fully vetoes), embeddings provide a strong secondary signal when available, and chunk co-occurrence provides a weak positive signal for same-document entities. Configuration: `extract.cross_type_merge_threshold: 0.6`.
+
+**Deferred cross-type dedup** (v21, H5f) - the hard threshold at 0.6 creates a permanent decision boundary where pairs in the ambiguous zone (posterior 0.4-0.6) are blocked immediately, losing the opportunity to accumulate evidence across documents. The deferred dedup buffer (`deferred_dedup.py`) introduces three-zone logic to replace the binary merge/block decision:
+
+- posterior >= 0.6 -> merge immediately (unchanged)
+- 0.4 <= posterior < 0.6 -> defer to buffer (NEW)
+- posterior < 0.4 -> block immediately (unchanged)
+
+The buffer stores `DeferredPair` records keyed by `(normalized_name, sorted_type_pair)`. Each pair tracks: posteriors from each encounter, accumulated shared chunk count, relationship target overlap (topology signal), descriptions from both type variants, and document range. After each document extraction, `update_evidence()` scans the new entities and relationships to accumulate co-occurrence, relationship target overlap, and descriptions for existing deferred pairs.
+
+At curing time, `resolve_all()` recomputes a final posterior for each pair by combining: the mean of per-encounter posteriors, a topology boost from relationship target Jaccard overlap (capped at +0.15), a co-occurrence boost from accumulated shared chunks (capped at +0.10), and a description similarity boost (capped at +0.10). Pairs clearing 0.6 after accumulation merge into the highest-priority type. Pairs still in the ambiguous zone with 2+ encounters can be escalated to the LLM when `deferred_dedup_llm_escalation=true`. The LLM receives the entity name, both types with descriptions, evidence summary, and optional graph context from Neo4j. It returns a structured `CrossTypeMergeDecision` (should_merge, chosen_type, reasoning) via instructor+litellm following the same pattern as `BayesianTypeResolver._llm_resolve()`.
+
+The topology signal is a new evidence dimension not available to the per-encounter posterior. It measures Jaccard overlap of relationship targets between the two type variants - if "humidifier" as Component connects to (CPAP, water chamber, heating element) and "humidifier" as Accessory connects to (CPAP, replacement parts), the shared target "CPAP" provides a merge signal. High target overlap (many shared neighbors) strongly indicates same entity viewed from different perspectives.
+
+Configuration: `extract.deferred_dedup: false` (opt-in), `extract.deferred_dedup_ambiguous_lower: 0.4`, `extract.deferred_dedup_llm_escalation: false`. When `deferred_dedup` is disabled, the pipeline falls back to the binary merge/block behavior (merge at 0.6, block below). Implementation: `kg_builder_cli/extraction/deferred_dedup.py` (DeferredPair, DeferredDedupBuffer, MergeDecision), integrated into `resolution.py` (_resolve_cross_type) and `accumulator.py` (FluidAccumulator.consolidate).
 
 **Graph-side resolution** (`loader.py`, `resolve_against_graph()`): during cured-phase ingestion, incoming entities are resolved against existing graph nodes using the same Bayesian posterior model. The Neo4j query uses case-insensitive name matching via `toLower()` to prevent mismatches between "Headgear" in the graph and "headgear" in extraction. When the posterior exceeds the threshold, the incoming entity adopts the existing entity's type and ID. This prevents cross-type duplicates from accumulating across ingestion runs.
 

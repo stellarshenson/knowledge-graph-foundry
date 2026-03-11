@@ -17,7 +17,7 @@ from loguru import logger
 from kg_builder_cli.extraction.chunking import chunk_text
 from kg_builder_cli.extraction.dedup import deduplicate, normalize_entity_ids
 from kg_builder_cli.extraction.embeddings import generate_embeddings
-from kg_builder_cli.extraction.extract import create_extraction_client, extract_chunk
+from kg_builder_cli.extraction.extract import LLMAuthError, create_extraction_client, extract_chunk
 from kg_builder_cli.extraction.parsing import parse_document
 from kg_builder_cli.extraction.prompts import build_extraction_prompt
 from kg_builder_cli.extraction.resolution import resolve_entities, rewire_relationships
@@ -36,6 +36,8 @@ from kg_builder_cli.types.ontology import OntologyState
 
 def _litellm_model_id(config: LLMConfig) -> str:
     """Build litellm model string from provider config."""
+    if not config.model:
+        raise ValueError("LLM model not configured. Set llm.model in config.yml")
     if config.provider == "bedrock":
         return f"bedrock/{config.model}"
     return config.model
@@ -157,18 +159,35 @@ def ingest_document(
             for chunk, prompt in prompts_and_chunks
         }
 
+        failed_chunks = 0
         for future in as_completed(futures):
             chunk_id = futures[future]
             try:
                 entities, relationships = future.result()
                 all_entities.extend(entities)
                 all_relationships.extend(relationships)
+                if not entities:
+                    failed_chunks += 1
+            except LLMAuthError:
+                # Cancel remaining futures and propagate immediately
+                for f in futures:
+                    f.cancel()
+                raise
             except Exception:
                 logger.exception("Extraction failed for chunk {}", chunk_id)
+                failed_chunks += 1
 
             completed += 1
             if completed % 10 == 0 or completed == total:
                 logger.info("Extraction progress: {}/{}", completed, total)
+
+    if failed_chunks == total and total > 0:
+        logger.error(
+            "All {} chunks failed extraction for {} - check LLM provider configuration",
+            total,
+            file_path.name,
+        )
+        return _empty_result(file_path, config)
 
     # Step 4b: Type resolution - Bayesian or Levenshtein fallback
     remap_count = 0

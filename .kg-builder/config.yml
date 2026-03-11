@@ -1,6 +1,13 @@
+llm:
+  provider: bedrock
+  model: "eu.anthropic.claude-sonnet-4-20250514-v1:0"
+  region: eu-central-1
+  profile: kolomolo
 extract:
   use_embeddings: true
   bayesian_resolution: true
+  deferred_dedup: true
+  embedding_model: "amazon.titan-embed-text-v2:0"
 ontology_buffer:
   intent: "Compare CPAP and auto-titrating positive airway pressure therapy devices across manufacturers, focusing on product specifications, clinical features, therapy modes, regulatory compliance, and component architecture"
 curing:

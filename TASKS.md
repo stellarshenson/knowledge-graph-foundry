@@ -26,6 +26,7 @@ Master task list for kg-builder-cli. Derived from `docs/KGB_DESIGN.md`.
 - [x] `extraction/unstructured.py` - orchestrate parse -> chunk -> extract -> dedup -> resolve -> load (with buffer + resolution)
 - [x] `extraction/dedup.py` - exact (type, id) deduplication with `normalize_entity_ids` cross-document merging
 - [x] `extraction/resolution.py` - multi-signal entity resolution (Levenshtein name, type-aware, embedding similarity, cross-type)
+- [x] `extraction/deferred_dedup.py` - deferred cross-type dedup buffer with evidence accumulation and LLM escalation (H5f)
 - [x] `extraction/response_models.py` - Pydantic response models for instructor structured output
 - [x] `extraction/embeddings.py` - Amazon Titan embedding generation for semantic entity resolution
 - [ ] `extraction/facts.py` - atomic facts extraction (FactNode track)
@@ -69,6 +70,12 @@ Master task list for kg-builder-cli. Derived from `docs/KGB_DESIGN.md`.
 ## Memory
 
 - [ ] `memory/` module - agent memory store with TTL, buffer disk persistence/versioning
+
+## Configuration
+
+- [ ] `config/defaults.py` - split parameters into user-exposed (config.yml) vs expert-only (hardcoded defaults). Document every setting with purpose, value, meaning
+- [ ] `config/selftest.py` - system_selftest: verify LLM provider/model configured, embedding model configured, Neo4j reachable, credentials valid. Run before ingestion
+- [ ] `config/defaults.py` - multi-provider embedding support (bedrock, openai, sentence-transformers)
 
 ## Testing
 

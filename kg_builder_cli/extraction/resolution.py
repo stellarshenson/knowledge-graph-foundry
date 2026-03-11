@@ -2,11 +2,16 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from loguru import logger
 import numpy as np
 
 from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.extraction import Entity
+
+if TYPE_CHECKING:
+    from kg_builder_cli.extraction.deferred_dedup import DeferredDedupBuffer
 
 
 class _UnionFind:
@@ -43,6 +48,9 @@ def resolve_entities(
     description_threshold: float = 0.3,
     cross_type_embedding_threshold: float = 0.75,
     cross_type_merge_threshold: float = 0.6,
+    deferred_buffer: "DeferredDedupBuffer | None" = None,
+    deferred_ambiguous_lower: float = 0.4,
+    doc_index: int = 0,
 ) -> list[Entity]:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
@@ -81,7 +89,12 @@ def resolve_entities(
 
     # Cross-type resolution: merge entities with identical normalized names
     resolved, id_map = _resolve_cross_type(
-        resolved, type_frequencies, merge_threshold=cross_type_merge_threshold
+        resolved,
+        type_frequencies,
+        merge_threshold=cross_type_merge_threshold,
+        deferred_buffer=deferred_buffer,
+        ambiguous_lower=deferred_ambiguous_lower,
+        doc_index=doc_index,
     )
 
     merge_count = len(entities) - len(resolved)
@@ -196,12 +209,21 @@ def _resolve_cross_type(
     entities: list[Entity],
     type_frequencies: dict[str, int] | None = None,
     merge_threshold: float = 0.6,
+    deferred_buffer: "DeferredDedupBuffer | None" = None,
+    ambiguous_lower: float = 0.4,
+    doc_index: int = 0,
 ) -> tuple[list[Entity], dict[str, str]]:
     """Merge entities with identical normalized names across different types.
 
     Uses a Bayesian posterior model combining name identity, description
     similarity, embedding cosine, and chunk co-occurrence to decide merges.
-    When posterior >= merge_threshold, entities merge into the highest-priority type.
+
+    Three-zone logic (when deferred_buffer is provided):
+    - posterior >= merge_threshold -> merge immediately
+    - ambiguous_lower <= posterior < merge_threshold -> defer to buffer
+    - posterior < ambiguous_lower -> block immediately
+
+    When deferred_buffer is None, falls back to binary: merge at threshold, block below.
 
     Returns (resolved_entities, id_mapping) where id_mapping maps merged entity
     IDs to their canonical entity IDs (for relationship rewiring).
@@ -235,7 +257,30 @@ def _resolve_cross_type(
                 continue
             if entities[idx].type != canonical.type:
                 posterior = _cross_type_posterior(canonical, entities[idx])
-                if posterior < merge_threshold:
+                if posterior >= merge_threshold:
+                    logger.info(
+                        "[resolve] cross-type merge via Bayesian: '{}' ({}) -> ({}) - "
+                        "posterior={:.3f}",
+                        entities[idx].name,
+                        entities[idx].type,
+                        canonical.type,
+                        posterior,
+                    )
+                elif deferred_buffer is not None and posterior >= ambiguous_lower:
+                    # Ambiguous zone: defer for evidence accumulation
+                    deferred_buffer.defer(canonical, entities[idx], posterior, doc_index)
+                    logger.info(
+                        "[resolve] cross-type DEFERRED: '{}' ({}) vs ({}) - "
+                        "posterior={:.3f} (ambiguous zone {}-{})",
+                        entities[idx].name,
+                        entities[idx].type,
+                        canonical.type,
+                        posterior,
+                        ambiguous_lower,
+                        merge_threshold,
+                    )
+                    continue
+                else:
                     logger.info(
                         "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
                         "posterior={:.3f} < {}",
@@ -243,17 +288,9 @@ def _resolve_cross_type(
                         entities[idx].type,
                         canonical.type,
                         posterior,
-                        merge_threshold,
+                        ambiguous_lower if deferred_buffer else merge_threshold,
                     )
                     continue
-                logger.info(
-                    "[resolve] cross-type merge via Bayesian: '{}' ({}) -> ({}) - "
-                    "posterior={:.3f}",
-                    entities[idx].name,
-                    entities[idx].type,
-                    canonical.type,
-                    posterior,
-                )
             id_map[entities[idx].id] = canonical.id
             canonical = _merge_entities(canonical, entities[idx])
             merged_indices.add(idx)
@@ -272,6 +309,11 @@ def _resolve_cross_type(
     cross_merged = len(entities) - len(result)
     if cross_merged > 0:
         logger.info("Cross-type resolution: merged {} entities", cross_merged)
+    if deferred_buffer and deferred_buffer.pair_count > 0:
+        logger.info(
+            "Cross-type resolution: {} pairs deferred for evidence accumulation",
+            deferred_buffer.pair_count,
+        )
 
     return result, id_map
 
