@@ -122,7 +122,7 @@ ontology_buffer:
 │   └── types/              <- Pydantic data models
 ├── tests/                  <- pytest test suite
 ├── docs/
-│   ├── DESIGN.md           <- Canonical design document
+│   ├── KGB_DESIGN.md       <- Canonical design document
 │   └── DESIGN_ASSUMPTIONS.md <- Design checklist
 ├── data/
 │   ├── raw/                <- Immutable source data

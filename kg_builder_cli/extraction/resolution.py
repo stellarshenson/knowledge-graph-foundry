@@ -42,6 +42,7 @@ def resolve_entities(
     type_frequencies: dict[str, int] | None = None,
     description_threshold: float = 0.3,
     cross_type_embedding_threshold: float = 0.75,
+    cross_type_merge_threshold: float = 0.6,
 ) -> list[Entity]:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
@@ -80,7 +81,7 @@ def resolve_entities(
 
     # Cross-type resolution: merge entities with identical normalized names
     resolved, id_map = _resolve_cross_type(
-        resolved, type_frequencies, description_threshold, cross_type_embedding_threshold
+        resolved, type_frequencies, merge_threshold=cross_type_merge_threshold
     )
 
     merge_count = len(entities) - len(resolved)
@@ -157,16 +158,50 @@ def _description_similarity(desc_a: str, desc_b: str) -> float:
     return len(words_a & words_b) / len(words_a | words_b)
 
 
+def _cross_type_posterior(canonical: Entity, other: Entity) -> float:
+    """Bayesian posterior P(same_entity | evidence) for cross-type pairs.
+
+    Combines name identity, description similarity, embedding cosine,
+    and source chunk co-occurrence as independent evidence signals.
+    """
+    name_a = normalize_entity_name(canonical.name)
+    name_b = normalize_entity_name(other.name)
+
+    # Prior: identical normalized names strongly indicate same entity
+    prior = 0.8 if name_a == name_b else 0.2
+
+    # Evidence 1: Description similarity (Jaccard)
+    desc_sim = _description_similarity(canonical.description, other.description)
+    lr_desc = max(0.3, desc_sim * 2.0)
+
+    # Evidence 2: Embedding cosine (if available)
+    lr_emb = 1.0  # neutral if no embeddings
+    if canonical.embedding and other.embedding:
+        emb_sim = _cosine_similarity(canonical.embedding, other.embedding)
+        lr_emb = max(0.2, emb_sim * 2.0)
+
+    # Evidence 3: Shared source chunks (co-occurrence in same document)
+    shared_chunks = set(canonical.source_chunks) & set(other.source_chunks)
+    lr_cooc = 1.5 if shared_chunks else 0.9
+
+    # Posterior via odds form
+    prior_odds = prior / (1.0 - prior)
+    posterior_odds = prior_odds * lr_desc * lr_emb * lr_cooc
+    posterior = posterior_odds / (1.0 + posterior_odds)
+
+    return posterior
+
+
 def _resolve_cross_type(
     entities: list[Entity],
     type_frequencies: dict[str, int] | None = None,
-    description_threshold: float = 0.3,
-    embedding_threshold: float = 0.75,
+    merge_threshold: float = 0.6,
 ) -> tuple[list[Entity], dict[str, str]]:
     """Merge entities with identical normalized names across different types.
 
-    When two entities share the same normalized name but have different types,
-    keep the more specific type (higher priority) and merge the other into it.
+    Uses a Bayesian posterior model combining name identity, description
+    similarity, embedding cosine, and chunk co-occurrence to decide merges.
+    When posterior >= merge_threshold, entities merge into the highest-priority type.
 
     Returns (resolved_entities, id_mapping) where id_mapping maps merged entity
     IDs to their canonical entity IDs (for relationship rewiring).
@@ -198,50 +233,27 @@ def _resolve_cross_type(
         for idx in indices:
             if idx == best_idx:
                 continue
-            # Description similarity gate: block cross-type merge if descriptions diverge
             if entities[idx].type != canonical.type:
-                desc_sim = _description_similarity(
-                    canonical.description, entities[idx].description
+                posterior = _cross_type_posterior(canonical, entities[idx])
+                if posterior < merge_threshold:
+                    logger.info(
+                        "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
+                        "posterior={:.3f} < {}",
+                        entities[idx].name,
+                        entities[idx].type,
+                        canonical.type,
+                        posterior,
+                        merge_threshold,
+                    )
+                    continue
+                logger.info(
+                    "[resolve] cross-type merge via Bayesian: '{}' ({}) -> ({}) - "
+                    "posterior={:.3f}",
+                    entities[idx].name,
+                    entities[idx].type,
+                    canonical.type,
+                    posterior,
                 )
-                if desc_sim < description_threshold:
-                    # Fallback: check embedding similarity
-                    if entities[idx].embedding and canonical.embedding:
-                        emb_sim = _cosine_similarity(canonical.embedding, entities[idx].embedding)
-                        if emb_sim >= embedding_threshold:
-                            logger.info(
-                                "[resolve] cross-type merge via embedding: '{}' ({}) vs ({}) - "
-                                "desc_sim={:.2f}, emb_sim={:.2f}",
-                                entities[idx].name,
-                                entities[idx].type,
-                                canonical.type,
-                                desc_sim,
-                                emb_sim,
-                            )
-                            # Fall through to merge
-                        else:
-                            logger.info(
-                                "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
-                                "desc_sim={:.2f} < {}, emb_sim={:.2f} < {}",
-                                entities[idx].name,
-                                entities[idx].type,
-                                canonical.type,
-                                desc_sim,
-                                description_threshold,
-                                emb_sim,
-                                embedding_threshold,
-                            )
-                            continue
-                    else:
-                        logger.info(
-                            "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
-                            "description similarity {:.2f} < {}",
-                            entities[idx].name,
-                            entities[idx].type,
-                            canonical.type,
-                            desc_sim,
-                            description_threshold,
-                        )
-                        continue
             id_map[entities[idx].id] = canonical.id
             canonical = _merge_entities(canonical, entities[idx])
             merged_indices.add(idx)

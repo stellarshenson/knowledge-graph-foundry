@@ -43,6 +43,7 @@ class ExtractConfig(BaseModel):
     schema_signal_extraction: bool = False
     cross_type_description_threshold: float = 0.3
     cross_type_embedding_threshold: float = 0.75
+    cross_type_merge_threshold: float = 0.6
 
 
 class OntologyBufferConfig(BaseModel):
