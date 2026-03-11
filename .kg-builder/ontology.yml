@@ -64,11 +64,7 @@ relationship_types:
   source_type: ''
   target_type: ''
   description: ''
-- name: DOCUMENTS
-  source_type: ''
-  target_type: ''
-  description: ''
-- name: COVERS
+- name: SUPPLIES
   source_type: ''
   target_type: ''
   description: ''
@@ -76,7 +72,7 @@ relationship_types:
   source_type: ''
   target_type: ''
   description: ''
-- name: DISPLAYS
+- name: HAS_INTERFACE
   source_type: ''
   target_type: ''
   description: ''
