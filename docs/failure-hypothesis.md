@@ -205,46 +205,39 @@ Relationship target Jaccard overlap ranges from 0% to 29%. Highest: `sd card` (2
 | Hypothesis | Impact | Complexity | Priority | Status |
 |-----------|--------|-----------|----------|--------|
 | H5f (deferred cross-type dedup) | +0 actual | Medium | Done | 52->48 dupes, no hybrid change |
-| H5g-A (type hierarchy) | +4-6 est | Medium | 1 | Eliminates 29/47 groups (Component/Accessory, Feature/Setting) |
-| H5g-C (extraction type coercion) | +1-2 est | Low | 2 | Known-entity lookup prevents inconsistent type assignment |
-| H5g-B (multi-facet entities) | +1-2 est | Medium | 3 | Multi-label nodes for Setting/Specification overlap |
+| H5g (ontology-enriched resolution) | +4-8 est | Medium | 1 | Hierarchy + resolution intent/guide + multi-label + exemplars |
 | H9 (cross_doc generative) | +1-2 est | Low | 4 | Will improve automatically as duplicates drop |
 | H5g-D (synonym resolution) | +1-2 est | High | 5 | 36 tubing variants, 38 filter variants need consolidation |
 | H10 (SleepStyle modes) | +1 est | Low | 6 | Extraction or linking gap |
 
 **v21 outcome**: H5f delivered +0 (88 -> 88), well below the +2-4 estimate. The deferred buffer resolved only 4 additional pairs. Graph query analysis revealed the problem is structural: 47 duplicate groups with 50 excess nodes, dominated by Component/Accessory (21 groups) and Feature/Setting (8 groups) where the type boundary reflects genuine dual roles rather than resolution failures. Additionally, within-type synonym proliferation (36 tubing nodes, 38 filter nodes) compounds the problem. The fix requires ontology-level changes (type hierarchy, multi-facet entities) not stronger resolution algorithms.
 
-### H5g: Ontological Type Hierarchy (proposed)
+### H5g: Ontology-Enriched Type Resolution (implementing)
 
-**Status**: Proposed for v22
+**Status**: Implementing for v22
 
-**Problem decomposition**: The 47 duplicate groups break into three actionable categories that need different solutions:
+**Design philosophy**: One enriched ontology, not two. The approach draws from OntoType's coarse-to-fine entity typing via type hierarchy (Komarlu et al., KDD 2024), AFET's hierarchical partial-label embedding for multi-type entities (Ren et al., EMNLP 2016), and ontology-grounded type disambiguation under Wikidata (Feng et al., KDD Workshop 2024). Instead of a separate resolution rules engine, we enrich the ontology with three layers: hierarchy for structural dedup, prose guidance for extraction-time disambiguation, and multi-labels for legitimate dual-role entities. The hierarchy is a dedup resolution strategy, not general extraction guidance - it materializes inside resolution machinery and gets flushed to ontology YAML for the next run. See `references/ontology/` for full paper summaries.
 
-**Strategy A - Type hierarchy in ontology buffer** (targets 21 Component/Accessory + 8 Feature/Setting = 29 groups):
+**Problem decomposition**: The 47 duplicate groups break into three categories addressed by a unified approach:
 
-Define parent-child type relationships in the ontology: `Part` -> `Component`, `Part` -> `Accessory`; `Behavior` -> `Feature`, `Behavior` -> `Setting`. During extraction, the LLM assigns the specific subtype. During resolution, entities with the same name under the same parent type merge automatically using the more specific type (Component wins over Accessory for physical parts, Feature wins over Setting for capabilities). This requires:
-- `ontology/buffer.py` - add `type_hierarchy: dict[str, list[str]]` mapping parent to children
-- `extraction/resolution.py` - modify `_resolve_cross_type()` to check if two types share a parent before computing the full Bayesian posterior - shared parent = auto-merge with type priority
-- Config: `type_hierarchy` in ontology_buffer config, or auto-discovered from extraction patterns
+**Layer 1 - Type hierarchy** (structural, targets 29 groups: 21 Component/Accessory + 8 Feature/Setting):
 
-Expected impact: eliminates 29 of 47 groups (62%), reducing excess nodes from 50 to ~18.
+New `type_hierarchy` section in ontology YAML defines parent-child subsumption: `Part` -> `[Component, Accessory]`, `Behavior` -> `[Feature, Setting]`. The hierarchy is NOT injected into extraction prompts - it lives exclusively in the resolution machinery. In `_resolve_cross_type()`, entities with same name under shared parent auto-merge (skip Bayesian) using frequency-based type priority. In fluid mode (no ontology seed), hierarchy starts empty and is discovered from data via `evolve_type_hierarchy()` when cross-type patterns meet conservative thresholds (>= 3 documents). Implementation: `TypeHierarchyEntry` model in `types/ontology.py`, `shared_parent()` on buffer, hierarchy check in `_resolve_cross_type()`.
 
-**Strategy B - Multi-facet entity model** (targets 4 Setting/Specification + 3 Component/Specification + 3 Feature/Specification = 10 groups):
+**Layer 2 - Resolution intent + resolution guide** (prose guidance, targets ~7 inconsistent groups + prevents recurrence):
 
-Entities like `ramp time` (Setting: "0-60 mins in 5 min increments" vs Specification: "0 to 45 min") or `therapy pressure` (Setting: "pressure unit hPa or cmH2O" vs Specification: "current delivered pressure") represent the same concept appearing as both a configurable parameter and a measured value. Rather than merging (losing the distinction), allow entities to carry multiple type labels. During loading, create one node with multiple labels: `(:Entity:Setting:Specification {name: "ramp time"})`. This preserves queryability by either type.
+Two-layer prose guidance in ontology YAML. `resolution_intent` is the user-authored immutable prior describing type assignment rules. `resolution_guide` is the system-evolved section that accumulates learned disambiguation rules across runs when `resolution_guide_evolution` is enabled (default true). Both are injected into extraction prompts, capped at `max_resolution_intent_tokens`. The intent captures domain expertise; the guide captures lessons from data. The original intent is never modified by the system.
 
-Expected impact: eliminates 10 groups by collapsing 20 nodes into 10 multi-labeled nodes.
+**Layer 3 - Multi-facet entities** (multi-label, targets 10 groups: Setting/Specification, Feature/Specification):
 
-**Strategy C - Extraction prompt type coercion** (targets ~7 resolution failure groups):
+Entities appearing as both a configurable parameter and a measured value (e.g., `ramp time` as Setting and Specification) carry multiple type labels via `entity.labels`. Loader uses `apoc.create.addLabels(n, row.labels)` for multi-label Neo4j nodes. For cross-type pairs where both types are under different hierarchy parents, both labels are preserved rather than merged.
 
-For `ramp` (Feature vs Setting), `mask fit` (3 types), `ahi` (3 types) - add a known-entity lookup to the extraction prompt. When the constrained prompt includes "Entity 'ramp' has been previously extracted as Feature", the LLM assigns the same type consistently. This is H5c from the original proposal list.
+**Exemplar injection**: `type_exemplars` section in ontology YAML provides concrete disambiguation examples per type, auto-flushed from accumulated extraction patterns and user-curated between runs.
 
-Expected impact: eliminates ~7 groups where type assignment is inconsistent rather than genuinely ambiguous.
+**Combined expected impact**: Layers 1+2+3 address all 47 groups. Layer 1 eliminates sibling-type duplicates through hierarchy. Layer 2 prevents type inconsistencies at extraction time. Layer 3 preserves legitimate multi-facet entities as multi-label nodes. Target: cross-type duplicates < 15, hybrid score 90+.
 
-**Strategy D - Within-type synonym resolution** (compounds all categories):
+**Implementation files**: `types/ontology.py` (TypeHierarchyEntry, OntologyState extensions), `types/extraction.py` (Entity.labels), `ontology/buffer.py` (load/save hierarchy+intent+guide+exemplars, evolve_type_hierarchy, evolve_resolution_guide, cross_type_stats), `extraction/prompts.py` (resolution_guidance_block for intent+guide prose), `extraction/resolution.py` (hierarchy safety net, CrossTypeStat reporting), `loading/loader.py` (multi-label APOC), `types/config.py` (hierarchy_resolution, resolution_guide_evolution).
 
-The tubing concept has 36 nodes and filter has 38 nodes across Component/Accessory. Even after cross-type merging, name variants (`heated tube`, `heated tubing`, `Heated Tubing`, `15H tubing`) remain as separate within-type entities. Current Levenshtein resolution catches `tube`/`Tube` but not semantic synonyms like `circuit tubing`/`connecting tubing`. Options: (1) embedding-based clustering within type groups post-extraction, (2) LLM-assisted synonym detection during curing consolidation, (3) stricter normalization rules for common variant patterns (plurals, adjective prefixes).
+**Strategy D - Within-type synonym resolution** (deferred, compounds all categories):
 
-**Combined expected impact**: A+B+C addresses all 47 groups. D reduces total entity count by consolidating name variants. Target: cross-type duplicates < 10, hybrid score 90+.
-
-**Recommended execution order**: A first (biggest impact, cleanest design), then C (prompt-level fix, low complexity), then B (requires loader changes for multi-label), then D (synonym resolution is a deeper problem).
+The tubing concept has 36 nodes and filter has 38 nodes across Component/Accessory. Even after cross-type merging, name variants (`heated tube`, `heated tubing`, `Heated Tubing`, `15H tubing`) remain as separate within-type entities. Current Levenshtein resolution catches `tube`/`Tube` but not semantic synonyms like `circuit tubing`/`connecting tubing`. Options: (1) embedding-based clustering within type groups post-extraction, (2) LLM-assisted synonym detection during curing consolidation, (3) stricter normalization rules for common variant patterns (plurals, adjective prefixes). Deferred to a later iteration.

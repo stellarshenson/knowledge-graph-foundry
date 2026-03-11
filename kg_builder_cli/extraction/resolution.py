@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NamedTuple
 
 from loguru import logger
 import numpy as np
@@ -12,6 +12,17 @@ from kg_builder_cli.types.extraction import Entity
 
 if TYPE_CHECKING:
     from kg_builder_cli.extraction.deferred_dedup import DeferredDedupBuffer
+    from kg_builder_cli.types.ontology import OntologyState
+
+
+class CrossTypeStat(NamedTuple):
+    """Record of a cross-type pair encounter during resolution."""
+
+    norm_name: str
+    type_a: str
+    type_b: str
+    doc_index: int
+    action: str  # "merged", "deferred", "blocked", "hierarchy_merge", "multi_facet"
 
 
 class _UnionFind:
@@ -51,6 +62,8 @@ def resolve_entities(
     deferred_buffer: "DeferredDedupBuffer | None" = None,
     deferred_ambiguous_lower: float = 0.4,
     doc_index: int = 0,
+    ontology_state: "OntologyState | None" = None,
+    hierarchy_resolution: bool = True,
 ) -> list[Entity]:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
@@ -88,13 +101,15 @@ def resolve_entities(
         resolved.extend(merged_block)
 
     # Cross-type resolution: merge entities with identical normalized names
-    resolved, id_map = _resolve_cross_type(
+    resolved, id_map, cross_type_stats = _resolve_cross_type(
         resolved,
         type_frequencies,
         merge_threshold=cross_type_merge_threshold,
         deferred_buffer=deferred_buffer,
         ambiguous_lower=deferred_ambiguous_lower,
         doc_index=doc_index,
+        ontology_state=ontology_state,
+        hierarchy_resolution=hierarchy_resolution,
     )
 
     merge_count = len(entities) - len(resolved)
@@ -106,14 +121,16 @@ def resolve_entities(
             merge_count,
         )
 
-    # Store ID map on module level for caller access
+    # Store ID map and cross-type stats on module level for caller access
     resolve_entities._last_id_map = id_map
+    resolve_entities._last_cross_type_stats = cross_type_stats
 
     return resolved
 
 
-# Initialize the class attribute
+# Initialize the class attributes
 resolve_entities._last_id_map = {}
+resolve_entities._last_cross_type_stats = []
 
 
 # Static fallback: higher number = more specific, preferred when merging
@@ -212,25 +229,41 @@ def _resolve_cross_type(
     deferred_buffer: "DeferredDedupBuffer | None" = None,
     ambiguous_lower: float = 0.4,
     doc_index: int = 0,
-) -> tuple[list[Entity], dict[str, str]]:
+    ontology_state: "OntologyState | None" = None,
+    hierarchy_resolution: bool = True,
+) -> tuple[list[Entity], dict[str, str], list[CrossTypeStat]]:
     """Merge entities with identical normalized names across different types.
 
-    Uses a Bayesian posterior model combining name identity, description
-    similarity, embedding cosine, and chunk co-occurrence to decide merges.
+    Resolution order (when hierarchy is available):
+    1. Sibling types (shared parent) -> auto-merge without Bayesian posterior
+    2. Cross-parent types (both have parents, different) -> multi-facet labels
+    3. No hierarchy relationship -> fall through to Bayesian posterior
 
-    Three-zone logic (when deferred_buffer is provided):
+    Bayesian three-zone logic (when deferred_buffer is provided):
     - posterior >= merge_threshold -> merge immediately
     - ambiguous_lower <= posterior < merge_threshold -> defer to buffer
     - posterior < ambiguous_lower -> block immediately
 
     When deferred_buffer is None, falls back to binary: merge at threshold, block below.
 
-    Returns (resolved_entities, id_mapping) where id_mapping maps merged entity
-    IDs to their canonical entity IDs (for relationship rewiring).
+    Returns (resolved_entities, id_mapping, cross_type_stats).
     """
     from collections import defaultdict
 
     type_priority = _build_type_priority(type_frequencies)
+    cross_type_stats: list[CrossTypeStat] = []
+
+    # Build hierarchy lookup from ontology state
+    has_hierarchy = (
+        hierarchy_resolution
+        and ontology_state is not None
+        and len(ontology_state.type_hierarchy) > 0
+    )
+    child_to_parent: dict[str, str] = {}
+    if has_hierarchy and ontology_state is not None:
+        for entry in ontology_state.type_hierarchy:
+            for child in entry.children:
+                child_to_parent[child] = entry.name
 
     name_groups: dict[str, list[int]] = defaultdict(list)
     for idx, entity in enumerate(entities):
@@ -256,39 +289,129 @@ def _resolve_cross_type(
             if idx == best_idx:
                 continue
             if entities[idx].type != canonical.type:
-                posterior = _cross_type_posterior(canonical, entities[idx])
+                other = entities[idx]
+
+                # H5g: Check hierarchy before Bayesian
+                if has_hierarchy:
+                    parent_canon = child_to_parent.get(canonical.type)
+                    parent_other = child_to_parent.get(other.type)
+
+                    # Case 1: Shared parent -> auto-merge (sibling types)
+                    if parent_canon and parent_other and parent_canon == parent_other:
+                        logger.info(
+                            "[resolve] hierarchy auto-merge: '{}' ({}) -> ({}) - "
+                            "siblings under '{}'",
+                            other.name,
+                            other.type,
+                            canonical.type,
+                            parent_canon,
+                        )
+                        cross_type_stats.append(
+                            CrossTypeStat(
+                                norm_name,
+                                canonical.type,
+                                other.type,
+                                doc_index,
+                                "hierarchy_merge",
+                            )
+                        )
+                        id_map[other.id] = canonical.id
+                        canonical = _merge_entities(canonical, other)
+                        merged_indices.add(idx)
+                        continue
+
+                    # Case 2: Different parents -> multi-facet labels
+                    if parent_canon and parent_other and parent_canon != parent_other:
+                        logger.info(
+                            "[resolve] multi-facet labels: '{}' ({} under '{}') + "
+                            "({} under '{}') - preserving both types",
+                            other.name,
+                            canonical.type,
+                            parent_canon,
+                            other.type,
+                            parent_other,
+                        )
+                        cross_type_stats.append(
+                            CrossTypeStat(
+                                norm_name,
+                                canonical.type,
+                                other.type,
+                                doc_index,
+                                "multi_facet",
+                            )
+                        )
+                        # Set labels on canonical to include both types
+                        if not canonical.labels:
+                            canonical.labels = [canonical.type]
+                        if other.type not in canonical.labels:
+                            canonical.labels.append(other.type)
+                        # Merge content but preserve both type labels
+                        id_map[other.id] = canonical.id
+                        canonical = _merge_entities(canonical, other)
+                        merged_indices.add(idx)
+                        continue
+
+                # Case 3: No hierarchy or types not in hierarchy -> Bayesian
+                posterior = _cross_type_posterior(canonical, other)
                 if posterior >= merge_threshold:
                     logger.info(
                         "[resolve] cross-type merge via Bayesian: '{}' ({}) -> ({}) - "
                         "posterior={:.3f}",
-                        entities[idx].name,
-                        entities[idx].type,
+                        other.name,
+                        other.type,
                         canonical.type,
                         posterior,
                     )
+                    cross_type_stats.append(
+                        CrossTypeStat(
+                            norm_name,
+                            canonical.type,
+                            other.type,
+                            doc_index,
+                            "merged",
+                        )
+                    )
                 elif deferred_buffer is not None and posterior >= ambiguous_lower:
                     # Ambiguous zone: defer for evidence accumulation
-                    deferred_buffer.defer(canonical, entities[idx], posterior, doc_index)
+                    deferred_buffer.defer(canonical, other, posterior, doc_index)
                     logger.info(
                         "[resolve] cross-type DEFERRED: '{}' ({}) vs ({}) - "
                         "posterior={:.3f} (ambiguous zone {}-{})",
-                        entities[idx].name,
-                        entities[idx].type,
+                        other.name,
+                        other.type,
                         canonical.type,
                         posterior,
                         ambiguous_lower,
                         merge_threshold,
+                    )
+                    cross_type_stats.append(
+                        CrossTypeStat(
+                            norm_name,
+                            canonical.type,
+                            other.type,
+                            doc_index,
+                            "deferred",
+                        )
                     )
                     continue
                 else:
                     logger.info(
                         "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
                         "posterior={:.3f} < {}",
-                        entities[idx].name,
-                        entities[idx].type,
+                        other.name,
+                        other.type,
                         canonical.type,
                         posterior,
                         ambiguous_lower if deferred_buffer else merge_threshold,
+                    )
+                    cross_type_stats.append(
+                        CrossTypeStat(
+                            norm_name,
+                            canonical.type,
+                            other.type,
+                            doc_index,
+                            "blocked",
+                        )
                     )
                     continue
             id_map[entities[idx].id] = canonical.id
@@ -314,8 +437,13 @@ def _resolve_cross_type(
             "Cross-type resolution: {} pairs deferred for evidence accumulation",
             deferred_buffer.pair_count,
         )
+    if cross_type_stats:
+        actions = {}
+        for stat in cross_type_stats:
+            actions[stat.action] = actions.get(stat.action, 0) + 1
+        logger.info("Cross-type stats: {}", actions)
 
-    return result, id_map
+    return result, id_map, cross_type_stats
 
 
 def rewire_relationships(

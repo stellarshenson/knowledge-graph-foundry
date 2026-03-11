@@ -43,6 +43,14 @@ class TypeExemplar(BaseModel):
     description: str = ""
 
 
+class TypeHierarchyEntry(BaseModel):
+    """A parent type grouping with its children for cross-type resolution."""
+
+    name: str
+    description: str = ""
+    children: list[str] = Field(default_factory=list)
+
+
 class OntologyState(BaseModel, frozen=True):
     entity_types: tuple[TypeDef, ...] = ()
     relationship_types: tuple[RelationshipDef, ...] = ()
@@ -53,6 +61,9 @@ class OntologyState(BaseModel, frozen=True):
     type_frequencies: dict[str, int] = Field(default_factory=dict)
     emerging_types: frozenset[str] = frozenset()
     type_exemplars: dict[str, tuple[TypeExemplar, ...]] = Field(default_factory=dict)
+    type_hierarchy: tuple[TypeHierarchyEntry, ...] = ()
+    resolution_intent: str = ""
+    resolution_guide: str = ""
 
 
 class TypeSignal(BaseModel):

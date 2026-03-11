@@ -6,9 +6,9 @@ Restores the copier-data-science template pattern with KGF-specific extensions.
 
 from __future__ import annotations
 
-import sys
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
+import sys
 
 from dotenv import load_dotenv
 from loguru import logger
