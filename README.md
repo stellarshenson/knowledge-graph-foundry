@@ -1,4 +1,4 @@
-# Knowledge Graph Forge (KGF)
+# Knowledge Graph Foundry (KGF)
 
 Data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection. CLI-driven alternative to [Neo4j LLM Graph Builder](https://github.com/neo4j-labs/llm-graph-builder).
 

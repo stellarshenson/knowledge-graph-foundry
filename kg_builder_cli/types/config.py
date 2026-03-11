@@ -1,4 +1,4 @@
-"""Configuration models for Knowledge Graph Forge."""
+"""Configuration models for Knowledge Graph Foundry."""
 
 from typing import Literal, Optional
 

@@ -1,4 +1,4 @@
-"""Central configuration for Knowledge Graph Forge.
+"""Central configuration for Knowledge Graph Foundry.
 
 Single source of truth for application identity, critical paths, and logger setup.
 Restores the copier-data-science template pattern with KGF-specific extensions.
@@ -32,7 +32,7 @@ load_dotenv()
 
 # ── Application identity ───────────────────────────────────────────────
 
-APP_NAME = "Knowledge Graph Forge"
+APP_NAME = "Knowledge Graph Foundry"
 APP_SHORT = "kgf"
 
 try:
