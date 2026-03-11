@@ -366,56 +366,66 @@ docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "RETURN ap
 
 ### Full benchmark procedure
 
-All benchmark runs execute from a `tmp/` directory under the project root to keep runtime artefacts (logs, evolved ontology, config snapshots) out of the source tree. The `tmp/` directory is gitignored.
+All benchmark runs execute from the `tmp/` directory under the project root. The CLI creates `.kgf/` relative to the current working directory, so running from `tmp/` keeps all runtime artefacts (config, evolved ontology, logs) isolated from the source tree. The `tmp/` directory is gitignored.
 
 ```bash
-# 0. Create tmp working directory
-mkdir -p tmp
+# 0. Prepare tmp working directory with input documents and config
+mkdir -p tmp/input
+cp data/raw/cpap-benchmark/* tmp/input/
+cp docs/config.yml.example tmp/.kgf/config.yml  # or create manually
+# Edit tmp/.kgf/config.yml as needed (see Benchmark Configuration above)
 
 # 1. Ensure Neo4j is running
 docker start kg-builder-neo4j
 
 # 2. Verify connectivity (Docker DNS resolves neo4j alias)
-python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
+uv run python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
 
 # 3. Wipe graph
 docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n) DETACH DELETE n"
 
-# 3b. Remove evolved ontology from previous runs
-rm -f .kgf/ontology.yml
+# 4. Run ingestion from tmp/ (all .kgf/ artefacts stay in tmp/)
+cd tmp
+uv run kgf ingest input/ --batch --fluid 2>&1 | tee vNN-ingestion.log
+cd ..
 
-# 4. Ensure .kgf/config.yml exists with benchmark config (see above)
-cat .kgf/config.yml
-
-# 5. Run ingestion (fluid mode, batch/autonomous)
-kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid 2>&1 | tee tmp/vNN-ingestion.log
-
-# 6. Verify no extraction failures in log
+# 5. Verify no extraction failures in log
 grep "extraction failed\|ExtractionFailedError" tmp/vNN-ingestion.log && echo "FAILED - rerun needed" || echo "OK"
 
-# 7. Run benchmark
-python tests/benchmark_multidoc.py vNN "description of iteration"
+# 6. Run benchmark
+uv run python tests/benchmark_multidoc.py vNN "description of iteration"
 
-# 8. Check results
+# 7. Check results
 cat docs/benchmarks/MULTIDOC_BENCHMARK_vNN_*.md
+```
+
+### Clean run (wipe previous tmp artefacts)
+
+```bash
+# Remove evolved ontology and re-wipe graph between runs
+rm -f tmp/.kgf/ontology.yml
+docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n) DETACH DELETE n"
+# Then repeat from step 4
 ```
 
 ### Rate limit handling
 
 Bedrock rate limits can cause `ExtractionFailedError` when all chunks in a document fail. If this happens:
-- Wait 5 minutes for rate limit cooldown
+- Add `rate_limit.requests_per_second: 1.0` under `llm` in config (token bucket throttling)
 - Reduce `extract.concurrency` in config (default 4, use 1-2 for rate-limited accounts)
-- Re-run from step 3 (wipe + ingest)
+- Wait 5 minutes for rate limit cooldown, then re-run from step 3
 - The CLI exits with code 1 on extraction failure - never silently continues
 
 ### Ingestion modes
 
 ```bash
+# All commands assume cwd is tmp/
+
 # Fluid mode (default for benchmarks - discovers ontology from data)
-kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid
+uv run kgf ingest input/ --batch --fluid
 
 # Constrained mode (uses pre-existing ontology seed)
-kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid --ontology data/ontologies/cpap_medical_device.yml
+uv run kgf ingest input/ --batch --fluid --ontology ../data/ontologies/cpap_medical_device.yml
 ```
 
 ## Iteration Results
