@@ -147,6 +147,9 @@ def _ingest_direct(
             load_result.relationships_created,
         )
 
+        if buffer:
+            buffer._maybe_evolve()
+
 
 def _ingest_fluid(
     files: list[Path],
@@ -282,6 +285,9 @@ def _ingest_fluid(
                 load_result.nodes_merged,
                 load_result.relationships_created,
             )
+
+            if buffer:
+                buffer._maybe_evolve()
             continue
 
         # Phase 1: fluid accumulation
@@ -328,6 +334,10 @@ def _ingest_fluid(
                 heaps_s,
                 ent_d_s,
             )
+
+        # Evolve hierarchy/guide after each document
+        if buffer:
+            buffer._maybe_evolve()
 
         # Check curing conditions
         should_cure = False
