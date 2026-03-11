@@ -355,7 +355,12 @@ docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "RETURN ap
 
 ### Full benchmark procedure
 
+All benchmark runs execute from a `tmp/` directory under the project root to keep runtime artefacts (logs, evolved ontology, config snapshots) out of the source tree. The `tmp/` directory is gitignored.
+
 ```bash
+# 0. Create tmp working directory
+mkdir -p tmp
+
 # 1. Ensure Neo4j is running
 docker start kg-builder-neo4j
 
@@ -372,10 +377,10 @@ rm -f .kgf/ontology.yml
 cat .kgf/config.yml
 
 # 5. Run ingestion (fluid mode, batch/autonomous)
-kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid 2>&1 | tee logs/vNN-ingestion.log
+kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid 2>&1 | tee tmp/vNN-ingestion.log
 
 # 6. Verify no extraction failures in log
-grep "extraction failed\|ExtractionFailedError" logs/vNN-ingestion.log && echo "FAILED - rerun needed" || echo "OK"
+grep "extraction failed\|ExtractionFailedError" tmp/vNN-ingestion.log && echo "FAILED - rerun needed" || echo "OK"
 
 # 7. Run benchmark
 python tests/benchmark_multidoc.py vNN "description of iteration"
