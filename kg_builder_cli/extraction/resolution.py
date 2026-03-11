@@ -188,7 +188,11 @@ def _description_similarity(desc_a: str, desc_b: str) -> float:
     return len(words_a & words_b) / len(words_a | words_b)
 
 
-def _cross_type_posterior(canonical: Entity, other: Entity) -> float:
+def _cross_type_posterior(
+    canonical: Entity,
+    other: Entity,
+    prior_override: float | None = None,
+) -> float:
     """Bayesian posterior P(same_entity | evidence) for cross-type pairs.
 
     Combines name identity, description similarity, embedding cosine,
@@ -197,8 +201,11 @@ def _cross_type_posterior(canonical: Entity, other: Entity) -> float:
     name_a = normalize_entity_name(canonical.name)
     name_b = normalize_entity_name(other.name)
 
-    # Prior: identical normalized names strongly indicate same entity
-    prior = 0.8 if name_a == name_b else 0.2
+    # Prior: use override if provided, otherwise compute from name identity
+    if prior_override is not None:
+        prior = prior_override
+    else:
+        prior = 0.8 if name_a == name_b else 0.2
 
     # Evidence 1: Description similarity (Jaccard)
     desc_sim = _description_similarity(canonical.description, other.description)
@@ -291,28 +298,81 @@ def _resolve_cross_type(
             if entities[idx].type != canonical.type:
                 other = entities[idx]
 
-                # H5g: Check hierarchy before Bayesian
+                # H5g: Hierarchy-boosted Bayesian resolution
                 if has_hierarchy:
                     parent_canon = child_to_parent.get(canonical.type)
                     parent_other = child_to_parent.get(other.type)
 
-                    # Case 1: Shared parent -> auto-merge (sibling types)
-                    if parent_canon and parent_other and parent_canon == parent_other:
-                        logger.info(
-                            "[resolve] hierarchy auto-merge: '{}' ({}) -> ({}) - "
-                            "siblings under '{}'",
-                            other.name,
-                            other.type,
-                            canonical.type,
-                            parent_canon,
-                        )
+                    # Compute hierarchy signals (read-only)
+                    sibling_boost = bool(
+                        parent_canon and parent_other and parent_canon == parent_other
+                    )
+                    multi_facet_signal = bool(
+                        parent_canon and parent_other and parent_canon != parent_other
+                    )
+
+                    # Compute prior based on hierarchy and name identity
+                    name_a = normalize_entity_name(canonical.name)
+                    name_b = normalize_entity_name(other.name)
+                    if sibling_boost:
+                        prior = 0.95
+                    elif name_a == name_b:
+                        prior = 0.8
+                    else:
+                        prior = 0.2
+
+                    # Always run Bayesian - hierarchy boosts prior, doesn't skip it
+                    posterior = _cross_type_posterior(canonical, other, prior_override=prior)
+
+                    if posterior >= merge_threshold:
+                        # Merge. Determine action and labels
+                        if multi_facet_signal:
+                            # Cross-parent merge: preserve both type labels
+                            if not canonical.labels:
+                                canonical.labels = [canonical.type]
+                            if other.type not in canonical.labels:
+                                canonical.labels.append(other.type)
+                            action = "multi_facet"
+                            logger.info(
+                                "[resolve] multi-facet merge: '{}' ({} + {}) - "
+                                "prior={:.2f}, posterior={:.3f}",
+                                other.name,
+                                canonical.type,
+                                other.type,
+                                prior,
+                                posterior,
+                            )
+                        elif sibling_boost:
+                            action = "hierarchy_merge"
+                            parent = parent_canon
+                            logger.info(
+                                "[resolve] hierarchy-boosted merge: '{}' ({}) -> ({}) - "
+                                "prior={:.2f}, posterior={:.3f}, parent='{}'",
+                                other.name,
+                                other.type,
+                                canonical.type,
+                                prior,
+                                posterior,
+                                parent,
+                            )
+                        else:
+                            action = "merged"
+                            logger.info(
+                                "[resolve] cross-type merge via Bayesian: '{}' ({}) -> ({}) - "
+                                "prior={:.2f}, posterior={:.3f}",
+                                other.name,
+                                other.type,
+                                canonical.type,
+                                prior,
+                                posterior,
+                            )
                         cross_type_stats.append(
                             CrossTypeStat(
                                 norm_name,
                                 canonical.type,
                                 other.type,
                                 doc_index,
-                                "hierarchy_merge",
+                                action,
                             )
                         )
                         id_map[other.id] = canonical.id
@@ -320,16 +380,20 @@ def _resolve_cross_type(
                         merged_indices.add(idx)
                         continue
 
-                    # Case 2: Different parents -> multi-facet labels
-                    if parent_canon and parent_other and parent_canon != parent_other:
+                    # Multi-facet at moderate evidence (posterior >= 0.3)
+                    if multi_facet_signal and posterior >= 0.3:
+                        if not canonical.labels:
+                            canonical.labels = [canonical.type]
+                        if other.type not in canonical.labels:
+                            canonical.labels.append(other.type)
                         logger.info(
-                            "[resolve] multi-facet labels: '{}' ({} under '{}') + "
-                            "({} under '{}') - preserving both types",
+                            "[resolve] multi-facet merge (moderate evidence): '{}' "
+                            "({} + {}) - prior={:.2f}, posterior={:.3f}",
                             other.name,
                             canonical.type,
-                            parent_canon,
                             other.type,
-                            parent_other,
+                            prior,
+                            posterior,
                         )
                         cross_type_stats.append(
                             CrossTypeStat(
@@ -340,18 +404,71 @@ def _resolve_cross_type(
                                 "multi_facet",
                             )
                         )
-                        # Set labels on canonical to include both types
-                        if not canonical.labels:
-                            canonical.labels = [canonical.type]
-                        if other.type not in canonical.labels:
-                            canonical.labels.append(other.type)
-                        # Merge content but preserve both type labels
                         id_map[other.id] = canonical.id
                         canonical = _merge_entities(canonical, other)
                         merged_indices.add(idx)
                         continue
 
-                # Case 3: No hierarchy or types not in hierarchy -> Bayesian
+                    # Deferred or blocked
+                    if deferred_buffer is not None and posterior >= ambiguous_lower:
+                        deferred_buffer.defer(canonical, other, posterior, doc_index)
+                        logger.info(
+                            "[resolve] cross-type DEFERRED (hierarchy): '{}' ({}) vs ({}) - "
+                            "prior={:.2f}, posterior={:.3f} (ambiguous zone {}-{})",
+                            other.name,
+                            other.type,
+                            canonical.type,
+                            prior,
+                            posterior,
+                            ambiguous_lower,
+                            merge_threshold,
+                        )
+                        cross_type_stats.append(
+                            CrossTypeStat(
+                                norm_name,
+                                canonical.type,
+                                other.type,
+                                doc_index,
+                                "deferred",
+                            )
+                        )
+                        continue
+
+                    # Block - log if hierarchy was present but evidence insufficient
+                    if sibling_boost:
+                        logger.info(
+                            "[resolve] cross-type BLOCKED despite hierarchy: '{}' "
+                            "({}) vs ({}) - prior={:.2f}, posterior={:.3f} < {}",
+                            other.name,
+                            other.type,
+                            canonical.type,
+                            prior,
+                            posterior,
+                            merge_threshold,
+                        )
+                    else:
+                        logger.info(
+                            "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
+                            "prior={:.2f}, posterior={:.3f} < {}",
+                            other.name,
+                            other.type,
+                            canonical.type,
+                            prior,
+                            posterior,
+                            ambiguous_lower if deferred_buffer else merge_threshold,
+                        )
+                    cross_type_stats.append(
+                        CrossTypeStat(
+                            norm_name,
+                            canonical.type,
+                            other.type,
+                            doc_index,
+                            "blocked",
+                        )
+                    )
+                    continue
+
+                # No hierarchy -> standard Bayesian
                 posterior = _cross_type_posterior(canonical, other)
                 if posterior >= merge_threshold:
                     logger.info(
