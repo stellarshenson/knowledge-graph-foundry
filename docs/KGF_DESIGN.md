@@ -2345,6 +2345,24 @@ For long-running ingestion jobs, the agent tracks progress in memory:
 
 If the pipeline is interrupted and restarted, the agent checks memory for in-progress state and offers to resume from the last checkpoint rather than starting over.
 
+### Confidence Propagation Model
+
+Every entity carries a `confidence` float (0.0-1.0) that originates at extraction and transforms through each pipeline stage. The propagation path:
+
+**Stage 1 - Extraction** (`extract_chunk`): the LLM assigns initial confidence per entity based on how clearly the source text supports the extraction. This is the raw extraction confidence stored on the `Entity.confidence` field. Typical range: 0.7-1.0 for well-supported entities, 0.3-0.6 for inferred or ambiguous ones.
+
+**Stage 2 - Within-type deduplication** (`deduplicate`): when entities merge within the same type block, confidences are averaged across all merged instances. An entity mentioned in 3 chunks with confidences [0.9, 0.85, 0.92] merges to 0.89. The `merged_from` list records which entities contributed.
+
+**Stage 3 - Entity resolution** (`resolve_entities`): multi-signal merge combines entities across name variants. The merged entity takes the weighted average of confidences from its constituent entities. Resolution does not inflate confidence - it preserves the extraction-time signal.
+
+**Stage 4 - Cross-type resolution** (`_resolve_cross_type`): Bayesian posterior decides whether to merge entities with the same name but different types. The merge/block decision is based on the posterior threshold (0.6), but the merged entity's confidence remains the average of the input confidences. The posterior itself is not written to the entity - it is a resolution decision signal, not a confidence score.
+
+**Stage 5 - Type enforcement** (`_enforce_ontology_types` / `_resolve_types_bayesian`): type remapping does not alter the entity's confidence. The confidence reflects extraction quality, not type assignment quality. Type resolution entropy (from Bayesian resolver) is logged separately but not persisted on the entity.
+
+**Stage 6 - Graph insertion** (`load_extraction`): the confidence value is written to the Neo4j node as-is. On MERGE updates (re-ingestion), confidence is updated to the new value. The `update_count` property tracks how many times the node has been updated.
+
+The design deliberately keeps confidence as a single float representing extraction quality rather than a compound score mixing extraction, resolution, and type assignment signals. Pipeline-internal signals (Bayesian posterior, resolution similarity, type entropy) are logged at DEBUG level for diagnostics but not persisted on entities, keeping the graph schema simple and the confidence value interpretable.
+
 ## 14. Observability
 
 ### Logging
