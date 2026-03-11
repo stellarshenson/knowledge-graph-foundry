@@ -93,10 +93,17 @@ def ingest(
 
     logger.info("found {} file(s) to ingest", len(files))
 
-    if curing_enabled:
-        _ingest_fluid(files, config, buffer, cure)
-    else:
-        _ingest_direct(files, config, buffer)
+    from kg_builder_cli.extraction.extract import LLMAuthError
+
+    try:
+        if curing_enabled:
+            _ingest_fluid(files, config, buffer, cure)
+        else:
+            _ingest_direct(files, config, buffer)
+    except LLMAuthError as exc:
+        logger.error("LLM authentication failed - aborting ingestion")
+        logger.error("{}", exc)
+        raise typer.Exit(1) from None
 
     # Flush ontology buffer after all files
     if buffer and config.ontology_buffer.flush_on_complete:
@@ -157,7 +164,7 @@ def _ingest_fluid(
         resolve_against_graph,
     )
 
-    accumulator = FluidAccumulator()
+    accumulator = FluidAccumulator(deferred_dedup=config.extract.deferred_dedup)
     detector = CuringDetector(config.curing)
     metrics_tracker = StabilityMetrics(
         variance_window=config.curing.metrics_variance_window,
@@ -241,7 +248,7 @@ def _ingest_fluid(
                         config.curing.drift_window,
                     )
                     cured = False
-                    accumulator = FluidAccumulator()
+                    accumulator = FluidAccumulator(deferred_dedup=config.extract.deferred_dedup)
                     detector = CuringDetector(config.curing)
                     metrics_tracker = StabilityMetrics(
                         variance_window=config.curing.metrics_variance_window,
@@ -447,6 +454,8 @@ def _ingest_fluid(
                 config.extract,
                 type_frequencies=freqs,
                 skip_type_enforcement=True,
+                llm_config=config.llm,
+                neo4j_config=config.neo4j,
             )
             logger.info(
                 "[curing] merged result: {} entities, {} relationships",
@@ -529,6 +538,8 @@ def _ingest_fluid(
             config.extract,
             type_frequencies=freqs,
             skip_type_enforcement=True,
+            llm_config=config.llm,
+            neo4j_config=config.neo4j,
         )
         # Load consolidated entities + relationships only (skip doc/chunks)
         load_result = load_extraction(merged_result, config, skip_doc_chunks=True)

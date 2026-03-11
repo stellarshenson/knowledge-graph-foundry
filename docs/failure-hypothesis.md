@@ -123,7 +123,7 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 | Hypothesis | Impact | Complexity | Priority | Status |
 |-----------|--------|-----------|----------|--------|
-| H5 residual (cross-type dupes) | +2-4 est | Medium | 1 | H5b or H5c |
+| H5f (deferred cross-type dedup) | +2-4 est | Medium | 1 | Implementing |
 | H9 (cross_doc generative) | +1-2 est | Low | 2 | Prompt tuning |
 | H10 (SleepStyle modes) | +1 est | Low | 3 | Extraction or linking gap |
 
@@ -145,6 +145,25 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 **Root cause**: The SleepStyle manual describes operating modes within general operating instructions rather than as a dedicated "modes" section. The extraction LLM may not recognize these as distinct mode entities worth extracting, or may extract them without linking to the product.
 
-**v21 priorities**: H5 residual is the primary bottleneck. The cross-type duplicate count (52 in v20) keeps the deterministic cross_doc check failing and drags cross_doc generative to 3/5. H5b (post-curing graph consolidation via Cypher) is the most pragmatic next step - merge same-name entities in Neo4j after loading, following the Neo4j graphrag-python pattern. H5c (type coercion in extraction prompt) prevents duplicates at the source but requires maintaining entity-to-type lookup tables in the buffer.
+### H5f: Deferred Cross-Type Dedup with Evidence Accumulation (v21)
+
+**Status**: Implementing
+
+**Approach**: Instead of making a permanent merge/block decision at the first encounter, pairs with posteriors in the ambiguous zone (0.4-0.6) are deferred to a buffer. Evidence accumulates across documents - co-occurrence, relationship target overlap (topology signal), and descriptions. At curing time, the buffer resolves all deferred pairs with the full evidence picture. Pairs still ambiguous after accumulation can be escalated to the LLM.
+
+**Three-zone logic** replaces the binary threshold:
+- posterior >= 0.6 -> merge immediately (unchanged)
+- 0.4 <= posterior < 0.6 -> defer to buffer (NEW)
+- posterior < 0.4 -> block immediately (unchanged)
+
+**New evidence dimension - topology signal**: Jaccard overlap of relationship targets between the two entity type variants. Entities sharing many relationship neighbors are likely the same entity viewed from different perspectives.
+
+**Expected impact**: The 52 cross-type duplicates in v20 include ~20-30 pairs with posteriors between 0.4 and 0.6 that were permanently blocked. With evidence accumulation, some of these will cross the 0.6 threshold after seeing multiple documents. Target: cross-type duplicates < 30, hybrid score 90+.
+
+**Configuration**: `deferred_dedup: false` (opt-in), `deferred_dedup_ambiguous_lower: 0.4`, `deferred_dedup_llm_escalation: false`.
+
+**Implementation**: `kg_builder_cli/extraction/deferred_dedup.py` (DeferredPair, DeferredDedupBuffer, MergeDecision), integrated into `resolution.py` and `accumulator.py`.
+
+**v21 priorities**: H5f is the primary bottleneck. The cross-type duplicate count (52 in v20) keeps the deterministic cross_doc check failing and drags cross_doc generative to 3/5. H5f defers ambiguous pairs and accumulates evidence across documents rather than making permanent decisions at first encounter.
 
 Combined expected: 88 -> 90-92 hybrid score.
