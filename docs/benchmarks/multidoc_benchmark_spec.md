@@ -309,11 +309,17 @@ The `ontology_buffer.intent` is the use-case intent that constrains the LLM extr
 
 ### Container creation
 
+The Neo4j container must be on the same Docker user-defined network as the client environment (e.g. JupyterLab) for Docker DNS resolution to work. The `--network-alias neo4j` registers the hostname with Docker's embedded DNS server (`127.0.0.11`), eliminating the need for `/etc/hosts` workarounds.
+
 ```bash
-# Create network and container (first time)
-docker network create kg-net
-docker run -d --name kg-builder-neo4j --network kg-net \
-  --hostname neo4j \
+# 1. Discover which network the current environment uses
+docker inspect "$(hostname)" --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}{{"\n"}}{{end}}'
+# -> jupyterhub_network (or whatever your environment uses)
+
+# 2. Create container on the same network
+docker run -d --name kg-builder-neo4j \
+  --network jupyterhub_network \
+  --network-alias neo4j \
   -p 7474:7474 -p 7687:7687 \
   -e NEO4J_AUTH=neo4j/kg-builder-pass \
   -e 'NEO4J_PLUGINS=["apoc"]' \
@@ -323,28 +329,33 @@ docker run -d --name kg-builder-neo4j --network kg-net \
 docker start kg-builder-neo4j
 ```
 
-### Host resolution (WSL2 workaround)
+### Hostname resolution
 
-Docker Desktop on WSL2 has a known port forwarding issue where `localhost` connections to mapped ports are refused. The workaround is to add the container IP to `/etc/hosts` so the `neo4j` hostname resolves directly.
+Docker's embedded DNS resolves the `neo4j` alias automatically on user-defined networks. No `/etc/hosts` entries required. If a stale `/etc/hosts` entry exists from a previous setup, remove it - it overrides Docker DNS and points to a dead IP.
 
 ```bash
-# Get the container IP
-docker inspect kg-builder-neo4j --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
-# -> 172.20.0.2
+# Verify DNS resolves to the container IP (not a stale /etc/hosts entry)
+ping -c1 neo4j
 
-# Add hostname (run once, or after container recreation if IP changes)
-echo "172.20.0.2 neo4j" | sudo tee -a /etc/hosts
-
-# Verify connectivity
-python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
+# Verify bolt connectivity
+uv run python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
 ```
 
 Connection URI: `bolt://neo4j:7687`, Browser: `http://neo4j:7474`
 
+### Recreating the container
+
+When recreating (e.g. after version upgrade or config change), stop, remove, and re-run:
+
+```bash
+docker stop kg-builder-neo4j && docker rm kg-builder-neo4j
+# Then re-run the docker run command above
+```
+
 ### Graph management
 
 ```bash
-# Wipe graph between benchmark runs (via docker exec)
+# Wipe graph between benchmark runs
 docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n) DETACH DELETE n"
 
 # Verify APOC is loaded
@@ -364,7 +375,7 @@ mkdir -p tmp
 # 1. Ensure Neo4j is running
 docker start kg-builder-neo4j
 
-# 2. Verify connectivity (WSL2: ensure /etc/hosts has neo4j entry)
+# 2. Verify connectivity (Docker DNS resolves neo4j alias)
 python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
 
 # 3. Wipe graph
