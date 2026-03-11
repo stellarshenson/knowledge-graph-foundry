@@ -11,6 +11,7 @@
 | v17 | 72% | HAS_SPECIFICATION=0, SUPPORTS_MODE=1 | Clustering prompt hardening |
 | v18 | 82% | Cross-type duplicates=56 | Intent-driven discovery model |
 | v19 | 84% | Cross-type duplicates=39 | Bayesian cross-type dedup, SUPPORTS_MODE fix |
+| v20 | 88% | Cross-type duplicates=52 | Expanded judge context (no pipeline changes) |
 
 ## Resolved Hypotheses
 
@@ -94,28 +95,56 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 **Fix applied**: `resolve_against_graph()` now queries Neo4j with `toLower(e.name) IN $names` using pre-normalized lowercase names, preventing case-sensitive mismatches between "Headgear" in the graph and "headgear" in extraction. The Bayesian posterior in `_resolve_cross_type()` uses `normalize_entity_name()` which lowercases, so in-memory cross-type resolution was already case-insensitive. The remaining case-sensitivity gaps are in dedup key generation (`dedup.py` uses `entity.id.lower()` which already lowercases) and entity ID hashing (which uses normalized names). No further action needed - case normalization is consistent across all comparison points.
 
-### H8: Generative Query Answerability Disconnect (2/5)
+### H8: Generative Query Answerability Disconnect (FIXED in v20)
 
-**Status**: Active - secondary bottleneck, unchanged in v19
+**Status**: Resolved - was a benchmark measurement problem, not a graph quality problem
 
-**Evidence**: The deterministic query_answerability scores 9/10 (90%), but the generative judge gives 2/5 in both v18 and v19. The judge's Cypher query fetches relationships from Product/Organization entities with `LIMIT 200`, which returns relationship types correctly via `type(r)` (APOC creates native types). However, the query only shows source->target->type triples without the rich spec data (numeric values, units, descriptions) that the deterministic checks confirm exists.
+**Root cause**: The generative judge's context window was too narrow. The single query returned `a.name, type(r), b.name, b.type, left(b.description, 60)` which truncated descriptions at 60 chars and didn't include `b.value`, `b.unit`, or other spec properties. The LLM judge correctly reported it couldn't see specific pressure ranges, weights, or dimensions even though they existed in the graph. Deterministic scored 9/10 (data exists) while generative scored 2/5 (judge can't see it).
 
-**Root cause**: The generative judge's context window is too narrow - it sees relationship structure but not entity property content. The query returns `a.name, type(r), b.name, b.type, left(b.description, 60)` which truncates descriptions at 60 chars and doesn't include `b.value`, `b.unit`, or other spec properties. The LLM judge therefore correctly reports it cannot see specific pressure ranges, weights, or dimensions even though they exist in the graph.
+**Fix applied**: Replaced single-query judge with three-query approach in `tests/benchmark_multidoc.py`: (1) product/org outgoing relationships with 200-char descriptions and LIMIT 300, (2) dedicated specification detail query returning `value`, `unit` properties for all Specification entities, (3) mode and standard coverage query for Feature/Setting entities with "mode" in name plus Standard entities with compliance links. Also enriched cross_doc_resolution prompt with 120-char entity descriptions. Increased JSON truncation from 8000 to 12000 chars, max_tokens from 200 to 300.
 
-**Proposed fix**: Expand the generative query to include entity properties (value, unit) for Specification targets, and increase description truncation from 60 to 200 chars. Alternatively, add a second query specifically for specs: `MATCH (p:Entity)-[r]->(s:Entity) WHERE s.type = 'Specification' RETURN p.name, s.name, s.description, s.value, s.unit`.
+**v20 results**: query_answerability jumped from 2/5 to 4/5. Generative average rose from 3.6/5.0 to 4.0/5.0. Hybrid score: 84% -> 88%. Zero pipeline changes - purely benchmark query expansion. This confirms the v19 diagnosis that the 84% ceiling was a measurement artifact.
 
 ## Priority Matrix (v19 -> v20)
 
 | Hypothesis | Impact | Complexity | Priority | Status |
 |-----------|--------|-----------|----------|--------|
-| H5e (Bayesian cross-type) | +2% actual | High | Done | 56->39 dupes, +2% hybrid |
-| H6 (SUPPORTS_MODE check) | +1% actual | Low | Done | Benchmark bug fixed |
+| H5e (Bayesian cross-type) | +2 actual | High | Done | 56->39 dupes, +2 hybrid |
+| H6 (SUPPORTS_MODE check) | +1 actual | Low | Done | Benchmark bug fixed |
 | H7 (case normalization) | folded | Low | Done | toLower() in graph query |
-| H8 (generative context) | +3-5% est | Medium | 1 | Judge sees truncated data |
-| H5 residual (39 dupes) | +2-4% est | Medium | 2 | H5b/H5c as next steps |
+| H8 (generative context) | +4 actual | Medium | Done | Judge 2/5->4/5, hybrid +4 |
+| H5 residual (52 dupes) | +2-4 est | Medium | 1 | H5b/H5c as next steps |
 
-**v19 outcome**: H5e delivered +2% (82% -> 84%), not the +5-8% estimated. The Bayesian model merges all evidence-supported pairs but cannot resolve the 39 remaining duplicates where descriptions diverge and no co-occurrence or embedding evidence exists. The gap between estimated (+5-8%) and actual (+2%) reflects that ~20 of the 39 remaining duplicates are genuinely ambiguous (the entity IS both a component and an accessory) rather than resolution failures.
+**v19 outcome**: H5e delivered +2 (82 -> 84), not the +5-8 estimated. The Bayesian model merges all evidence-supported pairs but cannot resolve the remaining duplicates where descriptions diverge and no co-occurrence or embedding evidence exists. The gap between estimated (+5-8) and actual (+2) reflects that ~20 of the remaining duplicates are genuinely ambiguous (the entity IS both a component and an accessory) rather than resolution failures.
 
-**v20 priorities**: H8 (generative context expansion) is the highest-impact remaining fix - deterministic is 97% but generative is only 3.6/5.0, with query_answerability at 2/5 despite 9/10 deterministic. Expanding the judge's context window to include spec properties and longer descriptions could lift generative by 1-2 points. H5 residual (post-curing graph consolidation or extraction prompt coercion) addresses the remaining cross-type duplicates but with diminishing returns since many are genuinely ambiguous.
+**v20 outcome**: H8 delivered +4 (84 -> 88), matching the +3-5 estimate. The multi-query judge approach with full spec properties and 200-char descriptions gave the LLM judge adequate context. query_answerability jumped 2/5 -> 4/5 with zero pipeline changes - confirming this was purely a benchmark measurement problem. Cross-type duplicates at 52 this run (variance from non-deterministic extraction). All other generative scores held steady (manufacturer 5/5, product 4/5, cross_doc 3/5, spec 4/5).
 
-Combined expected: 84% -> 88-92% hybrid score.
+## Priority Matrix (v20 -> v21)
+
+| Hypothesis | Impact | Complexity | Priority | Status |
+|-----------|--------|-----------|----------|--------|
+| H5 residual (cross-type dupes) | +2-4 est | Medium | 1 | H5b or H5c |
+| H9 (cross_doc generative) | +1-2 est | Low | 2 | Prompt tuning |
+| H10 (SleepStyle modes) | +1 est | Low | 3 | Extraction or linking gap |
+
+### H9: Cross-Doc Resolution Generative Stuck at 3/5
+
+**Status**: Active - minor bottleneck
+
+**Evidence**: cross_doc_resolution scores 5/6 (83%) deterministic but 3/5 generative. The judge sees duplicate counts with descriptions and correctly notes "fundamental CPAP components like tubing, filters, headgear still appear duplicated". However, many of these are genuinely multi-typed (Component + Accessory) rather than resolution failures.
+
+**Root cause**: The judge cannot distinguish genuine type ambiguity from resolution failures even with descriptions. A "humidifier" as Component ("internal heating element for moisture delivery") and as Accessory ("replaceable water chamber sold separately") are genuinely different aspects of the same physical object.
+
+**Proposed fix**: Either improve the prompt to explicitly instruct the judge that Component/Accessory overlap is expected for physical parts, or address H5 residual to reduce the duplicate count below the judge's concern threshold.
+
+### H10: SleepStyle Modes Not Linked
+
+**Status**: Active - minor deterministic failure
+
+**Evidence**: The deterministic check "What modes does SleepStyle support?" fails. SleepStyle 200 supports CPAP mode but the extraction may not create a mode Feature/Setting entity linked to the SleepStyle product.
+
+**Root cause**: The SleepStyle manual describes operating modes within general operating instructions rather than as a dedicated "modes" section. The extraction LLM may not recognize these as distinct mode entities worth extracting, or may extract them without linking to the product.
+
+**v21 priorities**: H5 residual is the primary bottleneck. The cross-type duplicate count (52 in v20) keeps the deterministic cross_doc check failing and drags cross_doc generative to 3/5. H5b (post-curing graph consolidation via Cypher) is the most pragmatic next step - merge same-name entities in Neo4j after loading, following the Neo4j graphrag-python pattern. H5c (type coercion in extraction prompt) prevents duplicates at the source but requires maintaining entity-to-type lookup tables in the buffer.
+
+Combined expected: 88 -> 90-92 hybrid score.
