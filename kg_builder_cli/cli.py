@@ -1,4 +1,4 @@
-"""CLI entry points for Knowledge Graph Forge."""
+"""CLI entry points for Knowledge Graph Foundry."""
 
 from __future__ import annotations
 
@@ -110,13 +110,9 @@ def ingest(
         logger.error("extraction failed: {}", exc)
         raise typer.Exit(1) from None
 
-    # Evolve hierarchy and resolution guide before flush (H5g)
-    if buffer and config.ontology_buffer.resolution_guide_evolution:
-        buffer.evolve_type_hierarchy()
-        buffer.evolve_resolution_guide()
-
     # Flush ontology buffer after all files
     if buffer and config.ontology_buffer.flush_on_complete:
+        buffer._maybe_evolve()  # final evolution pass before flush
         flush_path = ontology_file()
         buffer.flush(flush_path)
         logger.info("ontology buffer flushed: coverage={:.0%}", buffer.coverage())

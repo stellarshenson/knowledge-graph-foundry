@@ -345,7 +345,11 @@ class TestBufferHierarchy:
         assert data["resolution_guide"] == "Rule 1."
 
     def test_record_cross_type_stats(self, buffer_config):
-        """record_cross_type_stats accumulates stats by normalized key."""
+        """record_cross_type_stats accumulates stats by normalized key.
+
+        With 3 stats, encounters = 3 which triggers auto-evolution.
+        Stats accumulation itself is unchanged - side effects tested separately.
+        """
         buffer = OntologyBuffer(buffer_config)
         buffer.record_cross_type_stats([
             ("humidifier", "Component", "Accessory", 0, "merged"),
@@ -355,6 +359,8 @@ class TestBufferHierarchy:
         key = ("humidifier", "Accessory", "Component")
         assert key in buffer._cross_type_stats
         assert len(buffer._cross_type_stats[key]["doc_indices"]) == 3
+        # Auto-evolution triggered as side effect (3 encounters >= threshold)
+        assert len(buffer._type_hierarchy) == 1
 
 
 # ── Buffer: Hierarchy and Guide Evolution ───────────────────────────────
@@ -362,7 +368,11 @@ class TestBufferHierarchy:
 
 class TestBufferEvolution:
     def test_evolve_type_hierarchy_conservative(self, buffer_config):
-        """Hierarchy created only when pattern appears in >= 3 documents."""
+        """Hierarchy created when pattern reaches >= 3 encounters.
+
+        record_cross_type_stats auto-evolves, so explicit call is redundant
+        but idempotent.
+        """
         buffer = OntologyBuffer(buffer_config)
         buffer.accumulate_from_result(
             [
@@ -371,39 +381,46 @@ class TestBufferEvolution:
             ],
             [],
         )
-        # Record stats across 3 documents
+        # Record 3 encounters -> auto-evolves inside record_cross_type_stats
         buffer.record_cross_type_stats([
             ("humidifier", "Component", "Accessory", 0, "merged"),
             ("humidifier", "Component", "Accessory", 1, "merged"),
             ("humidifier", "Component", "Accessory", 2, "blocked"),
         ])
-        buffer.evolve_type_hierarchy()
+        # Already auto-evolved
         assert len(buffer._type_hierarchy) == 1
         assert buffer._type_hierarchy[0].name == "Part"
         assert "Component" in buffer._type_hierarchy[0].children
+        # Explicit call is idempotent
+        buffer.evolve_type_hierarchy()
+        assert len(buffer._type_hierarchy) == 1
 
     def test_evolve_type_hierarchy_below_threshold(self, buffer_config):
-        """No hierarchy when pattern appears in < 3 documents."""
+        """No hierarchy when pattern has < 3 encounters."""
         buffer = OntologyBuffer(buffer_config)
+        # 2 encounters < 3 threshold -> no auto-evolution
         buffer.record_cross_type_stats([
             ("humidifier", "Component", "Accessory", 0, "merged"),
             ("humidifier", "Component", "Accessory", 1, "merged"),
         ])
+        assert len(buffer._type_hierarchy) == 0
+        # Explicit call also doesn't evolve
         buffer.evolve_type_hierarchy()
         assert len(buffer._type_hierarchy) == 0
 
     def test_evolve_resolution_guide_with_hierarchy(self, buffer_config):
-        """Guide rule generated when all thresholds met: docs >= 3, dominance >= 75%, siblings."""
+        """Guide rule generated when encounters >= 3, dominance >= 75%, siblings."""
         buffer = OntologyBuffer(buffer_config)
         # Seed hierarchy first
         buffer._type_hierarchy.append(
             TypeHierarchyEntry(name="Part", children=["Component", "Accessory"])
         )
         buffer._child_to_parent = {"Component": "Part", "Accessory": "Part"}
-        # Record dominated pattern (Component 4x, Accessory 1x = 80% dominance)
+        # Record dominated pattern: Component 6x, Accessory 2x = 75% dominance
+        # encounters = (6+2)//2 = 4 >= 3 threshold
         buffer._cross_type_stats[("humidifier", "Accessory", "Component")] = {
             "doc_indices": {0, 1, 2, 3},
-            "type_counts": {"Component": 4, "Accessory": 1},
+            "type_counts": {"Component": 6, "Accessory": 2},
         }
         buffer.evolve_resolution_guide()
         assert "Component" in buffer._resolution_guide
@@ -414,7 +431,7 @@ class TestBufferEvolution:
         buffer = OntologyBuffer(buffer_config)
         buffer._cross_type_stats[("ramp", "Feature", "Specification")] = {
             "doc_indices": {0, 1, 2, 3},
-            "type_counts": {"Feature": 4, "Specification": 1},
+            "type_counts": {"Feature": 6, "Specification": 2},
         }
         buffer.evolve_resolution_guide()
         assert buffer._resolution_guide == ""
@@ -426,13 +443,145 @@ class TestBufferEvolution:
             TypeHierarchyEntry(name="Part", children=["Component", "Accessory"])
         )
         buffer._child_to_parent = {"Component": "Part", "Accessory": "Part"}
-        # 60% dominance (3/5) < 75%
+        # 60% dominance (6/10) < 75%, encounters = 10//2 = 5 >= 3
         buffer._cross_type_stats[("humidifier", "Accessory", "Component")] = {
             "doc_indices": {0, 1, 2},
-            "type_counts": {"Component": 3, "Accessory": 2},
+            "type_counts": {"Component": 6, "Accessory": 4},
         }
         buffer.evolve_resolution_guide()
         assert buffer._resolution_guide == ""
+
+    def test_auto_evolution_on_record_stats(self, buffer_config):
+        """record_cross_type_stats triggers evolution when threshold reached."""
+        buffer = OntologyBuffer(buffer_config)
+        buffer.accumulate_from_result(
+            [
+                Entity(id="e1", name="X", type="Component", source_chunks=["c1"]),
+                Entity(id="e2", name="Y", type="Accessory", source_chunks=["c2"]),
+            ],
+            [],
+        )
+        buffer.record_cross_type_stats([
+            ("humidifier", "Component", "Accessory", 0, "blocked"),
+            ("tubing", "Component", "Accessory", 1, "blocked"),
+            ("mask", "Component", "Accessory", 2, "blocked"),
+        ])
+        # Auto-evolved: hierarchy should exist
+        assert len(buffer._type_hierarchy) == 1
+        assert buffer._type_hierarchy[0].name == "Part"
+
+    def test_single_document_triggers_evolution(self, buffer_config):
+        """All encounters from doc_index=0 still trigger evolution."""
+        buffer = OntologyBuffer(buffer_config)
+        buffer.accumulate_from_result(
+            [
+                Entity(id="e1", name="X", type="Component", source_chunks=["c1"]),
+                Entity(id="e2", name="Y", type="Accessory", source_chunks=["c2"]),
+            ],
+            [],
+        )
+        buffer.record_cross_type_stats([
+            ("humidifier", "Component", "Accessory", 0, "blocked"),
+            ("tubing", "Component", "Accessory", 0, "blocked"),
+            ("mask", "Component", "Accessory", 0, "blocked"),
+        ])
+        assert len(buffer._type_hierarchy) == 1
+
+    def test_no_evolution_below_encounter_threshold(self, buffer_config):
+        """2 encounters < 3 threshold -> no hierarchy."""
+        buffer = OntologyBuffer(buffer_config)
+        buffer.record_cross_type_stats([
+            ("humidifier", "Component", "Accessory", 0, "blocked"),
+            ("tubing", "Component", "Accessory", 1, "blocked"),
+        ])
+        assert len(buffer._type_hierarchy) == 0
+
+    def test_hierarchy_boosts_prior_not_auto_merge(self):
+        """Siblings with very different descriptions can be blocked despite hierarchy."""
+        ontology = OntologyState(
+            entity_types=(
+                TypeDef(name="Specification", description="Measurement scale"),
+                TypeDef(name="Interface", description="Display panel"),
+            ),
+            confirmed_types=frozenset({"Specification", "Interface"}),
+            type_frequencies={"Specification": 10, "Interface": 8},
+            type_hierarchy=(
+                TypeHierarchyEntry(
+                    name="Measurement",
+                    children=["Specification", "Interface"],
+                ),
+            ),
+        )
+        entities = [
+            Entity(
+                id="e1",
+                name="AHI",
+                type="Specification",
+                description="Apnea Hypopnea Index severity measurement scale",
+            ),
+            Entity(
+                id="e2",
+                name="AHI",
+                type="Interface",
+                description="digital screen display panel showing nightly readings",
+            ),
+        ]
+        resolved = resolve_entities(
+            entities,
+            ontology_state=ontology,
+            hierarchy_resolution=True,
+            cross_type_merge_threshold=0.6,
+        )
+        # With prior=0.95 but very divergent descriptions, posterior may still
+        # be above or below threshold. The key test is that it goes through
+        # Bayesian rather than auto-merging. Check stats for action type.
+        stats = getattr(resolve_entities, "_last_cross_type_stats", [])
+        assert len(stats) == 1
+        # Action should be hierarchy_merge (if posterior >= 0.6) or blocked
+        # (if description evidence pulls it down). Either way, it went through Bayesian.
+        assert stats[0].action in ("hierarchy_merge", "blocked")
+
+    def test_guide_no_duplicate_rules(self, buffer_config):
+        """Repeated record_cross_type_stats calls don't produce duplicate guide rules."""
+        buffer = OntologyBuffer(buffer_config)
+        buffer._type_hierarchy.append(
+            TypeHierarchyEntry(name="Part", children=["Component", "Accessory"])
+        )
+        buffer._child_to_parent = {"Component": "Part", "Accessory": "Part"}
+        # Seed stats with a dominant pattern that will generate a guide rule
+        # Component appears as both type_a and type_b in each record, so each
+        # call adds 1 to each. We need dominance >= 75%.
+        # Pre-seed stats to get dominance right, then let auto-evolve trigger.
+        buffer._cross_type_stats[("humidifier", "Accessory", "Component")] = {
+            "doc_indices": {0, 1, 2},
+            "type_counts": {"Component": 8, "Accessory": 2},
+        }
+        # Now call record_cross_type_stats repeatedly to trigger _maybe_evolve
+        for i in range(5):
+            buffer.record_cross_type_stats([
+                ("humidifier", "Component", "Accessory", i + 3, "blocked"),
+            ])
+        # Should have exactly 1 rule for humidifier (deduped by _evolved_guide_keys)
+        assert buffer._resolution_guide.count("humidifier") == 1
+
+    def test_evolution_idempotent(self, buffer_config):
+        """Multiple explicit evolve calls produce same result."""
+        buffer = OntologyBuffer(buffer_config)
+        buffer.accumulate_from_result(
+            [
+                Entity(id="e1", name="X", type="Component", source_chunks=["c1"]),
+                Entity(id="e2", name="Y", type="Accessory", source_chunks=["c2"]),
+            ],
+            [],
+        )
+        buffer.record_cross_type_stats([
+            ("humidifier", "Component", "Accessory", 0, "blocked"),
+            ("tubing", "Component", "Accessory", 1, "blocked"),
+            ("mask", "Component", "Accessory", 2, "blocked"),
+        ])
+        count_after = len(buffer._type_hierarchy)
+        buffer.evolve_type_hierarchy()  # explicit call after auto-evolution
+        assert len(buffer._type_hierarchy) == count_after
 
 
 # ── Prompts: Resolution Guidance Block ──────────────────────────────────

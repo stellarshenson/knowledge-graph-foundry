@@ -18,10 +18,10 @@ from kg_builder_cli.config import CONFIG_DIR_NAME
 # from the end if the combined length exceeds this limit.
 MAX_RESOLUTION_PROMPT_TOKENS: int = 500
 
-# Minimum document frequency for a cross-type duplicate pattern to generate
-# a resolution_guide rule. The same entity name must appear with conflicting
-# types in at least this many distinct source documents.
-GUIDE_EVOLUTION_MIN_DOCUMENTS: int = 3
+# Minimum encounter frequency for a cross-type duplicate pattern to trigger
+# hierarchy evolution or generate a resolution_guide rule. Counts total
+# pair encounters (sum of type_counts // 2), not distinct source documents.
+GUIDE_EVOLUTION_MIN_ENCOUNTERS: int = 3
 
 # Minimum type dominance ratio for a cross-type pattern to generate a guide rule.
 # One type must account for >= this fraction of all occurrences.

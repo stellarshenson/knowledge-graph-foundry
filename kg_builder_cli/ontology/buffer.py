@@ -46,6 +46,8 @@ class OntologyBuffer:
         self._resolution_guide: str = ""
         # Cross-type stats: (norm_name, type_a, type_b) -> {doc_indices, type_a_count, type_b_count}
         self._cross_type_stats: dict[tuple[str, str, str], dict] = {}
+        # Track which (norm_name, type_a, type_b) keys have already generated guide rules
+        self._evolved_guide_keys: set[tuple[str, str, str]] = set()
 
     @classmethod
     def from_yaml(cls, path: Path, config: OntologyBufferConfig) -> OntologyBuffer:
@@ -480,35 +482,77 @@ class OntologyBuffer:
             entry["type_counts"][type_a] = entry["type_counts"].get(type_a, 0) + 1
             entry["type_counts"][type_b] = entry["type_counts"].get(type_b, 0) + 1
 
+        # Auto-evolve when evidence crosses thresholds
+        self._maybe_evolve()
+
+    def _maybe_evolve(self) -> None:
+        """Auto-evolve hierarchy and guide when any type pair reaches encounter threshold.
+
+        Aggregates encounters per (type_a, type_b) pair across all entity names,
+        matching the aggregation logic in evolve_type_hierarchy().
+        Hierarchy always evolves when evidence is sufficient.
+        Resolution guide evolution is gated by config.resolution_guide_evolution.
+        """
+        from kg_builder_cli.settings.defaults import GUIDE_EVOLUTION_MIN_ENCOUNTERS
+
+        # Aggregate encounters per type pair across all names
+        pair_encounters: dict[tuple[str, str], int] = {}
+        for (_norm_name, type_a, type_b), entry in self._cross_type_stats.items():
+            pair_key = (type_a, type_b)
+            encounters = sum(entry["type_counts"].values()) // 2
+            pair_encounters[pair_key] = pair_encounters.get(pair_key, 0) + encounters
+
+        for pair_key, encounters in pair_encounters.items():
+            if encounters >= GUIDE_EVOLUTION_MIN_ENCOUNTERS:
+                self.evolve_type_hierarchy()
+                if self._config.resolution_guide_evolution:
+                    self.evolve_resolution_guide()
+                return
+
     def evolve_type_hierarchy(self) -> None:
         """Discover parent-child groupings from recurring cross-type patterns.
 
-        Conservative: a hierarchy entry is created only when two types have been
-        observed in cross-type conflict across >= GUIDE_EVOLUTION_MIN_DOCUMENTS
-        distinct documents.
+        Conservative: a hierarchy entry is created only when two types have
+        accumulated >= GUIDE_EVOLUTION_MIN_ENCOUNTERS total pair encounters
+        (frequency-based, not document-based).
         """
-        from kg_builder_cli.settings.defaults import GUIDE_EVOLUTION_MIN_DOCUMENTS
+        from kg_builder_cli.settings.defaults import GUIDE_EVOLUTION_MIN_ENCOUNTERS
 
         if not self._cross_type_stats:
             return
 
-        # Find type pairs that co-occur in enough documents
-        pair_docs: dict[tuple[str, str], set[int]] = {}
-        for (norm_name, type_a, type_b), entry in self._cross_type_stats.items():
+        # Aggregate encounter counts per type pair across all entity names
+        pair_encounters: dict[tuple[str, str], int] = {}
+        for (_norm_name, type_a, type_b), entry in self._cross_type_stats.items():
             pair_key = (type_a, type_b)
-            pair_docs.setdefault(pair_key, set()).update(entry["doc_indices"])
+            encounters = sum(entry["type_counts"].values()) // 2
+            pair_encounters[pair_key] = pair_encounters.get(pair_key, 0) + encounters
 
         # Build hierarchy for qualifying pairs
         new_entries: dict[str, set[str]] = {}
         existing_children = set(self._child_to_parent.keys())
 
-        for (type_a, type_b), docs in pair_docs.items():
-            if len(docs) < GUIDE_EVOLUTION_MIN_DOCUMENTS:
+        for (type_a, type_b), encounters in pair_encounters.items():
+            if encounters < GUIDE_EVOLUTION_MIN_ENCOUNTERS:
+                logger.debug(
+                    "[hierarchy] pair ({}, {}) has {} encounters < {} threshold",
+                    type_a,
+                    type_b,
+                    encounters,
+                    GUIDE_EVOLUTION_MIN_ENCOUNTERS,
+                )
                 continue
             # Skip if both already have parents
             if type_a in existing_children and type_b in existing_children:
                 continue
 
+            logger.info(
+                "[hierarchy] qualifying pair ({}, {}) with {} encounters >= {} threshold",
+                type_a,
+                type_b,
+                encounters,
+                GUIDE_EVOLUTION_MIN_ENCOUNTERS,
+            )
             # Generate parent name from type descriptions or simple heuristic
             parent_name = self._infer_parent_name(type_a, type_b)
             new_entries.setdefault(parent_name, set()).update([type_a, type_b])
@@ -520,10 +564,19 @@ class OntologyBuffer:
             # Check if parent already exists in hierarchy
             existing = next((e for e in self._type_hierarchy if e.name == parent_name), None)
             if existing:
+                new_children = []
                 for child in children:
                     if child not in existing.children:
                         existing.children.append(child)
                         self._child_to_parent[child] = parent_name
+                        new_children.append(child)
+                if new_children:
+                    logger.info(
+                        "[hierarchy] evolved parent '{}': added children {} to existing {}",
+                        parent_name,
+                        sorted(new_children),
+                        existing.children,
+                    )
             else:
                 entry = TypeHierarchyEntry(
                     name=parent_name,
@@ -533,12 +586,11 @@ class OntologyBuffer:
                 self._type_hierarchy.append(entry)
                 for child in children:
                     self._child_to_parent[child] = parent_name
-
-            logger.info(
-                "[hierarchy] evolved parent '{}' with children: {}",
-                parent_name,
-                sorted(children),
-            )
+                logger.info(
+                    "[hierarchy] evolved new parent '{}' with children: {}",
+                    parent_name,
+                    sorted(children),
+                )
 
     def _infer_parent_name(self, type_a: str, type_b: str) -> str:
         """Infer a parent category name for two sibling types."""
@@ -561,11 +613,13 @@ class OntologyBuffer:
         """Generate disambiguation rules from recurring cross-type patterns.
 
         Conservative: rules only generated when a pattern meets all thresholds
-        for document frequency, type dominance, and hierarchy coverage.
+        for encounter frequency, type dominance, and hierarchy coverage.
+        Deduplicated via _evolved_guide_keys to prevent repeated calls from
+        producing duplicate rules.
         """
         from kg_builder_cli.settings.defaults import (
-            GUIDE_EVOLUTION_MIN_DOCUMENTS,
             GUIDE_EVOLUTION_MIN_DOMINANCE,
+            GUIDE_EVOLUTION_MIN_ENCOUNTERS,
         )
 
         if not self._cross_type_stats:
@@ -574,8 +628,15 @@ class OntologyBuffer:
         new_rules: list[str] = []
 
         for (norm_name, type_a, type_b), entry in self._cross_type_stats.items():
-            # Threshold 1: document frequency
-            if len(entry["doc_indices"]) < GUIDE_EVOLUTION_MIN_DOCUMENTS:
+            key = (norm_name, type_a, type_b)
+
+            # Skip if already generated a rule for this key
+            if key in self._evolved_guide_keys:
+                continue
+
+            # Threshold 1: encounter frequency
+            pair_encounters = sum(entry["type_counts"].values()) // 2
+            if pair_encounters < GUIDE_EVOLUTION_MIN_ENCOUNTERS:
                 continue
 
             # Threshold 2: type dominance
@@ -596,10 +657,19 @@ class OntologyBuffer:
             other_type = type_b if dominant_type == type_a else type_a
             rule = (
                 f'"{norm_name}" should be typed as {dominant_type}, not {other_type} '
-                f"({counts[dominant_type]}/{total} occurrences across "
-                f"{len(entry['doc_indices'])} documents)."
+                f"({counts[dominant_type]}/{total} occurrences, "
+                f"{pair_encounters} encounters)."
             )
             new_rules.append(rule)
+            self._evolved_guide_keys.add(key)
+
+            logger.debug(
+                "[guide] generated rule for '{}': {} (dominance={:.0%}, encounters={})",
+                norm_name,
+                dominant_type,
+                dominance,
+                pair_encounters,
+            )
 
         if not new_rules:
             return
