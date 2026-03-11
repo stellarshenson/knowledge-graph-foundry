@@ -599,15 +599,18 @@ Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
     "cross_doc_resolution": {
         "query": (
-            "MATCH (n:Entity) WITH toLower(n.name) AS name, collect(DISTINCT n.type) AS types, count(*) AS cnt "
-            "WHERE cnt > 1 RETURN name, types, cnt ORDER BY cnt DESC LIMIT 20"
+            "MATCH (n:Entity) WITH toLower(n.name) AS name, collect(DISTINCT n.type) AS types, "
+            "collect(DISTINCT left(n.description, 120)) AS descriptions, count(*) AS cnt "
+            "WHERE cnt > 1 RETURN name, types, descriptions, cnt ORDER BY cnt DESC LIMIT 30"
         ),
         "prompt": """Evaluate cross-document entity resolution. The graph was built from 10 CPAP PDFs - common entities like "CPAP", "OSA", "humidifier" should appear once or very few times, not duplicated per document.
 
-Duplicates found:
+Note: some entities legitimately carry multiple types (e.g. "humidifier" is both a Component inside a device and an Accessory sold separately). These are genuine type ambiguity, not resolution failures. Evaluate whether duplicates represent resolution failures (same entity with near-identical descriptions) or genuine multi-type entities (same name but meaningfully different descriptions per type).
+
+Duplicates found (with descriptions per instance):
 {data}
 
-Rate 1-5: 1=severe duplication across docs, 2=many common entities duplicated, 3=some duplicates but core entities clean, 4=minor duplication, 5=excellent resolution with no meaningful duplicates.
+Rate 1-5: 1=severe duplication (core entities 5+ copies), 2=many common entities duplicated (3-4 copies), 3=some duplicates but core entities clean (1-2 copies), 4=minor duplication only in edge cases, 5=excellent resolution with no meaningful duplicates.
 Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
     "spec_extraction": {
@@ -629,32 +632,59 @@ Rate 1-5: 1=no numeric values, 2=few specs without values, 3=some specs with val
 Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
     "query_answerability": {
-        "query": (
-            "MATCH (a:Entity)-[r]->(b:Entity) "
-            "WHERE toLower(a.type) IN ['product', 'organization'] "
-            "WITH a.name AS source, a.type AS source_type, type(r) AS rel, "
-            "b.name AS target, b.type AS target_type, "
-            "CASE WHEN b.description IS NOT NULL THEN left(b.description, 60) ELSE '' END AS desc "
-            "RETURN source, source_type, rel, target, target_type, desc "
-            "ORDER BY source_type, source, rel LIMIT 200"
-        ),
+        "queries": [
+            {
+                "label": "Product and manufacturer relationships",
+                "query": (
+                    "MATCH (a:Entity)-[r]->(b:Entity) "
+                    "WHERE toLower(a.type) IN ['product', 'organization'] "
+                    "WITH a.name AS source, a.type AS source_type, type(r) AS rel, "
+                    "b.name AS target, b.type AS target_type, "
+                    "CASE WHEN b.description IS NOT NULL THEN left(b.description, 200) ELSE '' END AS desc "
+                    "RETURN source, source_type, rel, target, target_type, desc "
+                    "ORDER BY source_type, source, rel LIMIT 300"
+                ),
+            },
+            {
+                "label": "Specification details with values and units",
+                "query": (
+                    "MATCH (p:Entity)-[r]->(s:Entity) "
+                    "WHERE toLower(s.type) = 'specification' "
+                    "RETURN p.name AS product, p.type AS product_type, type(r) AS rel, "
+                    "s.name AS spec_name, "
+                    "CASE WHEN s.description IS NOT NULL THEN left(s.description, 200) ELSE '' END AS description, "
+                    "s.value AS value, s.unit AS unit "
+                    "ORDER BY p.name, s.name LIMIT 200"
+                ),
+            },
+            {
+                "label": "Mode and standard coverage",
+                "query": (
+                    "MATCH (n:Entity) WHERE (toLower(n.name) CONTAINS 'mode' AND toLower(n.type) IN ['feature', 'setting']) "
+                    "OR toLower(n.type) = 'standard' "
+                    "OPTIONAL MATCH (p:Entity)-[r]->(n) "
+                    "RETURN n.name AS entity, n.type AS entity_type, n.description AS description, "
+                    "p.name AS linked_from, type(r) AS rel_type "
+                    "ORDER BY n.type, n.name LIMIT 100"
+                ),
+            },
+        ],
         "prompt": """Evaluate if this multi-document CPAP knowledge graph can answer cross-manufacturer comparison questions.
-Note: relationship types may vary (HAS_COMPONENT, COMPATIBLE_WITH, CONTAINS are all component relationships; SUPPORTS_MODE, HAS_MODE, OPERATES_IN, PROVIDES are all mode relationships). Focus on whether the DATA exists, not the exact relationship type name.
+Note: relationship types may vary (HAS_COMPONENT, COMPATIBLE_WITH, CONTAINS are all component relationships; SUPPORTS_MODE, HAS_MODE, OPERATES_IN, PROVIDES, HAS_FEATURE, HAS_SETTING are all mode/feature relationships). Focus on whether the DATA exists, not the exact relationship type name.
 
-Product relationships:
 {data}
 
 Questions users would ask:
 1) Which manufacturers make CPAP devices? (BMC, ResMed, Philips, Resvent, Fisher & Paykel)
 2) Compare features across brands? (Ramp, pressure relief, auto-start, humidification)
-3) What is the pressure range of [specific device]? (numeric values)
+3) What is the pressure range of [specific device]? (numeric values needed)
 4) Which devices treat OSA? (most/all)
 5) What modes do different devices support? (CPAP, Auto, Titrate)
 6) What components come with [specific device]? (mask, tubing, filter, humidifier)
 7) What standards do devices comply with? (IEC, ISO standards)
-8) Compare device specifications? (weight, dimensions, sound level)
+8) Compare device specifications? (weight, dimensions, sound level - numeric values needed)
 
-Rate 1-5: 1=0-1 answerable, 2=2-3, 3=4-5, 4=6-7, 5=all 8 answerable with specific data.
+Rate 1-5: 1=0-1 answerable, 2=2-3, 3=4-5, 4=6-7, 5=all 8 answerable with specific data (not just entity names - actual retrievable values where applicable).
 Respond ONLY: {{"score": N, "reasoning": "..."}}""",
     },
 }
@@ -767,10 +797,21 @@ def run_generative_scoring(
         with driver.session() as session:
             for dim_name, dim_config in GENERATIVE_PROMPTS.items():
                 try:
-                    records = list(session.run(dim_config["query"]))
-                    data_str = json.dumps(
-                        [dict(r) for r in records], indent=2, default=str
-                    )[:8000]
+                    # Support single query or multi-query dimensions
+                    if "queries" in dim_config:
+                        data_parts = []
+                        for qdef in dim_config["queries"]:
+                            records = list(session.run(qdef["query"]))
+                            part_str = json.dumps(
+                                [dict(r) for r in records], indent=2, default=str
+                            )[:4000]
+                            data_parts.append(f"### {qdef['label']}\n{part_str}")
+                        data_str = "\n\n".join(data_parts)
+                    else:
+                        records = list(session.run(dim_config["query"]))
+                        data_str = json.dumps(
+                            [dict(r) for r in records], indent=2, default=str
+                        )[:12000]
 
                     prompt = dim_config["prompt"].format(data=data_str)
 
@@ -778,7 +819,7 @@ def run_generative_scoring(
                         model=model,
                         messages=[{"role": "user", "content": prompt}],
                         temperature=0.0,
-                        max_tokens=200,
+                        max_tokens=300,
                     )
 
                     content = response.choices[0].message.content.strip()
