@@ -1,10 +1,10 @@
 # Implementation Instructions
 
-These instructions govern the implementation phase of kg-builder-cli. They override the default approval-seeking behaviour. Re-read this file after every context compaction.
+These instructions govern the implementation phase of Knowledge Graph Forge. They override the default approval-seeking behaviour. Re-read this file after every context compaction.
 
 ## Execution Mode
 
-Execute autonomously without asking for permission. Make decisions independently using Occam's razor - minimum viable implementation to achieve each result. Do not overengineer, do not add features not described in `docs/KGB_KGB_DESIGN.md`, do not ask "should I proceed?" - just proceed.
+Execute autonomously without asking for permission. Make decisions independently using Occam's razor - minimum viable implementation to achieve each result. Do not overengineer, do not add features not described in `docs/KGF_DESIGN.md`, do not ask "should I proceed?" - just proceed.
 
 ## Build Loop
 
@@ -18,9 +18,9 @@ Never use direct `pip install` or `uv install` - always `make install`.
 
 ## Source of Truth
 
-`docs/KGB_KGB_DESIGN.md` is the canonical design document. All implementation decisions flow from it. The design has been through 6 devil's advocate iterations (residual risk 15.5/136) and covers:
+`docs/KGF_DESIGN.md` is the canonical design document. All implementation decisions flow from it. The design has been through 6 devil's advocate iterations (residual risk 15.5/136) and covers:
 
-- CLI commands (typer): `kg ingest`, `kg query`, `kg update`, `kg init`
+- CLI commands (typer): `kgf ingest`, `kgf query`, `kgf update`, `kgf init`
 - Agent layer (Strands SDK): one agent per command
 - Ontology system: free or constrained, three-tier normalization
 - Extraction pipeline: parse -> chunk -> extract -> dedup -> resolve -> load
@@ -73,7 +73,7 @@ Pipeline prerequisites (must all be working):
 
 ## Task Management
 
-Maintain a global task list in `TASKS.md` at the project root. This is the master plan for the implementation phase - all major work items derived from `docs/KGB_KGB_DESIGN.md`.
+Maintain a global task list in `TASKS.md` at the project root. This is the master plan for the implementation phase - all major work items derived from `docs/KGF_DESIGN.md`.
 
 **Structure**:
 - Major tasks grouped by module/layer (e.g. "Types Module", "Config", "Ingestion Pipeline", "Loading", "CLI")
@@ -120,7 +120,7 @@ After each major implementation run, enter a structured improvement cycle. Keep 
 4. **Benchmark** - Run `python tests/benchmark_multidoc.py vNN "description"` with deterministic + generative scoring. Save results to `docs/benchmarks/`
 5. **Analyze** - Which dimensions improved vs regressed? New failure modes? Did the fixes hit their targets?
 6. **Commit & Push** - Commit all changes with descriptive message, push to remote
-7. **Update KGB_DESIGN.md** - Document lessons learned, what worked, what didn't
+7. **Update KGF_DESIGN.md** - Document lessons learned, what worked, what didn't
 8. **Update JOURNAL.md** - Log iteration number, changes, benchmark delta
 9. **Plan next** - Based on analysis, identify next highest-impact change. Repeat from step 1
 
@@ -149,7 +149,7 @@ Each benchmark run produces a versioned document in `docs/benchmarks/`:
 
 ## Design Feedback Loop
 
-After each benchmark run, update `docs/KGB_KGB_DESIGN.md` with lessons learned:
+After each benchmark run, update `docs/KGF_DESIGN.md` with lessons learned:
 - What extraction patterns work well vs poorly for the document types
 - Which entity types and relationship patterns the LLM captures reliably
 - Where the ontology needs tightening (types that get confused, relationships that get missed)
@@ -158,7 +158,7 @@ After each benchmark run, update `docs/KGB_KGB_DESIGN.md` with lessons learned:
 
 ## Reminders
 
-- After every context compaction, re-read this file, `TASKS.md`, and `docs/KGB_KGB_DESIGN.md`
+- After every context compaction, re-read this file, `TASKS.md`, and `docs/KGF_DESIGN.md`
 - Do not ask for permission - execute
 - Use `make install` for every build cycle
 - Occam's razor: simplest working solution first

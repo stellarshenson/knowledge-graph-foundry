@@ -1,6 +1,6 @@
-# kg-builder-cli
+# Knowledge Graph Forge (KGF)
 
-CLI tool for building knowledge graphs from structured and unstructured data into Neo4j. Simpler, CLI-driven alternative to [Neo4j LLM Graph Builder](https://github.com/neo4j-labs/llm-graph-builder) with adaptive ontology evolution and agent-backed architecture.
+Data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection. CLI-driven alternative to [Neo4j LLM Graph Builder](https://github.com/neo4j-labs/llm-graph-builder).
 
 ## Features
 
@@ -27,24 +27,24 @@ make install
 
 ```bash
 # Ingest documents into a knowledge graph
-kg ingest data/raw/ --ontology ontology.yml
+kgf ingest data/raw/ --ontology ontology.yml
 
 # Free extraction (no ontology seed - discovers types)
-kg ingest data/raw/
+kgf ingest data/raw/
 
 # Fluid schema curing
-kg ingest data/raw/ --fluid
+kgf ingest data/raw/ --fluid
 
 # Batch mode (no interactive checkpoints)
-kg ingest data/raw/ --batch
+kgf ingest data/raw/ --batch
 
-# Initialize .kg-builder/ directory
-kg init
+# Initialize .kgf/ directory
+kgf init
 ```
 
 ## Configuration
 
-Configuration uses `.kg-builder/config.yml` with environment variable interpolation from `.env`:
+Configuration uses `.kgf/config.yml` with environment variable interpolation from `.env`:
 
 ```yaml
 neo4j:
@@ -122,13 +122,13 @@ ontology_buffer:
 │   └── types/              <- Pydantic data models
 ├── tests/                  <- pytest test suite
 ├── docs/
-│   ├── KGB_DESIGN.md       <- Canonical design document
+│   ├── KGF_DESIGN.md       <- Canonical design document
 │   └── DESIGN_ASSUMPTIONS.md <- Design checklist
 ├── data/
 │   ├── raw/                <- Immutable source data
 │   ├── interim/            <- Intermediate transforms
 │   └── processed/          <- Final datasets
-└── .kg-builder/            <- Runtime config, ontology, extractions
+└── .kgf/                   <- Runtime config, ontology, extractions
 ```
 
 ## References

@@ -1,6 +1,6 @@
 # Implementation Tasks
 
-Master task list for kg-builder-cli. Derived from `docs/KGB_DESIGN.md`.
+Master task list for kg-builder-cli. Derived from `docs/KGF_DESIGN.md`.
 
 ---
 
@@ -8,7 +8,7 @@ Master task list for kg-builder-cli. Derived from `docs/KGB_DESIGN.md`.
 
 - [x] `types/` module - all Pydantic contract models (config, document, extraction, ontology, resolution, loading, pipeline)
 - [x] `config/` module - YAML loader with `${VAR}` interpolation, defaults, CLI override resolution
-- [ ] `.kg-builder/` initialization logic - create directory structure on first run
+- [ ] `.kgf/` initialization logic - create directory structure on first run
 
 ## Ontology
 
@@ -63,7 +63,7 @@ Master task list for kg-builder-cli. Derived from `docs/KGB_DESIGN.md`.
 
 ## CLI
 
-- [x] `cli.py` - typer entry points with TUI callback, ontology buffer integration, `kg ingest`, `kg query` (stub), `kg init`
+- [x] `cli.py` - typer entry points with TUI callback, ontology buffer integration, `kgf ingest`, `kgf query` (stub), `kgf init`
 - [x] `tui/app.py` - textual TUI skeleton (command panel, log panel, status bar)
 - [ ] `tui/` - btop-style interactive rich TUI with live stats, graph metrics, pipeline progress
 

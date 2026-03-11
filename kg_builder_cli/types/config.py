@@ -1,8 +1,10 @@
-"""Configuration models for kg-builder-cli."""
+"""Configuration models for Knowledge Graph Forge."""
 
 from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
+
+from kg_builder_cli.config import CONFIG_DIR_NAME
 
 
 class Neo4jConfig(BaseModel):
@@ -85,8 +87,8 @@ class PathsConfig(BaseModel):
 
     ontology: Optional[str] = None
     schema_dir: Optional[str] = Field(default=None, alias="schema")
-    memory: str = ".kg-builder/memory/"
-    migrations: str = ".kg-builder/migrations/"
+    memory: str = f"{CONFIG_DIR_NAME}/memory/"
+    migrations: str = f"{CONFIG_DIR_NAME}/migrations/"
 
 
 class CuringConfig(BaseModel):

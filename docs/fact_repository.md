@@ -20,8 +20,8 @@ No interpretation - just facts.
 - Ontology normalization: LLM converts any-format to canonical YAML via Pydantic validation
 - OWL import: programmatic via owlready2, no LLM involvement
 - Schema inference: agent samples 20 records, computes field profiles, proposes schema interactively
-- Migration plans saved to `.kg-builder/migrations/` with timestamps and rollback instructions
-- Agent memory: YAML files in `.kg-builder/memory/`, TTL 90 days, max 100 entries per source
+- Migration plans saved to `.kgf/migrations/` with timestamps and rollback instructions
+- Agent memory: YAML files in `.kgf/memory/`, TTL 90 days, max 100 entries per source
 - No functional code exists yet - project is at design stage with copier-data-science template scaffolding
 
 ## Reference implementation facts

@@ -1,4 +1,4 @@
-# Knowledge Graph Builder - CLI and Advanced Ingestion Engine v21
+# Knowledge Graph Forge - CLI and Advanced Ingestion Engine v21
 
 ## 1. Introduction
 
@@ -8,7 +8,7 @@ Where Neo4J LLM Graph Builder provides a web-based UI with minimal structured da
 
 **Key facts**:
 - Python 3.12, uv package manager, Strands Agents SDK
-- Three CLI commands: `kg ingest`, `kg query`, `kg update`
+- Three CLI commands: `kgf ingest`, `kgf query`, `kgf update`
 - Supports PDF, TXT, MD, DOCX (unstructured) and JSON, JSONL (structured)
 - Adaptive ontology buffer that evolves during ingestion
 - Ontology seeds in any format (OWL, YAML, JSON, markdown, plain text) with LLM normalization
@@ -48,7 +48,7 @@ Individual pipeline functions (parse, chunk, extract, dedup, resolve, load) are 
 
 ### Batch Decision Logging
 
-In autonomous mode (`--batch`), all decisions the agent makes at interactive checkpoints are logged to a run report at `.kg-builder/runs/<timestamp>.yml`. The report captures:
+In autonomous mode (`--batch`), all decisions the agent makes at interactive checkpoints are logged to a run report at `.kgf/runs/<timestamp>.yml`. The report captures:
 - Schema inferred (Y/N) with summary of proposed and accepted schema
 - Ontology normalization tier used (1/2/3) with diagnostic output
 - Refinement decisions applied (types promoted, variants merged, candidates pruned)
@@ -113,9 +113,9 @@ Each benchmark run records timing and throughput for every pipeline stage:
 - **Extract** - wall time per chunk, LLM calls, tokens consumed (input + output), entities and relationships per chunk
 - **Dedup/Resolve** - candidate pairs evaluated, merges performed, wall time
 - **Load** - batches sent, entities/second, relationships/second, total Neo4J transaction time
-- **End-to-end** - total wall time from `kg ingest` invocation to completion, peak memory usage
+- **End-to-end** - total wall time from `kgf ingest` invocation to completion, peak memory usage
 
-Results are saved to `.kg-builder/runs/<timestamp>_benchmark.yml` alongside the standard batch decision log. The `--benchmark` flag on `kg ingest` enables extended timing instrumentation.
+Results are saved to `.kgf/runs/<timestamp>_benchmark.yml` alongside the standard batch decision log. The `--benchmark` flag on `kgf ingest` enables extended timing instrumentation.
 
 #### Quality Metrics
 
@@ -127,14 +127,14 @@ Quality evaluation measures the graph output against the source documents:
 - **Ontology coherence** - percentage of entity types in the graph that map to confirmed ontology types vs `NEW_`-prefixed types
 - **Confidence distribution** - histogram of confidence scores across entities and relationships, flagging bimodal or uniformly high distributions as suspect
 
-Quality results are saved to `.kg-builder/runs/<timestamp>_quality.yml`. A baseline quality profile is established on the first benchmark run and subsequent runs compare against it to detect regressions.
+Quality results are saved to `.kgf/runs/<timestamp>_quality.yml`. A baseline quality profile is established on the first benchmark run and subsequent runs compare against it to detect regressions.
 
 #### Benchmark Workflow
 
 Running the benchmark is a single command:
 
 ```
-kg ingest data/raw/cpap-benchmark/ --benchmark --batch
+kgf ingest data/raw/cpap-benchmark/ --benchmark --batch
 ```
 
 This runs the full pipeline in autonomous mode with extended instrumentation. The benchmark flag adds timing hooks around each pipeline stage and produces both performance and quality output files. Quality metrics that require manual evaluation (entity coverage spot-check, relationship accuracy sampling) are flagged in the output for human review.
@@ -143,9 +143,9 @@ This runs the full pipeline in autonomous mode with extended instrumentation. Th
 graph LR
     subgraph CLI["CLI Entry Points"]
         direction TB
-        INGEST["kg ingest"]
-        QUERY["kg query"]
-        UPDATE["kg update"]
+        INGEST["kgf ingest"]
+        QUERY["kgf query"]
+        UPDATE["kgf update"]
     end
 
     subgraph AGENTS["Agent Layer"]
@@ -167,7 +167,7 @@ graph LR
         direction TB
         NEO4J[("Neo4J")]
         LLM["LLM Provider"]
-        FS["Filesystem<br/>.kg-builder/"]
+        FS["Filesystem<br/>.kgf/"]
     end
 
     INGEST --> IA
@@ -223,7 +223,7 @@ Every agent has access to four tools through the Strands tool registry:
 | `py-repl` | Python REPL for data inspection, sampling, statistical analysis, transformation |
 | `neo4j-mcp` | MCP server providing graph query, schema inspection, and index management |
 | `neo4j-driver` | Direct Neo4J Python driver for bulk Cypher operations, batch loading, transactions |
-| `file-ops` | Read/write files in `.kg-builder/` directory (schemas, extractions, ontology, migrations) |
+| `file-ops` | Read/write files in `.kgf/` directory (schemas, extractions, ontology, migrations) |
 
 The `neo4j-mcp` tool exposes the graph as a conversational resource - agents can ask questions about the current graph state, inspect node counts, and validate relationships without writing raw Cypher. The `neo4j-driver` tool handles performance-critical operations - bulk MERGE operations, index creation, and transactional writes that need direct driver access.
 
@@ -231,12 +231,12 @@ The `neo4j-mcp` tool exposes the graph as a conversational resource - agents can
 
 The CLI exposes three entry points corresponding to the primary knowledge graph workflows. Each command is backed by a Strands agent with tools appropriate to its workflow.
 
-### `kg ingest`
+### `kgf ingest`
 
 Build the knowledge graph from source data. Handles initialization, extraction, loading, and schema inference as a unified workflow.
 
 ```
-kg ingest <source> [options]
+kgf ingest <source> [options]
 ```
 
 | Option | Default | Description |
@@ -253,27 +253,27 @@ kg ingest <source> [options]
 | `--batch-size` | from config | Cypher batch size for bulk loading |
 | `--extract-only` | `False` | Run extraction without loading into Neo4J |
 | `--batch` | `False` | Autonomous mode - agent makes all decisions without prompting |
-| `--keep-extractions` | `False` | Save extraction JSON to `.kg-builder/extractions/` |
+| `--keep-extractions` | `False` | Save extraction JSON to `.kgf/extractions/` |
 
 **Workflow**:
 
 The ingest agent runs the full pipeline: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J.
 
 - **Initialization**: three scenarios depending on current state:
-  - **No `.kg-builder/`, no graph** - fresh setup. The agent creates `.kg-builder/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the agent asks questions about the target graph and generates tailored configuration
-  - **No `.kg-builder/`, graph exists** - recovery. The agent introspects the Neo4J graph (labels, relationship types, property keys, `OntologyType` nodes, `SchemaVersion` nodes) and reconstructs the schema and ontology YAML files. Presents the recovered schema to the user: "recovered schema from existing graph with N entity types and M relationship types"
-  - **`.kg-builder/` exists, graph exists** - validation. The agent compares the schema file against the current graph state and reports drift: new labels in graph not in schema, properties on entities not described in schema, `SchemaVersion` mismatches. Drift is reported as warnings, not errors
+  - **No `.kgf/`, no graph** - fresh setup. The agent creates `.kgf/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the agent asks questions about the target graph and generates tailored configuration
+  - **No `.kgf/`, graph exists** - recovery. The agent introspects the Neo4J graph (labels, relationship types, property keys, `OntologyType` nodes, `SchemaVersion` nodes) and reconstructs the schema and ontology YAML files. Presents the recovered schema to the user: "recovered schema from existing graph with N entity types and M relationship types"
+  - **`.kgf/` exists, graph exists** - validation. The agent compares the schema file against the current graph state and reports drift: new labels in graph not in schema, properties on entities not described in schema, `SchemaVersion` mismatches. Drift is reported as warnings, not errors
 - **Input detection**: file extension determines pipeline - `.json`/`.jsonl` -> structured, everything else -> unstructured
-- **Schema inference**: for structured data without `--schema`, the agent samples records via `py-repl`, proposes a schema interactively, and saves it to `.kg-builder/schemas/` before proceeding (see Section 7.3)
+- **Schema inference**: for structured data without `--schema`, the agent samples records via `py-repl`, proposes a schema interactively, and saves it to `.kgf/schemas/` before proceeding (see Section 7.3)
 - **Ontology buffer**: without `--ontology` the agent runs free extraction, building the ontology progressively. With `--ontology` it starts constrained but refines during processing. The buffer tracks type frequencies, variant mappings, and coverage scores (see Section 5)
 - **Extract + load**: by default the agent extracts and loads in a single run. Use `--extract-only` to stop after extraction, or `--keep-extractions` to save intermediate JSON alongside loading
 
-### `kg query`
+### `kgf query`
 
 Query the knowledge graph using natural language or Cypher.
 
 ```
-kg query [question] [options]
+kgf query [question] [options]
 ```
 
 | Option | Default | Description |
@@ -290,22 +290,22 @@ The query agent translates natural language questions to Cypher queries using th
 - **Schema-aware** - the agent inspects the graph schema (labels, relationship types, property keys) before generating queries, ensuring valid Cypher
 - **Dual retrieval** - uses vector index for semantic similarity and fulltext index for keyword matching, choosing the appropriate path based on the question type
 - **Interactive mode** - when invoked without a question, enters a conversational loop where the agent maintains context across questions. "Show me all engineers" followed by "what skills do they have?" works as expected
-- **Status** - `kg query --status` displays node counts by label, relationship counts by type, and index statistics
+- **Status** - `kgf query --status` displays node counts by label, relationship counts by type, and index statistics
 
-### `kg update`
+### `kgf update`
 
 Evolve the knowledge graph - update schemas, run migrations, re-process data, and refine the ontology.
 
 ```
-kg update <subcommand> [options]
+kgf update <subcommand> [options]
 ```
 
-#### `kg update schema`
+#### `kgf update schema`
 
 Update an existing schema for structured data.
 
 ```
-kg update schema <schema-file> [options]
+kgf update schema <schema-file> [options]
 ```
 
 | Option | Default | Description |
@@ -317,12 +317,12 @@ kg update schema <schema-file> [options]
 
 The update agent diffs the current schema against fresh data samples, proposes changes interactively, and optionally generates a migration plan for the existing graph.
 
-#### `kg update ontology`
+#### `kgf update ontology`
 
 Refine the ontology based on accumulated extraction evidence.
 
 ```
-kg update ontology [options]
+kgf update ontology [options]
 ```
 
 | Option | Default | Description |
@@ -333,12 +333,12 @@ kg update ontology [options]
 
 Triggers an ontology refinement pass using the buffer's accumulated frequency and coverage data. Can optionally re-process source data to gather fresh evidence.
 
-#### `kg update graph`
+#### `kgf update graph`
 
 Re-process previously ingested data with updated schema or ontology.
 
 ```
-kg update graph [options]
+kgf update graph [options]
 ```
 
 | Option | Default | Description |
@@ -348,7 +348,7 @@ kg update graph [options]
 | `--incremental` | `True` | Only process records affected by schema changes |
 | `--full` | `False` | Re-process all records from scratch |
 
-The update agent uses the migration plan from `kg update schema` to selectively re-process affected records rather than re-ingesting everything. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
+The update agent uses the migration plan from `kgf update schema` to selectively re-process affected records rather than re-ingesting everything. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
 
 ## 3.1 Terminal UI Harness
 
@@ -372,13 +372,13 @@ The chat panel becomes a scrolling log of autonomous decisions and pipeline prog
 
 ## 4. Resource Directory and Configuration
 
-### `.kg-builder/` Directory Structure
+### `.kgf/` Directory Structure
 
-The CLI operates on a `.kg-builder/` directory that lives in the target project (not in the CLI tool's own repository). Any project that wants to build a knowledge graph creates this folder containing all resources the CLI needs.
+The CLI operates on a `.kgf/` directory that lives in the target project (not in the CLI tool's own repository). Any project that wants to build a knowledge graph creates this folder containing all resources the CLI needs.
 
 ```
 my-project/
-  .kg-builder/
+  .kgf/
     config.yml              # main configuration (Neo4J connection, LLM settings, defaults)
     ontology.yml            # ontology definition (optional)
     schemas/                # schema descriptions for structured data
@@ -400,7 +400,7 @@ my-project/
       records.jsonl
 ```
 
-The CLI looks for `.kg-builder/` in the current working directory. All paths in `config.yml` are relative to the project root unless absolute.
+The CLI looks for `.kgf/` in the current working directory. All paths in `config.yml` are relative to the project root unless absolute.
 
 ### `config.yml` Reference
 
@@ -477,8 +477,8 @@ memory:
 paths:
   ontology: null                     # path to ontology YAML (free extraction if null)
   schema: null                       # path to schema description for structured data
-  memory: .kg-builder/memory/        # agent memory storage directory
-  migrations: .kg-builder/migrations/ # schema migration history
+  memory: .kgf/memory/        # agent memory storage directory
+  migrations: .kgf/migrations/ # schema migration history
 ```
 
 ### Resolution Order
@@ -486,7 +486,7 @@ paths:
 Configuration resolution follows highest-wins precedence:
 
 1. CLI flags (`--chunk-size 4000`)
-2. `.kg-builder/config.yml` values
+2. `.kgf/config.yml` values
 3. Built-in defaults
 
 ### Secrets
@@ -532,7 +532,7 @@ The ontology buffer accepts input in any format - the only requirement is that t
 2. **YAML ontology** (`paths.ontology`): the canonical application schema. If both seed and YAML are provided, the YAML takes precedence for overlapping type definitions
 3. **Empty** (free extraction): no seed, no YAML. The buffer starts empty and builds the ontology from scratch
 
-After the run completes, the refined ontology is always flushed as YAML to `.kg-builder/ontology.yml` regardless of the original source format.
+After the run completes, the refined ontology is always flushed as YAML to `.kgf/ontology.yml` regardless of the original source format.
 
 ### 5.1a Use Case Intent
 
@@ -676,7 +676,7 @@ The seed is advisory, not binding. The extraction pipeline treats seed-sourced t
 
 ### 5.4 YAML Ontology Format
 
-YAML file defining allowed entity types, relationship types, and optional property schemas. Default location: `.kg-builder/ontology.yml`.
+YAML file defining allowed entity types, relationship types, and optional property schemas. Default location: `.kgf/ontology.yml`.
 
 ```yaml
 entity_types:
@@ -773,7 +773,7 @@ The ontology buffer is the central mechanism that makes the extraction pipeline 
 The buffer is initialized from one of three sources:
 
 - **From seed** (domain-informed mode): an ontology seed file in any format. All non-YAML, non-OWL inputs pass through LLM normalization (Section 5.2). OWL/RDF files are normalized programmatically via owlready2 (Section 5.3). The normalized output is validated against Pydantic models before loading into the buffer. The seed is suggestive, not prescriptive - extraction is explicitly allowed to go beyond it
-- **From YAML** (constrained mode): loads `.kg-builder/ontology.yml` as the starting schema. New types discovered during extraction can still be proposed, but require higher confidence to be accepted
+- **From YAML** (constrained mode): loads `.kgf/ontology.yml` as the starting schema. New types discovered during extraction can still be proposed, but require higher confidence to be accepted
 - **Empty** (free extraction mode): the buffer starts with no types defined. The first few documents establish the initial ontology, which then stabilizes as more documents are processed
 
 When both seed and YAML are configured, the YAML takes precedence for overlapping type definitions. The seed fills in types not covered by the YAML. In all cases, the buffer is free to evolve beyond its initial state. Seed-sourced types carry higher initial confidence but discovered types that appear consistently across documents are promoted equally. The final flushed ontology represents what the data actually contains, not what the seed prescribed.
@@ -875,7 +875,7 @@ Relationship type constraints (source/target type pairs) are not required to be 
 
 #### Buffer Flush
 
-At the end of the ingestion run, the final buffer state is written to `.kg-builder/ontology.yml`. This means:
+At the end of the ingestion run, the final buffer state is written to `.kgf/ontology.yml`. This means:
 
 - **Free extraction** produces an ontology as a side effect - the next run can start constrained
 - **Constrained extraction** produces a refined ontology that incorporates what the documents actually contained
@@ -1356,7 +1356,7 @@ Each adapter is responsible for extracting clean text and attaching provenance m
 | CSV | built-in | Row batches as text segments |
 | HTML | `beautifulsoup4` | Extracts visible text, strips markup |
 
-The adapter layer enables mixed-format ingestion - a directory containing PDFs, spreadsheets, and text files can be processed in a single `kg ingest` run with each file routed to the appropriate parser. This metadata propagates through chunking into the final extraction output, enabling traceability from any entity back to its source location.
+The adapter layer enables mixed-format ingestion - a directory containing PDFs, spreadsheets, and text files can be processed in a single `kgf ingest` run with each file routed to the appropriate parser. This metadata propagates through chunking into the final extraction output, enabling traceability from any entity back to its source location.
 
 #### PDF Parsing with pymupdf4llm
 
@@ -1542,7 +1542,7 @@ Type priority for approved merges is built dynamically from the ontology buffer'
 
 **Ontology schema consolidation**: a final consolidation pass after all documents are processed catches remaining type sprawl from the last few documents whose feedback was never refined. This pass uses the buffer's variant mappings to rename all entities to their canonical types before loading.
 
-**Cross-type merge review**: cross-type merges are the highest-risk resolution operation because they silently change an entity's type. To control this risk, all cross-type merges are logged to a review report at `.kg-builder/runs/<timestamp>_cross_type_merges.yml` containing the merged entity names, original types, surviving type, and the priority scores that determined the outcome. When entity names are short (3 characters or fewer) or when the priority gap between the two types is 1 (adjacent ranks), the merge is flagged as `review: true` in the report. In interactive mode, flagged merges are presented to the user for confirmation before proceeding. In batch mode, flagged merges proceed automatically but are prominently logged as warnings. This operational control catches the cases where cross-type merging is most likely to produce false merges without blocking the pipeline.
+**Cross-type merge review**: cross-type merges are the highest-risk resolution operation because they silently change an entity's type. To control this risk, all cross-type merges are logged to a review report at `.kgf/runs/<timestamp>_cross_type_merges.yml` containing the merged entity names, original types, surviving type, and the priority scores that determined the outcome. When entity names are short (3 characters or fewer) or when the priority gap between the two types is 1 (adjacent ranks), the merge is flagged as `review: true` in the report. In interactive mode, flagged merges are presented to the user for confirmation before proceeding. In batch mode, flagged merges proceed automatically but are prominently logged as warnings. This operational control catches the cases where cross-type merging is most likely to produce false merges without blocking the pipeline.
 
 **Bayesian posterior details** (v19 fix) - the previous description-only gate blocked 56 cross-type duplicates in benchmark v18 because entities with different types naturally have divergent descriptions (e.g., "humidifier" as Component describes internal function, as Accessory describes purchase options). The Bayesian model treats each signal as independent evidence rather than a binary gate, so a strong name match (prior=0.8) can overcome weak description similarity. The likelihood ratio for descriptions is floored at 0.3 (never fully vetoes), embeddings provide a strong secondary signal when available, and chunk co-occurrence provides a weak positive signal for same-document entities. Configuration: `extract.cross_type_merge_threshold: 0.6`.
 
@@ -1626,7 +1626,7 @@ Pipeline steps:
 
 ### 7.2 Schema Description Formats
 
-The schema description is a human-readable file that explains what each field in the JSON records represents and how it maps to graph structure. The LLM interprets this generatively - it does not need to follow a rigid format. Stored in `.kg-builder/schemas/`.
+The schema description is a human-readable file that explains what each field in the JSON records represents and how it maps to graph structure. The LLM interprets this generatively - it does not need to follow a rigid format. Stored in `.kgf/schemas/`.
 
 A schema description should contain:
 - What each field represents semantically
@@ -1704,11 +1704,11 @@ The conversation that produces a schema is a UX convenience. Once the schema is 
 
 #### Lockfile
 
-Schema inference and adaptation acquire a lockfile at `.kg-builder/schema.lock` before modifying any schema file. The lock contains the process PID and timestamp. Only one process can perform schema discovery or adaptation at a time, ensuring the schema reaches a finalized state before ingestion proceeds. The lock is released when the schema is confirmed (interactive mode) or when the agent accepts it (autonomous mode).
+Schema inference and adaptation acquire a lockfile at `.kgf/schema.lock` before modifying any schema file. The lock contains the process PID and timestamp. Only one process can perform schema discovery or adaptation at a time, ensuring the schema reaches a finalized state before ingestion proceeds. The lock is released when the schema is confirmed (interactive mode) or when the agent accepts it (autonomous mode).
 
 #### Deterministic Baseline
 
-Before the agent proposes anything, the `py-repl` tool generates a deterministic field profile that is saved alongside the schema as `.kg-builder/schemas/<source_name>.profile.yml`. This profile is reproducible - the same data always produces the same profile regardless of conversation flow. It contains:
+Before the agent proposes anything, the `py-repl` tool generates a deterministic field profile that is saved alongside the schema as `.kgf/schemas/<source_name>.profile.yml`. This profile is reproducible - the same data always produces the same profile regardless of conversation flow. It contains:
 - Field names, JSON types, and nesting depth
 - Null rates and cardinality (unique value counts vs total records)
 - Value distribution samples (first 5 unique values per field)
@@ -1728,11 +1728,11 @@ The agent checks memory for prior inference sessions on structurally similar dat
 
 The agent validates each change against the data sample. After each round of changes, the agent presents the updated schema for confirmation.
 
-**Persistence**: the confirmed schema is saved to `.kg-builder/schemas/<source_name>.md` and the inference session is recorded in agent memory. Running with `--infer-schema` re-triggers inference even if a schema exists - the new proposal is diffed against the existing schema and differences are presented for review.
+**Persistence**: the confirmed schema is saved to `.kgf/schemas/<source_name>.md` and the inference session is recorded in agent memory. Running with `--infer-schema` re-triggers inference even if a schema exists - the new proposal is diffed against the existing schema and differences are presented for review.
 
 #### Schema Versioning
 
-Every confirmed schema receives an integer version, starting at 1. When a schema changes (via `--infer-schema` or `kg update schema`), the previous version is archived to `.kg-builder/schemas/<source_name>_v<N>.md` and the current file is updated with an incremented version header. The version history enables migration when schema evolution affects existing graph data.
+Every confirmed schema receives an integer version, starting at 1. When a schema changes (via `--infer-schema` or `kgf update schema`), the previous version is archived to `.kgf/schemas/<source_name>_v<N>.md` and the current file is updated with an incremented version header. The version history enables migration when schema evolution affects existing graph data.
 
 During loading, a `SchemaVersion` node is created (or matched) in Neo4J:
 
@@ -1752,7 +1752,7 @@ This enables downstream queries like "which entities were created under schema v
 
 #### Schema Recovery
 
-The schema can always be rediscovered from the graph itself. The graph contains `OntologyType` nodes with `IS_A` relationships, Entity labels and property patterns, and relationship types between entities. `kg init` uses this for recovery (see Section 3, Initialization).
+The schema can always be rediscovered from the graph itself. The graph contains `OntologyType` nodes with `IS_A` relationships, Entity labels and property patterns, and relationship types between entities. `kgf init` uses this for recovery (see Section 3, Initialization).
 
 ### 7.4 LLM Mapping
 
@@ -2011,7 +2011,7 @@ The agent has access to `neo4j-mcp` for conversational graph access and schema i
 Tool selection logic:
 - **Schema inspection** - `neo4j-mcp` provides node labels, relationship types, property keys, and index metadata. The agent calls this at the start of each session and caches the result for the conversation duration
 - **Query execution** - `neo4j-mcp` executes Cypher queries and returns results in structured format
-- **Configuration** - `file-ops` reads `.kg-builder/config.yml` for connection details and query defaults
+- **Configuration** - `file-ops` reads `.kgf/config.yml` for connection details and query defaults
 
 ### 10.2 Natural Language to Cypher
 
@@ -2037,7 +2037,7 @@ The agent determines the routing by analyzing the question type. Questions about
 
 ### 10.4 Interactive Conversational Mode
 
-When invoked without a question (`kg query`), the agent enters a conversational loop where it maintains context across questions. This enables follow-up resolution:
+When invoked without a question (`kgf query`), the agent enters a conversational loop where it maintains context across questions. This enables follow-up resolution:
 
 - "Show me all engineers" -> returns Person entities with role = engineer
 - "What skills do they have?" -> "they" resolves to the engineers from the previous query
@@ -2065,7 +2065,7 @@ The update pipeline manages schema evolution, ontology refinement, and graph re-
 
 ### 11.1 Schema Update
 
-The `kg update schema` command handles schema evolution by diffing current schema against fresh data, proposing changes, and generating migration plans for the existing graph.
+The `kgf update schema` command handles schema evolution by diffing current schema against fresh data, proposing changes, and generating migration plans for the existing graph.
 
 **Change detection**: the update agent samples fresh data and compares against the current schema:
 - **New fields** - fields present in data but not described in schema
@@ -2086,7 +2086,7 @@ The `kg update schema` command handles schema evolution by diffing current schem
 
 ### 11.2 Ontology Refinement
 
-The `kg update ontology` command triggers an ontology refinement pass using the buffer's accumulated frequency and coverage data. This is useful after multiple ingestion runs have produced a large ontology with potential redundancy.
+The `kgf update ontology` command triggers an ontology refinement pass using the buffer's accumulated frequency and coverage data. This is useful after multiple ingestion runs have produced a large ontology with potential redundancy.
 
 The refinement pass:
 - **Prunes low-frequency types** that did not reach the confirmation threshold (`min_frequency_to_confirm`)
@@ -2097,9 +2097,9 @@ The output is an updated `ontology.yml` with cleaner, more focused type definiti
 
 ### 11.3 Graph Re-processing
 
-The `kg update graph` command re-processes previously ingested data with updated schema or ontology. It supports two modes:
+The `kgf update graph` command re-processes previously ingested data with updated schema or ontology. It supports two modes:
 
-**Incremental** (default): uses the migration plan from `kg update schema` to selectively re-process affected records. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
+**Incremental** (default): uses the migration plan from `kgf update schema` to selectively re-process affected records. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
 
 **Full** (`--full`): re-processes all records from scratch. Used when schema changes are too fundamental for incremental migration.
 
@@ -2111,11 +2111,11 @@ The agent tracks migration state in memory so interrupted migrations can be resu
 
 ### 11.4 Migration Plan Format
 
-Migration plans are saved to `.kg-builder/migrations/` with timestamped filenames (e.g., `2026-03-09_employees_v2.yml`). Each plan contains:
+Migration plans are saved to `.kgf/migrations/` with timestamped filenames (e.g., `2026-03-09_employees_v2.yml`). Each plan contains:
 
 ```yaml
 timestamp: 2026-03-09T14:30:00Z
-schema_file: .kg-builder/schemas/employees.md
+schema_file: .kgf/schemas/employees.md
 source_data: data/records.jsonl
 
 changes:
@@ -2160,7 +2160,7 @@ The user can review and approve before execution, or run with `--dry-run` to see
 
 ## 12. Agent Memory
 
-Agent memory provides persistent operational knowledge stored in `.kg-builder/memory/`. It operates alongside the ontology buffer as a complementary persistence layer - the buffer tracks schema-level knowledge (entity types, relationship types, coverage scores, variant mappings), while memory tracks operational knowledge accumulated across runs.
+Agent memory provides persistent operational knowledge stored in `.kgf/memory/`. It operates alongside the ontology buffer as a complementary persistence layer - the buffer tracks schema-level knowledge (entity types, relationship types, coverage scores, variant mappings), while memory tracks operational knowledge accumulated across runs.
 
 ### Memory vs Ontology Buffer
 
@@ -2295,7 +2295,7 @@ Additionally, the extraction pipeline does not persist raw source text in the gr
 
 ### Extraction Output Sanitization
 
-Extraction outputs written to `.kg-builder/extractions/` may contain entity properties derived from source data. These files should be treated with the same sensitivity as the source data itself. The `--keep-extractions` flag is `false` by default, meaning extraction JSON is not persisted unless explicitly requested.
+Extraction outputs written to `.kgf/extractions/` may contain entity properties derived from source data. These files should be treated with the same sensitivity as the source data itself. The `--keep-extractions` flag is `false` by default, meaning extraction JSON is not persisted unless explicitly requested.
 
 ## 16. Module Structure
 
@@ -2417,7 +2417,7 @@ kg_builder_cli/
     py_repl.py                    # py-repl tool - Python REPL for data inspection
     neo4j_mcp.py                  # neo4j-mcp tool - graph query, schema inspection, index management
     neo4j_driver.py               # neo4j-driver tool - bulk Cypher operations, batch loading
-    file_ops.py                   # file-ops tool - read/write .kg-builder/ directory
+    file_ops.py                   # file-ops tool - read/write .kgf/ directory
 
   agents/                         # Strands agent definitions
     __init__.py
@@ -2650,14 +2650,14 @@ Test fixtures are organized in `tests/fixtures/`:
 
 ## 19. Extraction Output Format
 
-Extraction files are written to `.kg-builder/extractions/` with timestamped filenames.
+Extraction files are written to `.kgf/extractions/` with timestamped filenames.
 
 ```json
 {
   "metadata": {
     "source": "path/to/document.pdf",
     "model": "us.anthropic.claude-sonnet-4-20250514",
-    "ontology": ".kg-builder/ontology.yml",
+    "ontology": ".kgf/ontology.yml",
     "timestamp": "2026-03-09T12:00:00Z",
     "chunk_count": 15
   },
@@ -2752,7 +2752,7 @@ Confidence scores propagate to Neo4J as properties on Entity and FactNode nodes,
 | 1 | Agent overuse | 20 | 90% | 2.0 | Section 2: interactive vs autonomous mode, `--batch` flag, checkpoint annotations, batch decision logging. Report format deferred to runtime iteration |
 | 2 | All features are core | 15 | 95% | 0.75 | Core/extension distinction removed. All node types (Document, Chunk, Entity, FactNode, Page, Section, TableElement, ImageElement, etc.) are part of the core model. No phased roadmap needed - everything ships together |
 | 3 | LLM normalization risk | 16 | 90% | 1.6 | Section 5.2 three-tier pipeline: py-repl parse -> LLM repair -> full LLM. Diagnostic output, interactive confirm |
-| 4 | Schema inference instability | 12 | 90% | 1.2 | Section 7.3: schema-as-configuration principle, lockfile, deterministic baseline, schema versioning with `SchemaVersion` nodes, `CREATED_UNDER` linking, schema recovery via `kg init` |
+| 4 | Schema inference instability | 12 | 90% | 1.2 | Section 7.3: schema-as-configuration principle, lockfile, deterministic baseline, schema versioning with `SchemaVersion` nodes, `CREATED_UNDER` linking, schema recovery via `kgf init` |
 | 5 | Missing confidence model | 25 | 92% | 2.0 | Confidence + extraction_model on all elements. Evidence spans and source frequency as config options |
 | 6 | Levenshtein/similarity details | 12 | 85% | 1.8 | Type blocking, Levenshtein ratio 0.85, similarity matrix, ANN for large sets |
 | 7 | No concurrency model | 9 | 80% | 1.8 | Intra-document parallel, inter-document sequential, buffer feedback at document boundary |
