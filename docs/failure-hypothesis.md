@@ -13,6 +13,7 @@
 | v19 | 84 | Cross-type duplicates=39 | Bayesian cross-type dedup, SUPPORTS_MODE fix |
 | v20 | 88 | Cross-type duplicates=52 | Expanded judge context (no pipeline changes) |
 | v21 | 88 | Cross-type duplicates=48 | H5f deferred cross-type dedup (minimal impact) |
+| v23 | 83 | Hierarchy completely inert, 0 merges | H5g hierarchy + intent/guide (hierarchy non-functional) |
 
 ## Resolved Hypotheses
 
@@ -120,6 +121,17 @@ Merge threshold: `cross_type_merge_threshold=0.6` (configurable in ExtractConfig
 
 **v20 outcome**: H8 delivered +4 (84 -> 88), matching the +3-5 estimate. The multi-query judge approach with full spec properties and 200-char descriptions gave the LLM judge adequate context. query_answerability jumped 2/5 -> 4/5 with zero pipeline changes - confirming this was purely a benchmark measurement problem. Cross-type duplicates at 52 this run (variance from non-deterministic extraction). All other generative scores held steady (manufacturer 5/5, product 4/5, cross_doc 3/5, spec 4/5).
 
+## Priority Matrix (v23 -> v24)
+
+| Hypothesis | Impact | Complexity | Priority | Status |
+|-----------|--------|-----------|----------|--------|
+| H5g fix (self-evolving buffer) | +3-5 est | Medium | 1 | Implementing - hierarchy was inert in v23 |
+| H9 (cross_doc generative) | +1-2 est | Low | 2 | Will improve as duplicates drop |
+| H10 (SleepStyle modes) | +1 est | Low | 3 | Extraction or linking gap |
+| H5g-D (synonym resolution) | +1-2 est | High | 4 | 36 tubing variants, 38 filter variants |
+
+**v23 outcome**: H5g delivered +0 from hierarchy (83% hybrid, -5 from v20). The hierarchy was completely inert - zero hierarchy merges, zero hierarchy entries in flushed ontology, all 133 cross-type decisions via Bayesian fallback. Root causes: post-ingestion-only evolution timing, document-count threshold, auto-merge bypassing the Bayesian model. The v24 fix targets all three root causes with the self-evolving buffer model.
+
 ## Priority Matrix (v20 -> v21)
 
 | Hypothesis | Impact | Complexity | Priority | Status |
@@ -212,9 +224,9 @@ Relationship target Jaccard overlap ranges from 0% to 29%. Highest: `sd card` (2
 
 **v21 outcome**: H5f delivered +0 (88 -> 88), well below the +2-4 estimate. The deferred buffer resolved only 4 additional pairs. Graph query analysis revealed the problem is structural: 47 duplicate groups with 50 excess nodes, dominated by Component/Accessory (21 groups) and Feature/Setting (8 groups) where the type boundary reflects genuine dual roles rather than resolution failures. Additionally, within-type synonym proliferation (36 tubing nodes, 38 filter nodes) compounds the problem. The fix requires ontology-level changes (type hierarchy, multi-facet entities) not stronger resolution algorithms.
 
-### H5g: Ontology-Enriched Type Resolution (implementing)
+### H5g: Ontology-Enriched Type Resolution (v22-v24)
 
-**Status**: Implementing for v22
+**Status**: Partially implemented (v22-v23), hierarchy fix in v24
 
 **Design philosophy**: One enriched ontology, not two. The approach draws from OntoType's coarse-to-fine entity typing via type hierarchy (Komarlu et al., KDD 2024), AFET's hierarchical partial-label embedding for multi-type entities (Ren et al., EMNLP 2016), and ontology-grounded type disambiguation under Wikidata (Feng et al., KDD Workshop 2024). Instead of a separate resolution rules engine, we enrich the ontology with three layers: hierarchy for structural dedup, prose guidance for extraction-time disambiguation, and multi-labels for legitimate dual-role entities. The hierarchy is a dedup resolution strategy, not general extraction guidance - it materializes inside resolution machinery and gets flushed to ontology YAML for the next run. See `references/ontology/` for full paper summaries.
 
@@ -237,6 +249,14 @@ Entities appearing as both a configurable parameter and a measured value (e.g., 
 **Combined expected impact**: Layers 1+2+3 address all 47 groups. Layer 1 eliminates sibling-type duplicates through hierarchy. Layer 2 prevents type inconsistencies at extraction time. Layer 3 preserves legitimate multi-facet entities as multi-label nodes. Target: cross-type duplicates < 15, hybrid score 90+.
 
 **Implementation files**: `types/ontology.py` (TypeHierarchyEntry, OntologyState extensions), `types/extraction.py` (Entity.labels), `ontology/buffer.py` (load/save hierarchy+intent+guide+exemplars, evolve_type_hierarchy, evolve_resolution_guide, cross_type_stats), `extraction/prompts.py` (resolution_guidance_block for intent+guide prose), `extraction/resolution.py` (hierarchy safety net, CrossTypeStat reporting), `loading/loader.py` (multi-label APOC), `types/config.py` (hierarchy_resolution, resolution_guide_evolution).
+
+**v23 post-mortem - hierarchy completely inert**: v23 benchmark scored 83% hybrid (60/63 deterministic, 3.6/5.0 generative) - a 5-point drop from v20 (88%). Log forensics revealed that H5g hierarchy resolution was completely inert: zero hierarchy merges occurred across 10 documents, the flushed ontology contained 0 hierarchy entries, and all 133 cross-type decisions went through Bayesian fallback with none through the hierarchy path. Three root causes identified:
+
+1. **Evolution timing**: `evolve_type_hierarchy()` only ran once post-ingestion (`cli.py:115`), never per-document. The hierarchy didn't exist during resolution because cross-type stats accumulate during ingestion but evolution never triggered mid-ingestion
+2. **Document-based threshold**: `GUIDE_EVOLUTION_MIN_DOCUMENTS=3` counted distinct source documents, not encounter frequency. For the CPAP corpus structure, this threshold was never reached during the post-ingestion-only call because the function was called after all documents were already processed
+3. **Hierarchy bypassed the model**: The original design auto-merged siblings without Bayesian evaluation. Even if the hierarchy had materialized, sibling types would have auto-merged regardless of description divergence - no evidence gate
+
+**v24 fix - self-evolving buffer with frequency threshold**: Replace post-ingestion evolution with a self-evolving buffer where `record_cross_type_stats()` triggers `_maybe_evolve()` after each stats recording. Replace `GUIDE_EVOLUTION_MIN_DOCUMENTS` with `GUIDE_EVOLUTION_MIN_ENCOUNTERS` (encounter frequency, not document count). Replace hierarchy auto-merge with hierarchy-boosted Bayesian prior (0.95 for siblings under shared parent). The model decides all merges - hierarchy is evidence, not an override.
 
 **Strategy D - Within-type synonym resolution** (deferred, compounds all categories):
 

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "kg_builder_cli"
 version = "0.4.23"
-description = "Knowledge Graph Forge - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
+description = "Knowledge Graph Foundry - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
 ]

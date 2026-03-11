@@ -1,4 +1,4 @@
-# Knowledge Graph Forge - Example Configuration
+# Knowledge Graph Foundry - Example Configuration
 # Copy to .kgf/config.yml and adjust values for your environment.
 # All settings below show recommended defaults for the CPAP benchmark corpus.
 # See settings/defaults.py for full parameter reference.

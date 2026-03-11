@@ -1,6 +1,6 @@
 # Implementation Instructions
 
-These instructions govern the implementation phase of Knowledge Graph Forge. They override the default approval-seeking behaviour. Re-read this file after every context compaction.
+These instructions govern the implementation phase of Knowledge Graph Foundry. They override the default approval-seeking behaviour. Re-read this file after every context compaction.
 
 ## Execution Mode
 
