@@ -64,7 +64,16 @@ Validates all 5 CPAP device manufacturers are extracted as Organization entities
 - Resvent
 - Fisher & Paykel
 
-Generative: rates 1-5 based on how many of the 5 manufacturers are present with meaningful descriptions.
+**Generative judge context**: Full Organization entity list with `name`, `description`, `role` properties. No truncation.
+
+**Quality criteria**: Each manufacturer should have a meaningful description (not just the name repeated) and ideally a `role` property indicating "manufacturer". The judge evaluates presence, description quality, and whether the manufacturer ecosystem (regulatory bodies, authorized representatives) is captured.
+
+**Scoring rubric**: 1=0-1 manufacturers, 2=2, 3=3, 4=4, 5=all 5 with meaningful descriptions.
+
+**Known failure modes**:
+- Manufacturer name variants not merged (e.g. "ResMed" vs "ResMed Ltd" as separate entities)
+- Regulatory bodies extracted as Organization but without role differentiation
+- Description containing only address/contact info instead of business description
 
 ### 3. Product Coverage (7 checks + generative)
 
@@ -78,7 +87,17 @@ Validates distinct product entities from each manufacturer.
 - SleepStyle (Fisher & Paykel)
 - At least 5 distinct Product-typed entities
 
-Generative: rates product completeness and manufacturer linkage.
+**Generative judge context**: Product entities with `name`, `description`, plus MANUFACTURES relationship showing linked Organization entity name.
+
+**Quality criteria**: Each product should have (a) a descriptive name matching source documents, (b) a description explaining what it is, (c) a MANUFACTURES link to its manufacturer Organization. The judge evaluates product count, description quality, and manufacturer linkage completeness.
+
+**Scoring rubric**: 1=0-2 products, 2=3-4, 3=5, 4=6, 5=7+ all with manufacturer links.
+
+**Known failure modes**:
+- Product name variants not merged (e.g. "DreamStation Standard CPAP" and "DreamStation CPAP" as separate entities)
+- Missing iBreeze - Resvent manual may have parsing issues or the product name appears in non-standard formatting
+- Products missing MANUFACTURES link despite manufacturer existing as a separate entity
+- Product descriptions that are too generic ("a CPAP device") rather than capturing distinguishing features
 
 ### 4. Cross-Document Entity Resolution (6 checks + generative)
 
@@ -91,7 +110,17 @@ The critical multi-doc dimension. Common entities appearing across documents sho
 - Humidifier entity consolidated
 - Mask entity consolidated
 
-Generative: rates deduplication quality across the 10-doc corpus.
+**Generative judge context**: Top 20 duplicated entity names with their type lists and instance counts, sorted by count descending. Shows how many times each entity name appears with potentially different types.
+
+**Quality criteria**: The judge evaluates (a) whether core domain entities (CPAP, OSA, humidifier, mask, tubing, filter) are consolidated to 1-2 instances, (b) whether duplication is from genuine type ambiguity (acceptable) or resolution failures (not acceptable), (c) overall deduplication ratio. The judge should distinguish between entities that legitimately carry multiple types (e.g. "humidifier" is both Component when inside a device and Accessory when sold separately) versus entities that are simply unresolved duplicates.
+
+**Scoring rubric**: 1=severe duplication (core entities appear 5+ times), 2=many common entities duplicated (3-4 times), 3=some duplicates but core entities clean (1-2 times), 4=minor duplication only in edge cases, 5=excellent resolution with no meaningful duplicates.
+
+**Known failure modes**:
+- Cross-type duplicates where same entity name has different types (Component vs Accessory, Feature vs Interface vs Setting) - these survive dedup because the dedup key includes entity type
+- Description divergence blocking Bayesian merge - "humidifier" as Component has technical description, as Accessory has purchasing description, resulting in low Jaccard and posterior below threshold
+- Entities from cured-phase documents that lack embeddings on the graph side, preventing the embedding cosine signal from contributing to the Bayesian posterior
+- Genuinely ambiguous entities that are both types simultaneously (15-20 of the ~39 remaining cross-type duplicates in v19)
 
 ### 5. Relationship Patterns (8 checks)
 
@@ -106,6 +135,10 @@ Validates ontology-defined relationship types are populated.
 - COMPLIES_WITH (>= 1)
 - Orphan ratio < 20%
 
+**Note on APOC relationship types**: Relationships are created via APOC `apoc.merge.relationship()` which creates native Neo4j relationship types. Use `type(r)` to access the relationship type name. The `r.type` property is NULL for APOC-created relationships. This distinction is critical for all Cypher queries that filter or return relationship types.
+
+**Note on SUPPORTS_MODE**: The ontology has no `Mode` entity type. Modes are extracted as `Feature` or `Setting` entities (e.g. "CPAP Mode" as Feature, "standby mode" as Setting). The SUPPORTS_MODE check must match on entity name containing "mode" with type in `['feature', 'setting']`, and include relationship types `HAS_FEATURE` and `HAS_SETTING` alongside `SUPPORTS_MODE`.
+
 ### 6. Specification Extraction (8 checks + generative)
 
 Validates numeric specifications with units are extracted across products.
@@ -119,7 +152,17 @@ Validates numeric specifications with units are extracted across products.
 - Specs have `unit` property (>= 3)
 - Total spec entities >= 10
 
-Generative: rates spec completeness across products.
+**Generative judge context**: Full Specification entity list with `name`, `description`, `value`, `unit` properties, plus linked Product name via HAS_SPECIFICATION relationship. No description truncation.
+
+**Quality criteria**: The judge evaluates (a) whether specs have concrete numeric values (not just descriptive text), (b) whether units are proper measurement units (cmH2O, kg, dB, mm, V), (c) whether specs are linked to the correct product, (d) coverage across multiple products (not just one device). The judge specifically looks for extractable data points: exact pressure ranges, weights, dimensions, noise levels, power ratings.
+
+**Scoring rubric**: 1=no numeric values, 2=few specs without values, 3=some specs with values from 2-3 products, 4=good coverage across most products, 5=comprehensive specs with exact values from most products.
+
+**Known failure modes**:
+- Spec values buried in description text instead of extracted into `value`/`unit` properties (e.g. description says "4-20 cmH2O" but value and unit fields are null)
+- Specs extracted without product linkage (orphan Specification entities with no HAS_SPECIFICATION relationship)
+- Unit normalization issues (e.g. "hPa" vs "cmH2O" for the same pressure measurement)
+- Specifications from the generic CPAP_Eng.pdf not linked to any specific product
 
 ### 7. Type Distribution (5 checks)
 
@@ -155,7 +198,34 @@ Validates the graph can answer real cross-manufacturer comparison questions.
 - Device compliance standards
 - iBreeze specifications
 
-Generative: rates ability to answer 8 cross-manufacturer comparison questions.
+**Generative judge context**: This is the most complex generative dimension. The judge receives data from **three separate Cypher queries** to cover the full scope of answerable questions:
+
+1. **Product-outgoing relationships** - all relationships FROM Product/Organization entities, showing source, relationship type, target entity name, type, full description (up to 200 chars), plus `value` and `unit` properties for Specification targets. Limit 300 rows sorted by source type, source name, relationship type.
+
+2. **Specification detail** - dedicated query returning Product -> Specification links with `name`, `description`, `value`, `unit` for all Specification entities. This ensures the judge sees numeric spec data that may be truncated or missing from the relationship query.
+
+3. **Mode and standard coverage** - entities with "mode" in their name (type Feature/Setting) and their relationships, plus Standard entities with compliance relationships. This covers questions 5, 7, and 8 that the relationship query may miss.
+
+**Quality criteria per question**:
+
+| Question | What the judge must see | Required data signals |
+|----------|------------------------|---------------------|
+| Q1: Which manufacturers? | Organization entities with MANUFACTURES links | >= 3 org->product pairs |
+| Q2: Compare features? | Product -> Feature relationships | Feature names + descriptions for 3+ products |
+| Q3: Pressure range of [device]? | Product -> Specification with numeric value | value + unit fields populated (e.g. "4-20", "cmH2O") |
+| Q4: Which devices treat OSA? | Product/Feature -> MedicalCondition TREATS links | At least 1 TREATS relationship |
+| Q5: Supported modes? | Feature/Setting entities with "mode" in name | Mode entities linked to products via HAS_FEATURE/HAS_SETTING |
+| Q6: Components of [device]? | Product -> Component HAS_COMPONENT links | Component names for specific products |
+| Q7: Compliance standards? | Product/Org -> Standard COMPLIES_WITH links | Standard names with standard_id |
+| Q8: Compare specs? | Specification entities with value + unit across products | Numeric values for 3+ products on same spec type |
+
+**Scoring rubric**: 1=0-1 answerable, 2=2-3, 3=4-5, 4=6-7, 5=all 8 answerable with specific data (not just entity existence, but retrievable values).
+
+**Known failure modes** (v19 analysis):
+- **Context truncation** (primary cause of 2/5 in v19): The judge received `left(b.description, 60)` which truncates spec descriptions at 60 characters. Specifications like "Operating pressure range: 4-20 cmH2O with 0.5 cmH2O increments" become "Operating pressure range: 4-20 cmH2O with 0.5 cmH2O incr" - the value is present but the judge may not see complete data. More critically, `b.value` and `b.unit` properties were not included in the query at all, so even when the extraction pipeline correctly populates these structured fields, the judge cannot see them.
+- **Missing relationship types in context**: The single query `WHERE toLower(a.type) IN ['product', 'organization']` only returns outgoing relationships from Product and Organization nodes. Relationships between other entity types (Feature -> MedicalCondition for TREATS, Standard -> Product for compliance) are invisible to the judge.
+- **LIMIT too restrictive**: `LIMIT 200` on a graph with 1000+ entities and 3000+ relationships may cut off important Product relationships, especially for products appearing later alphabetically.
+- **Deterministic-generative disconnect**: v19 scores 9/10 deterministic (the data exists and can be queried) but 2/5 generative (the judge doesn't receive enough context to evaluate). This gap indicates a judge context problem, not an extraction quality problem. The fix is query expansion, not pipeline changes.
 
 ### 10. Property Completeness (5 checks)
 
@@ -181,6 +251,30 @@ CPAP (therapy/mode), Obstructive Sleep Apnea / OSA, humidifier, mask, tubing, ai
 ### Expected Specs (per product where available)
 Pressure ranges (4-20 hPa typical), weight, dimensions, sound level, power supply voltage, operating temperature
 
+## Generative Judge Design Principles
+
+The generative scoring component accounts for 50% of the hybrid score. Its effectiveness depends entirely on the quality and completeness of the context provided to the LLM judge. The following principles govern judge query design.
+
+### Context completeness over brevity
+
+Each generative prompt must include ALL data the judge needs to evaluate the dimension. Truncating descriptions, omitting properties, or limiting rows below the meaningful threshold produces artificially low scores that reflect judge blindness rather than graph quality. When deterministic checks pass at 90%+ but generative scores are below 3/5, the first investigation should be judge context - not pipeline changes.
+
+### Property inclusion rules
+
+- **Specification entities**: Always include `name`, `description` (full, up to 200 chars), `value`, `unit`, and linked product name
+- **Organization entities**: Include `name`, `description`, `role`
+- **Product entities**: Include `name`, `description`, and linked manufacturer name
+- **Feature/Setting entities**: Include `name`, `description`, and linked product name
+- **Relationship type**: Always use `type(r)` (APOC native types), never `r.type` (which is NULL)
+
+### Multi-query judges
+
+Complex dimensions like query_answerability cannot be evaluated from a single Cypher query. When a single query cannot capture the full scope of a dimension, use multiple queries and concatenate results in the prompt. Each query should be labeled in the prompt so the judge understands what data it is seeing.
+
+### Failure diagnosis from judge reasoning
+
+The judge's `reasoning` field in the JSON response is the primary diagnostic tool for understanding quality gaps. The reasoning should identify specific missing data points (not vague statements like "incomplete data"). When the judge says "no pressure ranges visible", check whether (a) the extraction pipeline produced pressure specs, (b) the spec entities have value/unit properties, (c) the judge query includes those properties. This three-step diagnosis distinguishes extraction failures from judge context failures.
+
 ## Execution
 
 All ingestion runs use the `kg` CLI tool:
@@ -194,29 +288,41 @@ kg ingest data/raw/cpap-benchmark/ --config tmp/.kg-builder/config.yml
 kg ingest data/raw/cpap-benchmark/ --config tmp/.kg-builder/config.yml --ontology data/ontologies/cpap_medical_device.yml
 ```
 
-Benchmark scoring: `python tests/benchmark_multidoc.py "description of iteration"`
+Benchmark scoring: `python tests/benchmark_multidoc.py v19 "description of iteration"`
 
 ## Iteration Results
 
 | Iteration | Hybrid | Det | Gen | Focus |
 |-----------|--------|-----|-----|-------|
 | v01 (baseline) | 73% | 54/63 (86%) | 3.0/5.0 | Free mode, no ontology, 33 emergent types |
-| v02 | - | - | - | Ontology constraint + standard base_entity properties |
-| v03 | - | - | - | Cross-doc resolution improvement |
-| v04 | - | - | - | Specification property extraction |
-| v05 | - | - | - | Query answerability and relationship completeness |
 | v06-v08 | 86-88% | 61-63/63 | 3.6-3.8 | Enriched buffer prompts, configurable thresholds |
 | v09 (fluid) | 81% | 59/63 (94%) | 3.4/5.0 | Fluid mode, empty ontology + intent prompt, cured at doc 4 |
+| v17 | 72% | - | - | Clustering prompt hardening |
+| v18 | 82% | 60/63 (95%) | 3.4/5.0 | Intent-driven discovery model |
+| v19 | 84% | 61/63 (97%) | 3.6/5.0 | Bayesian cross-type dedup, SUPPORTS_MODE fix |
 
-## Iteration Targets
+## v19 Failure Analysis
 
-| Iteration | Target Score | Focus |
-|-----------|-------------|-------|
-| v01 (baseline) | Establish baseline | Free mode, no ontology - **actual: 73%** |
-| v02 | > 80% | Add ontology constraint + standard properties |
-| v03 | > 85% | Improve cross-doc resolution |
-| v04 | > 88% | Specification property extraction |
-| v05 | > 90% hybrid | Query answerability and relationship completeness |
+### Deterministic failures (2/63)
+
+1. **cross_doc_resolution** - Cross-type duplicates < 20 check: actual=39. The Bayesian posterior reduced duplicates from 56 to 39 (30% reduction) but 15-20 remaining are genuinely ambiguous entities where the type boundary is real
+2. **query_answerability** - "What modes does SleepStyle support?" - SleepStyle modes are extracted as Feature/Setting entities but the query path from Product to mode entities may be indirect
+
+### Generative failures (biggest scoring gap)
+
+| Dimension | Det | Gen | Gap | Root Cause |
+|-----------|-----|-----|-----|-----------|
+| query_answerability | 9/10 | 2/5 | -7 | Judge context truncation (60-char desc, no value/unit, LIMIT 200) |
+| cross_doc_resolution | 5/6 | 3/5 | -2 | Judge sees counts but cannot assess genuine vs false duplicates |
+| product_coverage | 7/7 | 4/5 | -3 | iBreeze possibly missing, duplicate product variants visible |
+
+The deterministic-generative gap for query_answerability (9/10 vs 2/5) is the single largest contributor to the hybrid score deficit. The graph contains the data (deterministic proves it), but the judge's Cypher context window is too narrow to see it. This is a benchmark implementation issue, not an extraction quality issue.
+
+### Priority fixes for v20 benchmark implementation
+
+1. **Expand query_answerability judge context** - Replace single 200-row query with multi-query approach including spec details (value, unit), mode coverage, and standard compliance. Increase description from 60 to 200 chars. This alone could lift generative from 2/5 to 4/5 (+2 points -> +20% on generative -> +10% on hybrid)
+2. **Add type context to cross_doc_resolution prompt** - Include entity descriptions alongside duplicate counts so the judge can distinguish genuine type ambiguity from resolution failures
+3. **Product coverage prompt enrichment** - Include product descriptions and Feature/Component counts per product so the judge can assess completeness beyond name matching
 
 ## v01 Key Findings
 
