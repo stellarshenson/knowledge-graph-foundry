@@ -1,6 +1,6 @@
 # Multi-Doc Benchmark v21 - deferred cross-type dedup
 
-**Hybrid Score**: 88%
+**Hybrid Score**: 88
 **Deterministic**: 61/63 (97%)
 **Generative**: 4.0/5.0
 **Date**: 2026-03-11T14:27:37.014811
