@@ -1,4 +1,4 @@
-# Knowledge Graph Forge - CLI and Advanced Ingestion Engine v21
+# Knowledge Graph Forge - CLI and Advanced Ingestion Engine v22
 
 ## 1. Introduction
 
@@ -764,6 +764,110 @@ When the query agent generates Cypher, it includes relevant schema comments in i
 
 **Pydantic model generation** - during extraction, ontology entity types are converted to Pydantic response models. Each entity type becomes a Pydantic class with `Field` descriptions drawn from the ontology, `field_validator` functions for property validation rules (min/max bounds, allowed values, regex patterns), and `json_schema_extra` for few-shot examples. The Instructor library enforces these models against LLM output with automatic retry on validation failure. Entity types should use distinct field names (e.g., `medication_name` instead of just `name`) to avoid LLM confusion when multiple types share the same property structure - these disambiguated names are mapped back to canonical property names during loading.
 
+#### Type Hierarchy (H5g)
+
+The ontology YAML supports a `type_hierarchy` section defining parent-child subsumption relationships between entity types. The design draws from OntoType (Komarlu et al., KDD 2024) which demonstrates coarse-to-fine entity typing using type hierarchy as a structural prior - resolving entities from parent to child types progressively without labeled training data. AFET (Ren et al., EMNLP 2016) further validates that entities can carry multiple valid types at different hierarchy levels, informing our multi-facet label approach for cross-parent pairs. The ontology-grounded disambiguation strategy is supported by Feng et al. (KDD Workshop 2024) who show that IS_A hierarchy structure improves type assignment consistency over purely textual similarity. See `references/ontology/` for full paper summaries.
+
+Children are specializations of the parent, and entities matching any child type are implicitly members of the parent category. The hierarchy provides a safety net during cross-type resolution where entities with siblings under the same parent auto-merge. In fluid mode (no ontology seed), the hierarchy starts empty and is discovered from cross-type duplicate patterns via `evolve_type_hierarchy()` - validated by survey evidence (Bian et al., 2025; da Cruz et al., 2025) that LLM-driven ontology evolution from data is an effective approach for schema discovery.
+
+```yaml
+type_hierarchy:
+  - name: Part
+    description: Physical part of a device (component or accessory)
+    children: [Component, Accessory]
+  - name: Behavior
+    description: Device capability or configurable parameter
+    children: [Feature, Setting]
+```
+
+Parent types (`Part`, `Behavior`) are structural categories that never appear as entity types themselves - they exist only to define the subsumption relationship. The hierarchy is a dedup resolution strategy, not general ontology guidance - it materializes inside the resolution/buffer machinery only when cross-type duplicate patterns demand it. The hierarchy informs `_resolve_cross_type()` merges and gets flushed to `ontology.yml` for the next run's resolution, but is NOT injected into extraction prompts as type guidance. Extraction prompts use only `resolution_intent` + `resolution_guide` (prose guidance) for type disambiguation.
+
+#### Resolution Intent and Resolution Guide (H5g)
+
+The ontology YAML supports two complementary prose sections for type disambiguation guidance:
+
+**`resolution_intent`** is the user-authored immutable prior. It expresses the domain expert's intent for how entity types should be assigned when boundaries between siblings are ambiguous. The system never modifies this section - it is the stable foundation that persists across all runs.
+
+```yaml
+resolution_intent: |
+  When a physical part could be either Component or Accessory, prefer Component.
+  Use Accessory only for items sold separately that are not integral to device
+  operation (e.g., carrying case, extra tubing kit).
+
+  When a parameter could be either Feature or Setting, prefer Feature for
+  capabilities the device provides (e.g., ramp, auto-start). Use Setting only
+  for user-adjustable numeric parameters (e.g., pressure level, humidity level).
+
+  AHI, therapy pressure, ramp time, and altitude are always Specification when
+  they carry a numeric value or range. They are Setting only when describing
+  the user-adjustable configuration without a specific value.
+
+  Entities like humidity, pressure relief, and supplemental oxygen that appear
+  as both a Feature (the capability) and a Specification (the measured value)
+  should be typed as Feature. The numeric specification should be a separate
+  Specification entity linked via HAS_SPECIFICATION.
+```
+
+**`resolution_guide`** is the evolved section that accumulates learned disambiguation rules. When `resolution_guide_evolution` is enabled (default true), the system generates new rules and appends them at buffer flush time. The user can review, edit, or prune the guide between runs.
+
+**Evolution triggers**: the resolution guide evolves using the same trigger infrastructure as ontology refinement (Section 5.5, Refinement Triggers) and schema curing (Section 5.8) - at refinement checkpoints, curing events, and buffer flush. The guide starts empty and stays empty until very strong evidence justifies adding a rule.
+
+**Conservative evolution policy**: the system generates a guide rule only when all of the following conditions hold for a cross-type duplicate pattern:
+
+- **Recurrence**: the same normalized entity name appears with conflicting types in >= 3 separate documents (not just 3 chunks - 3 distinct source documents)
+- **Consistency**: one type dominates with >= 75% frequency across all occurrences (e.g., "humidifier" is Component 12 times, Accessory 3 times - Component dominates at 80%)
+- **Hierarchy coverage**: the conflicting types are siblings under the same hierarchy parent (if a hierarchy exists). Pairs without a shared parent are left to the Bayesian model, not codified as guide rules
+
+When these thresholds are not met, the pattern is considered genuinely ambiguous and no rule is generated. The guide accumulates slowly - a 10-document run might produce 0-2 rules. This prevents premature codification of disambiguation patterns that may not generalize beyond the current corpus. The user can always add rules manually to either `resolution_intent` (permanent) or `resolution_guide` (evolvable) based on domain knowledge.
+
+Rules that are generated follow a concise format: entity name, preferred type, and the evidence basis. Each rule carries a run-stamped comment marker so the user can trace when and why it was added.
+
+```yaml
+resolution_guide: |
+  # Auto-generated from v21 extraction patterns
+  "mask fit" should always be typed as Feature, not Setting or Specification.
+  "ahi" with a numeric value is Specification; without a value it is Feature.
+  "ramp time" as a user-adjustable parameter is Setting; as a measured value
+  with specific minutes is Specification.
+  # Auto-generated from v22 extraction patterns
+  "heated humidifier" is always Component (integral device part), never Accessory.
+```
+
+Both sections are injected into the extraction prompt as a resolution guidance block after the property definitions, with the `resolution_intent` (the prior) appearing first. Combined length is capped at `MAX_RESOLUTION_PROMPT_TOKENS` (default 500, internal constant in `defaults.py`). Unlike the use-case intent (Section 5.1a) which describes what the knowledge graph is for, these sections describe how to assign types correctly.
+
+This two-layer design acknowledges that type disambiguation knowledge accumulates over time. The `resolution_intent` captures the domain expert's invariant understanding. The `resolution_guide` captures what the system has learned from data. The first run may produce many cross-type duplicates because the guide is empty. Each subsequent run produces fewer as the guide grows. The KGF system automates discovery of ambiguous boundaries, while the user curates both layers to make the ontology precise.
+
+#### Persisted Type Exemplars (H5g)
+
+The `type_exemplars` section stores representative entity instances per type, used as few-shot disambiguation examples in extraction prompts. Exemplars are auto-flushed from the accumulated type exemplars at the end of each ingestion run (top N by frequency per type, configurable via `max_type_exemplars`), and the user can curate them between runs.
+
+```yaml
+type_exemplars:
+  Component:
+    - name: humidifier
+      description: Integrated humidifier component with water chamber
+    - name: air filter
+      description: Physical air filtration element in the device
+  Accessory:
+    - name: carrying case
+      description: Protective travel case sold separately
+    - name: mask cushion
+      description: Replaceable silicone cushion for the mask
+  Feature:
+    - name: ramp
+      description: Gradually increases pressure from a lower starting point
+    - name: auto-start
+      description: Automatically begins therapy when user breathes into mask
+  Setting:
+    - name: pressure level
+      description: User-adjustable therapy pressure in cmH2O
+  Specification:
+    - name: weight
+      description: Device weight measurement (e.g., 1.33 kg)
+```
+
+Exemplars complement the type hierarchy by providing concrete disambiguation examples. The hierarchy defines structural relationships between types; exemplars show what each type looks like in practice. Together they give the LLM both the rule (Component vs Accessory boundary) and the instances (humidifier is Component, carrying case is Accessory).
+
 ### 5.5 Ontology Buffer
 
 The ontology buffer is the central mechanism that makes the extraction pipeline adaptive. Rather than treating the ontology as a static input file read once at startup, the buffer holds the evolving ontology in memory throughout the entire ingestion run. Every document processed contributes back to it, so later documents benefit from what earlier documents taught the system.
@@ -784,7 +888,10 @@ The buffer tracks:
 
 - **Entity types**: name, description, frequency count (how often this type has appeared across chunks), source (`seed`, `seed_normalized`, `yaml`, `discovered`), confidence (`high`, `medium`, `low`)
 - **Relationship types**: name, source type, target type, frequency count, transitive flag (from OWL `TransitiveProperty` if OWL seed)
-- **Type hierarchy**: parent-child relationships between entity types (from OWL `subClassOf` or inferred by normalizer), used as context in extraction prompts
+- **Type hierarchy**: parent-child subsumption relationships between entity types (from YAML `type_hierarchy`, OWL `subClassOf`, or evolved from cross-type duplicate patterns). Used exclusively in cross-type resolution as a safety net for sibling merges - not injected into extraction prompts. The buffer maintains a `child_to_parent` lookup for O(1) shared-parent checks. In fluid mode (no ontology seed), the hierarchy starts empty and is discovered from data via `evolve_type_hierarchy()` when recurring cross-type patterns meet conservative thresholds
+- **Resolution intent**: user-authored immutable prior for type disambiguation, loaded from `resolution_intent` in ontology YAML. Never modified by the system
+- **Resolution guide**: evolved disambiguation rules, loaded from `resolution_guide` in ontology YAML. When `resolution_guide_evolution` is enabled (default true), the system appends learned rules at flush time based on observed cross-type patterns
+- **Type exemplars**: representative entity instances per type, loaded from `type_exemplars` in ontology YAML and updated during extraction. Top N by frequency per type (configurable via `max_type_exemplars`). Exemplars are injected into extraction prompts via `_build_entity_types_block()` as few-shot examples
 - **Type variants**: raw type labels the LLM has produced that map to a canonical type (e.g., "Human" -> "Person", "Corp" -> "Organization")
 - **Disjoint constraints**: type pairs the seed considers incompatible (from OWL `disjointWith` or normalizer inference), logged as warnings during extraction but not enforced - the data may legitimately contain entities that bridge seed-defined boundaries
 - **Coverage score**: fraction of recently extracted types that match existing buffer entries, measured per document
@@ -875,11 +982,12 @@ Relationship type constraints (source/target type pairs) are not required to be 
 
 #### Buffer Flush
 
-At the end of the ingestion run, the final buffer state is written to `.kgf/ontology.yml`. This means:
+At the end of the ingestion run, the final buffer state is written to `.kgf/ontology.yml`. The flush writes all sections: `entity_types`, `relationship_types`, `type_hierarchy` (reflecting confirmed types grouped by parent), `resolution_intent` (preserved verbatim - never modified), `resolution_guide` (evolved rules appended when `resolution_guide_evolution` is enabled), and `type_exemplars` (top N by frequency per type). This means:
 
 - **Free extraction** produces an ontology as a side effect - the next run can start constrained
 - **Constrained extraction** produces a refined ontology that incorporates what the documents actually contained
 - The flushed ontology includes frequency data as comments, so the user can see which types were common vs rare
+- **Resolution guide evolution**: when `resolution_guide_evolution` is enabled, the system analyzes cross-type duplicates that were not resolved during the run and generates disambiguation rules that append to the `resolution_guide` section. The `resolution_intent` (user-authored prior) is preserved verbatim and never modified. This creates a knowledge accumulation loop where each run teaches the ontology about its own ambiguities
 
 ### 5.6 Post-Load OWL Reasoning
 
@@ -1501,7 +1609,7 @@ The `concurrency` config option controls parallel LLM calls for chunk extraction
 
 - **Intra-document**: chunks extracted in parallel, results accumulated
 - **Inter-document**: sequential processing to maintain buffer consistency
-- **Rate limiting**: the concurrency limit serves as the primary rate control. API-level rate limit errors (HTTP 429) trigger per-call backoff without affecting other parallel calls
+- **Rate limiting**: optional token bucket rate limiter (RFC 4697) enforces a global request rate across all worker threads. Configured via `llm.rate_limit.requests_per_second` in config. When omitted, no rate limiting is applied (zero overhead). Each worker calls `acquire()` before the LLM API call, blocking until a token is available. Thread-safe via `threading.Lock`. API-level rate limit errors (HTTP 429) additionally trigger per-call backoff via litellm
 
 ### 6.5 Atomic Facts Extraction
 
@@ -1534,7 +1642,9 @@ Beyond exact ID matching, the pipeline runs a post-dedup resolution step to catc
 
 When embeddings are unavailable, the fallback uses normalized-name Levenshtein alone at threshold 0.85. Pairs exceeding the threshold are connected via Union-Find, and each connected component is merged into a canonical entity (longest name, longest description, unioned source chunks, averaged confidence). Brute-force pairwise comparison is used since entity counts per type block remain under 2,000 in practice.
 
-**Layer 3 - Cross-type resolution** (`resolution.py`): entities with identical normalized names across different types are candidates for merging into the most specific type. A Bayesian posterior model combines multiple evidence signals to decide merges, replacing the previous binary description-similarity gate. The posterior `P(same_entity | evidence)` is computed from: (1) a prior based on name identity - identical normalized names get prior=0.8 (high base rate), fuzzy matches get prior=0.2; (2) description similarity likelihood ratio (Jaccard on filtered word sets, floored at 0.3 to prevent descriptions that naturally diverge across types from vetoing merges); (3) embedding cosine similarity likelihood ratio (when available, strong signal); (4) source chunk co-occurrence likelihood ratio (shared chunks indicate same-document context). These combine via odds form: `posterior_odds = prior_odds * LR_desc * LR_emb * LR_cooc`. Merges proceed when the posterior exceeds `cross_type_merge_threshold` (default 0.6). This means all identical-name cross-type pairs merge by default (prior=0.8 easily clears 0.6 even with low description similarity), while genuinely different entities with similar names can still be blocked if evidence is weak across all signals.
+**Layer 3 - Cross-type resolution** (`resolution.py`): entities with identical normalized names across different types are candidates for merging into the most specific type. When the ontology includes a type hierarchy (Section 5.4, H5g), the resolver first checks whether the two types share a parent via `OntologyState.shared_parent()`. Sibling types under the same parent (e.g., Component and Accessory under Part) auto-merge without computing the Bayesian posterior - the hierarchy relationship is sufficient evidence. The surviving type is chosen by frequency-based priority. For multi-facet entities where both types are under different parents (e.g., Setting under Behavior and Specification with no parent), both types are preserved as `entity.labels` for multi-label loading. Only pairs without a hierarchy relationship fall through to the Bayesian posterior path. This hierarchy safety net is controlled by `extract.hierarchy_resolution` (default true).
+
+For pairs that fall through to the Bayesian path, a Bayesian posterior model combines multiple evidence signals to decide merges, replacing the previous binary description-similarity gate. The posterior `P(same_entity | evidence)` is computed from: (1) a prior based on name identity - identical normalized names get prior=0.8 (high base rate), fuzzy matches get prior=0.2; (2) description similarity likelihood ratio (Jaccard on filtered word sets, floored at 0.3 to prevent descriptions that naturally diverge across types from vetoing merges); (3) embedding cosine similarity likelihood ratio (when available, strong signal); (4) source chunk co-occurrence likelihood ratio (shared chunks indicate same-document context). These combine via odds form: `posterior_odds = prior_odds * LR_desc * LR_emb * LR_cooc`. Merges proceed when the posterior exceeds `cross_type_merge_threshold` (default 0.6). This means all identical-name cross-type pairs merge by default (prior=0.8 easily clears 0.6 even with low description similarity), while genuinely different entities with similar names can still be blocked if evidence is weak across all signals.
 
 Type priority for approved merges is built dynamically from the ontology buffer's frequency counts - higher frequency types get higher priority. A static fallback table (Specification > Component > Feature > WorkMode > Product > MedicalCondition > Standard > Organization) covers cases where no frequency data is available. After cross-type merging, relationship endpoints are rewired from the dropped entity's ID to the surviving canonical entity's ID.
 
@@ -1939,18 +2049,26 @@ Entities and relationships are loaded in batches using parameterized Cypher.
 **Node creation** (unstructured):
 
 ```cypher
-MERGE (n:Entity:{type} {id: $id})
+MERGE (n:Entity {id: $id})
 SET n.name = $name, n.description = $description
 SET n += $properties
+WITH n
+CALL apoc.create.addLabels(n, $labels) YIELD node
+RETURN node
 ```
+
+When an entity carries multiple type labels (from multi-facet resolution, Section 6.7 H5g), `$labels` contains all types (e.g., `["Setting", "Specification"]`). For single-type entities, `$labels` is `[entity.type]`. This replaces the previous pattern of embedding the type directly in the MERGE label, enabling multi-label nodes without additional Cypher statements.
 
 **Node creation** (structured, batched by type for reduced label-switching overhead):
 
 ```cypher
 UNWIND $batch AS row
-MERGE (n:Entity:{type} {id: row.id})
+MERGE (n:Entity {id: row.id})
 SET n.name = row.name
 SET n += row.properties
+WITH n, row
+CALL apoc.create.addLabels(n, row.labels) YIELD node
+RETURN node
 ```
 
 **Relationship creation**:
@@ -2200,11 +2318,15 @@ The pipeline handles failures at multiple levels - LLM calls, Neo4J transactions
 
 ### LLM Retry Strategy
 
-The Instructor library provides built-in retry logic for LLM validation failures. When the LLM returns output that fails Pydantic validation, Instructor re-prompts with the validation error, allowing the LLM to self-correct. The retry limit is configurable (default 3 attempts).
+Three layers of protection handle LLM call failures, each operating at a different scope:
 
-For API-level failures (rate limits, timeouts, transient errors), the pipeline implements exponential backoff with jitter. Rate limit responses (HTTP 429) trigger backoff based on the `Retry-After` header when available. Connection timeouts trigger immediate retry with increasing delay.
+1. **Token bucket rate limiter (pre-call, global)** - optional, configured via `llm.rate_limit.requests_per_second`. Enforces a maximum request rate across all concurrent worker threads before any LLM call is made. When disabled (default), zero overhead. Uses `threading.Lock` and `time.monotonic()` from stdlib.
 
-Fallback model support allows specifying an alternative LLM model to try when the primary model consistently fails. This is configured in `config.yml` under `llm.fallback_model`.
+2. **litellm 429 backoff (per-request, reactive)** - handles API-level rate limit responses (HTTP 429) with exponential backoff based on `Retry-After` header. Connection timeouts trigger immediate retry with increasing delay. This is reactive - it fires after a rate limit is hit.
+
+3. **Instructor retry (per-request, validation)** - retries when the LLM returns output that fails Pydantic validation. Instructor re-prompts with the validation error for self-correction. Retry limit configurable (default 3 attempts).
+
+The token bucket limiter prevents rate limit errors proactively, while litellm backoff handles any that slip through. Together they eliminate the need to reduce `concurrency` below 4 for most API tiers.
 
 ### Neo4J Transaction Resilience
 

@@ -18,6 +18,19 @@ from kg_builder_cli.extraction.chunking import chunk_text
 from kg_builder_cli.extraction.dedup import deduplicate, normalize_entity_ids
 from kg_builder_cli.extraction.embeddings import generate_embeddings
 from kg_builder_cli.extraction.extract import LLMAuthError, create_extraction_client, extract_chunk
+from kg_builder_cli.extraction.rate_limiter import TokenBucketRateLimiter
+
+
+class ExtractionFailedError(RuntimeError):
+    """Raised when all chunks in a document fail extraction."""
+
+    def __init__(self, document: str, total_chunks: int):
+        self.document = document
+        self.total_chunks = total_chunks
+        super().__init__(
+            f"All {total_chunks} chunks failed extraction for {document} "
+            "- check LLM provider configuration and rate limits"
+        )
 from kg_builder_cli.extraction.parsing import parse_document
 from kg_builder_cli.extraction.prompts import build_extraction_prompt
 from kg_builder_cli.extraction.resolution import resolve_entities, rewire_relationships
@@ -141,21 +154,25 @@ def ingest_document(
         (chunk, build_extraction_prompt(chunk, ontology, intent=intent)) for chunk in chunks
     ]
 
+    # Rate limiter: no-op when rate_limit is not configured
+    rate = config.llm.rate_limit.requests_per_second if config.llm.rate_limit else 0
+    rate_limiter = TokenBucketRateLimiter(rate=rate)
+    if config.llm.rate_limit:
+        logger.info("Rate limiting enabled: {} req/s", rate)
+
+    def _throttled_extract(chunk, prompt):
+        rate_limiter.acquire()
+        return extract_chunk(
+            chunk, prompt, model_id, client,
+            temperature, max_retries, response_model,
+        )
+
     completed = 0
     total = len(prompts_and_chunks)
 
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
         futures = {
-            executor.submit(
-                extract_chunk,
-                chunk,
-                prompt,
-                model_id,
-                client,
-                temperature,
-                max_retries,
-                response_model,
-            ): chunk.id
+            executor.submit(_throttled_extract, chunk, prompt): chunk.id
             for chunk, prompt in prompts_and_chunks
         }
 
@@ -182,12 +199,7 @@ def ingest_document(
                 logger.info("Extraction progress: {}/{}", completed, total)
 
     if failed_chunks == total and total > 0:
-        logger.error(
-            "All {} chunks failed extraction for {} - check LLM provider configuration",
-            total,
-            file_path.name,
-        )
-        return _empty_result(file_path, config)
+        raise ExtractionFailedError(file_path.name, total)
 
     # Step 4b: Type resolution - Bayesian or Levenshtein fallback
     remap_count = 0
@@ -247,6 +259,8 @@ def ingest_document(
         name_threshold=config.extract.name_threshold,
         type_frequencies=type_freqs,
         cross_type_merge_threshold=config.extract.cross_type_merge_threshold,
+        ontology_state=ontology,
+        hierarchy_resolution=config.extract.hierarchy_resolution,
     )
 
     # Step 5e: Rewire relationships after cross-type entity merges
@@ -254,8 +268,16 @@ def ingest_document(
     if id_map:
         deduped_relationships = rewire_relationships(deduped_relationships, id_map)
 
-    # Step 5f: Feed back into ontology buffer
+    # Step 5f: Record cross-type stats and feed back into ontology buffer
     if buffer:
+        cross_type_stats = getattr(resolve_entities, "_last_cross_type_stats", [])
+        if cross_type_stats:
+            buffer.record_cross_type_stats(
+                [
+                    (s.norm_name, s.type_a, s.type_b, s.doc_index, s.action)
+                    for s in cross_type_stats
+                ]
+            )
         buffer.accumulate_from_result(deduped_entities, deduped_relationships)
 
     # Step 6: Build result

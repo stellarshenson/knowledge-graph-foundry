@@ -275,20 +275,132 @@ Complex dimensions like query_answerability cannot be evaluated from a single Cy
 
 The judge's `reasoning` field in the JSON response is the primary diagnostic tool for understanding quality gaps. The reasoning should identify specific missing data points (not vague statements like "incomplete data"). When the judge says "no pressure ranges visible", check whether (a) the extraction pipeline produced pressure specs, (b) the spec entities have value/unit properties, (c) the judge query includes those properties. This three-step diagnosis distinguishes extraction failures from judge context failures.
 
-## Execution
+## Benchmark Configuration
 
-All ingestion runs use the `kgf` CLI tool:
+The `.kgf/config.yml` configuration used for all benchmark runs (v18+):
 
-```bash
-# Clean graph before each iteration
-# Free mode (no ontology)
-kgf ingest data/raw/cpap-benchmark/ --config tmp/.kgf/config.yml
-
-# Constrained mode (with ontology)
-kgf ingest data/raw/cpap-benchmark/ --config tmp/.kgf/config.yml --ontology data/ontologies/cpap_medical_device.yml
+```yaml
+llm:
+  provider: bedrock
+  model: "eu.anthropic.claude-sonnet-4-20250514-v1:0"
+  region: eu-central-1
+  profile: kolomolo
+  max_retries: 3
+  timeout: 120
+extract:
+  use_embeddings: true
+  bayesian_resolution: true
+  deferred_dedup: true
+  embedding_model: "amazon.titan-embed-text-v2:0"
+  concurrency: 1  # reduce to avoid Bedrock rate limits (default 4)
+ontology_buffer:
+  intent: "Compare CPAP and auto-titrating positive airway pressure therapy devices across manufacturers, focusing on product specifications, clinical features, therapy modes, regulatory compliance, and component architecture"
+curing:
+  enabled: true
+neo4j:
+  uri: bolt://neo4j:7687
+  user: neo4j
+  password: kg-builder-pass
 ```
 
-Benchmark scoring: `python tests/benchmark_multidoc.py v19 "description of iteration"`
+The `ontology_buffer.intent` is the use-case intent that constrains the LLM extraction hypothesis space to CPAP domain-relevant entity types. Without it, the LLM samples from a broad prior over all possible types, producing inconsistent extraction across documents. This intent was the single largest signal improvement (v17 72% -> v18 82%).
+
+## Neo4j Setup
+
+### Container creation
+
+```bash
+# Create network and container (first time)
+docker network create kg-net
+docker run -d --name kg-builder-neo4j --network kg-net \
+  --hostname neo4j \
+  -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/kg-builder-pass \
+  -e 'NEO4J_PLUGINS=["apoc"]' \
+  neo4j:5
+
+# Start existing container
+docker start kg-builder-neo4j
+```
+
+### Host resolution (WSL2 workaround)
+
+Docker Desktop on WSL2 has a known port forwarding issue where `localhost` connections to mapped ports are refused. The workaround is to add the container IP to `/etc/hosts` so the `neo4j` hostname resolves directly.
+
+```bash
+# Get the container IP
+docker inspect kg-builder-neo4j --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
+# -> 172.20.0.2
+
+# Add hostname (run once, or after container recreation if IP changes)
+echo "172.20.0.2 neo4j" | sudo tee -a /etc/hosts
+
+# Verify connectivity
+python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
+```
+
+Connection URI: `bolt://neo4j:7687`, Browser: `http://neo4j:7474`
+
+### Graph management
+
+```bash
+# Wipe graph between benchmark runs (via docker exec)
+docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n) DETACH DELETE n"
+
+# Verify APOC is loaded
+docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "RETURN apoc.version()"
+```
+
+## Execution
+
+### Full benchmark procedure
+
+```bash
+# 1. Ensure Neo4j is running
+docker start kg-builder-neo4j
+
+# 2. Verify connectivity (WSL2: ensure /etc/hosts has neo4j entry)
+python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
+
+# 3. Wipe graph
+docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n) DETACH DELETE n"
+
+# 3b. Remove evolved ontology from previous runs
+rm -f .kgf/ontology.yml
+
+# 4. Ensure .kgf/config.yml exists with benchmark config (see above)
+cat .kgf/config.yml
+
+# 5. Run ingestion (fluid mode, batch/autonomous)
+kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid 2>&1 | tee logs/vNN-ingestion.log
+
+# 6. Verify no extraction failures in log
+grep "extraction failed\|ExtractionFailedError" logs/vNN-ingestion.log && echo "FAILED - rerun needed" || echo "OK"
+
+# 7. Run benchmark
+python tests/benchmark_multidoc.py vNN "description of iteration"
+
+# 8. Check results
+cat docs/benchmarks/MULTIDOC_BENCHMARK_vNN_*.md
+```
+
+### Rate limit handling
+
+Bedrock rate limits can cause `ExtractionFailedError` when all chunks in a document fail. If this happens:
+- Wait 5 minutes for rate limit cooldown
+- Reduce `extract.concurrency` in config (default 4, use 1-2 for rate-limited accounts)
+- Re-run from step 3 (wipe + ingest)
+- The CLI exits with code 1 on extraction failure - never silently continues
+
+### Ingestion modes
+
+```bash
+# Fluid mode (default for benchmarks - discovers ontology from data)
+kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid
+
+# Constrained mode (uses pre-existing ontology seed)
+kgf ingest data/raw/cpap-benchmark/ --config .kgf/config.yml --batch --fluid --ontology data/ontologies/cpap_medical_device.yml
+```
 
 ## Iteration Results
 

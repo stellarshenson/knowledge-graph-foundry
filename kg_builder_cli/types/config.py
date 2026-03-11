@@ -13,6 +13,10 @@ class Neo4jConfig(BaseModel):
     password: str = ""
 
 
+class RateLimitConfig(BaseModel):
+    requests_per_second: float = 1.0
+
+
 class LLMConfig(BaseModel):
     provider: Optional[Literal["bedrock", "openai", "anthropic"]] = None
     model: Optional[str] = None
@@ -21,6 +25,7 @@ class LLMConfig(BaseModel):
     profile: Optional[str] = None
     max_retries: int = 3
     timeout: int = 120
+    rate_limit: Optional[RateLimitConfig] = None
 
 
 class ExtractConfig(BaseModel):
@@ -49,6 +54,7 @@ class ExtractConfig(BaseModel):
     deferred_dedup: bool = False
     deferred_dedup_ambiguous_lower: float = 0.4
     deferred_dedup_llm_escalation: bool = False
+    hierarchy_resolution: bool = True
 
 
 class OntologyBufferConfig(BaseModel):
@@ -65,6 +71,7 @@ class OntologyBufferConfig(BaseModel):
     type_resolution_top_k: int = 3
     type_resolution_entropy_threshold: float = 0.8
     post_load_reasoning: bool = False
+    resolution_guide_evolution: bool = True
 
 
 class LoadConfig(BaseModel):

@@ -11,6 +11,22 @@ behavior for non-expert users appear in config.yml.
 
 from kg_builder_cli.config import CONFIG_DIR_NAME
 
+# ── Internal Constants (not exposed in user config) ─────────────────────
+# Maximum token length for resolution_intent + resolution_guide combined when
+# injected into extraction prompts. Prevents prompt bloat from evolved guides.
+# The intent (immutable prior) is always included in full; the guide is truncated
+# from the end if the combined length exceeds this limit.
+MAX_RESOLUTION_PROMPT_TOKENS: int = 500
+
+# Minimum document frequency for a cross-type duplicate pattern to generate
+# a resolution_guide rule. The same entity name must appear with conflicting
+# types in at least this many distinct source documents.
+GUIDE_EVOLUTION_MIN_DOCUMENTS: int = 3
+
+# Minimum type dominance ratio for a cross-type pattern to generate a guide rule.
+# One type must account for >= this fraction of all occurrences.
+GUIDE_EVOLUTION_MIN_DOMINANCE: float = 0.75
+
 DEFAULTS: dict = {
     # ── Neo4j Connection ──────────────────────────────────────────────
     # Database connection settings. Values support ${ENV_VAR:default} interpolation.
@@ -45,6 +61,12 @@ DEFAULTS: dict = {
         "max_retries": 3,
         # Request timeout in seconds. Extraction prompts with large chunks need 60-120s
         "timeout": 120,
+        # Optional rate limiting for LLM API calls. Omit entirely to disable.
+        # When present, uses token bucket algorithm for smooth rate enforcement.
+        # Only needed for throttled API tiers (e.g. Bedrock on-demand).
+        # "rate_limit": {
+        #     "requests_per_second": 1.0,  # max LLM requests per second
+        # },
     },
     # ── Extraction Pipeline ───────────────────────────────────────────
     # Controls document parsing, chunking, entity/relationship extraction, and resolution.
