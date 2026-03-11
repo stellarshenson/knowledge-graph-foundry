@@ -11,6 +11,7 @@ from typing import Any
 from dotenv import load_dotenv
 import yaml
 
+from kg_builder_cli.config import config_file as default_config_file
 from kg_builder_cli.types.config import AppConfig
 
 from .defaults import DEFAULTS
@@ -62,7 +63,7 @@ def load_config(
 
     Args:
         config_path: Explicit path to config.yml. When None, looks for
-            .kg-builder/config.yml in the current working directory.
+            .kgf/config.yml in the current working directory.
         overrides: Dict of CLI overrides to apply on top.
 
     Returns:
@@ -76,7 +77,7 @@ def load_config(
 
     # Determine config file location
     if config_path is None:
-        config_path = Path.cwd() / ".kg-builder" / "config.yml"
+        config_path = default_config_file()
 
     # Layer YAML values on top of defaults
     if config_path.is_file():

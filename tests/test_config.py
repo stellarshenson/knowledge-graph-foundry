@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from kg_builder_cli.config import load_config
-from kg_builder_cli.config.loader import _deep_merge, _interpolate_env
+from kg_builder_cli.settings import load_config
+from kg_builder_cli.settings.loader import _deep_merge, _interpolate_env
 
 
 class TestLoadConfigDefaults:

@@ -1,13 +1,14 @@
-"""CLI entry points for kg-builder-cli."""
+"""CLI entry points for Knowledge Graph Forge."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from loguru import logger
 import typer
 
-app = typer.Typer(name="kg", help="Knowledge Graph Builder CLI", invoke_without_command=True)
+from kg_builder_cli.config import APP_NAME, APP_SHORT, config_dir, ontology_file, logger
+
+app = typer.Typer(name=APP_SHORT, help=f"{APP_NAME} CLI", invoke_without_command=True)
 
 
 @app.callback(invoke_without_command=True)
@@ -39,7 +40,7 @@ def ingest(
     cure: bool = typer.Option(False, "--cure", help="Force-cure after first document"),
 ):
     """Ingest documents into the knowledge graph."""
-    from kg_builder_cli.config import load_config
+    from kg_builder_cli.settings import load_config
     from kg_builder_cli.ontology.buffer import OntologyBuffer
 
     logger.info("ingesting from {}", source)
@@ -107,7 +108,7 @@ def ingest(
 
     # Flush ontology buffer after all files
     if buffer and config.ontology_buffer.flush_on_complete:
-        flush_path = Path.cwd() / ".kg-builder" / "ontology.yml"
+        flush_path = ontology_file()
         buffer.flush(flush_path)
         logger.info("ontology buffer flushed: coverage={:.0%}", buffer.coverage())
 
@@ -625,12 +626,12 @@ def query(
 
 @app.command()
 def init():
-    """Initialize .kg-builder/ directory with default configuration."""
-    from kg_builder_cli.config.defaults import DEFAULTS
+    """Initialize .kgf/ directory with default configuration."""
+    from kg_builder_cli.settings.defaults import DEFAULTS
 
-    kg_dir = Path.cwd() / ".kg-builder"
+    kg_dir = config_dir()
     if kg_dir.exists():
-        logger.info(".kg-builder/ already exists")
+        logger.info("{} already exists", kg_dir)
         return
 
     import yaml

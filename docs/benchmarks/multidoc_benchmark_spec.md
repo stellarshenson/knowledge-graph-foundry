@@ -277,15 +277,15 @@ The judge's `reasoning` field in the JSON response is the primary diagnostic too
 
 ## Execution
 
-All ingestion runs use the `kg` CLI tool:
+All ingestion runs use the `kgf` CLI tool:
 
 ```bash
 # Clean graph before each iteration
 # Free mode (no ontology)
-kg ingest data/raw/cpap-benchmark/ --config tmp/.kg-builder/config.yml
+kgf ingest data/raw/cpap-benchmark/ --config tmp/.kgf/config.yml
 
 # Constrained mode (with ontology)
-kg ingest data/raw/cpap-benchmark/ --config tmp/.kg-builder/config.yml --ontology data/ontologies/cpap_medical_device.yml
+kgf ingest data/raw/cpap-benchmark/ --config tmp/.kgf/config.yml --ontology data/ontologies/cpap_medical_device.yml
 ```
 
 Benchmark scoring: `python tests/benchmark_multidoc.py v19 "description of iteration"`

@@ -9,6 +9,8 @@ Only high-level feature toggles and parameters that meaningfully affect pipeline
 behavior for non-expert users appear in config.yml.
 """
 
+from kg_builder_cli.config import CONFIG_DIR_NAME
+
 DEFAULTS: dict = {
     # ── Neo4j Connection ──────────────────────────────────────────────
     # Database connection settings. Values support ${ENV_VAR:default} interpolation.
@@ -179,7 +181,7 @@ DEFAULTS: dict = {
         "min_frequency_to_confirm": 2,
         # Minimum frequency for type emergence tracking. 1 = any single occurrence counts
         "min_frequency_to_emerge": 1,
-        # When true, flush the final ontology state to .kg-builder/ontology.yml at
+        # When true, flush the final ontology state to <CONFIG_DIR>/ontology.yml at
         # run completion. Free extraction produces a usable ontology as a side effect
         "flush_on_complete": True,
         # Maximum exemplar entities stored per type for Bayesian resolution.
@@ -213,7 +215,7 @@ DEFAULTS: dict = {
         "validate": True,
     },
     # ── Agent Memory ──────────────────────────────────────────────────
-    # Persistent operational knowledge stored in .kg-builder/memory/.
+    # Persistent operational knowledge stored in <CONFIG_DIR>/memory/.
     "memory": {
         # When true, agent stores and retrieves operational knowledge across sessions
         "enabled": True,
@@ -301,8 +303,8 @@ DEFAULTS: dict = {
         # Contains YAML/markdown files describing JSON field semantics
         "schema": None,
         # Directory for agent memory persistence
-        "memory": ".kg-builder/memory/",
+        "memory": f"{CONFIG_DIR_NAME}/memory/",
         # Directory for schema migration plans and rollback scripts
-        "migrations": ".kg-builder/migrations/",
+        "migrations": f"{CONFIG_DIR_NAME}/migrations/",
     },
 }
