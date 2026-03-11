@@ -59,7 +59,7 @@ class ExtractConfig(BaseModel):
 
 class OntologyBufferConfig(BaseModel):
     seed_from: Optional[str] = None
-    intent: Optional[str] = None
+    resolution_intent: Optional[str] = None
     seed_depth: int = 2
     seed_filter: Optional[str] = None
     refine_every_n_docs: int = 5

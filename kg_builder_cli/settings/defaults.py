@@ -178,13 +178,14 @@ DEFAULTS: dict = {
         # Path to ontology seed file. Any format: OWL, YAML, markdown, plain text.
         # OWL parsed programmatically; others normalized via LLM. None = free extraction
         "seed_from": None,
-        # Intent prompt guiding extraction toward a specific use case. Can be short
-        # ("medical device comparison") or long (multi-sentence description of what
-        # the knowledge graph should capture and how it will be queried). Passed to
-        # extraction prompts to focus the LLM on relevant entity types, relationships,
-        # and properties. A well-crafted intent dramatically improves extraction relevance.
+        # Single source for extraction intent: guides both extraction focus and type
+        # disambiguation. Can be short ("medical device comparison") or long
+        # (multi-sentence description of what the knowledge graph should capture and
+        # how it will be queried). Passed to extraction prompts to focus the LLM on
+        # relevant entity types, relationships, and properties. A well-crafted intent
+        # dramatically improves extraction relevance. Never stored in ontology YAML.
         # None = generic extraction without domain focus
-        "intent": None,
+        "resolution_intent": None,
         # Maximum depth for OWL class hierarchy traversal during seed import.
         # 2 = classes and their direct subclasses. Deeper values import more specificity
         "seed_depth": 2,

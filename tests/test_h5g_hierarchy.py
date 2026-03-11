@@ -274,7 +274,6 @@ class TestBufferHierarchy:
                             "children": ["Component", "Accessory"],
                         }
                     ],
-                    "resolution_intent": "Prefer Component over Accessory for integral parts.",
                     "resolution_guide": '"humidifier" is always Component.',
                     "type_exemplars": {
                         "Component": [
@@ -285,7 +284,7 @@ class TestBufferHierarchy:
             )
         )
         buffer = OntologyBuffer.from_yaml(ontology_file, buffer_config)
-        snapshot = buffer.snapshot()
+        snapshot = buffer.snapshot(resolution_intent="Prefer Component over Accessory for integral parts.")
 
         assert len(snapshot.type_hierarchy) == 1
         assert snapshot.type_hierarchy[0].name == "Part"
@@ -319,7 +318,7 @@ class TestBufferHierarchy:
         assert buffer.shared_parent("Unknown", "Component") is None
 
     def test_flush_includes_hierarchy_and_guide(self, tmp_path, buffer_config):
-        """Flush writes hierarchy, intent, guide, and exemplars to YAML."""
+        """Flush writes hierarchy and guide to YAML. resolution_intent is NOT flushed."""
         ontology_file = tmp_path / "seed.yml"
         ontology_file.write_text(
             yaml.dump(
@@ -329,7 +328,6 @@ class TestBufferHierarchy:
                     "type_hierarchy": [
                         {"name": "Part", "children": ["Component", "Accessory"]}
                     ],
-                    "resolution_intent": "Always prefer Component.",
                     "resolution_guide": "Rule 1.",
                 }
             )
@@ -341,7 +339,7 @@ class TestBufferHierarchy:
         data = yaml.safe_load(out.read_text())
         assert "type_hierarchy" in data
         assert data["type_hierarchy"][0]["name"] == "Part"
-        assert data["resolution_intent"] == "Always prefer Component."
+        assert "resolution_intent" not in data
         assert data["resolution_guide"] == "Rule 1."
 
     def test_record_cross_type_stats(self, buffer_config):
@@ -594,12 +592,12 @@ class TestResolutionGuidanceBlock:
         assert _build_resolution_guidance_block(ontology) == ""
 
     def test_intent_only(self):
-        """Intent without guide produces domain expert block."""
+        """Intent without guide produces use case context block."""
         ontology = OntologyState(
             resolution_intent="Prefer Component over Accessory for integral parts.",
         )
         block = _build_resolution_guidance_block(ontology)
-        assert "domain expert" in block
+        assert "Use case context" in block
         assert "Prefer Component" in block
 
     def test_guide_only(self):
@@ -618,7 +616,7 @@ class TestResolutionGuidanceBlock:
             resolution_guide='"humidifier" is Component.',
         )
         block = _build_resolution_guidance_block(ontology)
-        assert "domain expert" in block
+        assert "Use case context" in block
         assert "Learned disambiguation" in block
 
     def test_guidance_in_constrained_prompt(self):
@@ -630,12 +628,12 @@ class TestResolutionGuidanceBlock:
             resolution_intent="Prefer Component.",
         )
         prompt = build_extraction_prompt(chunk, ontology)
-        assert "domain expert" in prompt
+        assert "Use case context" in prompt
         assert "Prefer Component" in prompt
 
     def test_no_guidance_in_free_prompt(self):
         """Free prompt (no ontology) has no resolution guidance."""
         chunk = _make_chunk()
         prompt = build_extraction_prompt(chunk)
-        assert "domain expert" not in prompt
+        assert "Use case context" not in prompt
         assert "Learned disambiguation" not in prompt

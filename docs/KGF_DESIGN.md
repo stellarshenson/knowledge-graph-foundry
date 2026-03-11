@@ -799,31 +799,33 @@ Doc 3: snapshot() includes hierarchy
 
 #### Resolution Intent and Resolution Guide (H5g)
 
-The ontology YAML supports two complementary prose sections for type disambiguation guidance:
+Two complementary prose sections guide type disambiguation, each with a single source of truth:
 
-**`resolution_intent`** is the user-authored immutable prior. It expresses the domain expert's intent for how entity types should be assigned when boundaries between siblings are ambiguous. The system never modifies this section - it is the stable foundation that persists across all runs.
+**`resolution_intent`** lives in `config.yml` only (under `ontology_buffer.resolution_intent`) and is never stored in or loaded from `ontology.yml`. It is the user-authored immutable extraction use case - describing what the knowledge graph should capture and how entities should be typed when boundaries between siblings are ambiguous. The system never modifies this value. It flows into extraction prompts via `OntologyState` at snapshot time.
 
 ```yaml
-resolution_intent: |
-  When a physical part could be either Component or Accessory, prefer Component.
-  Use Accessory only for items sold separately that are not integral to device
-  operation (e.g., carrying case, extra tubing kit).
+# config.yml
+ontology_buffer:
+  resolution_intent: |
+    When a physical part could be either Component or Accessory, prefer Component.
+    Use Accessory only for items sold separately that are not integral to device
+    operation (e.g., carrying case, extra tubing kit).
 
-  When a parameter could be either Feature or Setting, prefer Feature for
-  capabilities the device provides (e.g., ramp, auto-start). Use Setting only
-  for user-adjustable numeric parameters (e.g., pressure level, humidity level).
+    When a parameter could be either Feature or Setting, prefer Feature for
+    capabilities the device provides (e.g., ramp, auto-start). Use Setting only
+    for user-adjustable numeric parameters (e.g., pressure level, humidity level).
 
-  AHI, therapy pressure, ramp time, and altitude are always Specification when
-  they carry a numeric value or range. They are Setting only when describing
-  the user-adjustable configuration without a specific value.
+    AHI, therapy pressure, ramp time, and altitude are always Specification when
+    they carry a numeric value or range. They are Setting only when describing
+    the user-adjustable configuration without a specific value.
 
-  Entities like humidity, pressure relief, and supplemental oxygen that appear
-  as both a Feature (the capability) and a Specification (the measured value)
-  should be typed as Feature. The numeric specification should be a separate
-  Specification entity linked via HAS_SPECIFICATION.
+    Entities like humidity, pressure relief, and supplemental oxygen that appear
+    as both a Feature (the capability) and a Specification (the measured value)
+    should be typed as Feature. The numeric specification should be a separate
+    Specification entity linked via HAS_SPECIFICATION.
 ```
 
-**`resolution_guide`** is the evolved section that accumulates learned disambiguation rules. When `resolution_guide_evolution` is enabled (default true), the system generates new rules and appends them at buffer flush time. The user can review, edit, or prune the guide between runs.
+**`resolution_guide`** lives in `ontology.yml` only and is the evolved section that accumulates learned disambiguation rules. When `resolution_guide_evolution` is enabled (default true), the system generates new rules during ingestion. The guide stems from the `resolution_intent` and evolves to serve it better - covering type dominance, relationship patterns, merge/split decisions, and any other resolution-relevant knowledge the system discovers. The user can review, edit, or prune the guide between runs.
 
 **Evolution triggers**: the resolution guide evolves as part of the buffer's self-evolving mechanism. When `record_cross_type_stats()` detects that any type pair has reached the encounter frequency threshold, it triggers `evolve_resolution_guide()` alongside `evolve_type_hierarchy()`. The guide starts empty and stays empty until very strong evidence justifies adding a rule. A deduplication set (`_evolved_guide_keys`) prevents repeated evolution calls from producing duplicate rules.
 
@@ -833,7 +835,7 @@ resolution_intent: |
 - **Consistency**: one type dominates with >= 75% frequency across all occurrences (e.g., "humidifier" is Component 12 times, Accessory 3 times - Component dominates at 80%)
 - **Hierarchy coverage**: the conflicting types are siblings under the same hierarchy parent (if a hierarchy exists). Pairs without a shared parent are left to the Bayesian model, not codified as guide rules
 
-When these thresholds are not met, the pattern is considered genuinely ambiguous and no rule is generated. The guide accumulates slowly - a 10-document run might produce 0-2 rules. This prevents premature codification of disambiguation patterns that may not generalize beyond the current corpus. The user can always add rules manually to either `resolution_intent` (permanent) or `resolution_guide` (evolvable) based on domain knowledge.
+When these thresholds are not met, the pattern is considered genuinely ambiguous and no rule is generated. The guide accumulates slowly - a 10-document run might produce 0-2 rules. This prevents premature codification of disambiguation patterns that may not generalize beyond the current corpus. The user can always edit `resolution_intent` in `config.yml` (permanent, never modified by system) or `resolution_guide` in `ontology.yml` (evolvable) based on domain knowledge.
 
 Rules that are generated follow a concise format: entity name, preferred type, and the evidence basis. Each rule carries a run-stamped comment marker so the user can trace when and why it was added.
 
@@ -848,9 +850,9 @@ resolution_guide: |
   "heated humidifier" is always Component (integral device part), never Accessory.
 ```
 
-Both sections are injected into the extraction prompt as a resolution guidance block after the property definitions, with the `resolution_intent` (the prior) appearing first. Combined length is capped at `MAX_RESOLUTION_PROMPT_TOKENS` (default 500, internal constant in `defaults.py`). Unlike the use-case intent (Section 5.1a) which describes what the knowledge graph is for, these sections describe how to assign types correctly.
+Both sections are injected into the extraction prompt as a resolution guidance block after the property definitions, with the `resolution_intent` (from config) appearing first as "Use case context" and the `resolution_guide` (from ontology) appearing as "Learned disambiguation rules". Combined length is capped at `MAX_RESOLUTION_PROMPT_TOKENS` (default 500, internal constant in `defaults.py`). The intent is always included in full; the guide is truncated from the end if the combined length exceeds the limit.
 
-This two-layer design acknowledges that type disambiguation knowledge accumulates over time. The `resolution_intent` captures the domain expert's invariant understanding. The `resolution_guide` captures what the system has learned from data. The first run may produce many cross-type duplicates because the guide is empty. Each subsequent run produces fewer as the guide grows. The KGF system automates discovery of ambiguous boundaries, while the user curates both layers to make the ontology precise.
+This two-layer design acknowledges that type disambiguation knowledge accumulates over time. The `resolution_intent` in `config.yml` captures the domain expert's invariant understanding - it is the single source of truth for extraction focus and never persisted to `ontology.yml`. The `resolution_guide` in `ontology.yml` captures what the system has learned from data - it stems from the intent and evolves to serve it better. The first run may produce many cross-type duplicates because the guide is empty. Each subsequent run produces fewer as the guide grows. The KGF system automates discovery of ambiguous boundaries, while the user curates both layers to make the ontology precise.
 
 #### Persisted Type Exemplars (H5g)
 
@@ -904,7 +906,7 @@ The buffer tracks:
 - **Entity types**: name, description, frequency count (how often this type has appeared across chunks), source (`seed`, `seed_normalized`, `yaml`, `discovered`), confidence (`high`, `medium`, `low`)
 - **Relationship types**: name, source type, target type, frequency count, transitive flag (from OWL `TransitiveProperty` if OWL seed)
 - **Type hierarchy**: parent-child subsumption relationships between entity types (from YAML `type_hierarchy`, OWL `subClassOf`, or self-evolved from cross-type duplicate patterns). Used exclusively in cross-type resolution as a Bayesian prior boost for sibling pairs - not injected into extraction prompts. The buffer maintains a `child_to_parent` lookup for O(1) shared-parent checks. In fluid mode (no ontology seed), the hierarchy starts empty and self-evolves via `_maybe_evolve()` when encounter frequency reaches `GUIDE_EVOLUTION_MIN_ENCOUNTERS` (default 3). Evolution is triggered automatically by `record_cross_type_stats()` and explicitly after every document via `_maybe_evolve()` in both direct and fluid ingestion paths - no external orchestration needed
-- **Resolution intent**: user-authored immutable prior for type disambiguation, loaded from `resolution_intent` in ontology YAML. Never modified by the system
+- **Resolution intent**: user-authored immutable extraction use case, sourced from `resolution_intent` in `config.yml` (not from ontology YAML). Passed into `OntologyState` at snapshot time. Never stored in or loaded from `ontology.yml`
 - **Resolution guide**: evolved disambiguation rules, loaded from `resolution_guide` in ontology YAML. When `resolution_guide_evolution` is enabled (default true), the system appends learned rules as cross-type encounter evidence accumulates. Rules are deduplicated via `_evolved_guide_keys` to prevent repeated evolution calls from producing duplicates
 - **Type exemplars**: representative entity instances per type, loaded from `type_exemplars` in ontology YAML and updated during extraction. Top N by frequency per type (configurable via `max_type_exemplars`). Exemplars are injected into extraction prompts via `_build_entity_types_block()` as few-shot examples
 - **Type variants**: raw type labels the LLM has produced that map to a canonical type (e.g., "Human" -> "Person", "Corp" -> "Organization")
@@ -997,12 +999,12 @@ Relationship type constraints (source/target type pairs) are not required to be 
 
 #### Buffer Flush
 
-At the end of the ingestion run, the final buffer state is written to `.kgf/ontology.yml`. The flush writes all sections: `entity_types`, `relationship_types`, `type_hierarchy` (reflecting confirmed types grouped by parent), `resolution_intent` (preserved verbatim - never modified), `resolution_guide` (evolved rules appended when `resolution_guide_evolution` is enabled), and `type_exemplars` (top N by frequency per type). This means:
+At the end of the ingestion run, the final buffer state is written to `.kgf/ontology.yml`. The flush writes: `entity_types`, `relationship_types`, `type_hierarchy` (reflecting confirmed types grouped by parent), `resolution_guide` (evolved rules appended when `resolution_guide_evolution` is enabled), and `type_exemplars` (top N by frequency per type). Note that `resolution_intent` is NOT flushed - it lives exclusively in `config.yml`. This means:
 
 - **Free extraction** produces an ontology as a side effect - the next run can start constrained
 - **Constrained extraction** produces a refined ontology that incorporates what the documents actually contained
 - The flushed ontology includes frequency data as comments, so the user can see which types were common vs rare
-- **Resolution guide evolution**: when `resolution_guide_evolution` is enabled, the buffer self-evolves during ingestion at three trigger points: (1) inline from `record_cross_type_stats()` when encounter evidence crosses the threshold, (2) explicitly after every document in both direct and fluid ingestion paths, and (3) a final `_maybe_evolve()` before flush. The `resolution_intent` (user-authored prior) is preserved verbatim and never modified. This creates a knowledge accumulation loop where each run teaches the ontology about its own ambiguities
+- **Resolution guide evolution**: when `resolution_guide_evolution` is enabled, the buffer self-evolves during ingestion at three trigger points: (1) inline from `record_cross_type_stats()` when encounter evidence crosses the threshold, (2) explicitly after every document in both direct and fluid ingestion paths, and (3) a final `_maybe_evolve()` before flush. The `resolution_intent` remains in `config.yml` and is never written to `ontology.yml`. This creates a knowledge accumulation loop where each run teaches the ontology about its own ambiguities
 
 ### 5.6 Post-Load OWL Reasoning
 

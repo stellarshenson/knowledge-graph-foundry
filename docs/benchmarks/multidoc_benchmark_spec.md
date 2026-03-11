@@ -294,7 +294,7 @@ extract:
   embedding_model: "amazon.titan-embed-text-v2:0"
   concurrency: 1  # reduce to avoid Bedrock rate limits (default 4)
 ontology_buffer:
-  intent: "Compare CPAP and auto-titrating positive airway pressure therapy devices across manufacturers, focusing on product specifications, clinical features, therapy modes, regulatory compliance, and component architecture"
+  resolution_intent: "Compare CPAP and auto-titrating positive airway pressure therapy devices across manufacturers, focusing on product specifications, clinical features, therapy modes, regulatory compliance, and component architecture"
 curing:
   enabled: true
 neo4j:
@@ -303,7 +303,7 @@ neo4j:
   password: kg-builder-pass
 ```
 
-The `ontology_buffer.intent` is the use-case intent that constrains the LLM extraction hypothesis space to CPAP domain-relevant entity types. Without it, the LLM samples from a broad prior over all possible types, producing inconsistent extraction across documents. This intent was the single largest signal improvement (v17 72% -> v18 82%).
+The `ontology_buffer.resolution_intent` is the use-case intent that constrains the LLM extraction hypothesis space to CPAP domain-relevant entity types. Without it, the LLM samples from a broad prior over all possible types, producing inconsistent extraction across documents. This intent was the single largest signal improvement (v17 72% -> v18 82%).
 
 ## Neo4j Setup
 

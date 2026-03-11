@@ -87,14 +87,6 @@ Text:
 {text}"""
 
 
-_INTENT_PREFIX = """\
-**Use case context**: {intent}
-
-Focus extraction on entities and relationships relevant to this use case.
-
-"""
-
-
 def _build_entity_types_block(ontology: OntologyState) -> str:
     """Build entity types block with descriptions and seed vs discovered distinction."""
     confirmed = ontology.confirmed_types
@@ -191,7 +183,10 @@ def _build_resolution_guidance_block(ontology: OntologyState) -> str:
 
     parts = []
     if intent:
-        parts.append(f"**Type disambiguation rules** (domain expert):\n{intent}")
+        parts.append(
+            f"**Use case context**: {intent}\n\n"
+            "Focus extraction on entities and relationships relevant to this use case."
+        )
     if guide:
         parts.append(f"**Learned disambiguation rules** (from previous runs):\n{guide}")
 
@@ -217,7 +212,10 @@ def _build_resolution_guidance_block(ontology: OntologyState) -> str:
 
         parts = []
         if intent:
-            parts.append(f"**Type disambiguation rules** (domain expert):\n{intent}")
+            parts.append(
+                f"**Use case context**: {intent}\n\n"
+                "Focus extraction on entities and relationships relevant to this use case."
+            )
         if guide:
             parts.append(f"**Learned disambiguation rules** (from previous runs):\n{guide}")
         combined = "\n\n".join(parts)
@@ -228,23 +226,23 @@ def _build_resolution_guidance_block(ontology: OntologyState) -> str:
 def build_extraction_prompt(
     chunk: Chunk,
     ontology: OntologyState | None = None,
-    intent: str | None = None,
 ) -> str:
     """Build an extraction prompt for a chunk.
 
     If ontology is provided and has entity types, uses a constrained prompt
     listing the allowed types with descriptions and relationship definitions.
     Otherwise uses a free extraction prompt.
-    If intent is provided, prepends use case context to guide extraction.
-    """
-    prefix = _INTENT_PREFIX.format(intent=intent) if intent else ""
 
+    The resolution_intent (use case context) and resolution_guide (learned rules)
+    flow through ontology.resolution_intent and ontology.resolution_guide,
+    rendered by _build_resolution_guidance_block().
+    """
     if ontology and ontology.entity_types:
         entity_types_block = _build_entity_types_block(ontology)
         relationship_types_block = _build_relationship_types_block(ontology)
         property_defs_block = _build_property_defs_block(ontology)
         resolution_guidance_block = _build_resolution_guidance_block(ontology)
-        return prefix + _CONSTRAINED_PROMPT.format(
+        return _CONSTRAINED_PROMPT.format(
             entity_types_block=entity_types_block,
             relationship_types_block=relationship_types_block,
             property_defs_block=property_defs_block,
@@ -252,4 +250,11 @@ def build_extraction_prompt(
             text=chunk.text,
         )
 
+    # Free prompt: intent still flows through ontology if provided
+    prefix = ""
+    if ontology and ontology.resolution_intent:
+        prefix = (
+            f"**Use case context**: {ontology.resolution_intent}\n\n"
+            "Focus extraction on entities and relationships relevant to this use case.\n\n"
+        )
     return prefix + _FREE_PROMPT.format(text=chunk.text)

@@ -34,18 +34,20 @@ class TestPrompts:
         assert "Allowed entity types" in prompt
 
     def test_intent_prefix_prepended(self):
-        """Intent prefix appears before main prompt."""
+        """Intent via OntologyState appears in free prompt."""
         chunk = _make_chunk()
-        prompt = build_extraction_prompt(chunk, intent="CPAP medical devices")
-        assert prompt.startswith("**Use case context**: CPAP medical devices")
+        ontology = OntologyState(resolution_intent="CPAP medical devices")
+        prompt = build_extraction_prompt(chunk, ontology)
+        assert "**Use case context**: CPAP medical devices" in prompt
 
     def test_intent_plus_constrained(self):
         """Both intent and ontology work together."""
         chunk = _make_chunk()
         ontology = OntologyState(
             entity_types=(TypeDef(name="Product"),),
+            resolution_intent="Medical devices",
         )
-        prompt = build_extraction_prompt(chunk, ontology, intent="Medical devices")
+        prompt = build_extraction_prompt(chunk, ontology)
         assert "Medical devices" in prompt
         assert "Product" in prompt
         assert "Allowed entity types" in prompt
