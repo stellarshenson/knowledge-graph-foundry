@@ -1,6 +1,6 @@
 # Design Assumptions Checklist
 
-Tracks alignment between `docs/DESIGN.md` and the actual implementation. Each item is a verifiable fact from the design document checked against code.
+Tracks alignment between `docs/KGB_DESIGN.md` and the actual implementation. Each item is a verifiable fact from the design document checked against code.
 
 Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semantic resolution, signal-driven curing)
 

@@ -227,7 +227,7 @@ def ingest_document(
         embedding_threshold=config.extract.embedding_threshold,
         name_threshold=config.extract.name_threshold,
         type_frequencies=type_freqs,
-        description_threshold=config.extract.cross_type_description_threshold,
+        cross_type_merge_threshold=config.extract.cross_type_merge_threshold,
     )
 
     # Step 5e: Rewire relationships after cross-type entity merges

@@ -200,9 +200,13 @@ class TestDescriptionSimilarity:
         assert _description_similarity("pressure control system", "pressure control system") == 1.0
 
 
-class TestCrossTypeDescriptionGate:
+class TestCrossTypeBayesianMerge:
     def test_cross_type_blocks_divergent_descriptions(self):
-        """'Filter' (Component) vs 'Filter' (Feature) with different descriptions stay separate."""
+        """'Filter' (Component) vs 'Filter' (Feature) with different descriptions stay separate.
+
+        Prior=0.8, desc_sim~0.0 (no shared words), lr_desc=0.3, lr_cooc=0.9.
+        posterior_odds = 4.0 * 0.3 * 0.9 = 1.08 -> posterior = 0.519 < 0.6.
+        """
         entities = [
             Entity(id="e1", name="Filter", type="Component",
                    source_chunks=["c1"], confidence=0.9,
@@ -211,11 +215,15 @@ class TestCrossTypeDescriptionGate:
                    source_chunks=["c2"], confidence=0.85,
                    description="data smoothing algorithm for signal processing"),
         ]
-        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.3)
+        resolved = resolve_entities(entities, threshold=0.85, cross_type_merge_threshold=0.6)
         assert len(resolved) == 2
 
     def test_cross_type_merges_similar_descriptions(self):
-        """'Ramp' with overlapping descriptions should merge."""
+        """'Ramp' with overlapping descriptions should merge.
+
+        Prior=0.8, desc_sim>0.3 (shared: pressure, ramp, cpap), lr_desc>0.6.
+        posterior_odds > 4.0 * 0.6 * 0.9 = 2.16 -> posterior > 0.68.
+        """
         entities = [
             Entity(id="e1", name="Ramp", type="Feature",
                    source_chunks=["c1"], confidence=0.9,
@@ -224,22 +232,39 @@ class TestCrossTypeDescriptionGate:
                    source_chunks=["c2"], confidence=0.85,
                    description="ramp pressure mode for CPAP device"),
         ]
-        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.3)
+        resolved = resolve_entities(entities, threshold=0.85, cross_type_merge_threshold=0.6)
         assert len(resolved) == 1
 
     def test_cross_type_empty_descriptions_no_merge(self):
-        """Empty descriptions default to no merge (safe)."""
+        """Empty descriptions: prior=0.8, lr_desc=0.3, posterior=0.519 < 0.6."""
         entities = [
             Entity(id="e1", name="Filter", type="Component",
                    source_chunks=["c1"], confidence=0.9, description=""),
             Entity(id="e2", name="Filter", type="Feature",
                    source_chunks=["c2"], confidence=0.85, description=""),
         ]
-        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.3)
+        resolved = resolve_entities(entities, threshold=0.85, cross_type_merge_threshold=0.6)
         assert len(resolved) == 2
 
+    def test_cross_type_shared_chunks_boosts_merge(self):
+        """Shared source chunks (co-occurrence) boost posterior above threshold.
+
+        Prior=0.8, lr_desc=0.3, lr_cooc=1.5 (shared chunks).
+        posterior_odds = 4.0 * 0.3 * 1.5 = 1.8 -> posterior = 0.643 >= 0.6.
+        """
+        entities = [
+            Entity(id="e1", name="Filter", type="Component",
+                   source_chunks=["c1", "c2"], confidence=0.9,
+                   description="physical air filter"),
+            Entity(id="e2", name="Filter", type="Feature",
+                   source_chunks=["c2", "c3"], confidence=0.85,
+                   description="data algorithm"),
+        ]
+        resolved = resolve_entities(entities, threshold=0.85, cross_type_merge_threshold=0.6)
+        assert len(resolved) == 1
+
     def test_cross_type_threshold_zero_always_merges(self):
-        """threshold=0.0 reproduces old behavior (always merge)."""
+        """cross_type_merge_threshold=0.0 reproduces old behavior (always merge)."""
         entities = [
             Entity(id="e1", name="Filter", type="Component",
                    source_chunks=["c1"], confidence=0.9,
@@ -248,7 +273,7 @@ class TestCrossTypeDescriptionGate:
                    source_chunks=["c2"], confidence=0.85,
                    description="data algorithm"),
         ]
-        resolved = resolve_entities(entities, threshold=0.85, description_threshold=0.0)
+        resolved = resolve_entities(entities, threshold=0.85, cross_type_merge_threshold=0.0)
         assert len(resolved) == 1
 
 

@@ -100,7 +100,7 @@ class FluidAccumulator:
             embedding_threshold=config.embedding_threshold,
             name_threshold=config.name_threshold,
             type_frequencies=type_frequencies,
-            cross_type_embedding_threshold=config.cross_type_embedding_threshold,
+            cross_type_merge_threshold=config.cross_type_merge_threshold,
         )
 
         # Step 5: Rewire relationships

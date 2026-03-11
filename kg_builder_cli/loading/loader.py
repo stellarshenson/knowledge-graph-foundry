@@ -8,7 +8,9 @@ from neo4j import GraphDatabase
 from neo4j.exceptions import TransientError
 
 from kg_builder_cli.extraction.normalization import normalize_entity_name
-from kg_builder_cli.extraction.resolution import _description_similarity
+from kg_builder_cli.extraction.resolution import (
+    _description_similarity,
+)
 from kg_builder_cli.types.config import AppConfig
 from kg_builder_cli.types.extraction import ExtractionResult
 from kg_builder_cli.types.loading import LoadResult
@@ -284,12 +286,7 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
         return result
 
     # Collect normalized names for batch query
-    name_to_entities: dict[str, list] = defaultdict(list)
-    for entity in result.entities:
-        norm_name = normalize_entity_name(entity.name)
-        name_to_entities[norm_name].append(entity)
-
-    all_names = [e.name for e in result.entities]
+    norm_names = list({normalize_entity_name(e.name) for e in result.entities})
 
     driver = GraphDatabase.driver(
         config.neo4j.uri,
@@ -297,50 +294,74 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
     )
     try:
         with driver.session() as session:
+            # Case-insensitive query using toLower() to match normalized names
             query_result = session.run(
-                "MATCH (e:Entity) WHERE e.name IN $names "
-                "RETURN e.id AS id, e.name AS name, e.type AS type, e.description AS description",
-                {"names": all_names},
+                "MATCH (e:Entity) WHERE toLower(e.name) IN $names "
+                "RETURN e.id AS id, e.name AS name, e.type AS type, "
+                "e.description AS description",
+                {"names": norm_names},
             )
-            existing = {record["name"]: record for record in query_result}
+            existing_records = list(query_result)
     finally:
         driver.close()
 
-    if not existing:
+    if not existing_records:
         return result
+
+    # Group existing records by normalized name
+    existing_by_norm: dict[str, list] = defaultdict(list)
+    for rec in existing_records:
+        ex_norm = normalize_entity_name(rec["name"])
+        existing_by_norm[ex_norm].append(rec)
 
     # Build remap: incoming entity old_id -> new_id
     id_remap: dict[str, str] = {}
     remapped = 0
-    description_threshold = config.extract.cross_type_description_threshold
+    merge_threshold = config.extract.cross_type_merge_threshold
 
     for entity in result.entities:
         norm_name = normalize_entity_name(entity.name)
-        # Check all existing entities by normalized name match
-        for ex_name, ex_record in existing.items():
-            ex_norm = normalize_entity_name(ex_name)
-            if ex_norm == norm_name and ex_record["type"] != entity.type:
-                # Description similarity gate
-                ex_desc = ex_record.get("description") or ""
-                desc_sim = _description_similarity(entity.description, ex_desc)
-                if desc_sim < description_threshold:
-                    logger.info(
-                        "[resolve] cross-type merge blocked: '{}' ({}) vs ({}) - "
-                        "description similarity {:.2f} < {}",
-                        entity.name,
-                        entity.type,
-                        ex_record["type"],
-                        desc_sim,
-                        description_threshold,
-                    )
-                    break
-                old_id = entity.id
-                entity.type = ex_record["type"]
-                entity.id = ex_record["id"]
-                if old_id != entity.id:
-                    id_remap[old_id] = entity.id
-                    remapped += 1
-                break
+        candidates = existing_by_norm.get(norm_name, [])
+        for ex_record in candidates:
+            if ex_record["type"] == entity.type:
+                continue
+            # Build a lightweight Entity-like object for posterior computation
+            ex_desc = ex_record.get("description") or ""
+            # Compute simplified Bayesian posterior (no embeddings from graph)
+            name_a = norm_name
+            name_b = normalize_entity_name(ex_record["name"])
+            prior = 0.8 if name_a == name_b else 0.2
+            desc_sim = _description_similarity(entity.description, ex_desc)
+            lr_desc = max(0.3, desc_sim * 2.0)
+            prior_odds = prior / (1.0 - prior)
+            posterior_odds = prior_odds * lr_desc
+            posterior = posterior_odds / (1.0 + posterior_odds)
+
+            if posterior < merge_threshold:
+                logger.info(
+                    "[resolve] graph cross-type merge blocked: '{}' ({}) vs ({}) - "
+                    "posterior={:.3f} < {}",
+                    entity.name,
+                    entity.type,
+                    ex_record["type"],
+                    posterior,
+                    merge_threshold,
+                )
+                continue
+            old_id = entity.id
+            entity.type = ex_record["type"]
+            entity.id = ex_record["id"]
+            if old_id != entity.id:
+                id_remap[old_id] = entity.id
+                remapped += 1
+            logger.info(
+                "[resolve] graph cross-type merge: '{}' ({}) -> ({}) - posterior={:.3f}",
+                entity.name,
+                entity.type,
+                ex_record["type"],
+                posterior,
+            )
+            break
 
     # Rewire relationships
     if id_remap:

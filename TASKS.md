@@ -1,6 +1,6 @@
 # Implementation Tasks
 
-Master task list for kg-builder-cli. Derived from `docs/DESIGN.md`.
+Master task list for kg-builder-cli. Derived from `docs/KGB_DESIGN.md`.
 
 ---
 

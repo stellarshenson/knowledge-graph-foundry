@@ -285,7 +285,7 @@ SCORECARD: list[ScoreItem] = [
     ScoreItem(
         dimension="relationship_patterns",
         name="SUPPORTS_MODE relationships",
-        query="MATCH (a:Entity)-[r]->(b:Entity) WHERE toLower(b.type) = 'mode' AND type(r) IN ['SUPPORTS_MODE', 'FUNCTIONS_IN', 'OPERATES_IN', 'HAS_MODE', 'PROVIDES'] RETURN count(r) AS cnt",
+        query="MATCH (a:Entity)-[r]->(b:Entity) WHERE (toLower(b.name) CONTAINS 'mode' AND toLower(b.type) IN ['feature', 'setting']) AND type(r) IN ['SUPPORTS_MODE', 'FUNCTIONS_IN', 'OPERATES_IN', 'HAS_MODE', 'PROVIDES', 'HAS_FEATURE', 'HAS_SETTING'] RETURN count(r) AS cnt",
         expected="Product-mode links",
         check_fn="count_gte", expected_value=3,
     ),
