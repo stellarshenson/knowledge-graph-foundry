@@ -449,6 +449,11 @@ class OntologyBuffer:
             len(exemplar_data),
             path,
         )
+        if self._resolution_guide:
+            logger.info(
+                "[guide] resolution_guide flushed:\n{}",
+                self._resolution_guide.strip(),
+            )
 
     def shared_parent(self, type_a: str, type_b: str) -> str | None:
         """Return shared parent name if both types are siblings, else None."""
@@ -663,8 +668,8 @@ class OntologyBuffer:
             new_rules.append(rule)
             self._evolved_guide_keys.add(key)
 
-            logger.debug(
-                "[guide] generated rule for '{}': {} (dominance={:.0%}, encounters={})",
+            logger.info(
+                "[guide] new rule: '{}' -> {} (dominance={:.0%}, encounters={})",
                 norm_name,
                 dominant_type,
                 dominance,
