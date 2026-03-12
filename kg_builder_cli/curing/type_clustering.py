@@ -73,12 +73,38 @@ async def cluster_types(
     client = instructor.from_litellm(litellm.acompletion)
 
     try:
+        import time
+
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+        from kg_builder_cli.extraction.extract import extract_usage
+
+        evt_signals.llm_call_started.send(
+            evt_signals.llm_call_started,
+            event=etypes.LLMCallStarted(call_type="type_clustering", model=model_id),
+        )
+        t0 = time.monotonic()
+
         result = await client.create(
             model=model_id,
             response_model=TypeClusteringResult,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
             max_retries=2,
+        )
+
+        duration_ms = int((time.monotonic() - t0) * 1000)
+        usage = extract_usage(result)
+        evt_signals.llm_call_completed.send(
+            evt_signals.llm_call_completed,
+            event=etypes.LLMCallCompleted(
+                call_type="type_clustering",
+                model=model_id,
+                duration_ms=duration_ms,
+                token_count=usage["total_tokens"],
+                prompt_tokens=usage["prompt_tokens"],
+                completion_tokens=usage["completion_tokens"],
+            ),
         )
 
         mapping = result.mapping

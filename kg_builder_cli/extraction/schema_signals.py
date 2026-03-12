@@ -46,6 +46,21 @@ def extract_schema_signals(
         "Return the entity types and relationship types you detect."
     )
 
+    import time
+
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+    from kg_builder_cli.extraction.extract import extract_usage
+
+    evt_signals.llm_call_started.send(
+        evt_signals.llm_call_started,
+        event=etypes.LLMCallStarted(
+            call_type="schema_signals",
+            model=model_id,
+        ),
+    )
+    t0 = time.monotonic()
+
     try:
         result = client.chat.completions.create(
             model=model_id,
@@ -54,6 +69,19 @@ def extract_schema_signals(
             temperature=0.0,
             max_retries=2,
         )
+        duration_ms = int((time.monotonic() - t0) * 1000)
+        usage = extract_usage(result)
+        evt_signals.llm_call_completed.send(
+            evt_signals.llm_call_completed,
+            event=etypes.LLMCallCompleted(
+                call_type="schema_signals",
+                model=model_id,
+                duration_ms=duration_ms,
+                token_count=usage["total_tokens"],
+                prompt_tokens=usage["prompt_tokens"],
+                completion_tokens=usage["completion_tokens"],
+            ),
+        )
         logger.debug(
             "Schema signals: {} entity types, {} relationship types",
             len(result.entity_types),
@@ -61,6 +89,16 @@ def extract_schema_signals(
         )
         return result
     except Exception:
+        duration_ms = int((time.monotonic() - t0) * 1000)
+        evt_signals.llm_call_failed.send(
+            evt_signals.llm_call_failed,
+            event=etypes.LLMCallFailed(
+                call_type="schema_signals",
+                model=model_id,
+                error_type="exception",
+                error_message="Schema signal extraction failed",
+            ),
+        )
         logger.warning("Schema signal extraction failed, returning empty signals")
         return SchemaSignals()
 

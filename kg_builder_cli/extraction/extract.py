@@ -12,6 +12,29 @@ from kg_builder_cli.types.extraction import Entity, Relationship
 from .response_models import ExtractionResponse
 
 
+def extract_usage(response) -> dict:
+    """Extract token usage from an instructor response.
+
+    Instructor stores the raw litellm response on ``_raw_response``.
+    Returns dict with prompt_tokens, completion_tokens, total_tokens
+    (all None if unavailable).
+    """
+    usage = {"prompt_tokens": None, "completion_tokens": None, "total_tokens": None}
+    try:
+        raw = getattr(response, "_raw_response", None)
+        if raw is None:
+            return usage
+        raw_usage = getattr(raw, "usage", None)
+        if raw_usage is None:
+            return usage
+        usage["prompt_tokens"] = getattr(raw_usage, "prompt_tokens", None)
+        usage["completion_tokens"] = getattr(raw_usage, "completion_tokens", None)
+        usage["total_tokens"] = getattr(raw_usage, "total_tokens", None)
+    except Exception:
+        pass
+    return usage
+
+
 class LLMAuthError(Exception):
     """Raised when the LLM provider returns an authentication/authorization error.
 
@@ -112,13 +135,16 @@ def extract_chunk(
         ]
 
         duration_ms = int((time.monotonic() - t0) * 1000)
+        usage = extract_usage(response)
         evt_signals.llm_call_completed.send(
             evt_signals.llm_call_completed,
             event=etypes.LLMCallCompleted(
                 call_type="chunk_extraction",
                 model=model_id,
                 duration_ms=duration_ms,
-                token_count=None,
+                token_count=usage["total_tokens"],
+                prompt_tokens=usage["prompt_tokens"],
+                completion_tokens=usage["completion_tokens"],
                 doc_index=None,
             ),
         )

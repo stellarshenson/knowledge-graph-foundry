@@ -135,6 +135,23 @@ def _on_graph_validated(sender, event=None, **kwargs):
         )
 
 
+def _on_llm_call_completed(sender, event=None, **kwargs):
+    if event:
+        tokens = ""
+        if event.prompt_tokens is not None or event.completion_tokens is not None:
+            tokens = " ({}p + {}c = {}t)".format(
+                event.prompt_tokens or 0,
+                event.completion_tokens or 0,
+                event.token_count or 0,
+            )
+        logger.info(
+            "[event] LLM call completed: {} {}ms{}",
+            event.call_type,
+            event.duration_ms,
+            tokens,
+        )
+
+
 def _on_llm_call_failed(sender, event=None, **kwargs):
     if event:
         logger.warning(
@@ -212,6 +229,7 @@ def register_default_handlers() -> None:
     signals.consolidation_completed.connect(_on_consolidation_completed)
     signals.graph_load_completed.connect(_on_graph_load_completed)
     signals.graph_validated.connect(_on_graph_validated)
+    signals.llm_call_completed.connect(_on_llm_call_completed)
     signals.llm_call_failed.connect(_on_llm_call_failed)
     signals.drift_detected.connect(_on_drift_detected)
     signals.patience_exceeded.connect(_on_patience_exceeded)

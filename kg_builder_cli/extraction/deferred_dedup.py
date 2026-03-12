@@ -381,9 +381,14 @@ class DeferredDedupBuffer:
         Follows the instructor+litellm pattern from type_resolver.py._llm_resolve().
         """
         try:
+            import time
+
             import instructor
             import litellm
 
+            from kg_builder_cli.events import signals as evt_signals
+            from kg_builder_cli.events import types as etypes
+            from kg_builder_cli.extraction.extract import extract_usage
             from kg_builder_cli.extraction.unstructured import (
                 _configure_aws_env,
                 _litellm_model_id,
@@ -449,12 +454,36 @@ class DeferredDedupBuffer:
                 chosen_type: str
                 reasoning: str = ""
 
+            evt_signals.llm_call_started.send(
+                evt_signals.llm_call_started,
+                event=etypes.LLMCallStarted(
+                    call_type="deferred_dedup_escalation",
+                    model=model_id,
+                    context={"entity_name": pair.entity_a_name},
+                ),
+            )
+            t0 = time.monotonic()
+
             response = client.chat.completions.create(
                 model=model_id,
                 response_model=_CrossTypeMergeDecision,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.0,
                 max_retries=1,
+            )
+
+            duration_ms = int((time.monotonic() - t0) * 1000)
+            usage = extract_usage(response)
+            evt_signals.llm_call_completed.send(
+                evt_signals.llm_call_completed,
+                event=etypes.LLMCallCompleted(
+                    call_type="deferred_dedup_escalation",
+                    model=model_id,
+                    duration_ms=duration_ms,
+                    token_count=usage["total_tokens"],
+                    prompt_tokens=usage["prompt_tokens"],
+                    completion_tokens=usage["completion_tokens"],
+                ),
             )
 
             action = "merge" if response.should_merge else "block"

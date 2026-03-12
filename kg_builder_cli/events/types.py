@@ -238,6 +238,8 @@ class LLMCallCompleted(BaseModel):
     model: str
     duration_ms: int
     token_count: int | None = None
+    prompt_tokens: int | None = None
+    completion_tokens: int | None = None
     doc_index: int | None = None
 
 

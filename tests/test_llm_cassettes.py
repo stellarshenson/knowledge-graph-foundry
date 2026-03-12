@@ -13,11 +13,9 @@ from unittest.mock import patch
 
 import pytest
 
-CASSETTES = Path(__file__).parent / "fixtures" / "llm_cassettes"
+from tests.llm_cassette import Cassette, CassetteCall, RecordingClient, ReplayClient
 
-# Import from sibling module (tests/ is not a package, use sys.path)
-sys.path.insert(0, str(Path(__file__).parent))
-from llm_cassette import Cassette, CassetteCall, RecordingClient, ReplayClient  # noqa: E402
+CASSETTES = Path(__file__).parent / "fixtures" / "llm_cassettes"
 
 
 def load_cassette(name: str) -> ReplayClient:
@@ -360,6 +358,59 @@ class TestTypeClusteringWithCassette:
 
 
 # ---------------------------------------------------------------------------
+# Inline response model tests (type_resolver, deferred_dedup)
+# ---------------------------------------------------------------------------
+
+
+class TestInlineModelCassettes:
+    def test_type_resolver_escalation(self):
+        """Cassette: _TypeChoice inline model replays correctly."""
+        from tests.llm_cassette import _TypeChoice
+
+        client = load_cassette("type_resolver_escalation")
+        resp = client.chat.completions.create(
+            model="bedrock/test-model",
+            response_model=_TypeChoice,
+            messages=[{"role": "user", "content": "test"}],
+            temperature=0.0,
+        )
+
+        assert isinstance(resp, _TypeChoice)
+        assert resp.chosen_type == "Component"
+        assert "physical part" in resp.reasoning.lower()
+        assert client.calls_made == 1
+        assert client.calls_remaining == 0
+
+    def test_deferred_dedup_escalation(self):
+        """Cassette: _CrossTypeMergeDecision inline model replays correctly."""
+        from tests.llm_cassette import _CrossTypeMergeDecision
+
+        client = load_cassette("deferred_dedup_escalation")
+        resp = client.chat.completions.create(
+            model="bedrock/test-model",
+            response_model=_CrossTypeMergeDecision,
+            messages=[{"role": "user", "content": "test"}],
+            temperature=0.0,
+        )
+
+        assert isinstance(resp, _CrossTypeMergeDecision)
+        assert resp.should_merge is True
+        assert resp.chosen_type == "Product"
+        assert "standalone" in resp.reasoning.lower()
+        assert client.calls_made == 1
+
+    def test_inline_models_in_registry(self):
+        """Both inline models are registered and resolvable."""
+        from tests.llm_cassette import _resolve_model
+
+        tc = _resolve_model("_TypeChoice")
+        assert tc.__name__ == "_TypeChoice"
+
+        ctmd = _resolve_model("_CrossTypeMergeDecision")
+        assert ctmd.__name__ == "_CrossTypeMergeDecision"
+
+
+# ---------------------------------------------------------------------------
 # Recording client tests
 # ---------------------------------------------------------------------------
 
@@ -371,7 +422,7 @@ class TestRecordingClient:
 
         from kg_builder_cli.curing.generative import CureDecision
 
-        from llm_cassette import RecordingClient, ReplayClient
+        from tests.llm_cassette import RecordingClient, ReplayClient
 
         # Simulate a real client
         mock_real = MagicMock()
@@ -401,7 +452,7 @@ class TestRecordingClient:
             ExtractionResponse,
         )
 
-        from llm_cassette import RecordingClient, ReplayClient
+        from tests.llm_cassette import RecordingClient, ReplayClient
 
         mock_real = MagicMock()
         mock_real.chat.completions.create.return_value = ExtractionResponse(

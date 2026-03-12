@@ -19,10 +19,7 @@ def cassette_dir() -> Path:
 
 def load_cassette(name: str):
     """Load a cassette by name (without .json extension) and return a ReplayClient."""
-    import sys
-
-    sys.path.insert(0, str(Path(__file__).parent))
-    from llm_cassette import ReplayClient
+    from tests.llm_cassette import ReplayClient
 
     path = CASSETTES_DIR / f"{name}.json"
     if not path.exists():

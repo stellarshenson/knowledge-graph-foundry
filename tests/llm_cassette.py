@@ -25,6 +25,7 @@ Cassette format (JSON)::
 from __future__ import annotations
 
 import json
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -32,6 +33,21 @@ from pydantic import BaseModel
 
 # Registry of response model classes by name, populated lazily.
 _MODEL_REGISTRY: dict[str, type[BaseModel]] = {}
+
+
+class _TypeChoice(BaseModel):
+    """Mirror of type_resolver.py inline _TypeChoice model."""
+
+    chosen_type: str
+    reasoning: str = ""
+
+
+class _CrossTypeMergeDecision(BaseModel):
+    """Mirror of deferred_dedup.py inline _CrossTypeMergeDecision model."""
+
+    should_merge: bool
+    chosen_type: str
+    reasoning: str = ""
 
 
 def _ensure_registry() -> None:
@@ -51,6 +67,8 @@ def _ensure_registry() -> None:
         RecureDecision,
         TypeClusteringResult,
         SchemaSignals,
+        _TypeChoice,
+        _CrossTypeMergeDecision,
     ):
         _MODEL_REGISTRY[cls.__name__] = cls
 
@@ -150,6 +168,7 @@ class ReplayClient:
     def __init__(self, cassette: Cassette):
         self._cassette = cassette
         self._index = 0
+        self._lock = threading.Lock()
         self.call_log: list[dict[str, Any]] = []
 
         # Wire up both call patterns
@@ -157,27 +176,28 @@ class ReplayClient:
         self.create = self._create
 
     def _next_response(self, method: str, **kwargs: Any) -> BaseModel:
-        """Return the next pre-recorded response."""
-        if self._index >= len(self._cassette.calls):
-            raise IndexError(
-                f"Cassette exhausted after {self._index} calls "
-                f"(cassette: {self._cassette.description!r})"
-            )
+        """Return the next pre-recorded response (thread-safe)."""
+        with self._lock:
+            if self._index >= len(self._cassette.calls):
+                raise IndexError(
+                    f"Cassette exhausted after {self._index} calls "
+                    f"(cassette: {self._cassette.description!r})"
+                )
 
-        call = self._cassette.calls[self._index]
-        self._index += 1
+            call = self._cassette.calls[self._index]
+            self._index += 1
 
-        if call.method != method:
-            raise ValueError(
-                f"Call {self._index}: expected method {call.method!r}, "
-                f"got {method!r}"
-            )
+            if call.method != method:
+                raise ValueError(
+                    f"Call {self._index}: expected method {call.method!r}, "
+                    f"got {method!r}"
+                )
 
-        self.call_log.append({
-            "method": method,
-            "response_model": call.response_model_name,
-            "kwargs": kwargs,
-        })
+            self.call_log.append({
+                "method": method,
+                "response_model": call.response_model_name,
+                "kwargs": kwargs,
+            })
 
         return call.replay()
 

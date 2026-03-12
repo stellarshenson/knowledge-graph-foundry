@@ -1,0 +1,15 @@
+{
+  "description": "Deferred dedup LLM escalation - cross-type merge decision via _CrossTypeMergeDecision",
+  "calls": [
+    {
+      "method": "chat.completions.create",
+      "response_model": "_CrossTypeMergeDecision",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "should_merge": true,
+        "chosen_type": "Product",
+        "reasoning": "AirSense 10 appears as both Product and Component but is fundamentally a standalone CPAP device sold as a complete unit. The Component classification was likely due to it being referenced as part of a bundle."
+      }
+    }
+  ]
+}

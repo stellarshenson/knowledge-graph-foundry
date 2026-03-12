@@ -1,0 +1,14 @@
+{
+  "description": "Type resolver LLM escalation - ambiguous entity type resolved via _TypeChoice",
+  "calls": [
+    {
+      "method": "chat.completions.create",
+      "response_model": "_TypeChoice",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "chosen_type": "Component",
+        "reasoning": "The entity 'Heated Tube' is a physical part of the CPAP system, not a standalone product or accessory. It functions as an integral component of the humidifier assembly."
+      }
+    }
+  ]
+}
