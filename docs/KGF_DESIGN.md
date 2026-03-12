@@ -2430,7 +2430,7 @@ The event system replaces this implicit coupling with a typed, observable signal
 
 **Handler registration**: At pipeline startup in `cli.py` via `register_default_handlers()` (always) and `register_verbose_handlers()` (when `--verbose`). Default handlers log key events at INFO level. Verbose handlers log full Pydantic payloads at DEBUG level for every signal.
 
-**Event log**: When `--event-log PATH` is provided, events are accumulated via `register_event_accumulator()` and written as JSONL to the specified file after the run. The config option `extract.event_log: true` enables accumulation with a default path of `.kgf/events.log`.
+**Event log**: When `--event-log PATH` is provided, each event is streamed as a JSONL line to the specified file as it's emitted (not batched at the end). This enables real-time monitoring with `tail -f` during long ingestion runs. The config option `extract.event_log: true` enables streaming with a default path of `.kgf/events.log`.
 
 **Signal categories** (10):
 
@@ -2459,7 +2459,7 @@ At pipeline startup, `cli.py` registers three handler layers:
 
 1. **Default handlers** (always active) - connected to ~12 key signals, produce INFO-level log output matching the existing logging behavior
 2. **Verbose handlers** (when `--verbose`) - connected to all ~41 signals, log full Pydantic payloads at DEBUG level
-3. **Event accumulator** (when `--event-log PATH`) - appends every emitted event to an in-memory list, dumped as JSONL to the specified file after the run
+3. **Event log writer** (when `--event-log PATH`) - streams each event as a JSONL line to the specified file as it's emitted, enabling real-time `tail -f` monitoring
 
 Handlers are plain functions connected via `signal.connect(handler)`. Blinker uses weak references by default, so handler functions must be module-level or stored in a collection to prevent garbage collection.
 

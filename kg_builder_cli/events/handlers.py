@@ -7,6 +7,8 @@ at DEBUG level for every event.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from loguru import logger
 
 from . import signals
@@ -149,24 +151,39 @@ def _on_patience_exceeded(sender, event=None, **kwargs):
         )
 
 
-# Collected event log for RunReport
-_event_log: list = []
+# Streaming event log writer
+_event_log_path: Path | None = None
+_event_log_count: int = 0
 
 
-def _accumulate_event(sender, event=None, **kwargs):
-    """Accumulate events into the global event log for post-run analysis."""
-    if event is not None:
-        _event_log.append({"signal": getattr(sender, "name", str(sender)), "payload": event})
+def _stream_event(sender, event=None, **kwargs):
+    """Append each event as a JSONL line to the event log file."""
+    global _event_log_count
+    if event is None or _event_log_path is None:
+        return
+    import json
+
+    line = json.dumps(
+        {
+            "signal": getattr(sender, "name", str(sender)),
+            "payload": event.model_dump() if hasattr(event, "model_dump") else str(event),
+        }
+    )
+    with open(_event_log_path, "a") as f:
+        f.write(line + "\n")
+    _event_log_count += 1
 
 
-def get_event_log() -> list:
-    """Return the accumulated event log."""
-    return list(_event_log)
+def get_event_log_count() -> int:
+    """Return the number of events written to the log."""
+    return _event_log_count
 
 
 def clear_event_log() -> None:
-    """Clear the accumulated event log."""
-    _event_log.clear()
+    """Reset event log state."""
+    global _event_log_path, _event_log_count
+    _event_log_path = None
+    _event_log_count = 0
 
 
 def register_default_handlers() -> None:
@@ -193,9 +210,14 @@ def register_verbose_handlers() -> None:
             obj.connect(_log_event)
 
 
-def register_event_accumulator() -> None:
-    """Connect the event accumulator to all signals for post-run analysis."""
+def register_event_accumulator(log_path: Path) -> None:
+    """Connect the streaming event writer to all signals, writing JSONL to log_path."""
+    global _event_log_path
+    _event_log_path = log_path
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    # Truncate file at start of run
+    log_path.write_text("")
     for name in dir(signals):
         obj = getattr(signals, name)
         if isinstance(obj, Signal) and not name.startswith("_"):
-            obj.connect(_accumulate_event)
+            obj.connect(_stream_event)

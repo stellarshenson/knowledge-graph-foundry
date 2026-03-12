@@ -6,7 +6,7 @@ import blinker
 
 from kg_builder_cli.events import (
     clear_event_log,
-    get_event_log,
+    get_event_log_count,
     register_default_handlers,
     register_event_accumulator,
     register_verbose_handlers,
@@ -188,8 +188,9 @@ class TestHandlerRegistration:
         assert len(signals.cross_type_decision.receivers) > 0
         assert len(signals.stability_metrics_recorded.receivers) > 0
 
-    def test_event_accumulator(self):
-        register_event_accumulator()
+    def test_event_accumulator(self, tmp_path):
+        log_file = tmp_path / "events.log"
+        register_event_accumulator(log_file)
 
         event1 = types.IngestionStarted(files=["a.pdf"], mode="fluid", model="test")
         signals.ingestion_started.send(signals.ingestion_started, event=event1)
@@ -197,19 +198,23 @@ class TestHandlerRegistration:
         event2 = types.IngestionCompleted(total_docs=1, total_entities=10, total_rels=5)
         signals.ingestion_completed.send(signals.ingestion_completed, event=event2)
 
-        log = get_event_log()
-        assert len(log) == 2
-        assert log[0]["signal"] == "ingestion-started"
-        assert log[1]["signal"] == "ingestion-completed"
+        assert get_event_log_count() == 2
+        lines = log_file.read_text().strip().split("\n")
+        assert len(lines) == 2
+        import json
 
-    def test_clear_event_log(self):
-        register_event_accumulator()
+        assert json.loads(lines[0])["signal"] == "ingestion-started"
+        assert json.loads(lines[1])["signal"] == "ingestion-completed"
+
+    def test_clear_event_log(self, tmp_path):
+        log_file = tmp_path / "events.log"
+        register_event_accumulator(log_file)
         event = types.IngestionStarted(files=["a.pdf"], mode="fluid", model="test")
         signals.ingestion_started.send(signals.ingestion_started, event=event)
-        assert len(get_event_log()) == 1
+        assert get_event_log_count() == 1
 
         clear_event_log()
-        assert len(get_event_log()) == 0
+        assert get_event_log_count() == 0
 
 
 class TestSignalCoverage:
