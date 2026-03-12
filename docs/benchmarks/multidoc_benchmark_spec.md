@@ -386,9 +386,9 @@ docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n)
 
 # 4. Run ingestion from tmp/ (all .kgf/ artefacts stay in tmp/)
 cd tmp
-uv run kgf ingest input/ --batch --fluid --event-log .kgf/events.log --processing-log vNN-ingestion.log
+uv run kgf ingest input/ --batch --fluid --event-log vNN-events.log --processing-log vNN-ingestion.log
 cd ..
-# Event log written to tmp/.kgf/events.log (JSONL format, one event per line)
+# Event log streams to tmp/vNN-events.log as JSONL (one event per line, written continuously)
 
 # 5. Verify no extraction failures in log
 grep "extraction failed\|ExtractionFailedError" tmp/vNN-ingestion.log && echo "FAILED - rerun needed" || echo "OK"
