@@ -72,6 +72,9 @@ def ingest_document(
     ontology: OntologyState | None = None,
     buffer: OntologyBuffer | None = None,
     exemplar_index: "ExemplarIndex | None" = None,
+    doc_index: int = 0,
+    total_docs: int = 1,
+    phase: str = "direct",
 ) -> ExtractionResult:
     """Run the full unstructured ingestion pipeline.
 
@@ -174,6 +177,20 @@ def ingest_document(
             max_retries,
             response_model,
         )
+
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+
+    evt_signals.document_extraction_started.send(
+        evt_signals.document_extraction_started,
+        event=etypes.DocumentExtractionStarted(
+            document_source=str(file_path),
+            doc_index=doc_index,
+            total_docs=total_docs,
+            chunk_count=len(chunks),
+            phase=phase,
+        ),
+    )
 
     completed = 0
     total = len(prompts_and_chunks)
@@ -300,6 +317,19 @@ def ingest_document(
         entities=deduped_entities,
         relationships=deduped_relationships,
         chunks=chunks,
+    )
+
+    evt_signals.document_extraction_completed.send(
+        evt_signals.document_extraction_completed,
+        event=etypes.DocumentExtractionCompleted(
+            document_source=str(file_path.name),
+            doc_index=doc_index,
+            total_docs=total_docs,
+            entity_count=len(deduped_entities),
+            rel_count=len(deduped_relationships),
+            remap_count=remap_count,
+            phase=phase,
+        ),
     )
 
     logger.info(

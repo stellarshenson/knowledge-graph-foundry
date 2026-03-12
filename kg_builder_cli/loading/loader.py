@@ -374,6 +374,16 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
             remapped,
         )
 
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+
+    evt_signals.graph_resolution_applied.send(
+        evt_signals.graph_resolution_applied,
+        event=etypes.GraphResolutionApplied(
+            remapped_count=remapped,
+        ),
+    )
+
     return result
 
 

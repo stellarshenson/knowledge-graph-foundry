@@ -104,7 +104,19 @@ class FluidAccumulator:
             from kg_builder_cli.extraction.unstructured import _enforce_ontology_types
 
             allowed = [t.name for t in ontology.entity_types]
-            entities, _ = _enforce_ontology_types(entities, allowed)
+            entities, remap_count = _enforce_ontology_types(entities, allowed)
+
+            from kg_builder_cli.events import signals as evt_signals
+            from kg_builder_cli.events import types as etypes
+
+            evt_signals.type_enforcement_applied.send(
+                evt_signals.type_enforcement_applied,
+                event=etypes.TypeEnforcementApplied(
+                    document_source="consolidation",
+                    remap_count=remap_count,
+                    method="levenshtein",
+                ),
+            )
 
         # Step 2: Normalize entity IDs
         entities, relationships = normalize_entity_ids(entities, relationships)

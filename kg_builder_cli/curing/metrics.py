@@ -124,6 +124,16 @@ class StabilityMetrics:
             ),
         )
 
+        # Emit periodic full-state snapshot every 5 documents
+        if len(self._history) % 5 == 0:
+            evt_signals.stability_snapshot.send(
+                evt_signals.stability_snapshot,
+                event=etypes.StabilitySnapshot(
+                    doc_index=len(self._history) - 1,
+                    metrics_summary=dict(metrics),
+                ),
+            )
+
         return dict(metrics)
 
     def history(self) -> list[dict[str, float]]:

@@ -147,9 +147,9 @@ def ingest(
 
     try:
         if curing_enabled:
-            _ingest_fluid(files, config, buffer, cure)
+            _total_entities, _total_rels = _ingest_fluid(files, config, buffer, cure)
         else:
-            _ingest_direct(files, config, buffer)
+            _total_entities, _total_rels = _ingest_direct(files, config, buffer)
     except LLMAuthError as exc:
         logger.error("LLM authentication failed - aborting ingestion")
         logger.error("{}", exc)
@@ -169,8 +169,8 @@ def ingest(
         signals.ingestion_completed,
         event=etypes.IngestionCompleted(
             total_docs=len(files),
-            total_entities=0,
-            total_rels=0,
+            total_entities=_total_entities,
+            total_rels=_total_rels,
         ),
     )
 
@@ -184,14 +184,26 @@ def _ingest_direct(
     files: list[Path],
     config,
     buffer,
-) -> None:
+) -> tuple[int, int]:
     """Standard per-document ingestion with immediate Neo4j loading."""
     from kg_builder_cli.extraction.unstructured import ingest_document
     from kg_builder_cli.loading.loader import load_extraction
 
-    for file_path in files:
-        logger.info("processing: {}", file_path.name)
-        result = ingest_document(file_path, config, buffer=buffer)
+    total_entities = 0
+    total_rels = 0
+
+    for i, file_path in enumerate(files):
+        logger.info("[{}/{}] processing: {}", i + 1, len(files), file_path.name)
+        result = ingest_document(
+            file_path,
+            config,
+            buffer=buffer,
+            doc_index=i,
+            total_docs=len(files),
+            phase="direct",
+        )
+        total_entities += len(result.entities)
+        total_rels += len(result.relationships)
         logger.info(
             "extracted {} entities, {} relationships, {} facts",
             len(result.entities),
@@ -210,13 +222,15 @@ def _ingest_direct(
         if buffer:
             buffer._maybe_evolve()
 
+    return total_entities, total_rels
+
 
 def _ingest_fluid(
     files: list[Path],
     config,
     buffer,
     force_cure: bool = False,
-) -> None:
+) -> tuple[int, int]:
     """Two-phase ingestion: fluid accumulation then cured direct loading.
 
     Phase 1 (fluid): Extract and accumulate in memory, evolve schema.
@@ -226,6 +240,8 @@ def _ingest_fluid(
     from kg_builder_cli.curing.accumulator import FluidAccumulator
     from kg_builder_cli.curing.detector import CuringDetector
     from kg_builder_cli.curing.metrics import StabilityMetrics
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
     from kg_builder_cli.extraction.unstructured import ingest_document
     from kg_builder_cli.loading.loader import (
         load_doc_chunks,
@@ -239,19 +255,26 @@ def _ingest_fluid(
         variance_window=config.curing.metrics_variance_window,
     )
 
+    total_entities = 0
+    total_rels = 0
     cured = False
     exemplar_index = None  # built at curing time for Bayesian resolution
 
     for i, file_path in enumerate(files):
         if cured:
             # Phase 2: direct load with graph-aware resolution
-            logger.info("[cured] processing: {}", file_path.name)
+            logger.info("[cured] [{}/{}] processing: {}", i + 1, len(files), file_path.name)
             result = ingest_document(
                 file_path,
                 config,
                 buffer=buffer,
                 exemplar_index=exemplar_index,
+                doc_index=i,
+                total_docs=len(files),
+                phase="cured",
             )
+            total_entities += len(result.entities)
+            total_rels += len(result.relationships)
             logger.info(
                 "[cured] extracted {} entities, {} relationships",
                 len(result.entities),
@@ -351,12 +374,21 @@ def _ingest_fluid(
             continue
 
         # Phase 1: fluid accumulation
-        logger.info("[fluid] processing: {}", file_path.name)
+        logger.info("[fluid] [{}/{}] processing: {}", i + 1, len(files), file_path.name)
 
         # Capture types before extraction for new type detection
         types_before = buffer.type_names() if buffer else set()
 
-        result = ingest_document(file_path, config, buffer=buffer)
+        result = ingest_document(
+            file_path,
+            config,
+            buffer=buffer,
+            doc_index=i,
+            total_docs=len(files),
+            phase="fluid",
+        )
+        total_entities += len(result.entities)
+        total_rels += len(result.relationships)
         accumulator.add_result(result)
         logger.info(
             "[fluid] extracted {} entities, {} relationships (accumulated: {} docs)",
@@ -401,9 +433,11 @@ def _ingest_fluid(
 
         # Check curing conditions
         should_cure = False
+        cure_trigger = ""
         if force_cure:
             logger.warning("[fluid] force-cure requested after first document")
             should_cure = True
+            cure_trigger = "force_cure"
         elif (
             config.curing.generative_curing
             and detector.docs_processed >= config.curing.min_documents
@@ -431,11 +465,14 @@ def _ingest_fluid(
                 if decision.should_cure:
                     logger.info("[fluid] LLM advises cure: {}", decision.reasoning)
                     should_cure = True
+                    cure_trigger = "generative"
                 else:
                     logger.info("[fluid] LLM advises continue: {}", decision.reasoning)
             else:
                 logger.warning("[fluid] generative curing failed, falling back to metrics")
                 should_cure = _check_metric_curing(detector)
+                if should_cure:
+                    cure_trigger = "metric"
 
         # Early stopping: patience-based auto-cure
         if (
@@ -446,6 +483,14 @@ def _ingest_fluid(
             threshold = max(
                 3, int(config.curing.max_fluid_documents * config.curing.generative_patience)
             )
+            evt_signals.patience_exceeded.send(
+                evt_signals.patience_exceeded,
+                event=etypes.PatienceExceeded(
+                    docs_processed=detector.docs_processed,
+                    max_patience=threshold,
+                    trigger="consecutive_cure_votes",
+                ),
+            )
             logger.info(
                 "[fluid] EARLY STOP: {} consecutive cure votes (patience {:.0%} of {} docs)",
                 threshold,
@@ -453,9 +498,12 @@ def _ingest_fluid(
                 config.curing.max_fluid_documents,
             )
             should_cure = True
+            cure_trigger = "patience"
 
         if not should_cure and not force_cure and not config.curing.generative_curing:
             should_cure = _check_metric_curing(detector)
+            if should_cure:
+                cure_trigger = "metric"
 
         # Safety net ALWAYS applies
         if not should_cure and detector.is_force_required():
@@ -464,8 +512,19 @@ def _ingest_fluid(
                 config.curing.max_fluid_documents,
             )
             should_cure = True
+            cure_trigger = "safety_net"
 
         if should_cure:
+            evt_signals.curing_triggered.send(
+                evt_signals.curing_triggered,
+                event=etypes.CuringTriggered(
+                    trigger=cure_trigger,
+                    doc_index=i,
+                    accumulated_docs=accumulator.doc_count,
+                    type_count=len(buffer.type_names()) if buffer else 0,
+                ),
+            )
+
             # Curing event: type clustering + consolidation + flush
             import asyncio
 
@@ -559,6 +618,15 @@ def _ingest_fluid(
                 exemplar_index = _build_exemplar_index(buffer, config)
 
             cured = True
+            evt_signals.phase_transition.send(
+                evt_signals.phase_transition,
+                event=etypes.PhaseTransition(
+                    from_phase="fluid",
+                    to_phase="cured",
+                    trigger=cure_trigger,
+                    doc_index=i,
+                ),
+            )
 
     # If never cured (all files processed in fluid phase), flush anyway
     if not cured and accumulator.doc_count > 0:
@@ -637,6 +705,8 @@ def _ingest_fluid(
             load_result.nodes_merged,
             load_result.relationships_created,
         )
+
+    return total_entities, total_rels
 
 
 def _check_metric_curing(detector) -> bool:

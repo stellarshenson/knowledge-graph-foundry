@@ -74,6 +74,19 @@ def validate_graph(config: AppConfig, *, driver: object | None = None) -> Valida
         len(orphan_ids),
     )
 
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+
+    evt_signals.graph_validated.send(
+        evt_signals.graph_validated,
+        event=etypes.GraphValidated(
+            entity_count=total_entities,
+            rel_count=total_relationships,
+            type_coverage=type_coverage,
+            orphan_count=len(orphan_ids),
+        ),
+    )
+
     return ValidationReport(
         orphan_entities=orphan_ids,
         missing_relationships=[],
