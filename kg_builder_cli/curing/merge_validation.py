@@ -188,6 +188,20 @@ def validate_type_clustering(
                 desc_coh,
                 freq_rat,
             )
+
+            from kg_builder_cli.events import signals as evt_signals
+            from kg_builder_cli.events import types as etypes
+
+            evt_signals.merge_validation_failed.send(
+                evt_signals.merge_validation_failed,
+                event=etypes.MergeValidationFailed(
+                    cluster_label=f"{source}->{target}",
+                    entity_names=[source],
+                    confidence=confidence,
+                    threshold=threshold,
+                    reason=f"name_sim={name_sim:.3f}, desc_coh={desc_coh:.3f}, freq_rat={freq_rat:.3f}",
+                ),
+            )
         else:
             approved_mapping[source] = target
             logger.debug(

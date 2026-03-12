@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING, Literal
 
 from loguru import logger
 
+from kg_builder_cli.events import signals as evt_signals
+from kg_builder_cli.events import types as etypes
 from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.extraction import Entity, Relationship
 
@@ -187,6 +189,32 @@ class DeferredDedupBuffer:
                 if e.description and e.description not in pair.descriptions_b:
                     pair.descriptions_b.append(e.description)
 
+            # Emit evidence update signal for pairs touched this document
+            if pair.last_seen_doc == doc_index:
+                _targets_a: set[str] = set()
+                for e in type_a_entities:
+                    _targets_a.update(entity_targets.get(e.id, set()))
+                _targets_b: set[str] = set()
+                for e in type_b_entities:
+                    _targets_b.update(entity_targets.get(e.id, set()))
+                _all_targets = _targets_a | _targets_b
+                evt_signals.deferred_evidence_updated.send(
+                    evt_signals.deferred_evidence_updated,
+                    event=etypes.DeferredEvidenceUpdated(
+                        entity_name=pair.entity_a_name,
+                        type_a=pair.type_a,
+                        type_b=pair.type_b,
+                        shared_chunks=pair.shared_chunks,
+                        topology_jaccard=(
+                            len(pair.shared_targets) / max(len(_all_targets), 1)
+                            if _all_targets
+                            else 0.0
+                        ),
+                        posteriors_count=len(pair.posteriors),
+                        desc_similarity=0.0,
+                    ),
+                )
+
     def resolve_all(
         self,
         type_frequencies: dict[str, int] | None = None,
@@ -305,6 +333,19 @@ class DeferredDedupBuffer:
                     final_posterior,
                     len(pair.posteriors),
                 )
+                evt_signals.deferred_pair_skipped.send(
+                    evt_signals.deferred_pair_skipped,
+                    event=etypes.DeferredPairSkipped(
+                        entity_name=pair.entity_a_name,
+                        type_a=pair.type_a,
+                        type_b=pair.type_b,
+                        final_posterior=final_posterior,
+                        reason=(
+                            f"posterior {final_posterior:.3f} < 0.6 "
+                            f"after {len(pair.posteriors)} encounters"
+                        ),
+                    ),
+                )
 
         merge_count = sum(1 for d in decisions if d.action == "merge")
         block_count = sum(1 for d in decisions if d.action == "block")
@@ -313,6 +354,16 @@ class DeferredDedupBuffer:
             len(decisions),
             merge_count,
             block_count,
+        )
+
+        evt_signals.deferred_resolution_completed.send(
+            evt_signals.deferred_resolution_completed,
+            event=etypes.DeferredResolutionCompleted(
+                pairs_resolved=len(decisions),
+                merges=merge_count,
+                blocks=block_count,
+                llm_escalations=sum(1 for d in decisions if "LLM" in d.reasoning),
+            ),
         )
 
         return decisions

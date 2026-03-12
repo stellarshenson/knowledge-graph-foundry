@@ -55,11 +55,25 @@ def _on_phase_transition(sender, event=None, **kwargs):
         )
 
 
+def _on_document_extraction_started(sender, event=None, **kwargs):
+    if event:
+        logger.info(
+            "[event] extraction started: {} ({}/{}) [{}, {} chunks]",
+            event.document_source,
+            event.doc_index + 1,
+            event.total_docs,
+            event.phase,
+            event.chunk_count,
+        )
+
+
 def _on_document_extraction_completed(sender, event=None, **kwargs):
     if event:
         logger.info(
-            "[event] extraction done: {} ({} entities, {} rels, {} remapped) [{}]",
+            "[event] extraction done: {} ({}/{}) ({} entities, {} rels, {} remapped) [{}]",
             event.document_source,
+            event.doc_index + 1,
+            event.total_docs,
             event.entity_count,
             event.rel_count,
             event.remap_count,
@@ -191,6 +205,7 @@ def register_default_handlers() -> None:
     signals.ingestion_started.connect(_on_ingestion_started)
     signals.ingestion_completed.connect(_on_ingestion_completed)
     signals.phase_transition.connect(_on_phase_transition)
+    signals.document_extraction_started.connect(_on_document_extraction_started)
     signals.document_extraction_completed.connect(_on_document_extraction_completed)
     signals.curing_triggered.connect(_on_curing_triggered)
     signals.ontology_evolved.connect(_on_ontology_evolved)

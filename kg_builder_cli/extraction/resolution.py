@@ -211,6 +211,22 @@ def _description_similarity(desc_a: str, desc_b: str) -> float:
     return len(words_a & words_b) / len(words_a | words_b)
 
 
+def _compute_lr_values(canonical: Entity, other: Entity) -> tuple[float, float, float]:
+    """Compute individual likelihood ratios for event reporting."""
+    desc_sim = _description_similarity(canonical.description, other.description)
+    lr_desc = max(0.3, desc_sim * 2.0)
+
+    lr_emb = 1.0
+    if canonical.embedding and other.embedding:
+        emb_sim = _cosine_similarity(canonical.embedding, other.embedding)
+        lr_emb = max(0.2, emb_sim * 2.0)
+
+    shared_chunks = set(canonical.source_chunks) & set(other.source_chunks)
+    lr_cooc = 1.5 if shared_chunks else 0.9
+
+    return lr_desc, lr_emb, lr_cooc
+
+
 def _cross_type_posterior(
     canonical: Entity,
     other: Entity,
@@ -291,6 +307,7 @@ def _resolve_cross_type(
         posterior: float = 0.0,
         prior: float = 0.0,
         lr_desc: float = 0.0,
+        lr_emb: float = 0.0,
         lr_cooc: float = 0.0,
         has_hier: bool = False,
         sibling: bool = False,
@@ -305,7 +322,7 @@ def _resolve_cross_type(
                 posterior=posterior,
                 action=stat.action,
                 lr_desc=lr_desc,
-                lr_emb=0.0,
+                lr_emb=lr_emb,
                 lr_cooc=lr_cooc,
                 has_hierarchy=has_hier,
                 sibling=sibling,
@@ -427,10 +444,14 @@ def _resolve_cross_type(
                             action,
                         )
                         cross_type_stats.append(stat)
+                        _lr_d, _lr_e, _lr_c = _compute_lr_values(canonical, other)
                         _emit_decision(
                             stat,
                             posterior=posterior,
                             prior=prior,
+                            lr_desc=_lr_d,
+                            lr_emb=_lr_e,
+                            lr_cooc=_lr_c,
                             has_hier=True,
                             sibling=sibling_boost,
                         )
@@ -462,8 +483,16 @@ def _resolve_cross_type(
                             "multi_facet",
                         )
                         cross_type_stats.append(stat)
+                        _lr_d, _lr_e, _lr_c = _compute_lr_values(canonical, other)
                         _emit_decision(
-                            stat, posterior=posterior, prior=prior, has_hier=True, sibling=False
+                            stat,
+                            posterior=posterior,
+                            prior=prior,
+                            lr_desc=_lr_d,
+                            lr_emb=_lr_e,
+                            lr_cooc=_lr_c,
+                            has_hier=True,
+                            sibling=False,
                         )
                         id_map[other.id] = canonical.id
                         canonical = _merge_entities(canonical, other)
@@ -492,12 +521,28 @@ def _resolve_cross_type(
                             "deferred",
                         )
                         cross_type_stats.append(stat)
+                        _lr_d, _lr_e, _lr_c = _compute_lr_values(canonical, other)
                         _emit_decision(
                             stat,
                             posterior=posterior,
                             prior=prior,
+                            lr_desc=_lr_d,
+                            lr_emb=_lr_e,
+                            lr_cooc=_lr_c,
                             has_hier=True,
                             sibling=sibling_boost,
+                        )
+                        evt_signals.cross_type_pair_deferred.send(
+                            evt_signals.cross_type_pair_deferred,
+                            event=etypes.CrossTypePairDeferred(
+                                entity_name=norm_name,
+                                type_a=canonical.type,
+                                type_b=other.type,
+                                posterior=posterior,
+                                ambiguous_lower=ambiguous_lower,
+                                merge_threshold=merge_threshold,
+                                doc_index=doc_index,
+                            ),
                         )
                         continue
 
@@ -532,12 +577,27 @@ def _resolve_cross_type(
                         "blocked",
                     )
                     cross_type_stats.append(stat)
+                    _lr_d, _lr_e, _lr_c = _compute_lr_values(canonical, other)
                     _emit_decision(
                         stat,
                         posterior=posterior,
                         prior=prior,
+                        lr_desc=_lr_d,
+                        lr_emb=_lr_e,
+                        lr_cooc=_lr_c,
                         has_hier=True,
                         sibling=sibling_boost,
+                    )
+                    evt_signals.merge_blocked.send(
+                        evt_signals.merge_blocked,
+                        event=etypes.MergeBlocked(
+                            entity_name=norm_name,
+                            type_a=canonical.type,
+                            type_b=other.type,
+                            posterior=posterior,
+                            reason="below_threshold",
+                            doc_index=doc_index,
+                        ),
                     )
                     continue
 
@@ -560,7 +620,14 @@ def _resolve_cross_type(
                         "merged",
                     )
                     cross_type_stats.append(stat)
-                    _emit_decision(stat, posterior=posterior)
+                    _lr_d, _lr_e, _lr_c = _compute_lr_values(canonical, other)
+                    _emit_decision(
+                        stat,
+                        posterior=posterior,
+                        lr_desc=_lr_d,
+                        lr_emb=_lr_e,
+                        lr_cooc=_lr_c,
+                    )
                 elif deferred_buffer is not None and posterior >= ambiguous_lower:
                     # Ambiguous zone: defer for evidence accumulation
                     deferred_buffer.defer(canonical, other, posterior, doc_index)
@@ -582,7 +649,26 @@ def _resolve_cross_type(
                         "deferred",
                     )
                     cross_type_stats.append(stat)
-                    _emit_decision(stat, posterior=posterior)
+                    _lr_d, _lr_e, _lr_c = _compute_lr_values(canonical, other)
+                    _emit_decision(
+                        stat,
+                        posterior=posterior,
+                        lr_desc=_lr_d,
+                        lr_emb=_lr_e,
+                        lr_cooc=_lr_c,
+                    )
+                    evt_signals.cross_type_pair_deferred.send(
+                        evt_signals.cross_type_pair_deferred,
+                        event=etypes.CrossTypePairDeferred(
+                            entity_name=norm_name,
+                            type_a=canonical.type,
+                            type_b=other.type,
+                            posterior=posterior,
+                            ambiguous_lower=ambiguous_lower,
+                            merge_threshold=merge_threshold,
+                            doc_index=doc_index,
+                        ),
+                    )
                     continue
                 else:
                     logger.info(
@@ -602,7 +688,25 @@ def _resolve_cross_type(
                         "blocked",
                     )
                     cross_type_stats.append(stat)
-                    _emit_decision(stat, posterior=posterior)
+                    _lr_d, _lr_e, _lr_c = _compute_lr_values(canonical, other)
+                    _emit_decision(
+                        stat,
+                        posterior=posterior,
+                        lr_desc=_lr_d,
+                        lr_emb=_lr_e,
+                        lr_cooc=_lr_c,
+                    )
+                    evt_signals.merge_blocked.send(
+                        evt_signals.merge_blocked,
+                        event=etypes.MergeBlocked(
+                            entity_name=norm_name,
+                            type_a=canonical.type,
+                            type_b=other.type,
+                            posterior=posterior,
+                            reason="below_threshold",
+                            doc_index=doc_index,
+                        ),
+                    )
                     continue
             id_map[entities[idx].id] = canonical.id
             canonical = _merge_entities(canonical, entities[idx])

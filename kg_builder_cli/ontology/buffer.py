@@ -182,6 +182,18 @@ class OntologyBuffer:
             if exs:
                 frozen_exemplars[type_name] = tuple(sorted(exs, key=lambda e: -e.frequency))
 
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+
+        evt_signals.buffer_snapshot_taken.send(
+            evt_signals.buffer_snapshot_taken,
+            event=etypes.BufferSnapshotTaken(
+                path="",
+                entity_type_count=len(filtered_types),
+                rel_type_count=len(filtered_rels),
+            ),
+        )
+
         return OntologyState(
             entity_types=filtered_types,
             relationship_types=filtered_rels,
@@ -265,9 +277,23 @@ class OntologyBuffer:
         # Update type exemplars
         self._update_exemplars(entities)
 
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+
+        evt_signals.ontology_signals_accumulated.send(
+            evt_signals.ontology_signals_accumulated,
+            event=etypes.OntologySignalsAccumulated(
+                new_entity_types=len([s for s in signals if not s.is_relationship]),
+                new_rel_types=len([s for s in signals if s.is_relationship]),
+                total_entity_types=len(self._entity_types),
+                total_rel_types=len(self._relationship_types),
+            ),
+        )
+
     def _update_exemplars(self, entities: list[Entity]) -> None:
         """Update type exemplars from extracted entities."""
         max_exemplars = self._config.max_type_exemplars
+        updated_types: set[str] = set()
         # Count entity occurrences by (type, normalized_name), track description
         entity_counts: dict[tuple[str, str], tuple[str, int, str]] = {}
         for entity in entities:
@@ -293,6 +319,7 @@ class OntologyBuffer:
                 existing.frequency += count
                 if desc and len(desc) > len(existing.description):
                     existing.description = desc
+                updated_types.add(canonical_type)
                 continue
             if len(exemplars) < max_exemplars:
                 exemplars.append(
@@ -303,6 +330,7 @@ class OntologyBuffer:
                         description=desc,
                     )
                 )
+                updated_types.add(canonical_type)
             else:
                 # Replace lowest-frequency exemplar if new entity has higher frequency
                 min_ex = min(exemplars, key=lambda e: e.frequency)
@@ -316,6 +344,20 @@ class OntologyBuffer:
                             description=desc,
                         )
                     )
+                    updated_types.add(canonical_type)
+
+        if updated_types:
+            from kg_builder_cli.events import signals as evt_signals
+            from kg_builder_cli.events import types as etypes
+
+            for type_name in updated_types:
+                evt_signals.buffer_exemplars_updated.send(
+                    evt_signals.buffer_exemplars_updated,
+                    event=etypes.BufferExemplarsUpdated(
+                        entity_type=type_name,
+                        exemplar_count=len(self._type_exemplars.get(type_name, [])),
+                    ),
+                )
 
     def frequencies(self) -> dict[str, int]:
         """Return copy of current type frequency counts."""
@@ -354,6 +396,19 @@ class OntologyBuffer:
                 threshold_pct,
                 min_count,
                 ", ".join(sorted(pruned)),
+            )
+
+            from kg_builder_cli.events import signals as evt_signals
+            from kg_builder_cli.events import types as etypes
+
+            evt_signals.buffer_types_pruned.send(
+                evt_signals.buffer_types_pruned,
+                event=etypes.BufferTypesPruned(
+                    pruned_entity_types=sorted(pruned),
+                    pruned_rel_types=[],
+                    remaining_entity_types=len(self._entity_types),
+                    remaining_rel_types=len(self._relationship_types),
+                ),
             )
 
         return pruned
@@ -577,6 +632,19 @@ class OntologyBuffer:
                     encounters,
                     GUIDE_EVOLUTION_MIN_ENCOUNTERS,
                 )
+                from kg_builder_cli.events import signals as evt_signals
+                from kg_builder_cli.events import types as etypes
+
+                evt_signals.hierarchy_skipped.send(
+                    evt_signals.hierarchy_skipped,
+                    event=etypes.HierarchySkipped(
+                        type_a=type_a,
+                        type_b=type_b,
+                        encounters=encounters,
+                        threshold=GUIDE_EVOLUTION_MIN_ENCOUNTERS,
+                        reason="below_encounter_threshold",
+                    ),
+                )
                 continue
             # Skip if both already have parents
             if type_a in existing_children and type_b in existing_children:
@@ -588,6 +656,18 @@ class OntologyBuffer:
                 type_b,
                 encounters,
                 GUIDE_EVOLUTION_MIN_ENCOUNTERS,
+            )
+            from kg_builder_cli.events import signals as evt_signals
+            from kg_builder_cli.events import types as etypes
+
+            evt_signals.hierarchy_pair_qualifying.send(
+                evt_signals.hierarchy_pair_qualifying,
+                event=etypes.HierarchyPairQualifying(
+                    type_a=type_a,
+                    type_b=type_b,
+                    encounters=encounters,
+                    threshold=GUIDE_EVOLUTION_MIN_ENCOUNTERS,
+                ),
             )
             # Generate parent name from type descriptions or simple heuristic
             parent_name = self._infer_parent_name(type_a, type_b)
@@ -613,6 +693,17 @@ class OntologyBuffer:
                         sorted(new_children),
                         existing.children,
                     )
+                    from kg_builder_cli.events import signals as evt_signals
+                    from kg_builder_cli.events import types as etypes
+
+                    evt_signals.hierarchy_evolved.send(
+                        evt_signals.hierarchy_evolved,
+                        event=etypes.HierarchyEvolved(
+                            parent_name=parent_name,
+                            children=sorted(existing.children),
+                            is_new=False,
+                        ),
+                    )
             else:
                 entry = TypeHierarchyEntry(
                     name=parent_name,
@@ -626,6 +717,17 @@ class OntologyBuffer:
                     "[hierarchy] evolved new parent '{}' with children: {}",
                     parent_name,
                     sorted(children),
+                )
+                from kg_builder_cli.events import signals as evt_signals
+                from kg_builder_cli.events import types as etypes
+
+                evt_signals.hierarchy_evolved.send(
+                    evt_signals.hierarchy_evolved,
+                    event=etypes.HierarchyEvolved(
+                        parent_name=parent_name,
+                        children=sorted(children),
+                        is_new=True,
+                    ),
                 )
 
     def _infer_parent_name(self, type_a: str, type_b: str) -> str:
@@ -663,16 +765,41 @@ class OntologyBuffer:
 
         new_rules: list[str] = []
 
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+
         for (norm_name, type_a, type_b), entry in self._cross_type_stats.items():
             key = (norm_name, type_a, type_b)
 
             # Skip if already generated a rule for this key
             if key in self._evolved_guide_keys:
+                evt_signals.guide_rule_skipped.send(
+                    evt_signals.guide_rule_skipped,
+                    event=etypes.GuideRuleSkipped(
+                        entity_name=norm_name,
+                        type_a=type_a,
+                        type_b=type_b,
+                        dominance=0.0,
+                        encounters=0,
+                        reason="already_generated",
+                    ),
+                )
                 continue
 
             # Threshold 1: encounter frequency
             pair_encounters = sum(entry["type_counts"].values()) // 2
             if pair_encounters < GUIDE_EVOLUTION_MIN_ENCOUNTERS:
+                evt_signals.guide_rule_skipped.send(
+                    evt_signals.guide_rule_skipped,
+                    event=etypes.GuideRuleSkipped(
+                        entity_name=norm_name,
+                        type_a=type_a,
+                        type_b=type_b,
+                        dominance=0.0,
+                        encounters=pair_encounters,
+                        reason="below_encounter_threshold",
+                    ),
+                )
                 continue
 
             # Threshold 2: type dominance
@@ -683,10 +810,32 @@ class OntologyBuffer:
             dominant_type = max(counts, key=lambda t: counts[t])
             dominance = counts[dominant_type] / total
             if dominance < GUIDE_EVOLUTION_MIN_DOMINANCE:
+                evt_signals.guide_rule_skipped.send(
+                    evt_signals.guide_rule_skipped,
+                    event=etypes.GuideRuleSkipped(
+                        entity_name=norm_name,
+                        type_a=type_a,
+                        type_b=type_b,
+                        dominance=dominance,
+                        encounters=pair_encounters,
+                        reason="below_dominance_threshold",
+                    ),
+                )
                 continue
 
             # Threshold 3: hierarchy coverage (siblings only)
             if not self.shared_parent(type_a, type_b):
+                evt_signals.guide_rule_skipped.send(
+                    evt_signals.guide_rule_skipped,
+                    event=etypes.GuideRuleSkipped(
+                        entity_name=norm_name,
+                        type_a=type_a,
+                        type_b=type_b,
+                        dominance=dominance,
+                        encounters=pair_encounters,
+                        reason="no_shared_parent",
+                    ),
+                )
                 continue
 
             # Generate rule
@@ -705,6 +854,16 @@ class OntologyBuffer:
                 dominant_type,
                 dominance,
                 pair_encounters,
+            )
+            evt_signals.guide_rule_generated.send(
+                evt_signals.guide_rule_generated,
+                event=etypes.GuideRuleGenerated(
+                    entity_name=norm_name,
+                    dominant_type=dominant_type,
+                    other_type=other_type,
+                    dominance=dominance,
+                    encounters=pair_encounters,
+                ),
             )
 
         if not new_rules:

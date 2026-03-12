@@ -121,6 +121,22 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] `generative_max_tool_calls` = 2
 - [x] `cross_type_description_threshold` = 0.3
 
+## Event Architecture (Section 14)
+
+- [x] 41 named signals defined in `events/signals.py` across 10 categories
+- [x] ~50 Pydantic event payload models in `events/types.py`, one per signal (case-insensitive match)
+- [x] All 41 signals have `.send()` call sites wired into business logic
+- [x] 13 default handlers registered for key pipeline events at INFO level
+- [x] Verbose handlers connect to all 41 signals at DEBUG level
+- [x] Streaming JSONL event accumulator connects to all signals when `--event-log PATH` provided
+- [x] Document extraction events carry `doc_index` and `total_docs` for progression tracking
+- [x] `ingestion_completed` payload aggregates actual entity/rel counts from the run
+- [x] Cross-type decision events carry actual likelihood ratio values (`lr_desc`, `lr_emb`, `lr_cooc`)
+- [x] `stability_snapshot` fires every 5 documents with full metrics summary
+- [x] Blinker weak references documented - handler functions must be module-level or stored to prevent GC
+- [x] CLI flags: `--verbose` (DEBUG payloads), `--event-log PATH` (JSONL streaming), `--processing-log PATH` (loguru redirect)
+- [x] 2 condition-dependent signals: `llm_call_failed` (fires only on LLM error), `drift_detected` (fires only when remap rate exceeds threshold)
+
 ## Known Gaps (prioritized)
 
 1. **Composite curing mechanism** - design lines 999-1007 describe a weighted metric composite for curing detection, replacing the three-condition heuristic. Not yet implemented, current system uses `is_converged()` (metric-based) with `is_plateau()` (metric plateau) and `is_cured()` (heuristic fallback)

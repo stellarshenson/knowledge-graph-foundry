@@ -35,6 +35,7 @@ class IngestionCompleted(BaseModel):
 class DocumentExtractionStarted(BaseModel):
     document_source: str
     doc_index: int
+    total_docs: int
     chunk_count: int
     phase: str
 
@@ -42,6 +43,7 @@ class DocumentExtractionStarted(BaseModel):
 class DocumentExtractionCompleted(BaseModel):
     document_source: str
     doc_index: int
+    total_docs: int
     entity_count: int
     rel_count: int
     remap_count: int

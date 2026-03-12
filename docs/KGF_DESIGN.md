@@ -2424,11 +2424,11 @@ The pipeline accumulated significant implicit coupling as features were added: `
 
 The event system replaces this implicit coupling with a typed, observable signal layer. Every significant pipeline action emits a signal with a Pydantic payload, making the execution flow visible and traceable without changing pipeline behavior. The `ResolutionResult` NamedTuple replaces the module-attribute hack, and evolution triggers are explicit rather than buried in side effects.
 
-**Signal dispatch**: Named `Signal` instances in `kg_builder_cli/events/signals.py`. One signal per event type (~41 signals across 10 categories). Synchronous dispatch via `signal.send(signal, event=payload)`.
+**Signal dispatch**: Named `Signal` instances in `kg_builder_cli/events/signals.py`. One signal per event type (41 signals across 10 categories). Synchronous dispatch via `signal.send(signal, event=payload)`. All 41 signals are wired into business logic - every signal has at least one `.send()` call site. Two signals (`llm_call_failed`, `drift_detected`) are condition-dependent and only fire when the condition occurs (all LLM calls succeed or all drift checks pass).
 
-**Event payloads**: Pydantic `BaseModel` subclasses in `kg_builder_cli/events/types.py` (~50 event types). Passed as `event=` kwarg to `signal.send()`.
+**Event payloads**: Pydantic `BaseModel` subclasses in `kg_builder_cli/events/types.py` (~50 event types). Passed as `event=` kwarg to `signal.send()`. Document extraction events carry `doc_index` and `total_docs` fields for progression tracking.
 
-**Handler registration**: At pipeline startup in `cli.py` via `register_default_handlers()` (always) and `register_verbose_handlers()` (when `--verbose`). Default handlers log key events at INFO level. Verbose handlers log full Pydantic payloads at DEBUG level for every signal.
+**Handler registration**: At pipeline startup in `cli.py` via `register_default_handlers()` (always) and `register_verbose_handlers()` (when `--verbose`). Default handlers log 13 key signals at INFO level. Verbose handlers log full Pydantic payloads at DEBUG level for every signal.
 
 **Event log**: When `--event-log PATH` is provided, each event is streamed as a JSONL line to the specified file as it's emitted (not batched at the end). This enables real-time monitoring with `tail -f` during long ingestion runs. The config option `extract.event_log: true` enables streaming with a default path of `.kgf/events.log`.
 
@@ -2450,15 +2450,15 @@ The event system replaces this implicit coupling with a typed, observable signal
 **CLI flags**:
 
 - `--verbose / -v` - enables verbose event logging with full Pydantic payloads at DEBUG level
-- `--event-log PATH` - writes JSONL event log to the specified file after the run
+- `--event-log PATH` - streams JSONL event log to the specified file continuously during the run
 - `--processing-log PATH` - redirects loguru execution log to the specified file (default: stdout)
 
 **Event bus architecture**: The event bus is a flat, synchronous dispatch layer - there is no message queue or async processing. When a component calls `signal.send(signal, event=payload)`, all connected handlers execute inline before control returns to the caller. This keeps the pipeline deterministic and preserves execution order while making every decision point observable.
 
 At pipeline startup, `cli.py` registers three handler layers:
 
-1. **Default handlers** (always active) - connected to ~12 key signals, produce INFO-level log output matching the existing logging behavior
-2. **Verbose handlers** (when `--verbose`) - connected to all ~41 signals, log full Pydantic payloads at DEBUG level
+1. **Default handlers** (always active) - connected to 13 key signals, produce INFO-level log output with document progression (e.g., "extraction started: doc.pdf (2/10) [fluid, 15 chunks]")
+2. **Verbose handlers** (when `--verbose`) - connected to all 41 signals, log full Pydantic payloads at DEBUG level
 3. **Event log writer** (when `--event-log PATH`) - streams each event as a JSONL line to the specified file as it's emitted, enabling real-time `tail -f` monitoring
 
 Handlers are plain functions connected via `signal.connect(handler)`. Blinker uses weak references by default, so handler functions must be module-level or stored in a collection to prevent garbage collection.
