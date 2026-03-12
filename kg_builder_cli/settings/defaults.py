@@ -170,6 +170,11 @@ DEFAULTS: dict = {
         # The LLM receives entity name, both types with descriptions, evidence summary,
         # and optional graph context. Returns structured merge/block decision
         "deferred_dedup_llm_escalation": False,
+        # Write JSONL event log to .kgf/events.log after ingestion.
+        # Captures all pipeline signals (resolution decisions, curing checks,
+        # LLM calls, stability metrics) for post-run debugging.
+        # Override with --event-log / --no-event-log CLI flag
+        "event_log": False,
     },
     # ── Ontology Buffer ───────────────────────────────────────────────
     # Controls the in-memory ontology buffer that evolves during ingestion.
