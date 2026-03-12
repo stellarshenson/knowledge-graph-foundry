@@ -1,4 +1,4 @@
-# Knowledge Graph Foundry - CLI and Advanced Ingestion Engine v22
+# Knowledge Graph Foundry - CLI and Advanced Ingestion Engine v24
 
 ## 1. Introduction
 
