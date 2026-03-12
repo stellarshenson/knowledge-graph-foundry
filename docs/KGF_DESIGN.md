@@ -2876,13 +2876,15 @@ Integration tests use a dedicated Neo4J test instance (Docker container or testc
 
 ### Mock Strategy
 
-- **LLM responses** - Instructor's `Patch` mode allows injecting predefined responses for deterministic testing. Test fixtures provide known extraction outputs for specific input chunks
+- **LLM cassettes** - pre-recorded LLM sessions stored as JSON files in `tests/fixtures/llm_cassettes/`. A `ReplayClient` replays responses in sequence, supporting both instructor call patterns (`client.chat.completions.create()` and `client.create()`). A `RecordingClient` wraps a real instructor client to capture live sessions for new cassettes. Cassettes store serialized Pydantic response models (ExtractionResponse, CureProbe, CureDecision, RecureDecision, TypeClusteringResult, SchemaSignals) with method and model metadata. This replaces ad-hoc MagicMock patterns for LLM-dependent tests
+- **Direct MagicMock** - lightweight unit tests still use `unittest.mock.MagicMock` for simple cases where a full cassette is unnecessary (error paths, config validation, single-call assertions)
 - **Neo4J driver** - the driver is mocked for unit tests. Integration tests use a real database
 - **File system** - `tmp_path` fixtures provide isolated file systems for config loading and extraction output tests
 
 ### Test Data Fixtures
 
 Test fixtures are organized in `tests/fixtures/`:
+- `llm_cassettes/` - pre-recorded LLM response sessions for deterministic replay (extraction, curing, re-curing, schema signals, type clustering)
 - `documents/` - small PDF, TXT, MD files for parsing and extraction tests
 - `records/` - JSONL files with known schemas for structured pipeline tests
 - `ontologies/` - YAML and OWL files for buffer initialization tests
