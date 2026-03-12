@@ -1,3 +1,5 @@
+![Knowledge Graph Foundry](images/header_banner.svg)
+
 # Knowledge Graph Foundry - CLI and Advanced Ingestion Engine v26
 
 ## 1. Introduction
@@ -18,7 +20,11 @@ Where Neo4J LLM Graph Builder provides a web-based UI with minimal structured da
 
 ## 2. System Architecture
 
+![Hybrid Architecture](images/hybrid_architecture.svg)
+
 The system follows a hybrid architecture. Pipeline functions execute as direct `litellm+instructor` single-shot calls on the hot path, with Strands agents engaged at specific escalation points where adaptive evidence gathering improves decision quality. Three existing call sites convert to agents where benchmark forensics identified measurable quality gaps from hardcoded branching, plus one new agent-native command (`kgf query`).
+
+![Pipeline Flow](images/pipeline_flow.svg)
 
 ### Interactive vs Autonomous Agent Mode
 
@@ -227,6 +233,8 @@ graph LR
 The CLI layer is thin - typer parses arguments and invokes pipeline functions directly. The pipeline runs as sequential single-shot `litellm+instructor` calls with no agent overhead on the hot path. Strands agents are spawned only at specific escalation points where the current hardcoded branching limits decision quality, and for the `kgf query` command which is naturally conversational.
 
 ### LLM Engagement Matrix
+
+![LLM Call Sites](images/llm_call_sites.svg)
 
 Seven call sites in the pipeline use LLM inference. Four remain single-shot; three convert to Strands agents where benchmark forensics identified quality gaps.
 
