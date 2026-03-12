@@ -1,6 +1,6 @@
-# Design Assumptions Checklist
+# Design Concepts
 
-Tracks alignment between `docs/KGF_DESIGN.md` and the actual implementation. Each item is a verifiable fact from the design document checked against code.
+Tracks alignment between `docs/KGF_DESIGN.md` and the actual implementation, documents potential enhancements, and captures design concepts for future work. Each checklist item is a verifiable fact from the design document checked against code.
 
 Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semantic resolution, signal-driven curing)
 
@@ -151,6 +151,47 @@ Features described in KGF_DESIGN.md that are not yet implemented. The design sec
 - [ ] **Update pipeline** (Section 11) - incremental update/migration not implemented
 - [ ] **Agent memory** (Section 12) - persistent agent knowledge store not implemented
 - [ ] **Interactive agent mode** (Section 2) - batch mode works, interactive checkpoints with user confirmations not implemented
+
+## Potential Enhancements
+
+- [ ] **Post-curing ontology validation** - PheKnowLator implements ontology validation checks (punning detection where the same entity is declared as both class and individual, connectivity verification ensuring synonymous classes are linked, obsolescence removal of deprecated classes). These could be adapted as post-curing sanity checks on the discovered schema - validating type consistency, detecting conflicting type assignments, and flagging disconnected type clusters before freezing. Reference: `references/other-projects/PheKnowLator-insights.md`
+
+- [ ] **Session state persistence and resume** (`kgf ingest --resume`) - save and restore pipeline state across sessions so interrupted or incomplete ingestion runs can be continued. This covers multiple scenarios: fluid phase interrupted before curing, curing completed but documents remain, re-curing triggered mid-session, and stabilised extraction interrupted. Requires research into state storage strategy with pros/cons analysis for each approach:
+
+  **State components to persist**: ontology buffer (type frequencies, exemplars, hierarchy, resolution guide), curing detector state (metrics history, LLM vote history, docs processed), fluid accumulator contents (if mid-fluid), list of processed files, current phase (fluid/cured/re-curing), stability metrics history
+
+  **Recovery strategies to evaluate**:
+  - **Local state file** (`.kgf/session_state.pkl` or YAML) - fast serialize/deserialize, but can diverge from graph if graph is modified externally
+  - **Graph-embedded state node** (`SessionState` node in Neo4j with serialised properties) - single source of truth, survives local file loss, but adds graph coupling and serialisation limits
+  - **Hybrid** - primary state in graph node, local cache for fast startup, conflict detection on resume
+  - **Graph-only recovery** - reconstruct state entirely from graph structure (count Document nodes, infer phase from ontology.yml existence, rebuild type frequencies from entity labels) - no state file needed but loses metrics history and accumulator contents
+
+  **Resume scenario matrix** (needs detailed design):
+
+  | Scenario | Phase | State Available | Recovery Action |
+  |----------|-------|-----------------|-----------------|
+  | Interrupted mid-fluid (e.g. doc 3 of 10) | fluid | accumulator + buffer + detector | Resume fluid from doc 4, restore accumulator |
+  | Interrupted after curing, mid-cured phase | cured | buffer frozen, exemplar index | Rebuild exemplar index, resume cured from next unprocessed doc |
+  | Completed normally, new docs added | cured | buffer frozen | Resume cured phase with new docs |
+  | Interrupted during re-curing | re-curing | partial accumulator | Reset to fluid, re-accumulate from graph + new docs |
+  | State file exists but graph was wiped | conflict | stale state file | Detect conflict (graph empty but state says docs processed), prompt user |
+  | Graph has data but no state file | recovery | graph only | Reconstruct minimal state from graph, resume in cured mode |
+
+  **Conflict detection**: compare state file's `docs_processed` list against `Document` nodes in graph. Mismatch indicates external modification. Options: warn and proceed, force re-state from graph, or abort with instructions.
+
+  **Testing**: mock-based tests for each resume scenario - serialize state, simulate interruption, deserialize, verify pipeline continues correctly. Graph-recovery tests query mock Neo4j to reconstruct state.
+
+- [ ] **LLM observability and cost tracking** - instrument all LLM calls with token usage, latency, and cost metrics. Evaluate integration options from the litellm ecosystem (litellm callbacks, LangSmith, Langfuse, OpenLLMetry/OpenTelemetry) for monitoring:
+  - Token usage per call and cumulative per session (input tokens, output tokens, total)
+  - Number of LLM calls per minute (actual rate vs configured rate limit)
+  - Total cost per ingestion run (model-specific pricing)
+  - Latency distribution (p50, p95, p99) per call type (extraction, clustering, curing advisory, type resolution)
+  - Error rate and retry count
+  - Per-document and per-chunk token breakdown for cost attribution
+
+  litellm already provides `completion_cost()` and callback hooks (`success_callback`, `failure_callback`) that could emit to the existing event system. The benchmark reports should include a cost/token summary section alongside quality scores to enable cost-quality tradeoff analysis across versions.
+
+- [ ] **Multi-pass extraction with convergence signal** - run multiple extraction passes over the same chunk set, comparing results across passes to identify stable vs volatile extractions. First pass discovers entities/relationships normally. Subsequent passes re-extract with the accumulated ontology context, comparing against previous pass results. A convergence signal measures inter-pass agreement (entity overlap, relationship stability, type consistency). Extraction stabilises when the convergence signal drops below threshold (similar to curing's JSD convergence). Benefits: reduces LLM extraction variance, surfaces entities missed in single pass, provides confidence scores based on extraction reproducibility. Cost: multiplies LLM calls by pass count. Config: `extract.multi_pass` (default false), `extract.max_passes` (default 3), `extract.pass_convergence_threshold` (default 0.95).
 
 ## Known Gaps (prioritized)
 
