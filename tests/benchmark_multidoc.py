@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -917,6 +918,76 @@ def print_benchmark(result: BenchmarkResult) -> None:
     print(f"{'=' * 74}\n")
 
 
+def _get_changes_since_last_benchmark(benchmarks_dir: Path, current_version: str) -> list[str]:
+    """Get git log between the last benchmark commit and HEAD.
+
+    Finds the most recent benchmark file (excluding current version), looks up the
+    commit that introduced it, and returns the git log from that commit to HEAD.
+    Returns a list of markdown lines for the delta section, or empty list if
+    no previous benchmark or git history is unavailable.
+    """
+    # Find previous benchmark files sorted by modification time (newest first)
+    existing = sorted(
+        benchmarks_dir.glob("MULTIDOC_BENCHMARK_v*.md"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+
+    # Filter out the current version
+    previous = [p for p in existing if f"_{current_version}_" not in p.name]
+    if not previous:
+        return []
+
+    prev_file = previous[0]
+    prev_name = prev_file.name
+
+    # Extract version tag from filename for display
+    prev_version_match = re.search(r"_(v\d+)_", prev_name)
+    prev_version = prev_version_match.group(1) if prev_version_match else "previous"
+
+    # Find the commit that introduced the previous benchmark file
+    try:
+        commit_hash = subprocess.run(
+            ["git", "log", "--diff-filter=A", "--format=%H", "-1", "--", f"docs/benchmarks/{prev_name}"],
+            capture_output=True, text=True, timeout=10,
+        ).stdout.strip()
+
+        if not commit_hash:
+            # File may have been renamed; try last commit that touched it
+            commit_hash = subprocess.run(
+                ["git", "log", "--format=%H", "-1", "--", f"docs/benchmarks/{prev_name}"],
+                capture_output=True, text=True, timeout=10,
+            ).stdout.strip()
+
+        if not commit_hash:
+            return []
+
+        # Get git log from that commit to HEAD
+        log_output = subprocess.run(
+            ["git", "log", f"{commit_hash}..HEAD", "--oneline", "--no-decorate"],
+            capture_output=True, text=True, timeout=10,
+        ).stdout.strip()
+
+        if not log_output:
+            return []
+
+        commits = log_output.splitlines()
+        lines = [
+            "",
+            f"## Changes Since {prev_version}",
+            "",
+            f"{len(commits)} commits since last benchmark ({prev_name}):",
+            "",
+        ]
+        for commit in commits:
+            lines.append(f"- `{commit}`")
+        lines.append("")
+        return lines
+
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        return []
+
+
 def save_benchmark_md(result: BenchmarkResult, path: Path, version: str = "v01", title: str = "") -> None:
     """Save benchmark result as markdown document."""
     score_int = int(result.hybrid_score) if result.hybrid_score > 0 else int(result.deterministic_pct)
@@ -968,6 +1039,11 @@ def save_benchmark_md(result: BenchmarkResult, path: Path, version: str = "v01",
         lines.extend(["", "## Generative Assessment", ""])
         for gs in result.generative_scores:
             lines.append(f"- **{gs.dimension}** ({gs.score:.0f}/5): {gs.reasoning}")
+
+    # Delta from previous benchmark
+    delta_lines = _get_changes_since_last_benchmark(path.parent, version)
+    if delta_lines:
+        lines.extend(delta_lines)
 
     lines.append("")
 
