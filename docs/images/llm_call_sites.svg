@@ -58,7 +58,7 @@
     <path d="M16,36 H198 V153 Q198,156 195,156 H19 Q16,156 16,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
     <rect x="16" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="30" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Chunk Extraction</text>
-    <text x="30" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/extract.py</text>
+    <text x="30" y="72" class="accent-1" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">LLM CALL</text>
     <text x="30" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Single-shot per chunk</text>
     <text x="30" y="104" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">ExtractionResponse model</text>
     <!-- Volume bar -->
@@ -74,7 +74,7 @@
     <path d="M210,36 H392 V153 Q392,156 389,156 H213 Q210,156 210,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
     <rect x="210" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="224" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Schema Signals</text>
-    <text x="224" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/schema_signals.py</text>
+    <text x="224" y="72" class="accent-1" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">LLM CALL</text>
     <text x="224" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Single-shot per batch</text>
     <text x="224" y="104" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">SchemaSignals model</text>
     <!-- Volume bar -->
@@ -90,7 +90,7 @@
     <path d="M404,36 H586 V153 Q586,156 583,156 H407 Q404,156 404,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
     <rect x="404" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="418" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Type Clustering</text>
-    <text x="418" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">ontology/type_clustering.py</text>
+    <text x="418" y="72" class="accent-1" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">LLM CALL</text>
     <text x="418" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Single-shot per batch</text>
     <text x="418" y="104" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">TypeClusteringResult model</text>
     <!-- Volume bar -->
@@ -106,7 +106,7 @@
     <path d="M598,36 H780 V153 Q780,156 777,156 H601 Q598,156 598,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
     <rect x="598" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="612" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Curing Probe</text>
-    <text x="612" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">curing/generative.py (phase 1)</text>
+    <text x="612" y="72" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">STRANDS AGENT</text>
     <text x="612" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Two-phase with graph query</text>
     <text x="612" y="104" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">CureProbe + CureDecision</text>
     <!-- Volume bar -->
@@ -124,7 +124,7 @@
     <path d="M16,168 H198 V285 Q198,288 195,288 H19 Q16,288 16,285 Z" fill="none" stroke="#da8230" stroke-width="1"/>
     <rect x="16" y="168" width="182" height="5" fill="#da8230" opacity="0.6"/>
     <text x="30" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Curing Decision</text>
-    <text x="30" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">curing/generative.py (phase 2)</text>
+    <text x="30" y="204" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">STRANDS AGENT</text>
     <text x="30" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Needs graph evidence</text>
     <text x="30" y="236" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">CureDecision model</text>
     <!-- Volume bar -->
@@ -140,7 +140,7 @@
     <path d="M210,168 H392 V285 Q392,288 389,288 H213 Q210,288 210,285 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
     <rect x="210" y="168" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="224" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Recure Decision</text>
-    <text x="224" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">curing/generative.py</text>
+    <text x="224" y="204" class="accent-1" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">LLM CALL</text>
     <text x="224" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Remap rate timeline</text>
     <text x="224" y="236" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">RecureDecision model</text>
     <!-- Volume bar -->
@@ -156,7 +156,7 @@
     <path d="M404,168 H586 V285 Q586,288 583,288 H407 Q404,288 404,285 Z" fill="none" stroke="#da8230" stroke-width="1"/>
     <rect x="404" y="168" width="182" height="5" fill="#da8230" opacity="0.6"/>
     <text x="418" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Type Resolver</text>
-    <text x="418" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/type_resolver.py</text>
+    <text x="418" y="204" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">STRANDS AGENT</text>
     <text x="418" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Bayesian posterior gap &lt;0.15</text>
     <text x="418" y="236" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">TypeChoice model</text>
     <!-- Volume bar -->
@@ -172,7 +172,7 @@
     <path d="M598,168 H780 V285 Q780,288 777,288 H601 Q598,288 598,285 Z" fill="none" stroke="#da8230" stroke-width="1"/>
     <rect x="598" y="168" width="182" height="5" fill="#da8230" opacity="0.6"/>
     <text x="612" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Deferred Dedup</text>
-    <text x="612" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/deferred_dedup.py</text>
+    <text x="612" y="204" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="7" letter-spacing="1">STRANDS AGENT</text>
     <text x="612" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Ambiguous zone 0.4-0.6</text>
     <text x="612" y="236" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">CrossTypeMergeDecision</text>
     <!-- Volume bar -->
@@ -184,10 +184,10 @@
 
   <!-- Summary stats -->
   <g id="summary">
-    <text x="16" y="310" class="fg-2" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600">4 single-shot (KEEP)</text>
-    <rect x="130" y="302" width="8" height="8" rx="1" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1"/>
-    <text x="160" y="310" class="fg-2" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600">4 agent escalation (CONVERT)</text>
-    <rect x="320" y="302" width="8" height="8" rx="1" fill="#da8230" fill-opacity="0.06" stroke="#da8230" stroke-width="1"/>
+    <rect x="16" y="302" width="8" height="8" rx="1" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1"/>
+    <text x="30" y="310" class="accent-1" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600">4 LLM CALL (single-shot)</text>
+    <rect x="200" y="302" width="8" height="8" rx="1" fill="#da8230" fill-opacity="0.06" stroke="#da8230" stroke-width="1"/>
+    <text x="214" y="310" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600">4 STRANDS AGENT (escalation)</text>
     <text x="16" y="328" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="8">Volume bars show relative call frequency per ingestion run. CONVERT sites meet all 4 criteria: low volume, external evidence, hardcoded branching, measurable quality gap.</text>
   </g>
 

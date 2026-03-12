@@ -234,17 +234,27 @@ The CLI layer is thin - typer parses arguments and invokes pipeline functions di
 
 ![LLM Call Sites](images/llm_call_sites.svg)
 
-Seven call sites in the pipeline use LLM inference. Four remain single-shot; three convert to Strands agents where benchmark forensics identified quality gaps.
+Seven call sites in the pipeline use LLM inference. Four remain single-shot `litellm+instructor` calls; three convert to Strands agents where benchmark forensics identified quality gaps from hardcoded branching.
 
-| Call Site | Module | Current Pattern | Volume/Run | Convert? | Rationale |
-|-----------|--------|-----------------|------------|----------|-----------|
-| Chunk extraction | `extraction/extract.py` | Single-shot instructor | ~159 | No | Hot path, no tools needed, structured output sufficient |
-| Type clustering | `curing/type_clustering.py` | Single async instructor | 1 | No | One-shot semantic merge, no external evidence required |
-| Schema signals | `extraction/schema_signals.py` | Single-shot instructor | 1/doc | No | Lightweight pre-pass, no decision branching |
-| Generative curing | `curing/generative.py` | Two-phase + manual dispatch | 1-6 | **Yes** | Hand-coded ReAct loop with `_is_ambiguous_for_query()` gate, needs flexible tool use |
-| Type resolver | `extraction/type_resolver.py` | Bayesian + conditional LLM | 5-15 | **Yes** | Hardcoded evidence gates limit quality; 15 blocked pairs at posteriors 0.45-0.60 |
-| Deferred dedup | `extraction/deferred_dedup.py` | Accumulated + conditional LLM | 2-10 | **Yes** | Same blocked-pair pattern, accumulated evidence needs adaptive querying |
-| kgf query | new | Not implemented | On-demand | **Yes** | Natural agent use case - multi-turn conversational Cypher generation |
+| Call Site | LLM Call | Strands Agent | Volume/Run |
+|-----------|:--------:|:-------------:|------------|
+| Chunk extraction | Yes | No | ~159 |
+| Type clustering | Yes | No | 1 |
+| Schema signals | Yes | No | 1/doc |
+| Generative curing | No | **Yes** | 1-6 |
+| Type resolver | No | **Yes** | 5-15 |
+| Deferred dedup | No | **Yes** | 2-10 |
+| kgf query | No | **Yes** | On-demand |
+
+| Call Site | Module | Rationale |
+|-----------|--------|-----------|
+| Chunk extraction | `extraction/extract.py` | Hot path, no tools needed, structured output sufficient |
+| Type clustering | `curing/type_clustering.py` | One-shot semantic merge, no external evidence required |
+| Schema signals | `extraction/schema_signals.py` | Lightweight pre-pass, no decision branching |
+| Generative curing | `curing/generative.py` | Hand-coded ReAct loop with `_is_ambiguous_for_query()` gate, needs flexible tool use |
+| Type resolver | `extraction/type_resolver.py` | Hardcoded evidence gates limit quality; 15 blocked pairs at posteriors 0.45-0.60 |
+| Deferred dedup | `extraction/deferred_dedup.py` | Same blocked-pair pattern, accumulated evidence needs adaptive querying |
+| kgf query | new | Natural agent use case - multi-turn conversational Cypher generation |
 
 ### Agent Conversion Criteria
 
