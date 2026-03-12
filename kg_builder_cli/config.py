@@ -14,17 +14,26 @@ from dotenv import load_dotenv
 from loguru import logger
 
 # ── Logger setup ───────────────────────────────────────────────────────
+#
+# In TTY mode, route through tqdm.write so progress bars and log lines
+# don't collide.  In non-TTY mode (pipes, background jobs, CI),
+# tqdm.write buffers indefinitely and never flushes, so fall back to
+# plain stderr which auto-flushes on every write.
 
 logger.remove()
-logger.add(sys.stdout, colorize=True)
 
-try:
-    from tqdm import tqdm
+if sys.stdout.isatty():
+    try:
+        from tqdm import tqdm
 
-    logger.remove()
-    logger.add(lambda msg: tqdm.write(msg, end="", file=sys.stdout), colorize=True)
-except ModuleNotFoundError:
-    pass
+        logger.add(
+            lambda msg: tqdm.write(msg, end="", file=sys.stdout),
+            colorize=True,
+        )
+    except ModuleNotFoundError:
+        logger.add(sys.stdout, colorize=True)
+else:
+    logger.add(sys.stderr, colorize=False)
 
 # ── Environment ────────────────────────────────────────────────────────
 
