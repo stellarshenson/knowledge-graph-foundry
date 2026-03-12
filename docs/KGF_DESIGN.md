@@ -2,12 +2,12 @@
 
 ## 1. Introduction
 
-kg-builder-cli is a Python CLI tool for building knowledge graphs from structured and unstructured data, loading them into Neo4J. It uses LLMs to identify entities and relationships, with optional ontology constraints to control graph structure. Built on the Strands Agents SDK, each CLI command is an autonomous agent with tools for data inspection, graph operations, and interactive user collaboration. The tool is a simpler, CLI-driven alternative to the Neo4J LLM Graph Builder web application.
+kg-builder-cli is a Python CLI tool for building knowledge graphs from structured and unstructured data, loading them into Neo4J. It uses LLMs to identify entities and relationships, with optional ontology constraints to control graph structure. The pipeline executes as direct `litellm+instructor` single-shot calls for throughput, with Strands agents engaged at specific escalation points where adaptive evidence gathering improves decision quality. The tool is a simpler, CLI-driven alternative to the Neo4J LLM Graph Builder web application.
 
-Where Neo4J LLM Graph Builder provides a web-based UI with minimal structured data support (treating everything as unstructured text), kg-builder-cli offers a terminal-first workflow with first-class support for both structured records and free-form documents. The agent-backed architecture enables interactive schema inference, adaptive ontology evolution, and migration-aware updates - capabilities that a static web UI cannot provide.
+Where Neo4J LLM Graph Builder provides a web-based UI with minimal structured data support (treating everything as unstructured text), kg-builder-cli offers a terminal-first workflow with first-class support for both structured records and free-form documents. The hybrid architecture - direct pipeline execution with targeted agent escalation - enables adaptive ontology evolution and evidence-based resolution without imposing agent overhead on the hot extraction path.
 
 **Key facts**:
-- Python 3.12, uv package manager, Strands Agents SDK
+- Python 3.12, uv package manager, litellm+instructor (pipeline), Strands Agents SDK (escalation)
 - Three CLI commands: `kgf ingest`, `kgf query`, `kgf update`
 - Supports PDF, TXT, MD, DOCX (unstructured) and JSON, JSONL (structured)
 - Adaptive ontology buffer that evolves during ingestion
@@ -18,7 +18,7 @@ Where Neo4J LLM Graph Builder provides a web-based UI with minimal structured da
 
 ## 2. System Architecture
 
-The system follows an agent-centric design where each CLI command spawns an autonomous Strands agent. Agents orchestrate multi-step pipelines using a shared tool registry, maintaining conversational context for interactive operations and executing batch operations autonomously.
+The system follows a hybrid architecture. Pipeline functions execute as direct `litellm+instructor` single-shot calls on the hot path, with Strands agents engaged at specific escalation points where adaptive evidence gathering improves decision quality. Three existing call sites convert to agents where benchmark forensics identified measurable quality gaps from hardcoded branching, plus one new agent-native command (`kgf query`).
 
 ### Interactive vs Autonomous Agent Mode
 
@@ -148,19 +148,26 @@ graph LR
         UPDATE["kgf update"]
     end
 
-    subgraph AGENTS["Agent Layer"]
+    subgraph PIPELINE["Direct Execution (litellm+instructor)"]
         direction TB
-        IA["Ingest Agent"]
-        QA["Query Agent"]
-        UA["Update Agent"]
+        PARSE["Parse / Chunk"]
+        EXTRACT["Extract"]
+        DEDUP["Dedup / Resolve"]
+        LOAD["Load"]
     end
 
-    subgraph TOOLS["Tool Registry"]
+    subgraph AGENTS["Strands Agents (escalation)"]
         direction TB
-        PYREPL["py-repl"]
-        MCP["neo4j-mcp"]
-        DRIVER["neo4j-driver"]
-        FILEOPS["file-ops"]
+        CA["Curing Agent"]
+        RA["Resolution Agent"]
+        QA["Query Agent"]
+    end
+
+    subgraph TOOLS["Agent Tool Registry"]
+        direction TB
+        QG["query_graph"]
+        QB["query_buffer"]
+        IM["inspect_metrics"]
     end
 
     subgraph EXTERNAL["External Systems"]
@@ -170,62 +177,111 @@ graph LR
         FS["Filesystem<br/>.kgf/"]
     end
 
-    INGEST --> IA
+    INGEST --> PARSE --> EXTRACT --> DEDUP --> LOAD
     QUERY --> QA
-    UPDATE --> UA
+    UPDATE --> PIPELINE
 
-    IA --> PYREPL
-    IA --> MCP
-    IA --> DRIVER
-    IA --> FILEOPS
-    QA --> MCP
-    QA --> FILEOPS
-    UA --> PYREPL
-    UA --> MCP
-    UA --> DRIVER
-    UA --> FILEOPS
+    EXTRACT -.->|ambiguous curing| CA
+    DEDUP -.->|blocked pairs| RA
 
-    MCP --> NEO4J
-    DRIVER --> NEO4J
-    PYREPL --> LLM
-    IA --> LLM
+    CA --> QG
+    CA --> QB
+    CA --> IM
+    RA --> QG
+    RA --> QB
+    QA --> QG
+
+    QG --> NEO4J
+    EXTRACT --> LLM
+    CA --> LLM
+    RA --> LLM
     QA --> LLM
-    UA --> LLM
-    FILEOPS --> FS
+    LOAD --> NEO4J
+    LOAD --> FS
 
     style CLI stroke:#0284c7,stroke-width:3px
+    style PIPELINE stroke:#10b981,stroke-width:3px
     style AGENTS stroke:#a855f7,stroke-width:3px
-    style TOOLS stroke:#10b981,stroke-width:3px
+    style TOOLS stroke:#f59e0b,stroke-width:3px
     style EXTERNAL stroke:#3b82f6,stroke-width:3px
     style INGEST stroke:#0284c7,stroke-width:2px
     style QUERY stroke:#0284c7,stroke-width:2px
     style UPDATE stroke:#0284c7,stroke-width:2px
-    style IA stroke:#a855f7,stroke-width:2px
+    style PARSE stroke:#10b981,stroke-width:2px
+    style EXTRACT stroke:#10b981,stroke-width:2px
+    style DEDUP stroke:#10b981,stroke-width:2px
+    style LOAD stroke:#10b981,stroke-width:2px
+    style CA stroke:#a855f7,stroke-width:2px
+    style RA stroke:#a855f7,stroke-width:2px
     style QA stroke:#a855f7,stroke-width:2px
-    style UA stroke:#a855f7,stroke-width:2px
-    style PYREPL stroke:#10b981,stroke-width:2px
-    style MCP stroke:#10b981,stroke-width:2px
-    style DRIVER stroke:#10b981,stroke-width:2px
-    style FILEOPS stroke:#10b981,stroke-width:2px
+    style QG stroke:#f59e0b,stroke-width:2px
+    style QB stroke:#f59e0b,stroke-width:2px
+    style IM stroke:#f59e0b,stroke-width:2px
     style NEO4J stroke:#3b82f6,stroke-width:2px
     style LLM stroke:#a855f7,stroke-width:2px
     style FS stroke:#3b82f6,stroke-width:2px
 ```
 
-The CLI layer is thin - typer parses arguments and spawns the appropriate Strands agent. Each agent receives a system prompt tailored to its workflow and access to the shared tool registry. Agents maintain conversational context for interactive operations (schema inference, migration review, query follow-ups) and execute multi-step pipelines autonomously for batch operations.
+The CLI layer is thin - typer parses arguments and invokes pipeline functions directly. The pipeline runs as sequential single-shot `litellm+instructor` calls with no agent overhead on the hot path. Strands agents are spawned only at specific escalation points where the current hardcoded branching limits decision quality, and for the `kgf query` command which is naturally conversational.
 
-### Agent Tools
+### LLM Engagement Matrix
 
-Every agent has access to four tools through the Strands tool registry:
+Seven call sites in the pipeline use LLM inference. Four remain single-shot; three convert to Strands agents where benchmark forensics identified quality gaps.
 
-| Tool | Purpose |
-|------|---------|
-| `py-repl` | Python REPL for data inspection, sampling, statistical analysis, transformation |
-| `neo4j-mcp` | MCP server providing graph query, schema inspection, and index management |
-| `neo4j-driver` | Direct Neo4J Python driver for bulk Cypher operations, batch loading, transactions |
-| `file-ops` | Read/write files in `.kgf/` directory (schemas, extractions, ontology, migrations) |
+| Call Site | Module | Current Pattern | Volume/Run | Convert? | Rationale |
+|-----------|--------|-----------------|------------|----------|-----------|
+| Chunk extraction | `extraction/extract.py` | Single-shot instructor | ~159 | No | Hot path, no tools needed, structured output sufficient |
+| Type clustering | `curing/type_clustering.py` | Single async instructor | 1 | No | One-shot semantic merge, no external evidence required |
+| Schema signals | `extraction/schema_signals.py` | Single-shot instructor | 1/doc | No | Lightweight pre-pass, no decision branching |
+| Generative curing | `curing/generative.py` | Two-phase + manual dispatch | 1-6 | **Yes** | Hand-coded ReAct loop with `_is_ambiguous_for_query()` gate, needs flexible tool use |
+| Type resolver | `extraction/type_resolver.py` | Bayesian + conditional LLM | 5-15 | **Yes** | Hardcoded evidence gates limit quality; 15 blocked pairs at posteriors 0.45-0.60 |
+| Deferred dedup | `extraction/deferred_dedup.py` | Accumulated + conditional LLM | 2-10 | **Yes** | Same blocked-pair pattern, accumulated evidence needs adaptive querying |
+| kgf query | new | Not implemented | On-demand | **Yes** | Natural agent use case - multi-turn conversational Cypher generation |
 
-The `neo4j-mcp` tool exposes the graph as a conversational resource - agents can ask questions about the current graph state, inspect node counts, and validate relationships without writing raw Cypher. The `neo4j-driver` tool handles performance-critical operations - bulk MERGE operations, index creation, and transactional writes that need direct driver access.
+### Agent Conversion Criteria
+
+A call site converts from single-shot to Strands agent only when all four conditions hold:
+
+1. **Low volume** - fewer than 20 calls per ingestion run (agent spawn overhead acceptable)
+2. **External evidence required** - the decision improves with access to graph state, buffer contents, or metrics history
+3. **Hardcoded branching** - the current implementation uses manual if/else dispatch that limits the LLM's ability to gather the evidence it needs
+4. **Measurable quality gap** - benchmark forensics identified specific failures traceable to the hardcoded pattern (blocked pairs, missed curing windows, ambiguous classifications)
+
+Call sites that fail any condition remain single-shot. Chunk extraction fails conditions 1-3 (high volume, no tools needed, no branching). Type clustering fails conditions 2-3. Schema signals fails condition 2.
+
+### Targeted Agents
+
+Three pipeline escalation agents plus one new command agent. Each agent has a focused tool set and returns structured output via Pydantic models.
+
+**Curing Agent** - replaces the two-phase flow in `curing/generative.py` where `llm_should_cure()` manually constructs a `CureProbe`, checks `_is_ambiguous_for_query()`, optionally queries the graph, then makes a second LLM call for `CureDecision`. The agent receives metrics timeline and type frequencies as system context, then autonomously decides whether to gather additional evidence from the graph or buffer before rendering a cure/block decision.
+
+- **Tools**: `query_graph`, `query_buffer`, `inspect_metrics`
+- **Structured output**: `CureDecision` (action: cure/block, confidence, reasoning)
+- **Replaces**: `_is_ambiguous_for_query()` gate, manual two-phase dispatch, `CureProbe` intermediate model
+- **Invocation**: from `cli.py._ingest_fluid()` when generative curing is enabled and metric-based check is inconclusive
+
+**Resolution Agent** - replaces `type_resolver._llm_resolve()` and `deferred_dedup._llm_resolve_pair()` where the LLM receives a fixed context window and cannot request additional evidence about entity relationships or type distributions. The agent receives a candidate pair with Bayesian posterior and can query the graph for relationship patterns, co-occurrence, and type exemplars before deciding.
+
+- **Tools**: `query_graph`, `query_buffer`
+- **Structured output**: `TypeChoice` (for type resolution) or `CrossTypeMergeDecision` (for deferred dedup)
+- **Replaces**: fixed-context LLM calls in `_llm_resolve()` and `_llm_resolve_pair()`
+- **Invocation**: from `type_resolver` when posterior gap < 0.15 between top candidates; from `deferred_dedup.resolve_all()` for pairs in the ambiguous zone (0.4-0.6 posterior)
+
+**Query Agent** - new `kgf query` command providing multi-turn conversational graph exploration. The agent receives the current graph schema and maintains conversation history for follow-up queries, generating Cypher from natural language and presenting results.
+
+- **Tools**: `query_graph` (with schema introspection mode)
+- **Structured output**: none (conversational)
+- **Invocation**: `kgf query` CLI command
+
+### Agent Tool Registry
+
+Three read-only tools wrapping existing functions. All tools are stateless and safe to call in any order.
+
+| Tool | Wraps | Used By | Returns |
+|------|-------|---------|---------|
+| `query_graph` | `graph_query.query_graph()` | Curing, Resolution, Query agents | `GraphQueryResult` (entity counts, relationship patterns, entity search results) |
+| `query_buffer` | `buffer.snapshot()` | Curing, Resolution agents | `OntologyState` (type frequencies, exemplars, hierarchy, resolution guide, coverage) |
+| `inspect_metrics` | Stability metrics history | Curing agent | Metrics timeline (JSD, entropy delta, Chao1 coverage, type accumulation rate per document) |
 
 ## 3. CLI Commands
 
@@ -2622,19 +2678,18 @@ kg_builder_cli/
     schema.py                     # Pydantic validators that produce types/config.py models
     defaults.py                   # built-in default values
 
-  tools/                          # external dependency wrappers
+  tools/                          # Strands agent tool wrappers
     __init__.py
-    registry.py                   # shared tool registry setup for Strands SDK
-    py_repl.py                    # py-repl tool - Python REPL for data inspection
-    neo4j_mcp.py                  # neo4j-mcp tool - graph query, schema inspection, index management
-    neo4j_driver.py               # neo4j-driver tool - bulk Cypher operations, batch loading
-    file_ops.py                   # file-ops tool - read/write .kgf/ directory
+    registry.py                   # tool registry setup for Strands SDK
+    query_graph.py                # query_graph tool - wraps graph_query.query_graph()
+    query_buffer.py               # query_buffer tool - wraps buffer.snapshot()
+    inspect_metrics.py            # inspect_metrics tool - stability metrics history
 
-  agents/                         # Strands agent definitions
+  agents/                         # Strands agent definitions (escalation only)
     __init__.py
-    ingest.py                     # ingest agent - system prompt, tool list, checkpoint logic
-    query.py                      # query agent - system prompt, conversation context management
-    update.py                     # update agent - system prompt, migration workflow
+    curing.py                     # curing agent - replaces two-phase generative curing
+    resolution.py                 # resolution agent - replaces fixed-context type/dedup resolution
+    query.py                      # query agent - kgf query conversational Cypher generation
 
   ontology/                       # ontology buffer and normalization
     __init__.py
@@ -2771,7 +2826,7 @@ The `OntologyState` passed from `ontology/` to `extraction/` is a frozen snapsho
 - **`types/`** depends on nothing except `pydantic`. Every other module may import from `types/`
 - **`config/`** depends on `types/config` for model definitions. Produces validated `AppConfig` at startup
 - **`tools/`** depends on `config/` for connection details. Wraps external libraries behind factory functions
-- **`agents/`** depends on `tools/` and `config/`. Each agent module defines a system prompt and tool list, delegates to Strands SDK
+- **`agents/`** depends on `tools/` and `config/`. Each agent defines a system prompt and tool subset, delegates to Strands SDK for escalation decisions only
 - **`ontology/`** depends on `types/ontology` and `types/extraction` (for `TypeSignal`). Self-contained otherwise. `buffer.py` is the primary interface
 - **`extraction/`** depends on `types/` (document, extraction, ontology types) and `ontology/` (for `OntologyState`). Top-level orchestrators (`unstructured.py`, `structured.py`) compose the internal submodules
 - **`loading/`** depends on `types/` (extraction, loading types) and `tools/neo4j_driver`. Receives `ExtractionResult` - does not import from `extraction/` directly
