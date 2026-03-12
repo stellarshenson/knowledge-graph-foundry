@@ -145,6 +145,10 @@ DEFAULTS: dict = {
         # The LLM receives entity name, both types with descriptions, evidence summary,
         # and optional graph context. Returns structured merge/block decision
         "deferred_dedup_llm_escalation": False,
+        # When true, uses ontology hierarchy (parent/child type relationships) to resolve
+        # sibling entities deterministically instead of falling through to Bayesian resolution.
+        # Requires a seeded ontology with hierarchy. Enabled by default for best accuracy
+        "hierarchy_resolution": True,
         # Write JSONL event log to .kgf/events.log after ingestion.
         # Captures all pipeline signals (resolution decisions, curing checks,
         # LLM calls, stability metrics) for post-run debugging.
@@ -197,6 +201,10 @@ DEFAULTS: dict = {
         # Below this = confident assignment; above = ambiguous, may trigger LLM escalation.
         # Range: 0.0-log2(top_k). Lower = stricter confidence requirement
         "type_resolution_entropy_threshold": 0.8,
+        # When true, evolves the resolution_guide text based on observed cross-type
+        # duplicate patterns during ontology refinement. The guide helps extraction prompts
+        # disambiguate frequently confused entity types. Requires guide_evolution_min_encounters
+        "resolution_guide_evolution": True,
         # When true, runs OWL reasoning (HermiT via owlready2) after graph loading
         # to materialize inferred relationships from ontology axioms
         "post_load_reasoning": False,
@@ -291,7 +299,7 @@ DEFAULTS: dict = {
         # Chao1 estimates total species (types) from observed frequencies.
         # Coverage = observed/estimated. 0.7 = we've likely seen 70%+ of all types.
         # Range: 0.0-1.0
-        "min_chao1_coverage": 0.7,
+        "min_chao1_coverage": 0.5,
         # Minimum confidence for type merge operations during curing.
         # Merges below this threshold are rejected. Range: 0.0-1.0
         "merge_confidence_threshold": 0.4,

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kg_builder_cli"
-version = "0.4.24"
+version = "0.4.25"
 description = "Knowledge Graph Foundry - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -30,11 +30,8 @@ dependencies = [
     "python-docx",
     # Chunking
     "tiktoken",
-    "langchain-text-splitters",
-    "chonkie",
     # Graph database
     "neo4j",
-    "langchain-neo4j",
     # Ontology
     "owlready2",
     # Entity resolution
