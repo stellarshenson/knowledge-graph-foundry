@@ -54,8 +54,9 @@
 
   <!-- Card 1: Chunk Extraction -->
   <g id="card-extract">
-    <rect x="16" y="36" width="182" height="120" rx="6" fill="#0096d1" fill-opacity="0.05" stroke="#0096d1" stroke-width="1"/>
-    <rect x="16" y="36" width="182" height="4" rx="2" fill="#0096d1" opacity="0.5"/>
+    <path d="M16,36 H198 V153 Q198,156 195,156 H19 Q16,156 16,153 Z" fill="#0096d1" fill-opacity="0.04"/>
+    <path d="M16,36 H198 V153 Q198,156 195,156 H19 Q16,156 16,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
+    <rect x="16" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="30" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Chunk Extraction</text>
     <text x="30" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/extract.py</text>
     <text x="30" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Single-shot per chunk</text>
@@ -69,8 +70,9 @@
 
   <!-- Card 2: Schema Signals -->
   <g id="card-signals">
-    <rect x="210" y="36" width="182" height="120" rx="6" fill="#0096d1" fill-opacity="0.05" stroke="#0096d1" stroke-width="1"/>
-    <rect x="210" y="36" width="182" height="4" rx="2" fill="#0096d1" opacity="0.5"/>
+    <path d="M210,36 H392 V153 Q392,156 389,156 H213 Q210,156 210,153 Z" fill="#0096d1" fill-opacity="0.04"/>
+    <path d="M210,36 H392 V153 Q392,156 389,156 H213 Q210,156 210,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
+    <rect x="210" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="224" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Schema Signals</text>
     <text x="224" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/schema_signals.py</text>
     <text x="224" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Single-shot per batch</text>
@@ -84,8 +86,9 @@
 
   <!-- Card 3: Type Clustering -->
   <g id="card-cluster">
-    <rect x="404" y="36" width="182" height="120" rx="6" fill="#0096d1" fill-opacity="0.05" stroke="#0096d1" stroke-width="1"/>
-    <rect x="404" y="36" width="182" height="4" rx="2" fill="#0096d1" opacity="0.5"/>
+    <path d="M404,36 H586 V153 Q586,156 583,156 H407 Q404,156 404,153 Z" fill="#0096d1" fill-opacity="0.04"/>
+    <path d="M404,36 H586 V153 Q586,156 583,156 H407 Q404,156 404,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
+    <rect x="404" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="418" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Type Clustering</text>
     <text x="418" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">ontology/type_clustering.py</text>
     <text x="418" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Single-shot per batch</text>
@@ -99,8 +102,9 @@
 
   <!-- Card 4: Curing Probe -->
   <g id="card-probe">
-    <rect x="598" y="36" width="182" height="120" rx="6" fill="#0096d1" fill-opacity="0.05" stroke="#0096d1" stroke-width="1"/>
-    <rect x="598" y="36" width="182" height="4" rx="2" fill="#0096d1" opacity="0.5"/>
+    <path d="M598,36 H780 V153 Q780,156 777,156 H601 Q598,156 598,153 Z" fill="#0096d1" fill-opacity="0.04"/>
+    <path d="M598,36 H780 V153 Q780,156 777,156 H601 Q598,156 598,153 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
+    <rect x="598" y="36" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="612" y="58" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Curing Probe</text>
     <text x="612" y="72" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">curing/generative.py (phase 1)</text>
     <text x="612" y="90" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Two-phase with graph query</text>
@@ -116,8 +120,9 @@
 
   <!-- Card 5: Curing Decision -->
   <g id="card-cure-decision">
-    <rect x="16" y="168" width="182" height="120" rx="6" fill="#da8230" fill-opacity="0.05" stroke="#da8230" stroke-width="1"/>
-    <rect x="16" y="168" width="182" height="4" rx="2" fill="#da8230" opacity="0.5"/>
+    <path d="M16,168 H198 V285 Q198,288 195,288 H19 Q16,288 16,285 Z" fill="#da8230" fill-opacity="0.04"/>
+    <path d="M16,168 H198 V285 Q198,288 195,288 H19 Q16,288 16,285 Z" fill="none" stroke="#da8230" stroke-width="1"/>
+    <rect x="16" y="168" width="182" height="5" fill="#da8230" opacity="0.6"/>
     <text x="30" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Curing Decision</text>
     <text x="30" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">curing/generative.py (phase 2)</text>
     <text x="30" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Needs graph evidence</text>
@@ -131,8 +136,9 @@
 
   <!-- Card 6: Recure Decision -->
   <g id="card-recure">
-    <rect x="210" y="168" width="182" height="120" rx="6" fill="#0096d1" fill-opacity="0.05" stroke="#0096d1" stroke-width="1"/>
-    <rect x="210" y="168" width="182" height="4" rx="2" fill="#0096d1" opacity="0.5"/>
+    <path d="M210,168 H392 V285 Q392,288 389,288 H213 Q210,288 210,285 Z" fill="#0096d1" fill-opacity="0.04"/>
+    <path d="M210,168 H392 V285 Q392,288 389,288 H213 Q210,288 210,285 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
+    <rect x="210" y="168" width="182" height="5" fill="#0096d1" opacity="0.6"/>
     <text x="224" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Recure Decision</text>
     <text x="224" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">curing/generative.py</text>
     <text x="224" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Remap rate timeline</text>
@@ -146,8 +152,9 @@
 
   <!-- Card 7: Type Resolver -->
   <g id="card-type-resolve">
-    <rect x="404" y="168" width="182" height="120" rx="6" fill="#da8230" fill-opacity="0.05" stroke="#da8230" stroke-width="1"/>
-    <rect x="404" y="168" width="182" height="4" rx="2" fill="#da8230" opacity="0.5"/>
+    <path d="M404,168 H586 V285 Q586,288 583,288 H407 Q404,288 404,285 Z" fill="#da8230" fill-opacity="0.04"/>
+    <path d="M404,168 H586 V285 Q586,288 583,288 H407 Q404,288 404,285 Z" fill="none" stroke="#da8230" stroke-width="1"/>
+    <rect x="404" y="168" width="182" height="5" fill="#da8230" opacity="0.6"/>
     <text x="418" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Type Resolver</text>
     <text x="418" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/type_resolver.py</text>
     <text x="418" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Bayesian posterior gap &lt;0.15</text>
@@ -161,8 +168,9 @@
 
   <!-- Card 8: Deferred Dedup -->
   <g id="card-deferred">
-    <rect x="598" y="168" width="182" height="120" rx="6" fill="#da8230" fill-opacity="0.05" stroke="#da8230" stroke-width="1"/>
-    <rect x="598" y="168" width="182" height="4" rx="2" fill="#da8230" opacity="0.5"/>
+    <path d="M598,168 H780 V285 Q780,288 777,288 H601 Q598,288 598,285 Z" fill="#da8230" fill-opacity="0.04"/>
+    <path d="M598,168 H780 V285 Q780,288 777,288 H601 Q598,288 598,285 Z" fill="none" stroke="#da8230" stroke-width="1"/>
+    <rect x="598" y="168" width="182" height="5" fill="#da8230" opacity="0.6"/>
     <text x="612" y="190" class="fg-1" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">Deferred Dedup</text>
     <text x="612" y="204" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">extraction/deferred_dedup.py</text>
     <text x="612" y="222" class="fg-3" font-family="Segoe UI, Arial, sans-serif" font-size="8">Ambiguous zone 0.4-0.6</text>

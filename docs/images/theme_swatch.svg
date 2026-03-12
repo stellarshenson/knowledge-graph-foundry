@@ -6,6 +6,36 @@
   Theme: Stellars-Tech derived - teal/cyan primary, orange accent.
   fg-1 = most contrastive (brightest), fg-4 = least contrastive (still readable).
   Source: stellars-tech_jupyterhub_logo_basic.svg brand colours #4099b3, #0096d1, #da8230.
+
+  === DESIGN NOTES (card shape + arrow conventions) ===
+
+  CARD SHAPE:
+  - Flat top edge (square corners), rounded bottom corners only
+  - Bottom corner radius: r=3 (tight, nearly square)
+  - Accent bar: flat rect at top, height=5, accent colour at opacity 0.6
+  - Fill: accent colour at fill-opacity 0.04
+  - Stroke: accent colour at stroke-width 1
+  - Path template for card at (x, y, w, h, r=3):
+      fill:   M{x},{y} H{x+w} V{y+h-r} Q{x+w},{y+h} {x+w-r},{y+h} H{x+r} Q{x},{y+h} {x},{y+h-r} Z
+      stroke: same path, fill="none" stroke="{colour}" stroke-width="1"
+      bar:    rect x={x} y={y} width={w} height=5 fill="{colour}" opacity="0.6"
+
+  ARROW CONVENTIONS:
+  - Pipeline flow arrows: solid lines, tips touch shape edges
+  - Escalation arrows: solid lines (not dashed), same weight
+  - L-shaped routing: chamfered bends (4px diagonal at each 90-degree turn)
+  - Chamfer template: instead of sharp V{y1} H{x2}, use V{y1-4} L{x+4},{y1} H{x2-4} L{x2},{y1+4}
+  - Arrow tips: polygon triangles, 6px base, 4px depth
+  - Straight-down arrows preferred when source and target are vertically aligned
+  - Stagger vertical midpoints when multiple L-connectors share a gap to avoid overlap
+
+  CONTAINER SHAPE:
+  - Same flat-top-rounded-bottom as cards but more muted
+  - Fill: accent colour at opacity 0.02
+  - Stroke: accent colour at stroke-width 0.8, opacity 0.25
+  - Accent bar: height=4, opacity 0.15
+
+  === END DESIGN NOTES ===
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
   <style>
@@ -92,8 +122,8 @@
 
     <!-- Card sample -->
     <g id="card-light">
-      <path d="M20,196 H195 V290 Q195,300 185,300 H30 Q20,300 20,290 Z" fill="#0096d1" opacity="0.04"/>
-      <path d="M20,196 H195 V290 Q195,300 185,300 H30 Q20,300 20,290 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
+      <path d="M20,196 H195 V297 Q195,300 192,300 H23 Q20,300 20,297 Z" fill="#0096d1" opacity="0.04"/>
+      <path d="M20,196 H195 V297 Q195,300 192,300 H23 Q20,300 20,297 Z" fill="none" stroke="#0096d1" stroke-width="1"/>
       <rect x="20" y="196" width="175" height="5" fill="#0096d1" opacity="0.6"/>
       <text x="32" y="218" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#0096d1">EXTRACT</text>
       <text x="32" y="236" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#1a5a6e">Entity Extraction</text>
@@ -160,8 +190,8 @@
 
     <!-- Card sample (dark) -->
     <g id="card-dark">
-      <path d="M20,376 H195 V470 Q195,480 185,480 H30 Q20,480 20,470 Z" fill="#0096d1" opacity="0.08"/>
-      <path d="M20,376 H195 V470 Q195,480 185,480 H30 Q20,480 20,470 Z" fill="none" stroke="#0096d1" stroke-width="1" opacity="0.5"/>
+      <path d="M20,376 H195 V477 Q195,480 192,480 H23 Q20,480 20,477 Z" fill="#0096d1" opacity="0.08"/>
+      <path d="M20,376 H195 V477 Q195,480 192,480 H23 Q20,480 20,477 Z" fill="none" stroke="#0096d1" stroke-width="1" opacity="0.5"/>
       <rect x="20" y="376" width="175" height="5" fill="#0096d1" opacity="0.6"/>
       <text x="32" y="398" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#0096d1">EXTRACT</text>
       <text x="32" y="416" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#b8e4f0">Entity Extraction</text>

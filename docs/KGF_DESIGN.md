@@ -1,7 +1,5 @@
 ![Knowledge Graph Foundry](images/header_banner.svg)
 
-# Knowledge Graph Foundry - CLI and Advanced Ingestion Engine v26
-
 ## 1. Introduction
 
 kg-builder-cli is a Python CLI tool for building knowledge graphs from structured and unstructured data, loading them into Neo4J. It uses LLMs to identify entities and relationships, with optional ontology constraints to control graph structure. The pipeline executes as direct `litellm+instructor` single-shot calls for throughput, with Strands agents engaged at specific escalation points where adaptive evidence gathering improves decision quality. The tool is a simpler, CLI-driven alternative to the Neo4J LLM Graph Builder web application.
