@@ -959,7 +959,7 @@ type_exemplars:
 
 Exemplars complement the type hierarchy by providing concrete disambiguation examples. The hierarchy defines structural relationships between types; exemplars show what each type looks like in practice. Together they give the LLM both the rule (Component vs Accessory boundary) and the instances (humidifier is Component, carrying case is Accessory).
 
-<img src="docs/images/type_hierarchy.svg" alt="Type Hierarchy and Self-Evolution">
+<img src="images/type_hierarchy.svg" alt="Type Hierarchy and Self-Evolution">
 
 ### 5.5 Ontology Buffer
 
@@ -1356,7 +1356,7 @@ extract:
   deferred_dedup_llm_escalation: false    # opt-in LLM resolves ambiguous deferred pairs at curing
 ```
 
-<img src="docs/images/curing_decision_flow.svg" alt="Curing Decision Flow">
+<img src="images/curing_decision_flow.svg" alt="Curing Decision Flow">
 
 > **Note - config exposure policy**: Not all configuration parameters will be exposed in the user-facing config file. Expert-level tuning parameters (thresholds, likelihood ratios, boost caps) will be hardcoded in `kg_builder_cli/config/defaults.py` with detailed documentation explaining purpose, value, and meaning. Only high-level feature toggles and parameters that meaningfully affect pipeline behavior for non-expert users will appear in the config YAML. The `defaults.py` file serves as the authoritative reference for all parameter semantics. This separation is pending implementation - currently all parameters are in `ExtractConfig`.
 
@@ -1387,7 +1387,7 @@ The metrics draw from three established fields. Entropy and divergences (Shannon
 
 Until this analysis is complete, the existing heuristic remains the sole decision maker and all metrics are observational only.
 
-<img src="docs/images/stability_metrics.svg" alt="Stability Metrics Dashboard">
+<img src="images/stability_metrics.svg" alt="Stability Metrics Dashboard">
 
 **Module structure**:
 - `kg_builder_cli/curing/__init__.py` - module init
@@ -1466,7 +1466,7 @@ ontology_buffer:
 - `kg_builder_cli/extraction/schema_signals.py` - `SchemaSignals` model and `extract_schema_signals()` for lightweight pre-extraction type discovery, plus `compute_coverage()` for measuring buffer coverage against detected signals
 - Integrates at step 4b in `unstructured.py`: when `bayesian_resolution=true` and an exemplar index is available, replaces `_enforce_ontology_types()` with `_resolve_types_bayesian()`. The exemplar index is built at curing time in `cli.py._build_exemplar_index()` by generating embeddings for all frozen exemplar entities
 
-<img src="docs/images/bayesian_resolution.svg" alt="Bayesian Cross-Type Resolution">
+<img src="images/bayesian_resolution.svg" alt="Bayesian Cross-Type Resolution">
 
 **Schema signal extraction** (opt-in, `extract.schema_signal_extraction: false`) - before full extraction, each document goes through a lightweight LLM pre-pass on the first 3 chunks. The `extract_schema_signals()` function uses instructor+litellm to return `SchemaSignals` (entity_types, relationship_types) without extracting specific entities. The detected signals are compared against the ontology buffer via `compute_coverage()` to measure how well the buffer covers the document's domain. New type signals not already in the buffer are accumulated automatically. This enables the buffer to anticipate types before full extraction encounters them.
 
@@ -1757,7 +1757,7 @@ The topology signal is a new evidence dimension not available to the per-encount
 
 Configuration: `extract.deferred_dedup: false` (opt-in), `extract.deferred_dedup_ambiguous_lower: 0.4`, `extract.deferred_dedup_llm_escalation: false`. When `deferred_dedup` is disabled, the pipeline falls back to the binary merge/block behavior (merge at 0.6, block below). Implementation: `kg_builder_cli/extraction/deferred_dedup.py` (DeferredPair, DeferredDedupBuffer, MergeDecision), integrated into `resolution.py` (_resolve_cross_type) and `accumulator.py` (FluidAccumulator.consolidate).
 
-<img src="docs/images/deferred_dedup.svg" alt="Deferred Cross-Type Dedup Evidence Accumulation">
+<img src="images/deferred_dedup.svg" alt="Deferred Cross-Type Dedup Evidence Accumulation">
 
 **Graph-side resolution** (`loader.py`, `resolve_against_graph()`): during cured-phase ingestion, incoming entities are resolved against existing graph nodes using the same Bayesian posterior model. The Neo4j query uses case-insensitive name matching via `toLower()` to prevent mismatches between "Headgear" in the graph and "headgear" in extraction. When the posterior exceeds the threshold, the incoming entity adopts the existing entity's type and ID. This prevents cross-type duplicates from accumulating across ingestion runs.
 
@@ -2464,7 +2464,7 @@ Every entity carries a `confidence` float (0.0-1.0) that originates at extractio
 
 The design deliberately keeps confidence as a single float representing extraction quality rather than a compound score mixing extraction, resolution, and type assignment signals. Pipeline-internal signals (Bayesian posterior, resolution similarity, type entropy) are logged at DEBUG level for diagnostics but not persisted on entities, keeping the graph schema simple and the confidence value interpretable.
 
-<img src="docs/images/confidence_propagation.svg" alt="Confidence Propagation Model">
+<img src="images/confidence_propagation.svg" alt="Confidence Propagation Model">
 
 ## 14. Observability
 
