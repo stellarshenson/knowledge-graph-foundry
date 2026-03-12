@@ -80,38 +80,38 @@
     contain: dark-strip > card, stats, arrows, icon-samples, coverage-bar
   === -->
 
-  <!-- === SECTION 1: Palette Reference (transparent bg) === -->
+  <!-- === SECTION 1: Palette Reference (transparent bg, uses CSS classes) === -->
   <g id="palette-ref">
-    <text x="20" y="20" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600" fill="#5aafc5" letter-spacing="1">KGF THEME SWATCH (STELLARS-TECH DERIVED)</text>
-    <line x1="20" y1="26" x2="780" y2="26" stroke="#5aafc5" stroke-width="0.5" opacity="0.3"/>
+    <text x="20" y="20" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600" class="fg-3" letter-spacing="1">KGF THEME SWATCH (STELLARS-TECH DERIVED)</text>
+    <line x1="20" y1="26" x2="780" y2="26" stroke="#0096d1" stroke-width="0.5" opacity="0.3"/>
 
     <!-- Foreground shades: fg-1 = most contrastive, fg-4 = least -->
-    <text x="20" y="48" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#5aafc5" letter-spacing="1">FOREGROUND SHADES (1=MOST CONTRASTIVE, 4=LEAST)</text>
-    <rect x="20" y="54" width="12" height="12" rx="2" fill="#b8e4f0"/>
-    <text x="38" y="65" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#b8e4f0">fg-1 - Headings, primary labels (most visible)</text>
-    <rect x="20" y="74" width="12" height="12" rx="2" fill="#8fd4e6"/>
-    <text x="38" y="85" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" fill="#8fd4e6">fg-2 - Card titles, stat numbers</text>
-    <rect x="20" y="94" width="12" height="12" rx="2" fill="#5aafc5"/>
-    <text x="38" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#5aafc5">fg-3 - Descriptions, sublabels</text>
-    <rect x="20" y="114" width="12" height="12" rx="2" fill="#4099b3"/>
-    <text x="38" y="125" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#4099b3">fg-4 - Metadata, tertiary (least visible, still readable)</text>
+    <text x="20" y="48" font-family="Segoe UI, Arial, sans-serif" font-size="8" class="fg-3" letter-spacing="1">FOREGROUND SHADES (1=MOST CONTRASTIVE, 4=LEAST)</text>
+    <rect x="20" y="54" width="12" height="12" rx="2" class="fg-1"/>
+    <text x="38" y="65" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" class="fg-1">fg-1 - Headings, primary labels (most visible)</text>
+    <rect x="20" y="74" width="12" height="12" rx="2" class="fg-2"/>
+    <text x="38" y="85" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" class="fg-2">fg-2 - Card titles, stat numbers</text>
+    <rect x="20" y="94" width="12" height="12" rx="2" class="fg-3"/>
+    <text x="38" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="11" class="fg-3">fg-3 - Descriptions, sublabels</text>
+    <rect x="20" y="114" width="12" height="12" rx="2" class="fg-4"/>
+    <text x="38" y="125" font-family="Segoe UI, Arial, sans-serif" font-size="10" class="fg-4">fg-4 - Metadata, tertiary (least visible, still readable)</text>
 
     <!-- Accent shades -->
-    <text x="530" y="48" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#5aafc5" letter-spacing="1">ACCENT SHADES</text>
+    <text x="530" y="48" font-family="Segoe UI, Arial, sans-serif" font-size="8" class="fg-3" letter-spacing="1">ACCENT SHADES</text>
     <rect x="530" y="56" width="90" height="26" rx="6" fill="#0096d1"/>
-    <text x="530" y="98" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#5aafc5">accent-1: #0096d1</text>
+    <text x="530" y="98" font-family="Segoe UI, Arial, sans-serif" font-size="10" class="accent-1">accent-1: #0096d1</text>
     <rect x="650" y="56" width="90" height="26" rx="6" fill="#da8230"/>
-    <text x="650" y="98" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#5aafc5">accent-2: #da8230</text>
+    <text x="650" y="98" font-family="Segoe UI, Arial, sans-serif" font-size="10" class="accent-2">accent-2: #da8230</text>
 
     <!-- Background fills -->
-    <text x="530" y="116" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#5aafc5" letter-spacing="1">BACKGROUND FILLS</text>
+    <text x="530" y="116" font-family="Segoe UI, Arial, sans-serif" font-size="8" class="fg-3" letter-spacing="1">BACKGROUND FILLS</text>
     <rect x="530" y="120" width="90" height="14" rx="4" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1"/>
-    <text x="540" y="131" font-family="Segoe UI, Arial, sans-serif" font-size="7" fill="#5aafc5">bg-1 (0.06)</text>
+    <text x="540" y="131" font-family="Segoe UI, Arial, sans-serif" font-size="7" class="fg-4">bg-1 (0.06)</text>
     <rect x="650" y="120" width="90" height="14" rx="4" fill="#0096d1" opacity="0.3"/>
-    <text x="660" y="131" font-family="Segoe UI, Arial, sans-serif" font-size="7" fill="#5aafc5">bg-2 (0.3)</text>
+    <text x="660" y="131" font-family="Segoe UI, Arial, sans-serif" font-size="7" class="fg-4">bg-2 (0.3)</text>
 
     <!-- Stroke reference -->
-    <text x="530" y="148" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#5aafc5" letter-spacing="1">STROKE REF: #1278d1</text>
+    <text x="530" y="148" font-family="Segoe UI, Arial, sans-serif" font-size="8" class="fg-3" letter-spacing="1">STROKE REF: #1278d1</text>
     <line x1="670" y1="144" x2="740" y2="144" stroke="#1278d1" stroke-width="2"/>
   </g>
 

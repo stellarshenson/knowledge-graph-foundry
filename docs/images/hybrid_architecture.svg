@@ -210,11 +210,11 @@
   <!-- Legend -->
   <g id="legend">
     <rect x="16" y="388" width="8" height="8" rx="1" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1"/>
-    <text x="28" y="396" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">Pipeline (direct litellm+instructor)</text>
+    <text x="28" y="396" class="accent-1" font-family="Segoe UI, Arial, sans-serif" font-size="7">Pipeline (direct litellm+instructor)</text>
     <rect x="200" y="388" width="8" height="8" rx="1" fill="#da8230" fill-opacity="0.06" stroke="#da8230" stroke-width="1"/>
-    <text x="212" y="396" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">Agent engagement (Strands SDK)</text>
+    <text x="212" y="396" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="7">Agent engagement (Strands SDK)</text>
     <line x1="400" y1="392" x2="420" y2="392" stroke="#da8230" stroke-width="1" stroke-dasharray="3,2"/>
-    <text x="424" y="396" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="7">Escalation (structured decision return)</text>
+    <text x="424" y="396" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="7">Escalation (structured decision return)</text>
   </g>
 
 </svg>

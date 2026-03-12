@@ -185,9 +185,9 @@
   <!-- Legend -->
   <g id="legend">
     <line x1="200" y1="244" x2="220" y2="244" stroke="#0096d1" stroke-width="1.5"/>
-    <text x="224" y="247" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="8">Pipeline (direct litellm+instructor)</text>
+    <text x="224" y="247" class="accent-1" font-family="Segoe UI, Arial, sans-serif" font-size="8">Pipeline (direct litellm+instructor)</text>
     <line x1="440" y1="244" x2="460" y2="244" stroke="#da8230" stroke-width="1.5"/>
-    <text x="464" y="247" class="fg-4" font-family="Segoe UI, Arial, sans-serif" font-size="8">Agent escalation (Strands SDK)</text>
+    <text x="464" y="247" class="accent-2" font-family="Segoe UI, Arial, sans-serif" font-size="8">Agent escalation (Strands SDK)</text>
   </g>
 
 </svg>
