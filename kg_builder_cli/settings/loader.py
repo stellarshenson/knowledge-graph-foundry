@@ -16,8 +16,6 @@ from kg_builder_cli.types.config import AppConfig
 
 from .defaults import DEFAULTS
 
-_ENV_VAR_PATTERN = re.compile(r"\$\{([^}]+)\}")
-
 
 def _deep_merge(base: dict, override: dict) -> dict:
     """Recursively merge override into base. Override values win."""
