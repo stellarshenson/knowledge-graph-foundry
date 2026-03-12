@@ -104,7 +104,7 @@ The fluid-to-cured lifecycle uses statistical convergence detection:
 
 ### Event System
 
-All pipeline decisions emit blinker signals to a JSONL event log (41 signal types across extraction, resolution, curing, loading). Enables post-run forensic analysis via the `/forensics` command.
+All pipeline decisions emit blinker signals to a JSONL event log (41 signal types across extraction, resolution, curing, loading) for post-run analysis and debugging.
 
 ### Supported Formats
 
