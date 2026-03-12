@@ -1,0 +1,14 @@
+{
+  "description": "Re-cure evaluation: trigger re-cure due to missing categories",
+  "calls": [
+    {
+      "method": "create",
+      "response_model": "RecureDecision",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "should_recure": true,
+        "reasoning": "Three distinct remapped types (Standard, Certification, ComplianceRequirement) are not synonyms of any cured type. Remap rate sustained above 35% across all 4 documents in the window. These represent regulatory entity categories genuinely missing from the cured ontology for a medical device catalog."
+      }
+    }
+  ]
+}
