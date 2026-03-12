@@ -381,18 +381,21 @@ docker start kg-builder-neo4j
 # 2. Verify connectivity (Docker DNS resolves neo4j alias)
 uv run python -c "from neo4j import GraphDatabase; d=GraphDatabase.driver('bolt://neo4j:7687', auth=('neo4j','kg-builder-pass')); d.verify_connectivity(); print('OK'); d.close()"
 
-# 3. Wipe graph
+# 3. Wipe graph and clean previous run
 docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n) DETACH DELETE n"
+rm -f tmp/.kgf/ontology.yml
 
-# 4. Run ingestion from tmp/ (all .kgf/ artefacts stay in tmp/)
+# 4. Run ingestion from tmp/ (all artefacts stay in tmp/)
 cd tmp
-uv run kgf ingest --input input/ --batch --fluid --unstructured --event-log vNN-events.log --processing-log vNN-ingestion.log
+uv run kgf ingest --input input/ --batch --fluid \
+  --event-log vNN-events.jsonl \
+  --processing-log vNN-ingestion.log
 cd ..
-# Positional form also works: kgf ingest input/ --batch --fluid --unstructured ...
 # --unstructured is the default mode; picks up .pdf, .txt, .md, .docx from input/
-# Event log streams to tmp/vNN-events.log as JSONL (one event per line, written continuously)
+# Processing log captures all loguru output (pipeline progress, curing decisions, metrics)
+# Event log streams JSONL signals (one event per line, 41 signal types, written continuously)
 
-# 5. Verify no extraction failures in log
+# 5. Verify no extraction failures in processing log
 grep "extraction failed\|ExtractionFailedError" tmp/vNN-ingestion.log && echo "FAILED - rerun needed" || echo "OK"
 
 # 6. Run benchmark
@@ -400,13 +403,30 @@ uv run python tests/benchmark_multidoc.py vNN "description of iteration"
 
 # 7. Check results
 cat docs/benchmarks/MULTIDOC_BENCHMARK_vNN_*.md
+
+# 8. Review logs
+#   Processing log: human-readable pipeline execution trace
+cat tmp/vNN-ingestion.log
+#   Event log: machine-parseable JSONL for forensics (jq-friendly)
+jq '.signal' tmp/vNN-events.jsonl | sort | uniq -c | sort -rn
 ```
+
+### Log files
+
+All logs are written to `tmp/` and gitignored. Two log streams capture different aspects of each run:
+
+| Log | Flag | Format | Content |
+|-----|------|--------|---------|
+| Processing log | `--processing-log` | Plain text (loguru) | Pipeline progress, curing decisions, stability metrics, load results, warnings/errors |
+| Event log | `--event-log` | JSONL (one event per line) | 41 signal types: extraction, resolution, curing, loading events with structured payloads for `jq` analysis |
+
+Both logs are required for forensics. The processing log shows the human-readable narrative; the event log provides machine-parseable evidence for root cause analysis.
 
 ### Clean run (wipe previous tmp artefacts)
 
 ```bash
-# Remove evolved ontology and re-wipe graph between runs
-rm -f tmp/.kgf/ontology.yml
+# Full clean: remove all logs, evolved ontology, and wipe graph
+rm -f tmp/v*-events.jsonl tmp/v*-ingestion.log tmp/.kgf/ontology.yml
 docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n) DETACH DELETE n"
 # Then repeat from step 4
 ```
@@ -428,7 +448,7 @@ After a benchmark run, invoke the `/forensics` command to run an agentic investi
 /forensics
 ```
 
-The agent automatically locates the most recent event log (`tmp/v*-events.log`) and benchmark report (`docs/benchmarks/MULTIDOC_BENCHMARK_v*.md`), then runs a four-phase investigation:
+The agent automatically locates the most recent event log (`tmp/v*-events.jsonl`) and benchmark report (`docs/benchmarks/MULTIDOC_BENCHMARK_v*.md`), then runs a four-phase investigation:
 
 1. **Scope** - extracts all failed checks and low generative scores from the benchmark report
 2. **Event log analysis** - queries the JSONL event log with `jq` to trace each failure through pipeline signals (cross-type decisions, curing triggers, LLM calls, resolution stats). Follows leads - if a blocked pair has a surprising posterior, digs into likelihood ratios; if an entity is missing, searches across all signals
@@ -455,19 +475,25 @@ Full command specification: `.claude/commands/forensics.md`
 
 # Fluid mode (default for benchmarks - discovers ontology from data)
 # --unstructured is the default; picks up .pdf, .txt, .md, .docx from input/
-uv run kgf ingest --input input/ --batch --fluid --unstructured
+uv run kgf ingest --input input/ --batch --fluid \
+  --event-log vNN-events.jsonl --processing-log vNN-ingestion.log
 
 # Structured mode - picks up .json, .jsonl, .csv, .xlsx from input/
-uv run kgf ingest --input input/ --batch --fluid --structured
+uv run kgf ingest --input input/ --batch --fluid --structured \
+  --event-log vNN-events.jsonl --processing-log vNN-ingestion.log
 
 # Multiple inputs (mix files and directories)
-uv run kgf ingest -i input/ -i /other/docs/ --batch --fluid --unstructured
+uv run kgf ingest -i input/ -i /other/docs/ --batch --fluid \
+  --event-log vNN-events.jsonl --processing-log vNN-ingestion.log
 
 # Positional form (legacy, still works)
-uv run kgf ingest input/ --batch --fluid --unstructured
+uv run kgf ingest input/ --batch --fluid \
+  --event-log vNN-events.jsonl --processing-log vNN-ingestion.log
 
 # Constrained mode (uses pre-existing ontology seed)
-uv run kgf ingest --input input/ --batch --fluid --unstructured --ontology ../data/ontologies/cpap_medical_device.yml
+uv run kgf ingest --input input/ --batch --fluid \
+  --ontology ../data/ontologies/cpap_medical_device.yml \
+  --event-log vNN-events.jsonl --processing-log vNN-ingestion.log
 ```
 
 `--structured` and `--unstructured` are mutually exclusive. File type filtering is automatic - only extensions matching the selected mode are picked up from directory inputs. Files of other types are silently skipped.
