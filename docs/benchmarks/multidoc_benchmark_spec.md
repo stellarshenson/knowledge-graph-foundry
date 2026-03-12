@@ -372,7 +372,7 @@ All benchmark runs execute from the `tmp/` directory under the project root. The
 # 0. Prepare tmp working directory with input documents and config
 mkdir -p tmp/input
 cp data/raw/cpap-benchmark/* tmp/input/
-cp docs/config.yml.example tmp/.kgf/config.yml  # or create manually
+cp docs/examples/config.yml.example tmp/.kgf/config.yml  # or create manually
 # Edit tmp/.kgf/config.yml as needed (see Benchmark Configuration above)
 
 # 1. Ensure Neo4j is running
