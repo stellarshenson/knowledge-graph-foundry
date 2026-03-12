@@ -22,7 +22,7 @@ The system follows a hybrid architecture. Pipeline functions execute as direct `
 
 ### Interactive vs Autonomous Agent Mode
 
-The agent is always present in all modes - it orchestrates the full pipeline regardless of configuration. The `--batch` flag controls whether the agent pauses for user input or proceeds with autonomous decisions at interactive checkpoints.
+Strands agents are present at interactive checkpoints and escalation points. Pipeline functions execute independently of the agent framework on the hot path - the `--batch` flag controls whether checkpoint decisions require user input or proceed autonomously.
 
 - **Interactive mode** (default) - the agent pauses at defined checkpoints to present proposals, diagnostics, and Y/n confirmations. The user reviews and directs decisions through conversation: schema inference proposals, ontology normalization diagnostics, ontology buffer refinement reviews, migration plan approvals, and first-run initialization questions
 - **Autonomous mode** (`--batch`) - the agent makes all decisions at interactive checkpoints without pausing. It applies sensible defaults, accepts proposals automatically, and logs every autonomous decision to a run report for post-run review
@@ -285,7 +285,7 @@ Three read-only tools wrapping existing functions. All tools are stateless and s
 
 ## 3. CLI Commands
 
-The CLI exposes three entry points corresponding to the primary knowledge graph workflows. Each command is backed by a Strands agent with tools appropriate to its workflow.
+The CLI exposes three entry points. `kgf ingest` and `kgf update` execute pipeline functions directly, with Strands agents engaged at interactive checkpoints and escalation points. `kgf query` is fully agent-native for conversational graph exploration.
 
 ### `kgf ingest`
 
@@ -313,16 +313,16 @@ kgf ingest <source> [options]
 
 **Workflow**:
 
-The ingest agent runs the full pipeline: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J.
+The ingest workflow executes the pipeline directly: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J. Strands agents engage only at interactive checkpoints.
 
 - **Initialization**: three scenarios depending on current state:
-  - **No `.kgf/`, no graph** - fresh setup. The agent creates `.kgf/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the agent asks questions about the target graph and generates tailored configuration
-  - **No `.kgf/`, graph exists** - recovery. The agent introspects the Neo4J graph (labels, relationship types, property keys, `OntologyType` nodes, `SchemaVersion` nodes) and reconstructs the schema and ontology YAML files. Presents the recovered schema to the user: "recovered schema from existing graph with N entity types and M relationship types"
-  - **`.kgf/` exists, graph exists** - validation. The agent compares the schema file against the current graph state and reports drift: new labels in graph not in schema, properties on entities not described in schema, `SchemaVersion` mismatches. Drift is reported as warnings, not errors
+  - **No `.kgf/`, no graph** - fresh setup. The pipeline creates `.kgf/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the initialization checkpoint asks questions about the target graph and generates tailored configuration
+  - **No `.kgf/`, graph exists** - recovery. The pipeline introspects the Neo4J graph (labels, relationship types, property keys, `OntologyType` nodes, `SchemaVersion` nodes) and reconstructs the schema and ontology YAML files. Presents the recovered schema to the user: "recovered schema from existing graph with N entity types and M relationship types"
+  - **`.kgf/` exists, graph exists** - validation. The pipeline compares the schema file against the current graph state and reports drift: new labels in graph not in schema, properties on entities not described in schema, `SchemaVersion` mismatches. Drift is reported as warnings, not errors
 - **Input detection**: file extension determines pipeline - `.json`/`.jsonl` -> structured, everything else -> unstructured
-- **Schema inference**: for structured data without `--schema`, the agent samples records via `py-repl`, proposes a schema interactively, and saves it to `.kgf/schemas/` before proceeding (see Section 7.3)
-- **Ontology buffer**: without `--ontology` the agent runs free extraction, building the ontology progressively. With `--ontology` it starts constrained but refines during processing. The buffer tracks type frequencies, variant mappings, and coverage scores (see Section 5)
-- **Extract + load**: by default the agent extracts and loads in a single run. Use `--extract-only` to stop after extraction, or `--keep-extractions` to save intermediate JSON alongside loading
+- **Schema inference**: for structured data without `--schema`, the pipeline samples records directly, proposes a schema at the interactive checkpoint, and saves it to `.kgf/schemas/` before proceeding (see Section 7.3)
+- **Ontology buffer**: without `--ontology` the pipeline runs free extraction, building the ontology progressively. With `--ontology` it starts constrained but refines during processing. The buffer tracks type frequencies, variant mappings, and coverage scores (see Section 5)
+- **Extract + load**: by default the pipeline extracts and loads in a single run. Use `--extract-only` to stop after extraction, or `--keep-extractions` to save intermediate JSON alongside loading
 
 ### `kgf query`
 
@@ -341,7 +341,7 @@ kgf query [question] [options]
 
 **Workflow**:
 
-The query agent translates natural language questions to Cypher queries using the current graph schema as context. It queries the graph via `neo4j-mcp`, formats results, and can enter an interactive conversational loop where follow-up questions build on previous context.
+The query agent translates natural language questions to Cypher queries using the current graph schema as context. It queries the graph via the `query_graph` tool, formats results, and can enter an interactive conversational loop where follow-up questions build on previous context.
 
 - **Schema-aware** - the agent inspects the graph schema (labels, relationship types, property keys) before generating queries, ensuring valid Cypher
 - **Dual retrieval** - uses vector index for semantic similarity and fulltext index for keyword matching, choosing the appropriate path based on the question type
@@ -371,7 +371,7 @@ kgf update schema <schema-file> [options]
 | `--dry-run` | `False` | Show proposed changes without applying |
 | `--migrate` | `True` | Generate and execute migration plan for the graph |
 
-The update agent diffs the current schema against fresh data samples, proposes changes interactively, and optionally generates a migration plan for the existing graph.
+The update workflow diffs the current schema against fresh data samples, proposes changes at the interactive checkpoint, and optionally generates a migration plan for the existing graph.
 
 #### `kgf update ontology`
 
@@ -404,7 +404,7 @@ kgf update graph [options]
 | `--incremental` | `True` | Only process records affected by schema changes |
 | `--full` | `False` | Re-process all records from scratch |
 
-The update agent uses the migration plan from `kgf update schema` to selectively re-process affected records rather than re-ingesting everything. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
+The update workflow uses the migration plan from `kgf update schema` to selectively re-process affected records rather than re-ingesting everything. For structural changes (new entity types, relationship retyping), the pipeline executes Cypher transformations directly against Neo4J. The Strands agent engages only at the migration plan approval checkpoint.
 
 ## 3.1 Terminal UI Harness
 
@@ -577,7 +577,7 @@ The ontology buffer accepts input in any format - the only requirement is that t
 |--------|-----------|---------------------|
 | OWL/RDF (`.owl`, `.rdf`, `.ttl`) | File extension | Programmatic via owlready2 - classes, properties, hierarchy extracted directly |
 | YAML (`.yml`, `.yaml`) | File extension | Validated against canonical schema, passed through if conforming |
-| JSON (`.json`) | File extension | Programmatic parse via py-repl (Tier 1), LLM repair if validation fails (Tier 2) |
+| JSON (`.json`) | File extension | Programmatic parse (Tier 1), LLM repair if validation fails (Tier 2) |
 | Markdown (`.md`) | File extension | LLM interprets prose, extracts entity types, relationships, constraints |
 | Plain text (`.txt`) | File extension | LLM interprets free-form description, extracts ontology elements |
 | Any other | Fallback | LLM reads content as-is, attempts ontology extraction |
@@ -624,11 +624,11 @@ All non-YAML, non-OWL inputs pass through a normalization pipeline that converts
 - Type hierarchies (parent-child, IS_A relationships)
 - Constraints and cardinality hints
 
-#### Tier 1 - Programmatic Parse (py-repl)
+#### Tier 1 - Programmatic Parse
 
-For JSON and other structured formats, the agent uses `py-repl` to write a format-specific parser. The parser extracts entity types, relationship types, properties, and hierarchy from the input. If the parser fails, the agent iterates - adjusts parsing code, retries up to 3 attempts. This handles well-structured inputs without LLM involvement.
+For JSON and other structured formats, the normalizer executes a format-specific parser directly in Python. The parser extracts entity types, relationship types, properties, and hierarchy from the input. If the parser fails, it iterates - adjusts parsing logic, retries up to 3 attempts. This handles well-structured inputs without LLM involvement.
 
-Tier 1 is the default path for JSON, YAML-like structures, and any input with recognizable programmatic structure. The agent examines the input, writes a parser in Python, executes it, and validates the output against the canonical Pydantic schema.
+Tier 1 is the default path for JSON, YAML-like structures, and any input with recognizable programmatic structure. The normalizer examines the input, runs the parser, and validates the output against the canonical Pydantic schema.
 
 #### Tier 2 - LLM-Assisted Repair
 
@@ -1867,7 +1867,7 @@ All three formats are valid. The LLM reads whichever format the user provides an
 
 ### 7.3 Schema Inference
 
-When no schema description is provided, the ingest agent infers one from the data itself. This eliminates the barrier to entry - a user can point the tool at a JSONL file and the agent collaborates to build the schema before ingesting.
+When no schema description is provided, the ingest pipeline infers one from the data itself. This eliminates the barrier to entry - a user can point the tool at a JSONL file and the schema inference checkpoint collaborates with the user to build the schema before ingesting.
 
 #### Schema-as-Configuration Principle
 
@@ -1879,7 +1879,7 @@ Schema inference and adaptation acquire a lockfile at `.kgf/schema.lock` before 
 
 #### Deterministic Baseline
 
-Before the agent proposes anything, the `py-repl` tool generates a deterministic field profile that is saved alongside the schema as `.kgf/schemas/<source_name>.profile.yml`. This profile is reproducible - the same data always produces the same profile regardless of conversation flow. It contains:
+Before any proposal is made, the pipeline generates a deterministic field profile that is saved alongside the schema as `.kgf/schemas/<source_name>.profile.yml`. This profile is reproducible - the same data always produces the same profile regardless of conversation flow. It contains:
 - Field names, JSON types, and nesting depth
 - Null rates and cardinality (unique value counts vs total records)
 - Value distribution samples (first 5 unique values per field)
@@ -2180,17 +2180,17 @@ The query pipeline translates natural language questions into graph queries, ret
 ### 10.1 Query Agent Architecture
 
 The query agent receives a system prompt that instructs it to:
-1. Inspect the current graph schema (labels, relationship types, property keys) via `neo4j-mcp` before generating any queries
+1. Inspect the current graph schema (labels, relationship types, property keys) via `query_graph` before generating any queries
 2. Choose the appropriate retrieval strategy based on the question type
 3. Generate valid Cypher constrained by the actual graph schema
 4. Format results according to the user's requested output format
 
-The agent has access to `neo4j-mcp` for conversational graph access and schema inspection, and `file-ops` for reading configuration. It does not use `neo4j-driver` directly - all graph queries route through the MCP server for safety and schema validation.
+The agent has access to `query_graph` for graph queries and schema inspection. It uses the registered tool wrappers (Section 2) rather than the Neo4J driver directly.
 
 Tool selection logic:
-- **Schema inspection** - `neo4j-mcp` provides node labels, relationship types, property keys, and index metadata. The agent calls this at the start of each session and caches the result for the conversation duration
-- **Query execution** - `neo4j-mcp` executes Cypher queries and returns results in structured format
-- **Configuration** - `file-ops` reads `.kgf/config.yml` for connection details and query defaults
+- **Schema inspection** - `query_graph` provides node labels, relationship types, property keys, and index metadata. The agent calls this at the start of each session and caches the result for the conversation duration
+- **Query execution** - `query_graph` executes Cypher queries and returns results in structured format
+- **Configuration** - reads `.kgf/config.yml` for connection details and query defaults
 
 ### 10.2 Natural Language to Cypher
 
@@ -2246,13 +2246,13 @@ The update pipeline manages schema evolution, ontology refinement, and graph re-
 
 The `kgf update schema` command handles schema evolution by diffing current schema against fresh data, proposing changes, and generating migration plans for the existing graph.
 
-**Change detection**: the update agent samples fresh data and compares against the current schema:
+**Change detection**: the update workflow samples fresh data and compares against the current schema:
 - **New fields** - fields present in data but not described in schema
 - **Removed fields** - fields in schema but absent from data sample
 - **Type changes** - field type shifted (string to array, flat to nested)
 - **Distribution shifts** - cardinality or null rate changed significantly
 
-**Impact assessment**: before proposing changes, the agent queries the existing graph via `neo4j-mcp`:
+**Impact assessment**: before proposing changes, the pipeline queries the existing graph:
 - How many entities and relationships are affected
 - Whether changes create orphan nodes or broken relationships
 - Whether new entity types conflict with existing labels
@@ -2278,12 +2278,12 @@ The output is an updated `ontology.yml` with cleaner, more focused type definiti
 
 The `kgf update graph` command re-processes previously ingested data with updated schema or ontology. It supports two modes:
 
-**Incremental** (default): uses the migration plan from `kgf update schema` to selectively re-process affected records. For structural changes (new entity types, relationship retyping), it executes Cypher transformations directly via `neo4j-driver`.
+**Incremental** (default): uses the migration plan from `kgf update schema` to selectively re-process affected records. For structural changes (new entity types, relationship retyping), the pipeline executes Cypher transformations directly against Neo4J.
 
 **Full** (`--full`): re-processes all records from scratch. Used when schema changes are too fundamental for incremental migration.
 
 Execution runs in two phases:
-1. **Graph-level changes** via `neo4j-driver` - Cypher transformations applied directly (rename labels, add properties, retype relationships)
+1. **Graph-level changes** - Cypher transformations applied directly against Neo4J (rename labels, add properties, retype relationships)
 2. **Data-level changes** via re-ingestion - records affected by semantic changes are re-processed through the extraction pipeline with the updated schema
 
 The agent tracks migration state in memory so interrupted migrations can be resumed.
@@ -2696,7 +2696,7 @@ kg_builder_cli/
     buffer.py                     # in-memory buffer state, feedback accumulation, refinement triggers
                                   #   accepts: TypeSignal (from extraction)
                                   #   exposes: OntologyState (frozen snapshot for extraction)
-    normalizer.py                 # three-tier normalization (py-repl parse -> LLM repair -> full LLM)
+    normalizer.py                 # three-tier normalization (programmatic parse -> LLM repair -> full LLM)
                                   #   accepts: raw file content (any format)
                                   #   returns: OntologyState + NormDiagnostic
     owl_import.py                 # owlready2 OWL/RDF programmatic import
@@ -2894,7 +2894,7 @@ Test fixtures are organized in `tests/fixtures/`:
 | Package | Purpose |
 |---------|---------|
 | `strands-agents` | Strands Agents SDK for agent orchestration, tool registry, and conversational loops |
-| `strands-agents-tools` | Standard tool implementations (py-repl, file operations) |
+| `strands-agents-tools` | Standard tool implementations for agent escalation points |
 | `typer` | CLI entry points and argument parsing |
 | `neo4j` | Neo4J Python driver for bulk Cypher operations and transactions |
 | `boto3` | AWS Bedrock access |
