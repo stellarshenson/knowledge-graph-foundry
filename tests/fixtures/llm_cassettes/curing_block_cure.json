@@ -1,0 +1,18 @@
+{
+  "description": "Generative curing: probe decides NOT to cure - missing categories",
+  "calls": [
+    {
+      "method": "create",
+      "response_model": "CureProbe",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "should_cure": false,
+        "reasoning": "Domain intent mentions 'component architecture' and 'regulatory standards' but no Standard or Component types have been discovered yet. Type accumulation rate is 1.5 in the most recent document. Only 2 documents processed, below minimum of 3.",
+        "needs_query": false,
+        "query_type": null,
+        "query_filter_type": null,
+        "query_filter_name": null
+      }
+    }
+  ]
+}

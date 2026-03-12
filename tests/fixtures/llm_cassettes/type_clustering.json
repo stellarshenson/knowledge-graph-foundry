@@ -1,0 +1,25 @@
+{
+  "description": "Type clustering: merge synonyms at curing time",
+  "calls": [
+    {
+      "method": "create",
+      "response_model": "TypeClusteringResult",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "mapping": {
+          "Product": "Product",
+          "CPAPDevice": "Product",
+          "Organization": "Organization",
+          "Manufacturer": "Organization",
+          "Specification": "Specification",
+          "Spec": "Specification",
+          "Feature": "Feature",
+          "Component": "Component",
+          "Accessory": "Accessory",
+          "Standard": "Standard",
+          "RegulatoryStandard": "Standard"
+        }
+      }
+    }
+  ]
+}

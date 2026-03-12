@@ -1,0 +1,88 @@
+{
+  "description": "Two-chunk extraction: first chunk has product+org, second has features+specs",
+  "calls": [
+    {
+      "method": "chat.completions.create",
+      "response_model": "ExtractionResponse",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "entities": [
+          {
+            "id": "product_airsense_10",
+            "name": "AirSense 10",
+            "type": "Product",
+            "description": "AutoSet CPAP machine by ResMed",
+            "properties": {},
+            "confidence": 0.96
+          },
+          {
+            "id": "org_resmed",
+            "name": "ResMed",
+            "type": "Organization",
+            "description": "Global medical device company",
+            "properties": {},
+            "confidence": 0.97
+          }
+        ],
+        "relationships": [
+          {
+            "source": "org_resmed",
+            "target": "product_airsense_10",
+            "type": "MANUFACTURES",
+            "description": "ResMed manufactures AirSense 10",
+            "confidence": 0.96
+          }
+        ]
+      }
+    },
+    {
+      "method": "chat.completions.create",
+      "response_model": "ExtractionResponse",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "entities": [
+          {
+            "id": "feature_autoset",
+            "name": "AutoSet Algorithm",
+            "type": "Feature",
+            "description": "Automatic pressure adjustment algorithm",
+            "properties": {},
+            "confidence": 0.91
+          },
+          {
+            "id": "spec_noise_level",
+            "name": "Noise Level",
+            "type": "Specification",
+            "description": "Operating noise level at nominal pressure",
+            "properties": {"value": 26.6, "unit": "dBA"},
+            "confidence": 0.93
+          },
+          {
+            "id": "product_airsense_10",
+            "name": "AirSense 10",
+            "type": "Product",
+            "description": "ResMed CPAP device",
+            "properties": {},
+            "confidence": 0.94
+          }
+        ],
+        "relationships": [
+          {
+            "source": "product_airsense_10",
+            "target": "feature_autoset",
+            "type": "HAS_FEATURE",
+            "description": "AirSense 10 includes AutoSet algorithm",
+            "confidence": 0.92
+          },
+          {
+            "source": "product_airsense_10",
+            "target": "spec_noise_level",
+            "type": "HAS_SPECIFICATION",
+            "description": "AirSense 10 noise level specification",
+            "confidence": 0.90
+          }
+        ]
+      }
+    }
+  ]
+}

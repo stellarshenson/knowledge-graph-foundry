@@ -1,0 +1,14 @@
+{
+  "description": "Schema signal extraction: CPAP domain text pre-pass",
+  "calls": [
+    {
+      "method": "chat.completions.create",
+      "response_model": "SchemaSignals",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "entity_types": ["Product", "Organization", "Specification", "Feature", "Component", "Standard"],
+        "relationship_types": ["MANUFACTURES", "HAS_SPECIFICATION", "HAS_FEATURE", "HAS_COMPONENT", "COMPLIES_WITH"]
+      }
+    }
+  ]
+}

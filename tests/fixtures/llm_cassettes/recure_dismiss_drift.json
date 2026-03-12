@@ -1,0 +1,14 @@
+{
+  "description": "Re-cure evaluation: dismiss drift as synonym variants",
+  "calls": [
+    {
+      "method": "create",
+      "response_model": "RecureDecision",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "should_recure": false,
+        "reasoning": "Remapped types are formatting variants of existing cured types: 'CPAPDevice' is a variant of 'Product', 'Manufacturer' is a variant of 'Organization'. Remap rate dropped to 18% in the last document, below the 20% threshold. No genuinely novel entity categories detected."
+      }
+    }
+  ]
+}

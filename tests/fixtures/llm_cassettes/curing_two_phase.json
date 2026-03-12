@@ -1,0 +1,27 @@
+{
+  "description": "Generative curing: probe requests graph query, second call decides to cure",
+  "calls": [
+    {
+      "method": "create",
+      "response_model": "CureProbe",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "should_cure": false,
+        "reasoning": "JSD is in ambiguous range (0.04). Need to verify that entity distribution covers the expected product categories before freezing.",
+        "needs_query": true,
+        "query_type": "entity_counts",
+        "query_filter_type": null,
+        "query_filter_name": null
+      }
+    },
+    {
+      "method": "create",
+      "response_model": "CureDecision",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "should_cure": true,
+        "reasoning": "Graph query confirms adequate entity distribution across Product (45), Organization (12), Specification (89), Feature (34), Component (67). All major categories represented. Curing now."
+      }
+    }
+  ]
+}

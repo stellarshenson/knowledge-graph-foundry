@@ -1,0 +1,54 @@
+{
+  "description": "Single chunk extraction: CPAP product with manufacturer and specification",
+  "calls": [
+    {
+      "method": "chat.completions.create",
+      "response_model": "ExtractionResponse",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "entities": [
+          {
+            "id": "product_resmart_cpap",
+            "name": "RESmart CPAP",
+            "type": "Product",
+            "description": "CPAP device by BMC Medical for OSA treatment",
+            "properties": {"weight_lbs": 3.5},
+            "confidence": 0.95
+          },
+          {
+            "id": "org_bmc_medical",
+            "name": "BMC Medical Co., Ltd.",
+            "type": "Organization",
+            "description": "Medical device manufacturer based in Beijing",
+            "properties": {},
+            "confidence": 0.98
+          },
+          {
+            "id": "spec_pressure_range",
+            "name": "Pressure Range",
+            "type": "Specification",
+            "description": "Operating pressure range of the CPAP device",
+            "properties": {"min": 4, "max": 20, "unit": "cmH2O"},
+            "confidence": 0.92
+          }
+        ],
+        "relationships": [
+          {
+            "source": "org_bmc_medical",
+            "target": "product_resmart_cpap",
+            "type": "MANUFACTURES",
+            "description": "BMC Medical manufactures RESmart CPAP",
+            "confidence": 0.95
+          },
+          {
+            "source": "product_resmart_cpap",
+            "target": "spec_pressure_range",
+            "type": "HAS_SPECIFICATION",
+            "description": "RESmart CPAP has pressure range specification",
+            "confidence": 0.90
+          }
+        ]
+      }
+    }
+  ]
+}

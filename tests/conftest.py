@@ -1,9 +1,33 @@
 """Shared test fixtures for kg-builder-cli."""
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from kg_builder_cli.types.extraction import Entity
+
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
+CASSETTES_DIR = FIXTURES_DIR / "llm_cassettes"
+
+
+@pytest.fixture
+def cassette_dir() -> Path:
+    """Path to the llm_cassettes fixture directory."""
+    return CASSETTES_DIR
+
+
+def load_cassette(name: str):
+    """Load a cassette by name (without .json extension) and return a ReplayClient."""
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).parent))
+    from llm_cassette import ReplayClient
+
+    path = CASSETTES_DIR / f"{name}.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Cassette not found: {path}")
+    return ReplayClient.from_cassette_file(path)
 
 
 @pytest.fixture

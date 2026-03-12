@@ -1,0 +1,18 @@
+{
+  "description": "Generative curing: probe decides to cure without graph query",
+  "calls": [
+    {
+      "method": "create",
+      "response_model": "CureProbe",
+      "kwargs": {"model": "bedrock/test-model", "temperature": 0.0},
+      "response": {
+        "should_cure": true,
+        "reasoning": "Type list covers all major entity categories for CPAP domain (Product, Organization, Specification, Feature, Component). JSD below 0.05 for last 3 documents. Chao1 coverage at 0.92. No new types in last 2 documents.",
+        "needs_query": false,
+        "query_type": null,
+        "query_filter_type": null,
+        "query_filter_name": null
+      }
+    }
+  ]
+}
