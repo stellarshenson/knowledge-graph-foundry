@@ -22,10 +22,10 @@ The system follows a hybrid architecture. Pipeline functions execute as direct `
 
 ### Interactive vs Autonomous Agent Mode
 
-Strands agents are present at interactive checkpoints and escalation points. Pipeline functions execute independently of the agent framework on the hot path - the `--batch` flag controls whether checkpoint decisions require user input or proceed autonomously.
+Strands agents are invoked at interactive checkpoints and escalation points, returning structured decisions to the pipeline. Pipeline functions execute independently of the agent framework on the hot path - the `--batch` flag controls whether checkpoint decisions require user input or proceed autonomously.
 
-- **Interactive mode** (default) - the agent pauses at defined checkpoints to present proposals, diagnostics, and Y/n confirmations. The user reviews and directs decisions through conversation: schema inference proposals, ontology normalization diagnostics, ontology buffer refinement reviews, migration plan approvals, and first-run initialization questions
-- **Autonomous mode** (`--batch`) - the agent makes all decisions at interactive checkpoints without pausing. It applies sensible defaults, accepts proposals automatically, and logs every autonomous decision to a run report for post-run review
+- **Interactive mode** (default) - the pipeline pauses at defined checkpoints where the agent presents proposals, diagnostics, and Y/n confirmations. The user reviews and directs decisions through conversation: schema inference proposals, ontology normalization diagnostics, ontology buffer refinement reviews, migration plan approvals, and first-run initialization questions
+- **Autonomous mode** (`--batch`) - the pipeline proceeds through interactive checkpoints without pausing. The agent returns decisions using sensible defaults, accepts proposals automatically, and the pipeline logs every autonomous decision to a run report for post-run review
 
 Activities across the pipeline fall into two categories:
 
@@ -44,7 +44,7 @@ Activities across the pipeline fall into two categories:
 - Batch Cypher loading, index creation
 - Post-load validation, ontology buffer flush
 
-Individual pipeline functions (parse, chunk, extract, dedup, resolve, load) are importable and testable independently of the agent framework. The agent orchestrates their sequencing and handles interactive checkpoints, but the functions themselves are deterministic.
+Individual pipeline functions (parse, chunk, extract, dedup, resolve, load) are importable and testable independently of the agent framework. The pipeline orchestrates their sequencing. Agents handle interactive checkpoints and escalation decisions, but the pipeline functions themselves are deterministic and agent-independent.
 
 ### Batch Decision Logging
 
@@ -53,6 +53,8 @@ In autonomous mode (`--batch`), all decisions the agent makes at interactive che
 - Ontology normalization tier used (1/2/3) with diagnostic output
 - Refinement decisions applied (types promoted, variants merged, candidates pruned)
 - Validation results (orphan counts, coverage scores, type distribution)
+- Escalation invocations (curing, type resolution, deferred dedup) with call_type, model, duration, token counts, structured decision, and reasoning
+- Escalation failures with error type and message
 
 ### Scale and Performance Targets
 
@@ -253,7 +255,7 @@ Call sites that fail any condition remain single-shot. Chunk extraction fails co
 
 Three pipeline escalation agents plus one new command agent. Each agent has a focused tool set and returns structured output via Pydantic models.
 
-**Curing Agent** - replaces the two-phase flow in `curing/generative.py` where `llm_should_cure()` manually constructs a `CureProbe`, checks `_is_ambiguous_for_query()`, optionally queries the graph, then makes a second LLM call for `CureDecision`. The agent receives metrics timeline and type frequencies as system context, then autonomously decides whether to gather additional evidence from the graph or buffer before rendering a cure/block decision.
+**Curing Agent** - replaces the two-phase flow in `curing/generative.py` where `llm_should_cure()` manually constructs a `CureProbe`, checks `_is_ambiguous_for_query()`, optionally queries the graph, then makes a second LLM call for `CureDecision`. The agent receives metrics timeline and type frequencies as system context, then autonomously decides whether to gather additional evidence from the graph or buffer before returning a `CureDecision` to the pipeline.
 
 - **Tools**: `query_graph`, `query_buffer`, `inspect_metrics`
 - **Structured output**: `CureDecision` (action: cure/block, confidence, reasoning)
@@ -275,7 +277,7 @@ Three pipeline escalation agents plus one new command agent. Each agent has a fo
 
 ### Agent Tool Registry
 
-Three read-only tools wrapping existing functions. All tools are stateless and safe to call in any order.
+Three read-only tools wrapping existing functions. All tools are stateless and safe to call in any order. Escalation agents must not mutate pipeline state - they receive read-only context and return structured decisions (`CureDecision`, `MergeDecision`, `TypeChoice`) that the calling pipeline function applies.
 
 | Tool | Wraps | Used By | Returns |
 |------|-------|---------|---------|
@@ -313,7 +315,7 @@ kgf ingest <source> [options]
 
 **Workflow**:
 
-The ingest workflow executes the pipeline directly: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J. Strands agents engage only at interactive checkpoints.
+The ingest workflow executes the pipeline directly: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J. Strands agents engage only at interactive checkpoints and escalation points.
 
 - **Initialization**: three scenarios depending on current state:
   - **No `.kgf/`, no graph** - fresh setup. The pipeline creates `.kgf/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the initialization checkpoint asks questions about the target graph and generates tailored configuration
