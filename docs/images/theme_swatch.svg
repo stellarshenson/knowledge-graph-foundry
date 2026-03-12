@@ -25,7 +25,7 @@
   - Escalation arrows: solid lines (not dashed), same weight
   - L-shaped routing: chamfered bends (4px diagonal at each 90-degree turn)
   - Chamfer template: instead of sharp V{y1} H{x2}, use V{y1-4} L{x+4},{y1} H{x2-4} L{x2},{y1+4}
-  - Arrow tips: polygon triangles, 6px base, 4px depth
+  - Arrow tips: polygon triangles, 6px base, 4px depth; stem ends at back of head (no protrusion)
   - Straight-down arrows preferred when source and target are vertically aligned
   - Stagger vertical midpoints when multiple L-connectors share a gap to avoid overlap
 
@@ -37,7 +37,7 @@
 
   === END DESIGN NOTES ===
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 800 528">
   <style>
     .fg-1 { fill: #1a5a6e; }
     .fg-2 { fill: #24697e; }
@@ -117,7 +117,7 @@
 
   <!-- === SECTION 2: Light background strip === -->
   <g id="light-strip">
-    <rect x="0" y="166" width="800" height="164" fill="#f5f7fa"/>
+    <rect x="0" y="166" width="800" height="176" fill="#f5f7fa"/>
     <text x="20" y="186" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#236a74" letter-spacing="1">ON LIGHT BACKGROUND (#f5f7fa)</text>
 
     <!-- Card sample -->
@@ -147,28 +147,32 @@
     <!-- Arrow samples -->
     <g id="arrows-light">
       <text x="560" y="200" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#236a74" letter-spacing="1">ARROWS</text>
-      <line x1="560" y1="214" x2="620" y2="214" stroke="#0096d1" stroke-width="2" opacity="0.3"/>
-      <polygon points="620,209 630,214 620,219" fill="#0096d1" opacity="0.8"/>
+      <!-- Straight horizontal: pipeline flow -->
+      <line x1="560" y1="214" x2="620" y2="214" stroke="#0096d1" stroke-width="1.2" opacity="0.4"/>
+      <polygon points="620,211 624,214 620,217" fill="#0096d1" opacity="0.6"/>
       <text x="640" y="218" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#24697e">pipeline flow</text>
-      <line x1="560" y1="234" x2="620" y2="234" stroke="#da8230" stroke-width="2" opacity="0.3"/>
-      <polygon points="620,229 630,234 620,239" fill="#da8230" opacity="0.8"/>
+      <!-- Straight horizontal: escalation -->
+      <line x1="560" y1="234" x2="620" y2="234" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
+      <polygon points="620,231 624,234 620,237" fill="#da8230" opacity="0.6"/>
       <text x="640" y="238" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#24697e">escalation</text>
-      <line x1="560" y1="254" x2="620" y2="254" stroke="#0096d1" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <polygon points="620,249 630,254 620,259" fill="#0096d1" opacity="0.5"/>
-      <text x="640" y="258" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#24697e">decision return</text>
+      <!-- Chamfered L-route: angular routing (4px chamfer at bend) -->
+      <path d="M560,254 H586 L590,258 V266" fill="none" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
+      <polygon points="587,266 590,270 593,266" fill="#da8230" opacity="0.6"/>
+      <text x="640" y="258" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#24697e">chamfered L-route</text>
+      <text x="640" y="270" font-family="Segoe UI, Arial, sans-serif" font-size="7" fill="#2b7680">4px chamfer, r=3 corners</text>
     </g>
 
     <!-- Icon stroke samples -->
     <g id="icons-light">
-      <text x="560" y="280" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#236a74" letter-spacing="1">ICON STROKES</text>
-      <circle cx="574" cy="298" r="6" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1.5"/>
-      <circle cx="594" cy="290" r="4" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1.5"/>
-      <line x1="579" y1="294" x2="590" y2="292" stroke="#0096d1" stroke-width="1"/>
-      <circle cx="594" cy="306" r="4" fill="#da8230" fill-opacity="0.06" stroke="#da8230" stroke-width="1.5"/>
-      <line x1="579" y1="302" x2="590" y2="304" stroke="#da8230" stroke-width="1"/>
-      <rect x="620" y="288" width="40" height="6" rx="2" fill="#0096d1" fill-opacity="0.15"/>
-      <rect x="620" y="298" width="30" height="6" rx="2" fill="#0096d1" fill-opacity="0.25"/>
-      <rect x="620" y="308" width="50" height="6" rx="2" fill="#da8230" fill-opacity="0.2"/>
+      <text x="560" y="292" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#236a74" letter-spacing="1">ICON STROKES</text>
+      <circle cx="574" cy="310" r="6" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1.5"/>
+      <circle cx="594" cy="302" r="4" fill="#0096d1" fill-opacity="0.06" stroke="#0096d1" stroke-width="1.5"/>
+      <line x1="579" y1="306" x2="590" y2="304" stroke="#0096d1" stroke-width="1"/>
+      <circle cx="594" cy="318" r="4" fill="#da8230" fill-opacity="0.06" stroke="#da8230" stroke-width="1.5"/>
+      <line x1="579" y1="314" x2="590" y2="316" stroke="#da8230" stroke-width="1"/>
+      <rect x="620" y="300" width="40" height="6" rx="2" fill="#0096d1" fill-opacity="0.15"/>
+      <rect x="620" y="310" width="30" height="6" rx="2" fill="#0096d1" fill-opacity="0.25"/>
+      <rect x="620" y="320" width="50" height="6" rx="2" fill="#da8230" fill-opacity="0.2"/>
     </g>
 
     <!-- Coverage bar -->
@@ -180,75 +184,79 @@
     </g>
 
     <!-- Light mode note -->
-    <text x="20" y="322" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#2b7680">Light mode uses darker variants: fg-1=#1a5a6e fg-2=#24697e fg-3=#236a74 fg-4=#2b7680 | accent-1=#005f7a accent-2=#7a4a15</text>
+    <text x="20" y="334" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#2b7680">Light mode uses darker variants: fg-1=#1a5a6e fg-2=#24697e fg-3=#236a74 fg-4=#2b7680 | accent-1=#005f7a accent-2=#7a4a15</text>
   </g>
 
   <!-- === SECTION 3: Dark background strip === -->
   <g id="dark-strip">
-    <rect x="0" y="346" width="800" height="174" fill="#1e1e1e"/>
-    <text x="20" y="366" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">ON DARK BACKGROUND (#1e1e1e)</text>
+    <rect x="0" y="342" width="800" height="186" fill="#1e1e1e"/>
+    <text x="20" y="362" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">ON DARK BACKGROUND (#1e1e1e)</text>
 
     <!-- Card sample (dark) -->
     <g id="card-dark">
-      <path d="M20,376 H195 V477 Q195,480 192,480 H23 Q20,480 20,477 Z" fill="#0096d1" opacity="0.08"/>
-      <path d="M20,376 H195 V477 Q195,480 192,480 H23 Q20,480 20,477 Z" fill="none" stroke="#0096d1" stroke-width="1" opacity="0.5"/>
-      <rect x="20" y="376" width="175" height="5" fill="#0096d1" opacity="0.6"/>
-      <text x="32" y="398" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#0096d1">EXTRACT</text>
-      <text x="32" y="416" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#b8e4f0">Entity Extraction</text>
-      <text x="32" y="434" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#8fd4e6">litellm + instructor</text>
-      <text x="32" y="448" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#5aafc5">Pydantic structured output</text>
-      <text x="32" y="462" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#4099b3">8 LLM call sites</text>
+      <path d="M20,372 H195 V473 Q195,476 192,476 H23 Q20,476 20,473 Z" fill="#0096d1" opacity="0.08"/>
+      <path d="M20,372 H195 V473 Q195,476 192,476 H23 Q20,476 20,473 Z" fill="none" stroke="#0096d1" stroke-width="1" opacity="0.5"/>
+      <rect x="20" y="372" width="175" height="5" fill="#0096d1" opacity="0.6"/>
+      <text x="32" y="394" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#0096d1">EXTRACT</text>
+      <text x="32" y="412" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#b8e4f0">Entity Extraction</text>
+      <text x="32" y="430" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#8fd4e6">litellm + instructor</text>
+      <text x="32" y="444" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#5aafc5">Pydantic structured output</text>
+      <text x="32" y="458" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#4099b3">8 LLM call sites</text>
     </g>
 
     <!-- Stat sample (dark) -->
     <g id="stats-dark">
-      <text x="220" y="396" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#b8e4f0">1,007</text>
-      <text x="220" y="412" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#5aafc5">Entities</text>
-      <line x1="300" y1="384" x2="300" y2="416" stroke="#0096d1" stroke-width="1" opacity="0.3"/>
-      <text x="320" y="396" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#b8e4f0">3,496</text>
-      <text x="320" y="412" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#5aafc5">Relationships</text>
-      <line x1="410" y1="384" x2="410" y2="416" stroke="#0096d1" stroke-width="1" opacity="0.3"/>
-      <text x="430" y="396" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#da8230">88%</text>
-      <text x="430" y="412" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#5aafc5">Hybrid Score</text>
+      <text x="220" y="392" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#b8e4f0">1,007</text>
+      <text x="220" y="408" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#5aafc5">Entities</text>
+      <line x1="300" y1="380" x2="300" y2="412" stroke="#0096d1" stroke-width="1" opacity="0.3"/>
+      <text x="320" y="392" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#b8e4f0">3,496</text>
+      <text x="320" y="408" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#5aafc5">Relationships</text>
+      <line x1="410" y1="380" x2="410" y2="412" stroke="#0096d1" stroke-width="1" opacity="0.3"/>
+      <text x="430" y="392" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#da8230">88%</text>
+      <text x="430" y="408" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#5aafc5">Hybrid Score</text>
     </g>
 
     <!-- Arrow samples (dark) -->
     <g id="arrows-dark">
-      <text x="560" y="380" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">ARROWS</text>
-      <line x1="560" y1="394" x2="620" y2="394" stroke="#0096d1" stroke-width="2" opacity="0.5"/>
-      <polygon points="620,389 630,394 620,399" fill="#0096d1" opacity="0.8"/>
-      <text x="640" y="398" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#8fd4e6">pipeline flow</text>
-      <line x1="560" y1="414" x2="620" y2="414" stroke="#da8230" stroke-width="2" opacity="0.5"/>
-      <polygon points="620,409 630,414 620,419" fill="#da8230" opacity="0.8"/>
-      <text x="640" y="418" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#8fd4e6">escalation</text>
-      <line x1="560" y1="434" x2="620" y2="434" stroke="#0096d1" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <polygon points="620,429 630,434 620,439" fill="#0096d1" opacity="0.5"/>
-      <text x="640" y="438" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#8fd4e6">decision return</text>
+      <text x="560" y="376" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">ARROWS</text>
+      <!-- Straight horizontal: pipeline flow -->
+      <line x1="560" y1="390" x2="620" y2="390" stroke="#0096d1" stroke-width="1.2" opacity="0.4"/>
+      <polygon points="620,387 624,390 620,393" fill="#0096d1" opacity="0.6"/>
+      <text x="640" y="394" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#8fd4e6">pipeline flow</text>
+      <!-- Straight horizontal: escalation -->
+      <line x1="560" y1="410" x2="620" y2="410" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
+      <polygon points="620,407 624,410 620,413" fill="#da8230" opacity="0.6"/>
+      <text x="640" y="414" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#8fd4e6">escalation</text>
+      <!-- Chamfered L-route: angular routing (4px chamfer at bend) -->
+      <path d="M560,430 H586 L590,434 V442" fill="none" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
+      <polygon points="587,442 590,446 593,442" fill="#da8230" opacity="0.6"/>
+      <text x="640" y="434" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#8fd4e6">chamfered L-route</text>
+      <text x="640" y="446" font-family="Segoe UI, Arial, sans-serif" font-size="7" fill="#4099b3">4px chamfer, r=3 corners</text>
     </g>
 
     <!-- Icon stroke samples (dark) -->
     <g id="icons-dark">
-      <text x="560" y="460" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">ICON STROKES</text>
-      <circle cx="574" cy="478" r="6" fill="#0096d1" fill-opacity="0.1" stroke="#0096d1" stroke-width="1.5"/>
-      <circle cx="594" cy="470" r="4" fill="#0096d1" fill-opacity="0.1" stroke="#0096d1" stroke-width="1.5"/>
-      <line x1="579" y1="474" x2="590" y2="472" stroke="#0096d1" stroke-width="1"/>
-      <circle cx="594" cy="486" r="4" fill="#da8230" fill-opacity="0.1" stroke="#da8230" stroke-width="1.5"/>
-      <line x1="579" y1="482" x2="590" y2="484" stroke="#da8230" stroke-width="1"/>
-      <rect x="620" y="468" width="40" height="6" rx="2" fill="#0096d1" fill-opacity="0.3"/>
-      <rect x="620" y="478" width="30" height="6" rx="2" fill="#0096d1" fill-opacity="0.4"/>
-      <rect x="620" y="488" width="50" height="6" rx="2" fill="#da8230" fill-opacity="0.3"/>
+      <text x="560" y="468" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">ICON STROKES</text>
+      <circle cx="574" cy="486" r="6" fill="#0096d1" fill-opacity="0.1" stroke="#0096d1" stroke-width="1.5"/>
+      <circle cx="594" cy="478" r="4" fill="#0096d1" fill-opacity="0.1" stroke="#0096d1" stroke-width="1.5"/>
+      <line x1="579" y1="482" x2="590" y2="480" stroke="#0096d1" stroke-width="1"/>
+      <circle cx="594" cy="494" r="4" fill="#da8230" fill-opacity="0.1" stroke="#da8230" stroke-width="1.5"/>
+      <line x1="579" y1="490" x2="590" y2="492" stroke="#da8230" stroke-width="1"/>
+      <rect x="620" y="476" width="40" height="6" rx="2" fill="#0096d1" fill-opacity="0.3"/>
+      <rect x="620" y="486" width="30" height="6" rx="2" fill="#0096d1" fill-opacity="0.4"/>
+      <rect x="620" y="496" width="50" height="6" rx="2" fill="#da8230" fill-opacity="0.3"/>
     </g>
 
     <!-- Coverage bar (dark) -->
     <g id="coverage-dark">
-      <text x="220" y="440" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">COVERAGE BAR</text>
-      <rect x="220" y="448" width="260" height="14" rx="4" fill="#0096d1" fill-opacity="0.12"/>
-      <rect x="220" y="448" width="229" height="14" rx="4" fill="#0096d1"/>
-      <text x="340" y="459" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600" fill="#e0f2f7">88%</text>
+      <text x="220" y="436" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#9ad4e2" letter-spacing="1">COVERAGE BAR</text>
+      <rect x="220" y="444" width="260" height="14" rx="4" fill="#0096d1" fill-opacity="0.12"/>
+      <rect x="220" y="444" width="229" height="14" rx="4" fill="#0096d1"/>
+      <text x="340" y="455" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="600" fill="#e0f2f7">88%</text>
     </g>
 
     <!-- Dark mode note -->
-    <text x="20" y="506" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#4099b3">Dark mode uses CSS classes: fg-1=#b8e4f0 fg-2=#8fd4e6 fg-3=#5aafc5 fg-4=#4099b3 | accent-1=#5cc8e0 accent-2=#d4a04a</text>
+    <text x="20" y="514" font-family="Segoe UI, Arial, sans-serif" font-size="8" fill="#4099b3">Dark mode uses CSS classes: fg-1=#b8e4f0 fg-2=#8fd4e6 fg-3=#5aafc5 fg-4=#4099b3 | accent-1=#5cc8e0 accent-2=#d4a04a</text>
   </g>
 
 </svg>

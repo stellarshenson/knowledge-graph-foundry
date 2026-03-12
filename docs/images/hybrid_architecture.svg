@@ -91,15 +91,15 @@
   <!-- Gap x=180..210, vertical midpoints staggered to avoid overlap -->
 
   <!-- Unstructured (cy=86) -> Parse (cy=54) via x=192, chamfered -->
-  <path d="M180,86 H188 L192,82 V58 L196,54 H210" fill="none" stroke="#0096d1" stroke-width="1.2" opacity="0.4"/>
+  <path d="M180,86 H188 L192,82 V58 L196,54 H206" fill="none" stroke="#0096d1" stroke-width="1.2" opacity="0.4"/>
   <polygon points="206,51 210,54 206,57" fill="#0096d1" opacity="0.6"/>
 
   <!-- Structured (cy=200) -> Chunk (cy=98) via x=195, chamfered -->
-  <path d="M180,200 H191 L195,196 V102 L199,98 H210" fill="none" stroke="#0096d1" stroke-width="1.2" opacity="0.4"/>
+  <path d="M180,200 H191 L195,196 V102 L199,98 H206" fill="none" stroke="#0096d1" stroke-width="1.2" opacity="0.4"/>
   <polygon points="206,95 210,98 206,101" fill="#0096d1" opacity="0.6"/>
 
   <!-- Ontology (cy=302) -> Ontology Buffer (cy=230) via x=198, chamfered, dashed -->
-  <path d="M180,302 H194 L198,298 V234 L202,230 H210" fill="none" stroke="#da8230" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.4"/>
+  <path d="M180,302 H194 L198,298 V234 L202,230 H206" fill="none" stroke="#da8230" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.4"/>
   <polygon points="206,227 210,230 206,233" fill="#da8230" opacity="0.6"/>
 
   <!-- === CENTRE COLUMN: PIPELINE === -->
@@ -166,7 +166,7 @@
   <!-- Gap x=518..548, vertical midpoints staggered -->
 
   <!-- Extract (cy=142) -> Interactive Checkpoints (cy=91) via x=530, chamfered, dashed -->
-  <path d="M518,142 H526 L530,138 V95 L534,91 H548" fill="none" stroke="#da8230" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+  <path d="M518,142 H526 L530,138 V95 L534,91 H544" fill="none" stroke="#da8230" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
   <polygon points="544,88 548,91 544,94" fill="#da8230" opacity="0.5"/>
 
   <!-- Ontology Buffer (cy=230) -> Escalation Points (cy=215), straight horizontal -->

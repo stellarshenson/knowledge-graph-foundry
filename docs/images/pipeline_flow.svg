@@ -128,7 +128,7 @@
 
   <!-- Chamfered L-connectors: pipeline stage -> escalation card -->
   <!-- Extract (cx=318, bottom=74) -> Curing (cx=150, top=116) -->
-  <path d="M318,74 V84 L314,88 H154 L150,92 V116" fill="none" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
+  <path d="M318,74 V84 L314,88 H154 L150,92 V112" fill="none" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
   <polygon points="147,112 150,116 153,112" fill="#da8230" opacity="0.6"/>
 
   <!-- Dedup (cx=444, bottom=74) -> Resolution card, straight down -->
@@ -136,7 +136,7 @@
   <polygon points="441,112 444,116 447,112" fill="#da8230" opacity="0.6"/>
 
   <!-- Resolve (cx=570, bottom=74) -> Deferred (cx=650, top=116) -->
-  <path d="M570,74 V84 L574,88 H646 L650,92 V116" fill="none" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
+  <path d="M570,74 V84 L574,88 H646 L650,92 V112" fill="none" stroke="#da8230" stroke-width="1.2" opacity="0.5"/>
   <polygon points="647,112 650,116 653,112" fill="#da8230" opacity="0.6"/>
 
   <!-- Container for escalation cards (flat top, rounded bottom r=3) -->
