@@ -386,8 +386,10 @@ docker exec kg-builder-neo4j cypher-shell -u neo4j -p kg-builder-pass "MATCH (n)
 
 # 4. Run ingestion from tmp/ (all .kgf/ artefacts stay in tmp/)
 cd tmp
-uv run kgf ingest input/ --batch --fluid --event-log vNN-events.log --processing-log vNN-ingestion.log
+uv run kgf ingest --input input/ --batch --fluid --unstructured --event-log vNN-events.log --processing-log vNN-ingestion.log
 cd ..
+# Positional form also works: kgf ingest input/ --batch --fluid --unstructured ...
+# --unstructured is the default mode; picks up .pdf, .txt, .md, .docx from input/
 # Event log streams to tmp/vNN-events.log as JSONL (one event per line, written continuously)
 
 # 5. Verify no extraction failures in log
@@ -446,15 +448,29 @@ Full command specification: `.claude/commands/forensics.md`
 
 ### Ingestion modes
 
+`--input` / `-i` is a repeatable option. The positional `SOURCE` argument is still accepted for backward compatibility. These forms are all equivalent:
+
 ```bash
 # All commands assume cwd is tmp/
 
 # Fluid mode (default for benchmarks - discovers ontology from data)
-uv run kgf ingest input/ --batch --fluid
+# --unstructured is the default; picks up .pdf, .txt, .md, .docx from input/
+uv run kgf ingest --input input/ --batch --fluid --unstructured
+
+# Structured mode - picks up .json, .jsonl, .csv, .xlsx from input/
+uv run kgf ingest --input input/ --batch --fluid --structured
+
+# Multiple inputs (mix files and directories)
+uv run kgf ingest -i input/ -i /other/docs/ --batch --fluid --unstructured
+
+# Positional form (legacy, still works)
+uv run kgf ingest input/ --batch --fluid --unstructured
 
 # Constrained mode (uses pre-existing ontology seed)
-uv run kgf ingest input/ --batch --fluid --ontology ../data/ontologies/cpap_medical_device.yml
+uv run kgf ingest --input input/ --batch --fluid --unstructured --ontology ../data/ontologies/cpap_medical_device.yml
 ```
+
+`--structured` and `--unstructured` are mutually exclusive. File type filtering is automatic - only extensions matching the selected mode are picked up from directory inputs. Files of other types are silently skipped.
 
 ## Iteration Results
 

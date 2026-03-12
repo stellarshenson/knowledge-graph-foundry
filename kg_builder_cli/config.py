@@ -63,6 +63,10 @@ FIGURES_DIR = REPORTS_DIR / "figures"
 
 # ── KGF runtime paths ─────────────────────────────────────────────────
 
+UNSTRUCTURED_EXTENSIONS = {".pdf", ".txt", ".md", ".docx"}
+STRUCTURED_EXTENSIONS = {".json", ".jsonl", ".csv", ".xlsx"}
+SUPPORTED_EXTENSIONS = UNSTRUCTURED_EXTENSIONS | STRUCTURED_EXTENSIONS
+
 CONFIG_DIR_NAME = ".kgf"
 
 

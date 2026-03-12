@@ -6,7 +6,15 @@ from pathlib import Path
 
 import typer
 
-from kg_builder_cli.config import APP_NAME, APP_SHORT, config_dir, logger, ontology_file
+from kg_builder_cli.config import (
+    APP_NAME,
+    APP_SHORT,
+    STRUCTURED_EXTENSIONS,
+    UNSTRUCTURED_EXTENSIONS,
+    config_dir,
+    logger,
+    ontology_file,
+)
 
 app = typer.Typer(name=APP_SHORT, help=f"{APP_NAME} CLI", invoke_without_command=True)
 
@@ -23,7 +31,16 @@ def main_callback(ctx: typer.Context):
 
 @app.command()
 def ingest(
-    source: Path = typer.Argument(..., help="Path to file or directory to ingest"),
+    source: Path | None = typer.Argument(None, help="Path to file or directory to ingest"),
+    inputs: list[Path] | None = typer.Option(
+        None, "--input", "-i", help="Input file or directory (repeatable)"
+    ),
+    structured: bool = typer.Option(
+        False, "--structured", help="Use structured pipeline (JSON/JSONL/CSV/XLSX)"
+    ),
+    unstructured: bool = typer.Option(
+        False, "--unstructured", help="Use unstructured pipeline (PDF/TXT/MD/DOCX) [default]"
+    ),
     batch: bool = typer.Option(
         False, "--batch", help="Run in autonomous mode without interactive checkpoints"
     ),
@@ -71,7 +88,23 @@ def ingest(
     if verbose:
         register_verbose_handlers()
 
-    logger.info("ingesting from {}", source)
+    # Merge sources: positional SOURCE and --input options
+    all_sources: list[Path] = []
+    if source is not None:
+        all_sources.append(source)
+    if inputs:
+        all_sources.extend(inputs)
+    if not all_sources:
+        logger.error("no input specified - provide SOURCE argument or --input options")
+        raise typer.Exit(1)
+
+    # Resolve pipeline mode: --structured and --unstructured are mutually exclusive
+    if structured and unstructured:
+        logger.error("--structured and --unstructured are mutually exclusive")
+        raise typer.Exit(1)
+    pipeline_mode = "structured" if structured else "unstructured"
+
+    logger.info("ingesting from {} source(s) [{}]", len(all_sources), pipeline_mode)
 
     # Build CLI overrides
     overrides = {}
@@ -101,11 +134,25 @@ def ingest(
         curing_enabled = False
 
     logger.info(
-        "config loaded: model={}, neo4j={}, fluid={}",
+        "config loaded: model={}, neo4j={}, fluid={}, pipeline={}",
         config.llm.model,
         config.neo4j.uri,
         curing_enabled,
+        pipeline_mode,
     )
+    logger.info(
+        "settings: chunk_size={}, overlap={}, concurrency={}, embeddings={}, bayesian={}",
+        config.extract.chunk_size,
+        config.extract.chunk_overlap,
+        config.extract.concurrency,
+        config.extract.use_embeddings,
+        config.extract.bayesian_resolution,
+    )
+    if config.llm.rate_limit:
+        logger.info(
+            "rate limit: {:.1f} req/s",
+            config.llm.rate_limit.requests_per_second,
+        )
 
     # Initialize ontology buffer
     buffer = None
@@ -115,18 +162,19 @@ def ingest(
     elif ontology is None:
         buffer = OntologyBuffer(config.ontology_buffer)
 
-    # Collect files to process
-    if source.is_dir():
-        files = sorted(
-            p
-            for p in source.iterdir()
-            if p.suffix.lower() in (".pdf", ".txt", ".md", ".docx", ".json", ".jsonl")
-        )
-    else:
-        files = [source]
+    # Collect files from all sources, filtered by pipeline mode
+    allowed_ext = STRUCTURED_EXTENSIONS if structured else UNSTRUCTURED_EXTENSIONS
+    files: list[Path] = []
+    for src in all_sources:
+        if src.is_dir():
+            files.extend(sorted(p for p in src.iterdir() if p.suffix.lower() in allowed_ext))
+        elif src.is_file():
+            files.append(src)
+        else:
+            logger.warning("source not found, skipping: {}", src)
 
     if not files:
-        logger.error("no supported files found in {}", source)
+        logger.error("no supported files found across {} source(s)", len(all_sources))
         raise typer.Exit(1)
 
     logger.info("found {} file(s) to ingest", len(files))

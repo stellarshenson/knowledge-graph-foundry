@@ -1,4 +1,4 @@
-# Knowledge Graph Foundry (KGF)
+<img src="docs/images/readme_banner.svg" alt="Knowledge Graph Foundry">
 
 A CLI tool that reads your documents and builds a knowledge graph in Neo4j. Point it at a folder of PDFs, manuals, or data files - it extracts entities, relationships, and specifications, resolves duplicates across documents, and loads a queryable graph. No predefined schema required - the tool discovers the ontology from your data, or you can seed one to guide extraction.
 
@@ -6,7 +6,7 @@ Built as a simpler, CLI-driven alternative to [Neo4j LLM Graph Builder](https://
 
 ## What It Does
 
-**Input**: a folder of documents (PDF, DOCX, TXT, MD, JSON, JSONL)
+**Input**: one or more files or directories (PDF, DOCX, TXT, MD, JSON, JSONL, CSV, XLSX)
 
 **Output**: a Neo4j knowledge graph with entities, relationships, specifications, and provenance - queryable via Cypher
 
@@ -20,6 +20,8 @@ The pipeline:
 
 The tool handles multi-document corpora where the same entities appear across files. A product mentioned in a datasheet, a user manual, and a brochure gets consolidated into one graph node with merged properties and multiple source references.
 
+<img src="docs/images/pipeline_flow.svg" alt="Ingestion Pipeline Flow">
+
 ## Quick Start
 
 ```bash
@@ -30,8 +32,15 @@ make install
 kgf init
 # Edit .kgf/config.yml with your Neo4j and LLM credentials
 
-# Ingest documents
+# Ingest unstructured documents - PDF, TXT, MD, DOCX (default, --unstructured is implicit)
 kgf ingest data/raw/ --batch --fluid
+
+# Ingest structured data - JSON, JSONL, CSV, XLSX (automatic file type filtering)
+kgf ingest data/raw/ --structured --batch --fluid
+
+# Multiple inputs with repeatable --input / -i option
+kgf ingest --input data/raw/ --input /other/docs/ --batch --fluid
+kgf ingest -i file1.pdf -i file2.pdf -i data/raw/ --batch --fluid
 
 # Query the graph
 # Open Neo4j Browser at http://localhost:7474
@@ -83,6 +92,8 @@ curing:
 
 ## Technical Details
 
+<img src="docs/images/hybrid_architecture.svg" alt="Hybrid Architecture">
+
 ### Entity Resolution
 
 Entities are resolved across documents through multiple signals:
@@ -94,6 +105,8 @@ Entities are resolved across documents through multiple signals:
 - **LLM escalation** for high-entropy cases where statistical signals are inconclusive
 
 ### Curing and Convergence
+
+<img src="docs/images/curing_decision_flow.svg" alt="Curing Decision Flow">
 
 The fluid-to-cured lifecycle uses statistical convergence detection:
 - Jensen-Shannon divergence between consecutive type distributions
@@ -108,8 +121,10 @@ All pipeline decisions emit blinker signals to a JSONL event log (41 signal type
 
 ### Supported Formats
 
-- **Unstructured**: PDF, TXT, MD, DOCX
-- **Structured**: JSON, JSONL with automatic schema inference
+Use `--unstructured` (default) or `--structured` to select the pipeline - the flags are mutually exclusive and file type filtering is automatic based on the chosen mode.
+
+- **Unstructured** (`--unstructured`, default): PDF, TXT, MD, DOCX
+- **Structured** (`--structured`): JSON, JSONL, CSV, XLSX with automatic schema inference
 - **Ontology seeds**: OWL, YAML, JSON, markdown, plain text
 
 ## Technology Stack

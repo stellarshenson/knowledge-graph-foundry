@@ -9,7 +9,7 @@ Where Neo4J LLM Graph Builder provides a web-based UI with minimal structured da
 **Key facts**:
 - Python 3.12, uv package manager, litellm+instructor (pipeline), Strands Agents SDK (escalation)
 - Three CLI commands: `kgf ingest`, `kgf query`, `kgf update`
-- Supports PDF, TXT, MD, DOCX (unstructured) and JSON, JSONL (structured)
+- Supports PDF, TXT, MD, DOCX (unstructured) and JSON, JSONL, CSV, XLSX (structured)
 - Adaptive ontology buffer that evolves during ingestion
 - Ontology seeds in any format (OWL, YAML, JSON, markdown, plain text) with LLM normalization
 - Neo4J graph database with dual indexing (vector + fulltext)
@@ -310,12 +310,15 @@ The CLI exposes three entry points. `kgf ingest` and `kgf update` execute pipeli
 Build the knowledge graph from source data. Handles initialization, extraction, loading, and schema inference as a unified workflow.
 
 ```
-kgf ingest <source> [options]
+kgf ingest [<source>] [--input <path>]... [--structured | --unstructured] [options]
 ```
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `<source>` | required | Path to file or directory of documents to process |
+| `[<source>]` | optional | Positional path to file or directory (backward-compatible shorthand) |
+| `--input` / `-i` | none | Path to file or directory; repeatable to specify multiple inputs (e.g. `-i file1.pdf -i data/raw/`) |
+| `--structured` | `False` | Use structured pipeline (JSON, JSONL, CSV, XLSX); mutually exclusive with `--unstructured` |
+| `--unstructured` | `True` | Use unstructured pipeline (PDF, TXT, MD, DOCX); default when neither flag is set; mutually exclusive with `--structured` |
 | `--schema` | from config | Path to schema description file for structured data |
 | `--infer-schema` | `False` | Force schema inference even if schema exists |
 | `--ontology` | from config | Path to ontology YAML file (free extraction if omitted) |
@@ -337,7 +340,7 @@ The ingest workflow executes the pipeline directly: detect input type, extract e
   - **No `.kgf/`, no graph** - fresh setup. The pipeline creates `.kgf/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the initialization checkpoint asks questions about the target graph and generates tailored configuration
   - **No `.kgf/`, graph exists** - recovery. The pipeline introspects the Neo4J graph (labels, relationship types, property keys, `OntologyType` nodes, `SchemaVersion` nodes) and reconstructs the schema and ontology YAML files. Presents the recovered schema to the user: "recovered schema from existing graph with N entity types and M relationship types"
   - **`.kgf/` exists, graph exists** - validation. The pipeline compares the schema file against the current graph state and reports drift: new labels in graph not in schema, properties on entities not described in schema, `SchemaVersion` mismatches. Drift is reported as warnings, not errors
-- **Input detection**: file extension determines pipeline - `.json`/`.jsonl` -> structured, everything else -> unstructured
+- **Input detection**: pipeline mode is controlled by `--structured` / `--unstructured` (default). File type filtering is automatic - structured mode accepts extensions defined in `STRUCTURED_EXTENSIONS` (JSON, JSONL, CSV, XLSX), unstructured mode accepts extensions defined in `UNSTRUCTURED_EXTENSIONS` (PDF, TXT, MD, DOCX). Files not matching the active mode are skipped with a warning
 - **Schema inference**: for structured data without `--schema`, the pipeline samples records directly, proposes a schema at the interactive checkpoint, and saves it to `.kgf/schemas/` before proceeding (see Section 7.3)
 - **Ontology buffer**: without `--ontology` the pipeline runs free extraction, building the ontology progressively. With `--ontology` it starts constrained but refines during processing. The buffer tracks type frequencies, variant mappings, and coverage scores (see Section 5)
 - **Extract + load**: by default the pipeline extracts and loads in a single run. Use `--extract-only` to stop after extraction, or `--keep-extractions` to save intermediate JSON alongside loading
