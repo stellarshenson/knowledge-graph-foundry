@@ -179,6 +179,7 @@ def ingest_document(
             temperature,
             max_retries,
             response_model,
+            doc_index=doc_index,
         )
 
     from kg_builder_cli.events import signals as evt_signals

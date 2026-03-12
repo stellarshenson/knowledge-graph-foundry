@@ -74,6 +74,7 @@ def extract_chunk(
     temperature: float = 0.0,
     max_retries: int = 3,
     response_model: type = ExtractionResponse,
+    doc_index: int | None = None,
 ) -> tuple[list[Entity], list[Relationship]]:
     """Extract entities and relationships from a chunk using structured output.
 
@@ -90,7 +91,7 @@ def extract_chunk(
         event=etypes.LLMCallStarted(
             call_type="chunk_extraction",
             model=model_id,
-            doc_index=None,
+            doc_index=doc_index,
             context={"chunk_id": chunk.id},
         ),
     )
@@ -145,7 +146,7 @@ def extract_chunk(
                 token_count=usage["total_tokens"],
                 prompt_tokens=usage["prompt_tokens"],
                 completion_tokens=usage["completion_tokens"],
-                doc_index=None,
+                doc_index=doc_index,
             ),
         )
 
@@ -167,7 +168,7 @@ def extract_chunk(
                     model=model_id,
                     error_type="auth",
                     error_message=str(exc),
-                    doc_index=None,
+                    doc_index=doc_index,
                 ),
             )
             raise LLMAuthError(
@@ -181,7 +182,7 @@ def extract_chunk(
                 model=model_id,
                 error_type=type(exc).__name__,
                 error_message=str(exc),
-                doc_index=None,
+                doc_index=doc_index,
             ),
         )
         logger.exception("Extraction failed for chunk {}", chunk.id)

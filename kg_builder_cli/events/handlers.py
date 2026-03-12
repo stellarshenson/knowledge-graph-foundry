@@ -7,6 +7,8 @@ at DEBUG level for every event.
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
+import math
 from pathlib import Path
 
 from loguru import logger
@@ -187,6 +189,17 @@ _event_log_path: Path | None = None
 _event_log_count: int = 0
 
 
+def _sanitize_nans(obj):
+    """Recursively replace NaN/Inf floats with None for JSON compliance."""
+    if isinstance(obj, dict):
+        return {k: _sanitize_nans(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_sanitize_nans(v) for v in obj]
+    if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    return obj
+
+
 def _stream_event(sender, event=None, **kwargs):
     """Append each event as a JSONL line to the event log file."""
     global _event_log_count
@@ -194,10 +207,14 @@ def _stream_event(sender, event=None, **kwargs):
         return
     import json
 
+    payload = event.model_dump() if hasattr(event, "model_dump") else str(event)
+    if isinstance(payload, dict):
+        payload = _sanitize_nans(payload)
     line = json.dumps(
         {
             "signal": getattr(sender, "name", str(sender)),
-            "payload": event.model_dump() if hasattr(event, "model_dump") else str(event),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "payload": payload,
         }
     )
     with open(_event_log_path, "a") as f:
