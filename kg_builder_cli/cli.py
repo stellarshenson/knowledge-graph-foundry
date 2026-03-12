@@ -38,10 +38,26 @@ def ingest(
         None, "--fluid/--no-fluid", help="Enable/disable fluid schema curing"
     ),
     cure: bool = typer.Option(False, "--cure", help="Force-cure after first document"),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Enable verbose event logging with full payloads"
+    ),
 ):
     """Ingest documents into the knowledge graph."""
+    from kg_builder_cli.events import (
+        clear_event_log,
+        register_default_handlers,
+        register_event_accumulator,
+        register_verbose_handlers,
+    )
     from kg_builder_cli.ontology.buffer import OntologyBuffer
     from kg_builder_cli.settings import load_config
+
+    # Set up event bus
+    clear_event_log()
+    register_default_handlers()
+    register_event_accumulator()
+    if verbose:
+        register_verbose_handlers()
 
     logger.info("ingesting from {}", source)
 
@@ -94,8 +110,19 @@ def ingest(
 
     logger.info("found {} file(s) to ingest", len(files))
 
+    from kg_builder_cli.events import signals
+    from kg_builder_cli.events import types as etypes
     from kg_builder_cli.extraction.extract import LLMAuthError
     from kg_builder_cli.extraction.unstructured import ExtractionFailedError
+
+    signals.ingestion_started.send(
+        signals.ingestion_started,
+        event=etypes.IngestionStarted(
+            files=[str(f) for f in files],
+            mode="fluid" if curing_enabled else "direct",
+            model=config.llm.model,
+        ),
+    )
 
     try:
         if curing_enabled:
@@ -117,6 +144,14 @@ def ingest(
         buffer.flush(flush_path)
         logger.info("ontology buffer flushed: coverage={:.0%}", buffer.coverage())
 
+    signals.ingestion_completed.send(
+        signals.ingestion_completed,
+        event=etypes.IngestionCompleted(
+            total_docs=len(files),
+            total_entities=0,
+            total_rels=0,
+        ),
+    )
     logger.info("ingestion complete")
 
 

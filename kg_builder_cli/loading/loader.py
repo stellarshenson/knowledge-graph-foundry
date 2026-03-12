@@ -384,6 +384,17 @@ def load_extraction(
     skip_doc_chunks: bool = False,
 ) -> LoadResult:
     """Load an ExtractionResult into Neo4j, returning counts and timing."""
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+
+    evt_signals.graph_load_started.send(
+        evt_signals.graph_load_started,
+        event=etypes.GraphLoadStarted(
+            entity_count=len(result.entities),
+            rel_count=len(result.relationships),
+        ),
+    )
+
     start = time.monotonic()
     errors: list[str] = []
 
@@ -456,6 +467,15 @@ def load_extraction(
         relationships_created=rels_created,
         errors=errors,
         duration_ms=elapsed_ms,
+    )
+    evt_signals.graph_load_completed.send(
+        evt_signals.graph_load_completed,
+        event=etypes.GraphLoadCompleted(
+            entities_created=nodes_created,
+            entities_merged=nodes_created,
+            rels_created=rels_created,
+            duration_ms=elapsed_ms,
+        ),
     )
     logger.info(
         "load complete: {} entities, {} relationships in {}ms",

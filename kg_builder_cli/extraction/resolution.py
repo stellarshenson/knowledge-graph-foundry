@@ -25,6 +25,14 @@ class CrossTypeStat(NamedTuple):
     action: str  # "merged", "deferred", "blocked", "hierarchy_merge", "multi_facet"
 
 
+class ResolutionResult(NamedTuple):
+    """Return type for resolve_entities - replaces module-level attribute hack."""
+
+    entities: list[Entity]
+    id_map: dict[str, str]
+    cross_type_stats: list[CrossTypeStat]
+
+
 class _UnionFind:
     """Union-Find for transitive entity clustering."""
 
@@ -64,7 +72,7 @@ def resolve_entities(
     doc_index: int = 0,
     ontology_state: "OntologyState | None" = None,
     hierarchy_resolution: bool = True,
-) -> list[Entity]:
+) -> ResolutionResult:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
     Signals:
@@ -76,9 +84,11 @@ def resolve_entities(
     - If no embeddings: name_sim >= threshold (backward-compatible)
 
     Connected components on the similarity graph determine merge clusters.
+
+    Returns ResolutionResult(entities, id_map, cross_type_stats).
     """
     if len(entities) <= 1:
-        return entities
+        return ResolutionResult(entities=entities, id_map={}, cross_type_stats=[])
 
     from Levenshtein import ratio as levenshtein_ratio
 
@@ -121,16 +131,29 @@ def resolve_entities(
             merge_count,
         )
 
-    # Store ID map and cross-type stats on module level for caller access
-    resolve_entities._last_id_map = id_map
-    resolve_entities._last_cross_type_stats = cross_type_stats
+    # Emit resolution completed signal
+    from kg_builder_cli.events import signals
+    from kg_builder_cli.events import types as etypes
 
-    return resolved
+    signals.entity_resolution_completed.send(
+        signals.entity_resolution_completed,
+        event=etypes.EntityResolutionCompleted(
+            document_source="",
+            entities_before=len(entities),
+            entities_after=len(resolved),
+            id_map=id_map,
+            cross_type_stats=[
+                {"name": s.norm_name, "type_a": s.type_a, "type_b": s.type_b, "action": s.action}
+                for s in cross_type_stats
+            ],
+        ),
+    )
 
-
-# Initialize the class attributes
-resolve_entities._last_id_map = {}
-resolve_entities._last_cross_type_stats = []
+    return ResolutionResult(
+        entities=resolved,
+        id_map=id_map,
+        cross_type_stats=cross_type_stats,
+    )
 
 
 # Static fallback: higher number = more specific, preferred when merging
@@ -257,8 +280,32 @@ def _resolve_cross_type(
     """
     from collections import defaultdict
 
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+
     type_priority = _build_type_priority(type_frequencies)
     cross_type_stats: list[CrossTypeStat] = []
+
+    def _emit_decision(stat: CrossTypeStat, posterior: float = 0.0, prior: float = 0.0,
+                       lr_desc: float = 0.0, lr_cooc: float = 0.0,
+                       has_hier: bool = False, sibling: bool = False):
+        evt_signals.cross_type_decision.send(
+            evt_signals.cross_type_decision,
+            event=etypes.CrossTypeDecision(
+                entity_name=stat.norm_name,
+                type_a=stat.type_a,
+                type_b=stat.type_b,
+                prior=prior,
+                posterior=posterior,
+                action=stat.action,
+                lr_desc=lr_desc,
+                lr_emb=0.0,
+                lr_cooc=lr_cooc,
+                has_hierarchy=has_hier,
+                sibling=sibling,
+                doc_index=stat.doc_index,
+            ),
+        )
 
     # Build hierarchy lookup from ontology state
     has_hierarchy = (
@@ -366,15 +413,12 @@ def _resolve_cross_type(
                                 prior,
                                 posterior,
                             )
-                        cross_type_stats.append(
-                            CrossTypeStat(
-                                norm_name,
-                                canonical.type,
-                                other.type,
-                                doc_index,
-                                action,
-                            )
+                        stat = CrossTypeStat(
+                            norm_name, canonical.type, other.type, doc_index, action,
                         )
+                        cross_type_stats.append(stat)
+                        _emit_decision(stat, posterior=posterior, prior=prior,
+                                       has_hier=True, sibling=sibling_boost)
                         id_map[other.id] = canonical.id
                         canonical = _merge_entities(canonical, other)
                         merged_indices.add(idx)
@@ -395,15 +439,12 @@ def _resolve_cross_type(
                             prior,
                             posterior,
                         )
-                        cross_type_stats.append(
-                            CrossTypeStat(
-                                norm_name,
-                                canonical.type,
-                                other.type,
-                                doc_index,
-                                "multi_facet",
-                            )
+                        stat = CrossTypeStat(
+                            norm_name, canonical.type, other.type, doc_index, "multi_facet",
                         )
+                        cross_type_stats.append(stat)
+                        _emit_decision(stat, posterior=posterior, prior=prior,
+                                       has_hier=True, sibling=False)
                         id_map[other.id] = canonical.id
                         canonical = _merge_entities(canonical, other)
                         merged_indices.add(idx)
@@ -423,15 +464,12 @@ def _resolve_cross_type(
                             ambiguous_lower,
                             merge_threshold,
                         )
-                        cross_type_stats.append(
-                            CrossTypeStat(
-                                norm_name,
-                                canonical.type,
-                                other.type,
-                                doc_index,
-                                "deferred",
-                            )
+                        stat = CrossTypeStat(
+                            norm_name, canonical.type, other.type, doc_index, "deferred",
                         )
+                        cross_type_stats.append(stat)
+                        _emit_decision(stat, posterior=posterior, prior=prior,
+                                       has_hier=True, sibling=sibling_boost)
                         continue
 
                     # Block - log if hierarchy was present but evidence insufficient
@@ -457,15 +495,12 @@ def _resolve_cross_type(
                             posterior,
                             ambiguous_lower if deferred_buffer else merge_threshold,
                         )
-                    cross_type_stats.append(
-                        CrossTypeStat(
-                            norm_name,
-                            canonical.type,
-                            other.type,
-                            doc_index,
-                            "blocked",
-                        )
+                    stat = CrossTypeStat(
+                        norm_name, canonical.type, other.type, doc_index, "blocked",
                     )
+                    cross_type_stats.append(stat)
+                    _emit_decision(stat, posterior=posterior, prior=prior,
+                                   has_hier=True, sibling=sibling_boost)
                     continue
 
                 # No hierarchy -> standard Bayesian
@@ -479,15 +514,11 @@ def _resolve_cross_type(
                         canonical.type,
                         posterior,
                     )
-                    cross_type_stats.append(
-                        CrossTypeStat(
-                            norm_name,
-                            canonical.type,
-                            other.type,
-                            doc_index,
-                            "merged",
-                        )
+                    stat = CrossTypeStat(
+                        norm_name, canonical.type, other.type, doc_index, "merged",
                     )
+                    cross_type_stats.append(stat)
+                    _emit_decision(stat, posterior=posterior)
                 elif deferred_buffer is not None and posterior >= ambiguous_lower:
                     # Ambiguous zone: defer for evidence accumulation
                     deferred_buffer.defer(canonical, other, posterior, doc_index)
@@ -501,15 +532,11 @@ def _resolve_cross_type(
                         ambiguous_lower,
                         merge_threshold,
                     )
-                    cross_type_stats.append(
-                        CrossTypeStat(
-                            norm_name,
-                            canonical.type,
-                            other.type,
-                            doc_index,
-                            "deferred",
-                        )
+                    stat = CrossTypeStat(
+                        norm_name, canonical.type, other.type, doc_index, "deferred",
                     )
+                    cross_type_stats.append(stat)
+                    _emit_decision(stat, posterior=posterior)
                     continue
                 else:
                     logger.info(
@@ -521,15 +548,11 @@ def _resolve_cross_type(
                         posterior,
                         ambiguous_lower if deferred_buffer else merge_threshold,
                     )
-                    cross_type_stats.append(
-                        CrossTypeStat(
-                            norm_name,
-                            canonical.type,
-                            other.type,
-                            doc_index,
-                            "blocked",
-                        )
+                    stat = CrossTypeStat(
+                        norm_name, canonical.type, other.type, doc_index, "blocked",
                     )
+                    cross_type_stats.append(stat)
+                    _emit_decision(stat, posterior=posterior)
                     continue
             id_map[entities[idx].id] = canonical.id
             canonical = _merge_entities(canonical, entities[idx])

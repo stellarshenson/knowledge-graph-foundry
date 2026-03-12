@@ -98,6 +98,32 @@ class StabilityMetrics:
         # Update the stored entry with variance values
         self._history[-1] = dict(metrics)
 
+        # Emit stability metrics signal
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+
+        evt_signals.stability_metrics_recorded.send(
+            evt_signals.stability_metrics_recorded,
+            event=etypes.StabilityMetricsRecorded(
+                doc_index=len(self._history) - 1,
+                entity_count=int(metrics.get("total_occurrences", 0)),
+                type_count=int(metrics.get("unique_types", 0)),
+                entropy_shannon=metrics.get("entropy_shannon", 0.0),
+                entropy_shannon_delta=metrics.get("entropy_shannon_delta", 0.0),
+                kl_divergence=metrics.get("kl_divergence", 0.0),
+                js_divergence=metrics.get("js_divergence", 0.0),
+                type_accumulation_rate=metrics.get("type_accumulation_rate", 0.0),
+                gini_coefficient=metrics.get("gini_coefficient", 0.0),
+                zipf_r_squared=metrics.get("zipf_r_squared", 0.0),
+                heaps_beta=metrics.get("heaps_beta", 0.0),
+                chao1_estimate=metrics.get("chao1_estimate", 0.0),
+                chao1_coverage=metrics.get("chao1_coverage", 0.0),
+                ace_estimate=metrics.get("ace_estimate", 0.0),
+                rolling_jsd_var=metrics.get("js_divergence_var", 0.0),
+                rolling_entropy_var=metrics.get("entropy_shannon_var", 0.0),
+            ),
+        )
+
         return dict(metrics)
 
     def history(self) -> list[dict[str, float]]:

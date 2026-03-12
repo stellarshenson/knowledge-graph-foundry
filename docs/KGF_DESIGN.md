@@ -2418,6 +2418,68 @@ The pipeline measures and reports:
 - **Batch throughput** - entities loaded per second, relationships loaded per second
 - **Pipeline duration** - wall clock time per stage (parse, chunk, extract, dedup, resolve, load)
 
+### Event Architecture
+
+The pipeline accumulated significant implicit coupling as features were added: `resolve_entities()` stored results on module-level function attributes (`_last_id_map`, `_last_cross_type_stats`) that callers retrieved via `getattr`, `record_cross_type_stats()` auto-called `_maybe_evolve()` as a hidden side effect, and `cli.py` contained 4 redundant `_maybe_evolve()` calls at different pipeline stages with no clear ownership. 27+ explicit triggers and 15+ implicit callbacks were scattered across 6 modules with no way to trace which actions caused which effects. Debugging curing decisions required reading 4 files and reconstructing the execution order mentally. Adding new observability (e.g. tracking why curing didn't trigger on a specific document) meant adding more `logger.info` calls in the middle of business logic, further mixing concerns.
+
+The event system replaces this implicit coupling with a typed, observable signal layer. Every significant pipeline action emits a signal with a Pydantic payload, making the execution flow visible and traceable without changing pipeline behavior. The `ResolutionResult` NamedTuple replaces the module-attribute hack, and evolution triggers are explicit rather than buried in side effects.
+
+**Signal dispatch**: Named `Signal` instances in `kg_builder_cli/events/signals.py`. One signal per event type (~41 signals across 10 categories). Synchronous dispatch via `signal.send(signal, event=payload)`.
+
+**Event payloads**: Pydantic `BaseModel` subclasses in `kg_builder_cli/events/types.py` (~50 event types). Passed as `event=` kwarg to `signal.send()`.
+
+**Handler registration**: At pipeline startup in `cli.py` via `register_default_handlers()` (always) and `register_verbose_handlers()` (when `--verbose`). Default handlers log key events at INFO level. Verbose handlers log full Pydantic payloads at DEBUG level for every signal.
+
+**Event log**: All emitted events are accumulated via `register_event_accumulator()` during a run, available via `get_event_log()` for post-run analysis in `RunReport`.
+
+**Signal categories** (10):
+
+| Category | Signals | Coverage |
+|----------|---------|----------|
+| Pipeline phase | 3 | ingestion start/complete, phase transitions |
+| Extraction | 4 | document extraction start/complete, resolution, type enforcement |
+| Resolution decisions | 4 | Bayesian cross-type decisions, deferred pairs, evidence updates |
+| Ontology evolution | 6 | hierarchy discovery, guide rules, evolution triggers, flush |
+| Stability metrics | 2 | per-document metrics recording, periodic snapshots |
+| Curing detection | 6 | detector method results, blocked conditions, drift, patience |
+| LLM invocations | 3 | call start/complete/fail for all LLM call types |
+| Blocked/skipped | 5 | merge rejections, validation failures, skipped pairs |
+| Buffer mutations | 4 | type pruning, exemplar updates, snapshots, consolidation |
+| Loading | 4 | graph load start/complete, resolution applied, validation |
+
+**CLI flag**: `--verbose / -v` on `kgf ingest` enables verbose event logging. Without it, events are emitted and consumed by default handlers but only key events produce INFO-level output.
+
+**Event bus architecture**: The event bus is a flat, synchronous dispatch layer - there is no message queue or async processing. When a component calls `signal.send(signal, event=payload)`, all connected handlers execute inline before control returns to the caller. This keeps the pipeline deterministic and preserves execution order while making every decision point observable.
+
+At pipeline startup, `cli.py` registers three handler layers:
+
+1. **Default handlers** (always active) - connected to ~12 key signals, produce INFO-level log output matching the existing logging behavior
+2. **Verbose handlers** (when `--verbose`) - connected to all ~41 signals, log full Pydantic payloads at DEBUG level
+3. **Event accumulator** (always active) - appends every emitted event to an in-memory list for post-run analysis in `RunReport`
+
+Handlers are plain functions connected via `signal.connect(handler)`. Blinker uses weak references by default, so handler functions must be module-level or stored in a collection to prevent garbage collection.
+
+**Example - curing detection flow**: When the curing detector evaluates whether the ontology has stabilized, the event bus captures every sub-decision:
+
+```
+stability_metrics_recorded     # StabilityMetrics.record() emits ~20 metrics
+  -> curing_check_performed    # detector.is_cured() result: False
+     -> curing_condition_blocked  # "jsd > 0.05" (actual=0.12, threshold=0.05)
+     -> curing_condition_blocked  # "chao1_coverage < 0.85" (actual=0.72)
+  -> curing_check_performed    # detector.patience_exceeded() result: False
+  -> drift_check_passed        # remap_rate=0.02 below threshold=0.15
+
+# ... 3 documents later, conditions met:
+stability_metrics_recorded     # entropy stabilized, JSD < threshold
+  -> curing_check_performed    # detector.is_cured() result: True
+  -> curing_triggered          # trigger="convergence", doc_index=7, types=12
+  -> phase_transition          # from="fluid", to="cured", trigger="convergence"
+```
+
+Each event carries its full Pydantic payload. With `--verbose`, the `curing_condition_blocked` event logs exactly which sub-condition failed and by how much, eliminating guesswork when debugging why curing did not trigger.
+
+**Why blinker**: Synchronous, lightweight (~40KB, zero deps), well-maintained (official Pallets signal library), supports sender filtering and weak references.
+
 ## 15. Security
 
 ### Credential Management

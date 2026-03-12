@@ -113,7 +113,7 @@ class FluidAccumulator:
         entities, relationships = deduplicate(entities, relationships)
 
         # Step 4: Entity resolution (defers ambiguous cross-type pairs to buffer)
-        entities = resolve_entities(
+        resolution = resolve_entities(
             entities,
             threshold=config.resolution_threshold,
             use_embeddings=config.use_embeddings,
@@ -126,11 +126,11 @@ class FluidAccumulator:
             ontology_state=ontology,
             hierarchy_resolution=config.hierarchy_resolution,
         )
+        entities = resolution.entities
 
         # Step 5: Rewire relationships from Step 4 merges
-        id_map = getattr(resolve_entities, "_last_id_map", {})
-        if id_map:
-            relationships = rewire_relationships(relationships, id_map)
+        if resolution.id_map:
+            relationships = rewire_relationships(relationships, resolution.id_map)
 
         # Step 6: Resolve deferred cross-type pairs (after Step 4 populated the buffer)
         if self._deferred_buffer and self._deferred_buffer.pair_count > 0:
@@ -151,6 +151,26 @@ class FluidAccumulator:
             "Consolidation complete: {} entities, {} relationships",
             len(entities),
             len(relationships),
+        )
+
+        from kg_builder_cli.events import signals
+        from kg_builder_cli.events import types as etypes
+
+        signals.consolidation_completed.send(
+            signals.consolidation_completed,
+            event=etypes.ConsolidationCompleted(
+                entities_before=len(self.all_entities()),
+                entities_after=len(entities),
+                rels_before=len(self.all_relationships()),
+                rels_after=len(relationships),
+                deferred_resolved=(
+                    self._deferred_buffer.pair_count if self._deferred_buffer else 0
+                ),
+                steps_completed=[
+                    "type_enforcement", "normalize_ids", "deduplicate",
+                    "entity_resolution", "rewire", "deferred_resolution",
+                ],
+            ),
         )
 
         return ExtractionResult(

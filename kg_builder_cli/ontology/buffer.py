@@ -455,6 +455,19 @@ class OntologyBuffer:
                 self._resolution_guide.strip(),
             )
 
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+
+        evt_signals.ontology_flushed.send(
+            evt_signals.ontology_flushed,
+            event=etypes.OntologyFlushed(
+                path=str(path),
+                entity_type_count=len(entity_types),
+                rel_type_count=len(rel_types),
+                has_guide=bool(self._resolution_guide),
+            ),
+        )
+
     def shared_parent(self, type_a: str, type_b: str) -> str | None:
         """Return shared parent name if both types are siblings, else None."""
         parent_a = self._child_to_parent.get(type_a)
@@ -509,9 +522,27 @@ class OntologyBuffer:
 
         for pair_key, encounters in pair_encounters.items():
             if encounters >= GUIDE_EVOLUTION_MIN_ENCOUNTERS:
+                hierarchy_before = len(self._type_hierarchy)
                 self.evolve_type_hierarchy()
+                hierarchy_changes = len(self._type_hierarchy) - hierarchy_before
+                guide_rules = 0
                 if self._config.resolution_guide_evolution:
+                    guide_keys_before = len(self._evolved_guide_keys)
                     self.evolve_resolution_guide()
+                    guide_rules = len(self._evolved_guide_keys) - guide_keys_before
+
+                if hierarchy_changes or guide_rules:
+                    from kg_builder_cli.events import signals as evt_signals
+                    from kg_builder_cli.events import types as etypes
+
+                    evt_signals.ontology_evolved.send(
+                        evt_signals.ontology_evolved,
+                        event=etypes.OntologyEvolved(
+                            hierarchy_changes=hierarchy_changes,
+                            guide_rules_added=guide_rules,
+                            trigger="cross_type_evidence",
+                        ),
+                    )
                 return
 
     def evolve_type_hierarchy(self) -> None:
