@@ -91,15 +91,15 @@ class TestHierarchyAutoMerge:
                 description="optional heated humidifier accessory",
             ),
         ]
-        resolved = resolve_entities(
+        result = resolve_entities(
             entities,
             threshold=0.85,
             ontology_state=hierarchy_ontology,
             hierarchy_resolution=True,
         )
-        assert len(resolved) == 1
-        assert resolved[0].type == "Component"
-        assert set(resolved[0].source_chunks) == {"c1", "c2"}
+        assert len(result.entities) == 1
+        assert result.entities[0].type == "Component"
+        assert set(result.entities[0].source_chunks) == {"c1", "c2"}
 
     def test_cross_parent_types_get_multi_labels(self, hierarchy_ontology):
         """Feature (Behavior) and Component (Part) -> multi-facet labels."""
@@ -119,16 +119,16 @@ class TestHierarchyAutoMerge:
                 description="physical ramp mechanism component",
             ),
         ]
-        resolved = resolve_entities(
+        result = resolve_entities(
             entities,
             threshold=0.85,
             ontology_state=hierarchy_ontology,
             hierarchy_resolution=True,
         )
         # Multi-facet: merged into one entity with both labels
-        assert len(resolved) == 1
-        assert "Feature" in resolved[0].labels
-        assert "Component" in resolved[0].labels
+        assert len(result.entities) == 1
+        assert "Feature" in result.entities[0].labels
+        assert "Component" in result.entities[0].labels
 
     def test_no_hierarchy_falls_through_to_bayesian(self):
         """Without hierarchy, cross-type resolution uses Bayesian posterior."""
@@ -156,7 +156,7 @@ class TestHierarchyAutoMerge:
                 description="data smoothing algorithm for signal processing",
             ),
         ]
-        resolved = resolve_entities(
+        result = resolve_entities(
             entities,
             threshold=0.85,
             cross_type_merge_threshold=0.6,
@@ -164,7 +164,7 @@ class TestHierarchyAutoMerge:
             hierarchy_resolution=True,
         )
         # Divergent descriptions -> Bayesian blocks merge
-        assert len(resolved) == 2
+        assert len(result.entities) == 2
 
     def test_hierarchy_disabled_falls_through(self, hierarchy_ontology):
         """With hierarchy_resolution=False, siblings go through Bayesian."""
@@ -184,14 +184,14 @@ class TestHierarchyAutoMerge:
                 description="optional heated humidifier accessory",
             ),
         ]
-        resolved = resolve_entities(
+        result = resolve_entities(
             entities,
             threshold=0.85,
             ontology_state=hierarchy_ontology,
             hierarchy_resolution=False,
         )
         # Falls through to Bayesian, which should merge (overlapping descriptions)
-        assert len(resolved) == 1
+        assert len(result.entities) == 1
 
 
 # ── Resolution: CrossTypeStat Reporting ─────────────────────────────────
@@ -216,14 +216,14 @@ class TestCrossTypeStats:
                 description="tubing kit",
             ),
         ]
-        resolve_entities(
+        result = resolve_entities(
             entities,
             threshold=0.85,
             ontology_state=hierarchy_ontology,
             hierarchy_resolution=True,
             doc_index=3,
         )
-        stats = getattr(resolve_entities, "_last_cross_type_stats", [])
+        stats = result.cross_type_stats
         assert len(stats) >= 1
         assert any(s.action == "hierarchy_merge" for s in stats)
 
@@ -245,13 +245,13 @@ class TestCrossTypeStats:
                 description="pressure valve component",
             ),
         ]
-        resolve_entities(
+        result = resolve_entities(
             entities,
             threshold=0.85,
             ontology_state=hierarchy_ontology,
             hierarchy_resolution=True,
         )
-        stats = getattr(resolve_entities, "_last_cross_type_stats", [])
+        stats = result.cross_type_stats
         assert any(s.action == "multi_facet" for s in stats)
 
 
@@ -524,7 +524,7 @@ class TestBufferEvolution:
                 description="digital screen display panel showing nightly readings",
             ),
         ]
-        resolved = resolve_entities(
+        result = resolve_entities(
             entities,
             ontology_state=ontology,
             hierarchy_resolution=True,
@@ -533,7 +533,7 @@ class TestBufferEvolution:
         # With prior=0.95 but very divergent descriptions, posterior may still
         # be above or below threshold. The key test is that it goes through
         # Bayesian rather than auto-merging. Check stats for action type.
-        stats = getattr(resolve_entities, "_last_cross_type_stats", [])
+        stats = result.cross_type_stats
         assert len(stats) == 1
         # Action should be hierarchy_merge (if posterior >= 0.6) or blocked
         # (if description evidence pulls it down). Either way, it went through Bayesian.

@@ -259,7 +259,7 @@ def ingest_document(
 
     # Step 5d: Entity resolution (multi-signal merge near-duplicates)
     type_freqs = buffer.frequencies() if buffer else None
-    deduped_entities = resolve_entities(
+    resolution = resolve_entities(
         deduped_entities,
         threshold=config.extract.resolution_threshold,
         use_embeddings=use_embeddings,
@@ -270,20 +270,19 @@ def ingest_document(
         ontology_state=ontology,
         hierarchy_resolution=config.extract.hierarchy_resolution,
     )
+    deduped_entities = resolution.entities
 
     # Step 5e: Rewire relationships after cross-type entity merges
-    id_map = getattr(resolve_entities, "_last_id_map", {})
-    if id_map:
-        deduped_relationships = rewire_relationships(deduped_relationships, id_map)
+    if resolution.id_map:
+        deduped_relationships = rewire_relationships(deduped_relationships, resolution.id_map)
 
     # Step 5f: Record cross-type stats and feed back into ontology buffer
     if buffer:
-        cross_type_stats = getattr(resolve_entities, "_last_cross_type_stats", [])
-        if cross_type_stats:
+        if resolution.cross_type_stats:
             buffer.record_cross_type_stats(
                 [
                     (s.norm_name, s.type_a, s.type_b, s.doc_index, s.action)
-                    for s in cross_type_stats
+                    for s in resolution.cross_type_stats
                 ]
             )
         buffer.accumulate_from_result(deduped_entities, deduped_relationships)

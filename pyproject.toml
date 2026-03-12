@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kg_builder_cli"
-version = "0.4.23"
+version = "0.4.24"
 description = "Knowledge Graph Foundry - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -49,6 +49,8 @@ dependencies = [
     "python-dotenv",
     # Logging
     "loguru",
+    # Event system
+    "blinker>=1.7",
 ]
 
 [project.optional-dependencies]

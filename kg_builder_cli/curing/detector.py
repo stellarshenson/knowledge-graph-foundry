@@ -52,22 +52,40 @@ class CuringDetector:
 
     def is_cured(self) -> bool:
         """Check if all three curing conditions are met."""
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+
+        def _blocked(condition: str, actual: float, threshold: float):
+            evt_signals.curing_condition_blocked.send(
+                evt_signals.curing_condition_blocked,
+                event=etypes.CuringConditionBlocked(
+                    method="is_cured", condition=condition,
+                    actual_value=actual, threshold=threshold,
+                    doc_index=self._docs_processed,
+                ),
+            )
+
         if self._docs_processed < self._config.min_documents:
+            _blocked("docs < min_documents", self._docs_processed, self._config.min_documents)
             return False
 
         # Coverage convergence: delta < threshold for last stability_window docs
         window = self._config.stability_window
         if len(self._coverage_history) < window + 1:
+            _blocked("coverage_history < window", len(self._coverage_history), window + 1)
             return False
 
         recent = self._coverage_history[-window:]
         deltas = [abs(recent[i] - recent[i - 1]) for i in range(1, len(recent))]
         if any(d >= self._config.coverage_delta_threshold for d in deltas):
+            _blocked("coverage_delta >= threshold", max(deltas), self._config.coverage_delta_threshold)
             return False
 
         # Type stability: no new types for stability_window consecutive docs
         recent_types = self._new_types_history[-window:]
         if any(len(types) > 0 for types in recent_types):
+            new_count = sum(len(t) for t in recent_types)
+            _blocked("new_types_in_window > 0", new_count, 0)
             return False
 
         # Chao1 coverage floor: do not cure if species richness indicates
@@ -76,6 +94,7 @@ class CuringDetector:
             latest = self._metrics_history[-1]
             chao1 = latest.get("chao1_coverage")
             if chao1 is not None and chao1 < self._config.min_chao1_coverage:
+                _blocked("chao1_coverage < min", chao1, self._config.min_chao1_coverage)
                 logger.debug(
                     "Curing blocked: chao1_coverage={:.3f} < min_chao1_coverage={:.3f}",
                     chao1,
@@ -83,6 +102,13 @@ class CuringDetector:
                 )
                 return False
 
+        evt_signals.curing_check_performed.send(
+            evt_signals.curing_check_performed,
+            event=etypes.CuringCheckPerformed(
+                method="is_cured", result=True,
+                doc_index=self._docs_processed, details={},
+            ),
+        )
         return True
 
     def is_converged(self) -> bool:
@@ -186,11 +212,33 @@ class CuringDetector:
 
     def check_drift(self, remap_rate: float) -> bool:
         """Returns True if remap rate signals schema drift."""
+        from kg_builder_cli.events import signals as evt_signals
+        from kg_builder_cli.events import types as etypes
+
         self._remap_history.append(remap_rate)
         if len(self._remap_history) < self._config.drift_window:
             return False
         recent = self._remap_history[-self._config.drift_window :]
-        return all(r >= self._config.drift_remap_threshold for r in recent)
+        drifting = all(r >= self._config.drift_remap_threshold for r in recent)
+        if drifting:
+            evt_signals.drift_detected.send(
+                evt_signals.drift_detected,
+                event=etypes.DriftDetected(
+                    remap_rate=remap_rate,
+                    consecutive_docs=self._config.drift_window,
+                    action="re_enter_fluid",
+                ),
+            )
+        else:
+            evt_signals.drift_check_passed.send(
+                evt_signals.drift_check_passed,
+                event=etypes.DriftCheckPassed(
+                    remap_rate=remap_rate,
+                    threshold=self._config.drift_remap_threshold,
+                    doc_index=self._docs_processed,
+                ),
+            )
+        return drifting
 
     def is_force_required(self) -> bool:
         """Check if max_fluid_documents reached (failsafe)."""

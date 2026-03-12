@@ -57,6 +57,20 @@ def extract_chunk(
     Uses instructor + litellm for automatic Pydantic validation and retry.
     Returns empty lists on transient errors. Raises LLMAuthError on auth failures.
     """
+    import time
+
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+
+    evt_signals.llm_call_started.send(
+        evt_signals.llm_call_started,
+        event=etypes.LLMCallStarted(
+            call_type="chunk_extraction", model=model_id,
+            doc_index=None, context={"chunk_id": chunk.id},
+        ),
+    )
+    t0 = time.monotonic()
+
     try:
         response = client.chat.completions.create(
             model=model_id,
@@ -95,6 +109,15 @@ def extract_chunk(
             for r in response.relationships
         ]
 
+        duration_ms = int((time.monotonic() - t0) * 1000)
+        evt_signals.llm_call_completed.send(
+            evt_signals.llm_call_completed,
+            event=etypes.LLMCallCompleted(
+                call_type="chunk_extraction", model=model_id,
+                duration_ms=duration_ms, token_count=None, doc_index=None,
+            ),
+        )
+
         logger.debug(
             "Chunk {} -> {} entities, {} relationships",
             chunk.id,
@@ -104,10 +127,25 @@ def extract_chunk(
         return entities, relationships
 
     except Exception as exc:
+        duration_ms = int((time.monotonic() - t0) * 1000)
         if _is_auth_error(exc):
+            evt_signals.llm_call_failed.send(
+                evt_signals.llm_call_failed,
+                event=etypes.LLMCallFailed(
+                    call_type="chunk_extraction", model=model_id,
+                    error_type="auth", error_message=str(exc), doc_index=None,
+                ),
+            )
             raise LLMAuthError(
                 f"LLM authentication failed: {exc}\n"
                 f"Check your provider credentials and IAM permissions for model '{model_id}'."
             ) from exc
+        evt_signals.llm_call_failed.send(
+            evt_signals.llm_call_failed,
+            event=etypes.LLMCallFailed(
+                call_type="chunk_extraction", model=model_id,
+                error_type=type(exc).__name__, error_message=str(exc), doc_index=None,
+            ),
+        )
         logger.exception("Extraction failed for chunk {}", chunk.id)
         return [], []
