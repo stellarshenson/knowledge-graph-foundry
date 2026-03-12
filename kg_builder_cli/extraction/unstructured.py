@@ -33,20 +33,23 @@ class ExtractionFailedError(RuntimeError):
         )
 
 
-from kg_builder_cli.extraction.parsing import parse_document
-from kg_builder_cli.extraction.prompts import build_extraction_prompt
-from kg_builder_cli.extraction.resolution import resolve_entities, rewire_relationships
-from kg_builder_cli.extraction.response_models import build_response_model
-from kg_builder_cli.ontology.buffer import OntologyBuffer
-from kg_builder_cli.types.config import AppConfig, LLMConfig
-from kg_builder_cli.types.document import Chunk
-from kg_builder_cli.types.extraction import (
+from kg_builder_cli.extraction.parsing import parse_document  # noqa: E402
+from kg_builder_cli.extraction.prompts import build_extraction_prompt  # noqa: E402
+from kg_builder_cli.extraction.resolution import (  # noqa: E402
+    resolve_entities,
+    rewire_relationships,
+)
+from kg_builder_cli.extraction.response_models import build_response_model  # noqa: E402
+from kg_builder_cli.ontology.buffer import OntologyBuffer  # noqa: E402
+from kg_builder_cli.types.config import AppConfig, LLMConfig  # noqa: E402
+from kg_builder_cli.types.document import Chunk  # noqa: E402
+from kg_builder_cli.types.extraction import (  # noqa: E402
     Entity,
     ExtractionMetadata,
     ExtractionResult,
     Relationship,
 )
-from kg_builder_cli.types.ontology import OntologyState
+from kg_builder_cli.types.ontology import OntologyState  # noqa: E402
 
 
 def _litellm_model_id(config: LLMConfig) -> str:
