@@ -59,8 +59,10 @@ class CuringDetector:
             evt_signals.curing_condition_blocked.send(
                 evt_signals.curing_condition_blocked,
                 event=etypes.CuringConditionBlocked(
-                    method="is_cured", condition=condition,
-                    actual_value=actual, threshold=threshold,
+                    method="is_cured",
+                    condition=condition,
+                    actual_value=actual,
+                    threshold=threshold,
                     doc_index=self._docs_processed,
                 ),
             )
@@ -78,7 +80,9 @@ class CuringDetector:
         recent = self._coverage_history[-window:]
         deltas = [abs(recent[i] - recent[i - 1]) for i in range(1, len(recent))]
         if any(d >= self._config.coverage_delta_threshold for d in deltas):
-            _blocked("coverage_delta >= threshold", max(deltas), self._config.coverage_delta_threshold)
+            _blocked(
+                "coverage_delta >= threshold", max(deltas), self._config.coverage_delta_threshold
+            )
             return False
 
         # Type stability: no new types for stability_window consecutive docs
@@ -105,8 +109,10 @@ class CuringDetector:
         evt_signals.curing_check_performed.send(
             evt_signals.curing_check_performed,
             event=etypes.CuringCheckPerformed(
-                method="is_cured", result=True,
-                doc_index=self._docs_processed, details={},
+                method="is_cured",
+                result=True,
+                doc_index=self._docs_processed,
+                details={},
             ),
         )
         return True

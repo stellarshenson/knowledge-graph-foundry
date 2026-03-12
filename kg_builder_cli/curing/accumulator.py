@@ -167,8 +167,12 @@ class FluidAccumulator:
                     self._deferred_buffer.pair_count if self._deferred_buffer else 0
                 ),
                 steps_completed=[
-                    "type_enforcement", "normalize_ids", "deduplicate",
-                    "entity_resolution", "rewire", "deferred_resolution",
+                    "type_enforcement",
+                    "normalize_ids",
+                    "deduplicate",
+                    "entity_resolution",
+                    "rewire",
+                    "deferred_resolution",
                 ],
             ),
         )

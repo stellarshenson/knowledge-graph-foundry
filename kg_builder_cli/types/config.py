@@ -55,6 +55,7 @@ class ExtractConfig(BaseModel):
     deferred_dedup_ambiguous_lower: float = 0.4
     deferred_dedup_llm_escalation: bool = False
     hierarchy_resolution: bool = True
+    event_log: bool = False
 
 
 class OntologyBufferConfig(BaseModel):

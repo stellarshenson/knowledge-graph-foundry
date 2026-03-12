@@ -65,8 +65,10 @@ def extract_chunk(
     evt_signals.llm_call_started.send(
         evt_signals.llm_call_started,
         event=etypes.LLMCallStarted(
-            call_type="chunk_extraction", model=model_id,
-            doc_index=None, context={"chunk_id": chunk.id},
+            call_type="chunk_extraction",
+            model=model_id,
+            doc_index=None,
+            context={"chunk_id": chunk.id},
         ),
     )
     t0 = time.monotonic()
@@ -113,8 +115,11 @@ def extract_chunk(
         evt_signals.llm_call_completed.send(
             evt_signals.llm_call_completed,
             event=etypes.LLMCallCompleted(
-                call_type="chunk_extraction", model=model_id,
-                duration_ms=duration_ms, token_count=None, doc_index=None,
+                call_type="chunk_extraction",
+                model=model_id,
+                duration_ms=duration_ms,
+                token_count=None,
+                doc_index=None,
             ),
         )
 
@@ -132,8 +137,11 @@ def extract_chunk(
             evt_signals.llm_call_failed.send(
                 evt_signals.llm_call_failed,
                 event=etypes.LLMCallFailed(
-                    call_type="chunk_extraction", model=model_id,
-                    error_type="auth", error_message=str(exc), doc_index=None,
+                    call_type="chunk_extraction",
+                    model=model_id,
+                    error_type="auth",
+                    error_message=str(exc),
+                    doc_index=None,
                 ),
             )
             raise LLMAuthError(
@@ -143,8 +151,11 @@ def extract_chunk(
         evt_signals.llm_call_failed.send(
             evt_signals.llm_call_failed,
             event=etypes.LLMCallFailed(
-                call_type="chunk_extraction", model=model_id,
-                error_type=type(exc).__name__, error_message=str(exc), doc_index=None,
+                call_type="chunk_extraction",
+                model=model_id,
+                error_type=type(exc).__name__,
+                error_message=str(exc),
+                doc_index=None,
             ),
         )
         logger.exception("Extraction failed for chunk {}", chunk.id)

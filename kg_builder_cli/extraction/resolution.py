@@ -286,9 +286,15 @@ def _resolve_cross_type(
     type_priority = _build_type_priority(type_frequencies)
     cross_type_stats: list[CrossTypeStat] = []
 
-    def _emit_decision(stat: CrossTypeStat, posterior: float = 0.0, prior: float = 0.0,
-                       lr_desc: float = 0.0, lr_cooc: float = 0.0,
-                       has_hier: bool = False, sibling: bool = False):
+    def _emit_decision(
+        stat: CrossTypeStat,
+        posterior: float = 0.0,
+        prior: float = 0.0,
+        lr_desc: float = 0.0,
+        lr_cooc: float = 0.0,
+        has_hier: bool = False,
+        sibling: bool = False,
+    ):
         evt_signals.cross_type_decision.send(
             evt_signals.cross_type_decision,
             event=etypes.CrossTypeDecision(
@@ -414,11 +420,20 @@ def _resolve_cross_type(
                                 posterior,
                             )
                         stat = CrossTypeStat(
-                            norm_name, canonical.type, other.type, doc_index, action,
+                            norm_name,
+                            canonical.type,
+                            other.type,
+                            doc_index,
+                            action,
                         )
                         cross_type_stats.append(stat)
-                        _emit_decision(stat, posterior=posterior, prior=prior,
-                                       has_hier=True, sibling=sibling_boost)
+                        _emit_decision(
+                            stat,
+                            posterior=posterior,
+                            prior=prior,
+                            has_hier=True,
+                            sibling=sibling_boost,
+                        )
                         id_map[other.id] = canonical.id
                         canonical = _merge_entities(canonical, other)
                         merged_indices.add(idx)
@@ -440,11 +455,16 @@ def _resolve_cross_type(
                             posterior,
                         )
                         stat = CrossTypeStat(
-                            norm_name, canonical.type, other.type, doc_index, "multi_facet",
+                            norm_name,
+                            canonical.type,
+                            other.type,
+                            doc_index,
+                            "multi_facet",
                         )
                         cross_type_stats.append(stat)
-                        _emit_decision(stat, posterior=posterior, prior=prior,
-                                       has_hier=True, sibling=False)
+                        _emit_decision(
+                            stat, posterior=posterior, prior=prior, has_hier=True, sibling=False
+                        )
                         id_map[other.id] = canonical.id
                         canonical = _merge_entities(canonical, other)
                         merged_indices.add(idx)
@@ -465,11 +485,20 @@ def _resolve_cross_type(
                             merge_threshold,
                         )
                         stat = CrossTypeStat(
-                            norm_name, canonical.type, other.type, doc_index, "deferred",
+                            norm_name,
+                            canonical.type,
+                            other.type,
+                            doc_index,
+                            "deferred",
                         )
                         cross_type_stats.append(stat)
-                        _emit_decision(stat, posterior=posterior, prior=prior,
-                                       has_hier=True, sibling=sibling_boost)
+                        _emit_decision(
+                            stat,
+                            posterior=posterior,
+                            prior=prior,
+                            has_hier=True,
+                            sibling=sibling_boost,
+                        )
                         continue
 
                     # Block - log if hierarchy was present but evidence insufficient
@@ -496,11 +525,20 @@ def _resolve_cross_type(
                             ambiguous_lower if deferred_buffer else merge_threshold,
                         )
                     stat = CrossTypeStat(
-                        norm_name, canonical.type, other.type, doc_index, "blocked",
+                        norm_name,
+                        canonical.type,
+                        other.type,
+                        doc_index,
+                        "blocked",
                     )
                     cross_type_stats.append(stat)
-                    _emit_decision(stat, posterior=posterior, prior=prior,
-                                   has_hier=True, sibling=sibling_boost)
+                    _emit_decision(
+                        stat,
+                        posterior=posterior,
+                        prior=prior,
+                        has_hier=True,
+                        sibling=sibling_boost,
+                    )
                     continue
 
                 # No hierarchy -> standard Bayesian
@@ -515,7 +553,11 @@ def _resolve_cross_type(
                         posterior,
                     )
                     stat = CrossTypeStat(
-                        norm_name, canonical.type, other.type, doc_index, "merged",
+                        norm_name,
+                        canonical.type,
+                        other.type,
+                        doc_index,
+                        "merged",
                     )
                     cross_type_stats.append(stat)
                     _emit_decision(stat, posterior=posterior)
@@ -533,7 +575,11 @@ def _resolve_cross_type(
                         merge_threshold,
                     )
                     stat = CrossTypeStat(
-                        norm_name, canonical.type, other.type, doc_index, "deferred",
+                        norm_name,
+                        canonical.type,
+                        other.type,
+                        doc_index,
+                        "deferred",
                     )
                     cross_type_stats.append(stat)
                     _emit_decision(stat, posterior=posterior)
@@ -549,7 +595,11 @@ def _resolve_cross_type(
                         ambiguous_lower if deferred_buffer else merge_threshold,
                     )
                     stat = CrossTypeStat(
-                        norm_name, canonical.type, other.type, doc_index, "blocked",
+                        norm_name,
+                        canonical.type,
+                        other.type,
+                        doc_index,
+                        "blocked",
                     )
                     cross_type_stats.append(stat)
                     _emit_decision(stat, posterior=posterior)

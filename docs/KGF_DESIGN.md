@@ -2430,7 +2430,7 @@ The event system replaces this implicit coupling with a typed, observable signal
 
 **Handler registration**: At pipeline startup in `cli.py` via `register_default_handlers()` (always) and `register_verbose_handlers()` (when `--verbose`). Default handlers log key events at INFO level. Verbose handlers log full Pydantic payloads at DEBUG level for every signal.
 
-**Event log**: All emitted events are accumulated via `register_event_accumulator()` during a run, available via `get_event_log()` for post-run analysis in `RunReport`.
+**Event log**: When `--event-log PATH` is provided, events are accumulated via `register_event_accumulator()` and written as JSONL to the specified file after the run. The config option `extract.event_log: true` enables accumulation with a default path of `.kgf/events.log`.
 
 **Signal categories** (10):
 
@@ -2447,7 +2447,11 @@ The event system replaces this implicit coupling with a typed, observable signal
 | Buffer mutations | 4 | type pruning, exemplar updates, snapshots, consolidation |
 | Loading | 4 | graph load start/complete, resolution applied, validation |
 
-**CLI flag**: `--verbose / -v` on `kgf ingest` enables verbose event logging. Without it, events are emitted and consumed by default handlers but only key events produce INFO-level output.
+**CLI flags**:
+
+- `--verbose / -v` - enables verbose event logging with full Pydantic payloads at DEBUG level
+- `--event-log PATH` - writes JSONL event log to the specified file after the run
+- `--processing-log PATH` - redirects loguru execution log to the specified file (default: stdout)
 
 **Event bus architecture**: The event bus is a flat, synchronous dispatch layer - there is no message queue or async processing. When a component calls `signal.send(signal, event=payload)`, all connected handlers execute inline before control returns to the caller. This keeps the pipeline deterministic and preserves execution order while making every decision point observable.
 
@@ -2455,7 +2459,7 @@ At pipeline startup, `cli.py` registers three handler layers:
 
 1. **Default handlers** (always active) - connected to ~12 key signals, produce INFO-level log output matching the existing logging behavior
 2. **Verbose handlers** (when `--verbose`) - connected to all ~41 signals, log full Pydantic payloads at DEBUG level
-3. **Event accumulator** (always active) - appends every emitted event to an in-memory list for post-run analysis in `RunReport`
+3. **Event accumulator** (when `--event-log PATH`) - appends every emitted event to an in-memory list, dumped as JSONL to the specified file after the run
 
 Handlers are plain functions connected via `signal.connect(handler)`. Blinker uses weak references by default, so handler functions must be module-level or stored in a collection to prevent garbage collection.
 

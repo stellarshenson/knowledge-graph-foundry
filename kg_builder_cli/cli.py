@@ -41,6 +41,12 @@ def ingest(
     verbose: bool = typer.Option(
         False, "--verbose", "-v", help="Enable verbose event logging with full payloads"
     ),
+    event_log: Path | None = typer.Option(
+        None, "--event-log", help="Write JSONL event log to file path"
+    ),
+    processing_log: Path | None = typer.Option(
+        None, "--processing-log", help="Write execution log to file path (default: stdout)"
+    ),
 ):
     """Ingest documents into the knowledge graph."""
     from kg_builder_cli.events import (
@@ -52,10 +58,15 @@ def ingest(
     from kg_builder_cli.ontology.buffer import OntologyBuffer
     from kg_builder_cli.settings import load_config
 
-    # Set up event bus
+    # Redirect loguru to file when --processing-log is provided
+    if processing_log is not None:
+        processing_log.parent.mkdir(parents=True, exist_ok=True)
+        logger.remove()
+        logger.add(str(processing_log), colorize=False)
+
+    # Set up event bus (accumulator registered conditionally below)
     clear_event_log()
     register_default_handlers()
-    register_event_accumulator()
     if verbose:
         register_verbose_handlers()
 
@@ -71,6 +82,15 @@ def ingest(
         overrides.setdefault("extract", {})["concurrency"] = concurrency
 
     config = load_config(config_path=config_path, overrides=overrides if overrides else None)
+
+    # Enable event accumulator when --event-log path is provided or config enables it
+    if event_log is not None:
+        register_event_accumulator()
+        logger.info("event accumulator enabled - writing to {}", event_log)
+    elif config.extract.event_log:
+        event_log = config_dir() / "events.log"
+        register_event_accumulator()
+        logger.info("event accumulator enabled - writing to {}", event_log)
 
     # Resolve fluid mode: CLI flag > config > default
     curing_enabled = fluid if fluid is not None else config.curing.enabled
@@ -152,7 +172,41 @@ def ingest(
             total_rels=0,
         ),
     )
+
+    # Dump event log if enabled
+    if event_log is not None:
+        _dump_event_log(event_log)
+
     logger.info("ingestion complete")
+
+
+def _dump_event_log(log_path: Path) -> None:
+    """Write accumulated events as JSONL to the given file path."""
+    import json
+
+    from kg_builder_cli.events import get_event_log
+
+    events = get_event_log()
+    if not events:
+        return
+
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+
+    lines = []
+    for entry in events:
+        lines.append(
+            json.dumps(
+                {
+                    "signal": entry["signal"],
+                    "payload": entry["payload"].model_dump()
+                    if hasattr(entry["payload"], "model_dump")
+                    else str(entry["payload"]),
+                }
+            )
+        )
+
+    log_path.write_text("\n".join(lines) + "\n")
+    logger.info("event log written: {} events to {}", len(events), log_path)
 
 
 def _ingest_direct(

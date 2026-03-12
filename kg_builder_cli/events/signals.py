@@ -13,6 +13,7 @@ class Signal(_BlinkerSignal):
         super().__init__(name)
         self.name = name
 
+
 # ── Pipeline phase (3) ──────────────────────────────────────────────
 ingestion_started = Signal("ingestion-started")
 phase_transition = Signal("phase-transition")
