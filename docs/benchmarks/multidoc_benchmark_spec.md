@@ -417,6 +417,56 @@ Bedrock rate limits can cause `ExtractionFailedError` when all chunks in a docum
 - Wait 5 minutes for rate limit cooldown, then re-run from step 3
 - The CLI exits with code 1 on extraction failure - never silently continues
 
+### Post-benchmark forensics
+
+After a benchmark run, analyse the JSONL event log to diagnose failures and identify actionable improvements. The event log (`tmp/vNN-events.log`) contains all pipeline signals emitted during ingestion - resolution decisions, curing triggers, LLM calls, buffer mutations.
+
+**Forensic queries** (all run from the project root using `jq` against the event log):
+
+```bash
+EVENT_LOG=tmp/vNN-events.log
+
+# 1. Cross-type resolution breakdown (merge/block/defer/hierarchy_merge/multi_facet)
+jq -r 'select(.signal == "entity-resolution-completed") | .payload.cross_type_decisions[]? | .action' "$EVENT_LOG" | sort | uniq -c | sort -rn
+
+# 2. Blocked pairs with posteriors (candidates for threshold tuning)
+jq -r 'select(.signal == "merge-blocked") | "\(.payload.posterior | tostring | .[0:5]) \(.payload.entity_a) [\(.payload.type_a)] vs [\(.payload.type_b)]"' "$EVENT_LOG" | sort -rn
+
+# 3. Deferred pairs and their resolution
+jq -r 'select(.signal == "deferred-resolution-completed") | .payload' "$EVENT_LOG"
+
+# 4. Curing trigger and phase transition
+jq -r 'select(.signal | test("curing-triggered|phase-transition|curing-condition-blocked")) | "\(.signal): \(.payload | tostring | .[0:120])"' "$EVENT_LOG"
+
+# 5. LLM call stats (count, duration, failures)
+echo "Total calls: $(jq -r 'select(.signal == "llm-call-completed")' "$EVENT_LOG" | wc -l)"
+echo "Avg duration: $(jq -r 'select(.signal == "llm-call-completed") | .payload.duration_ms' "$EVENT_LOG" | awk '{s+=$1; n++} END {printf "%.0fms\n", s/n}')"
+echo "Failures: $(jq -r 'select(.signal == "llm-call-failed")' "$EVENT_LOG" | wc -l)"
+
+# 6. Entity resolution totals per document
+jq -r 'select(.signal == "entity-resolution-completed") | "\(.payload.doc_source // "consolidation"): \(.payload.merged_count // 0) merged, \(.payload.cross_type_count // 0) cross-type"' "$EVENT_LOG"
+
+# 7. Search for specific entity in events (e.g. OSA, iBreeze, SleepStyle)
+jq -r 'select(.payload | tostring | test("OSA|obstructive sleep apnea"; "i")) | "\(.signal): \(.payload | tostring | .[0:150])"' "$EVENT_LOG"
+
+# 8. Buffer evolution events (hierarchy, guide rules)
+jq -r 'select(.signal | test("hierarchy-evolved|guide-rule-generated")) | "\(.signal): \(.payload | tostring | .[0:120])"' "$EVENT_LOG"
+```
+
+**Forensic report structure** (appended to the benchmark markdown):
+
+| Section | What to capture |
+|---------|----------------|
+| Failure root causes | Per failed check: root cause (extraction gap, resolution miss, graph-load merge miss, prompt issue), evidence from event log |
+| Pipeline health | Curing trigger type and timing, LLM failure count, resolution decision breakdown |
+| Cross-type analysis | Blocked pairs with posteriors, top offending entity names, hierarchy merge vs Bayesian merge counts |
+| Actionable signals | Which failures are fixable via threshold tuning, hierarchy enforcement, name normalization, or prompt changes |
+
+The forensic analysis distinguishes three failure classes:
+- **Extraction gaps** - entities or relationships never produced by the LLM (no event trail). Requires prompt investigation
+- **Resolution misses** - entities extracted but not merged (visible in cross-type-decision events with action=blocked). Fixable via threshold or hierarchy changes
+- **Graph-load merge misses** - entities extracted and resolved but name variants survive MERGE in Neo4j. Fixable via normalization
+
 ### Ingestion modes
 
 ```bash
