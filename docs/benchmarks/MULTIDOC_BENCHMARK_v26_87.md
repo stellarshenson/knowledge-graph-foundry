@@ -47,3 +47,21 @@
 - **cross_doc_resolution** (4/5): The duplicates represent genuine multi-type entities rather than resolution failures. Each entity appears exactly twice with meaningfully different descriptions that justify the different types. For example, 'humidifier' as Component (internal system part) vs Accessory (purchasable item), 'ramp' as Feature (therapy function) vs Component (physical control), and 'warranty' as Section (documentation) vs Specification (technical detail). Core entities like CPAP, OSA are properly resolved to single instances. The dual typing reflects legitimate conceptual distinctions where the same named entity serves different roles in the CPAP ecosystem.
 - **spec_extraction** (4/5): The extraction shows good coverage across multiple CPAP products with concrete numeric values and proper units. Key specifications are well-represented including pressure ranges (4-20 cmH2O), dimensions (116x205x150 mm), weights (1106g, 1.33kg), sound levels (26.1-34.1 dB(A)), power supply (12VDC, 100-240VAC), and operating temperatures (+5°C to +35°C). The data covers at least 8-9 different products including DreamStation models, AirSense devices, and various CPAP accessories. Most entries have proper numeric values with appropriate units (cmH2O, mm, kg, dB, VAC, °C). However, some entries lack complete numeric values (like 'Maximum dynamic pressure variation' showing null values) and coverage could be more comprehensive across all 10 expected devices. The specification linking to products is consistent and the technical detail level is appropriate for medical device documentation.
 - **query_answerability** (4/5): The knowledge graph can answer 6-7 of the 8 question types well. It has comprehensive manufacturer-product relationships (Q1), mode/feature data across brands (Q2, Q5), OSA treatment indications (Q4), component relationships (Q6), and standards compliance (Q7). Specifications include many numeric values like warranty periods, data storage capacities, altitude limits, and AHI values (Q3, Q8). However, critical specifications like pressure ranges, weight, dimensions, and sound levels appear limited or missing from the sample data, which would prevent complete answers to device specification comparisons. The graph structure supports cross-manufacturer queries but lacks some key technical specifications users commonly need for device comparisons.
+
+## Forensic Analysis
+
+### Failure Root Causes
+
+| Issue | Root Cause | Actionable? |
+|-------|-----------|-------------|
+| Cross-type dupes = 28 (target <20) | 15 blocked pairs with posteriors 0.45-0.60, just below 0.6 threshold. Top offenders: `integrated heated humidifier` (3 pairs), `type bf applied part`, `flexible tubing`, Section/Interface trio (`home screen`, `my setup`, `patient standby interface`) | Yes - hierarchy enforcement or threshold tuning |
+| OSA = 4 (target 1-3) | Extracted 7x as MedicalCondition, 3 merged during load, 4 name variants survived normalization. Graph-load merge miss, not cross-type | Yes - name normalization |
+| SleepStyle modes | No mode entities extracted from SleepStyle's 13 chunks at all. Extraction gap, not resolution | Prompt investigation needed |
+| iBreeze -> Resvent | No MANUFACTURES relationship created. Resvent never appears as Organization in events. Extraction gap | Prompt investigation needed |
+
+### Pipeline Health
+
+- **Curing**: metric trigger at doc 4 (4 fluid, 6 cured)
+- **LLM**: 0 failures across 159 calls, avg 19s, max 40s
+- **Resolution**: 74 cross-type decisions (36 hierarchy_merge, 12 merged, 15 blocked, 9 multi_facet, 2 deferred)
+- **Deferred dedup**: minimal impact - 2 pairs deferred, both skipped at resolution
