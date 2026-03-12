@@ -1,134 +1,159 @@
 # Knowledge Graph Foundry (KGF)
 
-Data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection. CLI-driven alternative to [Neo4j LLM Graph Builder](https://github.com/neo4j-labs/llm-graph-builder).
+A CLI tool that reads your documents and builds a knowledge graph in Neo4j. Point it at a folder of PDFs, manuals, or data files - it extracts entities, relationships, and specifications, resolves duplicates across documents, and loads a queryable graph. No predefined schema required - the tool discovers the ontology from your data, or you can seed one to guide extraction.
 
-## Features
+Built as a simpler, CLI-driven alternative to [Neo4j LLM Graph Builder](https://github.com/neo4j-labs/llm-graph-builder).
 
-- **Adaptive ontology buffer** - evolves during ingestion with frequency tracking, variant detection, and coverage scoring. Free extraction discovers types; constrained extraction refines them
-- **Any-format ontology seeding** - OWL, YAML, JSON, markdown, plain text - LLM normalizes any format to canonical schema
-- **Structured + unstructured** - PDF, TXT, MD, DOCX (unstructured) and JSON, JSONL (structured) with automatic schema inference
-- **Multi-signal entity resolution** - Levenshtein fuzzy matching, embedding similarity (FAISS), Bayesian type inference with LLM escalation for ambiguous cases
-- **Fluid schema curing** - two-phase ingestion: fluid accumulation discovers types, curing event freezes the schema, remaining documents load with enforcement
-- **Generative curing advisory** - optional LLM layer evaluates metric timelines and domain intent for cure/continue decisions, with graph query tool for ambiguous cases and patience-based early stopping
-- **Drift detection** - post-cure monitoring with remap rate tracking, optional re-curing on sustained drift
-- **Dual indexing** - vector index (semantic similarity) + fulltext index (keyword lookup) on Neo4j entities
-- **Extraction modes** - entity-relationship, atomic facts (Graph Reader), or hybrid at ~2x LLM cost
-- **Interactive + batch modes** - user checkpoints for schema review or fully autonomous execution with `--batch`
-- **TUI** - textual-based terminal interface with live stats and ontology buffer display
-- **Instructor/Pydantic** - structured LLM output enforcement with auto-retry on validation failure
+## What It Does
 
-## Install
+**Input**: a folder of documents (PDF, DOCX, TXT, MD, JSON, JSONL)
+
+**Output**: a Neo4j knowledge graph with entities, relationships, specifications, and provenance - queryable via Cypher
+
+The pipeline:
+
+1. **Parses** documents into text (PDF via pymupdf4llm, DOCX via python-docx)
+2. **Chunks** text into overlapping token windows
+3. **Extracts** entities and relationships from each chunk using an LLM (Claude, GPT-4, or any litellm-supported model)
+4. **Resolves** duplicates - fuzzy name matching, embedding similarity, and Bayesian cross-type deduplication merge entities that refer to the same thing across documents
+5. **Loads** the graph into Neo4j with APOC-based merge, vector and fulltext indexes, and provenance linking every entity back to its source chunk and document
+
+The tool handles multi-document corpora where the same entities appear across files. A product mentioned in a datasheet, a user manual, and a brochure gets consolidated into one graph node with merged properties and multiple source references.
+
+## Quick Start
 
 ```bash
+# Install
 make install
-```
 
-## Usage
-
-```bash
-# Ingest documents into a knowledge graph
-kgf ingest data/raw/ --ontology ontology.yml
-
-# Free extraction (no ontology seed - discovers types)
-kgf ingest data/raw/
-
-# Fluid schema curing
-kgf ingest data/raw/ --fluid
-
-# Batch mode (no interactive checkpoints)
-kgf ingest data/raw/ --batch
-
-# Initialize .kgf/ directory
+# Configure (Neo4j connection + LLM provider)
 kgf init
+# Edit .kgf/config.yml with your Neo4j and LLM credentials
+
+# Ingest documents
+kgf ingest data/raw/ --batch --fluid
+
+# Query the graph
+# Open Neo4j Browser at http://localhost:7474
+# MATCH (p:Product)-[:HAS_SPECIFICATION]->(s:Specification) RETURN p.name, s.name, s.value, s.unit
 ```
+
+## How Ontology Discovery Works
+
+By default, KGF runs in **free extraction** mode - the LLM discovers entity types from your documents without constraints. As documents are processed, the tool tracks type frequencies, detects convergence, and builds an ontology as a side effect. After processing enough documents for the type distribution to stabilise, the schema "cures" (freezes) and remaining documents are extracted with type enforcement.
+
+You can also **seed an ontology** in any format (OWL, YAML, markdown, plain text) to guide extraction from the start. The LLM normalises whatever format you provide into a canonical schema.
+
+A `resolution_intent` in the config tells the LLM what the knowledge graph is for - "compare medical devices across manufacturers" or "map software architecture dependencies" - which dramatically improves extraction relevance from the first document.
 
 ## Configuration
 
-Configuration uses `.kgf/config.yml` with environment variable interpolation from `.env`:
+Configuration uses `.kgf/config.yml` with `${ENV_VAR:default}` interpolation from `.env`:
 
 ```yaml
 neo4j:
-  uri: ${NEO4J_URI:bolt://localhost:7687}   # bolt or neo4j+s:// for Aura
+  uri: ${NEO4J_URI:bolt://localhost:7687}
   user: ${NEO4J_USERNAME:neo4j}
   password: ${NEO4J_PASSWORD:}
 
 llm:
   provider: bedrock                          # bedrock | openai | anthropic
   model: eu.anthropic.claude-sonnet-4-20250514-v1:0
-  temperature: 0.0                           # 0.0 for deterministic extraction
-  max_retries: 3                             # instructor retry on validation failure
+  temperature: 0.0                           # deterministic extraction
   timeout: 120                               # seconds per LLM call
 
 extract:
   chunk_size: 2000                           # tokens per chunk
   chunk_overlap: 200                         # overlap between consecutive chunks
   concurrency: 4                             # parallel extraction threads
-  extraction_mode: hybrid                    # entity_relationship | graph_reader | hybrid
-  resolution_threshold: 0.85                 # Levenshtein threshold for entity resolution
-  bayesian_resolution: false                 # Bayesian type inference with exemplar index
-  llm_escalation: false                      # LLM fallback for high-entropy type assignment
-  use_embeddings: false                      # embedding-based entity resolution (requires model)
-
-curing:
-  enabled: false                             # fluid schema curing (two-phase ingestion)
-  min_documents: 3                           # minimum docs before curing can trigger
-  max_fluid_documents: 20                    # safety net - force-cure at this count
-  generative_curing: false                   # LLM-assisted cure/continue decisions
-  generative_patience: 0.4                   # fraction of max_fluid_documents as consecutive
-                                             # document cure votes to auto-trigger (0.4 * 20 = 8, min 3)
-  generative_max_tool_calls: 2              # max graph queries per LLM decision
-  drift_remap_threshold: 0.3                # remap rate to signal schema drift
-  re_cure_on_drift: false                    # re-enter fluid phase on sustained drift
+  use_embeddings: true                       # embedding-based entity resolution
+  embedding_model: amazon.titan-embed-text-v2:0
+  bayesian_resolution: true                  # Bayesian type inference
+  deferred_dedup: true                       # accumulate cross-type evidence across docs
 
 ontology_buffer:
-  seed_from: null                            # path to ontology seed (any format)
-  intent: null                               # domain intent for LLM guidance
-  refine_every_n_docs: 5                     # buffer refinement interval
-  coverage_threshold: 0.5                    # minimum coverage to confirm types
-  flush_on_complete: true                    # write final ontology to disk
+  resolution_intent: "describe your use case here"
+  flush_on_complete: true                    # write discovered ontology to disk
+
+curing:
+  enabled: true                              # fluid -> cured lifecycle
+  min_documents: 3                           # docs before curing can trigger
+  max_fluid_documents: 20                    # force-cure safety net
 ```
+
+## Technical Details
+
+### Entity Resolution
+
+Entities are resolved across documents through multiple signals:
+- **Levenshtein fuzzy matching** within the same type (configurable threshold)
+- **Embedding cosine similarity** via FAISS for semantic matching
+- **Bayesian cross-type deduplication** combining name identity prior, description similarity, embedding similarity, and co-occurrence evidence
+- **Hierarchy-boosted resolution** where sibling types under a shared parent get elevated merge priors
+- **Deferred dedup** accumulates evidence for ambiguous pairs across documents, resolving at curing time
+- **LLM escalation** for high-entropy cases where statistical signals are inconclusive
+
+### Curing and Convergence
+
+The fluid-to-cured lifecycle uses statistical convergence detection:
+- Jensen-Shannon divergence between consecutive type distributions
+- Shannon entropy delta tracking
+- Chao1 species richness estimation for type coverage
+- Optional generative curing advisory with graph query tool for ambiguous decisions
+- Post-cure drift detection with remap rate monitoring
+
+### Event System
+
+All pipeline decisions emit blinker signals to a JSONL event log (41 signal types across extraction, resolution, curing, loading). Enables post-run forensic analysis via the `/forensics` command.
+
+### Supported Formats
+
+- **Unstructured**: PDF, TXT, MD, DOCX
+- **Structured**: JSON, JSONL with automatic schema inference
+- **Ontology seeds**: OWL, YAML, JSON, markdown, plain text
 
 ## Technology Stack
 
 - Python 3.12, uv package manager
-- **LLM**: litellm + instructor (structured output)
-- **Agents**: Strands Agents SDK
-- **CLI/TUI**: typer, textual
+- **LLM**: litellm + instructor (structured output with validation retry)
+- **CLI**: typer
 - **Parsing**: pymupdf4llm (PDF), python-docx (DOCX)
-- **Chunking**: tiktoken, langchain-text-splitters, chonkie (semantic)
-- **Graph**: neo4j driver, langchain-neo4j
-- **Resolution**: python-Levenshtein, faiss-cpu, numpy
+- **Chunking**: tiktoken
+- **Graph**: neo4j driver, APOC procedures
+- **Resolution**: python-Levenshtein, faiss-cpu, numpy, boto3 (embeddings)
 - **Ontology**: owlready2 (OWL/RDF), pydantic (schema validation)
+- **Events**: blinker (signal dispatch)
 
 ## Makefile Targets
 
-- `make install` - Create environment and install package
-- `make test` - Run tests
-- `make lint` / `make format` - Check / fix code style
-- `make build` - Build distributable wheel
-- `make clean` - Remove compiled files and caches
+- `make install` - create environment and install package
+- `make test` - run tests (352 tests)
+- `make lint` / `make format` - check / fix code style
+- `make build` - build distributable wheel
+- `make clean` - remove compiled files and caches
 
 ## Project Organization
 
 ```
 ├── kg_builder_cli/
 │   ├── cli.py              <- CLI entry points (typer)
-│   ├── config/             <- Configuration loading and defaults
+│   ├── config.py           <- Central module config, logger, paths
+│   ├── settings/           <- YAML loading, defaults, env interpolation
 │   ├── curing/             <- Fluid schema curing, metrics, drift detection
 │   ├── extraction/         <- Parsing, chunking, LLM extraction, entity resolution
 │   ├── loading/            <- Batch Cypher loading, indexes, validation
-│   ├── ontology/           <- Ontology buffer, OWL import
-│   ├── tui/                <- Textual terminal UI
+│   ├── ontology/           <- Ontology buffer, OWL import, hierarchy evolution
+│   ├── events/             <- Blinker signals, event types, handlers
 │   └── types/              <- Pydantic data models
-├── tests/                  <- pytest test suite
+├── tests/                  <- pytest test suite + benchmark scorecard
 ├── docs/
 │   ├── KGF_DESIGN.md       <- Canonical design document
-│   └── DESIGN_ASSUMPTIONS.md <- Design checklist
+│   └── benchmarks/         <- Versioned benchmark results with forensics
 ├── data/
 │   ├── raw/                <- Immutable source data
 │   ├── interim/            <- Intermediate transforms
 │   └── processed/          <- Final datasets
-└── .kgf/                   <- Runtime config, ontology, extractions
+└── .kgf/                   <- Runtime config, evolved ontology, event logs
 ```
 
 ## References
