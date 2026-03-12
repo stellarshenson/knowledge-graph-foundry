@@ -29,17 +29,9 @@ class LLMConfig(BaseModel):
 
 
 class ExtractConfig(BaseModel):
-    chunking_strategy: Literal["token", "semantic"] = "token"
     chunk_size: int = 2000
     chunk_overlap: int = 200
     concurrency: int = 4
-    extraction_mode: Literal["entity_relationship", "graph_reader", "hybrid"] = "hybrid"
-    evidence_spans: bool = False
-    source_frequency: bool = False
-    describe_images: bool = False
-    vision_model: Optional[str] = None
-    subgraph_splitting: bool = False
-    rolling_context_window: int = 0
     resolution_threshold: float = 0.85
     name_threshold: float = 0.65
     embedding_threshold: float = 0.80

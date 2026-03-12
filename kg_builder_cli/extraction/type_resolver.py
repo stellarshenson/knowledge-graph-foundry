@@ -72,11 +72,6 @@ class BayesianTypeResolver:
         candidates = sorted(self._prior.items(), key=lambda x: -x[1])[: self._top_k]
         candidate_types = [t for t, _ in candidates]
 
-        # If current type is valid and in candidates, may not need resolution
-        if entity.type in self._prior and entity.type in candidate_types:
-            # Still run evidence to potentially reassign
-            pass
-
         # Compute posterior for each candidate
         posterior: dict[str, float] = {}
         for type_name in candidate_types:

@@ -71,9 +71,6 @@ DEFAULTS: dict = {
     # ── Extraction Pipeline ───────────────────────────────────────────
     # Controls document parsing, chunking, entity/relationship extraction, and resolution.
     "extract": {
-        # Chunking strategy: "token" (fixed token windows) | "semantic" (embedding-based)
-        # Token is cheaper and sufficient for most documents
-        "chunking_strategy": "token",
         # Target chunk size in tokens. 2000 balances context richness with LLM cost.
         # Smaller chunks (500-1000) improve precision but miss cross-paragraph relationships.
         # Larger chunks (3000-4000) capture more context but increase extraction cost
@@ -84,27 +81,6 @@ DEFAULTS: dict = {
         # Maximum concurrent LLM extraction calls per document. Limited by API rate limits
         # and memory. 4 is conservative; increase for high-throughput API tiers
         "concurrency": 4,
-        # Extraction mode: "entity_relationship" (standard triplets) |
-        # "graph_reader" (atomic facts) | "hybrid" (both, ~2x cost but best coverage)
-        "extraction_mode": "hybrid",
-        # When true, extraction output includes character offset spans linking each entity
-        # and relationship back to exact source text positions. Adds latency (~10-15%)
-        "evidence_spans": False,
-        # When true, tracks how many source documents/chunks mention each entity.
-        # Enables cross-document corroboration scoring. Small overhead per entity
-        "source_frequency": False,
-        # When true, extracts images from PDFs and generates text descriptions via
-        # vision model before chunking. Dramatically enriches extraction from visual content
-        "describe_images": False,
-        # Vision model for image description. Required when describe_images=true.
-        # Example: "anthropic.claude-sonnet-4-20250514-v1:0" (must support vision)
-        "vision_model": None,
-        # When true, splits large ontology schemas into subgraphs for separate extraction
-        # passes. Prevents prompt overflow for ontologies with 20+ entity types
-        "subgraph_splitting": False,
-        # Number of recent extraction results passed as context to the next chunk's prompt.
-        # 0 = no rolling context. 2-3 helps sequential documents maintain entity consistency
-        "rolling_context_window": 0,
         # ── Within-type entity resolution ──
         # Levenshtein similarity threshold for merging entities within the same type block.
         # 0.85 catches "CPAP Machine" vs "CPAP machine" without false merges.
@@ -130,7 +106,6 @@ DEFAULTS: dict = {
         # Embedding provider backend. Currently only "bedrock" is implemented.
         # Future: "openai", "anthropic", "sentence-transformers" (local).
         # No default - inherits from llm.provider if not set
-        # TODO: implement multi-provider embedding support in embeddings.py
         "embedding_provider": None,
         # ── Bayesian type resolution (cured phase) ──
         # When true, enables Bayesian type resolver using exemplar index, relationship

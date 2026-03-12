@@ -14,7 +14,7 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] Coverage = confirmed_count / total_entity_types
 - [x] Buffer flush writes confirmed types to YAML
 - [x] `min_frequency_to_confirm` default = 2
-- [x] `min_frequency_to_emerge` default = 2
+- [x] `min_frequency_to_emerge` default = 1
 - [x] `TypeExemplar` model with name, entity_type, frequency fields stored in buffer `_type_exemplars`
 - [x] Exemplar accumulation via `_update_exemplars()` in `accumulate_from_result()` with case-insensitive dedup and frequency-based replacement at capacity
 - [x] Snapshot freezes exemplars as tuples sorted by descending frequency, included in `OntologyState.type_exemplars`
@@ -117,7 +117,7 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] `drift_window` = 3
 - [x] `re_cure_on_drift` = false
 - [x] `generative_curing` = false
-- [x] `generative_patience` = 5
+- [x] `generative_patience` = 0.4
 - [x] `generative_max_tool_calls` = 2
 - [x] `cross_type_description_threshold` = 0.3
 
@@ -136,6 +136,21 @@ Last verified: 2026-03-10 (v0.1.12, ontology grounding - drift detection, semant
 - [x] Blinker weak references documented - handler functions must be module-level or stored to prevent GC
 - [x] CLI flags: `--verbose` (DEBUG payloads), `--event-log PATH` (JSONL streaming), `--processing-log PATH` (loguru redirect)
 - [x] 2 condition-dependent signals: `llm_call_failed` (fires only on LLM error), `drift_detected` (fires only when remap rate exceeds threshold)
+
+## Unimplemented Design (tracked)
+
+Features described in KGF_DESIGN.md that are not yet implemented. The design sections serve as specification for future work.
+
+- [ ] **Strands Agents SDK integration** (Section 2) - design describes agent-centric orchestration with interactive checkpoints and Y/n confirmations. Current implementation uses direct function calls via typer CLI. Dependencies present in pyproject.toml, ready for integration
+- [ ] **Terminal UI harness** (Section 3.1) - design describes Textual-based TUI. Stub exists in `tui/app.py` but not yet functional. Dependencies present in pyproject.toml
+- [ ] **`kgf query` command** (Section 3) - CLI stub exists but logs "not yet implemented". Requires query pipeline (Section 10)
+- [ ] **`kgf update` command** (Section 3) - no CLI command exists. Requires update pipeline (Section 11)
+- [ ] **Structured data ingestion** (Section 7) - JSON/JSONL pipeline not implemented. Only unstructured (PDF, TXT, MD, DOCX) is supported
+- [ ] **Schema inference for structured data** (Section 7.3) - requires structured ingestion first
+- [ ] **Query pipeline** (Section 10) - RAG-based graph query not implemented
+- [ ] **Update pipeline** (Section 11) - incremental update/migration not implemented
+- [ ] **Agent memory** (Section 12) - persistent agent knowledge store not implemented
+- [ ] **Interactive agent mode** (Section 2) - batch mode works, interactive checkpoints with user confirmations not implemented
 
 ## Known Gaps (prioritized)
 
