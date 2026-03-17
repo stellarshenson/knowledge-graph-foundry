@@ -90,7 +90,7 @@ Several modes interact across the pipeline. The table below defines allowed comb
 |--------|--------|------------|----------|
 | `--batch` | `--fluid` | Yes | Fluid phase runs autonomously, curing decisions logged to run report |
 | `--batch` | `--ontology seed.yml` | Yes | Seeded extraction with autonomous decisions at checkpoints |
-| `--fluid` | `--ontology seed.yml` | No | `--fluid` ignored with warning - seeded workflow always uses direct loading |
+| `--fluid` | `--ontology seed.yml` | Yes | Seed types pre-loaded as priors in the ontology buffer, fluid discovery continues beyond seed. See Section 14.3 entry scenarios |
 | `--fluid` | `--cure` | Yes | Force-cures after first document (useful for testing) |
 | `--fluid` | `extraction_mode: graph_reader` | Yes | Curing tracks entity/relationship type stability only (FactNodes not tracked) |
 | `--fluid` | `extraction_mode: hybrid` | Yes | Curing tracks entity/relationship types; facts pass through to consolidation |
@@ -100,7 +100,7 @@ Several modes interact across the pipeline. The table below defines allowed comb
 | `--batch` | `--cure` | Yes | Force-cure without user confirmation |
 
 **Key rules**:
-- Fluid curing is designed for empty-ontology discovery mode - when an ontology seed is provided, the schema is already defined and curing adds no value
+- Fluid curing with an ontology seed uses the seed as a prior - types from the seed get elevated initial signals in the ontology buffer, but the LLM can still discover additional types from data (Section 14.3)
 - `graph_reader` mode extracts FactNodes alongside entities - curing detection only monitors entity and relationship types, not fact stability
 - All extraction modes (`entity_relationship`, `graph_reader`, `hybrid`) work in both seeded and free extraction, with or without fluid curing
 
@@ -336,7 +336,7 @@ kgf ingest [<source>] [--input <path>]... [--structured | --unstructured] [optio
 
 The ingest workflow executes the pipeline directly: detect input type, extract entities and relationships, deduplicate, normalize, and load into Neo4J. Strands agents engage only at interactive checkpoints and escalation points.
 
-- **Initialization**: three scenarios depending on current state:
+- **Initialization**: three scenarios depending on current state (see Section 14.3 for full entry scenario matrix):
   - **No `.kgf/`, no graph** - fresh setup. The pipeline creates `.kgf/` with default `config.yml`, `schemas/`, `extractions/`, `memory/`, `migrations/`, and `runs/` directories. In interactive mode the initialization checkpoint asks questions about the target graph and generates tailored configuration
   - **No `.kgf/`, graph exists** - recovery. The pipeline introspects the Neo4J graph (labels, relationship types, property keys, `OntologyType` nodes, `SchemaVersion` nodes) and reconstructs the schema and ontology YAML files. Presents the recovered schema to the user: "recovered schema from existing graph with N entity types and M relationship types"
   - **`.kgf/` exists, graph exists** - validation. The pipeline compares the schema file against the current graph state and reports drift: new labels in graph not in schema, properties on entities not described in schema, `SchemaVersion` mismatches. Drift is reported as warnings, not errors
@@ -1123,7 +1123,7 @@ Post-load reasoning is most valuable when the domain has deep type hierarchies (
 
 ### 5.8 Schema Curing - Fluid-to-Stable Ontology Evolution
 
-Schema curing provides a middle path between pre-defined ontology seeds and fully unconstrained free extraction. Instead of committing to a schema before seeing the data, the system starts with an empty ontology and an intent prompt, lets the schema evolve during ingestion, and holds all graph data in memory while the schema is "fluid". Only when the schema stabilizes ("cures") does the system flush everything to Neo4j.
+Schema curing provides a middle path between pre-defined ontology seeds and fully unconstrained free extraction. Instead of committing to a schema before seeing the data, the system starts with an empty ontology and an intent prompt, lets the schema evolve during ingestion, and holds all graph data in memory while the schema is "fluid". Only when the schema stabilizes ("cures") does the system flush everything to Neo4j. The curing lifecycle is formalized as a finite state machine in Section 14, where CURING and STABLE are the primary ontology lifecycle states.
 
 **Key facts**:
 - Disabled by default (`curing.enabled = false`) - existing seeded workflow unchanged
@@ -2469,7 +2469,155 @@ The design deliberately keeps confidence as a single float representing extracti
 
 <img src="images/confidence_propagation.svg" alt="Confidence Propagation Model">
 
-## 14. Observability
+## 14. Pipeline Lifecycle
+
+The graph has a lifecycle that spans multiple ingestion runs. A fresh graph begins empty, establishes its ontology through curing - whether types are discovered via fluid extraction or prescribed via a seed - stabilizes when calibration converges, and matures as subsequent runs add documents against the established schema. The FSM formalizes this evolution from empty graph to mature knowledge base, tracking ontological maturity rather than extraction mechanics.
+
+The control plane lives in the graph itself as a `(:KGFControl)` metanode. Recovery requires only a config file and a graph connection - no serialized ontology files, no local state directories. The graph knows what state it is in, what ontology it has evolved, and what happened in previous runs.
+
+### 14.1 Graph States
+
+The FSM tracks the **ontology lifecycle** - what state is the graph's schema in? Run management (active process, run count, run history) is tracked via metanode properties, not FSM states. Six states govern the graph from cradle to grave.
+
+| State | Description | Entry From | Exits To |
+|-------|-------------|------------|----------|
+| **EMPTY** | Fresh graph, no entities, no control plane | Graph creation / full wipe | INITIALIZING |
+| **INITIALIZING** | Config loading, Neo4j verification, graph state detection, ontology conflict resolution | EMPTY (first run), STABLE (subsequent run) | CURING, STABLE, FAILED |
+| **CURING** | Ontology establishment and calibration. Evidence accumulation regardless of extraction mechanism (fluid or direct). See below | INITIALIZING (first run, or subsequent with new seed), RECURING (drift re-entry) | STABLE, FAILED |
+| **STABLE** | Well-calibrated ontology with robust posteriors, populated resolution guides, and consistent type assignments. Active runs extract with type enforcement; between runs, the graph is idle. Drift always monitored during active extraction | CURING (calibration converged) | INITIALIZING (next run), RECURING (sustained drift), FAILED |
+| **RECURING** | Drift deliberation. Sustained remap rates detected, system evaluates whether ontology revision is warranted. Two exits: proceed to CURING or dismiss back to STABLE | STABLE (sustained drift during active run) | CURING, STABLE |
+| **FAILED** | Unrecoverable error requiring operator attention | Any active state | (terminal within run) |
+
+EMPTY is the state before the first-ever run. After the first successful run, the graph reaches STABLE and never returns to EMPTY unless explicitly wiped. STABLE serves as both the "active extraction" and "idle between runs" state - the distinction is tracked by `run_id` on the metanode (null when idle, uuid when a run is active). FAILED can occur from any active state and requires operator intervention to recover (fix config, restart Neo4j, etc.). Drift is always monitored during active extraction in STABLE state, regardless of how the ontology was established.
+
+**Fluid and direct are extraction mechanisms, not lifecycle states.** Previous iterations modeled FLUID and DIRECT as separate FSM states. These are configuration parameters that control how the LLM extracts entities - fluid lets types emerge freely, direct enforces prescribed types. Both are mechanisms within the CURING state. The FSM tracks ontological maturity, not extraction mechanics.
+
+**CURING means ontology establishment and calibration, not just type discovery.** Even with a strict seed (direct mechanism), the first run goes through CURING because the graph needs to calibrate Bayesian posteriors with real entity evidence, build adaptive resolution guides for ambiguous type pairs, accumulate cross-type dedup evidence, and resolve assignment ambiguities. A graph with prescribed types but uncalibrated posteriors is not yet stable. In fluid mode, convergence metrics (JSD, entropy, Chao1) drive the CURING -> STABLE transition. In direct mode, calibration metrics (posterior variance, guide population, resolution consistency) determine stability. Consolidation (type clustering, ontology freeze, batch flush to Neo4j) is the final activity within CURING. The KGFControl metanode tracks consolidation progress via `consolidation_started_at` (null during discovery/calibration, set to timestamp when consolidation begins), enabling crash recovery detection without a separate FSM state.
+
+**RECURING is a deliberation state with branching exits.** RECURING has two exit paths: proceed to CURING (ontology revision needed) or dismiss back to STABLE (drift was synonyms/variants). This branching decision - potentially involving an LLM advisory call - requires a real state. Without it, drift-dismissed events leave no audit trail. The path STABLE -> RECURING -> STABLE in the transition log tells a clear story: drift was detected, evaluated, and dismissed.
+
+### 14.2 Transition Table
+
+Illegal transitions are any not listed. The trigger column names the `transitions` library trigger method. The actions column describes work performed during the transition.
+
+| From | To | Trigger | Condition | Actions | Event |
+|------|----|---------|-----------|---------|-------|
+| EMPTY | INITIALIZING | `start_run` | First `kgf ingest` | Create KGFControl metanode | `phase_transition` |
+| STABLE | INITIALIZING | `start_run` | Subsequent `kgf ingest` | Set `run_id`, increment `run_count` | `phase_transition` |
+| INITIALIZING | CURING | `begin_curing` | `_needs_calibration`: first run, or subsequent run with new seed in non-strict mode | Initialize FluidAccumulator or direct calibrator based on config | `phase_transition` |
+| INITIALIZING | STABLE | `begin_stable` | `_already_calibrated`: subsequent run with no seed or strict seed, graph already calibrated | Load existing ontology from graph | `phase_transition` |
+| CURING | STABLE | `stabilize` | Convergence detected (fluid) or calibration thresholds met (direct). 6 trigger paths from Section 5.8: convergence, plateau, heuristic, generative, failsafe, force | Type clustering, ontology freeze, batch flush to Neo4j, build exemplar index | `phase_transition`, `curing_triggered` |
+| CURING | FAILED | `fail` | Unrecoverable error during discovery, calibration, or consolidation | Record error on metanode | `phase_transition` |
+| STABLE | RECURING | `detect_drift` | `_drift_exceeds_threshold`: sustained remap rates above threshold | Snapshot current ontology state for comparison | `phase_transition`, `drift_detected` |
+| RECURING | CURING | `authorize_revision` | LLM advisory or heuristic confirms ontology revision needed | Reset accumulator, prepare for re-calibration | `phase_transition`, `recuring_authorized` |
+| RECURING | STABLE | `dismiss_drift` | Drift evaluated as synonyms/variants, not genuine ontology gap | Resume extraction with current ontology | `phase_transition`, `drift_dismissed` |
+| * | FAILED | `fail` | Unrecoverable error from any active state | Record error, set `last_error` | `phase_transition` |
+
+### 14.3 Entry Scenarios and Graph State Detection
+
+During INITIALIZING, the system determines the graph's current state and decides the entry path.
+
+**Detection algorithm**:
+1. Query for `(:KGFControl)` metanode - if exists, read `fsm_state`, `run_count`, `ontology_type_count`
+2. If no metanode, query for entity nodes - if found, this is a legacy graph (pre-FSM)
+3. If no entities, graph is EMPTY
+
+**Ontology seed semantics**: a provided ontology seed can serve two roles:
+- **Prior** (default): the seed informs fluid discovery - types from the seed get elevated priors in the ontology buffer, but the LLM can still discover additional types from data. The system enters CURING with the seed pre-loaded as initial type signals
+- **Strict enforcement** (explicit): the seed constrains extraction - only seed types are allowed, no discovery. Requires explicit config flag (`ontology.strict: true` or `--strict-ontology` CLI flag). On an empty graph, the system enters CURING with direct mechanism (types prescribed but calibration needed). On an existing graph, the graph ontology wins (Section 14.4)
+
+| Graph State | Ontology Seed | Strict Mode | Result | Rationale |
+|-------------|---------------|-------------|--------|-----------|
+| EMPTY | None | - | CURING (fluid) | Pure discovery from data |
+| EMPTY | Provided | No (default) | CURING (fluid, seed as prior) | Discovery informed by seed types as initial signals |
+| EMPTY | Provided | Yes | CURING (direct) | Types prescribed, but posteriors and guides still need calibration |
+| STABLE | None | - | STABLE | Graph already calibrated, process docs directly |
+| STABLE | Provided | No | CURING (fluid, graph ontology + seed merged as priors) | Continued evolution with merged priors |
+| STABLE | Provided | Yes | WARNING + STABLE (use graph ontology) | Graph ontology wins, seed ignored (Section 14.4) |
+
+### 14.4 Ontology Prior Conflict Rules
+
+**Default (non-strict) mode**: seed and graph ontology are **merged as priors** for continued fluid evolution. The seed adds type signals to the buffer alongside the graph's existing types. Both inform discovery, neither constrains it. This enables incremental ontology enrichment across runs.
+
+**Strict mode** (`ontology.strict: true`): the graph's evolved ontology always wins over a provided seed. The graph ontology was empirically derived from actual data through curing. Overriding it would invalidate existing entities and break relationships.
+
+Strict mode resolution:
+- Seed subset of graph ontology -> proceed with graph ontology, INFO log
+- Seed adds types not in graph -> proceed with graph ontology, WARN log listing ignored types
+- Seed contradicts graph -> proceed with graph ontology, WARN with full diff
+- Future `--force-seed` + `--wipe` -> override (requires explicit graph wipe)
+
+### 14.5 Graph Control Plane
+
+The `(:KGFControl)` metanode is the authoritative state store.
+
+**Properties**:
+- `graph_id` - unique identifier for this KG instance
+- `fsm_state` - current state (EMPTY, INITIALIZING, CURING, STABLE, RECURING, FAILED)
+- `run_id` - active ingestion run identifier (null when idle in STABLE)
+- `run_count` - total completed runs
+- `ontology_source` - provenance of current ontology (discovered/seed/graph)
+- `extraction_mechanism` - how CURING was conducted (fluid/direct)
+- `consolidation_started_at` - null during discovery/calibration, set to timestamp when consolidation begins
+- `ontology_type_count` - number of types in evolved ontology
+- `ontology_hash` - hash of current ontology for conflict detection
+- `created_at` - graph creation timestamp
+- `last_completed_at` - last successful run completion
+- `last_error` - most recent error if in FAILED state
+
+**Related nodes**:
+- `(:KGFRun)` per ingestion run with start/end time, doc count, entity count, trigger type
+- `(:KGFTransition)` for state change audit trail (from, to, trigger, timestamp)
+
+**Recovery**: a new KGF process connects, reads the KGFControl metanode, and knows exactly what state the graph is in. Combined with `config.yml`, this is sufficient to resume or start a new run. No `.kgf/ontology.yml` or local serialized state needed - the ontology is reconstructable from the graph's entity types and the buffer can be rebuilt from graph state.
+
+**Split responsibility**:
+- Graph metanode: authoritative control plane (FSM state, run history, ontology hash)
+- Local filesystem: non-authoritative artifacts only (logs, benchmark outputs, event dumps)
+
+### 14.6 FSM Implementation
+
+The FSM uses the `transitions` library (pytransitions/transitions). The state machine attaches to a `PipelineContext` model object via mixin, with `on_enter_<state>` callbacks emitting blinker signals and `conditions` guards enforcing transition preconditions.
+
+```python
+from transitions import Machine
+
+states = [
+    {"name": "empty"},
+    {"name": "initializing"},
+    {"name": "curing", "on_enter": ["_on_enter_curing"]},
+    {"name": "stable", "on_enter": ["_on_enter_stable"]},
+    {"name": "recuring", "on_enter": ["_on_enter_recuring"]},
+    {"name": "failed", "on_enter": ["_on_enter_failed"]},
+]
+
+transitions = [
+    {"trigger": "start_run", "source": ["empty", "stable"], "dest": "initializing"},
+    {"trigger": "begin_curing", "source": "initializing", "dest": "curing",
+     "conditions": ["_needs_calibration"]},
+    {"trigger": "begin_stable", "source": "initializing", "dest": "stable",
+     "conditions": ["_already_calibrated"]},
+    {"trigger": "stabilize", "source": "curing", "dest": "stable"},
+    {"trigger": "detect_drift", "source": "stable", "dest": "recuring",
+     "conditions": ["_drift_exceeds_threshold"]},
+    {"trigger": "authorize_revision", "source": "recuring", "dest": "curing"},
+    {"trigger": "dismiss_drift", "source": "recuring", "dest": "stable"},
+    {"trigger": "fail", "source": "*", "dest": "failed"},
+]
+```
+
+Key state actions:
+- `_on_enter_curing`: begins ontology establishment. In fluid mode, types emerge freely and accumulate in FluidAccumulator with convergence checking after each document. In direct mode, types are prescribed but Bayesian posteriors calibrate, resolution guides build, and cross-type evidence accumulates. When calibration converges, consolidation runs (type clustering, ontology freeze, batch flush) and triggers `stabilize`
+- `_on_enter_stable`: if entering from CURING, processes remaining documents with type enforcement. If entering from INITIALIZING (subsequent run), processes all documents with established ontology. Drift monitored after each document. Run finalization sets `run_id` to null when all docs are processed
+- `_on_enter_recuring`: evaluates drift evidence (remap rates, missing types), optionally consults LLM advisory (Section 5.8). Decides between `authorize_revision` (proceed to CURING) or `dismiss_drift` (return to STABLE)
+
+Guard conditions read pipeline state (detector metrics, ontology buffer, config flags) to enforce transition preconditions.
+
+### 14.7 Event Mapping
+
+The `phase_transition` signal's `from_state` and `to_state` fields must match states defined in 14.1. The transition table in 14.2 is the authoritative source for valid event payloads. See Section 15 for the full event architecture.
+
+## 15. Observability
 
 ### Logging
 
@@ -2573,7 +2721,7 @@ Each event carries its full Pydantic payload. With `--verbose`, the `curing_cond
 
 **Why blinker**: Synchronous, lightweight (~40KB, zero deps), well-maintained (official Pallets signal library), supports sender filtering and weak references.
 
-## 15. Security
+## 16. Security
 
 ### Credential Management
 
@@ -2597,7 +2745,7 @@ Additionally, the extraction pipeline does not persist raw source text in the gr
 
 Extraction outputs written to `.kgf/extractions/` may contain entity properties derived from source data. These files should be treated with the same sensitivity as the source data itself. The `--keep-extractions` flag is `false` by default, meaning extraction JSON is not persisted unless explicitly requested.
 
-## 16. Module Structure
+## 17. Module Structure
 
 The package is organized by domain responsibility with explicit interface contracts between modules. A shared `types/` module defines all Pydantic models that cross module boundaries, ensuring every data handoff is typed and validated. The dependency graph is acyclic - modules import types and call downstream, never upstream.
 
@@ -2843,7 +2991,7 @@ Every data handoff between modules uses a Pydantic model from `types/`. The tabl
 | `extraction/chunking` | `extraction/prompts` | `List[Chunk]` | `id` (SHA1), `text`, `index`, `metadata` |
 | `ontology/buffer` | `extraction/prompts` | `OntologyState` | `entity_types`, `relationship_types`, `coverage`, `variants` (frozen snapshot) |
 | `extraction/` | `ontology/buffer` | `List[TypeSignal]` | `type_name`, `frequency`, `source_chunk`, `is_relationship` |
-| `extraction/` | `loading/` | `ExtractionResult` | `metadata`, `entities`, `relationships`, `facts`, `validation` (Section 19 format) |
+| `extraction/` | `loading/` | `ExtractionResult` | `metadata`, `entities`, `relationships`, `facts`, `validation` (Section 20 format) |
 | `extraction/resolution` | `loading/` | `List[ResolvedEntity]` | extends `Entity` with `normalized_name`, `normalized_score`, `normalized_method` |
 | `loading/validation` | caller | `ValidationReport` | `orphan_entities`, `missing_relationships`, `type_coverage`, `warnings` |
 | `query/retrieval` | `query/formatter` | `QueryResult` | `records`, `columns`, `cypher_used`, `retrieval_strategy` |
@@ -2883,7 +3031,7 @@ All configuration is validated at startup using Pydantic models from `types/conf
 - Path resolution (ontology file exists if specified)
 - Secret interpolation (\${VAR} resolves to non-empty value)
 
-## 17. Testing Strategy
+## 18. Testing Strategy
 
 ### Unit Test Scope
 
@@ -2924,7 +3072,7 @@ Test fixtures are organized in `tests/fixtures/`:
 - `extractions/` - known-good extraction JSON for loading and validation tests
 - `schemas/` - schema description files for structured mapping tests
 
-## 18. Dependencies
+## 19. Dependencies
 
 | Package | Purpose |
 |---------|---------|
@@ -2945,11 +3093,12 @@ Test fixtures are organized in `tests/fixtures/`:
 | `pydantic` | Entity schema definition, extraction validation, config validation, response models |
 | `chonkie` | Semantic chunking (embedding similarity-based splitting) |
 | `textual` | Terminal UI framework for live pipeline display, interactive agent communication, and progress tracking (built on `rich`) |
+| `transitions` | Lightweight FSM library for pipeline lifecycle state machine (Section 14) |
 | `loguru` | Structured logging |
 | `ruff` | Linting and formatting (dev dependency) |
 | `pytest` | Testing framework (dev dependency) |
 
-## 19. Extraction Output Format
+## 20. Extraction Output Format
 
 Extraction files are written to `.kgf/extractions/` with timestamped filenames.
 
@@ -3028,7 +3177,7 @@ Confidence scores propagate to Neo4J as properties on Entity and FactNode nodes,
 
 **Source frequency** (`source_frequency: true` in extract config): when enabled, a post-extraction aggregation pass counts how many independent chunks and documents corroborate each triple. The `source_count` field records the number of distinct chunks that produced the same entity or relationship. The `document_count` field records the number of distinct source documents. This adds a dedup-time computation step that cross-references all extracted elements across chunks and documents before loading. Entities mentioned in many chunks across multiple documents are more trustworthy than those appearing once. Default is `false`. Enable when extraction confidence needs cross-document corroboration signals.
 
-## 20. Supported Input Formats
+## 21. Supported Input Formats
 
 | Format | Type | Library |
 |--------|------|---------|
@@ -3041,7 +3190,7 @@ Confidence scores propagate to Neo4J as properties on Entity and FactNode nodes,
 | JSON | structured | built-in |
 | JSONL | structured | built-in |
 
-## 21. Design Lessons
+## 22. Design Lessons
 
 Approaches that were tried and abandoned or significantly reworked during development. Documented to prevent re-introducing patterns that already proved problematic.
 

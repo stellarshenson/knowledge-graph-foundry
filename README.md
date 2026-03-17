@@ -49,7 +49,9 @@ kgf ingest -i file1.pdf -i file2.pdf -i data/raw/ --batch --fluid
 
 ## How Ontology Discovery Works
 
-By default, KGF runs in **free extraction** mode - the LLM discovers entity types from your documents without constraints. As documents are processed, the tool tracks type frequencies, detects convergence, and builds an ontology as a side effect. After processing enough documents for the type distribution to stabilise, the schema "cures" (freezes) and remaining documents are extracted with type enforcement.
+By default, KGF runs in **free extraction** mode - the LLM discovers entity types from your documents without constraints. As documents are processed, the tool tracks type frequencies, detects convergence, and builds an ontology as a side effect. After processing enough documents for the type distribution to stabilise, the schema [cures](docs/research/concept-ontology-lifecycle.md) (freezes) and remaining documents are extracted with type enforcement. If post-cure drift is detected, the system can re-cure - creating a full lifecycle: fluid -> curing -> cured -> drift detection -> recuring -> cured.
+
+As the system processes documents, it also builds [adaptive resolution guides](docs/research/concept-ontology-lifecycle.md) - learned heuristics for handling ambiguous type pairs. These guides evolve from accumulated evidence rather than requiring manual rule authoring.
 
 You can also **seed an ontology** in any format (OWL, YAML, markdown, plain text) to guide extraction from the start. The LLM normalises whatever format you provide into a canonical schema.
 
@@ -96,19 +98,39 @@ curing:
 
 ### Entity Resolution
 
-Entities are resolved across documents through multiple signals:
+Entities are resolved across documents through [multi-channel evidence fusion](docs/research/concept-bayesian-resolution.md) producing a [Bayesian posterior probability](docs/research/concept-bayesian-resolution.md) rather than ad-hoc weighted scoring:
+
 - **Levenshtein fuzzy matching** within the same type (configurable threshold)
 - **Embedding cosine similarity** via FAISS for semantic matching
-- **Bayesian cross-type deduplication** combining name identity prior, description similarity, embedding similarity, and co-occurrence evidence
+- **Bayesian cross-type deduplication** combining name identity prior, description similarity, embedding similarity, and co-occurrence likelihood ratios into a posterior
 - **Hierarchy-boosted resolution** where sibling types under a shared parent get elevated merge priors
-- **Deferred dedup** accumulates evidence for ambiguous pairs across documents, resolving at curing time
-- **LLM escalation** for high-entropy cases where statistical signals are inconclusive
+- **Deferred dedup** accumulates [positive evidence](docs/research/concept-bayesian-resolution.md) for ambiguous pairs across documents, resolving at curing time when entity profiles are richer
+- **[LLM escalation](docs/research/concept-decision-architecture.md)** only at decision boundaries where statistical signals are inconclusive - the system uses [agents selectively](docs/research/concept-architectural-positioning.md), not on every resolution decision
+
+The posterior supports three-zone decision logic: high confidence triggers automatic merge, low confidence triggers automatic block, and the gray zone triggers [two-layer adjudication](docs/research/concept-decision-architecture.md) where an LLM reasoning model acts as a conservative veto over the statistical signal.
+
+### Pipeline Lifecycle
+
+The graph has a formal lifecycle governed by a finite state machine tracking ontological maturity. Six states cover the graph from creation to mature knowledge base:
+
+```
+EMPTY -> INITIALIZING -> CURING -> STABLE
+                             ^        |
+                             | RECURING|
+                             +--------+
+```
+
+- **Curing** - ontology establishment and calibration. In fluid mode, types emerge freely and convergence metrics drive stabilization. In direct mode (strict seed), types are prescribed but Bayesian posteriors calibrate and resolution guides build. First run always enters CURING
+- **Stable** - well-calibrated ontology with type-enforced extraction and drift monitoring. Serves as both the active extraction state and the resting state between runs
+- **Recuring** - drift deliberation when sustained remap rates are detected. The system evaluates whether to revise the ontology (re-enter CURING) or dismiss the drift
+
+The control plane lives in the graph itself as a `(:KGFControl)` metanode - recovery requires only a config file and a graph connection. The lifecycle is documented in [KGF_DESIGN.md Section 14](docs/KGF_DESIGN.md) with the full state machine definition, entry scenario matrix, and ontology conflict rules.
 
 ### Curing and Convergence
 
 <img src="docs/images/curing_decision_flow.svg" alt="Curing Decision Flow">
 
-The fluid-to-cured lifecycle uses statistical convergence detection:
+The fluid-to-cured transition uses statistical convergence detection:
 - Jensen-Shannon divergence between consecutive type distributions
 - Shannon entropy delta tracking
 - Chao1 species richness estimation for type coverage
@@ -163,6 +185,7 @@ Use `--unstructured` (default) or `--structured` to select the pipeline - the fl
 ├── tests/                  <- pytest test suite + benchmark scorecard
 ├── docs/
 │   ├── KGF_DESIGN.md       <- Canonical design document
+│   ├── research/           <- Foundational concept documents
 │   └── benchmarks/         <- Versioned benchmark results with forensics
 ├── data/
 │   ├── raw/                <- Immutable source data
@@ -170,6 +193,16 @@ Use `--unstructured` (default) or `--structured` to select the pipeline - the fl
 │   └── processed/          <- Final datasets
 └── .kgf/                   <- Runtime config, evolved ontology, event logs
 ```
+
+## Research Concepts
+
+The [docs/research/](docs/research/README.md) folder documents the foundational concepts underlying KGF - both implemented and proposed:
+
+- [Ontology Lifecycle](docs/research/concept-ontology-lifecycle.md) - curing/stabilization phases (implemented) and adaptive resolution guides that evolve from accumulated evidence (implemented)
+- [Bayesian Resolution](docs/research/concept-bayesian-resolution.md) - posterior-based entity resolution (implemented), multi-channel evidence fusion (implemented), positive evidence accumulation via deferred dedup (implemented)
+- [Decision Architecture](docs/research/concept-decision-architecture.md) - two-layer adjudication with LLM escalation (implemented), Bayesian decision calibration (proposed), contextual adjudication triggers (proposed), epistemic loop prevention (design principle)
+- [Pipeline Governance](docs/research/concept-pipeline-governance.md) - formal FSM lifecycle (formalized in [Section 14](docs/KGF_DESIGN.md)), graph metanode control plane (formalized), lease-style locking (proposed)
+- [Architectural Positioning](docs/research/concept-architectural-positioning.md) - innovation classification, agent escalation boundaries (implemented), design signature
 
 ## References
 
