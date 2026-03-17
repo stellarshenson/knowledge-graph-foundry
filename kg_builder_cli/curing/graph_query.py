@@ -159,12 +159,14 @@ def _graph_entity_counts(
     """Count entities per type from Neo4j."""
     if request.filter_type:
         result = session.run(
-            "MATCH (e:Entity {type: $type}) RETURN e.type AS type, count(e) AS count",
+            "MATCH (e:Entity {type: $type}) WHERE NOT e:KGFControl "
+            "RETURN e.type AS type, count(e) AS count",
             {"type": request.filter_type},
         )
     else:
         result = session.run(
-            "MATCH (e:Entity) RETURN e.type AS type, count(e) AS count ORDER BY count DESC LIMIT $limit",
+            "MATCH (e:Entity) WHERE NOT e:KGFControl "
+            "RETURN e.type AS type, count(e) AS count ORDER BY count DESC LIMIT $limit",
             {"limit": request.limit},
         )
 
@@ -181,6 +183,7 @@ def _graph_relationship_patterns(
     """Count relationship patterns from Neo4j."""
     result = session.run(
         "MATCH (a:Entity)-[r]->(b:Entity) "
+        "WHERE NOT a:KGFControl AND NOT b:KGFControl "
         "RETURN a.type AS source_type, type(r) AS rel_type, b.type AS target_type, count(*) AS count "
         "ORDER BY count DESC LIMIT $limit",
         {"limit": request.limit},
@@ -205,7 +208,7 @@ def _graph_entity_search(
     session,
 ) -> GraphQueryResult:
     """Search entities by name and/or type from Neo4j."""
-    conditions = []
+    conditions = ["NOT e:KGFControl"]
     params: dict[str, str | int] = {"limit": request.limit}
 
     if request.filter_name:
@@ -215,7 +218,7 @@ def _graph_entity_search(
         conditions.append("e.type = $type")
         params["type"] = request.filter_type
 
-    where = f" WHERE {' AND '.join(conditions)}" if conditions else ""
+    where = f" WHERE {' AND '.join(conditions)}"
     query = f"MATCH (e:Entity){where} RETURN e.name AS name, e.type AS type, e.description AS description LIMIT $limit"
 
     result = session.run(query, params)

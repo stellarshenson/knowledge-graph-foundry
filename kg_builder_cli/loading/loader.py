@@ -41,9 +41,12 @@ def _run_with_retry(session, query: str, parameters: dict | None = None) -> obje
             time.sleep(wait)
 
 
-def _create_document_node(session, result: ExtractionResult) -> None:
+def _create_document_node(session, result: ExtractionResult, *, run_id: str | None = None) -> None:
     """MERGE the Document node for this extraction source."""
-    query = "MERGE (d:Document {name: $name}) SET d.source = $source, d.processed_at = $timestamp"
+    query = (
+        "MERGE (d:Document {name: $name}) "
+        "SET d.source = $source, d.processed_at = $timestamp, d.run_id = $run_id"
+    )
     _run_with_retry(
         session,
         query,
@@ -51,12 +54,15 @@ def _create_document_node(session, result: ExtractionResult) -> None:
             "name": result.metadata.source,
             "source": result.metadata.source,
             "timestamp": result.metadata.timestamp.isoformat(),
+            "run_id": run_id,
         },
     )
     logger.debug("merged Document node for '{}'", result.metadata.source)
 
 
-def _create_entity_nodes(session, result: ExtractionResult, batch_size: int) -> int:
+def _create_entity_nodes(
+    session, result: ExtractionResult, batch_size: int, *, run_id: str | None = None
+) -> int:
     """Create Entity nodes in batches and add type labels via APOC."""
     entities = result.entities
     if not entities:
@@ -66,7 +72,8 @@ def _create_entity_nodes(session, result: ExtractionResult, batch_size: int) -> 
         "UNWIND $batch AS row "
         "MERGE (n:Entity {id: row.id}) "
         "SET n.name = row.name, n.type = row.type, "
-        "n.description = row.description, n.confidence = row.confidence "
+        "n.description = row.description, n.confidence = row.confidence, "
+        "n.run_id = row.run_id "
         "SET n += row.properties "
         "FOREACH (_ IN CASE WHEN row.embedding IS NOT NULL THEN [1] ELSE [] END | "
         "SET n.embedding = row.embedding)"
@@ -92,6 +99,7 @@ def _create_entity_nodes(session, result: ExtractionResult, batch_size: int) -> 
                 "description": e.description,
                 "confidence": e.confidence,
                 "embedding": e.embedding,
+                "run_id": run_id,
                 "properties": {k: v for k, v in e.properties.items() if k not in _RESERVED_KEYS},
                 "labels": e.labels if e.labels else [e.type],
             }
@@ -248,7 +256,9 @@ def _create_relationships(session, result: ExtractionResult, batch_size: int) ->
     return total
 
 
-def load_doc_chunks(result: ExtractionResult, config: AppConfig) -> None:
+def load_doc_chunks(
+    result: ExtractionResult, config: AppConfig, *, run_id: str | None = None
+) -> None:
     """Load only Document and Chunk nodes from an ExtractionResult.
 
     Creates the Document node, Chunk nodes, HAS_CHUNK links, and NEXT_CHUNK
@@ -261,7 +271,7 @@ def load_doc_chunks(result: ExtractionResult, config: AppConfig) -> None:
     )
     try:
         with driver.session() as session:
-            _create_document_node(session, result)
+            _create_document_node(session, result, run_id=run_id)
             _create_chunk_nodes(session, result, config.load.batch_size)
             _create_has_entity_relationships(session, result, config.load.batch_size)
             _create_chunk_chain(session, result)
@@ -294,6 +304,7 @@ def resolve_against_graph(result: ExtractionResult, config: AppConfig) -> Extrac
             # Case-insensitive query using toLower() to match normalized names
             query_result = session.run(
                 "MATCH (e:Entity) WHERE toLower(e.name) IN $names "
+                "AND NOT e:KGFControl "
                 "RETURN e.id AS id, e.name AS name, e.type AS type, "
                 "e.description AS description",
                 {"names": norm_names},
@@ -392,6 +403,7 @@ def load_extraction(
     config: AppConfig,
     *,
     skip_doc_chunks: bool = False,
+    run_id: str | None = None,
 ) -> LoadResult:
     """Load an ExtractionResult into Neo4j, returning counts and timing."""
     from kg_builder_cli.events import signals as evt_signals
@@ -415,9 +427,11 @@ def load_extraction(
     try:
         with driver.session() as session:
             if not skip_doc_chunks:
-                _create_document_node(session, result)
+                _create_document_node(session, result, run_id=run_id)
 
-            nodes_created = _create_entity_nodes(session, result, config.load.batch_size)
+            nodes_created = _create_entity_nodes(
+                session, result, config.load.batch_size, run_id=run_id
+            )
 
             if not skip_doc_chunks:
                 _create_chunk_nodes(session, result, config.load.batch_size)

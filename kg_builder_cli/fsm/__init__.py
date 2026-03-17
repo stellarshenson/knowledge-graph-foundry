@@ -6,10 +6,14 @@ See KGF_DESIGN.md Section 14 for the full specification.
 from kg_builder_cli.fsm.context import PipelineContext, create_fsm
 from kg_builder_cli.fsm.metanode import (
     create_control_metanode,
+    detect_graph_state,
     read_control_metanode,
     update_control_metanode,
+    write_ontology_types,
+    write_resolution_guide,
     write_run_node,
     write_transition_node,
+    write_type_calibration,
 )
 from kg_builder_cli.fsm.states import STATES, TRANSITIONS, GraphState
 
@@ -20,8 +24,12 @@ __all__ = [
     "PipelineContext",
     "create_fsm",
     "create_control_metanode",
+    "detect_graph_state",
     "read_control_metanode",
     "update_control_metanode",
+    "write_ontology_types",
+    "write_resolution_guide",
     "write_run_node",
     "write_transition_node",
+    "write_type_calibration",
 ]

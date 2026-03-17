@@ -203,13 +203,83 @@ def ingest(
             fsm_ctx.run_id,
         )
 
+    # --- Graph-authoritative buffer initialization (FSC-2) ---
+    if fsm_ctx and fsm_ctx.ontology_hash is not None and buffer is not None:
+        # Existing graph with known ontology hash - check seed dedup
+        seed_hash = buffer.compute_hash()
+        graph_hash = fsm_ctx.ontology_hash
+        if seed_hash == graph_hash:
+            logger.info("seed already consumed (hash={}), skipping", seed_hash)
+            # Load buffer from graph instead of seed
+            try:
+                from neo4j import GraphDatabase as _GDB
+
+                _drv = _GDB.driver(
+                    config.neo4j.uri,
+                    auth=(config.neo4j.user, config.neo4j.password),
+                )
+                try:
+                    buffer = OntologyBuffer.from_graph(_drv, config.ontology_buffer)
+                finally:
+                    _drv.close()
+            except Exception:
+                logger.debug("from_graph() failed, keeping seed buffer")
+        else:
+            logger.info(
+                "seed hash differs ({} vs {}), merging",
+                seed_hash,
+                graph_hash,
+            )
+    elif fsm_ctx and fsm_ctx.ontology_hash is not None and buffer is not None:
+        pass  # seed provided, graph has hash - handled above
+    elif fsm_ctx and fsm_ctx.ontology_hash is not None and ontology is None:
+        # No seed provided, existing graph - reconstruct from graph
+        try:
+            from neo4j import GraphDatabase as _GDB
+
+            _drv = _GDB.driver(
+                config.neo4j.uri,
+                auth=(config.neo4j.user, config.neo4j.password),
+            )
+            try:
+                # Cache-first: check if ontology.yml exists and hash matches
+                ont_path = ontology_file()
+                if ont_path.exists():
+                    cached_buffer = OntologyBuffer.from_yaml(ont_path, config.ontology_buffer)
+                    cached_hash = cached_buffer.compute_hash()
+                    if cached_hash == fsm_ctx.ontology_hash:
+                        buffer = cached_buffer
+                        logger.info(
+                            "ontology buffer loaded from cache (hash verified): {} types",
+                            len(buffer.type_names()),
+                        )
+                    else:
+                        logger.warning(
+                            "ontology cache hash mismatch ({} vs {}), rebuilding from graph",
+                            cached_hash,
+                            fsm_ctx.ontology_hash,
+                        )
+                        buffer = OntologyBuffer.from_graph(_drv, config.ontology_buffer)
+                else:
+                    buffer = OntologyBuffer.from_graph(_drv, config.ontology_buffer)
+            finally:
+                _drv.close()
+        except Exception:
+            logger.debug("graph buffer reconstruction failed, using empty buffer")
+            if buffer is None:
+                buffer = OntologyBuffer(config.ontology_buffer)
+
     try:
         if curing_enabled:
             _total_entities, _total_rels = _ingest_fluid(
-                files, config, buffer, cure, fsm_ctx=fsm_ctx,
+                files,
+                config,
+                buffer,
+                cure,
+                fsm_ctx=fsm_ctx,
             )
         else:
-            _total_entities, _total_rels = _ingest_direct(files, config, buffer)
+            _total_entities, _total_rels = _ingest_direct(files, config, buffer, fsm_ctx=fsm_ctx)
     except LLMAuthError as exc:
         logger.error("LLM authentication failed - aborting ingestion")
         logger.error("{}", exc)
@@ -230,10 +300,12 @@ def ingest(
         fsm_ctx.complete_run()
         _update_metanode_safe(config, fsm_ctx)
         logger.info(
-            "FSM run completed: state={}, run_count={}",
+            "FSM run completed: state={}, graph_id={}, run_count={}",
             fsm_ctx.state,
+            fsm_ctx.graph_id,
             fsm_ctx.run_count,
         )
+        fsm_ctx._log_state()
 
     signals.ingestion_completed.send(
         signals.ingestion_completed,
@@ -268,16 +340,126 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
         )
 
         driver = GraphDatabase.driver(
-            config.neo4j.uri, auth=(config.neo4j.user, config.neo4j.password),
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
         )
         try:
             detection = detect_graph_state(driver)
         finally:
             driver.close()
 
+        logger.debug(
+            "FSM detection: has_metanode={}, has_entities={}, entity_count={}, is_empty={}",
+            detection["has_metanode"],
+            detection["has_entities"],
+            detection.get("entity_count", 0),
+            detection["is_empty"],
+        )
+
         if detection["has_metanode"]:
             meta = detection["metanode"]
+            stale_fsm_state = meta.get("fsm_state")
+            stale_run_id = meta.get("run_id")
+            stale_consolidation = meta.get("consolidation_started_at")
+
+            # --- Crash recovery detection ---
+            force_recure = False
+            loaded_names: set[str] = set()
+
+            if stale_fsm_state == GraphState.CURING and stale_consolidation is None:
+                # Scenario 1: pre-consolidation crash - accumulator data lost
+                logger.warning(
+                    "previous run interrupted pre-consolidation (fsm_state=curing), "
+                    "forcing re-cure"
+                )
+                force_recure = True
+
+            elif stale_consolidation is not None:
+                # Scenario 2: mid-consolidation crash - partial entities in graph
+                wipe_count = 0
+                if stale_run_id:
+                    try:
+                        wipe_driver = GraphDatabase.driver(
+                            config.neo4j.uri,
+                            auth=(config.neo4j.user, config.neo4j.password),
+                        )
+                        try:
+                            with wipe_driver.session() as wipe_session:
+                                wipe_result = wipe_session.run(
+                                    "MATCH (n:Entity {run_id: $run_id}) "
+                                    "WITH n LIMIT 10000 DETACH DELETE n "
+                                    "RETURN count(*) AS cnt",
+                                    {"run_id": stale_run_id},
+                                )
+                                wipe_count = wipe_result.single()["cnt"]
+                        finally:
+                            wipe_driver.close()
+                    except Exception:
+                        logger.debug("failed to wipe partial entities (non-critical)")
+                logger.warning(
+                    "previous run interrupted mid-consolidation (started_at={}), "
+                    "wiped {} partial entities, forcing re-cure",
+                    stale_consolidation,
+                    wipe_count,
+                )
+                force_recure = True
+
+            elif stale_fsm_state == GraphState.STABLE and stale_run_id is not None:
+                # Scenario 3: post-consolidation crash - resume from next unloaded doc
+                try:
+                    resume_driver = GraphDatabase.driver(
+                        config.neo4j.uri,
+                        auth=(config.neo4j.user, config.neo4j.password),
+                    )
+                    try:
+                        with resume_driver.session() as resume_session:
+                            doc_result = resume_session.run(
+                                "MATCH (d:Document) RETURN d.name AS name"
+                            )
+                            loaded_names = {r["name"] for r in doc_result}
+                    finally:
+                        resume_driver.close()
+                except Exception:
+                    logger.debug("failed to query loaded docs (non-critical)")
+
+                logger.warning(
+                    "previous run interrupted post-consolidation (run_id={}), "
+                    "{} docs loaded, resuming from next unloaded",
+                    stale_run_id,
+                    len(loaded_names),
+                )
+
+            # Clear stale markers on metanode
+            if force_recure or (stale_run_id is not None and stale_consolidation is not None):
+                from kg_builder_cli.fsm import update_control_metanode as _update_meta
+
+                stale_updates: dict[str, object] = {}
+                if stale_consolidation is not None:
+                    stale_updates["consolidation_started_at"] = None
+                    logger.info("cleared stale consolidation marker from metanode")
+                if stale_run_id is not None and force_recure:
+                    stale_updates["run_id"] = None
+                    logger.info("cleared stale run_id from metanode")
+                if stale_updates:
+                    try:
+                        clear_driver = GraphDatabase.driver(
+                            config.neo4j.uri,
+                            auth=(config.neo4j.user, config.neo4j.password),
+                        )
+                        try:
+                            _update_meta(clear_driver, stale_updates)
+                        finally:
+                            clear_driver.close()
+                    except Exception:
+                        logger.debug("failed to clear stale markers (non-critical)")
+
             initial = GraphState.STABLE
+            logger.info(
+                "FSM resuming existing graph: state={}, graph_id={}, run_count={}",
+                meta.get("fsm_state"),
+                meta.get("graph_id"),
+                meta.get("run_count"),
+            )
             ctx = create_fsm(
                 initial_state=initial,
                 graph_id=meta.get("graph_id", ""),
@@ -288,12 +470,29 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
                 created_at=meta.get("created_at"),
                 last_completed_at=meta.get("last_completed_at"),
             )
+
+            # Store loaded doc names for post-consolidation resume
+            if not force_recure and stale_fsm_state == GraphState.STABLE and stale_run_id:
+                ctx.loaded_doc_names = loaded_names
+
+            # Force re-cure override: set curing_enabled so FSM enters CURING
+            if force_recure:
+                curing_enabled = True
         else:
             initial = GraphState.EMPTY
+            logger.info("FSM starting fresh graph (no metanode found)")
             ctx = create_fsm(initial_state=initial)
 
-        # EMPTY/STABLE -> INITIALIZING
+        # Wire Neo4j config for KGFTransition audit trail writes
+        ctx._neo4j_uri = config.neo4j.uri
+        ctx._neo4j_user = config.neo4j.user
+        ctx._neo4j_password = config.neo4j.password
+
+        # Create metanode BEFORE transitions so audit trail nodes can link
         ctx.begin_run()
+        _update_metanode_safe(config, ctx)
+
+        # EMPTY/STABLE -> INITIALIZING
         ctx.start_run()
 
         # INITIALIZING -> CURING or STABLE
@@ -311,13 +510,14 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
             ctx.ontology_source = "seed" if has_seed else "discovered"
             ctx.begin_curing()
 
-        # Write metanode
+        # Update metanode with post-transition state
         _update_metanode_safe(config, ctx)
 
         # Write run node
         try:
             driver = GraphDatabase.driver(
-                config.neo4j.uri, auth=(config.neo4j.user, config.neo4j.password),
+                config.neo4j.uri,
+                auth=(config.neo4j.user, config.neo4j.password),
             )
             try:
                 write_run_node(
@@ -345,42 +545,117 @@ def _update_metanode_safe(config, ctx) -> None:
         from kg_builder_cli.fsm import create_control_metanode
 
         driver = GraphDatabase.driver(
-            config.neo4j.uri, auth=(config.neo4j.user, config.neo4j.password),
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
         )
         try:
-            create_control_metanode(driver, {
-                "graph_id": ctx.graph_id,
-                "fsm_state": ctx.state,
-                "run_id": ctx.run_id,
-                "run_count": ctx.run_count,
-                "ontology_source": ctx.ontology_source,
-                "extraction_mechanism": ctx.extraction_mechanism,
-                "consolidation_started_at": ctx.consolidation_started_at,
-                "ontology_type_count": ctx.ontology_type_count,
-                "ontology_hash": ctx.ontology_hash,
-                "created_at": ctx.created_at,
-                "last_completed_at": ctx.last_completed_at,
-                "last_error": ctx.last_error,
-            })
+            create_control_metanode(
+                driver,
+                {
+                    "graph_id": ctx.graph_id,
+                    "fsm_state": ctx.state,
+                    "run_id": ctx.run_id,
+                    "run_count": ctx.run_count,
+                    "ontology_source": ctx.ontology_source,
+                    "extraction_mechanism": ctx.extraction_mechanism,
+                    "consolidation_started_at": ctx.consolidation_started_at,
+                    "ontology_type_count": ctx.ontology_type_count,
+                    "ontology_hash": ctx.ontology_hash,
+                    "created_at": ctx.created_at,
+                    "last_completed_at": ctx.last_completed_at,
+                    "last_error": ctx.last_error,
+                },
+            )
         finally:
             driver.close()
     except Exception as exc:
         logger.debug("metanode update skipped: {}", exc)
 
 
+def _persist_schema_safe(config, ctx, buffer) -> None:
+    """Persist ontology schema to graph control plane nodes. Non-critical."""
+    if not buffer or not ctx:
+        return
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import (
+            write_ontology_types,
+            write_resolution_guide,
+            write_type_calibration,
+        )
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            # Write ontology type definitions
+            threshold = buffer._config.min_frequency_to_confirm
+            type_defs = [
+                {
+                    "name": td.name,
+                    "description": td.description,
+                    "properties": td.properties,
+                }
+                for td in buffer._entity_types.values()
+                if buffer._frequencies.get(td.name, 0) >= threshold
+            ]
+            hierarchy_pairs = [
+                (child, parent) for child, parent in buffer._child_to_parent.items()
+            ]
+            write_ontology_types(driver, ctx.graph_id, type_defs, hierarchy_pairs)
+
+            # Write resolution guide
+            if buffer._resolution_guide:
+                write_resolution_guide(driver, ctx.graph_id, buffer._resolution_guide)
+
+            # Write type calibration from entity frequencies as baseline
+            calibration: dict[str, dict] = {}
+            for type_name in buffer._entity_types:
+                freq = buffer._frequencies.get(type_name, 0)
+                if freq >= threshold:
+                    calibration[type_name] = {
+                        "entity_count": freq,
+                        "mean_posterior": 0.0,
+                        "observation_count": freq,
+                        "remap_count": 0,
+                        "prior_strength": 1.0,
+                    }
+            # Merge with existing calibration data if available
+            if hasattr(buffer, "_calibration_data"):
+                for type_name, data in buffer._calibration_data.items():
+                    if type_name in calibration:
+                        calibration[type_name].update(data)
+            write_type_calibration(driver, ctx.graph_id, calibration)
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("schema persistence skipped: {}", exc)
+
+
 def _ingest_direct(
     files: list[Path],
     config,
     buffer,
+    *,
+    fsm_ctx=None,
 ) -> tuple[int, int]:
     """Standard per-document ingestion with immediate Neo4j loading."""
     from kg_builder_cli.extraction.unstructured import ingest_document
     from kg_builder_cli.loading.loader import load_extraction
 
+    run_id = fsm_ctx.run_id if fsm_ctx else None
+    loaded_doc_names = fsm_ctx.loaded_doc_names if fsm_ctx else set()
     total_entities = 0
     total_rels = 0
 
     for i, file_path in enumerate(files):
+        # Skip already-loaded documents (post-consolidation crash resume)
+        if file_path.name in loaded_doc_names:
+            logger.info("skipping already-loaded document: {}", file_path.name)
+            continue
+
         logger.info("[{}/{}] processing: {}", i + 1, len(files), file_path.name)
         result = ingest_document(
             file_path,
@@ -399,7 +674,7 @@ def _ingest_direct(
             len(result.facts),
         )
 
-        load_result = load_extraction(result, config)
+        load_result = load_extraction(result, config, run_id=run_id)
         logger.info(
             "loaded: {} created, {} merged, {} relationships",
             load_result.nodes_created,
@@ -445,12 +720,19 @@ def _ingest_fluid(
         variance_window=config.curing.metrics_variance_window,
     )
 
+    run_id = fsm_ctx.run_id if fsm_ctx else None
+    loaded_doc_names = fsm_ctx.loaded_doc_names if fsm_ctx else set()
     total_entities = 0
     total_rels = 0
     cured = False
     exemplar_index = None  # built at curing time for Bayesian resolution
 
     for i, file_path in enumerate(files):
+        # Skip already-loaded documents (post-consolidation crash resume)
+        if file_path.name in loaded_doc_names:
+            logger.info("skipping already-loaded document: {}", file_path.name)
+            continue
+
         if cured:
             # Phase 2: direct load with graph-aware resolution
             logger.info("[cured] [{}/{}] processing: {}", i + 1, len(files), file_path.name)
@@ -493,6 +775,12 @@ def _ingest_fluid(
             # Drift detection
             remap_rate = result.metadata.remap_count / max(len(result.entities), 1)
             if detector.check_drift(remap_rate):
+                # FSM: STABLE -> RECURING
+                if fsm_ctx:
+                    fsm_ctx.drift_confirmed = True
+                    fsm_ctx.detect_drift()
+                    _update_metanode_safe(config, fsm_ctx)
+
                 should_recure = False
                 if config.curing.generative_curing:
                     from kg_builder_cli.curing.generative import llm_should_recure
@@ -524,6 +812,12 @@ def _ingest_fluid(
                     should_recure = config.curing.re_cure_on_drift
 
                 if should_recure:
+                    # FSM: RECURING -> CURING
+                    if fsm_ctx:
+                        fsm_ctx.authorize_revision()
+                        fsm_ctx.needs_calibration = True
+                        _update_metanode_safe(config, fsm_ctx)
+
                     logger.warning(
                         "[cured] DRIFT detected: re-entering fluid phase (remap rate {:.0%} for {} consecutive docs)",
                         remap_rate,
@@ -542,6 +836,12 @@ def _ingest_fluid(
                         buffer.accumulate_from_result(result.entities, result.relationships)
                     continue
                 else:
+                    # FSM: RECURING -> STABLE (dismiss)
+                    if fsm_ctx:
+                        fsm_ctx.dismiss_drift()
+                        fsm_ctx.drift_confirmed = False
+                        _update_metanode_safe(config, fsm_ctx)
+
                     logger.warning(
                         "[cured] DRIFT: {:.0%} entities remapped for {} consecutive docs",
                         remap_rate,
@@ -551,7 +851,7 @@ def _ingest_fluid(
             # Graph-aware resolution: remap to existing graph types
             result = resolve_against_graph(result, config)
 
-            load_result = load_extraction(result, config)
+            load_result = load_extraction(result, config, run_id=run_id)
             logger.info(
                 "[cured] loaded: {} created, {} merged, {} relationships",
                 load_result.nodes_created,
@@ -717,7 +1017,9 @@ def _ingest_fluid(
 
             # FSM: mark consolidation start for crash recovery
             if fsm_ctx:
+                logger.info("FSM: consolidation starting (crash recovery marker set)")
                 fsm_ctx.mark_consolidation_start()
+                fsm_ctx._log_state()
                 _update_metanode_safe(config, fsm_ctx)
 
             # Curing event: type clustering + consolidation + flush
@@ -779,7 +1081,7 @@ def _ingest_fluid(
 
             # Load per-document Document + Chunk nodes before consolidation
             for individual_result in accumulator._results:
-                load_doc_chunks(individual_result, config)
+                load_doc_chunks(individual_result, config, run_id=run_id)
                 logger.debug(
                     "[curing] loaded doc+chunks for '{}'",
                     individual_result.metadata.source,
@@ -800,7 +1102,9 @@ def _ingest_fluid(
             )
 
             # Load consolidated entities + relationships only (skip doc/chunks)
-            load_result = load_extraction(merged_result, config, skip_doc_chunks=True)
+            load_result = load_extraction(
+                merged_result, config, skip_doc_chunks=True, run_id=run_id
+            )
             logger.info(
                 "[curing] loaded: {} created, {} merged, {} relationships",
                 load_result.nodes_created,
@@ -814,14 +1118,16 @@ def _ingest_fluid(
 
             cured = True
 
-            # FSM: CURING -> STABLE
+            # FSM: CURING -> STABLE + schema persistence (FSC-2)
             if fsm_ctx:
                 fsm_ctx.mark_consolidation_end()
-                fsm_ctx.ontology_type_count = (
-                    len(buffer.type_names()) if buffer else 0
-                )
+                fsm_ctx.ontology_type_count = len(buffer.type_names()) if buffer else 0
+                if buffer:
+                    fsm_ctx.ontology_hash = buffer.compute_hash()
+                    logger.info("ontology hash computed: {}", fsm_ctx.ontology_hash)
                 fsm_ctx.stabilize()
                 _update_metanode_safe(config, fsm_ctx)
+                _persist_schema_safe(config, fsm_ctx, buffer)
 
             evt_signals.phase_transition.send(
                 evt_signals.phase_transition,
@@ -881,7 +1187,7 @@ def _ingest_fluid(
 
         # Load per-document Document + Chunk nodes before consolidation
         for individual_result in accumulator._results:
-            load_doc_chunks(individual_result, config)
+            load_doc_chunks(individual_result, config, run_id=run_id)
             logger.debug(
                 "[flush] loaded doc+chunks for '{}'",
                 individual_result.metadata.source,
@@ -903,13 +1209,24 @@ def _ingest_fluid(
             neo4j_config=config.neo4j,
         )
         # Load consolidated entities + relationships only (skip doc/chunks)
-        load_result = load_extraction(merged_result, config, skip_doc_chunks=True)
+        load_result = load_extraction(merged_result, config, skip_doc_chunks=True, run_id=run_id)
         logger.info(
             "[flush] loaded: {} created, {} merged, {} relationships",
             load_result.nodes_created,
             load_result.nodes_merged,
             load_result.relationships_created,
         )
+
+        # FSM: CURING -> STABLE (end-of-corpus flush) + schema persistence (FSC-2)
+        if fsm_ctx:
+            fsm_ctx.mark_consolidation_end()
+            fsm_ctx.ontology_type_count = len(buffer.type_names()) if buffer else 0
+            if buffer:
+                fsm_ctx.ontology_hash = buffer.compute_hash()
+                logger.info("ontology hash computed: {}", fsm_ctx.ontology_hash)
+            fsm_ctx.stabilize()
+            _update_metanode_safe(config, fsm_ctx)
+            _persist_schema_safe(config, fsm_ctx, buffer)
 
     return total_entities, total_rels
 

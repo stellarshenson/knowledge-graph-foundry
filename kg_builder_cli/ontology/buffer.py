@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 from loguru import logger
@@ -131,6 +132,169 @@ class OntologyBuffer:
             len(buffer._relationship_types),
             len(buffer._type_hierarchy),
             path,
+        )
+        return buffer
+
+    def compute_hash(self) -> str:
+        """Compute a deterministic hash of confirmed entity and relationship types.
+
+        Returns 16 hex chars of SHA256 over sorted confirmed type names and
+        sorted confirmed relationship type names. Changes when confirmed types change.
+        """
+        threshold = self._config.min_frequency_to_confirm
+        confirmed_entities = sorted(
+            name
+            for name, freq in self._frequencies.items()
+            if freq >= threshold and name in self._entity_types
+        )
+        confirmed_rels = sorted(
+            name
+            for name, freq in self._frequencies.items()
+            if freq >= threshold and name in self._relationship_types
+        )
+        content = "|".join(confirmed_entities) + "||" + "|".join(confirmed_rels)
+        return hashlib.sha256(content.encode()).hexdigest()[:16]
+
+    @classmethod
+    def from_graph(cls, driver, config: OntologyBufferConfig) -> OntologyBuffer:
+        """Reconstruct an OntologyBuffer from graph-resident control plane data.
+
+        Queries entity type frequencies from domain nodes, relationship types
+        from domain relationships, type definitions from KGFOntologyType nodes,
+        hierarchy from IS_A relationships, resolution guide from
+        KGFResolutionGuide nodes, exemplars from entity samples, and calibration
+        state from KGFTypeCalibration nodes.
+        """
+        buffer = cls(config)
+
+        with driver.session() as session:
+            # Query 1: entity type frequencies from domain nodes
+            result = session.run(
+                "MATCH (n:Entity) WHERE NOT n:KGFControl "
+                "RETURN n.type AS t, count(n) AS freq ORDER BY freq DESC"
+            )
+            for record in result:
+                type_name = record["t"]
+                freq = record["freq"]
+                if type_name:
+                    buffer._entity_types[type_name] = TypeDef(name=type_name)
+                    buffer._frequencies[type_name] = freq
+                    buffer._register_canonical(type_name)
+                    if freq >= config.min_frequency_to_confirm:
+                        buffer._seed_types.add(type_name)
+
+            # Query 2: relationship types from domain relationships
+            result = session.run(
+                "MATCH (a:Entity)-[r]->(b:Entity) "
+                "WHERE NOT a:KGFControl AND NOT b:KGFControl "
+                "RETURN DISTINCT type(r) AS t"
+            )
+            for record in result:
+                rel_type = record["t"]
+                if rel_type:
+                    buffer._relationship_types[rel_type] = RelationshipDef(
+                        name=rel_type, source_type="", target_type=""
+                    )
+                    buffer._register_canonical(rel_type)
+                    if rel_type not in buffer._frequencies:
+                        buffer._frequencies[rel_type] = config.min_frequency_to_confirm
+                    buffer._seed_rel_types.add(rel_type)
+
+            # Query 3: type definitions from control plane
+            result = session.run("MATCH (n:KGFControl:KGFOntologyType) RETURN n")
+            for record in result:
+                node = record["n"]
+                name = node.get("name", "")
+                if not name:
+                    continue
+                desc = node.get("description", "")
+                props_raw = node.get("properties")
+                props = {}
+                if props_raw and isinstance(props_raw, str):
+                    try:
+                        import json
+
+                        props = json.loads(props_raw)
+                    except (json.JSONDecodeError, TypeError):
+                        pass
+                elif isinstance(props_raw, dict):
+                    props = props_raw
+                buffer._entity_types[name] = TypeDef(name=name, description=desc, properties=props)
+                buffer._register_canonical(name)
+
+            # Query 4: type hierarchy from IS_A relationships
+            result = session.run(
+                "MATCH (c:KGFControl:KGFOntologyType)-[:IS_A]->(p:KGFControl:KGFOntologyType) "
+                "RETURN c.name AS child, p.name AS parent"
+            )
+            hierarchy_map: dict[str, list[str]] = {}
+            for record in result:
+                child = record["child"]
+                parent = record["parent"]
+                if child and parent:
+                    hierarchy_map.setdefault(parent, []).append(child)
+                    buffer._child_to_parent[child] = parent
+            for parent_name, children in hierarchy_map.items():
+                entry = TypeHierarchyEntry(
+                    name=parent_name,
+                    description=f"Parent category for {', '.join(sorted(children))}",
+                    children=sorted(children),
+                )
+                buffer._type_hierarchy.append(entry)
+
+            # Query 5: resolution guide
+            result = session.run(
+                "MATCH (n:KGFControl:KGFResolutionGuide) RETURN n.rules AS rules LIMIT 1"
+            )
+            guide_record = result.single()
+            if guide_record and guide_record["rules"]:
+                buffer._resolution_guide = guide_record["rules"]
+
+            # Query 6: sample exemplars per type
+            result = session.run(
+                "MATCH (n:Entity) WHERE NOT n:KGFControl "
+                "WITH n.type AS t, collect({name: n.name, description: n.description})[0..5] AS exs "
+                "RETURN t, exs"
+            )
+            for record in result:
+                type_name = record["t"]
+                exs = record["exs"]
+                if not type_name or not exs:
+                    continue
+                for ex_data in exs:
+                    if not isinstance(ex_data, dict):
+                        continue
+                    ex = TypeExemplar(
+                        name=ex_data.get("name", ""),
+                        entity_type=type_name,
+                        frequency=1,
+                        description=ex_data.get("description", ""),
+                    )
+                    buffer._type_exemplars.setdefault(type_name, []).append(ex)
+
+            # Query 7: calibration state (loaded but not yet applied to resolver)
+            result = session.run("MATCH (n:KGFControl:KGFTypeCalibration) RETURN n")
+            calibration_data: dict[str, dict] = {}
+            for record in result:
+                node = record["n"]
+                name = node.get("name", "")
+                if name:
+                    calibration_data[name] = {
+                        "entity_count": node.get("entity_count", 0),
+                        "mean_posterior": node.get("mean_posterior", 0.0),
+                        "observation_count": node.get("observation_count", 0),
+                        "remap_count": node.get("remap_count", 0),
+                        "prior_strength": node.get("prior_strength", 1.0),
+                    }
+
+        # Store calibration data for downstream consumers
+        buffer._calibration_data = calibration_data
+
+        logger.info(
+            "ontology buffer loaded from graph: {} types, {} rels, {} hierarchy entries",
+            len(buffer._entity_types),
+            len(buffer._relationship_types),
+            len(buffer._type_hierarchy),
         )
         return buffer
 

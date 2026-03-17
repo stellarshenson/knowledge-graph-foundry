@@ -31,29 +31,38 @@ def validate_graph(config: AppConfig, *, driver: object | None = None) -> Valida
 
     try:
         with driver.session() as session:
-            # orphan entities - no relationships at all
-            result = session.run("MATCH (n:Entity) WHERE NOT (n)-[]-() RETURN n.id AS id")
+            # orphan entities - no relationships at all (exclude control plane)
+            result = session.run(
+                "MATCH (n:Entity) WHERE NOT (n)-[]-() AND NOT n:KGFControl RETURN n.id AS id"
+            )
             orphan_ids = [record["id"] for record in result]
             if orphan_ids:
                 logger.warning("{} orphan entities detected", len(orphan_ids))
 
-            # total entity count
-            result = session.run("MATCH (n:Entity) RETURN count(n) AS cnt")
+            # total entity count (exclude control plane)
+            result = session.run("MATCH (n:Entity) WHERE NOT n:KGFControl RETURN count(n) AS cnt")
             total_entities = result.single()["cnt"]
 
-            # total relationship count
-            result = session.run("MATCH (:Entity)-[r]-(:Entity) RETURN count(r) AS cnt")
+            # total relationship count (exclude control plane)
+            result = session.run(
+                "MATCH (a:Entity)-[r]-(b:Entity) "
+                "WHERE NOT a:KGFControl AND NOT b:KGFControl "
+                "RETURN count(r) AS cnt"
+            )
             total_relationships = result.single()["cnt"]
 
-            # type distribution
+            # type distribution (exclude control plane)
             result = session.run(
-                "MATCH (n:Entity) RETURN n.type AS type, count(n) AS cnt ORDER BY cnt DESC"
+                "MATCH (n:Entity) WHERE NOT n:KGFControl "
+                "RETURN n.type AS type, count(n) AS cnt ORDER BY cnt DESC"
             )
             type_distribution = {record["type"]: record["cnt"] for record in result}
 
-            # types that participate in at least one relationship
+            # types that participate in at least one relationship (exclude control plane)
             if type_distribution:
-                result = session.run("MATCH (n:Entity)-[]-() RETURN DISTINCT n.type AS type")
+                result = session.run(
+                    "MATCH (n:Entity)-[]-() WHERE NOT n:KGFControl RETURN DISTINCT n.type AS type"
+                )
                 types_with_rels = {record["type"] for record in result}
     finally:
         if owns_driver:

@@ -9,8 +9,11 @@ from kg_builder_cli.fsm.metanode import (
     detect_graph_state,
     read_control_metanode,
     update_control_metanode,
+    write_ontology_types,
+    write_resolution_guide,
     write_run_node,
     write_transition_node,
+    write_type_calibration,
 )
 
 
@@ -44,7 +47,7 @@ class TestCreateControlMetanode:
         create_control_metanode(driver, props)
         session.run.assert_called_once()
         call_args = session.run.call_args
-        assert "MERGE (c:KGFControl" in call_args[0][0]
+        assert "MERGE (c:KGFControl:KGFState" in call_args[0][0]
         assert call_args[0][1]["graph_id"] == "test-123"
 
 
@@ -96,7 +99,8 @@ class TestWriteRunNode:
         )
         session.run.assert_called_once()
         query = session.run.call_args[0][0]
-        assert "KGFRun" in query
+        assert "KGFControl:KGFRun" in query
+        assert "KGFControl:KGFState" in query
         assert "HAS_RUN" in query
 
 
@@ -113,7 +117,8 @@ class TestWriteTransitionNode:
         )
         session.run.assert_called_once()
         query = session.run.call_args[0][0]
-        assert "KGFTransition" in query
+        assert "KGFControl:KGFTransition" in query
+        assert "KGFControl:KGFState" in query
         assert "HAS_TRANSITION" in query
 
 
@@ -155,3 +160,68 @@ class TestDetectGraphState:
         assert result["has_metanode"] is False
         assert result["has_entities"] is True
         assert result["is_empty"] is False
+
+
+class TestWriteOntologyTypes:
+    def test_writes_type_nodes(self, mock_driver):
+        driver, session = mock_driver
+        types = [
+            {"name": "Product", "description": "A product", "properties": {"brand": "string"}},
+            {"name": "Component", "description": "A component", "properties": {}},
+        ]
+        write_ontology_types(driver, "test-123", types, [])
+        session.run.assert_called_once()
+        query = session.run.call_args[0][0]
+        assert "KGFControl:KGFOntologyType" in query
+
+    def test_writes_hierarchy_relationships(self, mock_driver):
+        driver, session = mock_driver
+        types = [
+            {"name": "Part", "description": "Parent"},
+            {"name": "Component", "description": "Child"},
+        ]
+        hierarchy = [("Component", "Part")]
+        write_ontology_types(driver, "test-123", types, hierarchy)
+        assert session.run.call_count == 2
+        hier_query = session.run.call_args_list[1][0][0]
+        assert "IS_A" in hier_query
+
+    def test_skips_empty_types(self, mock_driver):
+        driver, session = mock_driver
+        write_ontology_types(driver, "test-123", [], [])
+        session.run.assert_not_called()
+
+
+class TestWriteResolutionGuide:
+    def test_writes_guide(self, mock_driver):
+        driver, session = mock_driver
+        write_resolution_guide(driver, "test-123", "rule1\nrule2")
+        session.run.assert_called_once()
+        query = session.run.call_args[0][0]
+        assert "KGFControl:KGFResolutionGuide" in query
+        assert session.run.call_args[0][1]["rules"] == "rule1\nrule2"
+
+
+class TestWriteTypeCalibration:
+    def test_writes_calibration_nodes(self, mock_driver):
+        driver, session = mock_driver
+        calibration = {
+            "Product": {
+                "entity_count": 100,
+                "mean_posterior": 0.85,
+                "observation_count": 120,
+                "remap_count": 5,
+                "prior_strength": 1.2,
+            },
+        }
+        write_type_calibration(driver, "test-123", calibration)
+        session.run.assert_called_once()
+        query = session.run.call_args[0][0]
+        assert "KGFControl:KGFTypeCalibration" in query
+        assert "HAS_CALIBRATION" in query
+        assert "KGFControl:KGFState" in query
+
+    def test_skips_empty_calibration(self, mock_driver):
+        driver, session = mock_driver
+        write_type_calibration(driver, "test-123", {})
+        session.run.assert_not_called()

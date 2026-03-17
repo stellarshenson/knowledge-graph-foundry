@@ -27,7 +27,7 @@ class PipelineContext:
     (``start_run``, ``begin_curing``, etc.) via :func:`create_fsm`.
     """
 
-    # --- Metanode properties (persisted to :KGFControl in Neo4j) ---
+    # --- Metanode properties (persisted to :KGFControl:KGFState in Neo4j) ---
     graph_id: str = field(default_factory=lambda: str(uuid4())[:8])
     run_id: str | None = None
     run_count: int = 0
@@ -43,7 +43,11 @@ class PipelineContext:
     # --- Runtime (not persisted to metanode) ---
     needs_calibration: bool = True
     drift_confirmed: bool = False
+    loaded_doc_names: set[str] = field(default_factory=set)
     _prev_state: str = GraphState.EMPTY
+    _neo4j_uri: str | None = None
+    _neo4j_user: str | None = None
+    _neo4j_password: str | None = None
 
     # FSM state attribute - set by transitions library
     state: str = GraphState.EMPTY
@@ -65,12 +69,16 @@ class PipelineContext:
         self._emit_transition("start_run")
 
     def _on_enter_curing(self) -> None:
-        trigger = "begin_curing" if self._prev_state == GraphState.INITIALIZING else "authorize_revision"
+        trigger = (
+            "begin_curing" if self._prev_state == GraphState.INITIALIZING else "authorize_revision"
+        )
         self._emit_transition(trigger)
 
     def _on_enter_stable(self) -> None:
-        trigger = "begin_stable" if self._prev_state == GraphState.INITIALIZING else (
-            "stabilize" if self._prev_state == GraphState.CURING else "dismiss_drift"
+        trigger = (
+            "begin_stable"
+            if self._prev_state == GraphState.INITIALIZING
+            else ("stabilize" if self._prev_state == GraphState.CURING else "dismiss_drift")
         )
         self._emit_transition(trigger)
 
@@ -82,16 +90,36 @@ class PipelineContext:
 
     # --- Helpers ---
 
+    def _log_state(self) -> None:
+        """Log full FSM state structure at DEBUG level."""
+        logger.debug(
+            "FSM state: state={}, graph_id={}, run_id={}, run_count={}, "
+            "ontology_source={}, mechanism={}, needs_calibration={}, "
+            "drift_confirmed={}, consolidation={}",
+            self.state,
+            self.graph_id,
+            self.run_id,
+            self.run_count,
+            self.ontology_source,
+            self.extraction_mechanism,
+            self.needs_calibration,
+            self.drift_confirmed,
+            self.consolidation_started_at,
+        )
+
     def _emit_transition(self, trigger: str) -> None:
-        """Emit phase_transition blinker signal and log."""
+        """Emit phase_transition blinker signal, log, and write audit trail."""
         from_state = self._prev_state
         to_state = self.state
         logger.info(
-            "FSM transition: {} -> {} (trigger={})",
+            "FSM transition: {} -> {} (trigger={}, graph_id={}, run_id={})",
             from_state,
             to_state,
             trigger,
+            self.graph_id,
+            self.run_id,
         )
+        self._log_state()
         phase_transition_signal.send(
             phase_transition_signal,
             event=PhaseTransition(
@@ -101,6 +129,31 @@ class PipelineContext:
                 doc_index=0,
             ),
         )
+
+        # Write KGFTransition audit trail node if Neo4j config is available
+        if self._neo4j_uri:
+            try:
+                from neo4j import GraphDatabase
+
+                from kg_builder_cli.fsm.metanode import write_transition_node
+
+                driver = GraphDatabase.driver(
+                    self._neo4j_uri,
+                    auth=(self._neo4j_user, self._neo4j_password),
+                )
+                try:
+                    write_transition_node(
+                        driver,
+                        graph_id=self.graph_id,
+                        from_state=from_state,
+                        to_state=to_state,
+                        trigger=trigger,
+                        run_id=self.run_id,
+                    )
+                finally:
+                    driver.close()
+            except Exception:
+                logger.debug("failed to write KGFTransition node (non-critical)")
 
     def begin_run(self) -> None:
         """Start a new ingestion run. Sets run_id and timestamps."""
@@ -173,6 +226,7 @@ def create_fsm(
             def wrapper(*args: Any, **kwargs: Any) -> Any:
                 ctx._prev_state = ctx.state
                 return fn(*args, **kwargs)
+
             wrapper.__name__ = name
             return wrapper
 

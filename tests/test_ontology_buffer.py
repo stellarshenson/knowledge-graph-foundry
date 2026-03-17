@@ -172,3 +172,38 @@ class TestOntologyBuffer:
         newtype_td = next(t for t in snapshot.entity_types if t.name == "NewType")
         assert product_td.description == "A product"
         assert newtype_td.description == ""
+
+    def test_compute_hash_deterministic(self, empty_buffer):
+        """Hash is deterministic and changes when confirmed types change."""
+        empty_buffer.accumulate([TypeSignal(type_name="Alpha", frequency=2)])
+        empty_buffer.accumulate([TypeSignal(type_name="Beta", frequency=2)])
+        hash1 = empty_buffer.compute_hash()
+        hash2 = empty_buffer.compute_hash()
+        assert hash1 == hash2
+        assert len(hash1) == 16  # 16 hex chars
+
+        # Adding a new confirmed type changes the hash
+        empty_buffer.accumulate([TypeSignal(type_name="Gamma", frequency=2)])
+        hash3 = empty_buffer.compute_hash()
+        assert hash3 != hash1
+
+    def test_compute_hash_ignores_unconfirmed(self, empty_buffer):
+        """Unconfirmed types (freq < threshold) do not affect hash."""
+        empty_buffer.accumulate([TypeSignal(type_name="Confirmed", frequency=2)])
+        hash1 = empty_buffer.compute_hash()
+
+        empty_buffer.accumulate([TypeSignal(type_name="Candidate", frequency=1)])
+        hash2 = empty_buffer.compute_hash()
+        assert hash1 == hash2
+
+    def test_compute_hash_order_independent(self, buffer_config):
+        """Hash is the same regardless of accumulation order."""
+        buf_a = OntologyBuffer(buffer_config)
+        buf_a.accumulate([TypeSignal(type_name="Zebra", frequency=2)])
+        buf_a.accumulate([TypeSignal(type_name="Apple", frequency=2)])
+
+        buf_b = OntologyBuffer(buffer_config)
+        buf_b.accumulate([TypeSignal(type_name="Apple", frequency=2)])
+        buf_b.accumulate([TypeSignal(type_name="Zebra", frequency=2)])
+
+        assert buf_a.compute_hash() == buf_b.compute_hash()

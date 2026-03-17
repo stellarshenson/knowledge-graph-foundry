@@ -2549,9 +2549,11 @@ Strict mode resolution:
 
 ### 14.5 Graph Control Plane
 
-The `(:KGFControl)` metanode is the authoritative state store.
+All control plane nodes carry `:KGFControl` as a shared secondary label for namespace isolation. The `KGF` prefix alone could collide with domain data extracted from sources that mention "KGF". The shared label enables clean wipe (`MATCH (n:KGFControl) DETACH DELETE n`), exclusion from domain queries (`WHERE NOT n:KGFControl`), and index optimization without substring matching.
 
-**Properties**:
+The `(:KGFControl:KGFState)` metanode is the authoritative state store.
+
+**Metanode properties**:
 - `graph_id` - unique identifier for this KG instance
 - `fsm_state` - current state (EMPTY, INITIALIZING, CURING, STABLE, RECURING, FAILED)
 - `run_id` - active ingestion run identifier (null when idle in STABLE)
@@ -2560,20 +2562,45 @@ The `(:KGFControl)` metanode is the authoritative state store.
 - `extraction_mechanism` - how CURING was conducted (fluid/direct)
 - `consolidation_started_at` - null during discovery/calibration, set to timestamp when consolidation begins
 - `ontology_type_count` - number of types in evolved ontology
-- `ontology_hash` - hash of current ontology for conflict detection
+- `ontology_hash` - SHA256 hash (16 hex chars) of sorted confirmed entity and relationship type names
 - `created_at` - graph creation timestamp
 - `last_completed_at` - last successful run completion
 - `last_error` - most recent error if in FAILED state
 
-**Related nodes**:
-- `(:KGFRun)` per ingestion run with start/end time, doc count, entity count, trigger type
-- `(:KGFTransition)` for state change audit trail (from, to, trigger, timestamp)
+**Control plane node inventory**:
 
-**Recovery**: a new KGF process connects, reads the KGFControl metanode, and knows exactly what state the graph is in. Combined with `config.yml`, this is sufficient to resume or start a new run. No `.kgf/ontology.yml` or local serialized state needed - the ontology is reconstructable from the graph's entity types and the buffer can be rebuilt from graph state.
+| Node | Labels | Purpose |
+|------|--------|---------|
+| Metanode | `:KGFControl:KGFState` | FSM state, run history, ontology hash |
+| Run | `:KGFControl:KGFRun` | Per-ingestion run record |
+| Transition | `:KGFControl:KGFTransition` | State change audit trail |
+| Ontology type | `:KGFControl:KGFOntologyType` | Type definition with description and properties |
+| Resolution guide | `:KGFControl:KGFResolutionGuide` | Type pair disambiguation rules |
+| Type calibration | `:KGFControl:KGFTypeCalibration` | Per-type Bayesian calibration state |
+
+Domain nodes (`(:Entity)`, `(:Document)`, `(:Chunk)`) never carry `:KGFControl`. All domain queries include `WHERE NOT n:KGFControl` to exclude control plane nodes from entity counts, type distributions, validation, graph resolution, and curing graph queries.
+
+**Graph-authoritative schema persistence**: at each stabilize point (CURING -> STABLE), the system persists the full ontology schema to graph control plane nodes. `(:KGFControl:KGFOntologyType)` nodes store type definitions with descriptions and properties, linked by `[:IS_A]` relationships encoding the type hierarchy. `(:KGFControl:KGFResolutionGuide)` stores the evolved disambiguation rules string. `(:KGFControl:KGFTypeCalibration)` nodes store per-type entity counts, mean posteriors, observation counts, remap counts, and prior strengths, linked to the metanode via `[:HAS_CALIBRATION]`.
+
+**OntologyBuffer.from_graph()**: reconstructs a full `OntologyBuffer` from graph-resident data without reading `ontology.yml`. Seven queries extract entity type frequencies from domain nodes, relationship types from domain relationships, type definitions from `KGFOntologyType` nodes, hierarchy from `IS_A` relationships, resolution guide from `KGFResolutionGuide`, exemplars from entity samples, and calibration state from `KGFTypeCalibration` nodes.
+
+**Ontology hash and seed dedup**: `buffer.compute_hash()` produces a deterministic 16-character hex hash from sorted confirmed entity and relationship type names. When a seed ontology is provided on a subsequent run, the system compares the seed's hash against the metanode's `ontology_hash`. If identical, the seed is recognized as already consumed and skipped. If different, the seed's new types merge as additive priors into the existing buffer.
+
+**Cache-first pattern**: when no seed is provided against an existing graph, the system first checks if `ontology.yml` exists and its hash matches the metanode. If matched, the file is loaded directly (avoiding graph round-trips). If mismatched or missing, `from_graph()` reconstructs the buffer from graph data. The `ontology.yml` file is a disposable cache - the graph is the sole authority.
+
+**Document and entity tagging**: all `(:Document)` and `(:Entity)` nodes carry a `run_id` property matching the FSM run that created them. This enables targeted cleanup during crash recovery (wiping partial entities from an interrupted run by `run_id`).
+
+**Crash recovery**: three interruption scenarios are detected and handled at FSM initialization:
+
+| Scenario | Detection | Action |
+|----------|-----------|--------|
+| Pre-consolidation | `fsm_state=curing`, `consolidation_started_at` is null | Force re-cure, clear stale `run_id` |
+| Mid-consolidation | `consolidation_started_at` is non-null | Wipe entities by stale `run_id`, force re-cure |
+| Post-consolidation | `fsm_state=stable`, `run_id` is non-null | Query loaded `(:Document)` nodes, skip already-loaded, resume |
 
 **Split responsibility**:
-- Graph metanode: authoritative control plane (FSM state, run history, ontology hash)
-- Local filesystem: non-authoritative artifacts only (logs, benchmark outputs, event dumps)
+- Graph metanode: authoritative control plane (FSM state, run history, ontology hash, schema, calibration)
+- Local filesystem: non-authoritative artifacts only (logs, benchmark outputs, event dumps, ontology.yml cache)
 
 ### 14.6 FSM Implementation
 
