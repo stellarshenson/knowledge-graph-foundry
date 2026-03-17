@@ -2577,14 +2577,16 @@ The `(:KGFControl)` metanode is the authoritative state store.
 
 ### 14.6 FSM Implementation
 
-The FSM uses the `transitions` library (pytransitions/transitions). The state machine attaches to a `PipelineContext` model object via mixin, with `on_enter_<state>` callbacks emitting blinker signals and `conditions` guards enforcing transition preconditions.
+The FSM is implemented in `kg_builder_cli/fsm/` using the `transitions` library (pytransitions/transitions). The package has four modules: `states.py` (state and transition definitions), `context.py` (PipelineContext model with guards and callbacks), `metanode.py` (Neo4j CRUD operations), and `__init__.py` (public API).
+
+**State and transition definitions** (`fsm/states.py`):
 
 ```python
 from transitions import Machine
 
 states = [
     {"name": "empty"},
-    {"name": "initializing"},
+    {"name": "initializing", "on_enter": ["_on_enter_initializing"]},
     {"name": "curing", "on_enter": ["_on_enter_curing"]},
     {"name": "stable", "on_enter": ["_on_enter_stable"]},
     {"name": "recuring", "on_enter": ["_on_enter_recuring"]},
@@ -2606,12 +2608,31 @@ transitions = [
 ]
 ```
 
-Key state actions:
-- `_on_enter_curing`: begins ontology establishment. In fluid mode, types emerge freely and accumulate in FluidAccumulator with convergence checking after each document. In direct mode, types are prescribed but Bayesian posteriors calibrate, resolution guides build, and cross-type evidence accumulates. When calibration converges, consolidation runs (type clustering, ontology freeze, batch flush) and triggers `stabilize`
-- `_on_enter_stable`: if entering from CURING, processes remaining documents with type enforcement. If entering from INITIALIZING (subsequent run), processes all documents with established ontology. Drift monitored after each document. Run finalization sets `run_id` to null when all docs are processed
-- `_on_enter_recuring`: evaluates drift evidence (remap rates, missing types), optionally consults LLM advisory (Section 5.8). Decides between `authorize_revision` (proceed to CURING) or `dismiss_drift` (return to STABLE)
+A `GraphState` constants class provides type-safe state name references (`GraphState.CURING`, `GraphState.STABLE`, etc.) used throughout the codebase instead of string literals.
 
-Guard conditions read pipeline state (detector metrics, ontology buffer, config flags) to enforce transition preconditions.
+**PipelineContext model** (`fsm/context.py`):
+
+The `PipelineContext` is a `@dataclass` carrying all metanode properties (`graph_id`, `run_id`, `run_count`, `ontology_source`, `extraction_mechanism`, `consolidation_started_at`, etc.) plus runtime flags. The `transitions` Machine attaches via mixin through `create_fsm()`, which also wraps each trigger method to capture `_prev_state` before the transition fires - this enables `on_enter_*` callbacks to know the source state.
+
+**Guard conditions** are simple boolean properties set by `cli.py` before calling triggers:
+- `needs_calibration: bool` - set True for first runs, False for subsequent runs with existing ontology
+- `drift_confirmed: bool` - set True by `cli.py` when CuringDetector reports sustained drift
+
+When a guard returns False, the `transitions` library silently skips the transition (no exception). The caller checks `ctx.state` after the trigger to verify the transition occurred. This is intentional - guards are safety nets, not primary flow control. The pipeline logic in `cli.py` determines which trigger to call based on graph detection results.
+
+**State entry callbacks** emit `phase_transition` blinker signals and log the transition. They do not drive pipeline logic - all extraction, curing, and loading behavior remains in `cli.py`. The FSM is an observability and state-tracking overlay, not a control-flow replacement.
+
+**Integration pattern** (`cli.py`):
+
+The FSM integrates as a backward-compatible overlay via two helper functions:
+
+- `_init_fsm(config, curing_enabled, has_seed)` - detects graph state via `detect_graph_state()`, creates `PipelineContext` with appropriate initial state (EMPTY or STABLE), transitions through INITIALIZING to CURING or STABLE, writes the KGFControl metanode and KGFRun node. **Returns None on any failure** - the pipeline proceeds without FSM tracking if Neo4j is unavailable at detection time or the `transitions` library is not installed.
+
+- `_update_metanode_safe(config, ctx)` - writes the full FSM context to the KGFControl metanode. Swallows all exceptions. Called at each transition point (initialization, consolidation start/end, stabilization, run completion).
+
+The FSM context is passed as an optional keyword argument `fsm_ctx=None` to `_ingest_fluid()`. All FSM operations are guarded by `if fsm_ctx:` checks. The existing boolean `cured` flag and phase string tracking remain unchanged - the FSM runs alongside them, not instead of them.
+
+**Consolidation crash recovery**: at the start of consolidation (type clustering + batch flush), `cli.py` calls `fsm_ctx.mark_consolidation_start()` and updates the metanode. On successful completion, `mark_consolidation_end()` clears the marker. If the process crashes mid-consolidation, the metanode retains `consolidation_started_at` with a timestamp, enabling the next process to detect the partially-consolidated state.
 
 ### 14.7 Event Mapping
 

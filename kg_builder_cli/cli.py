@@ -193,9 +193,21 @@ def ingest(
         ),
     )
 
+    # --- FSM initialization ---
+    fsm_ctx = _init_fsm(config, curing_enabled, ontology is not None)
+    if fsm_ctx:
+        logger.info(
+            "FSM initialized: state={}, graph_id={}, run_id={}",
+            fsm_ctx.state,
+            fsm_ctx.graph_id,
+            fsm_ctx.run_id,
+        )
+
     try:
         if curing_enabled:
-            _total_entities, _total_rels = _ingest_fluid(files, config, buffer, cure)
+            _total_entities, _total_rels = _ingest_fluid(
+                files, config, buffer, cure, fsm_ctx=fsm_ctx,
+            )
         else:
             _total_entities, _total_rels = _ingest_direct(files, config, buffer)
     except LLMAuthError as exc:
@@ -213,6 +225,16 @@ def ingest(
         buffer.flush(flush_path)
         logger.info("ontology buffer flushed: coverage={:.0%}", buffer.coverage())
 
+    # --- FSM run completion ---
+    if fsm_ctx:
+        fsm_ctx.complete_run()
+        _update_metanode_safe(config, fsm_ctx)
+        logger.info(
+            "FSM run completed: state={}, run_count={}",
+            fsm_ctx.state,
+            fsm_ctx.run_count,
+        )
+
     signals.ingestion_completed.send(
         signals.ingestion_completed,
         event=etypes.IngestionCompleted(
@@ -226,6 +248,124 @@ def ingest(
         logger.info("event log: {} events written to {}", get_event_log_count(), event_log)
 
     logger.info("ingestion complete")
+
+
+def _init_fsm(config, curing_enabled: bool, has_seed: bool):
+    """Initialize the pipeline lifecycle FSM.
+
+    Detects graph state from the KGFControl metanode, creates the FSM
+    context, and transitions through EMPTY -> INITIALIZING -> CURING/STABLE.
+    Returns None if FSM initialization fails (pipeline proceeds without FSM).
+    """
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import (
+            GraphState,
+            create_fsm,
+            detect_graph_state,
+            write_run_node,
+        )
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri, auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            detection = detect_graph_state(driver)
+        finally:
+            driver.close()
+
+        if detection["has_metanode"]:
+            meta = detection["metanode"]
+            initial = GraphState.STABLE
+            ctx = create_fsm(
+                initial_state=initial,
+                graph_id=meta.get("graph_id", ""),
+                run_count=meta.get("run_count", 0),
+                ontology_source=meta.get("ontology_source"),
+                ontology_type_count=meta.get("ontology_type_count", 0),
+                ontology_hash=meta.get("ontology_hash"),
+                created_at=meta.get("created_at"),
+                last_completed_at=meta.get("last_completed_at"),
+            )
+        else:
+            initial = GraphState.EMPTY
+            ctx = create_fsm(initial_state=initial)
+
+        # EMPTY/STABLE -> INITIALIZING
+        ctx.begin_run()
+        ctx.start_run()
+
+        # INITIALIZING -> CURING or STABLE
+        if curing_enabled:
+            ctx.needs_calibration = True
+            ctx.extraction_mechanism = "fluid"
+            ctx.ontology_source = "seed" if has_seed else "discovered"
+            ctx.begin_curing()
+        elif detection["has_metanode"]:
+            ctx.needs_calibration = False
+            ctx.begin_stable()
+        else:
+            ctx.needs_calibration = True
+            ctx.extraction_mechanism = "direct" if has_seed else "fluid"
+            ctx.ontology_source = "seed" if has_seed else "discovered"
+            ctx.begin_curing()
+
+        # Write metanode
+        _update_metanode_safe(config, ctx)
+
+        # Write run node
+        try:
+            driver = GraphDatabase.driver(
+                config.neo4j.uri, auth=(config.neo4j.user, config.neo4j.password),
+            )
+            try:
+                write_run_node(
+                    driver,
+                    run_id=ctx.run_id or "",
+                    graph_id=ctx.graph_id,
+                    trigger_type=ctx.extraction_mechanism,
+                )
+            finally:
+                driver.close()
+        except Exception:
+            logger.debug("failed to write KGFRun node (non-critical)")
+
+        return ctx
+    except Exception as exc:
+        logger.debug("FSM initialization skipped: {}", exc)
+        return None
+
+
+def _update_metanode_safe(config, ctx) -> None:
+    """Write FSM context to KGFControl metanode. Non-critical - failures logged."""
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import create_control_metanode
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri, auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            create_control_metanode(driver, {
+                "graph_id": ctx.graph_id,
+                "fsm_state": ctx.state,
+                "run_id": ctx.run_id,
+                "run_count": ctx.run_count,
+                "ontology_source": ctx.ontology_source,
+                "extraction_mechanism": ctx.extraction_mechanism,
+                "consolidation_started_at": ctx.consolidation_started_at,
+                "ontology_type_count": ctx.ontology_type_count,
+                "ontology_hash": ctx.ontology_hash,
+                "created_at": ctx.created_at,
+                "last_completed_at": ctx.last_completed_at,
+                "last_error": ctx.last_error,
+            })
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("metanode update skipped: {}", exc)
 
 
 def _ingest_direct(
@@ -278,6 +418,8 @@ def _ingest_fluid(
     config,
     buffer,
     force_cure: bool = False,
+    *,
+    fsm_ctx=None,
 ) -> tuple[int, int]:
     """Two-phase ingestion: fluid accumulation then cured direct loading.
 
@@ -573,6 +715,11 @@ def _ingest_fluid(
                 ),
             )
 
+            # FSM: mark consolidation start for crash recovery
+            if fsm_ctx:
+                fsm_ctx.mark_consolidation_start()
+                _update_metanode_safe(config, fsm_ctx)
+
             # Curing event: type clustering + consolidation + flush
             import asyncio
 
@@ -666,6 +813,16 @@ def _ingest_fluid(
                 exemplar_index = _build_exemplar_index(buffer, config)
 
             cured = True
+
+            # FSM: CURING -> STABLE
+            if fsm_ctx:
+                fsm_ctx.mark_consolidation_end()
+                fsm_ctx.ontology_type_count = (
+                    len(buffer.type_names()) if buffer else 0
+                )
+                fsm_ctx.stabilize()
+                _update_metanode_safe(config, fsm_ctx)
+
             evt_signals.phase_transition.send(
                 evt_signals.phase_transition,
                 event=etypes.PhaseTransition(
