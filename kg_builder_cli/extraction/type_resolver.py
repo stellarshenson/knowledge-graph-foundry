@@ -53,6 +53,7 @@ class BayesianTypeResolver:
         collector: "ObservationCollector | None" = None,
         calibrator: object | None = None,
         type_metrics: dict[str, dict[str, float]] | None = None,
+        adaptive_state: object | None = None,
     ):
         self._top_k = config.type_resolution_top_k
         self._entropy_threshold = config.type_resolution_entropy_threshold
@@ -65,6 +66,7 @@ class BayesianTypeResolver:
         self._collector = collector
         self._calibrator = calibrator
         self._type_metrics = type_metrics
+        self._adaptive_state = adaptive_state
         if type_metrics is not None:
             self._prior = self._build_multi_channel_prior(type_frequencies, type_metrics)
 
@@ -169,14 +171,23 @@ class BayesianTypeResolver:
         if not self._prior:
             return entity.type
 
+        # Use adaptive priors if available, otherwise frozen prior
+        active_prior = self._prior
+        if self._adaptive_state is not None and hasattr(
+            self._adaptive_state, "get_adjusted_priors"
+        ):
+            adjusted = self._adaptive_state.get_adjusted_priors()
+            if adjusted:
+                active_prior = adjusted
+
         # Get top-k candidate types by prior
-        candidates = sorted(self._prior.items(), key=lambda x: -x[1])[: self._top_k]
+        candidates = sorted(active_prior.items(), key=lambda x: -x[1])[: self._top_k]
         candidate_types = [t for t, _ in candidates]
 
         # Compute posterior for each candidate
         posterior: dict[str, float] = {}
         for type_name in candidate_types:
-            prior_p = self._prior.get(type_name, 1e-6)
+            prior_p = active_prior.get(type_name, 1e-6)
             likelihood_exemplar = self._exemplar_likelihood(
                 entity,
                 type_name,
@@ -216,7 +227,7 @@ class BayesianTypeResolver:
         best_prob = posterior[best_type]
 
         # Audit log: prior, posteriors, entropy for diagnostic tracing
-        prior_str = " ".join(f"{t}={self._prior.get(t, 0):.3f}" for t in candidate_types)
+        prior_str = " ".join(f"{t}={active_prior.get(t, 0):.3f}" for t in candidate_types)
         post_str = " ".join(f"{t}={posterior.get(t, 0):.3f}" for t in candidate_types)
         logger.debug(
             "Bayesian audit: {} | prior={{{}}} | posteriors={{{}}} | entropy={:.3f} | assigned={}",

@@ -227,6 +227,28 @@ def _on_metric_correlation(sender, event=None, **kwargs):
         )
 
 
+def _on_adaptive_prior_updated(sender, event=None, **kwargs):
+    if event:
+        cap_str = " (sigma-capped)" if event.sigma_cap_applied else ""
+        logger.info(
+            "[event] adaptive prior updated: {} {:.4f} -> {:.4f} (n={}){}",
+            event.type_name,
+            event.old_prior,
+            event.new_prior,
+            event.observation_count,
+            cap_str,
+        )
+
+
+def _on_calibration_hot_loaded(sender, event=None, **kwargs):
+    if event:
+        logger.info(
+            "[event] calibration hot-loaded: {} samples, {} curve points",
+            event.n_samples,
+            event.curve_points,
+        )
+
+
 # Streaming event log writer
 _event_log_path: Path | None = None
 _event_log_count: int = 0
@@ -297,6 +319,8 @@ def register_default_handlers() -> None:
     signals.calibration_ground_truth.connect(_on_calibration_ground_truth)
     signals.calibration_fitted.connect(_on_calibration_fitted)
     signals.metric_correlation_computed.connect(_on_metric_correlation)
+    signals.adaptive_prior_updated.connect(_on_adaptive_prior_updated)
+    signals.calibration_hot_loaded.connect(_on_calibration_hot_loaded)
 
 
 def register_verbose_handlers() -> None:

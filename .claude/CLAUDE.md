@@ -44,6 +44,11 @@ Knowledge Graph Builder CLI (`kg-builder-cli`) - a Python CLI tool for building 
 
 **MANDATORY**: Read `/home/lab/workspace/learning/projects/kg-builder-cli/INSTRUCTIONS.md` at the start of every session and after every context compaction. It governs the autonomous execution mode for the implementation phase.
 
+## Planning Workflow
+
+- Every implementation plan must include acceptance criteria before work begins
+- Post-implementation must validate against all acceptance criteria and record PASS/FAIL
+
 ## Strengthened Rules
 
 - Always use Makefile targets (`make install`, `make test`, `make lint`, `make format`) - never direct uv/pip commands

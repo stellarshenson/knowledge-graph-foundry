@@ -80,3 +80,7 @@ type_metrics_computed = Signal("type-metrics-computed")
 calibration_ground_truth = Signal("calibration-ground-truth")
 calibration_fitted = Signal("calibration-fitted")
 metric_correlation_computed = Signal("metric-correlation-computed")
+
+# ── Adaptive calibration (2) ─────────────────────────────────────
+adaptive_prior_updated = Signal("adaptive-prior-updated")
+calibration_hot_loaded = Signal("calibration-hot-loaded")

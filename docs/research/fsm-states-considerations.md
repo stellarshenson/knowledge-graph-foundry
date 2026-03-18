@@ -204,3 +204,54 @@ The deeper insight is that curing is broader than type discovery. Even with a st
 - **Remap rate during CURING**: even in fluid mode, remaps occur when the type assigner overrides an LLM-proposed type. A declining remap rate within CURING signals that the LLM and the Bayesian resolver are converging
 
 A composite cure readiness score combining type stability (current signals) with calibration maturity (new signals) would make the cure decision more robust, particularly for strict-seed runs where type distribution converges immediately but calibration may lag. The generative curing advisory (`llm_should_cure`) already receives the full metrics timeline and could evaluate calibration signals if they were included in the prompt context.
+
+**Open**: calibration must take effect immediately within the same run, not only on the next run. The current implementation fits the isotonic curve at consolidation time and persists it for future runs, but the cured-phase documents processed after consolidation in the same run do not benefit from the just-fitted calibrator. The calibration curve should be hot-loaded into the `BayesianTypeResolver` and `_resolve_cross_type()` immediately after fitting, so that cured-phase cross-type decisions in docs 5-10 use calibrated posteriors rather than raw ones. This makes calibration a dynamic learning process - the system improves its resolution quality within the run that generated the evidence, not one run later when the context may have shifted.
+
+**Open**: the multi-channel prior and type metrics must update continuously during extraction, not only after each document completes. The current implementation computes the 19-metric suite and Spearman correlations once at consolidation time, then feeds a static prior into the resolver for all cured-phase documents. Each entity resolution decision produces new observations that shift the posterior landscape - the prior should reshape continuously as evidence accumulates within and across chunks. Per-entity resolution outcomes feed back into type-level statistics (mean posterior, observation count, remap rate) which in turn update the multi-channel prior weights for the next decision. This creates a tighter feedback loop where the resolver gets progressively better within a single document, not just between documents. Correlations computed on a running window will be noisier than batch correlations but carry the actual signal about which metrics are predictive in real time - exponential moving averages or a sliding window of the last N observations can cut through the noise while preserving responsiveness. The current batch-only approach means the system makes all cured-phase decisions with the same frozen prior regardless of what it learns along the way.
+
+### Update Granularity Analysis
+
+Empirical data from v28 (10-doc CPAP corpus, 12 types):
+
+| Metric | Total | Per-doc avg | Per-chunk avg |
+|--------|-------|-------------|---------------|
+| Entities | 1377 | 138 | 11 |
+| Cross-type decisions | 77 | 8 | 0.6 |
+| Type assignment decisions | 1377 | 138 | 11 |
+| Unique types with cross-type obs | 8/12 | - | - |
+
+The critical asymmetry: every entity generates a type assignment observation, but cross-type decisions are sparse (77 out of 1377 entities = 5.6% hit rate). This shapes what can update at each granularity.
+
+**Option A: Data-driven adaptive thresholds (preferred)**
+
+Rather than hardcoding batch sizes, derive update triggers from the data itself. The system tracks observation counts per type and triggers updates when statistical conditions are met.
+
+- **Prior update trigger**: when any type accumulates N_new observations since last update, where N_new = max(1, sqrt(N_existing)). A type with 4 prior observations updates after 2 new ones; a type with 100 prior observations updates after 10. The rationale is that sampling error drops as `1/sqrt(n)` (standard error = `sigma/sqrt(n)`). Adding sqrt(n) new observations to n existing ones produces a roughly constant fractional improvement in precision regardless of n - each update cycle represents an equivalent step in information gain. To halve the estimation error you must quadruple the sample size, so spacing updates at sqrt(n) intervals places them at equal precision-gain steps on a log scale. The `max(1, ...)` floor ensures new types with few observations update immediately (every observation matters), while established types with hundreds of observations update less frequently (diminishing returns). No hardcoded threshold - the relationship between existing evidence and required new evidence is purely mathematical.
+
+- **Calibration refit trigger**: when the mean absolute error of the current curve on recent observations exceeds the curve's own training error. The system continuously scores new observations against the existing curve; when prediction quality degrades, it refits. This is self-triggering - a well-calibrated curve stays stable, a stale curve triggers its own replacement. Minimum sample size for a refit is inherent in the isotonic algorithm (it needs at least 2 distinct posterior ranges to produce a non-trivial curve).
+
+- **Correlation update trigger**: when the number of types with 5+ observations increases (a new type becomes statistically viable) or when the running EMA of per-type correctness rates diverges from the batch estimate by more than 1 standard deviation. This avoids recomputing correlations on the same stale data.
+
+**Option B: Document-aligned with EMA overlay**
+
+Lightweight approach that piggybacks on existing per-document processing. After each document: (1) update per-type running statistics via EMA with alpha = 2/(n+1) where n is observation count for that type (Welford-style adaptive smoothing - new types are responsive, established types are stable, no hardcoded alpha), (2) recompute the multi-channel prior from updated stats, (3) refit calibration only if prediction error threshold exceeded (same as Option A).
+
+Tradeoff: simpler to implement, but documents vary wildly in size (v28: 19 to 310 entities). A 19-entity brochure triggers the same update as a 310-entity manual. The prior updates are well-timed for large docs but wasteful for small ones.
+
+**Option C: Observation-stream with decay**
+
+Treat the resolution process as an online learning stream. Each observation (type assignment or cross-type decision) immediately updates a lightweight running state: per-type EMA of posteriors, per-type observation count, per-type correctness estimate. The multi-channel prior reads from this running state on every resolution call. No batch recomputation needed - the prior is always current.
+
+The full 19-metric suite and Spearman correlations remain batch operations (they need graph topology and embedding space metrics that don't change per-entity), but the prior weights that consume them update via EMA. Metric weights start uniform and shift toward correlation-informed weights as sample size grows, using a blend factor: `w = w_uniform * (1 - confidence) + w_correlated * confidence` where confidence = `1 - 1/sqrt(n_observations)`. At n=1 confidence is 0 (fully uniform), at n=100 confidence is 0.9 (mostly correlation-driven). No hardcoded transition point.
+
+**Tradeoff summary**:
+
+| | Responsiveness | Stability risk | Implementation cost | Hardcoded values |
+|---|---|---|---|---|
+| Option A (adaptive) | High | Low (self-correcting) | Medium | None - all derived |
+| Option B (doc-aligned) | Medium | Low | Low | None if using Welford alpha |
+| Option C (stream) | Highest | Medium (feedback loops on sparse types) | High | None - blend from sample size |
+
+**Feedback loop mitigation** (applies to all options): cap the per-update prior shift at the current standard deviation of the type's posterior distribution. This prevents any single observation from dominating the prior - a rare cross-type merge on a type with stable posteriors shifts the prior by at most 1 sigma. Types with high posterior variance (uncertain types) allow larger shifts; types with low variance (confident types) are resistant. This is self-calibrating and requires no hardcoded dampening factor.
+
+**Recommendation**: Option A for the prior and calibration triggers, with Option C's observation-stream EMA for the lightweight running statistics that feed into them. The full metric suite and correlations stay as batch operations at consolidation and at the adaptive trigger points. This gives continuous learning without hardcoded thresholds - every trigger is derived from the data's own statistical properties.

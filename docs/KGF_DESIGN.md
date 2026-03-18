@@ -2689,7 +2689,23 @@ The pipeline's two Bayesian models (cross-type resolution and type assignment) p
 
 Each metric is min-max normalized across types, negative-direction metrics are inverted, NaN contributes zero. Weights are uniform in Phase B.1; learned weights via logistic regression on observation data are a future step (Phase B.2).
 
-**Metric Lifecycle**: Type metrics are computed once at curing time from accumulated extraction results. The computed metrics are then passed to every `BayesianTypeResolver` instance created during the cured phase, replacing the frequency-only prior with the multi-channel prior. During fluid phase, frequency-only priors are used (insufficient data for meaningful metrics). On run 2+, calibration curves are loaded from the graph at startup and applied throughout both phases.
+**Metric Lifecycle**: Type metrics are computed at curing time from accumulated extraction results and seed the adaptive prior state. The initial metrics are passed to every `BayesianTypeResolver` instance created during the cured phase as a multi-channel prior, but unlike the static regime, the prior reshapes continuously as new observations arrive. During fluid phase, frequency-only priors are used (insufficient data for meaningful metrics). On run 2+, calibration curves are loaded from the graph at startup and hot-loaded after consolidation for the current run's cured phase.
+
+### 14.7.1 Adaptive Calibration
+
+The calibration system has three adaptive mechanisms that close the gap between frozen-at-consolidation priors and the evolving evidence stream during cured-phase ingestion.
+
+**Calibration Hot-Load**: After `PosteriorCalibrator.fit()` at consolidation, the fitted calibrator replaces the run-start calibrator (which may be None on run 1 or a stale curve from run N-1) for all subsequent cured-phase documents in the same run. `CalibrationHotLoader` wraps a `PosteriorCalibrator | None` with interior mutability - `hot_load(calibrator)` swaps the inner reference, and `calibrate(raw_posterior)` delegates to the inner calibrator or returns the raw value as passthrough when None. This ensures cured-phase documents benefit from the calibration curve fitted on the current run's ground truth.
+
+**Adaptive Prior Trigger**: The trigger for prior recomputation uses a sqrt(N) schedule derived from sampling error properties. After N_existing observations for a given type, the next update fires when `observations_since_update >= max(1, floor(sqrt(N_existing)))`. This produces update intervals that grow sub-linearly: the first observation triggers an update, then at N=4 (after 2 more), N=9 (after 3 more), N=16 (after 4 more), etc. The rationale is that sampling error decreases as 1/sqrt(n), so each additional observation contributes diminishing information and updates can be spaced further apart. No hardcoded threshold is needed - the trigger is derived entirely from the observation count.
+
+**Continuous Prior Reshaping**: Per-type EMA (exponential moving average) of posteriors tracks the evolving evidence for each type. The smoothing factor alpha = 2/(n+1) adapts automatically as observations accumulate - early observations have high alpha (fast tracking), later observations have low alpha (stability). Welford's online algorithm computes running variance without storing the observation history. A sigma-cap mechanism prevents feedback loops: no single observation can shift a type's prior by more than one standard deviation of its observed posterior distribution. When the adaptive trigger fires, `get_adjusted_priors()` returns the current EMA values normalized to sum to 1.0 across all types.
+
+**Batch Operations**: Spearman correlations and the full 19-metric suite remain batch-only, computed at consolidation and at adaptive trigger points. These operations require the complete observation set and are not suited to streaming computation.
+
+**Adaptive Events**:
+- `adaptive-prior-updated` - type_name, old_prior, new_prior, observation_count, sigma_cap_applied
+- `calibration-hot-loaded` - n_samples, curve_points
 
 **Spearman Rank Correlation**: At curing time, after computing type metrics and deriving ground truth, the pipeline computes Spearman rank correlation (rho) between each of the 19 metrics and per-type resolution correctness rate. `compute_type_correctness_rates()` derives the fraction of correct decisions per type from ground truth. `compute_spearman_correlations()` ranks types by each metric value and by correctness rate, then computes rho = 1 - 6*sum(d^2) / n*(n^2-1). Minimum 5 types required; NaN metrics are filtered per-metric. Results are emitted as a `metric-correlation-computed` event with the full correlation dict and top-3 positive/negative metrics, enabling identification of which metrics most strongly predict correct resolution decisions.
 

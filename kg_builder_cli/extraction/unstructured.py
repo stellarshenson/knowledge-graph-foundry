@@ -81,6 +81,7 @@ def ingest_document(
     collector: object | None = None,
     calibrator: object | None = None,
     type_metrics: dict[str, dict[str, float]] | None = None,
+    adaptive_state: object | None = None,
 ) -> ExtractionResult:
     """Run the full unstructured ingestion pipeline.
 
@@ -253,6 +254,7 @@ def ingest_document(
                 collector=collector,
                 calibrator=calibrator,
                 type_metrics=type_metrics,
+                adaptive_state=adaptive_state,
             )
             all_entities, remap_count = _resolve_types_bayesian(
                 all_entities,

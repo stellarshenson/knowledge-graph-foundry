@@ -384,3 +384,19 @@ class MetricCorrelationComputed(BaseModel):
     correlations: dict[str, float]
     top_positive: list[str]
     top_negative: list[str]
+
+
+# ── Adaptive Calibration (2) ──────────────────────────────────────
+
+
+class AdaptivePriorUpdated(BaseModel):
+    type_name: str
+    old_prior: float
+    new_prior: float
+    observation_count: int
+    sigma_cap_applied: bool
+
+
+class CalibrationHotLoaded(BaseModel):
+    n_samples: int
+    curve_points: int

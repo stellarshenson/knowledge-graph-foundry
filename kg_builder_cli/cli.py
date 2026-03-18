@@ -837,7 +837,12 @@ def _ingest_fluid(
         variance_window=config.curing.metrics_variance_window,
     )
     collector = ObservationCollector()
-    calibrator = _load_calibrator_safe(config, fsm_ctx, "cross_type")
+    raw_calibrator = _load_calibrator_safe(config, fsm_ctx, "cross_type")
+
+    from kg_builder_cli.curing.adaptive import CalibrationHotLoader
+
+    hot_loader = CalibrationHotLoader(raw_calibrator)
+    calibrator = hot_loader  # cured-phase uses hot_loader as calibrator
 
     run_id = fsm_ctx.run_id if fsm_ctx else None
     loaded_doc_names = fsm_ctx.loaded_doc_names if fsm_ctx else set()
@@ -846,6 +851,7 @@ def _ingest_fluid(
     cured = False
     exemplar_index = None  # built at curing time for Bayesian resolution
     cured_type_metrics: dict | None = None  # computed at curing time for multi-channel prior
+    adaptive_state = None  # initialized at curing time for continuous prior reshaping
 
     # --- Resume from fluid cache if available ---
     cached_results = _read_fluid_results_safe(config, fsm_ctx)
@@ -889,6 +895,7 @@ def _ingest_fluid(
                 collector=collector,
                 calibrator=calibrator,
                 type_metrics=cured_type_metrics,
+                adaptive_state=adaptive_state,
             )
             total_entities += len(result.entities)
             total_rels += len(result.relationships)
@@ -1238,7 +1245,7 @@ def _ingest_fluid(
                 normalize_entity_ids(all_entities, all_rels)
 
             # Derive calibration ground truth and fit curves
-            cured_type_metrics = _fit_and_persist_calibration(
+            cured_type_metrics, fitted_cal = _fit_and_persist_calibration(
                 collector,
                 type_mapping if entity_type_names else {},
                 config,
@@ -1249,6 +1256,28 @@ def _ingest_fluid(
                 doc_index=i,
                 trigger=cure_trigger,
             )
+
+            # Hot-load calibrator for cured-phase documents
+            if fitted_cal is not None:
+                hot_loader.hot_load(fitted_cal)
+                x_pts, y_pts = fitted_cal.to_points()
+                evt_signals.calibration_hot_loaded.send(
+                    evt_signals.calibration_hot_loaded,
+                    event=etypes.CalibrationHotLoaded(
+                        n_samples=len(
+                            collector.derive_ground_truth(
+                                type_mapping if entity_type_names else {}
+                            )
+                        ),
+                        curve_points=len(x_pts),
+                    ),
+                )
+
+            # Initialize adaptive prior state for continuous reshaping
+            from kg_builder_cli.curing.adaptive import AdaptivePriorState
+
+            adaptive_state = AdaptivePriorState.from_type_metrics(cured_type_metrics or {}, freqs)
+            collector.on_observation = adaptive_state.record_observation
 
             # Doc+chunks already loaded per-document during fluid phase
 
@@ -1354,7 +1383,7 @@ def _ingest_fluid(
             normalize_entity_ids(all_entities, all_rels)
 
         # Derive calibration ground truth and fit curves
-        cured_type_metrics = _fit_and_persist_calibration(
+        cured_type_metrics, _fitted_cal = _fit_and_persist_calibration(
             collector,
             type_mapping if entity_type_names else {},
             config,
@@ -1514,10 +1543,10 @@ def _fit_and_persist_calibration(
     buffer,
     doc_index: int = -1,
     trigger: str = "unknown",
-) -> dict[str, dict[str, float]]:
+) -> tuple[dict[str, dict[str, float]], object | None]:
     """Derive ground truth, fit calibration curves, compute type metrics, persist.
 
-    Returns the computed type_metrics dict for use in cured-phase resolution.
+    Returns (type_metrics, fitted_calibrator) for use in cured-phase resolution.
     """
     from kg_builder_cli.events import signals as evt_signals
     from kg_builder_cli.events import types as etypes
@@ -1544,14 +1573,15 @@ def _fit_and_persist_calibration(
         )
 
     # Fit calibration curve
+    fitted_calibrator = None
     if gt_pairs:
         from kg_builder_cli.curing.calibration import PosteriorCalibrator
 
         raw_posteriors = [p for p, _ in gt_pairs]
         labels = [c for _, c in gt_pairs]
-        calibrator = PosteriorCalibrator.fit(raw_posteriors, labels)
-        if calibrator:
-            x_pts, y_pts = calibrator.to_points()
+        fitted_calibrator = PosteriorCalibrator.fit(raw_posteriors, labels)
+        if fitted_calibrator:
+            x_pts, y_pts = fitted_calibrator.to_points()
             evt_signals.calibration_fitted.send(
                 evt_signals.calibration_fitted,
                 event=etypes.CalibrationFitted(
@@ -1565,7 +1595,7 @@ def _fit_and_persist_calibration(
                 ),
             )
             if fsm_ctx:
-                _persist_calibration_curve_safe(config, fsm_ctx, calibrator, "cross_type")
+                _persist_calibration_curve_safe(config, fsm_ctx, fitted_calibrator, "cross_type")
 
     # Aggregate observations into calibration data for KGFTypeCalibration
     obs_calibration = collector.aggregate_calibration()
@@ -1604,7 +1634,7 @@ def _fit_and_persist_calibration(
                 ),
             )
 
-    return type_metrics
+    return type_metrics, fitted_calibrator
 
 
 def _compute_type_metrics_safe(accumulator, freqs, buffer, calibration_data):

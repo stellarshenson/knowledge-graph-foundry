@@ -51,14 +51,21 @@ class ObservationCollector:
 
     _cross_type: list[CrossTypeObservation] = field(default_factory=list)
     _type_assignment: list[TypeAssignmentObservation] = field(default_factory=list)
+    on_observation: object | None = None  # Callable[[str, float], None] | None
 
     def record_cross_type(self, obs: CrossTypeObservation) -> None:
         """Record a cross-type resolution observation."""
         self._cross_type.append(obs)
+        if self.on_observation is not None:
+            self.on_observation(obs.type_a, obs.raw_posterior)
+            self.on_observation(obs.type_b, obs.raw_posterior)
 
     def record_type_assignment(self, obs: TypeAssignmentObservation) -> None:
         """Record a type assignment observation."""
         self._type_assignment.append(obs)
+        if self.on_observation is not None and obs.posterior:
+            max_prob = max(obs.posterior.values())
+            self.on_observation(obs.type_after, max_prob)
 
     @property
     def cross_type_count(self) -> int:
