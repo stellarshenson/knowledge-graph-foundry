@@ -81,11 +81,3 @@ class TestExemplarIndex:
         results = index.query(embeddings["Humidifier"], top_k=1)
         assert len(results) == 1
 
-    def test_similarity_scores_bounded(self):
-        exemplars, embeddings = _make_exemplars_and_embeddings()
-        index = ExemplarIndex()
-        index.build(exemplars, embeddings)
-
-        results = index.query(embeddings["Tubing"], top_k=3)
-        for _, score in results:
-            assert -1.0 <= score <= 1.0

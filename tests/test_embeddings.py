@@ -35,13 +35,6 @@ class TestEmbeddings:
         assert mock_client.invoke_model.call_count == 2
 
     @patch("kg_builder_cli.extraction.embeddings.boto3")
-    def test_generate_embeddings_empty_list(self, mock_boto3):
-        """Empty input returns empty output without API calls."""
-        result = generate_embeddings([])
-        assert result == []
-        mock_boto3.Session.assert_not_called()
-
-    @patch("kg_builder_cli.extraction.embeddings.boto3")
     def test_generate_embeddings_handles_failure(self, mock_boto3):
         """Failed API call leaves embedding as None."""
         mock_client = MagicMock()

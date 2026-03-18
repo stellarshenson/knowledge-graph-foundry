@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kg_builder_cli"
-version = "0.4.26"
+version = "0.4.29"
 description = "Knowledge Graph Foundry - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -38,6 +38,8 @@ dependencies = [
     "python-Levenshtein",
     "numpy",
     "faiss-cpu",
+    # Calibration
+    "scikit-learn",
     # Embeddings
     "boto3",
     # Configuration and validation
@@ -48,6 +50,8 @@ dependencies = [
     "loguru",
     # Event system
     "blinker>=1.7",
+    # Pipeline lifecycle FSM
+    "transitions>=0.9",
 ]
 
 [project.optional-dependencies]

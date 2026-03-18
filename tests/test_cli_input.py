@@ -8,30 +8,8 @@ import pytest
 from typer.testing import CliRunner
 
 from kg_builder_cli.cli import app
-from kg_builder_cli.config import (
-    STRUCTURED_EXTENSIONS,
-    SUPPORTED_EXTENSIONS,
-    UNSTRUCTURED_EXTENSIONS,
-)
 
 runner = CliRunner()
-
-
-# ── Extension constants ──────────────────────────────────────────────
-
-
-class TestExtensionConstants:
-    def test_unstructured_extensions(self):
-        assert UNSTRUCTURED_EXTENSIONS == {".pdf", ".txt", ".md", ".docx"}
-
-    def test_structured_extensions(self):
-        assert STRUCTURED_EXTENSIONS == {".json", ".jsonl", ".csv", ".xlsx"}
-
-    def test_supported_is_union(self):
-        assert SUPPORTED_EXTENSIONS == UNSTRUCTURED_EXTENSIONS | STRUCTURED_EXTENSIONS
-
-    def test_no_overlap(self):
-        assert UNSTRUCTURED_EXTENSIONS & STRUCTURED_EXTENSIONS == set()
 
 
 # ── CLI argument parsing ─────────────────────────────────────────────

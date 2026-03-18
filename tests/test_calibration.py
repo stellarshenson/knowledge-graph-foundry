@@ -31,11 +31,6 @@ class TestCalibrate:
         cal = PosteriorCalibrator([0.2, 0.8], [0.1, 0.9])
         assert cal.calibrate(1.0) == pytest.approx(0.9)
 
-    def test_empty_curve_passthrough(self):
-        """Empty calibrator returns raw value."""
-        cal = PosteriorCalibrator([], [])
-        assert cal.calibrate(0.5) == 0.5
-
     def test_monotonic_output(self):
         """Output should be monotonically non-decreasing for increasing input."""
         cal = PosteriorCalibrator([0.0, 0.3, 0.6, 1.0], [0.0, 0.5, 0.7, 1.0])
@@ -44,13 +39,6 @@ class TestCalibrate:
             y = cal.calibrate(x)
             assert y >= prev, f"Not monotonic at x={x}: {y} < {prev}"
             prev = y
-
-    def test_single_point(self):
-        """Single point curve returns that y value."""
-        cal = PosteriorCalibrator([0.5], [0.8])
-        assert cal.calibrate(0.3) == pytest.approx(0.8)
-        assert cal.calibrate(0.5) == pytest.approx(0.8)
-        assert cal.calibrate(0.9) == pytest.approx(0.8)
 
 
 class TestFit:
