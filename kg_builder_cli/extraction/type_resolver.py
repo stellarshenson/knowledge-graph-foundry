@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import math
+from typing import TYPE_CHECKING
 
 from loguru import logger
 
@@ -11,6 +12,9 @@ from kg_builder_cli.extraction.exemplar_index import ExemplarIndex
 from kg_builder_cli.types.config import LLMConfig, OntologyBufferConfig
 from kg_builder_cli.types.extraction import Entity, Relationship
 from kg_builder_cli.types.ontology import TypeExemplar
+
+if TYPE_CHECKING:
+    from kg_builder_cli.curing.observation import ObservationCollector
 
 
 @dataclass
@@ -46,6 +50,9 @@ class BayesianTypeResolver:
         llm_config: LLMConfig | None = None,
         llm_escalation: bool = False,
         neo4j_config=None,
+        collector: "ObservationCollector | None" = None,
+        calibrator: object | None = None,
+        type_metrics: dict[str, dict[str, float]] | None = None,
     ):
         self._top_k = config.type_resolution_top_k
         self._entropy_threshold = config.type_resolution_entropy_threshold
@@ -55,6 +62,11 @@ class BayesianTypeResolver:
         self._llm_config = llm_config
         self._llm_escalation = llm_escalation
         self._neo4j_config = neo4j_config
+        self._collector = collector
+        self._calibrator = calibrator
+        self._type_metrics = type_metrics
+        if type_metrics is not None:
+            self._prior = self._build_multi_channel_prior(type_frequencies, type_metrics)
 
     def _build_prior(self, type_frequencies: dict[str, int]) -> dict[str, float]:
         """Build prior P(type) from normalized type frequencies."""
@@ -62,6 +74,95 @@ class BayesianTypeResolver:
         if total == 0:
             return {}
         return {t: freq / total for t, freq in type_frequencies.items()}
+
+    def _build_multi_channel_prior(
+        self,
+        type_frequencies: dict[str, int],
+        type_metrics: dict[str, dict[str, float]],
+        weights: dict[str, float] | None = None,
+    ) -> dict[str, float]:
+        """Build prior P(type) from weighted combination of type metrics.
+
+        Each metric is normalized to [0, 1] across types (min-max scaling).
+        Metrics with negative direction are inverted (1 - normalized).
+        NaN metrics contribute 0 (neutral).
+        Weights default to uniform if not provided.
+        """
+        if not type_metrics:
+            return self._build_prior(type_frequencies)
+
+        # Metrics where higher = worse (need inversion)
+        _NEGATIVE_DIRECTION = {
+            "freq_cv",
+            "top3_concentration",
+            "emb_centroid_dist",
+            "discovery_order",
+            "cross_type_rate",
+            "hist_remap_rate",
+            "cross_run_freq_delta",
+        }
+
+        # Collect all metric keys across types
+        all_keys: set[str] = set()
+        for metrics in type_metrics.values():
+            all_keys.update(metrics.keys())
+
+        if not all_keys:
+            return self._build_prior(type_frequencies)
+
+        # Min-max normalize each metric across types
+        normalized: dict[str, dict[str, float]] = {t: {} for t in type_metrics}
+        for key in all_keys:
+            values = []
+            for t in type_metrics:
+                v = type_metrics[t].get(key, float("nan"))
+                if not math.isnan(v):
+                    values.append(v)
+
+            if not values or (max(values) == min(values)):
+                # Constant or all-nan -> neutral 0.5
+                for t in type_metrics:
+                    normalized[t][key] = 0.5
+                continue
+
+            vmin, vmax = min(values), max(values)
+            for t in type_metrics:
+                v = type_metrics[t].get(key, float("nan"))
+                if math.isnan(v):
+                    normalized[t][key] = 0.0  # nan contributes nothing
+                else:
+                    norm_v = (v - vmin) / (vmax - vmin)
+                    if key in _NEGATIVE_DIRECTION:
+                        norm_v = 1.0 - norm_v
+                    normalized[t][key] = norm_v
+
+        # Apply weights (uniform if not provided)
+        available_keys = list(all_keys)
+        if weights is None:
+            w = {k: 1.0 / len(available_keys) for k in available_keys}
+        else:
+            w = weights
+
+        # Compute weighted sum per type
+        raw_scores: dict[str, float] = {}
+        for t in type_metrics:
+            score = 0.0
+            for key in available_keys:
+                score += w.get(key, 0.0) * normalized[t].get(key, 0.0)
+            raw_scores[t] = score
+
+        # Normalize to probability distribution
+        total = sum(raw_scores.values())
+        if total <= 0:
+            return self._build_prior(type_frequencies)
+
+        prior = {t: s / total for t, s in raw_scores.items()}
+        logger.debug(
+            "multi-channel prior: {} types, {} metrics",
+            len(prior),
+            len(available_keys),
+        )
+        return prior
 
     def resolve(self, entity: Entity, context: ResolverContext) -> str:
         """Resolve entity type using Bayesian inference. Returns type name."""
@@ -126,6 +227,11 @@ class BayesianTypeResolver:
             best_type,
         )
 
+        # Apply calibration to best probability if calibrator available
+        if self._calibrator is not None and hasattr(self._calibrator, "calibrate"):
+            best_prob = self._calibrator.calibrate(best_prob)
+
+        escalated = False
         if entropy < self._entropy_threshold:
             if best_type != entity.type:
                 logger.debug(
@@ -136,20 +242,20 @@ class BayesianTypeResolver:
                     best_prob,
                     entropy,
                 )
-            return best_type
+            resolved_type = best_type
         else:
             # High entropy - LLM escalation or argmax fallback
             if self._llm_escalation and self._llm_config:
-                resolved = self._llm_resolve(entity, posterior, candidate_types)
-                if resolved != entity.type:
+                resolved_type = self._llm_resolve(entity, posterior, candidate_types)
+                escalated = True
+                if resolved_type != entity.type:
                     logger.debug(
                         "Bayesian resolve (LLM): '{}' {} -> {} (H={:.3f})",
                         entity.name,
                         entity.type,
-                        resolved,
+                        resolved_type,
                         entropy,
                     )
-                return resolved
             else:
                 if best_type != entity.type:
                     logger.debug(
@@ -160,7 +266,26 @@ class BayesianTypeResolver:
                         best_prob,
                         entropy,
                     )
-                return best_type
+                resolved_type = best_type
+
+        # Record observation for calibration
+        if self._collector is not None:
+            from kg_builder_cli.curing.observation import TypeAssignmentObservation
+
+            self._collector.record_type_assignment(
+                TypeAssignmentObservation(
+                    entity_name=entity.name,
+                    type_before=entity.type,
+                    type_after=resolved_type,
+                    posterior=dict(posterior),
+                    entropy=entropy,
+                    was_remapped=resolved_type != entity.type,
+                    escalated_to_llm=escalated,
+                    doc_index=0,
+                )
+            )
+
+        return resolved_type
 
     def _exemplar_likelihood(
         self,

@@ -2577,6 +2577,8 @@ The `(:KGFControl:KGFState)` metanode is the authoritative state store.
 | Ontology type | `:KGFControl:KGFOntologyType` | Type definition with description and properties |
 | Resolution guide | `:KGFControl:KGFResolutionGuide` | Type pair disambiguation rules |
 | Type calibration | `:KGFControl:KGFTypeCalibration` | Per-type Bayesian calibration state |
+| Fluid result | `:KGFControl:KGFFluidResult` | Cached per-document extraction result during fluid phase |
+| Fluid state | `:KGFControl:KGFFluidState` | Cached detector/metrics/deferred state during fluid phase |
 
 Domain nodes (`(:Entity)`, `(:Document)`, `(:Chunk)`) never carry `:KGFControl`. All domain queries include `WHERE NOT n:KGFControl` to exclude control plane nodes from entity counts, type distributions, validation, graph resolution, and curing graph queries.
 
@@ -2588,14 +2590,17 @@ Domain nodes (`(:Entity)`, `(:Document)`, `(:Chunk)`) never carry `:KGFControl`.
 
 **Cache-first pattern**: when no seed is provided against an existing graph, the system first checks if `ontology.yml` exists and its hash matches the metanode. If matched, the file is loaded directly (avoiding graph round-trips). If mismatched or missing, `from_graph()` reconstructs the buffer from graph data. The `ontology.yml` file is a disposable cache - the graph is the sole authority.
 
+**Cross-run fluid phase persistence (FSC-8)**: the fluid phase accumulates extraction results in memory across documents until a curing event triggers consolidation. If the process exits mid-fluid, all accumulated data would be lost without persistence. To prevent this, after each fluid-phase document extraction the system persists two control plane artifacts: a `(:KGFControl:KGFFluidResult)` node per document containing the `ExtractionResult` (embeddings and chunks excluded), and a singleton `(:KGFControl:KGFFluidState)` node containing serialized `CuringDetector`, `StabilityMetrics`, and `DeferredDedupBuffer` state. Payloads use a versioned envelope pattern (`{"v": 1, "data": ...}`) with `zlib` compression and `base64` encoding, achieving roughly 5-6x compression on repetitive JSON field names. On resume, the system detects cached `KGFFluidResult` nodes and rebuilds the accumulator identically from cache - the consolidation pipeline requires zero changes. Document and chunk nodes are written to Neo4j per-document during fluid phase (not deferred to consolidation), so they are already in the graph when the cache is read. The `FLUID_CACHE_SCHEMA_VERSION` constant gates deserialization - on version mismatch the cache is discarded and extraction starts from scratch. Fluid cache nodes are ephemeral and cleaned up at every point where the accumulator is reset or consumed: after curing completes, after end-of-corpus flush, on drift re-entry, during mid-consolidation crash recovery, and as a safety net at run completion.
+
 **Document and entity tagging**: all `(:Document)` and `(:Entity)` nodes carry a `run_id` property matching the FSM run that created them. This enables targeted cleanup during crash recovery (wiping partial entities from an interrupted run by `run_id`).
 
 **Crash recovery**: three interruption scenarios are detected and handled at FSM initialization:
 
 | Scenario | Detection | Action |
 |----------|-----------|--------|
-| Pre-consolidation | `fsm_state=curing`, `consolidation_started_at` is null | Force re-cure, clear stale `run_id` |
-| Mid-consolidation | `consolidation_started_at` is non-null | Wipe entities by stale `run_id`, force re-cure |
+| Pre-consolidation (with cache) | `fsm_state=curing`, `consolidation_started_at` null, `KGFFluidResult` nodes exist | Resume from fluid cache - rebuild accumulator from cached results |
+| Pre-consolidation (no cache) | `fsm_state=curing`, `consolidation_started_at` null, no `KGFFluidResult` nodes | Force re-cure, clear stale `run_id` |
+| Mid-consolidation | `consolidation_started_at` is non-null | Wipe entities by stale `run_id`, delete fluid cache, force re-cure |
 | Post-consolidation | `fsm_state=stable`, `run_id` is non-null | Query loaded `(:Document)` nodes, skip already-loaded, resume |
 
 **Split responsibility**:
@@ -2664,6 +2669,27 @@ The FSM context is passed as an optional keyword argument `fsm_ctx=None` to `_in
 ### 14.7 Event Mapping
 
 The `phase_transition` signal's `from_state` and `to_state` fields must match states defined in 14.1. The transition table in 14.2 is the authoritative source for valid event payloads. See Section 15 for the full event architecture.
+
+### 14.7 Calibrated Bayesian Resolution
+
+The pipeline's two Bayesian models (cross-type resolution and type assignment) produce uncalibrated posteriors from hand-tuned likelihood ratios and frequency-only priors. The calibration subsystem corrects this in three layers.
+
+**Observation Collection** (`curing/observation.py`): Every resolution decision is recorded as a structured observation during a run. `ObservationCollector` captures `CrossTypeObservation` (norm_name, types, posterior, LR components, action, hierarchy signals) and `TypeAssignmentObservation` (entity, types before/after, full posterior distribution, entropy, remap/escalation flags). At curing time, `derive_ground_truth(type_mapping)` uses the type clustering outcome as ground truth - merged pairs where both types map to the same canonical cluster are correct merges, blocked pairs where types map to different clusters are correct blocks. `aggregate_calibration()` produces per-type `{mean_posterior, observation_count, remap_count}` for `KGFTypeCalibration` nodes.
+
+**Isotonic Calibration** (`curing/calibration.py`): On run N, `(raw_posterior, was_correct)` pairs from observation collection are fitted with `sklearn.isotonic.IsotonicRegression` via `PosteriorCalibrator.fit()`. The calibration curve is persisted as a `KGFCalibrationCurve` control plane node (x_points, y_points as JSON arrays, n_samples, model_type). On run N+1, the curve is loaded and `calibrator.calibrate(raw_posterior)` maps raw posteriors to calibrated probabilities before threshold comparison. Graceful degradation: run 1 uses raw posteriors (no curve exists), curves with < 20 training pairs are skipped, sklearn absence logs a warning and skips fitting.
+
+**Multi-Channel Prior** (`curing/type_metrics.py`): Replaces frequency-only `P(type)` with a weighted combination of 19 per-type metrics across 6 categories. `TypeMetricsCollector` computes metrics from accumulated extraction results:
+
+- **Frequency-derived** (F1-F3): log-smoothed frequency, rank percentile, coefficient of variation across documents
+- **Distribution shape** (D1-D3): description word entropy, name diversity ratio, top-3 entity concentration
+- **Embedding space** (E1-E4): intra-type cohesion, inter-type separation, silhouette score, centroid distance (NaN when no embeddings)
+- **Graph topology** (G1-G3): relationship type diversity, cross-type co-occurrence Jaccard, edge reciprocity
+- **Temporal/accumulation** (T1-T3): discovery order, type accumulation rate at discovery, cross-type pair rate
+- **Cross-run calibration** (C1-C3): historical mean posterior, historical remap rate, cross-run frequency delta (NaN on run 1)
+
+Each metric is min-max normalized across types, negative-direction metrics are inverted, NaN contributes zero. Weights are uniform in Phase B.1; learned weights via logistic regression on observation data are a future step (Phase B.2).
+
+**Control Plane Node**: `(:KGFControl:KGFCalibrationCurve)` stores `graph_id`, `model_type` ("cross_type" or "type_assignment"), `x_points` (JSON), `y_points` (JSON), `n_samples`, `created_at`. Linked to `KGFState` via `HAS_CALIBRATION_CURVE`.
 
 ## 15. Observability
 

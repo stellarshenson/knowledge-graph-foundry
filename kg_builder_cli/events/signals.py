@@ -74,3 +74,6 @@ graph_load_started = Signal("graph-load-started")
 graph_load_completed = Signal("graph-load-completed")
 graph_resolution_applied = Signal("graph-resolution-applied")
 graph_validated = Signal("graph-validated")
+
+# ── Calibration (1) ───────────────────────────────────────────────
+type_metrics_computed = Signal("type-metrics-computed")

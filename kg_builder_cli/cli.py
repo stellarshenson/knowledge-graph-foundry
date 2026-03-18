@@ -299,6 +299,8 @@ def ingest(
     if fsm_ctx:
         fsm_ctx.complete_run()
         _update_metanode_safe(config, fsm_ctx)
+        # Safety net: clean up any orphaned fluid cache nodes
+        _delete_fluid_cache_safe(config, fsm_ctx)
         logger.info(
             "FSM run completed: state={}, graph_id={}, run_count={}",
             fsm_ctx.state,
@@ -367,12 +369,15 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
             loaded_names: set[str] = set()
 
             if stale_fsm_state == GraphState.CURING and stale_consolidation is None:
-                # Scenario 1: pre-consolidation crash - accumulator data lost
-                logger.warning(
-                    "previous run interrupted pre-consolidation (fsm_state=curing), "
-                    "forcing re-cure"
-                )
-                force_recure = True
+                # Scenario 1: pre-consolidation crash
+                has_fluid_cache = _check_fluid_cache_exists_safe(config, meta.get("graph_id", ""))
+                if has_fluid_cache:
+                    # Scenario 1a: fluid cache exists -> resume accumulation
+                    logger.info("previous run interrupted with fluid cache, resuming accumulation")
+                else:
+                    # Scenario 1b: no cache -> force re-extract
+                    logger.warning("previous run interrupted without fluid cache, forcing re-cure")
+                    force_recure = True
 
             elif stale_consolidation is not None:
                 # Scenario 2: mid-consolidation crash - partial entities in graph
@@ -396,6 +401,22 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
                             wipe_driver.close()
                     except Exception:
                         logger.debug("failed to wipe partial entities (non-critical)")
+                # Also clean up stale fluid cache from the crashed run
+                from kg_builder_cli.fsm import delete_fluid_results, delete_fluid_state
+
+                try:
+                    cache_driver = GraphDatabase.driver(
+                        config.neo4j.uri,
+                        auth=(config.neo4j.user, config.neo4j.password),
+                    )
+                    try:
+                        gid = meta.get("graph_id", "")
+                        delete_fluid_results(cache_driver, gid)
+                        delete_fluid_state(cache_driver, gid)
+                    finally:
+                        cache_driver.close()
+                except Exception:
+                    logger.debug("failed to clean up stale fluid cache (non-critical)")
                 logger.warning(
                     "previous run interrupted mid-consolidation (started_at={}), "
                     "wiped {} partial entities, forcing re-cure",
@@ -572,7 +593,7 @@ def _update_metanode_safe(config, ctx) -> None:
         logger.debug("metanode update skipped: {}", exc)
 
 
-def _persist_schema_safe(config, ctx, buffer) -> None:
+def _persist_schema_safe(config, ctx, buffer, collector=None) -> None:
     """Persist ontology schema to graph control plane nodes. Non-critical."""
     if not buffer or not ctx:
         return
@@ -610,16 +631,18 @@ def _persist_schema_safe(config, ctx, buffer) -> None:
             if buffer._resolution_guide:
                 write_resolution_guide(driver, ctx.graph_id, buffer._resolution_guide)
 
-            # Write type calibration from entity frequencies as baseline
+            # Write type calibration from observation data or entity frequencies
+            obs_calibration = collector.aggregate_calibration() if collector else {}
             calibration: dict[str, dict] = {}
             for type_name in buffer._entity_types:
                 freq = buffer._frequencies.get(type_name, 0)
                 if freq >= threshold:
+                    obs = obs_calibration.get(type_name, {})
                     calibration[type_name] = {
                         "entity_count": freq,
-                        "mean_posterior": 0.0,
-                        "observation_count": freq,
-                        "remap_count": 0,
+                        "mean_posterior": obs.get("mean_posterior", 0.0),
+                        "observation_count": obs.get("observation_count", freq),
+                        "remap_count": obs.get("remap_count", 0),
                         "prior_strength": 1.0,
                     }
             # Merge with existing calibration data if available
@@ -632,6 +655,143 @@ def _persist_schema_safe(config, ctx, buffer) -> None:
             driver.close()
     except Exception as exc:
         logger.debug("schema persistence skipped: {}", exc)
+
+
+def _write_fluid_result_safe(config, fsm_ctx, doc_name: str, doc_index: int, result) -> None:
+    """Cache a fluid-phase extraction result. Non-critical - failures logged."""
+    if not fsm_ctx:
+        return
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import write_fluid_result
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            write_fluid_result(
+                driver, fsm_ctx.graph_id, fsm_ctx.run_id or "", doc_name, doc_index, result
+            )
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("fluid result cache write skipped: {}", exc)
+
+
+def _write_fluid_state_safe(config, fsm_ctx, detector, metrics_tracker, deferred_buffer) -> None:
+    """Cache fluid-phase detector/metrics state. Non-critical - failures logged."""
+    if not fsm_ctx:
+        return
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import write_fluid_state
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            deferred_data = deferred_buffer.to_dict() if deferred_buffer else None
+            write_fluid_state(
+                driver,
+                fsm_ctx.graph_id,
+                fsm_ctx.run_id or "",
+                detector.to_dict(),
+                metrics_tracker.to_dict(),
+                deferred_data,
+            )
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("fluid state cache write skipped: {}", exc)
+
+
+def _read_fluid_results_safe(config, fsm_ctx):
+    """Read cached fluid results. Returns empty list on failure."""
+    if not fsm_ctx:
+        return []
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import read_fluid_results
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            return read_fluid_results(driver, fsm_ctx.graph_id)
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("fluid result cache read skipped: {}", exc)
+        return []
+
+
+def _read_fluid_state_safe(config, fsm_ctx):
+    """Read cached fluid state. Returns None on failure."""
+    if not fsm_ctx:
+        return None
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import read_fluid_state
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            return read_fluid_state(driver, fsm_ctx.graph_id)
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("fluid state cache read skipped: {}", exc)
+        return None
+
+
+def _delete_fluid_cache_safe(config, fsm_ctx) -> None:
+    """Delete all fluid cache nodes. Non-critical - failures logged."""
+    if not fsm_ctx:
+        return
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import delete_fluid_results, delete_fluid_state
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            delete_fluid_results(driver, fsm_ctx.graph_id)
+            delete_fluid_state(driver, fsm_ctx.graph_id)
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("fluid cache cleanup skipped: {}", exc)
+
+
+def _check_fluid_cache_exists_safe(config, graph_id: str) -> bool:
+    """Check if fluid cache exists. Returns False on failure."""
+    try:
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import check_fluid_cache_exists
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            return check_fluid_cache_exists(driver, graph_id)
+        finally:
+            driver.close()
+    except Exception:
+        return False
 
 
 def _ingest_direct(
@@ -705,6 +865,7 @@ def _ingest_fluid(
     from kg_builder_cli.curing.accumulator import FluidAccumulator
     from kg_builder_cli.curing.detector import CuringDetector
     from kg_builder_cli.curing.metrics import StabilityMetrics
+    from kg_builder_cli.curing.observation import ObservationCollector
     from kg_builder_cli.events import signals as evt_signals
     from kg_builder_cli.events import types as etypes
     from kg_builder_cli.extraction.unstructured import ingest_document
@@ -719,6 +880,8 @@ def _ingest_fluid(
     metrics_tracker = StabilityMetrics(
         variance_window=config.curing.metrics_variance_window,
     )
+    collector = ObservationCollector()
+    calibrator = _load_calibrator_safe(config, fsm_ctx, "cross_type")
 
     run_id = fsm_ctx.run_id if fsm_ctx else None
     loaded_doc_names = fsm_ctx.loaded_doc_names if fsm_ctx else set()
@@ -727,8 +890,30 @@ def _ingest_fluid(
     cured = False
     exemplar_index = None  # built at curing time for Bayesian resolution
 
+    # --- Resume from fluid cache if available ---
+    cached_results = _read_fluid_results_safe(config, fsm_ctx)
+    if cached_results:
+        from kg_builder_cli.extraction.deferred_dedup import DeferredDedupBuffer
+
+        for doc_name, doc_index, result in cached_results:
+            accumulator.add_result(result)
+            if buffer:
+                buffer.accumulate_from_result(result.entities, result.relationships)
+        loaded_doc_names.update(r[0] for r in cached_results)
+
+        fluid_state = _read_fluid_state_safe(config, fsm_ctx)
+        if fluid_state:
+            detector = CuringDetector.from_dict(fluid_state["detector"], config.curing)
+            metrics_tracker = StabilityMetrics.from_dict(fluid_state["metrics"])
+            if fluid_state.get("deferred") and accumulator.deferred_buffer is not None:
+                accumulator._deferred_buffer = DeferredDedupBuffer.from_dict(
+                    fluid_state["deferred"]
+                )
+
+        logger.info("resumed fluid phase: {} cached docs", len(cached_results))
+
     for i, file_path in enumerate(files):
-        # Skip already-loaded documents (post-consolidation crash resume)
+        # Skip already-loaded documents (post-consolidation crash resume or fluid cache)
         if file_path.name in loaded_doc_names:
             logger.info("skipping already-loaded document: {}", file_path.name)
             continue
@@ -744,6 +929,8 @@ def _ingest_fluid(
                 doc_index=i,
                 total_docs=len(files),
                 phase="cured",
+                collector=collector,
+                calibrator=calibrator,
             )
             total_entities += len(result.entities)
             total_rels += len(result.relationships)
@@ -824,6 +1011,8 @@ def _ingest_fluid(
                         config.curing.drift_window,
                     )
                     cured = False
+                    # Clean up stale fluid cache from previous fluid session
+                    _delete_fluid_cache_safe(config, fsm_ctx)
                     accumulator = FluidAccumulator(deferred_dedup=config.extract.deferred_dedup)
                     detector = CuringDetector(config.curing)
                     metrics_tracker = StabilityMetrics(
@@ -876,6 +1065,8 @@ def _ingest_fluid(
             doc_index=i,
             total_docs=len(files),
             phase="fluid",
+            collector=collector,
+            calibrator=calibrator,
         )
         total_entities += len(result.entities)
         total_rels += len(result.relationships)
@@ -920,6 +1111,16 @@ def _ingest_fluid(
         # Evolve hierarchy/guide after each document
         if buffer:
             buffer._maybe_evolve()
+
+        # Persist doc+chunks to graph immediately (enables cross-run resume)
+        load_doc_chunks(result, config, run_id=run_id)
+        logger.debug("[fluid] loaded doc+chunks for '{}'", file_path.name)
+
+        # Cache extraction result and detector state to control plane
+        _write_fluid_result_safe(config, fsm_ctx, file_path.name, i, result)
+        _write_fluid_state_safe(
+            config, fsm_ctx, detector, metrics_tracker, accumulator.deferred_buffer
+        )
 
         # Check curing conditions
         should_cure = False
@@ -1079,13 +1280,18 @@ def _ingest_fluid(
                 all_rels = accumulator.all_relationships()
                 normalize_entity_ids(all_entities, all_rels)
 
-            # Load per-document Document + Chunk nodes before consolidation
-            for individual_result in accumulator._results:
-                load_doc_chunks(individual_result, config, run_id=run_id)
-                logger.debug(
-                    "[curing] loaded doc+chunks for '{}'",
-                    individual_result.metadata.source,
-                )
+            # Derive calibration ground truth and fit curves
+            _fit_and_persist_calibration(
+                collector,
+                type_mapping if entity_type_names else {},
+                config,
+                fsm_ctx,
+                accumulator,
+                freqs,
+                buffer,
+            )
+
+            # Doc+chunks already loaded per-document during fluid phase
 
             merged_result = accumulator.consolidate(
                 cured_ontology,
@@ -1127,7 +1333,10 @@ def _ingest_fluid(
                     logger.info("ontology hash computed: {}", fsm_ctx.ontology_hash)
                 fsm_ctx.stabilize()
                 _update_metanode_safe(config, fsm_ctx)
-                _persist_schema_safe(config, fsm_ctx, buffer)
+                _persist_schema_safe(config, fsm_ctx, buffer, collector)
+
+            # Clean up fluid cache after successful curing
+            _delete_fluid_cache_safe(config, fsm_ctx)
 
             evt_signals.phase_transition.send(
                 evt_signals.phase_transition,
@@ -1185,13 +1394,18 @@ def _ingest_fluid(
             all_rels = accumulator.all_relationships()
             normalize_entity_ids(all_entities, all_rels)
 
-        # Load per-document Document + Chunk nodes before consolidation
-        for individual_result in accumulator._results:
-            load_doc_chunks(individual_result, config, run_id=run_id)
-            logger.debug(
-                "[flush] loaded doc+chunks for '{}'",
-                individual_result.metadata.source,
-            )
+        # Derive calibration ground truth and fit curves
+        _fit_and_persist_calibration(
+            collector,
+            type_mapping if entity_type_names else {},
+            config,
+            fsm_ctx,
+            accumulator,
+            freqs,
+            buffer,
+        )
+
+        # Doc+chunks already loaded per-document during fluid phase
 
         cured_ontology = (
             buffer.snapshot(
@@ -1226,7 +1440,10 @@ def _ingest_fluid(
                 logger.info("ontology hash computed: {}", fsm_ctx.ontology_hash)
             fsm_ctx.stabilize()
             _update_metanode_safe(config, fsm_ctx)
-            _persist_schema_safe(config, fsm_ctx, buffer)
+            _persist_schema_safe(config, fsm_ctx, buffer, collector)
+
+        # Clean up fluid cache after end-of-corpus flush
+        _delete_fluid_cache_safe(config, fsm_ctx)
 
     return total_entities, total_rels
 
@@ -1292,6 +1509,130 @@ def _build_exemplar_index(buffer, config):
         return index
 
     return None
+
+
+def _load_calibrator_safe(config, fsm_ctx, model_type: str):
+    """Load a calibration curve from the graph. Returns PosteriorCalibrator or None."""
+    if not fsm_ctx:
+        return None
+    try:
+        import json
+
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.curing.calibration import PosteriorCalibrator
+        from kg_builder_cli.fsm import read_calibration_curve
+
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            data = read_calibration_curve(driver, fsm_ctx.graph_id, model_type)
+            if data and data["n_samples"] >= PosteriorCalibrator._MIN_SAMPLES:
+                x = json.loads(data["x_points"])
+                y = json.loads(data["y_points"])
+                logger.info(
+                    "loaded calibration curve: model_type={}, {} points",
+                    model_type,
+                    len(x),
+                )
+                return PosteriorCalibrator(x, y)
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("calibration curve load skipped: {}", exc)
+    return None
+
+
+def _fit_and_persist_calibration(
+    collector, type_mapping, config, fsm_ctx, accumulator, freqs, buffer
+) -> None:
+    """Derive ground truth, fit calibration curves, compute type metrics, persist."""
+    from kg_builder_cli.events import signals as evt_signals
+    from kg_builder_cli.events import types as etypes
+
+    # Derive ground truth from type clustering
+    gt_pairs = collector.derive_ground_truth(type_mapping)
+    logger.info(
+        "[calibration] {} ground truth pairs from {} cross-type obs, {} assignment obs",
+        len(gt_pairs),
+        collector.cross_type_count,
+        collector.type_assignment_count,
+    )
+
+    # Fit calibration curve
+    if gt_pairs:
+        from kg_builder_cli.curing.calibration import PosteriorCalibrator
+
+        raw_posteriors = [p for p, _ in gt_pairs]
+        labels = [c for _, c in gt_pairs]
+        calibrator = PosteriorCalibrator.fit(raw_posteriors, labels)
+        if calibrator and fsm_ctx:
+            _persist_calibration_curve_safe(config, fsm_ctx, calibrator, "cross_type")
+
+    # Aggregate observations into calibration data for KGFTypeCalibration
+    obs_calibration = collector.aggregate_calibration()
+
+    # Compute type metrics
+    type_metrics = _compute_type_metrics_safe(accumulator, freqs, buffer, obs_calibration)
+    if type_metrics:
+        evt_signals.type_metrics_computed.send(
+            evt_signals.type_metrics_computed,
+            event=etypes.TypeMetricsComputed(
+                type_count=len(type_metrics),
+                metric_count=19,
+                metrics_per_type=type_metrics,
+            ),
+        )
+
+
+def _compute_type_metrics_safe(accumulator, freqs, buffer, calibration_data):
+    """Compute type metrics. Non-critical - returns empty dict on failure."""
+    try:
+        from kg_builder_cli.curing.type_metrics import TypeMetricsCollector
+
+        results = accumulator._results if hasattr(accumulator, "_results") else []
+        collector = TypeMetricsCollector(
+            results=results,
+            frequencies=freqs,
+            calibration_data=calibration_data,
+        )
+        return collector.compute()
+    except Exception as exc:
+        logger.debug("type metrics computation skipped: {}", exc)
+        return {}
+
+
+def _persist_calibration_curve_safe(config, fsm_ctx, calibrator, model_type: str) -> None:
+    """Persist a calibration curve to the graph. Non-critical."""
+    if not fsm_ctx:
+        return
+    try:
+        import json
+
+        from neo4j import GraphDatabase
+
+        from kg_builder_cli.fsm import write_calibration_curve
+
+        x, y = calibrator.to_points()
+        driver = GraphDatabase.driver(
+            config.neo4j.uri,
+            auth=(config.neo4j.user, config.neo4j.password),
+        )
+        try:
+            write_calibration_curve(
+                driver,
+                fsm_ctx.graph_id,
+                model_type,
+                json.dumps(x),
+                json.dumps(y),
+                calibrator.n_samples,
+            )
+        finally:
+            driver.close()
+    except Exception as exc:
+        logger.debug("calibration curve persist skipped: {}", exc)
 
 
 @app.command()

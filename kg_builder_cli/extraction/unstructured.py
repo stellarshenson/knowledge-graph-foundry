@@ -78,6 +78,8 @@ def ingest_document(
     doc_index: int = 0,
     total_docs: int = 1,
     phase: str = "direct",
+    collector: object | None = None,
+    calibrator: object | None = None,
 ) -> ExtractionResult:
     """Run the full unstructured ingestion pipeline.
 
@@ -247,6 +249,8 @@ def ingest_document(
                 llm_config=config.llm if config.extract.llm_escalation else None,
                 llm_escalation=config.extract.llm_escalation,
                 neo4j_config=config.neo4j if config.extract.llm_escalation else None,
+                collector=collector,
+                calibrator=calibrator,
             )
             all_entities, remap_count = _resolve_types_bayesian(
                 all_entities,
@@ -290,6 +294,8 @@ def ingest_document(
         cross_type_merge_threshold=config.extract.cross_type_merge_threshold,
         ontology_state=ontology,
         hierarchy_resolution=config.extract.hierarchy_resolution,
+        collector=collector,
+        calibrator=calibrator,
     )
     deduped_entities = resolution.entities
 

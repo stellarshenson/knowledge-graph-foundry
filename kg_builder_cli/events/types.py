@@ -350,3 +350,12 @@ class GraphValidated(BaseModel):
     rel_count: int
     type_coverage: float
     orphan_count: int
+
+
+# ── Calibration (1) ──────────────────────────────────────────────
+
+
+class TypeMetricsComputed(BaseModel):
+    type_count: int
+    metric_count: int
+    metrics_per_type: dict[str, dict[str, float]]

@@ -252,6 +252,248 @@ def write_type_calibration(
     logger.info("wrote {} KGFTypeCalibration nodes", len(batch))
 
 
+def write_calibration_curve(
+    driver: Driver,
+    graph_id: str,
+    model_type: str,
+    x_points: str,
+    y_points: str,
+    n_samples: int,
+) -> None:
+    """Persist a calibration curve as :KGFControl:KGFCalibrationCurve node."""
+    query = """
+    MERGE (c:KGFControl:KGFCalibrationCurve {graph_id: $graph_id, model_type: $model_type})
+    SET c.x_points = $x_points,
+        c.y_points = $y_points,
+        c.n_samples = $n_samples,
+        c.created_at = $created_at
+    WITH c
+    MATCH (s:KGFControl:KGFState {graph_id: $graph_id})
+    MERGE (s)-[:HAS_CALIBRATION_CURVE]->(c)
+    """
+    with driver.session() as session:
+        session.run(
+            query,
+            {
+                "graph_id": graph_id,
+                "model_type": model_type,
+                "x_points": x_points,
+                "y_points": y_points,
+                "n_samples": n_samples,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            },
+        )
+    logger.info("wrote calibration curve: model_type={}, {} samples", model_type, n_samples)
+
+
+def read_calibration_curve(
+    driver: Driver, graph_id: str, model_type: str
+) -> dict[str, Any] | None:
+    """Read a calibration curve. Returns None if not found."""
+    query = """
+    MATCH (c:KGFControl:KGFCalibrationCurve {graph_id: $graph_id, model_type: $model_type})
+    RETURN c.x_points AS x_points, c.y_points AS y_points, c.n_samples AS n_samples
+    LIMIT 1
+    """
+    with driver.session() as session:
+        record = session.run(query, {"graph_id": graph_id, "model_type": model_type}).single()
+    if record is None:
+        return None
+    return {
+        "x_points": record["x_points"],
+        "y_points": record["y_points"],
+        "n_samples": record["n_samples"],
+    }
+
+
+def delete_calibration_curves(driver: Driver, graph_id: str) -> None:
+    """Delete all calibration curve nodes for a graph_id."""
+    query = "MATCH (c:KGFControl:KGFCalibrationCurve {graph_id: $graph_id}) DETACH DELETE c"
+    with driver.session() as session:
+        session.run(query, {"graph_id": graph_id})
+    logger.debug("deleted calibration curves for graph_id={}", graph_id)
+
+
+FLUID_CACHE_SCHEMA_VERSION = 1
+
+
+def _compress(data: dict | list, version: int = FLUID_CACHE_SCHEMA_VERSION) -> str:
+    """Wrap data in versioned envelope, JSON-serialize, zlib-compress, base64-encode."""
+    import base64
+    import json
+    import zlib
+
+    envelope = {"v": version, "data": data}
+    raw = json.dumps(envelope, separators=(",", ":"), default=str).encode()
+    return base64.b64encode(zlib.compress(raw)).decode()
+
+
+def _decompress(payload: str) -> dict | list | None:
+    """Decompress and validate versioned envelope. Returns None on version mismatch."""
+    import base64
+    import json
+    import zlib
+
+    envelope = json.loads(zlib.decompress(base64.b64decode(payload)))
+    if envelope.get("v") != FLUID_CACHE_SCHEMA_VERSION:
+        logger.warning(
+            "fluid cache schema v{} != current v{}, discarding",
+            envelope.get("v"),
+            FLUID_CACHE_SCHEMA_VERSION,
+        )
+        return None
+    return envelope["data"]
+
+
+def write_fluid_result(
+    driver: Driver,
+    graph_id: str,
+    run_id: str,
+    doc_name: str,
+    doc_index: int,
+    result,
+) -> None:
+    """Cache a fluid-phase ExtractionResult as a :KGFControl:KGFFluidResult node.
+
+    Embeddings and chunks are excluded from the payload to minimize size.
+    """
+    # Serialize result excluding embeddings and chunks
+    data = result.model_dump()
+    for entity in data.get("entities", []):
+        entity.pop("embedding", None)
+    data.pop("chunks", None)
+
+    payload = _compress(data)
+
+    query = """
+    MERGE (n:KGFControl:KGFFluidResult {graph_id: $graph_id, doc_name: $doc_name})
+    SET n.run_id = $run_id,
+        n.doc_index = $doc_index,
+        n.payload = $payload,
+        n.created_at = $created_at
+    """
+    with driver.session() as session:
+        session.run(
+            query,
+            {
+                "graph_id": graph_id,
+                "run_id": run_id,
+                "doc_name": doc_name,
+                "doc_index": doc_index,
+                "payload": payload,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            },
+        )
+    logger.debug("wrote fluid result cache: doc='{}' index={}", doc_name, doc_index)
+
+
+def read_fluid_results(driver: Driver, graph_id: str):
+    """Read all cached fluid results, ordered by doc_index.
+
+    Returns list of (doc_name, doc_index, ExtractionResult) tuples.
+    Returns empty list on version mismatch (cache discarded).
+    """
+    from kg_builder_cli.types.extraction import ExtractionResult
+
+    query = """
+    MATCH (n:KGFControl:KGFFluidResult {graph_id: $graph_id})
+    RETURN n.doc_name AS doc_name, n.doc_index AS doc_index, n.payload AS payload
+    ORDER BY n.doc_index
+    """
+    results = []
+    with driver.session() as session:
+        records = list(session.run(query, {"graph_id": graph_id}))
+
+    for record in records:
+        data = _decompress(record["payload"])
+        if data is None:
+            logger.warning("fluid cache version mismatch, discarding all cached results")
+            return []
+        result = ExtractionResult.model_validate(data)
+        results.append((record["doc_name"], record["doc_index"], result))
+
+    return results
+
+
+def delete_fluid_results(driver: Driver, graph_id: str) -> None:
+    """Delete all :KGFFluidResult nodes for a graph_id."""
+    query = "MATCH (n:KGFControl:KGFFluidResult {graph_id: $graph_id}) DETACH DELETE n"
+    with driver.session() as session:
+        session.run(query, {"graph_id": graph_id})
+    logger.debug("deleted fluid result cache for graph_id={}", graph_id)
+
+
+def write_fluid_state(
+    driver: Driver,
+    graph_id: str,
+    run_id: str,
+    detector_data: dict,
+    metrics_data: dict,
+    deferred_data: dict | None = None,
+) -> None:
+    """Persist fluid-phase detector/metrics/deferred state as :KGFFluidState node."""
+    state = {
+        "detector": detector_data,
+        "metrics": metrics_data,
+    }
+    if deferred_data is not None:
+        state["deferred"] = deferred_data
+
+    payload = _compress(state)
+    docs_processed = detector_data.get("docs_processed", 0)
+
+    query = """
+    MERGE (n:KGFControl:KGFFluidState {graph_id: $graph_id})
+    SET n.run_id = $run_id,
+        n.docs_processed = $docs_processed,
+        n.payload = $payload
+    """
+    with driver.session() as session:
+        session.run(
+            query,
+            {
+                "graph_id": graph_id,
+                "run_id": run_id,
+                "docs_processed": docs_processed,
+                "payload": payload,
+            },
+        )
+    logger.debug("wrote fluid state cache: docs_processed={}", docs_processed)
+
+
+def read_fluid_state(driver: Driver, graph_id: str) -> dict | None:
+    """Read cached fluid state. Returns None if absent or version mismatch."""
+    query = """
+    MATCH (n:KGFControl:KGFFluidState {graph_id: $graph_id})
+    RETURN n.payload AS payload
+    LIMIT 1
+    """
+    with driver.session() as session:
+        record = session.run(query, {"graph_id": graph_id}).single()
+    if record is None:
+        return None
+    return _decompress(record["payload"])
+
+
+def delete_fluid_state(driver: Driver, graph_id: str) -> None:
+    """Delete the :KGFFluidState node for a graph_id."""
+    query = "MATCH (n:KGFControl:KGFFluidState {graph_id: $graph_id}) DETACH DELETE n"
+    with driver.session() as session:
+        session.run(query, {"graph_id": graph_id})
+    logger.debug("deleted fluid state cache for graph_id={}", graph_id)
+
+
+def check_fluid_cache_exists(driver: Driver, graph_id: str) -> bool:
+    """Check if any fluid cache nodes exist for a graph_id."""
+    query = """
+    MATCH (n:KGFControl:KGFFluidResult {graph_id: $graph_id})
+    RETURN count(n) AS cnt LIMIT 1
+    """
+    with driver.session() as session:
+        result = session.run(query, {"graph_id": graph_id})
+        return result.single()["cnt"] > 0
+
+
 def detect_graph_state(driver: Driver) -> dict[str, Any]:
     """Detect the current graph state for FSM initialization.
 

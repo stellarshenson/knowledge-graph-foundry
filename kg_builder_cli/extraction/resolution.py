@@ -11,6 +11,7 @@ from kg_builder_cli.extraction.normalization import normalize_entity_name
 from kg_builder_cli.types.extraction import Entity
 
 if TYPE_CHECKING:
+    from kg_builder_cli.curing.observation import ObservationCollector
     from kg_builder_cli.extraction.deferred_dedup import DeferredDedupBuffer
     from kg_builder_cli.types.ontology import OntologyState
 
@@ -72,6 +73,8 @@ def resolve_entities(
     doc_index: int = 0,
     ontology_state: "OntologyState | None" = None,
     hierarchy_resolution: bool = True,
+    collector: "ObservationCollector | None" = None,
+    calibrator: "object | None" = None,
 ) -> ResolutionResult:
     """Merge near-duplicate entities within type blocks using multi-signal matching.
 
@@ -120,6 +123,8 @@ def resolve_entities(
         doc_index=doc_index,
         ontology_state=ontology_state,
         hierarchy_resolution=hierarchy_resolution,
+        collector=collector,
+        calibrator=calibrator,
     )
 
     merge_count = len(entities) - len(resolved)
@@ -277,6 +282,8 @@ def _resolve_cross_type(
     doc_index: int = 0,
     ontology_state: "OntologyState | None" = None,
     hierarchy_resolution: bool = True,
+    collector: "ObservationCollector | None" = None,
+    calibrator: "object | None" = None,
 ) -> tuple[list[Entity], dict[str, str], list[CrossTypeStat]]:
     """Merge entities with identical normalized names across different types.
 
@@ -301,6 +308,45 @@ def _resolve_cross_type(
 
     type_priority = _build_type_priority(type_frequencies)
     cross_type_stats: list[CrossTypeStat] = []
+
+    def _record_obs(
+        norm_name: str,
+        type_a: str,
+        type_b: str,
+        raw_posterior: float,
+        prior: float,
+        lr_d: float,
+        lr_e: float,
+        lr_c: float,
+        action: str,
+        has_hier: bool,
+        sibling: bool,
+    ) -> None:
+        if collector is None:
+            return
+        from kg_builder_cli.curing.observation import CrossTypeObservation
+
+        collector.record_cross_type(
+            CrossTypeObservation(
+                norm_name=norm_name,
+                type_a=type_a,
+                type_b=type_b,
+                raw_posterior=raw_posterior,
+                prior=prior,
+                lr_desc=lr_d,
+                lr_emb=lr_e,
+                lr_cooc=lr_c,
+                action=action,
+                doc_index=doc_index,
+                has_hierarchy=has_hier,
+                sibling=sibling,
+            )
+        )
+
+    def _maybe_calibrate(raw_posterior: float) -> float:
+        if calibrator is not None and hasattr(calibrator, "calibrate"):
+            return calibrator.calibrate(raw_posterior)
+        return raw_posterior
 
     def _emit_decision(
         stat: CrossTypeStat,
@@ -328,6 +374,19 @@ def _resolve_cross_type(
                 sibling=sibling,
                 doc_index=stat.doc_index,
             ),
+        )
+        _record_obs(
+            stat.norm_name,
+            stat.type_a,
+            stat.type_b,
+            posterior,
+            prior,
+            lr_desc,
+            lr_emb,
+            lr_cooc,
+            stat.action,
+            has_hier,
+            sibling,
         )
 
     # Build hierarchy lookup from ontology state
@@ -392,7 +451,8 @@ def _resolve_cross_type(
                         prior = 0.2
 
                     # Always run Bayesian - hierarchy boosts prior, doesn't skip it
-                    posterior = _cross_type_posterior(canonical, other, prior_override=prior)
+                    raw_posterior = _cross_type_posterior(canonical, other, prior_override=prior)
+                    posterior = _maybe_calibrate(raw_posterior)
 
                     if posterior >= merge_threshold:
                         # Merge. Determine action and labels
@@ -602,7 +662,8 @@ def _resolve_cross_type(
                     continue
 
                 # No hierarchy -> standard Bayesian
-                posterior = _cross_type_posterior(canonical, other)
+                raw_posterior = _cross_type_posterior(canonical, other)
+                posterior = _maybe_calibrate(raw_posterior)
                 if posterior >= merge_threshold:
                     logger.info(
                         "[resolve] cross-type merge via Bayesian: '{}' ({}) -> ({}) - "
