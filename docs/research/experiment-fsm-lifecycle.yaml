@@ -1,0 +1,623 @@
+# Experiment Plan: Graph-Resident FSM Lifecycle Management
+# Tests three hypotheses about state persistence for multi-run knowledge graphs
+# Domain: knowledge-graph lifecycle governance (not standard ML training)
+
+objectives:
+  - id: obj_1
+    description: >
+      Evaluate dual-authority schema (file-authoritative definitions + graph-authoritative
+      operational state) against single-authority alternatives for multi-run ontology management
+    hypothesis: H1
+  - id: obj_2
+    description: >
+      Validate content-addressable entity fingerprinting as an idempotent crash recovery
+      mechanism that eliminates the need for distinct recovery paths
+    hypothesis: H2
+  - id: obj_3
+    description: >
+      Measure whether decay-weighted calibration persistence improves cross-run entity
+      resolution quality while preventing degradation under distribution shift
+    hypothesis: H3
+
+datasets:
+  - id: cpap_corpus
+    name: CPAP Medical Device Corpus
+    description: >
+      10 unstructured documents about CPAP/respiratory therapy devices from multiple
+      manufacturers. Internal to KGF project, used by MultiDoc Benchmark v27.
+    size: 10 documents, ~1007 entities, ~3496 relationships at full ingestion
+    path: data/raw/
+    splits:
+      homogeneous:
+        description: Random 5/5 document split for measuring calibration value under stable distribution
+        batch_1: 5 randomly selected documents
+        batch_2: remaining 5 documents
+      heterogeneous:
+        description: >
+          Grouped by document style - formal technical datasheets vs informal product
+          descriptions/comparisons - for measuring calibration robustness under distribution shift
+        batch_1: formal technical specification documents
+        batch_2: informal product comparison and review documents
+    regime_factors:
+      corpus_split:
+        values: [homogeneous, heterogeneous]
+        rationale: >
+          H3 predicts calibration helps under homogeneous conditions but could harm under
+          heterogeneous conditions. Factorial required to isolate distribution shift effect
+      crash_point:
+        values: [25_pct, 50_pct, 75_pct]
+        rationale: >
+          H2 must validate recovery at three consolidation checkpoints representing
+          pre-merge, mid-merge, and post-merge interruption scenarios
+
+baselines:
+  - id: file_only_schema
+    name: File-Only Schema Reconstruction
+    description: >
+      Current KGF behavior: OntologyBuffer loads exclusively from ontology.yml on every run.
+      No operational state persisted in graph. Type frequencies, calibration metadata, and
+      consumed prior registry are discarded between runs. This is the default for all existing
+      LLM KG builders (GraphRAG, LightRAG, nano-graphrag).
+    hypothesis_tested: H1
+    rationale: >
+      Fair baseline because it represents current SOTA for LLM KG construction systems.
+      No published system persists operational ontology state in the graph. GraphRAG (Microsoft,
+      2024) and LightRAG (Hong et al., 2024) both use filesystem-only schema management.
+    implementation_spec:
+      class_name: FileOnlySchemaManager
+      key_methods: [__init__, load_schema, get_operational_state, reconstruct_from_run]
+      algorithm_steps:
+        - Load OntologyBuffer from ontology.yml via OntologyBuffer.from_yaml()
+        - Initialize empty frequency counters and calibration defaults
+        - Run ingestion batch with fresh operational state
+        - Discard all accumulated operational state after run completes
+        - Next run starts from step 1 (no state carryover)
+      loss_function: "N/A - not a training method. Quality measured by benchmark hybrid score"
+      key_hyperparameters:
+        ontology_path: "ontology.yml"
+        cross_type_merge_threshold: 0.6
+        resolution_threshold: 0.85
+      differentiator: >
+        No graph-resident operational state. Every run is stateless with respect to
+        prior ingestion history. Calibration uses fixed defaults.
+
+  - id: graph_only_schema
+    name: Graph-Only Schema Authority
+    description: >
+      Full graph-authoritative schema: both type definitions AND operational state reconstructed
+      from graph. OntologyBuffer.from_graph() replaces OntologyBuffer.from_yaml() entirely after
+      first run. The graph becomes the single source of truth for ontology, including type
+      definitions that were originally in ontology.yml.
+    hypothesis_tested: H1
+    rationale: >
+      Tests the contrarian concern: does making LLM extraction output authoritative over type
+      definitions cause noise accumulation? If graph-only matches dual-authority, the simpler
+      single-authority model wins. This is the pragmatist's original proposal before the
+      contrarian challenge.
+    implementation_spec:
+      class_name: GraphOnlySchemaManager
+      key_methods: [__init__, load_schema, persist_full_schema, reconstruct_from_graph]
+      algorithm_steps:
+        - Run 1: load from ontology.yml, persist ALL state (definitions + operational) to graph
+        - Run 2+: reconstruct OntologyBuffer entirely from graph via from_graph()
+        - Type definitions in graph may diverge from ontology.yml as LLM discovers variants
+        - Operational state (frequencies, calibration) accumulates across runs in graph
+        - No filesystem artifact consulted after initial seed ingestion
+      loss_function: "N/A - quality measured by type assignment accuracy and benchmark hybrid score"
+      key_hyperparameters:
+        ontology_path: "ontology.yml"
+        cross_type_merge_threshold: 0.6
+        persist_definitions: true
+        persist_operational: true
+      differentiator: >
+        Graph is sole authority for both definitions and operational state. Ontology.yml
+        is only used for initial seed. Risk: LLM extraction noise corrupts type definitions.
+
+  - id: fresh_calibration
+    name: Fresh Calibration Defaults
+    description: >
+      Current KGF behavior: Bayesian cross-type resolution uses fixed default priors on every
+      run. Prior for name-identical cross-type pairs is always 0.8, likelihood ratios use
+      hardcoded scaling. No learning from previous resolution outcomes.
+    hypothesis_tested: H3
+    rationale: >
+      Current production default. The fixed threshold (cross_type_merge_threshold=0.6) was
+      manually tuned during v08-v20 benchmark iterations. Tests whether empirical Bayes
+      provides any lift over well-tuned fixed thresholds at this corpus scale.
+    implementation_spec:
+      class_name: FreshCalibrationResolver
+      key_methods: [__init__, resolve_cross_type, compute_posterior, get_priors]
+      algorithm_steps:
+        - Initialize default priors: name_match=0.8, non_match=0.2
+        - Initialize default LR scaling: desc_sim*2.0, emb_sim*2.0, cooc=1.5/0.9
+        - For each cross-type candidate pair compute posterior from defaults
+        - Apply fixed merge threshold 0.6
+        - Discard all resolution statistics after run completes
+      loss_function: "posterior = prior_odds * LR_desc * LR_emb * LR_cooc / (1 + prior_odds * LR_desc * LR_emb * LR_cooc)"
+      key_hyperparameters:
+        name_match_prior: 0.8
+        non_match_prior: 0.2
+        cross_type_merge_threshold: 0.6
+        desc_lr_scale: 2.0
+        emb_lr_scale: 2.0
+        cooc_lr_present: 1.5
+        cooc_lr_absent: 0.9
+      differentiator: >
+        Stateless resolution: every run uses identical fixed priors regardless of history.
+        No calibration persistence, no decay, no adaptation.
+
+  - id: naive_calibration_persistence
+    name: Naive Calibration Persistence (No Decay)
+    description: >
+      Persist per-type calibration to graph and reload without any decay or distribution
+      awareness. Prior strengths accumulate monotonically. This tests the contrarian's
+      prediction that naive persistence degrades under distribution shift.
+    hypothesis_tested: H3
+    rationale: >
+      Direct test of the contrarian's core objection. If naive persistence degrades quality
+      on heterogeneous batches, the decay mechanism in H3 is justified. If naive persistence
+      works fine, the decay mechanism is unnecessary engineering complexity.
+    implementation_spec:
+      class_name: NaiveCalibrationResolver
+      key_methods: [__init__, resolve_cross_type, persist_calibration, load_calibration]
+      algorithm_steps:
+        - Run 1: use default priors, accumulate per-type merge/block counts
+        - Persist calibration to (:KGFTypeCalibration) nodes after run completes
+        - Run 2+: load persisted calibration, use accumulated counts as priors
+        - Prior for type pair = historical_merges / (historical_merges + historical_blocks)
+        - No decay, no recency weighting, no distribution shift detection
+        - Calibration accumulates monotonically across all runs
+      loss_function: "empirical_prior = merge_count / (merge_count + block_count); posterior computed with empirical_prior replacing default 0.8"
+      key_hyperparameters:
+        cross_type_merge_threshold: 0.6
+        min_observations_for_empirical: 3
+      differentiator: >
+        Calibration persists across runs but with no recency weighting. Stale observations
+        from batch 1 have equal influence to recent observations from batch N.
+
+  - id: wipe_and_retry_recovery
+    name: Wipe-and-Retry Crash Recovery
+    description: >
+      Simplest crash recovery: detect incomplete consolidation via missing last_completed_at
+      on metanode, wipe all entities from the interrupted run, re-run from scratch. This is
+      the implicit strategy when no crash recovery is implemented.
+    hypothesis_tested: H2
+    rationale: >
+      Represents the no-engineering-effort baseline. Most LLM KG systems have no crash
+      recovery at all - a crashed run requires manual cleanup or full graph rebuild. Wipe-
+      and-retry is the minimum viable recovery that avoids manual intervention.
+    implementation_spec:
+      class_name: WipeAndRetryRecovery
+      key_methods: [__init__, detect_interrupted_run, wipe_partial_state, restart_ingestion]
+      algorithm_steps:
+        - On startup: check metanode for consolidation_started_at without last_completed_at
+        - If interrupted run detected: execute MATCH (n) WHERE n.ingestion_run_id = $run_id DETACH DELETE n
+        - Wipe all entities, relationships, chunks from the interrupted run
+        - Re-run full ingestion from scratch against remaining documents
+        - No attempt to salvage partially-consolidated state
+      loss_function: "N/A - measured by recovery correctness (graph equivalence to clean run) and time overhead"
+      key_hyperparameters:
+        detection_query: "MATCH (c:KGFControl) WHERE c.consolidation_started_at IS NOT NULL AND c.last_completed_at IS NULL RETURN c"
+      differentiator: >
+        Destructive recovery: always wipes partial state. Simple but wasteful - discards
+        correctly-consolidated entities along with incomplete ones.
+
+proposed_methods:
+  - id: dual_authority_schema
+    name: Dual-Authority Schema with Graph-Reconstructable Operational State
+    description: >
+      Split schema authority by concern: file-authoritative for type definitions, hierarchy,
+      and resolution rules (governance checkpoints); graph-authoritative for type frequencies,
+      consumed prior registry, calibration metadata, and run history (operational observations).
+      OntologyBuffer.from_graph() reconstructs operational state only; from_yaml() loads
+      definitions. On startup: load definitions from file, merge operational state from graph.
+      (:KGFConsumedPrior) nodes track which seed ontology versions have been imported.
+    hypothesis_tested: H1
+    implementation_spec:
+      class_name: DualAuthoritySchemaManager
+      key_methods:
+        - __init__
+        - load_definitions_from_file
+        - load_operational_from_graph
+        - merge_authority_layers
+        - persist_operational_state
+        - check_consumed_priors
+        - register_consumed_prior
+      algorithm_steps:
+        - Load type definitions from ontology.yml (file authority layer)
+        - Query graph for (:KGFConsumedPrior) nodes - skip re-importing seed types already consumed
+        - Query graph for (:KGFTypeFrequency) nodes - reconstruct operational frequencies
+        - Query graph for (:KGFTypeCalibration) nodes - reconstruct calibration metadata
+        - Merge: file definitions take precedence for type schema, graph data takes precedence for operational counters
+        - After ingestion: persist updated operational state back to graph nodes
+        - Register new consumed priors for any seed types imported this run
+      loss_function: >
+        Round-trip fidelity: diff(in_memory_operational_state, reconstructed_from_graph_state) = 0
+        for all operational fields. Type assignment accuracy measured by benchmark hybrid score.
+      key_hyperparameters:
+        ontology_path: "ontology.yml"
+        operational_node_labels: ["KGFTypeFrequency", "KGFTypeCalibration", "KGFConsumedPrior"]
+        cross_type_merge_threshold: 0.6
+      differentiator: >
+        Separates governance (file) from observation (graph). Type definitions cannot drift
+        due to LLM extraction noise because they are always sourced from the authored file.
+        Operational state is graph-authoritative, enabling multi-machine consistency and
+        filesystem independence for runtime metadata.
+
+  - id: fingerprint_idempotent_recovery
+    name: Idempotent Entity Fingerprinting Recovery
+    description: >
+      Content-addressable fingerprinting makes consolidation inherently idempotent. Each entity
+      gets a deterministic fingerprint hash(canonical_name + type + sorted(source_chunk_ids)).
+      MERGE operations use fingerprint as the key. Re-running consolidation after a crash
+      produces no-ops for already-written entities and creates missing ones. Run ID retained
+      as diagnostic-only property, not recovery mechanism.
+    hypothesis_tested: H2
+    implementation_spec:
+      class_name: FingerprintIdempotentRecovery
+      key_methods:
+        - __init__
+        - compute_fingerprint
+        - merge_entity_by_fingerprint
+        - merge_relationship_by_fingerprint
+        - run_idempotent_consolidation
+        - verify_graph_equivalence
+      algorithm_steps:
+        - For each entity compute fingerprint = SHA256(canonical_name + "|" + type + "|" + sorted(source_chunk_ids).join(","))
+        - For each relationship compute fingerprint = SHA256(source_fingerprint + "|" + rel_type + "|" + target_fingerprint)
+        - Use MERGE (e:Entity {fingerprint: $fp}) SET e += $properties for all writes
+        - Use MERGE (s)-[r:REL_TYPE {fingerprint: $fp}]->(t) for relationship writes
+        - On crash detection: simply re-run consolidation - no cleanup needed
+        - Already-written entities match on fingerprint (MERGE = no-op for existing nodes)
+        - Missing entities created normally by MERGE
+        - Add ingestion_run_id as write-only diagnostic property (not used for recovery logic)
+      loss_function: >
+        Recovery correctness: entity_count_diff(recovered_graph, clean_graph) = 0,
+        relationship_count_diff = 0, property_divergence = 0 across all three crash points.
+        Recovery overhead = restart_time / full_consolidation_time (target < 0.30).
+      key_hyperparameters:
+        hash_algorithm: "sha256"
+        fingerprint_fields: ["canonical_name", "type", "sorted_source_chunk_ids"]
+        relationship_fingerprint_fields: ["source_fingerprint", "rel_type", "target_fingerprint"]
+      differentiator: >
+        Eliminates crash recovery taxonomy entirely. No detection of interrupted state needed,
+        no cleanup queries, no distinct recovery paths for pre/mid/post consolidation. The
+        system simply re-runs and MERGE handles deduplication. Run ID exists for auditing only.
+
+  - id: decay_weighted_calibration
+    name: Distribution-Aware Calibration with Decay Weighting
+    description: >
+      Persist per-type Bayesian calibration to graph with exponential decay weighting by
+      recency. Stale or distribution-shifted calibration decays toward defaults rather than
+      actively harming resolution. Topology sanity check compares persisted merge rates
+      against observed cross-type edge density to detect distribution shift.
+    hypothesis_tested: H3
+    implementation_spec:
+      class_name: DecayWeightedCalibrationResolver
+      key_methods:
+        - __init__
+        - load_calibration_from_graph
+        - apply_decay
+        - compute_topology_sanity_check
+        - resolve_cross_type_with_calibration
+        - persist_calibration_to_graph
+        - detect_distribution_shift
+      algorithm_steps:
+        - Load (:KGFTypeCalibration) nodes with last_updated_timestamp and observation counts
+        - Compute decay factor = exp(-lambda * elapsed_docs_since_last_update) for each type pair
+        - Apply decay: effective_count = raw_count * decay_factor
+        - If effective_count < min_observations, fall back to default priors
+        - Compute topology sanity check via Cypher - compare persisted merge rate against observed cross-type edge density
+        - If |persisted_rate - topology_rate| > divergence_threshold, increase decay rate (accelerate forgetting)
+        - Use decayed empirical priors for Bayesian cross-type resolution
+        - After run: persist updated calibration with current timestamp
+      loss_function: >
+        effective_prior = decay_factor * empirical_prior + (1 - decay_factor) * default_prior
+        where decay_factor = exp(-lambda * elapsed_docs), lambda = base_decay * shift_multiplier
+        posterior = odds(effective_prior) * LR_desc * LR_emb * LR_cooc / (1 + odds * product)
+      key_hyperparameters:
+        base_decay_lambda: 0.1
+        shift_multiplier: 3.0
+        divergence_threshold: 0.2
+        min_observations_for_empirical: 3
+        cross_type_merge_threshold: 0.6
+        topology_query_depth: 2
+      differentiator: >
+        Calibration adapts to corpus characteristics: accumulates under homogeneous batches
+        (slow decay), forgets under heterogeneous batches (fast decay triggered by topology
+        divergence). Unlike naive persistence, cannot harm resolution quality by more than
+        1% even under worst-case distribution shift.
+
+ablations:
+  - id: dual_authority_no_consumed_prior
+    name: Dual-Authority Without Consumed Prior Registry
+    parent_method: dual_authority_schema
+    hypothesis_tested: H1
+    what_is_removed: >
+      (:KGFConsumedPrior) node tracking. Without this, re-launching with the same ontology.yml
+      re-imports all seed types, potentially creating duplicates or resetting frequencies.
+    how_it_differs: >
+      Remove check_consumed_priors() and register_consumed_prior() calls. from_yaml() always
+      imports all seed types regardless of whether they were previously consumed. Merge logic
+      in OntologyBuffer.accumulate() must handle duplicate seeds gracefully (or not).
+    expected_effect: >
+      Second ingestion with identical ontology.yml may produce type count inflation (seed types
+      counted twice) or frequency distortion (seed type frequencies reset to 1). If OntologyBuffer
+      already handles re-import gracefully via PascalCase normalization, this ablation shows
+      consumed prior tracking is unnecessary engineering.
+
+  - id: fingerprint_no_diagnostic_runid
+    name: Fingerprint Recovery Without Diagnostic Run ID
+    parent_method: fingerprint_idempotent_recovery
+    hypothesis_tested: H2
+    what_is_removed: >
+      ingestion_run_id property on entities and relationships. Recovery still works (fingerprint
+      is the MERGE key), but post-hoc auditing ("which entities came from which run?") is lost.
+    how_it_differs: >
+      Remove ingestion_run_id from entity/relationship properties in merge_entity_by_fingerprint()
+      and merge_relationship_by_fingerprint(). All other logic identical.
+    expected_effect: >
+      Zero effect on recovery correctness or performance. This ablation validates that run_id
+      is purely diagnostic and not load-bearing for the recovery mechanism. If any test fails,
+      it reveals a hidden dependency on run_id in the recovery path.
+
+  - id: decay_no_topology_sanity
+    name: Decay Calibration Without Topology Sanity Check
+    parent_method: decay_weighted_calibration
+    hypothesis_tested: H3
+    what_is_removed: >
+      Topology sanity check: the Cypher queries comparing persisted merge rates against observed
+      cross-type edge density, and the shift_multiplier acceleration.
+    how_it_differs: >
+      Remove compute_topology_sanity_check() and detect_distribution_shift(). Decay uses only
+      base_decay_lambda without shift_multiplier acceleration. Decay rate is constant regardless
+      of whether distribution has shifted.
+    expected_effect: >
+      Homogeneous condition: no difference (no shift to detect). Heterogeneous condition:
+      decay still helps but slower to adapt. Prediction: 0.5-1.5% F1 gap between full method
+      and this ablation on heterogeneous batches, demonstrating topology check adds value
+      specifically under distribution shift.
+
+  - id: decay_calibration_no_decay
+    name: Calibration Persistence Without Decay (Equivalent to naive_calibration_persistence)
+    parent_method: decay_weighted_calibration
+    hypothesis_tested: H3
+    what_is_removed: >
+      Exponential decay weighting. All observations have equal weight regardless of recency.
+      This is functionally identical to naive_calibration_persistence baseline.
+    how_it_differs: >
+      Set decay_factor = 1.0 always (no decay). effective_prior = empirical_prior with no
+      blending toward defaults. Equivalent to naive_calibration_persistence baseline - included
+      as ablation to confirm equivalence.
+    expected_effect: >
+      Identical results to naive_calibration_persistence baseline. Validates that the decay
+      mechanism is the only difference between the proposed method and naive persistence.
+
+metrics:
+  # H1 metrics
+  - id: round_trip_fidelity
+    name: Operational State Round-Trip Fidelity
+    description: >
+      Number of operational fields (frequencies, calibration, consumed priors) that survive
+      graph persist -> reconstruct cycle with zero divergence. Measured field-by-field.
+    primary_metric: false
+    direction: maximize
+    units: "fraction of fields with zero divergence"
+    hypothesis: H1
+
+  - id: type_assignment_accuracy
+    name: Type Assignment Accuracy on Batch N
+    description: >
+      Fraction of entities in batch N correctly assigned to their ground-truth type, measured
+      against the benchmark deterministic checks. Higher is better.
+    primary_metric: false
+    direction: maximize
+    units: "fraction correct"
+    hypothesis: H1
+
+  - id: consumed_prior_dedup
+    name: Consumed Prior Deduplication
+    description: >
+      Number of new seed types imported on re-launch with identical ontology.yml. Target: 0.
+    primary_metric: false
+    direction: minimize
+    units: "count of re-imported seed types"
+    hypothesis: H1
+
+  # H2 metrics
+  - id: recovery_entity_divergence
+    name: Recovery Entity Count Divergence
+    description: >
+      Absolute difference in entity count between crash-recovered graph and clean baseline.
+      Target: 0 for all three crash points.
+    primary_metric: true
+    direction: minimize
+    units: "absolute entity count difference"
+    hypothesis: H2
+
+  - id: recovery_relationship_divergence
+    name: Recovery Relationship Count Divergence
+    description: >
+      Absolute difference in relationship count between crash-recovered graph and clean baseline.
+    primary_metric: false
+    direction: minimize
+    units: "absolute relationship count difference"
+    hypothesis: H2
+
+  - id: recovery_property_divergence
+    name: Recovery Property Divergence
+    description: >
+      Number of entity properties that differ between crash-recovered and clean baseline graphs.
+      Measured by iterating all entities matched by fingerprint and comparing property maps.
+    primary_metric: false
+    direction: minimize
+    units: "count of divergent properties"
+    hypothesis: H2
+
+  - id: recovery_time_overhead
+    name: Recovery Time Overhead Ratio
+    description: >
+      restart_time / full_consolidation_time. Measures how much faster idempotent restart is
+      compared to full re-consolidation. Lower is better. Target < 0.30.
+    primary_metric: false
+    direction: minimize
+    units: "ratio (0-1)"
+    hypothesis: H2
+
+  - id: success_rate
+    name: Run Completion Success Rate
+    description: >
+      Fraction of seeds that complete all ingestion runs without crash, Neo4j error, or
+      LLM API failure. Measures experimental reliability.
+    primary_metric: false
+    direction: maximize
+    units: "fraction (0-1)"
+
+  # H3 metrics
+  - id: resolution_f1_delta
+    name: Cross-Run Resolution F1 Delta
+    description: >
+      F1 improvement on batch 2 entity resolution compared to fresh calibration baseline.
+      Computed from cross-type merge precision and recall against benchmark ground truth.
+    primary_metric: false
+    direction: maximize
+    units: "F1 percentage points"
+    hypothesis: H3
+
+  - id: benchmark_hybrid_score
+    name: MultiDoc Benchmark Hybrid Score
+    description: >
+      Weighted combination of deterministic checks (63 assertions) and generative evaluation
+      (5 dimensions, 1-5 scale). Current baseline: 86% (v27). Measured after each batch.
+    primary_metric: false
+    direction: maximize
+    units: "percentage (0-100)"
+    hypothesis: H3
+
+  - id: adjudication_volume_reduction
+    name: Adjudication Volume Reduction
+    description: >
+      Percentage decrease in entities routed to LLM adjudication on batch 2 vs batch 1,
+      measuring whether calibrated thresholds route fewer candidates to expensive LLM calls.
+    primary_metric: false
+    direction: maximize
+    units: "percentage reduction"
+    hypothesis: H3
+
+  - id: cross_type_duplicate_count
+    name: Cross-Type Duplicate Count
+    description: >
+      Number of cross-type duplicate entities remaining after resolution. Current baseline: 52
+      (v20/v27). Target < 20 per benchmark spec.
+    primary_metric: false
+    direction: minimize
+    units: "count"
+    hypothesis: H3
+
+  - id: topology_sanity_false_positive_rate
+    name: Topology Sanity Check False Positive Rate
+    description: >
+      Fraction of topology divergence flags that do not correspond to actual distribution
+      shift. Measured by comparing flagged types against known batch composition differences.
+    primary_metric: false
+    direction: minimize
+    units: "fraction (0-1)"
+    hypothesis: H3
+
+risks:
+  - id: risk_llm_nondeterminism
+    description: >
+      LLM extraction is non-deterministic. Identical documents produce different entity sets
+      across runs, confounding cross-run comparisons.
+    severity: high
+    mitigation: >
+      Use temperature=0.0 for all extraction calls (already default). Fix random seeds where
+      possible. Use 5 seeds per condition and report mean +/- std. Compare within-seed
+      (same extraction, different schema management) to isolate treatment effect.
+
+  - id: risk_api_cost
+    description: >
+      Each full 10-doc ingestion requires ~200-400 LLM API calls (extraction + clustering +
+      adjudication). Total experiment with all conditions and seeds may cost \$50-150.
+    severity: medium
+    mitigation: >
+      Run H1 and H2 experiments first (lower API cost, fewer ingestion runs). Use cached
+      extraction results where schema management is the only variable. Limit H3 to 5 seeds
+      if budget constrains.
+
+  - id: risk_neo4j_state_leakage
+    description: >
+      Incomplete graph cleanup between conditions could leak state, invalidating comparisons.
+    severity: medium
+    mitigation: >
+      Full graph wipe (MATCH (n) DETACH DELETE n) between every condition. Verify empty state
+      before each run via detect_graph_state(). Log entity/relationship counts at each checkpoint.
+
+  - id: risk_crash_simulation_fidelity
+    description: >
+      Simulated crashes (kill -9 at consolidation checkpoints) may not reproduce real crash
+      scenarios where Neo4j transactions are partially committed.
+    severity: medium
+    mitigation: >
+      Use explicit transaction boundaries: commit after each consolidation batch (not all-or-nothing).
+      Inject crash between batch commits to ensure partially-written state. Verify partial state
+      exists before testing recovery.
+
+  - id: risk_small_corpus_scale
+    description: >
+      10-document CPAP corpus may be too small to distinguish calibration methods. Per-type
+      observation counts may be insufficient for empirical Bayes to outperform fixed thresholds.
+    severity: high
+    mitigation: >
+      If H3 results are within 1% F1 across all conditions, report as "inconclusive at this
+      scale" rather than claiming no effect. Include power analysis showing minimum corpus size
+      needed to detect a 2% effect. Recommend follow-up with larger corpus.
+
+  - id: risk_fingerprint_collision
+    description: >
+      SHA256 collision probability is negligible (~1/2^128) but fingerprint input normalization
+      errors could produce false matches (different entities mapped to same fingerprint).
+    severity: low
+    mitigation: >
+      Unit test fingerprint computation on all entity pairs in the corpus. Log any fingerprint
+      collisions during ingestion. Verify entity count matches between fingerprinted and
+      non-fingerprinted runs.
+
+compute_budget:
+  description: >
+    This is a graph database + LLM API experiment, not GPU training. The bottleneck is LLM
+    API latency and Neo4j write throughput, not compute. Wall-clock time estimates below.
+  hardware:
+    cpu: "Standard workstation (no GPU required)"
+    database: "Neo4j Community Edition 5.x, single instance"
+    llm_api: "Claude/GPT-4o via API (structured extraction calls)"
+  time_per_run:
+    full_10_doc_ingestion: "15-20 minutes"
+    batch_5_doc_ingestion: "8-10 minutes"
+    benchmark_evaluation: "5 minutes"
+    crash_recovery_test: "5-10 minutes per crash point"
+    graph_wipe_and_verify: "1-2 minutes"
+  total_runs:
+    h1_runs: >
+      3 conditions (file_only, graph_only, dual_authority) + 1 ablation
+      x 2 regimes (homogeneous, heterogeneous) x 2 batches per regime x 5 seeds = 80 batch runs
+    h2_runs: >
+      2 conditions (wipe_and_retry, fingerprint_idempotent) + 1 ablation
+      x 3 crash points x 5 seeds = 45 recovery tests (each requires 1 ingestion + 1 recovery)
+    h3_runs: >
+      3 conditions (fresh, naive, decay_weighted) + 2 ablations
+      x 2 regimes x 2 batches x 5 seeds = 100 batch runs
+    total: "~225 batch ingestion runs + 45 recovery tests"
+  estimated_wall_clock: "~60-80 hours total (sequential), ~20-30 hours with parallelization"
+  estimated_api_cost: "\$80-150 (with extraction caching for same-seed same-document runs)"
+  seeds_per_condition: 5
+  statistical_tests:
+    - "Wilcoxon signed-rank test for paired condition comparisons (n=5 per pair)"
+    - "95% bootstrap confidence intervals (10000 resamples)"
+    - "Cohen's d effect size for each comparison"
+    - "Per-seed raw values reported for transparency"
+  extraction_caching_strategy: >
+    For conditions that differ only in schema management (not extraction), cache the raw
+    LLM extraction results per (document, seed) pair and replay them. This reduces API
+    cost by ~60% and eliminates LLM non-determinism as a confound for H1/H3 comparisons.
+    H2 crash tests require live extraction to test real crash scenarios.
