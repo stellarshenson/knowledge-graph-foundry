@@ -80,9 +80,9 @@ When KGF is re-launched against an existing graph, the system must solve two pro
 
 STABLE is not idle - during active extraction it continues accumulating evidence for type assignments, deduplication, and cross-type resolution. Each document processed in the cured phase contributes to remap rate tracking (via `CuringDetector.check_drift()`), stability metrics (JSD, entropy delta), and type frequency distributions.
 
-**Current implementation**: the detector tracks remap rates in a sliding window (`drift_window=3`, `drift_remap_threshold=0.3`). When all recent documents exceed the threshold, drift is detected. The FSM transitions STABLE -> RECURING, and the LLM advisory (or heuristic fallback) decides whether to authorize revision (RECURING -> CURING) or dismiss (RECURING -> STABLE).
+**Current implementation**: the detector tracks remap rates in a sliding window (`drift_window=3`, `drift_remap_threshold=0.3`). When all recent documents exceed the threshold, drift is detected. The FSM transitions STABLE -> RECURING, and the LLM advisory (or heuristic fallback) decides whether to authorize revision (RECURING -> CURING) or dismiss (RECURING -> STABLE). Per-type calibration state (mean posterior, observation count, remap count, prior strength) is now persisted to `(:KGFControl:KGFTypeCalibration)` nodes at each stabilize point, and `OntologyBuffer.from_graph()` reconstructs this state on resume. Isotonic calibration curves are persisted as `(:KGFControl:KGFCalibrationCurve)` nodes and loaded when `run_count >= 1`.
 
-**Open**: per-type posterior distributions are not persisted across runs. When a new run starts, the Bayesian resolver rebuilds its exemplar index from graph entities but loses the accumulated likelihood ratios from previous resolution decisions. Persisting per-type calibration data (prior strength, observation count, mean posterior) to the metanode or dedicated `(:KGFControl:KGFTypeCalibration)` nodes would enable true cross-run posterior continuity.
+**Partially resolved**: cross-run posterior continuity exists at the aggregate level - per-type mean posteriors and observation counts survive between runs via KGFTypeCalibration nodes. The gap is per-entity posterior provenance: the system knows that "Component" has a mean posterior of 0.87 across 181 entities, but cannot trace which individual entity assignments were high-confidence versus marginal. This limits the ability to selectively re-evaluate low-confidence assignments when the ontology evolves during RECURING.
 
 ## FSC-4: Rebuild Cost and the Scale Problem
 
@@ -179,3 +179,28 @@ The fluid phase accumulates extraction results in memory across documents until 
 **Solution**: after each fluid-phase document extraction, persist the `ExtractionResult` as a `(:KGFControl:KGFFluidResult)` node and detector/metrics state as a `(:KGFControl:KGFFluidState)` node. On resume, deserialize and rebuild the accumulator identically. Payloads use versioned envelopes with zlib + base64 compression. Embeddings are excluded from the cache (regenerated at curing time). Document + chunk nodes are written to Neo4j per-document during fluid phase rather than deferred to consolidation, so chunk text is already in the graph and excluded from cache payload.
 
 **Cleanup triggers**: fluid cache nodes are deleted whenever the accumulator is reset or consumed - after curing, after end-of-corpus flush, on drift re-entry, during mid-consolidation crash recovery, and as a safety net at run completion. Version mismatch on resume discards the cache and falls back to re-extraction.
+
+## FSC-9: CURING Semantic Breadth - Beyond Type Discovery
+
+| | |
+|---|---|
+| **Raised** | 2026-03-18 |
+| **Status** | Partial |
+| **Last Update** | 2026-03-18 |
+| **Design Comments** | Core insight: fluid and direct are extraction mechanisms, not lifecycle states. CURING encompasses all ontology calibration, not just type emergence. This is structurally realized in the FSM but the cure trigger still relies primarily on type-distribution signals |
+| **Implementation Notes** | FSM correctly routes both fluid and direct extraction through CURING. `extraction_mechanism` is a metanode property, not a state. `needs_calibration` guard ensures strict-seed runs enter CURING. Cure trigger uses CuringDetector (JSD, Chao1, type accumulation rate, Heaps beta). Calibration infrastructure (observation collector, isotonic calibrator, 19-metric multi-channel prior) runs during CURING but does not feed back into the cure decision |
+
+Fluid and direct are extraction mechanisms that control how the LLM extracts entities - fluid lets types emerge freely, direct enforces types from a known schema. Both are configuration parameters within the CURING state, not lifecycle states themselves. The FSM is structurally correct on this: `extraction_mechanism` is recorded on the metanode as metadata, and both mechanisms transit through CURING before reaching STABLE.
+
+The deeper insight is that curing is broader than type discovery. Even with a strict seed where all types are known upfront, the graph is still curing: calibrating Bayesian posteriors with real entity evidence, building resolution guides for ambiguous type pairs, accumulating cross-type dedup evidence, stabilizing entity resolution thresholds, and resolving ontology assignment ambiguities. A graph with a strict seed doesn't skip curing - it cures with types already known but everything else still calibrating. "Cured" means the graph's ontology is robust and well-evidenced, not just that types stopped emerging.
+
+**Current implementation**: the `CuringDetector` decides when to cure based on type-distribution convergence signals - JSD below 0.05 for consecutive documents, Chao1 coverage above 0.7, type accumulation rate declining. These are all type-emergence signals. The broader calibration infrastructure (observation collector recording cross-type and type-assignment decisions, isotonic calibration fitting posterior curves, 19-metric multi-channel prior) runs during CURING and produces artifacts that persist to the control plane, but none of these feed back into the cure decision itself. The system cures when types stabilize, then calibration state persists as a side-effect.
+
+**Gap**: the cure trigger should incorporate calibration convergence alongside type-distribution convergence. Possible signals:
+
+- **Posterior convergence**: mean posterior variance across types dropping below a threshold (types are being assigned with consistent confidence)
+- **Resolution guide saturation**: the number of new resolution rules added per document approaching zero (ambiguous pairs are resolved)
+- **Deferred dedup resolution rate**: the fraction of deferred cross-type pairs that have accumulated enough evidence to resolve (the system is no longer deferring decisions)
+- **Remap rate during CURING**: even in fluid mode, remaps occur when the type assigner overrides an LLM-proposed type. A declining remap rate within CURING signals that the LLM and the Bayesian resolver are converging
+
+A composite cure readiness score combining type stability (current signals) with calibration maturity (new signals) would make the cure decision more robust, particularly for strict-seed runs where type distribution converges immediately but calibration may lag. The generative curing advisory (`llm_should_cure`) already receives the full metrics timeline and could evaluate calibration signals if they were included in the prompt context.
