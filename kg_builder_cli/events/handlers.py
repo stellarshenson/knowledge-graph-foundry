@@ -184,6 +184,49 @@ def _on_patience_exceeded(sender, event=None, **kwargs):
         )
 
 
+def _on_type_metrics_computed(sender, event=None, **kwargs):
+    if event:
+        logger.info(
+            "[event] type metrics: {} types, {} metrics (trigger={}, doc={})",
+            event.type_count,
+            event.metric_count,
+            event.trigger,
+            event.doc_index,
+        )
+
+
+def _on_calibration_ground_truth(sender, event=None, **kwargs):
+    if event:
+        logger.info(
+            "[event] calibration ground truth: {} pairs, {} correct ({:.0%} accuracy)",
+            event.pair_count,
+            event.correct_count,
+            event.accuracy,
+        )
+
+
+def _on_calibration_fitted(sender, event=None, **kwargs):
+    if event:
+        logger.info(
+            "[event] calibration fitted: {} samples, model={}, {} curve points (x: {:.3f}-{:.3f})",
+            event.n_samples,
+            event.model_type,
+            event.curve_points,
+            event.x_min,
+            event.x_max,
+        )
+
+
+def _on_metric_correlation(sender, event=None, **kwargs):
+    if event:
+        logger.info(
+            "[event] metric correlations: {} types, top+=[{}], top-=[{}]",
+            event.n_types,
+            ", ".join(event.top_positive),
+            ", ".join(event.top_negative),
+        )
+
+
 # Streaming event log writer
 _event_log_path: Path | None = None
 _event_log_count: int = 0
@@ -250,6 +293,10 @@ def register_default_handlers() -> None:
     signals.llm_call_failed.connect(_on_llm_call_failed)
     signals.drift_detected.connect(_on_drift_detected)
     signals.patience_exceeded.connect(_on_patience_exceeded)
+    signals.type_metrics_computed.connect(_on_type_metrics_computed)
+    signals.calibration_ground_truth.connect(_on_calibration_ground_truth)
+    signals.calibration_fitted.connect(_on_calibration_fitted)
+    signals.metric_correlation_computed.connect(_on_metric_correlation)
 
 
 def register_verbose_handlers() -> None:

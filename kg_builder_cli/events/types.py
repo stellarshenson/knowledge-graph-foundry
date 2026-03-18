@@ -352,10 +352,35 @@ class GraphValidated(BaseModel):
     orphan_count: int
 
 
-# ── Calibration (1) ──────────────────────────────────────────────
+# ── Calibration (4) ──────────────────────────────────────────────
 
 
 class TypeMetricsComputed(BaseModel):
     type_count: int
     metric_count: int
     metrics_per_type: dict[str, dict[str, float]]
+    doc_index: int
+    trigger: str
+
+
+class CalibrationGroundTruth(BaseModel):
+    pair_count: int
+    correct_count: int
+    accuracy: float
+
+
+class CalibrationFitted(BaseModel):
+    n_samples: int
+    model_type: str
+    curve_points: int
+    x_min: float
+    x_max: float
+    y_min: float
+    y_max: float
+
+
+class MetricCorrelationComputed(BaseModel):
+    n_types: int
+    correlations: dict[str, float]
+    top_positive: list[str]
+    top_negative: list[str]

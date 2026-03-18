@@ -889,6 +889,7 @@ def _ingest_fluid(
     total_rels = 0
     cured = False
     exemplar_index = None  # built at curing time for Bayesian resolution
+    cured_type_metrics: dict | None = None  # computed at curing time for multi-channel prior
 
     # --- Resume from fluid cache if available ---
     cached_results = _read_fluid_results_safe(config, fsm_ctx)
@@ -931,6 +932,7 @@ def _ingest_fluid(
                 phase="cured",
                 collector=collector,
                 calibrator=calibrator,
+                type_metrics=cured_type_metrics,
             )
             total_entities += len(result.entities)
             total_rels += len(result.relationships)
@@ -1281,7 +1283,7 @@ def _ingest_fluid(
                 normalize_entity_ids(all_entities, all_rels)
 
             # Derive calibration ground truth and fit curves
-            _fit_and_persist_calibration(
+            cured_type_metrics = _fit_and_persist_calibration(
                 collector,
                 type_mapping if entity_type_names else {},
                 config,
@@ -1289,6 +1291,8 @@ def _ingest_fluid(
                 accumulator,
                 freqs,
                 buffer,
+                doc_index=i,
+                trigger=cure_trigger,
             )
 
             # Doc+chunks already loaded per-document during fluid phase
@@ -1395,7 +1399,7 @@ def _ingest_fluid(
             normalize_entity_ids(all_entities, all_rels)
 
         # Derive calibration ground truth and fit curves
-        _fit_and_persist_calibration(
+        cured_type_metrics = _fit_and_persist_calibration(
             collector,
             type_mapping if entity_type_names else {},
             config,
@@ -1403,6 +1407,8 @@ def _ingest_fluid(
             accumulator,
             freqs,
             buffer,
+            doc_index=accumulator.doc_count - 1,
+            trigger="end_of_pipeline",
         )
 
         # Doc+chunks already loaded per-document during fluid phase
@@ -1546,9 +1552,20 @@ def _load_calibrator_safe(config, fsm_ctx, model_type: str):
 
 
 def _fit_and_persist_calibration(
-    collector, type_mapping, config, fsm_ctx, accumulator, freqs, buffer
-) -> None:
-    """Derive ground truth, fit calibration curves, compute type metrics, persist."""
+    collector,
+    type_mapping,
+    config,
+    fsm_ctx,
+    accumulator,
+    freqs,
+    buffer,
+    doc_index: int = -1,
+    trigger: str = "unknown",
+) -> dict[str, dict[str, float]]:
+    """Derive ground truth, fit calibration curves, compute type metrics, persist.
+
+    Returns the computed type_metrics dict for use in cured-phase resolution.
+    """
     from kg_builder_cli.events import signals as evt_signals
     from kg_builder_cli.events import types as etypes
 
@@ -1561,6 +1578,18 @@ def _fit_and_persist_calibration(
         collector.type_assignment_count,
     )
 
+    # Emit ground truth event
+    if gt_pairs:
+        correct_count = sum(1 for _, c in gt_pairs if c)
+        evt_signals.calibration_ground_truth.send(
+            evt_signals.calibration_ground_truth,
+            event=etypes.CalibrationGroundTruth(
+                pair_count=len(gt_pairs),
+                correct_count=correct_count,
+                accuracy=correct_count / len(gt_pairs),
+            ),
+        )
+
     # Fit calibration curve
     if gt_pairs:
         from kg_builder_cli.curing.calibration import PosteriorCalibrator
@@ -1568,8 +1597,22 @@ def _fit_and_persist_calibration(
         raw_posteriors = [p for p, _ in gt_pairs]
         labels = [c for _, c in gt_pairs]
         calibrator = PosteriorCalibrator.fit(raw_posteriors, labels)
-        if calibrator and fsm_ctx:
-            _persist_calibration_curve_safe(config, fsm_ctx, calibrator, "cross_type")
+        if calibrator:
+            x_pts, y_pts = calibrator.to_points()
+            evt_signals.calibration_fitted.send(
+                evt_signals.calibration_fitted,
+                event=etypes.CalibrationFitted(
+                    n_samples=len(gt_pairs),
+                    model_type="cross_type",
+                    curve_points=len(x_pts),
+                    x_min=min(x_pts) if x_pts else 0.0,
+                    x_max=max(x_pts) if x_pts else 0.0,
+                    y_min=min(y_pts) if y_pts else 0.0,
+                    y_max=max(y_pts) if y_pts else 0.0,
+                ),
+            )
+            if fsm_ctx:
+                _persist_calibration_curve_safe(config, fsm_ctx, calibrator, "cross_type")
 
     # Aggregate observations into calibration data for KGFTypeCalibration
     obs_calibration = collector.aggregate_calibration()
@@ -1583,8 +1626,32 @@ def _fit_and_persist_calibration(
                 type_count=len(type_metrics),
                 metric_count=19,
                 metrics_per_type=type_metrics,
+                doc_index=doc_index,
+                trigger=trigger,
             ),
         )
+
+    # Spearman correlation: metrics vs resolution correctness
+    if type_metrics and gt_pairs:
+        from kg_builder_cli.curing.observation import compute_spearman_correlations
+
+        correctness_rates = collector.compute_type_correctness_rates(type_mapping)
+        correlations = compute_spearman_correlations(type_metrics, correctness_rates)
+        if correlations:
+            sorted_by_rho = sorted(correlations.items(), key=lambda x: x[1], reverse=True)
+            top_pos = [name for name, rho in sorted_by_rho[:3] if rho > 0]
+            top_neg = [name for name, rho in sorted_by_rho[-3:] if rho < 0]
+            evt_signals.metric_correlation_computed.send(
+                evt_signals.metric_correlation_computed,
+                event=etypes.MetricCorrelationComputed(
+                    n_types=len(correctness_rates),
+                    correlations=correlations,
+                    top_positive=top_pos,
+                    top_negative=top_neg,
+                ),
+            )
+
+    return type_metrics
 
 
 def _compute_type_metrics_safe(accumulator, freqs, buffer, calibration_data):

@@ -75,5 +75,8 @@ graph_load_completed = Signal("graph-load-completed")
 graph_resolution_applied = Signal("graph-resolution-applied")
 graph_validated = Signal("graph-validated")
 
-# ── Calibration (1) ───────────────────────────────────────────────
+# ── Calibration (4) ───────────────────────────────────────────────
 type_metrics_computed = Signal("type-metrics-computed")
+calibration_ground_truth = Signal("calibration-ground-truth")
+calibration_fitted = Signal("calibration-fitted")
+metric_correlation_computed = Signal("metric-correlation-computed")

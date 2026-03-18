@@ -80,6 +80,7 @@ def ingest_document(
     phase: str = "direct",
     collector: object | None = None,
     calibrator: object | None = None,
+    type_metrics: dict[str, dict[str, float]] | None = None,
 ) -> ExtractionResult:
     """Run the full unstructured ingestion pipeline.
 
@@ -251,6 +252,7 @@ def ingest_document(
                 neo4j_config=config.neo4j if config.extract.llm_escalation else None,
                 collector=collector,
                 calibrator=calibrator,
+                type_metrics=type_metrics,
             )
             all_entities, remap_count = _resolve_types_bayesian(
                 all_entities,

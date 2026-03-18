@@ -2689,6 +2689,16 @@ The pipeline's two Bayesian models (cross-type resolution and type assignment) p
 
 Each metric is min-max normalized across types, negative-direction metrics are inverted, NaN contributes zero. Weights are uniform in Phase B.1; learned weights via logistic regression on observation data are a future step (Phase B.2).
 
+**Metric Lifecycle**: Type metrics are computed once at curing time from accumulated extraction results. The computed metrics are then passed to every `BayesianTypeResolver` instance created during the cured phase, replacing the frequency-only prior with the multi-channel prior. During fluid phase, frequency-only priors are used (insufficient data for meaningful metrics). On run 2+, calibration curves are loaded from the graph at startup and applied throughout both phases.
+
+**Spearman Rank Correlation**: At curing time, after computing type metrics and deriving ground truth, the pipeline computes Spearman rank correlation (rho) between each of the 19 metrics and per-type resolution correctness rate. `compute_type_correctness_rates()` derives the fraction of correct decisions per type from ground truth. `compute_spearman_correlations()` ranks types by each metric value and by correctness rate, then computes rho = 1 - 6*sum(d^2) / n*(n^2-1). Minimum 5 types required; NaN metrics are filtered per-metric. Results are emitted as a `metric-correlation-computed` event with the full correlation dict and top-3 positive/negative metrics, enabling identification of which metrics most strongly predict correct resolution decisions.
+
+**Calibration Events**: Four calibration-specific events are emitted at curing time:
+- `calibration-ground-truth` - pair count, correct count, accuracy rate
+- `calibration-fitted` - sample count, model type, curve point count, x/y ranges
+- `type-metrics-computed` - per-type metrics dict, doc_index, trigger
+- `metric-correlation-computed` - Spearman rho per metric, top positive/negative correlates
+
 **Control Plane Node**: `(:KGFControl:KGFCalibrationCurve)` stores `graph_id`, `model_type` ("cross_type" or "type_assignment"), `x_points` (JSON), `y_points` (JSON), `n_samples`, `created_at`. Linked to `KGFState` via `HAS_CALIBRATION_CURVE`.
 
 ## 15. Observability

@@ -6,6 +6,8 @@ from kg_builder_cli.curing.observation import (
     CrossTypeObservation,
     ObservationCollector,
     TypeAssignmentObservation,
+    _rank,
+    compute_spearman_correlations,
 )
 
 
@@ -189,3 +191,99 @@ class TestAggregation:
         result = collector.aggregate_calibration()
         assert "A" in result
         assert result["A"]["observation_count"] == 2  # one from each source
+
+
+class TestCorrectnessRates:
+    def test_all_correct(self):
+        collector = ObservationCollector()
+        # A-B merged, both map to same cluster -> correct
+        collector.record_cross_type(_cross_obs(type_a="A", type_b="B", action="merged"))
+        mapping = {"A": "X", "B": "X"}
+        rates = collector.compute_type_correctness_rates(mapping)
+        assert rates["A"] == 1.0
+        assert rates["B"] == 1.0
+
+    def test_mixed_correctness(self):
+        collector = ObservationCollector()
+        # A-B merged, different clusters -> incorrect
+        collector.record_cross_type(_cross_obs(type_a="A", type_b="B", action="merged"))
+        # A-C blocked, different clusters -> correct
+        collector.record_cross_type(_cross_obs(type_a="A", type_b="C", action="blocked"))
+        mapping = {"A": "A", "B": "B", "C": "C"}
+        rates = collector.compute_type_correctness_rates(mapping)
+        # A: 1 incorrect (merge) + 1 correct (block) = 0.5
+        assert abs(rates["A"] - 0.5) < 0.01
+
+    def test_deferred_excluded(self):
+        collector = ObservationCollector()
+        collector.record_cross_type(_cross_obs(type_a="A", type_b="B", action="deferred"))
+        mapping = {"A": "A", "B": "B"}
+        rates = collector.compute_type_correctness_rates(mapping)
+        assert len(rates) == 0
+
+
+class TestRank:
+    def test_no_ties(self):
+        ranks = _rank([10.0, 20.0, 30.0])
+        assert ranks == [1.0, 2.0, 3.0]
+
+    def test_with_ties(self):
+        ranks = _rank([10.0, 20.0, 20.0, 30.0])
+        assert ranks == [1.0, 2.5, 2.5, 4.0]
+
+    def test_all_tied(self):
+        ranks = _rank([5.0, 5.0, 5.0])
+        assert ranks == [2.0, 2.0, 2.0]
+
+    def test_reverse_order(self):
+        ranks = _rank([30.0, 20.0, 10.0])
+        assert ranks == [3.0, 2.0, 1.0]
+
+
+class TestSpearmanCorrelations:
+    def test_perfect_positive(self):
+        metrics = {
+            "A": {"m1": 1.0}, "B": {"m1": 2.0}, "C": {"m1": 3.0},
+            "D": {"m1": 4.0}, "E": {"m1": 5.0},
+        }
+        rates = {"A": 0.1, "B": 0.2, "C": 0.3, "D": 0.4, "E": 0.5}
+        corr = compute_spearman_correlations(metrics, rates)
+        assert abs(corr["m1"] - 1.0) < 0.01
+
+    def test_perfect_negative(self):
+        metrics = {
+            "A": {"m1": 5.0}, "B": {"m1": 4.0}, "C": {"m1": 3.0},
+            "D": {"m1": 2.0}, "E": {"m1": 1.0},
+        }
+        rates = {"A": 0.1, "B": 0.2, "C": 0.3, "D": 0.4, "E": 0.5}
+        corr = compute_spearman_correlations(metrics, rates)
+        assert abs(corr["m1"] - (-1.0)) < 0.01
+
+    def test_too_few_types(self):
+        metrics = {"A": {"m1": 1.0}, "B": {"m1": 2.0}}
+        rates = {"A": 0.5, "B": 0.8}
+        corr = compute_spearman_correlations(metrics, rates)
+        assert corr == {}
+
+    def test_nan_metrics_filtered(self):
+        metrics = {
+            "A": {"m1": 1.0, "m2": float("nan")},
+            "B": {"m1": 2.0, "m2": float("nan")},
+            "C": {"m1": 3.0, "m2": float("nan")},
+            "D": {"m1": 4.0, "m2": float("nan")},
+            "E": {"m1": 5.0, "m2": float("nan")},
+        }
+        rates = {"A": 0.1, "B": 0.2, "C": 0.3, "D": 0.4, "E": 0.5}
+        corr = compute_spearman_correlations(metrics, rates)
+        assert "m1" in corr
+        assert "m2" not in corr  # all NaN -> excluded
+
+    def test_partial_overlap(self):
+        """Only types present in both metrics and rates are used."""
+        metrics = {
+            "A": {"m1": 1.0}, "B": {"m1": 2.0}, "C": {"m1": 3.0},
+            "D": {"m1": 4.0}, "E": {"m1": 5.0}, "F": {"m1": 6.0},
+        }
+        rates = {"A": 0.1, "B": 0.2, "C": 0.3, "D": 0.4, "E": 0.5}
+        corr = compute_spearman_correlations(metrics, rates)
+        assert abs(corr["m1"] - 1.0) < 0.01

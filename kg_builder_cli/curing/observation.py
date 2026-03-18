@@ -8,6 +8,7 @@ aggregates into KGFTypeCalibration nodes.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import math
 
 from loguru import logger
 
@@ -169,3 +170,85 @@ class ObservationCollector:
             )
 
         return result
+
+    def compute_type_correctness_rates(self, type_mapping: dict[str, str]) -> dict[str, float]:
+        """Compute per-type correctness rate from cross-type ground truth.
+
+        For each type, counts how many resolution decisions involving that type
+        were correct vs total, returning the accuracy rate.
+        """
+        type_correct: dict[str, int] = {}
+        type_total: dict[str, int] = {}
+
+        for obs in self._cross_type:
+            canonical_a = type_mapping.get(obs.type_a, obs.type_a)
+            canonical_b = type_mapping.get(obs.type_b, obs.type_b)
+            same_cluster = canonical_a == canonical_b
+
+            if obs.action == "deferred":
+                continue
+
+            was_correct = (
+                same_cluster
+                if obs.action in ("merged", "hierarchy_merge", "multi_facet")
+                else not same_cluster
+            )
+
+            for t in (obs.type_a, obs.type_b):
+                type_total[t] = type_total.get(t, 0) + 1
+                if was_correct:
+                    type_correct[t] = type_correct.get(t, 0) + 1
+
+        return {t: type_correct.get(t, 0) / type_total[t] for t in type_total if type_total[t] > 0}
+
+
+def _rank(values: list[float]) -> list[float]:
+    """Assign average ranks to values (1-based, handles ties)."""
+    indexed = sorted(enumerate(values), key=lambda x: x[1])
+    ranks = [0.0] * len(values)
+    i = 0
+    while i < len(indexed):
+        j = i
+        while j < len(indexed) and indexed[j][1] == indexed[i][1]:
+            j += 1
+        avg_rank = (i + j + 1) / 2.0
+        for k in range(i, j):
+            ranks[indexed[k][0]] = avg_rank
+        i = j
+    return ranks
+
+
+def compute_spearman_correlations(
+    type_metrics: dict[str, dict[str, float]],
+    correctness_rates: dict[str, float],
+) -> dict[str, float]:
+    """Compute Spearman rank correlation between each metric and correctness rate.
+
+    Returns {metric_name: spearman_rho}. Metrics with fewer than 5 valid
+    data points are excluded.
+    """
+    _MIN_TYPES = 5
+    common_types = sorted(set(type_metrics.keys()) & set(correctness_rates.keys()))
+    if len(common_types) < _MIN_TYPES:
+        return {}
+
+    # Get metric names from first type
+    metric_names = list(next(iter(type_metrics.values())).keys())
+
+    correlations: dict[str, float] = {}
+    for metric in metric_names:
+        x_vals = [type_metrics[t].get(metric, float("nan")) for t in common_types]
+        # Filter NaN pairs - keep aligned indices
+        valid_idx = [i for i, x in enumerate(x_vals) if not math.isnan(x)]
+        if len(valid_idx) < _MIN_TYPES:
+            continue
+        x_filtered = [x_vals[i] for i in valid_idx]
+        y_filtered = [correctness_rates[common_types[i]] for i in valid_idx]
+        x_ranks = _rank(x_filtered)
+        y_ranks = _rank(y_filtered)
+        n = len(x_ranks)
+        d_sq_sum = sum((xr - yr) ** 2 for xr, yr in zip(x_ranks, y_ranks))
+        rho = 1.0 - (6.0 * d_sq_sum) / (n * (n**2 - 1))
+        correlations[metric] = round(rho, 4)
+
+    return correlations
