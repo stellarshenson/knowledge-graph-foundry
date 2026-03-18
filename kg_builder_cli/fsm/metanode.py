@@ -306,14 +306,6 @@ def read_calibration_curve(
     }
 
 
-def delete_calibration_curves(driver: Driver, graph_id: str) -> None:
-    """Delete all calibration curve nodes for a graph_id."""
-    query = "MATCH (c:KGFControl:KGFCalibrationCurve {graph_id: $graph_id}) DETACH DELETE c"
-    with driver.session() as session:
-        session.run(query, {"graph_id": graph_id})
-    logger.debug("deleted calibration curves for graph_id={}", graph_id)
-
-
 FLUID_CACHE_SCHEMA_VERSION = 1
 
 

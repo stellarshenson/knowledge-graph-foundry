@@ -3077,7 +3077,7 @@ Every data handoff between modules uses a Pydantic model from `types/`. The tabl
 | `extraction/` | `ontology/buffer` | `List[TypeSignal]` | `type_name`, `frequency`, `source_chunk`, `is_relationship` |
 | `extraction/` | `loading/` | `ExtractionResult` | `metadata`, `entities`, `relationships`, `facts`, `validation` (Section 20 format) |
 | `extraction/resolution` | `loading/` | `List[ResolvedEntity]` | extends `Entity` with `normalized_name`, `normalized_score`, `normalized_method` |
-| `loading/validation` | caller | `ValidationReport` | `orphan_entities`, `missing_relationships`, `type_coverage`, `warnings` |
+| `loading/validation` | caller | `ValidationReport` | `orphan_entities`, `type_coverage`, `warnings` |
 | `query/retrieval` | `query/formatter` | `QueryResult` | `records`, `columns`, `cypher_used`, `retrieval_strategy` |
 | `update/schema_diff` | `update/migration` | `List[MigrationStep]` | `type` (add/remove/rename), `entity`, `field`, `cypher` |
 | `update/migration` | `loading/` | `MigrationPlan` | `steps`, `rollback_steps`, `re_ingest_scope`, `estimated_impact` |
@@ -3241,7 +3241,6 @@ Extraction files are written to `.kgf/extractions/` with timestamped filenames.
   ],
   "validation": {
     "orphan_entities": 0,
-    "missing_relationships": 2,
     "type_coverage": 0.85
   }
 }

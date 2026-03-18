@@ -98,7 +98,6 @@ def validate_graph(config: AppConfig, *, driver: object | None = None) -> Valida
 
     return ValidationReport(
         orphan_entities=orphan_ids,
-        missing_relationships=[],
         type_coverage=type_coverage,
         warnings=warnings,
     )

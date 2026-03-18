@@ -1106,7 +1106,6 @@ def _ingest_fluid(
                 llm_config=config.llm,
                 min_documents=config.curing.min_documents,
                 accumulator=accumulator,
-                buffer=buffer,
                 max_tool_calls=config.curing.generative_max_tool_calls,
             )
             if decision is not None:

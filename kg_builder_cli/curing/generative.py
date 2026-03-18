@@ -22,7 +22,6 @@ from kg_builder_cli.types.config import LLMConfig
 
 if TYPE_CHECKING:
     from kg_builder_cli.curing.accumulator import FluidAccumulator
-    from kg_builder_cli.ontology.buffer import OntologyBuffer
     from kg_builder_cli.types.config import Neo4jConfig
 
 
@@ -203,7 +202,6 @@ def llm_should_cure(
     llm_config: LLMConfig,
     min_documents: int = 3,
     accumulator: "FluidAccumulator | None" = None,
-    buffer: "OntologyBuffer | None" = None,
     max_tool_calls: int = 2,
 ) -> CureDecision | None:
     """Ask LLM whether to cure the ontology. Returns None on failure.
@@ -296,7 +294,7 @@ def llm_should_cure(
                 filter_type=probe.query_filter_type,
                 filter_name=probe.query_filter_name,
             )
-            query_result = query_fluid(request, accumulator, buffer)
+            query_result = query_fluid(request, accumulator)
             logger.info(
                 "Graph query executed: {} -> {} records",
                 probe.query_type,

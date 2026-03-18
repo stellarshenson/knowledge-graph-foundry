@@ -7,7 +7,6 @@ from kg_builder_cli.fsm.context import PipelineContext, create_fsm
 from kg_builder_cli.fsm.metanode import (
     check_fluid_cache_exists,
     create_control_metanode,
-    delete_calibration_curves,
     delete_fluid_results,
     delete_fluid_state,
     detect_graph_state,
@@ -35,7 +34,6 @@ __all__ = [
     "check_fluid_cache_exists",
     "create_fsm",
     "create_control_metanode",
-    "delete_calibration_curves",
     "delete_fluid_results",
     "delete_fluid_state",
     "detect_graph_state",

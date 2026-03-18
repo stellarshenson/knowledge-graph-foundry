@@ -124,6 +124,8 @@ RECURING is triggered when sustained drift is detected during STABLE-phase extra
 
 **Open**: RECURING currently makes a binary decision per drift event. A graduated approach could track drift severity across multiple windows - minor drift dismissed automatically, moderate drift flagged for LLM evaluation, severe drift requiring interactive confirmation. The buffer is not used during RECURING deliberation itself, only after `authorize_revision` when fluid accumulation restarts.
 
+**Open**: control plane cleanup on `authorize_revision`. When RECURING transitions to CURING, stale control plane nodes (calibration state, type metrics, resolution guides) may reflect the pre-revision ontology and should be selectively pruned or invalidated. A controller + model pair will track the provenance state of each control plane node class - whether it was written by the current run or inherited from a previous one - so the system knows on any transition whether it is starting clean or carrying forward stale state. This eliminates the current implicit assumption that control plane nodes are always consistent with the active ontology.
+
 ## FSC-6: State Recovery Across Interrupted Runs
 
 | | |
@@ -161,3 +163,19 @@ Each ontology type should carry observable metrics that persist across runs - en
 **Current implementation**: type frequencies are tracked in the ontology buffer and flushed to `ontology.yml`. The benchmark reports type distribution from the graph (`MATCH (n:Entity) RETURN n.type, count(n)`). No per-type posterior statistics are persisted.
 
 **Open**: a `(:KGFControl:KGFTypeMetrics)` node per ontology type, linked to `(:KGFControl:KGFState)` via `[:HAS_TYPE_METRICS]`, could store `entity_count`, `mean_posterior`, `remap_count`, `first_seen_run`, `last_updated_run`. Updated at each run completion, these nodes would enable type-level drift detection ("Component remap rate jumped from 5% to 25% in the last 3 runs") and provide the cost estimation data needed for informed rebuild decisions.
+
+## FSC-8: Cross-Run Fluid Phase Persistence
+
+| | |
+|---|---|
+| **Raised** | 2026-03-18 |
+| **Status** | Implemented |
+| **Last Update** | 2026-03-18 |
+| **Design Comments** | Option B (control plane extraction cache) chosen over domain-layer provisional entities |
+| **Implementation Notes** | `metanode.py` (write/read/delete for KGFFluidResult + KGFFluidState), `cli.py` (per-doc cache writes, resume logic, cleanup), serialization methods on CuringDetector, StabilityMetrics, DeferredDedupBuffer |
+
+The fluid phase accumulates extraction results in memory across documents until a curing event triggers consolidation. If the process exits mid-fluid (crash, intentional stop, batch boundary), all accumulated data is lost and the next run forces re-extraction from scratch, wasting LLM API costs.
+
+**Solution**: after each fluid-phase document extraction, persist the `ExtractionResult` as a `(:KGFControl:KGFFluidResult)` node and detector/metrics state as a `(:KGFControl:KGFFluidState)` node. On resume, deserialize and rebuild the accumulator identically. Payloads use versioned envelopes with zlib + base64 compression. Embeddings are excluded from the cache (regenerated at curing time). Document + chunk nodes are written to Neo4j per-document during fluid phase rather than deferred to consolidation, so chunk text is already in the graph and excluded from cache payload.
+
+**Cleanup triggers**: fluid cache nodes are deleted whenever the accumulator is reset or consumed - after curing, after end-of-corpus flush, on drift re-entry, during mid-consolidation crash recovery, and as a safety net at run completion. Version mismatch on resume discards the cache and falls back to re-extraction.

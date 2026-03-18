@@ -13,7 +13,6 @@ from pydantic import BaseModel
 
 if TYPE_CHECKING:
     from kg_builder_cli.curing.accumulator import FluidAccumulator
-    from kg_builder_cli.ontology.buffer import OntologyBuffer
     from kg_builder_cli.types.config import Neo4jConfig
 
 
@@ -33,7 +32,6 @@ class GraphQueryResult(BaseModel):
 def query_fluid(
     request: GraphQueryRequest,
     accumulator: "FluidAccumulator",
-    buffer: "OntologyBuffer | None" = None,
 ) -> GraphQueryResult:
     """Execute a graph query against the in-memory FluidAccumulator."""
     if request.query_type == "entity_counts":

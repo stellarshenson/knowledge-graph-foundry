@@ -216,7 +216,9 @@ class OntologyBuffer:
 
                         props = json.loads(props_raw)
                     except (json.JSONDecodeError, TypeError):
-                        pass
+                        logger.debug(
+                            "malformed properties JSON for type '{}': {}", name, props_raw
+                        )
                 elif isinstance(props_raw, dict):
                     props = props_raw
                 buffer._entity_types[name] = TypeDef(name=name, description=desc, properties=props)

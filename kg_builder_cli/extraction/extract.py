@@ -31,7 +31,7 @@ def extract_usage(response) -> dict:
         usage["completion_tokens"] = getattr(raw_usage, "completion_tokens", None)
         usage["total_tokens"] = getattr(raw_usage, "total_tokens", None)
     except Exception:
-        pass
+        logger.trace("could not extract token usage from response: {}", type(response).__name__)
     return usage
 
 

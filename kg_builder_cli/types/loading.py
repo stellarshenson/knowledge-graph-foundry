@@ -21,6 +21,5 @@ class LoadResult(BaseModel):
 
 class ValidationReport(BaseModel):
     orphan_entities: list[str] = Field(default_factory=list)
-    missing_relationships: list[str] = Field(default_factory=list)
     type_coverage: float = 0.0
     warnings: list[str] = Field(default_factory=list)
