@@ -332,8 +332,6 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
     Returns None if FSM initialization fails (pipeline proceeds without FSM).
     """
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import (
             GraphState,
             create_fsm,
@@ -341,10 +339,7 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
             write_run_node,
         )
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             detection = detect_graph_state(driver)
         finally:
@@ -384,10 +379,7 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
                 wipe_count = 0
                 if stale_run_id:
                     try:
-                        wipe_driver = GraphDatabase.driver(
-                            config.neo4j.uri,
-                            auth=(config.neo4j.user, config.neo4j.password),
-                        )
+                        wipe_driver = _create_driver_quiet(config)
                         try:
                             with wipe_driver.session() as wipe_session:
                                 wipe_result = wipe_session.run(
@@ -405,10 +397,7 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
                 from kg_builder_cli.fsm import delete_fluid_results, delete_fluid_state
 
                 try:
-                    cache_driver = GraphDatabase.driver(
-                        config.neo4j.uri,
-                        auth=(config.neo4j.user, config.neo4j.password),
-                    )
+                    cache_driver = _create_driver_quiet(config)
                     try:
                         gid = meta.get("graph_id", "")
                         delete_fluid_results(cache_driver, gid)
@@ -428,10 +417,7 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
             elif stale_fsm_state == GraphState.STABLE and stale_run_id is not None:
                 # Scenario 3: post-consolidation crash - resume from next unloaded doc
                 try:
-                    resume_driver = GraphDatabase.driver(
-                        config.neo4j.uri,
-                        auth=(config.neo4j.user, config.neo4j.password),
-                    )
+                    resume_driver = _create_driver_quiet(config)
                     try:
                         with resume_driver.session() as resume_session:
                             doc_result = resume_session.run(
@@ -463,10 +449,7 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
                     logger.info("cleared stale run_id from metanode")
                 if stale_updates:
                     try:
-                        clear_driver = GraphDatabase.driver(
-                            config.neo4j.uri,
-                            auth=(config.neo4j.user, config.neo4j.password),
-                        )
+                        clear_driver = _create_driver_quiet(config)
                         try:
                             _update_meta(clear_driver, stale_updates)
                         finally:
@@ -536,10 +519,7 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
 
         # Write run node
         try:
-            driver = GraphDatabase.driver(
-                config.neo4j.uri,
-                auth=(config.neo4j.user, config.neo4j.password),
-            )
+            driver = _create_driver_quiet(config)
             try:
                 write_run_node(
                     driver,
@@ -558,17 +538,28 @@ def _init_fsm(config, curing_enabled: bool, has_seed: bool):
         return None
 
 
+def _create_driver_quiet(config):
+    """Create a Neo4j driver with notification warnings suppressed.
+
+    Neo4j 5 emits GqlStatusObject warnings for labels/properties that don't
+    exist yet on a fresh graph. These are harmless on MATCH queries that
+    return zero results. Suppressing them avoids noisy stderr output.
+    """
+    from neo4j import GraphDatabase, NotificationMinimumSeverity
+
+    return GraphDatabase.driver(
+        config.neo4j.uri,
+        auth=(config.neo4j.user, config.neo4j.password),
+        notifications_min_severity=NotificationMinimumSeverity.OFF,
+    )
+
+
 def _update_metanode_safe(config, ctx) -> None:
     """Write FSM context to KGFControl metanode. Non-critical - failures logged."""
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import create_control_metanode
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             create_control_metanode(
                 driver,
@@ -598,18 +589,13 @@ def _persist_schema_safe(config, ctx, buffer, collector=None) -> None:
     if not buffer or not ctx:
         return
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import (
             write_ontology_types,
             write_resolution_guide,
             write_type_calibration,
         )
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             # Write ontology type definitions
             threshold = buffer._config.min_frequency_to_confirm
@@ -662,14 +648,9 @@ def _write_fluid_result_safe(config, fsm_ctx, doc_name: str, doc_index: int, res
     if not fsm_ctx:
         return
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import write_fluid_result
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             write_fluid_result(
                 driver, fsm_ctx.graph_id, fsm_ctx.run_id or "", doc_name, doc_index, result
@@ -685,14 +666,9 @@ def _write_fluid_state_safe(config, fsm_ctx, detector, metrics_tracker, deferred
     if not fsm_ctx:
         return
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import write_fluid_state
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             deferred_data = deferred_buffer.to_dict() if deferred_buffer else None
             write_fluid_state(
@@ -714,14 +690,9 @@ def _read_fluid_results_safe(config, fsm_ctx):
     if not fsm_ctx:
         return []
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import read_fluid_results
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             return read_fluid_results(driver, fsm_ctx.graph_id)
         finally:
@@ -736,14 +707,9 @@ def _read_fluid_state_safe(config, fsm_ctx):
     if not fsm_ctx:
         return None
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import read_fluid_state
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             return read_fluid_state(driver, fsm_ctx.graph_id)
         finally:
@@ -758,14 +724,9 @@ def _delete_fluid_cache_safe(config, fsm_ctx) -> None:
     if not fsm_ctx:
         return
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import delete_fluid_results, delete_fluid_state
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             delete_fluid_results(driver, fsm_ctx.graph_id)
             delete_fluid_state(driver, fsm_ctx.graph_id)
@@ -778,14 +739,9 @@ def _delete_fluid_cache_safe(config, fsm_ctx) -> None:
 def _check_fluid_cache_exists_safe(config, graph_id: str) -> bool:
     """Check if fluid cache exists. Returns False on failure."""
     try:
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import check_fluid_cache_exists
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             return check_fluid_cache_exists(driver, graph_id)
         finally:
@@ -1518,21 +1474,19 @@ def _build_exemplar_index(buffer, config):
 
 
 def _load_calibrator_safe(config, fsm_ctx, model_type: str):
-    """Load a calibration curve from the graph. Returns PosteriorCalibrator or None."""
-    if not fsm_ctx:
+    """Load a calibration curve from the graph. Returns PosteriorCalibrator or None.
+
+    Skipped on run_count=0 (no prior completed run to have produced a curve).
+    """
+    if not fsm_ctx or fsm_ctx.run_count < 1:
         return None
     try:
         import json
 
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.curing.calibration import PosteriorCalibrator
         from kg_builder_cli.fsm import read_calibration_curve
 
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             data = read_calibration_curve(driver, fsm_ctx.graph_id, model_type)
             if data and data["n_samples"] >= PosteriorCalibrator._MIN_SAMPLES:
@@ -1660,9 +1614,11 @@ def _compute_type_metrics_safe(accumulator, freqs, buffer, calibration_data):
         from kg_builder_cli.curing.type_metrics import TypeMetricsCollector
 
         results = accumulator._results if hasattr(accumulator, "_results") else []
+        # Filter to entity types only (exclude relationship types from buffer)
+        entity_freqs = buffer.entity_type_frequencies() if buffer else freqs
         collector = TypeMetricsCollector(
             results=results,
-            frequencies=freqs,
+            frequencies=entity_freqs,
             calibration_data=calibration_data,
         )
         return collector.compute()
@@ -1678,15 +1634,10 @@ def _persist_calibration_curve_safe(config, fsm_ctx, calibrator, model_type: str
     try:
         import json
 
-        from neo4j import GraphDatabase
-
         from kg_builder_cli.fsm import write_calibration_curve
 
         x, y = calibrator.to_points()
-        driver = GraphDatabase.driver(
-            config.neo4j.uri,
-            auth=(config.neo4j.user, config.neo4j.password),
-        )
+        driver = _create_driver_quiet(config)
         try:
             write_calibration_curve(
                 driver,
