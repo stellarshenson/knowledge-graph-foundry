@@ -1,5 +1,13 @@
 # Architectural Positioning: Innovation Classification and Design Principles
 
+| | |
+|---|---|
+| **Raised** | 2026-03-17 |
+| **Status** | Open |
+| **Last Update** | 2026-03-17 |
+| **Design Comments** | - |
+| **Implementation Notes** | - |
+
 ## Innovation Classification
 
 KGF is architecturally innovative, not algorithmically groundbreaking. Every individual component - LLM extraction, ontology-guided resolution, hybrid lexical + embedding similarity, graph construction pipelines, agent escalation - exists somewhere in the current ecosystem. The innovation lies in how the pieces are combined and disciplined.

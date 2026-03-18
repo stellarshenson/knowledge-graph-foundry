@@ -1,5 +1,13 @@
 # Ontology Lifecycle: Curing and Adaptive Resolution
 
+| | |
+|---|---|
+| **Raised** | 2026-03-17 |
+| **Status** | Implemented |
+| **Last Update** | 2026-03-17 |
+| **Design Comments** | - |
+| **Implementation Notes** | - |
+
 ## Curing and Stabilization
 
 Ontology curing is a phase-based stabilization mechanism that addresses ontology chaos during early extraction. Most knowledge graph builders take one of two approaches: a fixed ontology defined upfront, or a fully emergent ontology with uncontrolled drift. KGF introduces a third option - a stabilization phase driven by metrics and drift detection.

@@ -1,5 +1,13 @@
 # Decision Architecture: Two-Layer Adjudication, Calibration, and Safety
 
+| | |
+|---|---|
+| **Raised** | 2026-03-17 |
+| **Status** | Open |
+| **Last Update** | 2026-03-17 |
+| **Design Comments** | - |
+| **Implementation Notes** | - |
+
 ## Two-Layer Decision Model
 
 Entity resolution operates as a two-layer system: a statistical layer that produces calibrated merge probabilities, and a reasoning layer that adjudicates action under context. The LLM does not replace the probability model - it acts as a policy layer over it.

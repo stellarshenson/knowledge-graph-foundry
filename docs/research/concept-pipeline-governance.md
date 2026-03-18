@@ -1,5 +1,13 @@
 # Pipeline Governance: FSM Lifecycle and Graph Control Plane
 
+| | |
+|---|---|
+| **Raised** | 2026-03-17 |
+| **Status** | Implemented |
+| **Last Update** | 2026-03-17 |
+| **Design Comments** | - |
+| **Implementation Notes** | - |
+
 > **Status**: This concept is now formalized in [KGF_DESIGN.md Section 14](../KGF_DESIGN.md#14-pipeline-lifecycle). The design evolved from the 7-state proposal below to a 6-state model focused on ontological maturity: EMPTY, INITIALIZING, CURING, STABLE, RECURING, FAILED. Key refinements: fluid and direct are extraction mechanisms within CURING (not separate states), CURING means ontology calibration (not just type discovery), and run management is tracked via metanode properties rather than FSM states.
 
 ## Finite State Machine

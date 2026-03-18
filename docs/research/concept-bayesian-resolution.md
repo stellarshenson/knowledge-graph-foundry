@@ -1,5 +1,13 @@
 # Bayesian Entity Resolution: Evidence Fusion and Accumulation
 
+| | |
+|---|---|
+| **Raised** | 2026-03-17 |
+| **Status** | Implemented |
+| **Last Update** | 2026-03-17 |
+| **Design Comments** | - |
+| **Implementation Notes** | - |
+
 ## Posterior over Heuristic Scoring
 
 Entity resolution in KGF uses Bayesian posterior probability rather than ad-hoc weighted scoring. Most KG builders combine similarity signals - name similarity, embedding cosine, description overlap, relationship context - using heuristic weighted sums or rule trees. KGF instead treats these signals as evidence contributing to a posterior probability that two entities represent the same real-world thing.
