@@ -136,6 +136,26 @@ class StabilityMetrics:
 
         return dict(metrics)
 
+    def to_dict(self) -> dict:
+        """Serialize metrics state for cross-run persistence."""
+        return {
+            "variance_window": self._variance_window,
+            "history": self._history,
+            "prev_probs": self._prev_probs,
+            "type_counts_history": self._type_counts_history,
+            "total_occurrences_history": self._total_occurrences_history,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> StabilityMetrics:
+        """Restore metrics from serialized state."""
+        m = cls(variance_window=data.get("variance_window", 5))
+        m._history = data.get("history", [])
+        m._prev_probs = data.get("prev_probs")
+        m._type_counts_history = data.get("type_counts_history", [])
+        m._total_occurrences_history = data.get("total_occurrences_history", [])
+        return m
+
     def history(self) -> list[dict[str, float]]:
         """Return full metric history for post-hoc analysis."""
         return list(self._history)

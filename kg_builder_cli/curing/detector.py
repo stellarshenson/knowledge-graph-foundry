@@ -246,6 +246,29 @@ class CuringDetector:
             )
         return drifting
 
+    def to_dict(self) -> dict:
+        """Serialize detector state for cross-run persistence."""
+        return {
+            "docs_processed": self._docs_processed,
+            "coverage_history": self._coverage_history,
+            "new_types_history": [sorted(s) for s in self._new_types_history],
+            "metrics_history": self._metrics_history,
+            "remap_history": self._remap_history,
+            "consecutive_cure_votes": self._consecutive_cure_votes,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict, config: CuringConfig) -> CuringDetector:
+        """Restore detector from serialized state."""
+        det = cls(config)
+        det._docs_processed = data["docs_processed"]
+        det._coverage_history = data["coverage_history"]
+        det._new_types_history = [set(s) for s in data["new_types_history"]]
+        det._metrics_history = data["metrics_history"]
+        det._remap_history = data.get("remap_history", [])
+        det._consecutive_cure_votes = data.get("consecutive_cure_votes", 0)
+        return det
+
     def is_force_required(self) -> bool:
         """Check if max_fluid_documents reached (failsafe)."""
         return self._docs_processed >= self._config.max_fluid_documents

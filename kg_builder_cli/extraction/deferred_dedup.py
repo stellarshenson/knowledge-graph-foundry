@@ -215,6 +215,46 @@ class DeferredDedupBuffer:
                     ),
                 )
 
+    def to_dict(self) -> dict:
+        """Serialize deferred buffer for cross-run persistence."""
+        pairs = {}
+        for key, pair in self._pairs.items():
+            str_key = f"{key[0]}|{key[1]}|{key[2]}"
+            pairs[str_key] = {
+                "entity_a_name": pair.entity_a_name,
+                "type_a": pair.type_a,
+                "type_b": pair.type_b,
+                "posteriors": pair.posteriors,
+                "shared_chunks": pair.shared_chunks,
+                "shared_targets": sorted(pair.shared_targets),
+                "first_seen_doc": pair.first_seen_doc,
+                "last_seen_doc": pair.last_seen_doc,
+                "descriptions_a": pair.descriptions_a,
+                "descriptions_b": pair.descriptions_b,
+            }
+        return {"pairs": pairs}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> DeferredDedupBuffer:
+        """Restore deferred buffer from serialized state."""
+        buf = cls()
+        for str_key, pdata in data.get("pairs", {}).items():
+            parts = str_key.split("|", 2)
+            key = (parts[0], parts[1], parts[2])
+            buf._pairs[key] = DeferredPair(
+                entity_a_name=pdata["entity_a_name"],
+                type_a=pdata["type_a"],
+                type_b=pdata["type_b"],
+                posteriors=pdata.get("posteriors", []),
+                shared_chunks=pdata.get("shared_chunks", 0),
+                shared_targets=set(pdata.get("shared_targets", [])),
+                first_seen_doc=pdata.get("first_seen_doc", 0),
+                last_seen_doc=pdata.get("last_seen_doc", 0),
+                descriptions_a=pdata.get("descriptions_a", []),
+                descriptions_b=pdata.get("descriptions_b", []),
+            )
+        return buf
+
     def resolve_all(
         self,
         type_frequencies: dict[str, int] | None = None,
