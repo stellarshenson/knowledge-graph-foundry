@@ -1058,8 +1058,8 @@ wheels = [
 ]
 
 [[package]]
-name = "kgf"
-version = "0.4.29"
+name = "knowledge-graph-foundry"
+version = "0.4.32"
 source = { editable = "." }
 dependencies = [
     { name = "blinker" },
