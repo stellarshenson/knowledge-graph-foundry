@@ -5,8 +5,8 @@
 #################################################################################
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-PROJECT_NAME = kg-builder-cli
-MODULE_NAME = kg_builder_cli
+PROJECT_NAME = knowledge-graph-foundry
+MODULE_NAME = kgf
 PYTHON_VERSION = 3.12
 PYTHON_INTERPRETER = python
 
@@ -201,6 +201,18 @@ build: clean install test increment_version_number
 	@echo "$(MSG_PREFIX) building $(MODULE_NAME)"
 	$(PROJECT_DIR)/.venv/bin/python -m build --wheel
 
+## Publish package to PyPI using twine (requires TWINE_USERNAME and TWINE_PASSWORD or ~/.pypirc)
+publish: build
+	@if ! $(PROJECT_DIR)/.venv/bin/python -c "import twine" 2>/dev/null; then \
+		echo "$(MSG_PREFIX) installing twine"; \
+		uv $(UV_OPTS) pip install -q --python $(PROJECT_DIR)/.venv twine; \
+	fi
+	@echo "$(MSG_PREFIX) checking distribution with twine"
+	$(PROJECT_DIR)/.venv/bin/python -m twine check dist/*
+	@echo "$(MSG_PREFIX) uploading $(MODULE_NAME) to PyPI"
+	$(PROJECT_DIR)/.venv/bin/python -m twine upload dist/*
+	@echo "$(OK_STYLE)>>> $(MODULE_NAME) published to PyPI$(NO_STYLE)"
+
 ## Increment build number
 increment_version_number:
 	@echo "$(MSG_PREFIX) incrementing build number"
@@ -212,7 +224,7 @@ increment_version_number:
 ## Make dataset
 data: requirements
 	@echo "$(MSG_PREFIX) generating dataset"
-	$(PYTHON_INTERPRETER) kg_builder_cli/dataset.py
+	$(PYTHON_INTERPRETER) kgf/dataset.py
 
 #################################################################################
 # Self Documenting Commands                                                     #

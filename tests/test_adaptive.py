@@ -7,7 +7,7 @@ import time
 
 import pytest
 
-from kg_builder_cli.curing.adaptive import AdaptivePriorState, CalibrationHotLoader
+from kgf.curing.adaptive import AdaptivePriorState, CalibrationHotLoader
 
 
 # ── AdaptivePriorState: sqrt(N) trigger ──────────────────────────
@@ -336,7 +336,7 @@ class TestObservationCallback:
     """Verify collector triggers on_observation callback."""
 
     def test_cross_type_fires_callback(self):
-        from kg_builder_cli.curing.observation import (
+        from kgf.curing.observation import (
             CrossTypeObservation,
             ObservationCollector,
         )
@@ -365,7 +365,7 @@ class TestObservationCallback:
         assert calls[1] == ("Component", 0.7)
 
     def test_type_assignment_fires_callback(self):
-        from kg_builder_cli.curing.observation import (
+        from kgf.curing.observation import (
             ObservationCollector,
             TypeAssignmentObservation,
         )
@@ -390,7 +390,7 @@ class TestObservationCallback:
 
     def test_no_callback_no_crash(self):
         """Callback is None by default - no crash."""
-        from kg_builder_cli.curing.observation import (
+        from kgf.curing.observation import (
             CrossTypeObservation,
             ObservationCollector,
         )

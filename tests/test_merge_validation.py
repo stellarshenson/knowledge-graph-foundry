@@ -2,7 +2,7 @@
 
 import pytest
 
-from kg_builder_cli.curing.merge_validation import (
+from kgf.curing.merge_validation import (
     ClusteringValidationResult,
     MergeValidation,
     validate_type_clustering,

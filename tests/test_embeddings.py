@@ -6,15 +6,15 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from kg_builder_cli.extraction.embeddings import generate_embeddings
-from kg_builder_cli.types.extraction import Entity
+from kgf.extraction.embeddings import generate_embeddings
+from kgf.types.extraction import Entity
 
 
 class TestEmbeddings:
     def _mock_entity(self, name: str = "Test", entity_type: str = "Product") -> Entity:
         return Entity(id="e1", name=name, type=entity_type, description="A test entity")
 
-    @patch("kg_builder_cli.extraction.embeddings.boto3")
+    @patch("kgf.extraction.embeddings.boto3")
     def test_generate_embeddings_populates_field(self, mock_boto3):
         """Embedding vectors are populated on entities."""
         fake_embedding = [0.1] * 1024
@@ -34,7 +34,7 @@ class TestEmbeddings:
         assert result[1].embedding == fake_embedding
         assert mock_client.invoke_model.call_count == 2
 
-    @patch("kg_builder_cli.extraction.embeddings.boto3")
+    @patch("kgf.extraction.embeddings.boto3")
     def test_generate_embeddings_handles_failure(self, mock_boto3):
         """Failed API call leaves embedding as None."""
         mock_client = MagicMock()
@@ -47,7 +47,7 @@ class TestEmbeddings:
         assert len(result) == 1
         assert result[0].embedding is None
 
-    @patch("kg_builder_cli.extraction.embeddings.boto3")
+    @patch("kgf.extraction.embeddings.boto3")
     def test_input_text_format(self, mock_boto3):
         """Input text follows format: '{type}: {name} - {description[:200]}'."""
         fake_embedding = [0.1] * 1024

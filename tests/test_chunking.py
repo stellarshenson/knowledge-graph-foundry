@@ -5,9 +5,9 @@ import hashlib
 
 import pytest
 
-from kg_builder_cli.extraction.chunking import chunk_text
-from kg_builder_cli.types.config import ExtractConfig
-from kg_builder_cli.types.document import TextSegment
+from kgf.extraction.chunking import chunk_text
+from kgf.types.config import ExtractConfig
+from kgf.types.document import TextSegment
 
 
 @pytest.fixture

@@ -6,15 +6,15 @@ from unittest.mock import MagicMock
 import pytest
 from pydantic import ValidationError
 
-from kg_builder_cli.extraction.extract import extract_chunk
-from kg_builder_cli.extraction.response_models import (
+from kgf.extraction.extract import extract_chunk
+from kgf.extraction.response_models import (
     EntityResponse,
     ExtractionResponse,
     RelationshipResponse,
     build_response_model,
 )
-from kg_builder_cli.types.document import Chunk, ChunkMetadata
-from kg_builder_cli.types.ontology import OntologyState, TypeDef
+from kgf.types.document import Chunk, ChunkMetadata
+from kgf.types.ontology import OntologyState, TypeDef
 
 
 @pytest.fixture
@@ -99,16 +99,16 @@ class TestExtractChunk:
 
     def test_litellm_model_string_bedrock(self):
         """Bedrock model string format."""
-        from kg_builder_cli.extraction.unstructured import _litellm_model_id
-        from kg_builder_cli.types.config import LLMConfig
+        from kgf.extraction.unstructured import _litellm_model_id
+        from kgf.types.config import LLMConfig
 
         config = LLMConfig(provider="bedrock", model="eu.anthropic.claude-sonnet-4-20250514-v1:0")
         assert _litellm_model_id(config) == "bedrock/eu.anthropic.claude-sonnet-4-20250514-v1:0"
 
     def test_litellm_model_string_openai(self):
         """OpenAI model string is plain."""
-        from kg_builder_cli.extraction.unstructured import _litellm_model_id
-        from kg_builder_cli.types.config import LLMConfig
+        from kgf.extraction.unstructured import _litellm_model_id
+        from kgf.types.config import LLMConfig
 
         config = LLMConfig(provider="openai", model="gpt-4o")
         assert _litellm_model_id(config) == "gpt-4o"

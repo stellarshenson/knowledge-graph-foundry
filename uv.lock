@@ -1058,7 +1058,7 @@ wheels = [
 ]
 
 [[package]]
-name = "kg-builder-cli"
+name = "kgf"
 version = "0.4.29"
 source = { editable = "." }
 dependencies = [

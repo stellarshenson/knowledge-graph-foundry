@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import blinker
 
-from kg_builder_cli.events import (
+from kgf.events import (
     clear_event_log,
     get_event_log_count,
     register_default_handlers,
@@ -283,7 +283,7 @@ class TestSignalWiring:
 
     def test_entity_resolution_emits_cross_type_decision(self):
         """resolve_entities emits cross_type_decision for cross-type pairs."""
-        from kg_builder_cli.types.extraction import Entity
+        from kgf.types.extraction import Entity
 
         signals.cross_type_decision.connect(self._capture("cross_type_decision"))
         signals.entity_resolution_completed.connect(
@@ -294,7 +294,7 @@ class TestSignalWiring:
             Entity(id="comp_tube", name="Tube", type="Component", description="A tube"),
             Entity(id="acc_tube", name="Tube", type="Accessory", description="An accessory tube"),
         ]
-        from kg_builder_cli.extraction.resolution import resolve_entities
+        from kgf.extraction.resolution import resolve_entities
 
         resolve_entities(entities, cross_type_merge_threshold=0.6)
 
@@ -307,7 +307,7 @@ class TestSignalWiring:
 
     def test_entity_resolution_emits_merge_blocked(self):
         """resolve_entities emits merge_blocked when posterior is below threshold."""
-        from kg_builder_cli.types.extraction import Entity
+        from kgf.types.extraction import Entity
 
         signals.merge_blocked.connect(self._capture("merge_blocked"))
 
@@ -322,7 +322,7 @@ class TestSignalWiring:
                 description="An ISO certification compliance framework",
             ),
         ]
-        from kg_builder_cli.extraction.resolution import resolve_entities
+        from kgf.extraction.resolution import resolve_entities
 
         resolve_entities(entities, cross_type_merge_threshold=0.99)
 
@@ -338,8 +338,8 @@ class TestSignalWiring:
             self._capture("deferred_resolution_completed")
         )
 
-        from kg_builder_cli.extraction.deferred_dedup import DeferredDedupBuffer
-        from kg_builder_cli.types.extraction import Entity
+        from kgf.extraction.deferred_dedup import DeferredDedupBuffer
+        from kgf.types.extraction import Entity
 
         buf = DeferredDedupBuffer()
         e1 = Entity(id="c1", name="Tube", type="Component", description="tube component")
@@ -359,9 +359,9 @@ class TestSignalWiring:
             self._capture("ontology_signals_accumulated")
         )
 
-        from kg_builder_cli.ontology.buffer import OntologyBuffer
-        from kg_builder_cli.types.config import OntologyBufferConfig
-        from kg_builder_cli.types.extraction import Entity, Relationship
+        from kgf.ontology.buffer import OntologyBuffer
+        from kgf.types.config import OntologyBufferConfig
+        from kgf.types.extraction import Entity, Relationship
 
         config = OntologyBufferConfig()
         buf = OntologyBuffer(config)
@@ -383,8 +383,8 @@ class TestSignalWiring:
         """OntologyBuffer.snapshot emits buffer_snapshot_taken."""
         signals.buffer_snapshot_taken.connect(self._capture("buffer_snapshot_taken"))
 
-        from kg_builder_cli.ontology.buffer import OntologyBuffer
-        from kg_builder_cli.types.config import OntologyBufferConfig
+        from kgf.ontology.buffer import OntologyBuffer
+        from kgf.types.config import OntologyBufferConfig
 
         config = OntologyBufferConfig()
         buf = OntologyBuffer(config)
@@ -396,9 +396,9 @@ class TestSignalWiring:
         """OntologyBuffer.prune_low_frequency_types emits buffer_types_pruned."""
         signals.buffer_types_pruned.connect(self._capture("buffer_types_pruned"))
 
-        from kg_builder_cli.ontology.buffer import OntologyBuffer
-        from kg_builder_cli.types.config import OntologyBufferConfig
-        from kg_builder_cli.types.ontology import TypeSignal
+        from kgf.ontology.buffer import OntologyBuffer
+        from kgf.types.config import OntologyBufferConfig
+        from kgf.types.ontology import TypeSignal
 
         config = OntologyBufferConfig()
         buf = OntologyBuffer(config)
@@ -421,7 +421,7 @@ class TestSignalWiring:
             self._capture("stability_metrics_recorded")
         )
 
-        from kg_builder_cli.curing.metrics import StabilityMetrics
+        from kgf.curing.metrics import StabilityMetrics
 
         tracker = StabilityMetrics()
         tracker.record({"Product": 50, "Component": 30, "Feature": 20})
@@ -438,7 +438,7 @@ class TestSignalWiring:
             self._capture("stability_metrics_recorded")
         )
 
-        from kg_builder_cli.curing.metrics import StabilityMetrics
+        from kgf.curing.metrics import StabilityMetrics
 
         tracker = StabilityMetrics()
         for i in range(7):
@@ -454,8 +454,8 @@ class TestSignalWiring:
             self._capture("merge_validation_failed")
         )
 
-        from kg_builder_cli.curing.merge_validation import validate_type_clustering
-        from kg_builder_cli.types.extraction import Entity
+        from kgf.curing.merge_validation import validate_type_clustering
+        from kgf.types.extraction import Entity
 
         entities = [
             Entity(id="m1", name="Gas", type="Gas", description="a gas"),
@@ -493,8 +493,8 @@ class TestSignalWiring:
             iter([{"type": "Product"}, {"type": "Component"}]),  # types with rels
         ]
 
-        from kg_builder_cli.loading.validation import validate_graph
-        from kg_builder_cli.types.config import AppConfig
+        from kgf.loading.validation import validate_graph
+        from kgf.types.config import AppConfig
 
         config = MagicMock(spec=AppConfig)
         report = validate_graph(config, driver=mock_driver)

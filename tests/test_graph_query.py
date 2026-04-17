@@ -4,13 +4,13 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from kg_builder_cli.curing.graph_query import (
+from kgf.curing.graph_query import (
     GraphQueryRequest,
     GraphQueryResult,
     query_fluid,
     query_graph,
 )
-from kg_builder_cli.types.extraction import Entity, Relationship
+from kgf.types.extraction import Entity, Relationship
 
 
 @pytest.fixture

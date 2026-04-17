@@ -1,8 +1,8 @@
 """Tests for curing detection logic."""
 import pytest
 
-from kg_builder_cli.curing.detector import CuringDetector
-from kg_builder_cli.types.config import CuringConfig
+from kgf.curing.detector import CuringDetector
+from kgf.types.config import CuringConfig
 
 
 @pytest.fixture

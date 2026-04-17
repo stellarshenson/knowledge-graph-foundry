@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import pytest
 
-from kg_builder_cli.extraction.dedup import deduplicate
-from kg_builder_cli.types.extraction import Entity, Relationship
+from kgf.extraction.dedup import deduplicate
+from kgf.types.extraction import Entity, Relationship
 
 
 class TestEntityDedup:

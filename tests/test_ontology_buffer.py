@@ -6,10 +6,10 @@ from pathlib import Path
 import pytest
 import yaml
 
-from kg_builder_cli.ontology.buffer import OntologyBuffer
-from kg_builder_cli.types.config import OntologyBufferConfig
-from kg_builder_cli.types.extraction import Entity, Relationship
-from kg_builder_cli.types.ontology import TypeSignal
+from kgf.ontology.buffer import OntologyBuffer
+from kgf.types.config import OntologyBufferConfig
+from kgf.types.extraction import Entity, Relationship
+from kgf.types.ontology import TypeSignal
 
 
 @pytest.fixture

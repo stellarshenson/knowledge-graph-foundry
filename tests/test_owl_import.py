@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from kg_builder_cli.ontology.owl_import import import_owl
+from kgf.ontology.owl_import import import_owl
 
 OWL_FIXTURE = Path(__file__).parent / "fixtures" / "cpap_ontology.owl"
 
@@ -93,8 +93,8 @@ class TestOwlImport:
 
     def test_import_feeds_buffer(self):
         """OWL import results can seed an OntologyBuffer."""
-        from kg_builder_cli.ontology.buffer import OntologyBuffer
-        from kg_builder_cli.types.config import OntologyBufferConfig
+        from kgf.ontology.buffer import OntologyBuffer
+        from kgf.types.config import OntologyBufferConfig
 
         entity_types, rel_types = import_owl(OWL_FIXTURE)
         config = OntologyBufferConfig(min_frequency_to_confirm=1)

@@ -11,19 +11,19 @@ from pathlib import Path
 import pytest
 import yaml
 
-from kg_builder_cli.extraction.prompts import (
+from kgf.extraction.prompts import (
     _build_resolution_guidance_block,
     build_extraction_prompt,
 )
-from kg_builder_cli.extraction.resolution import (
+from kgf.extraction.resolution import (
     CrossTypeStat,
     resolve_entities,
 )
-from kg_builder_cli.ontology.buffer import OntologyBuffer
-from kg_builder_cli.types.config import OntologyBufferConfig
-from kg_builder_cli.types.document import Chunk, ChunkMetadata
-from kg_builder_cli.types.extraction import Entity
-from kg_builder_cli.types.ontology import (
+from kgf.ontology.buffer import OntologyBuffer
+from kgf.types.config import OntologyBufferConfig
+from kgf.types.document import Chunk, ChunkMetadata
+from kgf.types.extraction import Entity
+from kgf.types.ontology import (
     OntologyState,
     TypeDef,
     TypeHierarchyEntry,

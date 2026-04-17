@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import pytest
 
-from kg_builder_cli.extraction.dedup import normalize_type_name
-from kg_builder_cli.ontology.buffer import OntologyBuffer
-from kg_builder_cli.types.config import OntologyBufferConfig
-from kg_builder_cli.types.ontology import TypeSignal
+from kgf.extraction.dedup import normalize_type_name
+from kgf.ontology.buffer import OntologyBuffer
+from kgf.types.config import OntologyBufferConfig
+from kgf.types.ontology import TypeSignal
 
 
 class TestNormalizeTypeName:

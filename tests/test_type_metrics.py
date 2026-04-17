@@ -4,8 +4,8 @@ import math
 
 import pytest
 
-from kg_builder_cli.curing.type_metrics import TypeMetricsCollector
-from kg_builder_cli.types.extraction import (
+from kgf.curing.type_metrics import TypeMetricsCollector
+from kgf.types.extraction import (
     Entity,
     ExtractionMetadata,
     ExtractionResult,

@@ -2,7 +2,7 @@
 
 import pytest
 
-from kg_builder_cli.curing.observation import (
+from kgf.curing.observation import (
     CrossTypeObservation,
     ObservationCollector,
     TypeAssignmentObservation,

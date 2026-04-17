@@ -3,8 +3,8 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "kg_builder_cli"
-version = "0.4.29"
+name = "kgf"
+version = "0.4.30"
 description = "Knowledge Graph Foundry - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -54,6 +54,11 @@ dependencies = [
     "transitions>=0.9",
 ]
 
+[project.urls]
+Homepage = "https://github.com/stellarshenson/knowledge-graph-foundry"
+Repository = "https://github.com/stellarshenson/knowledge-graph-foundry"
+Issues = "https://github.com/stellarshenson/knowledge-graph-foundry/issues"
+
 [project.optional-dependencies]
 dev = [
     "build",
@@ -69,24 +74,24 @@ dev = [
 ]
 
 [project.scripts]
-kgf = "kg_builder_cli.cli:main"
+kgf = "kgf.cli:main"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["kg_builder_cli*"]
+include = ["kgf*"]
 exclude = ["tests*"]
 
 [tool.ruff]
 line-length = 99
-src = ["kg_builder_cli"]
-include = ["pyproject.toml", "kg_builder_cli/**/*.py"]
+src = ["kgf"]
+include = ["pyproject.toml", "kgf/**/*.py"]
 
 [tool.ruff.lint]
 extend-select = ["I"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["kg_builder_cli"]
+known-first-party = ["kgf"]
 force-sort-within-sections = true

@@ -1,10 +1,10 @@
 """Tests for type exemplar accumulation, snapshot, and prompt formatting."""
-from kg_builder_cli.ontology.buffer import OntologyBuffer
-from kg_builder_cli.extraction.prompts import build_extraction_prompt
-from kg_builder_cli.types.config import OntologyBufferConfig
-from kg_builder_cli.types.document import Chunk
-from kg_builder_cli.types.extraction import Entity, Relationship
-from kg_builder_cli.types.ontology import TypeExemplar
+from kgf.ontology.buffer import OntologyBuffer
+from kgf.extraction.prompts import build_extraction_prompt
+from kgf.types.config import OntologyBufferConfig
+from kgf.types.document import Chunk
+from kgf.types.extraction import Entity, Relationship
+from kgf.types.ontology import TypeExemplar
 
 
 def _make_buffer(max_exemplars=5) -> OntologyBuffer:
@@ -127,7 +127,7 @@ class TestPromptExemplarInjection:
     def test_no_exemplars_no_hint(self):
         buf = _make_buffer()
         # Add type without exemplars (via signal only)
-        from kg_builder_cli.types.ontology import TypeSignal
+        from kgf.types.ontology import TypeSignal
         buf.accumulate([TypeSignal(type_name="Widget", frequency=2)])
 
         snapshot = buf.snapshot()

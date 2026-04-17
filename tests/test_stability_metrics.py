@@ -3,7 +3,7 @@ import math
 
 import pytest
 
-from kg_builder_cli.curing.metrics import StabilityMetrics
+from kgf.curing.metrics import StabilityMetrics
 
 
 @pytest.fixture

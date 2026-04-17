@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from kg_builder_cli.types.extraction import Entity
+from kgf.types.extraction import Entity
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 CASSETTES_DIR = FIXTURES_DIR / "llm_cassettes"

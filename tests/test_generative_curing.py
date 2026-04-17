@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from kg_builder_cli.curing.generative import (
+from kgf.curing.generative import (
     CureDecision,
     CureProbe,
     RecureDecision,
@@ -13,7 +13,7 @@ from kg_builder_cli.curing.generative import (
     llm_should_cure,
     llm_should_recure,
 )
-from kg_builder_cli.types.config import CuringConfig, LLMConfig
+from kgf.types.config import CuringConfig, LLMConfig
 
 
 @pytest.fixture
@@ -292,7 +292,7 @@ class TestEarlyStopPatience:
 
         With max_fluid_documents=10 and patience=0.3, threshold = max(3, int(10*0.3)) = 3.
         """
-        from kg_builder_cli.curing.detector import CuringDetector
+        from kgf.curing.detector import CuringDetector
 
         config = CuringConfig(enabled=True, max_fluid_documents=10, generative_patience=0.3)
         detector = CuringDetector(config)
@@ -305,7 +305,7 @@ class TestEarlyStopPatience:
 
     def test_early_stop_scales_with_corpus(self):
         """With max_fluid_documents=20 and patience=0.4, need 8 consecutive votes."""
-        from kg_builder_cli.curing.detector import CuringDetector
+        from kgf.curing.detector import CuringDetector
 
         config = CuringConfig(enabled=True, max_fluid_documents=20, generative_patience=0.4)
         detector = CuringDetector(config)
@@ -318,7 +318,7 @@ class TestEarlyStopPatience:
 
     def test_early_stop_reset_on_continue(self):
         """A 'continue' vote resets the patience counter."""
-        from kg_builder_cli.curing.detector import CuringDetector
+        from kgf.curing.detector import CuringDetector
 
         config = CuringConfig(enabled=True, max_fluid_documents=10, generative_patience=0.3)
         detector = CuringDetector(config)
