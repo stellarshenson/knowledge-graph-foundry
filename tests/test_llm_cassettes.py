@@ -35,7 +35,7 @@ class TestCassetteInfrastructure:
         client = load_cassette("extraction_cpap_product")
         assert client.calls_remaining == 1
 
-        from kgf.extraction.response_models import ExtractionResponse
+        from knowledge_graph_foundry.extraction.response_models import ExtractionResponse
 
         resp = client.chat.completions.create(
             model="bedrock/test-model",
@@ -88,7 +88,7 @@ class TestCassetteInfrastructure:
         client = load_cassette("extraction_multi_chunk")
         assert client.calls_remaining == 2
 
-        from kgf.extraction.response_models import ExtractionResponse
+        from knowledge_graph_foundry.extraction.response_models import ExtractionResponse
 
         r1 = client.chat.completions.create(model="x", response_model=ExtractionResponse, messages=[])
         assert len(r1.entities) == 2  # first chunk: AirSense + ResMed
@@ -106,9 +106,9 @@ class TestCassetteInfrastructure:
 class TestExtractionWithCassettes:
     def test_extract_chunk_cpap_product(self):
         """Full extract_chunk with cassette-replayed LLM response."""
-        from kgf.extraction.extract import extract_chunk
-        from kgf.extraction.response_models import ExtractionResponse
-        from kgf.types.document import Chunk, ChunkMetadata
+        from knowledge_graph_foundry.extraction.extract import extract_chunk
+        from knowledge_graph_foundry.extraction.response_models import ExtractionResponse
+        from knowledge_graph_foundry.types.document import Chunk, ChunkMetadata
 
         client = load_cassette("extraction_cpap_product")
         chunk = Chunk(
@@ -133,9 +133,9 @@ class TestExtractionWithCassettes:
 
     def test_extract_multi_chunk_session(self):
         """Two sequential chunk extractions from one cassette."""
-        from kgf.extraction.extract import extract_chunk
-        from kgf.extraction.response_models import ExtractionResponse
-        from kgf.types.document import Chunk, ChunkMetadata
+        from knowledge_graph_foundry.extraction.extract import extract_chunk
+        from knowledge_graph_foundry.extraction.response_models import ExtractionResponse
+        from knowledge_graph_foundry.types.document import Chunk, ChunkMetadata
 
         client = load_cassette("extraction_multi_chunk")
 
@@ -160,7 +160,7 @@ class TestExtractionWithCassettes:
 
     def test_schema_signals_with_cassette(self):
         """Schema signal extraction replayed from cassette."""
-        from kgf.extraction.schema_signals import SchemaSignals
+        from knowledge_graph_foundry.extraction.schema_signals import SchemaSignals
 
         client = load_cassette("schema_signals_cpap")
         resp = client.chat.completions.create(
@@ -183,7 +183,7 @@ class TestExtractionWithCassettes:
 class TestCuringWithCassettes:
     @pytest.fixture
     def llm_config(self):
-        from kgf.types.config import LLMConfig
+        from knowledge_graph_foundry.types.config import LLMConfig
         return LLMConfig(provider="bedrock", model="test-model", region="us-east-1")
 
     @pytest.fixture
@@ -216,7 +216,7 @@ class TestCuringWithCassettes:
 
     def test_cure_approved(self, llm_config, metrics_history, new_types_history):
         """Cassette: probe approves curing without graph query."""
-        from kgf.curing.generative import llm_should_cure
+        from knowledge_graph_foundry.curing.generative import llm_should_cure
 
         ctx, client = self._patch_instructor("curing_should_cure")
         with ctx:
@@ -241,7 +241,7 @@ class TestCuringWithCassettes:
 
     def test_cure_blocked(self, llm_config, metrics_history, new_types_history):
         """Cassette: probe blocks curing - missing entity categories."""
-        from kgf.curing.generative import llm_should_cure
+        from knowledge_graph_foundry.curing.generative import llm_should_cure
 
         ctx, client = self._patch_instructor("curing_block_cure")
         with ctx:
@@ -267,7 +267,7 @@ class TestCuringWithCassettes:
         """Cassette: probe requests graph query, second call decides."""
         from unittest.mock import MagicMock
 
-        from kgf.curing.generative import llm_should_cure
+        from knowledge_graph_foundry.curing.generative import llm_should_cure
 
         ctx, client = self._patch_instructor("curing_two_phase")
         mock_accumulator = MagicMock()
@@ -297,7 +297,7 @@ class TestCuringWithCassettes:
 
     def test_recure_dismissed(self, llm_config):
         """Cassette: drift dismissed as synonym variants."""
-        from kgf.curing.generative import llm_should_recure
+        from knowledge_graph_foundry.curing.generative import llm_should_recure
 
         ctx, client = self._patch_instructor("recure_dismiss_drift")
         with ctx:
@@ -317,7 +317,7 @@ class TestCuringWithCassettes:
 
     def test_recure_triggered(self, llm_config):
         """Cassette: re-cure triggered due to genuinely missing categories."""
-        from kgf.curing.generative import llm_should_recure
+        from knowledge_graph_foundry.curing.generative import llm_should_recure
 
         ctx, client = self._patch_instructor("recure_trigger")
         with ctx:
@@ -346,7 +346,7 @@ class TestTypeClusteringWithCassette:
         """Cassette: type clustering merges synonym variants."""
         client = load_cassette("type_clustering")
 
-        from kgf.curing.type_clustering import TypeClusteringResult
+        from knowledge_graph_foundry.curing.type_clustering import TypeClusteringResult
 
         resp = client.create(model="bedrock/test-model", response_model=TypeClusteringResult, messages=[])
 
@@ -420,7 +420,7 @@ class TestRecordingClient:
         """Record calls to a mock client, save, reload, replay."""
         from unittest.mock import MagicMock
 
-        from kgf.curing.generative import CureDecision
+        from knowledge_graph_foundry.curing.generative import CureDecision
 
         from tests.llm_cassette import RecordingClient, ReplayClient
 
@@ -447,7 +447,7 @@ class TestRecordingClient:
         """Record chat.completions.create calls."""
         from unittest.mock import MagicMock
 
-        from kgf.extraction.response_models import (
+        from knowledge_graph_foundry.extraction.response_models import (
             EntityResponse,
             ExtractionResponse,
         )

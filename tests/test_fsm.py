@@ -3,8 +3,8 @@
 import pytest
 from transitions import MachineError
 
-from kgf.fsm.context import create_fsm
-from kgf.fsm.states import GraphState
+from knowledge_graph_foundry.fsm.context import create_fsm
+from knowledge_graph_foundry.fsm.states import GraphState
 
 
 class TestFSMStateTransitions:

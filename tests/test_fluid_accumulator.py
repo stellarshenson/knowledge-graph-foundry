@@ -1,15 +1,15 @@
 """Tests for fluid accumulator."""
 import pytest
 
-from kgf.curing.accumulator import FluidAccumulator
-from kgf.types.config import ExtractConfig
-from kgf.types.document import Chunk
-from kgf.types.extraction import (
+from knowledge_graph_foundry.curing.accumulator import FluidAccumulator
+from knowledge_graph_foundry.types.config import ExtractConfig
+from knowledge_graph_foundry.types.document import Chunk
+from knowledge_graph_foundry.types.extraction import (
     Entity,
     ExtractionResult,
     Relationship,
 )
-from kgf.types.ontology import OntologyState, TypeDef
+from knowledge_graph_foundry.types.ontology import OntologyState, TypeDef
 
 
 def _make_entity(id: str, name: str, type: str = "Device") -> Entity:

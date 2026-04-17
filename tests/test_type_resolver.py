@@ -4,11 +4,11 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 
-from kgf.extraction.exemplar_index import ExemplarIndex
-from kgf.extraction.type_resolver import BayesianTypeResolver, ResolverContext
-from kgf.types.config import LLMConfig, OntologyBufferConfig
-from kgf.types.extraction import Entity, Relationship
-from kgf.types.ontology import TypeExemplar
+from knowledge_graph_foundry.extraction.exemplar_index import ExemplarIndex
+from knowledge_graph_foundry.extraction.type_resolver import BayesianTypeResolver, ResolverContext
+from knowledge_graph_foundry.types.config import LLMConfig, OntologyBufferConfig
+from knowledge_graph_foundry.types.extraction import Entity, Relationship
+from knowledge_graph_foundry.types.ontology import TypeExemplar
 
 
 def _config(**kwargs):

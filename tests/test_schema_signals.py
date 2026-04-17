@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from kgf.extraction.schema_signals import SchemaSignals, compute_coverage, extract_schema_signals
+from knowledge_graph_foundry.extraction.schema_signals import SchemaSignals, compute_coverage, extract_schema_signals
 
 
 class TestComputeCoverage:
@@ -35,8 +35,8 @@ class TestComputeCoverage:
 
 
 class TestExtractSchemaSignals:
-    @patch("kgf.extraction.schema_signals.instructor")
-    @patch("kgf.extraction.schema_signals.litellm")
+    @patch("knowledge_graph_foundry.extraction.schema_signals.instructor")
+    @patch("knowledge_graph_foundry.extraction.schema_signals.litellm")
     def test_mock_extraction(self, mock_litellm, mock_instructor):
         mock_client = MagicMock()
         mock_instructor.from_litellm.return_value = mock_client
@@ -49,8 +49,8 @@ class TestExtractSchemaSignals:
         assert len(result.entity_types) == 2
         assert "Person" in result.entity_types
 
-    @patch("kgf.extraction.schema_signals.instructor")
-    @patch("kgf.extraction.schema_signals.litellm")
+    @patch("knowledge_graph_foundry.extraction.schema_signals.instructor")
+    @patch("knowledge_graph_foundry.extraction.schema_signals.litellm")
     def test_exception_returns_empty(self, mock_litellm, mock_instructor):
         mock_client = MagicMock()
         mock_instructor.from_litellm.return_value = mock_client

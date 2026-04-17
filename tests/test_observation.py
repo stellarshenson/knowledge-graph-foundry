@@ -2,7 +2,7 @@
 
 import pytest
 
-from kgf.curing.observation import (
+from knowledge_graph_foundry.curing.observation import (
     CrossTypeObservation,
     ObservationCollector,
     TypeAssignmentObservation,

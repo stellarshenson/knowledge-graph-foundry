@@ -11,19 +11,19 @@ from pathlib import Path
 import pytest
 import yaml
 
-from kgf.extraction.prompts import (
+from knowledge_graph_foundry.extraction.prompts import (
     _build_resolution_guidance_block,
     build_extraction_prompt,
 )
-from kgf.extraction.resolution import (
+from knowledge_graph_foundry.extraction.resolution import (
     CrossTypeStat,
     resolve_entities,
 )
-from kgf.ontology.buffer import OntologyBuffer
-from kgf.types.config import OntologyBufferConfig
-from kgf.types.document import Chunk, ChunkMetadata
-from kgf.types.extraction import Entity
-from kgf.types.ontology import (
+from knowledge_graph_foundry.ontology.buffer import OntologyBuffer
+from knowledge_graph_foundry.types.config import OntologyBufferConfig
+from knowledge_graph_foundry.types.document import Chunk, ChunkMetadata
+from knowledge_graph_foundry.types.extraction import Entity
+from knowledge_graph_foundry.types.ontology import (
     OntologyState,
     TypeDef,
     TypeHierarchyEntry,

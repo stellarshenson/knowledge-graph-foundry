@@ -55,10 +55,10 @@ def _ensure_registry() -> None:
     if _MODEL_REGISTRY:
         return
 
-    from kgf.curing.generative import CureDecision, CureProbe, RecureDecision
-    from kgf.curing.type_clustering import TypeClusteringResult
-    from kgf.extraction.response_models import ExtractionResponse
-    from kgf.extraction.schema_signals import SchemaSignals
+    from knowledge_graph_foundry.curing.generative import CureDecision, CureProbe, RecureDecision
+    from knowledge_graph_foundry.curing.type_clustering import TypeClusteringResult
+    from knowledge_graph_foundry.extraction.response_models import ExtractionResponse
+    from knowledge_graph_foundry.extraction.schema_signals import SchemaSignals
 
     for cls in (
         ExtractionResponse,

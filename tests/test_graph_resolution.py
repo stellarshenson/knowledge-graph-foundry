@@ -3,9 +3,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from kgf.loading.loader import resolve_against_graph
-from kgf.types.config import AppConfig, Neo4jConfig
-from kgf.types.extraction import Entity, ExtractionResult, Relationship
+from knowledge_graph_foundry.loading.loader import resolve_against_graph
+from knowledge_graph_foundry.types.config import AppConfig, Neo4jConfig
+from knowledge_graph_foundry.types.extraction import Entity, ExtractionResult, Relationship
 
 
 @pytest.fixture
@@ -36,7 +36,7 @@ def test_resolve_remaps_type_to_existing(config):
          "description": "AirSense 10 CPAP therapy device"},
     ]
 
-    with patch("kgf.loading.loader.GraphDatabase") as mock_gdb:
+    with patch("knowledge_graph_foundry.loading.loader.GraphDatabase") as mock_gdb:
         mock_session = MagicMock()
         mock_session.run.return_value = mock_records
         mock_driver = MagicMock()
@@ -71,7 +71,7 @@ def test_resolve_rewires_relationships(config):
          "description": "AirSense 10 CPAP therapy device"},
     ]
 
-    with patch("kgf.loading.loader.GraphDatabase") as mock_gdb:
+    with patch("knowledge_graph_foundry.loading.loader.GraphDatabase") as mock_gdb:
         mock_session = MagicMock()
         mock_session.run.return_value = mock_records
         mock_driver = MagicMock()
@@ -95,7 +95,7 @@ def test_resolve_no_change_when_types_match(config):
         {"id": "device_abc", "name": "AirSense 10", "type": "Device"},
     ]
 
-    with patch("kgf.loading.loader.GraphDatabase") as mock_gdb:
+    with patch("knowledge_graph_foundry.loading.loader.GraphDatabase") as mock_gdb:
         mock_session = MagicMock()
         mock_session.run.return_value = mock_records
         mock_driver = MagicMock()
@@ -122,7 +122,7 @@ def test_resolve_no_graph_matches(config):
         Entity(id="product_abc", name="NewProduct", type="Product"),
     ])
 
-    with patch("kgf.loading.loader.GraphDatabase") as mock_gdb:
+    with patch("knowledge_graph_foundry.loading.loader.GraphDatabase") as mock_gdb:
         mock_session = MagicMock()
         mock_session.run.return_value = []
         mock_driver = MagicMock()

@@ -2,8 +2,8 @@
 import numpy as np
 import pytest
 
-from kgf.extraction.exemplar_index import ExemplarIndex
-from kgf.types.ontology import TypeExemplar
+from knowledge_graph_foundry.extraction.exemplar_index import ExemplarIndex
+from knowledge_graph_foundry.types.ontology import TypeExemplar
 
 
 def _random_embedding(dim=1024, seed=None):

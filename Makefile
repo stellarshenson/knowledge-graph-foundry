@@ -6,7 +6,7 @@
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = knowledge-graph-foundry
-MODULE_NAME = kgf
+MODULE_NAME = knowledge_graph_foundry
 PYTHON_VERSION = 3.12
 PYTHON_INTERPRETER = python
 
@@ -224,7 +224,7 @@ increment_version_number:
 ## Make dataset
 data: requirements
 	@echo "$(MSG_PREFIX) generating dataset"
-	$(PYTHON_INTERPRETER) kgf/dataset.py
+	$(PYTHON_INTERPRETER) knowledge_graph_foundry/dataset.py
 
 #################################################################################
 # Self Documenting Commands                                                     #

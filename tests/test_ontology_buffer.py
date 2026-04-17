@@ -6,10 +6,10 @@ from pathlib import Path
 import pytest
 import yaml
 
-from kgf.ontology.buffer import OntologyBuffer
-from kgf.types.config import OntologyBufferConfig
-from kgf.types.extraction import Entity, Relationship
-from kgf.types.ontology import TypeSignal
+from knowledge_graph_foundry.ontology.buffer import OntologyBuffer
+from knowledge_graph_foundry.types.config import OntologyBufferConfig
+from knowledge_graph_foundry.types.extraction import Entity, Relationship
+from knowledge_graph_foundry.types.ontology import TypeSignal
 
 
 @pytest.fixture

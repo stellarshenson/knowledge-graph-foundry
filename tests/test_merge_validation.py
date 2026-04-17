@@ -2,7 +2,7 @@
 
 import pytest
 
-from kgf.curing.merge_validation import (
+from knowledge_graph_foundry.curing.merge_validation import (
     ClusteringValidationResult,
     MergeValidation,
     validate_type_clustering,

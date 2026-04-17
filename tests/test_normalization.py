@@ -1,7 +1,7 @@
 """Tests for entity name normalization."""
 from __future__ import annotations
 
-from kgf.extraction.normalization import normalize_entity_name
+from knowledge_graph_foundry.extraction.normalization import normalize_entity_name
 
 
 class TestNormalization:

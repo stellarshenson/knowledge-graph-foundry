@@ -3,12 +3,12 @@ from __future__ import annotations
 
 import pytest
 
-from kgf.extraction.resolution import (
+from knowledge_graph_foundry.extraction.resolution import (
     resolve_entities,
     _cosine_similarity,
     _description_similarity,
 )
-from kgf.types.extraction import Entity
+from knowledge_graph_foundry.types.extraction import Entity
 
 
 class TestResolution:

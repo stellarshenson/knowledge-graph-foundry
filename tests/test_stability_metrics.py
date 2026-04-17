@@ -3,7 +3,7 @@ import math
 
 import pytest
 
-from kgf.curing.metrics import StabilityMetrics
+from knowledge_graph_foundry.curing.metrics import StabilityMetrics
 
 
 @pytest.fixture

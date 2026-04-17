@@ -4,8 +4,8 @@ import math
 
 import pytest
 
-from kgf.curing.type_metrics import TypeMetricsCollector
-from kgf.types.extraction import (
+from knowledge_graph_foundry.curing.type_metrics import TypeMetricsCollector
+from knowledge_graph_foundry.types.extraction import (
     Entity,
     ExtractionMetadata,
     ExtractionResult,

@@ -5,9 +5,9 @@ import hashlib
 
 import pytest
 
-from kgf.extraction.chunking import chunk_text
-from kgf.types.config import ExtractConfig
-from kgf.types.document import TextSegment
+from knowledge_graph_foundry.extraction.chunking import chunk_text
+from knowledge_graph_foundry.types.config import ExtractConfig
+from knowledge_graph_foundry.types.document import TextSegment
 
 
 @pytest.fixture

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from kgf.types.extraction import Entity
+from knowledge_graph_foundry.types.extraction import Entity
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 CASSETTES_DIR = FIXTURES_DIR / "llm_cassettes"

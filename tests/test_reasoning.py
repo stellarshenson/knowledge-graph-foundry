@@ -2,7 +2,7 @@
 
 from unittest.mock import MagicMock
 
-from kgf.loading.reasoning import run_subclass_propagation, _SUBCLASS_PROPAGATION_QUERY
+from knowledge_graph_foundry.loading.reasoning import run_subclass_propagation, _SUBCLASS_PROPAGATION_QUERY
 
 
 class TestSubclassPropagation:

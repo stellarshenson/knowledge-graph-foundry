@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "knowledge-graph-foundry"
-version = "0.4.33"
+version = "0.4.34"
 description = "Knowledge Graph Foundry - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -74,24 +74,24 @@ dev = [
 ]
 
 [project.scripts]
-kgf = "kgf.cli:main"
+kgf = "knowledge_graph_foundry.cli:main"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["kgf*"]
+include = ["knowledge_graph_foundry*"]
 exclude = ["tests*"]
 
 [tool.ruff]
 line-length = 99
-src = ["kgf"]
-include = ["pyproject.toml", "kgf/**/*.py"]
+src = ["knowledge_graph_foundry"]
+include = ["pyproject.toml", "knowledge_graph_foundry/**/*.py"]
 
 [tool.ruff.lint]
 extend-select = ["I"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["kgf"]
+known-first-party = ["knowledge_graph_foundry"]
 force-sort-within-sections = true

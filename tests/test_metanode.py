@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from kgf.fsm.metanode import (
+from knowledge_graph_foundry.fsm.metanode import (
     _compress,
     _decompress,
     check_fluid_cache_exists,
@@ -259,7 +259,7 @@ class TestCompressDecompress:
 class TestWriteFluidResult:
     def test_writes_result_node(self, mock_driver):
         driver, session = mock_driver
-        from kgf.types.extraction import ExtractionResult
+        from knowledge_graph_foundry.types.extraction import ExtractionResult
 
         result = ExtractionResult(
             entities=[],
@@ -276,7 +276,7 @@ class TestWriteFluidResult:
 
     def test_excludes_embeddings(self, mock_driver):
         driver, session = mock_driver
-        from kgf.types.extraction import Entity, ExtractionResult
+        from knowledge_graph_foundry.types.extraction import Entity, ExtractionResult
 
         result = ExtractionResult(
             entities=[
@@ -299,7 +299,7 @@ class TestWriteFluidResult:
 class TestReadFluidResults:
     def test_reads_and_deserializes(self, mock_driver):
         driver, session = mock_driver
-        from kgf.types.extraction import ExtractionResult
+        from knowledge_graph_foundry.types.extraction import ExtractionResult
 
         # Prepare a cached result payload
         result = ExtractionResult(entities=[], relationships=[])
@@ -394,8 +394,8 @@ class TestSerializationRoundTrips:
     """Round-trip tests for detector, metrics, and deferred buffer serialization."""
 
     def test_curing_detector_round_trip(self):
-        from kgf.curing.detector import CuringDetector
-        from kgf.types.config import CuringConfig
+        from knowledge_graph_foundry.curing.detector import CuringDetector
+        from knowledge_graph_foundry.types.config import CuringConfig
 
         config = CuringConfig()
         det = CuringDetector(config)
@@ -412,7 +412,7 @@ class TestSerializationRoundTrips:
         assert restored._metrics_history == det._metrics_history
 
     def test_stability_metrics_round_trip(self):
-        from kgf.curing.metrics import StabilityMetrics
+        from knowledge_graph_foundry.curing.metrics import StabilityMetrics
 
         m = StabilityMetrics(variance_window=3)
         m.record({"Product": 10, "Component": 5})
@@ -427,8 +427,8 @@ class TestSerializationRoundTrips:
         assert restored._prev_probs == m._prev_probs
 
     def test_deferred_dedup_round_trip(self):
-        from kgf.extraction.deferred_dedup import DeferredDedupBuffer
-        from kgf.types.extraction import Entity
+        from knowledge_graph_foundry.extraction.deferred_dedup import DeferredDedupBuffer
+        from knowledge_graph_foundry.types.extraction import Entity
 
         buf = DeferredDedupBuffer()
         e1 = Entity(id="e1", name="Widget", type="Product", source_chunks=["c1"])
@@ -447,7 +447,7 @@ class TestSerializationRoundTrips:
         assert pair.shared_chunks == 2  # c1 shared both times
 
     def test_extraction_result_serialize_without_embeddings(self):
-        from kgf.types.extraction import Entity, ExtractionResult, Relationship
+        from knowledge_graph_foundry.types.extraction import Entity, ExtractionResult, Relationship
 
         result = ExtractionResult(
             entities=[

@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from kgf.settings import load_config
-from kgf.settings.loader import _deep_merge, _interpolate_env
+from knowledge_graph_foundry.settings import load_config
+from knowledge_graph_foundry.settings.loader import _deep_merge, _interpolate_env
 
 
 class TestLoadConfigDefaults:

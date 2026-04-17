@@ -1,9 +1,9 @@
 """Tests for extraction prompt construction."""
 from __future__ import annotations
 
-from kgf.extraction.prompts import build_extraction_prompt
-from kgf.types.document import Chunk, ChunkMetadata
-from kgf.types.ontology import OntologyState, RelationshipDef, TypeDef
+from knowledge_graph_foundry.extraction.prompts import build_extraction_prompt
+from knowledge_graph_foundry.types.document import Chunk, ChunkMetadata
+from knowledge_graph_foundry.types.ontology import OntologyState, RelationshipDef, TypeDef
 
 
 def _make_chunk(text: str = "Test text.") -> Chunk:

@@ -2,7 +2,7 @@
 
 import pytest
 
-from kgf.curing.calibration import PosteriorCalibrator
+from knowledge_graph_foundry.curing.calibration import PosteriorCalibrator
 
 
 class TestCalibrate:

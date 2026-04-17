@@ -3,7 +3,7 @@
 import threading
 import time
 
-from kgf.extraction.rate_limiter import TokenBucketRateLimiter
+from knowledge_graph_foundry.extraction.rate_limiter import TokenBucketRateLimiter
 
 
 def test_zero_rate_is_noop():

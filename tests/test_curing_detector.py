@@ -1,8 +1,8 @@
 """Tests for curing detection logic."""
 import pytest
 
-from kgf.curing.detector import CuringDetector
-from kgf.types.config import CuringConfig
+from knowledge_graph_foundry.curing.detector import CuringDetector
+from knowledge_graph_foundry.types.config import CuringConfig
 
 
 @pytest.fixture

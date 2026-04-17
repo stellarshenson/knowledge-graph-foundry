@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
-from kgf.cli import app
+from knowledge_graph_foundry.cli import app
 
 runner = CliRunner()
 
@@ -41,7 +41,7 @@ class TestFileCollection:
 
     def test_unstructured_filters_correctly(self, mixed_dir):
         """Unstructured mode should only pick up PDF/TXT/MD/DOCX."""
-        from kgf.config import UNSTRUCTURED_EXTENSIONS
+        from knowledge_graph_foundry.config import UNSTRUCTURED_EXTENSIONS
 
         found = sorted(
             p for p in mixed_dir.iterdir() if p.suffix.lower() in UNSTRUCTURED_EXTENSIONS
@@ -51,7 +51,7 @@ class TestFileCollection:
 
     def test_structured_filters_correctly(self, mixed_dir):
         """Structured mode should only pick up JSON/JSONL/CSV/XLSX."""
-        from kgf.config import STRUCTURED_EXTENSIONS
+        from knowledge_graph_foundry.config import STRUCTURED_EXTENSIONS
 
         found = sorted(
             p for p in mixed_dir.iterdir() if p.suffix.lower() in STRUCTURED_EXTENSIONS
@@ -61,7 +61,7 @@ class TestFileCollection:
 
     def test_unsupported_extensions_excluded(self, mixed_dir):
         """Files like .py should never be collected in either mode."""
-        from kgf.config import SUPPORTED_EXTENSIONS
+        from knowledge_graph_foundry.config import SUPPORTED_EXTENSIONS
 
         found = [p for p in mixed_dir.iterdir() if p.suffix.lower() in SUPPORTED_EXTENSIONS]
         assert all(p.suffix != ".py" for p in found)
@@ -81,7 +81,7 @@ class TestMultiInput:
 
         # Simulate the merging logic from cli.py
         all_sources = [dir_a, dir_b]
-        from kgf.config import UNSTRUCTURED_EXTENSIONS
+        from knowledge_graph_foundry.config import UNSTRUCTURED_EXTENSIONS
 
         files: list[Path] = []
         for src in all_sources:
