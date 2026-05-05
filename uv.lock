@@ -1059,7 +1059,7 @@ wheels = [
 
 [[package]]
 name = "knowledge-graph-foundry"
-version = "0.4.33"
+version = "0.4.34"
 source = { editable = "." }
 dependencies = [
     { name = "blinker" },

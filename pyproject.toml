@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "knowledge-graph-foundry"
-version = "0.4.34"
+version = "0.4.35"
 description = "Knowledge Graph Foundry - data science-informed knowledge graph construction with adaptive ontology evolution, Bayesian entity resolution, and statistical convergence detection"
 authors = [
     { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
@@ -71,6 +71,9 @@ dev = [
     "pytest-mock",
     "ruff",
     "awscli",
+]
+local-embeddings = [
+    "sentence-transformers>=2.5",
 ]
 
 [project.scripts]

@@ -37,6 +37,9 @@ class ExtractConfig(BaseModel):
     embedding_threshold: float = 0.80
     use_embeddings: bool = False
     embedding_model: Optional[str] = None
+    embedding_provider: Optional[str] = None
+    embedding_fallback: Optional[str] = "sentence-transformers"
+    embedding_fallback_model: Optional[str] = None
     bayesian_resolution: bool = False
     llm_escalation: bool = False
     schema_signal_extraction: bool = False

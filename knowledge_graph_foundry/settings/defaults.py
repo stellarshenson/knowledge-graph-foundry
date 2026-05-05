@@ -103,10 +103,20 @@ DEFAULTS: dict = {
         # Bedrock example: "amazon.titan-embed-text-v2:0" (1024-dim)
         # OpenAI example: "text-embedding-3-small" (1536-dim)
         "embedding_model": None,
-        # Embedding provider backend. Currently only "bedrock" is implemented.
-        # Future: "openai", "anthropic", "sentence-transformers" (local).
-        # No default - inherits from llm.provider if not set
+        # Embedding provider backend: "bedrock" | "sentence-transformers" | None.
+        # None = inferred from embedding_model (amazon.* -> bedrock, all-*/MiniLM -> local).
+        # "sentence-transformers" runs fully on CPU via the all-MiniLM-L6-v2 model (22MB,
+        # 384-dim), downloaded once on first use. Ideal for offline/air-gapped deployments
+        # or as a fallback when cloud provider auth is unavailable
         "embedding_provider": None,
+        # Fallback provider when the primary embedding provider fails at the first API call.
+        # Default "sentence-transformers" enables always-on embeddings even without cloud
+        # credentials. Set to None to disable fallback (hard-fail on primary failure).
+        # Requires optional dependency: pip install knowledge-graph-foundry[local-embeddings]
+        "embedding_fallback": "sentence-transformers",
+        # Model identifier for the fallback provider. None = provider default
+        # (all-MiniLM-L6-v2 for sentence-transformers)
+        "embedding_fallback_model": None,
         # ── Bayesian type resolution (cured phase) ──
         # When true, enables Bayesian type resolver using exemplar index, relationship
         # context, co-occurrence, and description similarity. Activates after curing.
