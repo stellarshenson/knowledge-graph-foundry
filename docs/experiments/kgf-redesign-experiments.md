@@ -371,8 +371,8 @@ The regime doctrine operationalized: a use case narrows every stage, and failure
 - **Prediction** - the SleepStyle dimensions gap is auto-detected with zero probes; repair-from-source or an honest "corpus does not state it" negative record results; recorded gaps refuse matching unanswerable questions structurally
 - **Acceptance bar** - P09-class gap surfaces in the audit; >= 70% of unanswerable probes refused via the gap ledger with < 10% false refusal (the H17 bar, now with the right signal)
 - **Experiment** - <br>source: [`[paper digest] Predicting Completeness in Knowledge Bases.md`](../../references/papers/), [`[paper digest] Completeness Recall and Negation in Open-World KBs.md`](../../references/papers/), [`[paper digest] UnCommonSense.md`](../../references/papers/), [`[paper digest] GenIC.md`](../../references/papers/), [`[paper digest] EvoRAG.md`](../../references/papers/)<br>method: per-type attribute prevalence over the rebuilt graph (threshold ~0.7 sibling prevalence), gap queue -> repair, gap ledger -> abstention check on the 4 unanswerable probes
-- **Result** - wave 1b COMPLETE (481/481 documents, FSM STABLE throughout, zero recures, zero drift verdicts; 2078 entities, 4110 relations). The 9-type inventory cured at document 7 achieved forward coverage 0.9996 over the 474 post-cure documents (2235 of 2236 post-cure type observations covered; the single novel type 'Setting' carried 1 observation = 0.04% of mass, vastly below the 5% material-block threshold). No material post-cure block arrived, so the recure path was never exercised - it cannot be validated by a wave that never needed it
-- **Verdict** - INCONCLUSIVE per the pre-registered bar, second clause exactly: no material block + forward coverage >= 95% -> extend to wave 2. Side-finding worth its own line: the curing gate that DEF-3 flagged as suspiciously early (cured at doc 7 of 481) was sufficient, not premature - 99.96% forward coverage over 474 unseen documents is the empirical answer to the scale-aware-floors concern on this corpus. The upgraded fallback criterion (binomial-LLR CUSUM per H50/H59) goes in before wave 2 so a future material block is detected by the better instrument
+- **Result** - pending
+- **Verdict** - pending
 
 ## R05 - longevity campaign on the benchmark document corpus (pre-registered 2026-07-06)
 
@@ -408,8 +408,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - in-wave accuracy >= proposition-graph accuracy on the same wave-1 probes; manual audit finds zero fidelity-class residuals; if accuracy drops, record which query types need synthesis a pointer cannot provide (the honest failure mode)
 - **Prior art** - Evidence Units (arXiv 2604.00500) groups spans with provenance in Neo4j but for document organization, not QA-graph construction; the Extractive-Abstractive Spectrum (arXiv 2411.17375) proves abstractive generation trades verifiability for fluency but does not build a hollow KG; no system proves a proposition-free graph matches a proposition graph on QA
 - **Experiment** - <br>method: hollow-ingest variant over wave-1 documents into a scratch graph; run the 5 in-wave probes through a span-assembly reader; compare accuracy and fidelity-residual count against the R05 proposition graph
-- **Result** - measured in [`graph_topology_r10.ipynb`](../../notebooks/graph_topology_r10.ipynb) over the 127 SAME_AS edges, 26 labeled (6 false / 20 same-name true). AFRC (4 - deg_u - deg_v + 3x triangles) separates at AUC 0.617 vs the 0.7 bar
-- **Verdict** - REFUTED - curvature carries only weak identity signal here, and the reason is structural: at median degree 1 the graph has almost no triangles ANYWHERE, so the triangle bonus that gives AFRC its discriminative power (per Fesser-Weber) has nothing to work with. The sparsity diagnosis applies to the whole structural-detector family (see H88/H97) - on a star-forest graph, text and embedding signals dominate structural ones, consistent with H95's null-leaning registration and OWL2Vec*'s lexical-dominance ablation
+- **Result** - pending
+- **Verdict** - pending
 
 ### R06-H28 Types are decoration - the scramble test
 
@@ -421,8 +421,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - measured accuracy delta reported both ways; a null (< 5%) is registered as evidence typing is retrieval-inert and reframes curing as an audit-only investment; a non-null (>= 5%) is registered as the first causal evidence in the program that curing pays at retrieval time - either is a publishable result
 - **Prior art** - argues against the null: OMD-GraphRAG (arXiv 2603.25152) and SG-KBQA (arXiv 2502.12737) both show schema guidance lifts QA, but via removal/guidance ablations that confound schema with structure; the isolated scramble test is unrun in the cited literature
 - **Experiment** - <br>method: on the R05 wave graph, permute all `:Type` labels by a fixed random derangement (vary the derangement by seed offset per trial), re-run all in-wave probes, compare to the unscrambled baseline; repeat with types fully removed
-- **Result** - same notebook: effective resistance from the giant-component Laplacian pseudoinverse. AUC 0.458 - WORSE than chance - and the R >= 0.95 threshold recovers 17% of false merges while flagging 1 presumed-true pair
-- **Verdict** - REFUTED decisively, and the mechanism is instructive: most SAME_AS endpoints are degree-1 leaves whose ONLY edge is the SAME_AS itself, so R = 1 for TRUE aliases too - a true alias of a leaf is also a sole bridge. The redundancy premise (shared neighbors reconnect true pairs) requires a density this graph does not have. Black et al.'s instrument is sound; the corpus shape defeats it. Together with H87 this closes the curvature/resistance route to false-closure detection on sparse product graphs - the embedding/adjudication route (H97 signal at AUC 0.756, H101, H121) is what remains
+- **Result** - pending
+- **Verdict** - pending
 
 ### R06-H29 Duplicates are features - resolve at read time
 
@@ -434,8 +434,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - the cross-type duplicate probe class answers >= the merged graph; read-time resolution stays within the retrieval latency budget (measure hop count and wall-clock); no false cross-entity bleed introduced by alias-walk
 - **Prior art** - partial: the (0.85)^n multi-hop-poisoning analysis and DEG-RAG (arXiv 2510.14271, which argues FOR ingest denoising) frame the cost of bad merges; query-time entity resolution (Bhattacharya-Getoor, JAIR 2007) is the theoretical ancestor but predates KG-QA and never compared against ingest-merge on this task
 - **Experiment** - <br>method: ingest a wave with resolution disabled but alias-edge extraction on; read-time resolver over alias neighbourhoods; compare cross-type duplicate probe accuracy and latency against the merged R05 graph
-- **Result** - top-5 hubs audited (degrees 214/150/122/76/74). The registered conviction pattern (anomalous incident curvature + component strand) FIRED on the top hub (z = -3.09, 100% stranded) - and forensic inspection then exposed the instrument, not the hub: incident AFRC is mechanically negative for any high-degree node (the -deg term), so the z-score is degree-confounded; strandedness is natural for a star center. The hub itself is clean: single source document, zero foreign-brand neighbors among 200 - a manual's subject with its extracted relation star
-- **Verdict** - CONFIRMED (hubs legitimate) - with the instrument correction recorded as the real finding: curvature z-scores CANNOT serve as over-merge conviction on hubs; the working test is provenance purity (source-document count + foreign-family neighbor scan), which is cheap, deterministic, and now the registered audit for future hubs
+- **Result** - pending
+- **Verdict** - pending
 
 ### R06-H30 The question-native graph - extract what a document can answer
 
@@ -447,8 +447,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - in-wave accuracy >= the proposition graph on wave-1 probes; >= 70% of out-of-wave probes refused through question-coverage gaps with < 10% false refusal; question-match retrieval alone (no entity hop) reaches the answering span
 - **Prior art** - novel: the query-expansion survey (arXiv 2509.07794) and QA-Expand (arXiv 2502.08557) generate questions to expand queries at retrieval time; none make questions first-class graph citizens or audit cohort question-coverage - the closest published ideas stop at auxiliary expansion
 - **Experiment** - <br>method: question-native ingest over wave-1 documents into a scratch graph; question-to-question retrieval reader; measure in-wave accuracy, out-of-wave refusal, and whether coverage-gap abstention beats the H17 vector-score null
-- **Result** - 18 SAME_AS clusters of size >= 3; max member-to-centroid embedding distance ranks bad clusters at AUC 0.756, but the registered operating point (top-2k flagged) recovers only 33% of bad clusters at precision 0.17 - the bar (70% recall, precision > 0.5) fails
-- **Verdict** - REFUTED at the registered bar despite real signal (AUC 0.756 > chance): with only 18 clusters and 3 labeled-bad, the ranking cannot be thresholded usefully - small-n saturation again. The variance signal survives as a RANKING input for H101's adjudication queue (send the highest-variance clusters to the LLM first), not as a standalone filter; CCA's prediction (text geometry cannot see what the resolver missed) held at the decision level
+- **Result** - pending
+- **Verdict** - pending
 
 ### R06-H31 Small model plus audit loop beats big model single-pass
 
@@ -486,8 +486,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - one of: (i) recure fires on a genuine content shift and the post-recure ontology holds >= 95% forward observation mass coverage; (ii) no material block arrives (cure-time types keep >= 95% forward coverage) - inconclusive, extend to wave 2; refuted if a material block (>= 5% of subsequent observation mass in new types) arrives with no recure
 - **Experiment** - <br>data: wave 1b live run (cured at doc 7, 481 documents total), event log drift records + end-of-wave forward-coverage replay<br>method: monitor drift.decision events; at wave end, replay the realized stream to compute post-cure new-type mass and the forward coverage of the doc-7 cured set; if refuted, re-run the H32 replay harness with a windowed-mean remap criterion before touching production code
 - **Note (2026-07-06, CFAR assessment)** - evaluated radar-style CFAR (adaptive threshold from a local reference window at constant false-alarm rate) as a criterion candidate: rejected on three structural mismatches - CFAR detects point spikes (our 46 wave-1b warnings are all single-doc spikes and zero were real; the target is a SUSTAINED level change), local adaptation self-masks sustained drift (the reference window is contaminated by the drift it should detect - the clutter-edge failure), and per-doc remap rates violate its noise model (heteroscedastic: a 2-entity doc yields rate 1.0 from one remap). What survives is the objective - constant false-alarm rate with a data-derived threshold, the H32 doctrine applied to drift. The fallback criterion candidate is upgraded from windowed-mean (still a fixed threshold, laggy) to CUSUM/Page-Hinkley calibrated by target average run length (dimensionless operating point, accumulates evidence so adaptation cannot mask it), with per-doc remap evidence weighted by entity count (binomial) to kill small-denominator spikes
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - wave 1b COMPLETE (481/481 documents, FSM STABLE throughout, zero recures, zero drift verdicts; 2078 entities, 4110 relations). The 9-type inventory cured at document 7 achieved forward coverage 0.9996 over the 474 post-cure documents (2235 of 2236 post-cure type observations covered; the single novel type 'Setting' carried 1 observation = 0.04% of mass, vastly below the 5% material-block threshold). No material post-cure block arrived, so the recure path was never exercised - it cannot be validated by a wave that never needed it
+- **Verdict** - INCONCLUSIVE per the pre-registered bar, second clause exactly: no material block + forward coverage >= 95% -> extend to wave 2. Side-finding worth its own line: the curing gate that DEF-3 flagged as suspiciously early (cured at doc 7 of 481) was sufficient, not premature - 99.96% forward coverage over 474 unseen documents is the empirical answer to the scale-aware-floors concern on this corpus. The upgraded fallback criterion (binomial-LLR CUSUM per H50/H59) goes in before wave 2 so a future material block is detected by the better instrument
 
 ## R07 - contrarian slate 2: the entry point, the graph's right to exist, and the reader (pre-registered 2026-07-06)
 
@@ -1126,8 +1126,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - AUC >= 0.7 separating labeled false from true SAME_AS edges by edge AFRC
 - **Acceptance bar** - AUC >= 0.7; refuted at AUC <= 0.55 (curvature carries no identity signal)
 - **Experiment** - networkx AFRC over all SAME_AS edges + labeled defect set; milliseconds at 3.9k edges; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - measured in [`graph_topology_r10.ipynb`](../../notebooks/graph_topology_r10.ipynb) over the 127 SAME_AS edges, 26 labeled (6 false / 20 same-name true). AFRC (4 - deg_u - deg_v + 3x triangles) separates at AUC 0.617 vs the 0.7 bar
+- **Verdict** - REFUTED - curvature carries only weak identity signal here, and the reason is structural: at median degree 1 the graph has almost no triangles ANYWHERE, so the triangle bonus that gives AFRC its discriminative power (per Fesser-Weber) has nothing to work with. The sparsity diagnosis applies to the whole structural-detector family (see H88/H97) - on a star-forest graph, text and embedding signals dominate structural ones, consistent with H95's null-leaning registration and OWL2Vec*'s lexical-dominance ablation
 
 ### R10-H88 Effective resistance audits SAME_AS - redundancy means true
 
@@ -1136,8 +1136,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - the residual-resistance distributions separate cleanly; the false-closure members are extreme outliers
 - **Acceptance bar** - >=70% recall at zero true-alias loss; refuted if distributions are indistinguishable
 - **Experiment** - scipy pseudoinverse at 2.8k nodes; runs now; on confirmation joins H58's chain guard as a second deterministic prong
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - same notebook: effective resistance from the giant-component Laplacian pseudoinverse. AUC 0.458 - WORSE than chance - and the R >= 0.95 threshold recovers 17% of false merges while flagging 1 presumed-true pair
+- **Verdict** - REFUTED decisively, and the mechanism is instructive: most SAME_AS endpoints are degree-1 leaves whose ONLY edge is the SAME_AS itself, so R = 1 for TRUE aliases too - a true alias of a leaf is also a sole bridge. The redundancy premise (shared neighbors reconnect true pairs) requires a density this graph does not have. Black et al.'s instrument is sound; the corpus shape defeats it. Together with H87 this closes the curvature/resistance route to false-closure detection on sparse product graphs - the embedding/adjudication route (H97 signal at AUC 0.756, H101, H121) is what remains
 
 ### R10-H89 The curvature bound finds cross-type duplicates - no embeddings needed
 
@@ -1166,8 +1166,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - legitimate verdict for the top-5 hubs
 - **Acceptance bar** - either outcome is recorded as a verdict; the hypothesis fails only if the instruments cannot distinguish (curvature normal AND component behavior anomalous, or vice versa, with no adjudication)
 - **Experiment** - per-hub incident curvature + removal component census; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - top-5 hubs audited (degrees 214/150/122/76/74). The registered conviction pattern (anomalous incident curvature + component strand) FIRED on the top hub (z = -3.09, 100% stranded) - and forensic inspection then exposed the instrument, not the hub: incident AFRC is mechanically negative for any high-degree node (the -deg term), so the z-score is degree-confounded; strandedness is natural for a star center. The hub itself is clean: single source document, zero foreign-brand neighbors among 200 - a manual's subject with its extracted relation star
+- **Verdict** - CONFIRMED (hubs legitimate) - with the instrument correction recorded as the real finding: curvature z-scores CANNOT serve as over-merge conviction on hubs; the working test is provenance purity (source-document count + foreign-family neighbor scan), which is cheap, deterministic, and now the registered audit for future hubs
 
 ### R10-H92 ULTRA scores our edges - zero-shot structural plausibility
 
@@ -1226,8 +1226,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - variance flags the labeled defects; registered risk: the resolver merged them BECAUSE text similarity was high - the distinction may be invisible to Titan (the refuter CCA's similar-noise finding predicts)
 - **Acceptance bar** - >=70% recall at precision > 0.5; refuted if false members are uniformly high-similarity (signal absent from text geometry - structural detectors H87/H88 become the only route)
 - **Experiment** - numpy over stored embeddings; minutes; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - 18 SAME_AS clusters of size >= 3; max member-to-centroid embedding distance ranks bad clusters at AUC 0.756, but the registered operating point (top-2k flagged) recovers only 33% of bad clusters at precision 0.17 - the bar (70% recall, precision > 0.5) fails
+- **Verdict** - REFUTED at the registered bar despite real signal (AUC 0.756 > chance): with only 18 clusters and 3 labeled-bad, the ranking cannot be thresholded usefully - small-n saturation again. The variance signal survives as a RANKING input for H101's adjudication queue (send the highest-variance clusters to the LLM first), not as a standalone filter; CCA's prediction (text geometry cannot see what the resolver missed) held at the decision level
 
 ### R10-H98 The granularity gap - is the cured inventory task-optimal?
 
