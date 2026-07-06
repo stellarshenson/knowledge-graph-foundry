@@ -206,3 +206,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+# archived v1 data
+@archive/kgf-v1/data/
+@archive/kgf-v1/logs/
+@archive/kgf-v1/models/
