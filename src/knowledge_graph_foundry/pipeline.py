@@ -547,8 +547,23 @@ class Foundry:
             summaries = summarize_communities(
                 self.driver, self.engine, self.settings.graphrag.community_min_size
             )
+        propositions = 0
+        if self.settings.graphrag.propositions_enabled:
+            from knowledge_graph_foundry.graph.propositions import generate_propositions
+
+            propositions = generate_propositions(
+                self.driver,
+                self._embed_texts,
+                self.settings.graphrag.proposition_index_name,
+                self.settings.graphrag.vector_dimensions,
+            )
         card = scorecard(self.driver)
-        result = {"communities": communities, "summaries": summaries, "scorecard": card}
+        result = {
+            "communities": communities,
+            "summaries": summaries,
+            "propositions": propositions,
+            "scorecard": card,
+        }
         self._persist_scorecard(result)
         return result
 
@@ -636,11 +651,34 @@ class Foundry:
             self.settings.graphrag.vector_index_name,
             top_k=self.settings.graphrag.top_k,
         )
+
+        # R02-H11: proposition hits are primary evidence AND extra PPR seeds
+        fact_lines: list[str] = []
+        seed_ids = [s["id"] for s in seeds]
+        if self.settings.graphrag.propositions_enabled:
+            from knowledge_graph_foundry.graph.propositions import proposition_query
+
+            try:
+                hits = proposition_query(
+                    self.driver,
+                    embedded[0].embedding,
+                    self.settings.graphrag.proposition_index_name,
+                    top_k=self.settings.graphrag.proposition_top_k,
+                )
+            except Exception as exc:  # index absent until first optimize
+                logger.debug(f"proposition retrieval unavailable: {exc}")
+                hits = []
+            fact_lines = [h["text"] for h in hits]
+            for h in hits:
+                for eid in h["entity_ids"]:
+                    if eid not in seed_ids:
+                        seed_ids.append(eid)
+
         nodes = seeds
         if self.settings.graphrag.ppr_enabled:
             ranked = ppr_query(
                 self.driver,
-                [s["id"] for s in seeds],
+                seed_ids,
                 top_n=self.settings.graphrag.ppr_top_n,
                 damping=self.settings.graphrag.ppr_damping,
             )
@@ -654,6 +692,8 @@ class Foundry:
                         nodes.append(n)
 
         context_lines: list[str] = []
+        if fact_lines:
+            context_lines.append("## Facts\n" + "\n".join(f"- {t}" for t in fact_lines))
         supporting: list[str] = []
         with self.driver.session() as session:
             for node in nodes:

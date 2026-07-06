@@ -93,6 +93,9 @@ class GraphRAGSettings(BaseModel):
     ppr_enabled: bool = True  # R2: PPR traversal seeded from vector top-k
     ppr_top_n: int = 15  # R2: PPR nodes taken into the answer context
     ppr_damping: float = 0.85  # R2: PageRank damping
+    propositions_enabled: bool = True  # R02-H11: fact sentences as retrieval targets
+    proposition_index_name: str = "kgf_proposition_embeddings"
+    proposition_top_k: int = 8  # propositions retrieved per query
 
 
 class LoadSettings(BaseModel):
