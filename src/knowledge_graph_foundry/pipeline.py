@@ -47,6 +47,20 @@ class Foundry:
         self.settings = settings
         self._driver = None
         self._engine: Optional[Engine] = None
+        self._extraction_engine: Optional[Engine] = None
+
+    @classmethod
+    def from_config(cls, config_path: Optional[Path] = None) -> "Foundry":
+        """Build a Foundry from a config.yml (env overrides applied)."""
+        from knowledge_graph_foundry.settings import load_settings
+
+        return cls(load_settings(config_path))
+
+    def __enter__(self) -> "Foundry":
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        self.close()
 
     # -- lazy resources -------------------------------------------------
 
@@ -58,9 +72,20 @@ class Foundry:
 
     @property
     def engine(self) -> Engine:
+        """The orchestrator/reasoning engine (clustering, judging, query)."""
         if self._engine is None:
             self._engine = create_engine(self.settings.llm)
         return self._engine
+
+    @property
+    def extraction_engine(self) -> Engine:
+        """The extraction engine; falls back to the orchestrator when
+        extraction_llm is not configured (R9 role-based routing)."""
+        if self.settings.extraction_llm is None:
+            return self.engine
+        if self._extraction_engine is None:
+            self._extraction_engine = create_engine(self.settings.extraction_llm)
+        return self._extraction_engine
 
     def close(self) -> None:
         if self._driver is not None:
@@ -131,7 +156,7 @@ class Foundry:
             "drift": state.get("drift_verdict"),
         }
 
-    def ingest(self, path: Path) -> dict:
+    def ingest(self, path: "str | Path") -> dict:
         """Ingest a file, directory or zip through the full lifecycle.
 
         Exactly one ingester may run at a time: the run claims a
@@ -145,6 +170,7 @@ class Foundry:
             release_lease,
         )
 
+        path = Path(path)
         run_id = new_run_id()
         if not acquire_lease(self.driver, run_id, self.settings.lease_ttl_seconds):
             holder = lease_holder(self.driver) or {}
@@ -304,7 +330,7 @@ class Foundry:
                 chunks,
                 purpose,
                 ontology,
-                self.engine,
+                self.extraction_engine,
                 concurrency=self.settings.extraction.concurrency,
                 extraction_cfg=self.settings.extraction,
             )
@@ -612,6 +638,34 @@ class Foundry:
                     "Relations: " + "; ".join(f"{r['rel']} -> {r['name']}" for r in rows)
                 )
         return context_lines, supporting
+
+    def current_relationships(self, entity_id: str) -> list[dict]:
+        """Currently-valid outgoing edges of an entity (R1 time-aware read)."""
+        from knowledge_graph_foundry.graph.temporal import current_relationships
+
+        return current_relationships(self.driver, entity_id)
+
+    def relationship_history(self, entity_id: str, rel_type: str) -> list[dict]:
+        """Full ordered history of one relationship type (R1 evolution record)."""
+        from knowledge_graph_foundry.graph.temporal import relationship_history
+
+        return relationship_history(self.driver, entity_id, rel_type)
+
+    def search(self, embedding_or_text: "str | list[float]", top_k: int = 8) -> list[dict]:
+        """Vector search over entities; accepts a text query or a raw embedding."""
+        from knowledge_graph_foundry.extraction import generate_embeddings
+        from knowledge_graph_foundry.graph.graphrag import vector_query
+
+        if isinstance(embedding_or_text, str):
+            probe = Entity.create(
+                embedding_or_text[:80], types=["Query"], description=embedding_or_text
+            )
+            embedding = generate_embeddings([probe], self.settings.embeddings)[0].embedding
+        else:
+            embedding = embedding_or_text
+        return vector_query(
+            self.driver, embedding, self.settings.graphrag.vector_index_name, top_k=top_k
+        )
 
     def wipe(self) -> None:
         """Delete all graph content and the control metanode."""

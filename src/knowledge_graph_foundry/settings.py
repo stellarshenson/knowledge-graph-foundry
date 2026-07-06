@@ -101,7 +101,13 @@ class LoadSettings(BaseModel):
 class Settings(BaseModel):
     lease_ttl_seconds: int = 180  # ingest run lease staleness window
     neo4j: Neo4jSettings = Neo4jSettings()
+    # llm is the orchestrator/reasoning model: type clustering, contradiction and
+    # defer judging, community summaries, query answering, seed normalization.
     llm: LLMSettings = LLMSettings()
+    # extraction_llm is the high-volume per-chunk entity/relation extractor; when
+    # None it falls back to llm. Splitting them lets a cheaper model do the bulk
+    # extraction while a stronger model orchestrates (R9).
+    extraction_llm: Optional[LLMSettings] = None
     embeddings: EmbeddingSettings = EmbeddingSettings()
     extraction: ExtractionSettings = ExtractionSettings()
     resolution: ResolutionSettings = ResolutionSettings()
