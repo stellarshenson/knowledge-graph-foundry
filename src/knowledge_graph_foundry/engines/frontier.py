@@ -24,6 +24,8 @@ class FrontierEngine:
         if cfg.region and cfg.model.startswith("bedrock/"):
             os.environ.setdefault("AWS_REGION_NAME", cfg.region)
         litellm.suppress_debug_info = True
+        # reasoning models (e.g. Opus 4.8) reject temperature=0; drop rather than fail
+        litellm.drop_params = True
         self._client = instructor.from_litellm(litellm.completion)
 
     def complete(self, messages: list[dict[str, str]], response_model: type[T]) -> T:

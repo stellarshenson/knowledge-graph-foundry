@@ -153,10 +153,17 @@ class TestLoading:
         assert {"Entity", "Manufacturer", "Vendor"} <= set(labels)
 
     def test_ensure_indexes_idempotent(self, loaded):
+        # double call must not raise; an Entity.embedding vector index must
+        # exist afterwards (Neo4j treats an equivalent index under another
+        # name as satisfying IF NOT EXISTS, so assert capability, not name)
         ensure_indexes(loaded, vector_dimensions=DIMENSIONS, vector_index_name=VECTOR_INDEX)
         with loaded.session() as session:
-            names = [row["name"] for row in session.run("SHOW INDEXES YIELD name RETURN name")]
-        assert names.count(VECTOR_INDEX) == 1
+            rows = session.run(
+                "SHOW VECTOR INDEXES YIELD labelsOrTypes, properties "
+                "WHERE 'Entity' IN labelsOrTypes AND 'embedding' IN properties "
+                "RETURN count(*) AS n"
+            ).single()
+        assert rows["n"] >= 1
 
 
 class TestMetanode:
@@ -174,9 +181,11 @@ class TestMetanode:
             write_control(driver, state)
             read_back = read_control(driver)
             assert read_back is not None
-            updated_at = read_back.pop("updated_at")
-            assert updated_at
-            assert read_back == state
+            assert read_back.pop("updated_at")
+            # write_control merges (None clears a key), so on a live database
+            # the node may carry extra keys - assert the written keys round-trip
+            for key, value in state.items():
+                assert read_back[key] == value, key
         finally:
             if prior is not None:
                 write_control(driver, prior)

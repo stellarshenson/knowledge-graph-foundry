@@ -167,12 +167,16 @@ def ppr_query(
             session.run("CALL gds.graph.drop($name, false)", name=_PPR_PROJECTION).consume()
             # R02-H12: chunks join the projection (HippoRAG 2 passage nodes) so
             # passage and entity relevance diffuse jointly; _PPR_STREAM still
-            # filters returned nodes to entities
+            # filters returned nodes to entities. GDS rejects labels absent
+            # from the store, so project only the labels that exist (a graph
+            # without provenance nodes keeps working)
+            present = {row["label"] for row in session.run("CALL db.labels()")}
+            labels = [label for label in PPR_NODE_LABELS if label in present]
             session.run(
                 "CALL gds.graph.project($name, $labels, "
                 "{ALL: {type: '*', orientation: 'UNDIRECTED'}})",
                 name=_PPR_PROJECTION,
-                labels=list(PPR_NODE_LABELS),
+                labels=labels,
             ).consume()
             seed_node_ids = [
                 row["nid"]
