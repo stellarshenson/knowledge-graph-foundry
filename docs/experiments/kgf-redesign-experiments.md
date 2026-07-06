@@ -1486,3 +1486,248 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Result** - pending
 - **Verdict** - pending
 
+## R12 - the matching-model round: giving the resolver a signal with the right shape (pre-registered 2026-07-06)
+
+H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-visible misses) and exposed the core signal defect: the resolver's embedding likelihood is bi-encoder cosine, which measures TOPICAL similarity, not identity - "EverGo" vs "EverGo oxygen concentrator" scores 0.983 (same product) while adjacent siblings score ~0.95 (different products); the signal saturates exactly in the decision band. This round, fanned out from the project owner's concepts (better embedding model, another model class, cross-encoders, anisotropy removal), tests whether a matching signal with the RIGHT shape - joint attention over both records, directional entailment, field decomposition, string-theoretic features, isotropized geometry - separates what raw cosine cannot. Interim labels until H101 lands: the H107 candidate inventory (47 variance pairs + 19 resolver misses as noisy positives), same-name SAME_AS pairs (clean positives), model-number-family siblings (hard negatives), the 6 labeled false merges (clean negatives), random pairs (easy negatives). Hardware note: cross-encoders and small embedders run on the idle GPUs (0/2) NOW - this round does not wait for the wave.
+
+| id | concept | claim | runnable now |
+|----|---------|-------|--------------|
+| H121 | cross-encoder | a pretrained pairwise cross-encoder (bge-reranker class) separates duplicates from siblings at AUC >= cosine + 0.10 - joint attention sees what two independent vectors cannot | yes (GPU 0/2) |
+| H122 | NLI entailment | identity = MUTUAL entailment: bidirectional NLI detects the containment asymmetry ("EverGo" entailed by "EverGo oxygen concentrator") and flags siblings via spec contradiction | yes (GPU 0/2) |
+| H123 | embedder bake-off | the best IDENTITY embedder is not the retrieval embedder: a dedicated local model (bge/e5/gte class) beats Titan on duplicate-ranking AUC - split the two jobs | yes (GPU 0/2) |
+| H124 | contrastive fine-tune | a small embedder fine-tuned on SYNTHESIZED variance pairs (perturbations mirroring measured extraction variance) + sibling hard negatives beats every off-the-shelf model | yes (GPU 0/2) |
+| H125 | instruction embedding | an instruction-tuned embedder prompted "represent the product identity, ignore descriptors" closes >= half the gap to the cross-encoder at bi-encoder cost | yes (GPU 0/2) |
+| H126 | field decomposition | separate name/spec/description similarity channels as three LR terms beat the single full-record vector - false merges are high-desc/low-spec, variance pairs are high-name | yes |
+| H127 | LLM pairwise judge | the local 120B as cross-encoder beats dedicated cross-encoders on accuracy but loses the cost frontier - quantify the exchange rate | post-wave |
+| H128 | defer-band architecture | cross-encoder ONLY in the Bayesian defer band captures >= 90% of the full gain at < 5% of the pair-scoring cost | after H121 |
+| H129 | calibration transfer | isotonic calibration of the winning scorer lifts resolver calibration from 44% to >= 70% held-out - fix the posterior by replacing its likelihood | after H121/H101 |
+| H130 | string-theoretic revival | null-leaning: on the VARIANCE class (71% of the problem), tuned string features match neural scorers - the classic ER stack suffices where the defect is surface form | yes |
+| H131 | anisotropy removal | the 0.93-0.99 saturation is partly GEOMETRY: mean-centering + whitening/ABTT over the stored Titan vectors spreads the similarity distribution and lifts duplicate-ranking AUC >= 0.05 with zero new models | yes |
+
+### R12-H121 The cross-encoder sees the pair - joint attention for identity
+
+- **Grounding** - the measured saturation: variance pairs and sibling pairs both live at cosine 0.93-0.99 (H107 inventory); cross-encoders attend across both records jointly and are the standard reranking fix for exactly this failure shape; pretrained checkpoints run zero-shot on a free GPU
+- **Hypothesis** - a pretrained cross-encoder scoring record pairs (name + types + top spec lines) separates true duplicates from siblings at ROC-AUC >= bi-encoder cosine + 0.10 on the interim labeled set, zero training
+- **Prediction** - cosine AUC lands 0.6-0.75 (saturated); cross-encoder >= 0.85; the win concentrates on the sibling hard negatives
+- **Acceptance bar** - AUC gap >= 0.10; refuted if the cross-encoder inherits the saturation (identity is not in its pretraining signal either)
+- **Experiment** - interim pair set + two checkpoints on GPU 0/2; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H122 Identity as mutual entailment - direction matters
+
+- **Grounding** - identity has a logical structure similarity lacks: A and B denote the same thing iff each record entails the other; one-directional entailment is CONTAINMENT ("EverGo" vs "EverGo oxygen concentrator" - the measured dominant variance form); NLI cross-encoders ship pretrained (3-label, entailment index via id2label)
+- **Hypothesis** - bidirectional NLI scoring classifies the three regimes the resolver conflates: mutual entailment = duplicate, asymmetric entailment = surface variant (merge, keep the fuller name), contradiction on spec fields = sibling (never merge)
+- **Prediction** - the asymmetry signal alone recovers >= 70% of the 47 variance pairs; contradiction fires on >= 60% of siblings
+- **Acceptance bar** - both clauses; refuted if NLI treats all high-overlap product records as mutually entailing
+- **Experiment** - NLI checkpoint on GPU 0/2; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H123 The identity embedder is not the retrieval embedder - split the jobs
+
+- **Grounding** - one Titan vector serves retrieval seeding AND resolution likelihood - two tasks with different invariances (retrieval wants topical closeness; identity wants surface-form invariance plus sibling separation)
+- **Hypothesis** - at least one local embedder (bge-m3 / e5-large / gte class, conventions respected: e5 prefixes + mean pooling, bge CLS) beats Titan on duplicate-ranking AUC by >= 0.05; retrieval keeps Titan untouched - the resolver gets its own signal
+- **Prediction** - a 3-4 model bake-off finds a winner
+- **Acceptance bar** - >= 0.05 AUC over Titan; refuted if all bi-encoders saturate identically - the failure is the CLASS, not the checkpoint, and H121 becomes the only route
+- **Experiment** - embed the interim pair set per model on GPU 0/2; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H124 Train the invariance we measured - contrastive fine-tune on synthesized variance
+
+- **Grounding** - H107 measured the exact perturbation distribution extraction produces (drop/add descriptors, abbreviate, attach model codes) - synthesizable from the graph itself; hard negatives from model-number families; CCA's synthetic-mismatch warning applies
+- **Hypothesis** - a small embedder contrastively fine-tuned on synthesized pairs beats every off-the-shelf model by >= 0.05 AUC on REAL pairs (train synthetic, test real - the honest split)
+- **Prediction** - the invariance is narrow and learnable in hours on GPU 0/2
+- **Acceptance bar** - >= 0.05 over the H123 winner; refuted if synthetic-real transfer fails (route to H101 labels for real-pair training)
+- **Experiment** - sentence-transformers contrastive loop; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H125 Just ask the embedder - instruction-tuned identity representation
+
+- **Grounding** - instruction-embedding models condition the vector on a task string; an identity instruction is a zero-training lever between off-the-shelf and fine-tune
+- **Hypothesis** - an instruction-tuned embedder with "represent this product listing for identity matching, ignoring marketing descriptors" closes >= 50% of the bi-encoder-to-cross-encoder AUC gap at unchanged cost
+- **Prediction** - helps on variance pairs, not siblings (instructions cannot inject spec-contradiction detection)
+- **Acceptance bar** - >= 50% gap closure; refuted if the instruction moves AUC < 0.02
+- **Experiment** - one instruction model in the H123 harness; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H126 Three channels, not one vector - field-decomposed likelihoods
+
+- **Grounding** - false merges are high-description/low-spec agreement; variance pairs are high-name-containment; a single full-record vector averages the distinction away (H41's split-index idea, reborn where the evidence says it matters)
+- **Hypothesis** - per-field similarity features (name / spec / description) beat the single-vector likelihood by >= 0.07 AUC, and the per-field pattern is diagnostic: name-high+spec-low = sibling, name-contained+spec-high = variant
+- **Prediction** - the spec channel does the sibling separation; the name channel does the variance work
+- **Acceptance bar** - >= 0.07 + the diagnostic pattern; refuted if fields are too sparse to embed reliably
+- **Experiment** - field extraction + per-field similarity; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H127 The 120B as cross-encoder - accuracy vs the exchange rate
+
+- **Grounding** - an LLM judging "same product? yes/no/uncertain + one-line evidence" is the most expressive cross-encoder available; H94 tests the set-wise form, this is pairwise; the question is what accuracy costs
+- **Hypothesis** - the local 120B pairwise judge beats the best dedicated cross-encoder by >= 5 accuracy points at >= 100x the per-pair cost - the exchange rate that decides H128's architecture
+- **Prediction** - LLM wins accuracy; cost confines it to the defer band
+- **Acceptance bar** - both measured; frontier measurement, no refutation clause
+- **Experiment** - ~150 pairs post-wave; the same calls double as H101 adjudication
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H128 Cross-encode only the defer band - the architecture that ships
+
+- **Grounding** - cross-encoders cannot replace blocking (quadratic); production shape: bi-encoder blocking -> posterior -> cross-encoder only where the posterior defers (defer band was 5 of 77 decisions in the v28 record)
+- **Hypothesis** - defer-band-only cross-encoding captures >= 90% of the full-cross-encoder quality gain at < 5% of its pair-scoring cost
+- **Prediction** - the band holds most decision-relevant uncertainty if the posterior is even weakly informative
+- **Acceptance bar** - both clauses; refuted if hard pairs land OUTSIDE the band - confirming H54 from a third direction
+- **Experiment** - replay with band gating; after H121
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H129 Fix the posterior by replacing its likelihood - calibration transfer
+
+- **Grounding** - 44% calibration with a 2-point isotonic curve says the current likelihood carries no usable probability; a separating scorer + isotonic calibration is the standard repair
+- **Hypothesis** - the winning scorer, isotonically calibrated on labeled pairs, lifts held-out decision accuracy from 44% to >= 70% with ECE <= 0.15
+- **Prediction** - the scorer does the lifting, the calibration map makes it honest; the isotonic curve gains real support
+- **Acceptance bar** - both clauses held-out; if labels are too few pre-H101, re-run on the benchmark (H101 is the round's keystone)
+- **Experiment** - after H121 and ideally H101
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H130 The classic stack was built for this - string features on the variance class
+
+- **Grounding** - 71% of the duplicate problem is surface-form variance - the EXACT regime classical ER string similarity was built for, decades before embeddings; null-leaning by design
+- **Hypothesis** - on the variance class, a 4-feature string logistic (token-subset containment, Jaro-Winkler, length-normalized edit distance, model-code equality) matches the best neural scorer within 0.03 AUC at ~zero cost
+- **Prediction** - strings match neural on variance, lose on siblings - the constructive outcome is a CASCADE: strings resolve the cheap 71%, neural handles the hard 29%
+- **Acceptance bar** - within 0.03 on variance; the cascade ships if both halves win their class; refuted if neural dominates even pure surface variance
+- **Experiment** - python-Levenshtein (existing dependency) + logistic; runs now, no GPU
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H131 Isotropize the space - the saturation is partly geometry
+
+- **Grounding** - sentence/document embedding spaces are anisotropic (vectors occupy a narrow cone), compressing cosine into a thin high band - and the measured band here is 0.93-0.99, the classic signature; the standard removals (mean-centering, PCA whitening, all-but-the-top component removal) are deterministic transforms over the STORED vectors, zero new models
+- **Hypothesis** - isotropizing the Titan space (centering + whitening or top-k component removal, fit on all 2798 entity vectors) spreads the pair-similarity distribution (interquartile range >= 3x) and lifts duplicate-vs-sibling ranking AUC by >= 0.05
+- **Prediction** - the spread materializes; part of the "saturation" dissolves as geometry rather than semantics; the residual saturation is the true bi-encoder class limit that H121 addresses
+- **Acceptance bar** - both clauses; refuted if whitened cosine ranks no better (the compression was semantic, not geometric - the class limit is real and the cross-encoder route is mandatory)
+- **Experiment** - numpy over stored embeddings; runs now, no GPU; transforms also re-tested under H123's winner
+- **Result** - pending
+- **Verdict** - pending
+
+## R13 - the optimal-transport round: identity, drift and completeness as transport problems (pre-registered 2026-07-06)
+
+Fanned out from the project owner's direction: optimal transport for resolution through embeddings - Sinkhorn, Wasserstein - and its natural extensions in this system. The unifying idea: an entity is not a point, it is a BAG (of name tokens, spec key-values, attached propositions, graph neighbors), and a document is a bag of entities; identity, contradiction, drift and completeness are all statements about how cheaply one bag transports onto another. Single-vector cosine collapses the bag before comparing - transport compares the bags directly, with unmatched mass as a first-class signal (the contradiction/incompleteness residue cosine cannot express). Precedent in-house: the WMD document-distance work in the user's prior research track. Solvers: exact EMD via scipy assignment on small bags (name/spec bags are 5-50 items), entropic Sinkhorn (POT library) where bags grow. All entries use existing stored embeddings; most run now on CPU.
+
+| id | concept | claim | runnable now |
+|----|---------|-------|--------------|
+| H132 | WMD identity | Word Mover's Distance over record token-embedding bags separates duplicates from siblings at AUC >= cosine + 0.10 - the bag sees the differing token | yes |
+| H133 | Sinkhorn spec alignment | OT over property key-value sets: matched mass = shared identity evidence, UNMATCHED mass = contradiction feature that flags siblings | yes |
+| H134 | neighborhood transport | entity as distribution over 1-hop neighbor embeddings; Wasserstein between neighborhoods = relational identity signal orthogonal to text (H62's Jaccard, continuously generalized) | yes |
+| H135 | assignment-constrained resolution | cross-document entity alignment as entropic OT with one-to-one constraints - the transport polytope FORBIDS the many-to-one chaining that built the false SAME_AS closures | yes |
+| H136 | Gromov-Wasserstein twins | structure-only matching (no shared space needed) catches duplicates whose text diverged (codes, abbreviations) - the structural complement to H130's strings | yes |
+| H137 | barycenter chain guard | merged identity = Wasserstein barycenter of member embeddings; a chain member far from the barycenter is a false member - the OT form of H58's chain guard, tested on the model_code closures | yes |
+| H138 | type-distribution OT | types as embedding distributions; W-distance between types ranks merge candidates, within-type barycenter clustering ranks splits - the principled proposal engine for H98's granularity operators | yes |
+| H139 | Sinkhorn drift channel | per-document entity-embedding distribution vs the graph baseline: an embedding-space drift alarm racing JSD-on-types (distribution), H77 (spectral) and H90 (topological) - the fourth family on the early-warning panel | yes |
+| H140 | completeness transport | transport cost from chunk-embedding mass to entity-embedding mass per document: expensive chunks = unextracted content - a per-document completeness instrument for the audit doctrine | yes |
+| H141 | transport likelihood | the integration test: replacing LR_emb with a transport-based likelihood (WMD + unmatched-mass features) in the posterior lifts calibration beyond H129's scorer swap | after H132/H133 |
+
+### R13-H132 Word Mover's Distance - the bag sees the differing token
+
+- **Grounding** - cosine collapses "Pro-Flow adult nasal cannula" to one vector where "adult" is diluted; WMD transports token embeddings and pays explicitly for the token with no counterpart; in-house precedent: the WMD document-distance research track
+- **Hypothesis** - WMD over record token bags (name + type + spec keys, stopword-stripped, existing embedding vocabulary) separates duplicates from siblings at AUC >= raw cosine + 0.10; the unmatched-token cost is itself a usable feature
+- **Prediction** - siblings pay visibly for their differing model tokens; variance pairs transport nearly free (containment = cheap partial transport)
+- **Acceptance bar** - AUC gap >= 0.10; refuted if token-level transport inherits the same saturation (token embeddings equally anisotropic - couple with H131's whitening, which is a registered interaction)
+- **Experiment** - scipy exact EMD on small bags; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H133 Unmatched mass is the contradiction - Sinkhorn over the spec sets
+
+- **Grounding** - the sibling problem is structured disagreement: most spec keys match, ONE value differs (pressure range, weight); cosine averages it away; OT with marginals over key-value items yields matched mass (shared evidence) AND unmatched/expensive mass (the disagreement) as separate quantities
+- **Hypothesis** - the transport residual (cost concentrated on unmatchable spec items) flags siblings at >= 0.8 precision where both records carry >= 3 spec items; combined matched+residual features beat any single similarity
+- **Prediction** - the residual isolates the differing value; sparse-spec pairs abstain (honest coverage limit)
+- **Acceptance bar** - precision clause on the sibling set; refuted if spec value embeddings are too coarse to localize the disagreement
+- **Experiment** - Sinkhorn (POT) over key-value embedding bags; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H134 Neighborhood transport - relational identity, continuously
+
+- **Grounding** - H62 registered neighbor-set Jaccard (discrete overlap); OT generalizes it: an entity is a distribution over its neighbors' EMBEDDINGS, so two duplicates whose neighbor sets differ in surface form but agree in meaning still transport cheaply
+- **Hypothesis** - neighborhood Wasserstein ranks the labeled duplicate pairs better than neighbor-Jaccard by >= 0.05 AUC and carries signal on pairs with ZERO literal neighbor overlap (where Jaccard is blind)
+- **Prediction** - the continuous version wins exactly on cross-document pairs whose contexts were extracted with different surface forms
+- **Acceptance bar** - both clauses; refuted if median degree 1 starves the signal (most entities have too few neighbors to form a distribution - the honest scale risk)
+- **Experiment** - per-pair EMD over 1-hop neighbor embedding bags; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H135 The transport polytope forbids the chain - assignment-constrained resolution
+
+- **Grounding** - the false SAME_AS closures were built by greedy PAIRWISE merging then transitive union - nothing enforced global consistency; OT with one-to-one marginals is a global assignment: mass conservation makes "A matches B AND A matches C with B unlike C" expensive by construction
+- **Hypothesis** - re-resolving document-pair entity sets as entropic OT assignments (Sinkhorn, low temperature) reproduces the true merges while producing ZERO of the known false closure members - the constraint does structurally what H58's evidence guard does heuristically
+- **Prediction** - the model_code false merges (mask-battery over 'P10') never survive assignment because the mask has a better match or no match; P09's legitimate multi-doc identity survives
+- **Acceptance bar** - zero false closures + P09 regression-free; refuted if legitimate multi-facet entities NEED many-to-one (the assignment constraint would then be too strong - measured, not assumed)
+- **Experiment** - replay over the SAME_AS-bearing document pairs; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H136 Gromov-Wasserstein - matching structure to structure
+
+- **Grounding** - GW aligns two metric spaces WITHOUT a shared embedding space: it matches neighborhoods by their internal distance patterns; duplicates whose text diverged completely (pure code vs full name) are invisible to every text signal but may be structural twins
+- **Hypothesis** - GW distance between candidate pairs' 1-hop induced subgraphs (edge-type-aware cost) recovers >= 3 labeled duplicates that BOTH cosine and string features rank below threshold
+- **Prediction** - the wins are the code-vs-name pairs
+- **Acceptance bar** - >= 3 unique recoveries at precision >= 0.5 in the flagged head; refuted if degree-1 neighborhoods make GW degenerate (same scale risk as H134, registered separately because GW fails differently)
+- **Experiment** - POT entropic GW on small neighborhood graphs; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H137 The barycenter chain guard - membership by distance to the center of mass
+
+- **Grounding** - a merged identity (SAME_AS cluster) should have a coherent center; the Wasserstein barycenter of member record-bags is that center; the false closure members (MANU, bCPAP prongs) should sit far from the barycenter of the cluster they were chained into
+- **Hypothesis** - member-to-barycenter distance separates false from true members of the *1..2 closures at AUC >= 0.85, and thresholding it removes the known false members with zero true-member loss
+- **Prediction** - the model_code chains show the widest member spread (consistent with their false-merge surface)
+- **Acceptance bar** - both clauses; refuted if barycenters of small clusters (2-4 members) are too unstable to threshold
+- **Experiment** - barycenters over the 127-edge closure clusters; CPU, runs now; on confirmation joins H58/H88 as the third chain-guard prong
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H138 Types as distributions - the granularity proposal engine
+
+- **Grounding** - H98 needs candidate merge/split operators ranked by something better than intuition; a type IS a distribution of its entities' embeddings; W-distance between two type distributions measures their semantic separation, within-type 2-barycenter clustering measures internal heterogeneity
+- **Hypothesis** - type-pair W-distance ranks merge candidates and within-type barycenter-split gain ranks split candidates such that the top-3 proposals of each contain every operator that H98's probe replay confirms as improving
+- **Prediction** - Condition/MedicalCondition and Feature/ComfortFeature-class pairs rank as top merge candidates; Accessory (999 entities) ranks as top split
+- **Acceptance bar** - the confirmed operators (if any) come from the OT top-3s; refuted if probe-improving operators exist that OT ranks poorly (the proposal engine misses what matters)
+- **Experiment** - sliced-Wasserstein between type distributions; CPU, runs now; feeds H98
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H139 The fourth alarm family - drift as transport in embedding space
+
+- **Grounding** - the early-warning panel has three families: distributional (JSD on type frequencies, production), spectral (H77), topological (H90); none sees SEMANTIC shift - a new document whose entities are embedded far from everything the graph knows; Sinkhorn divergence between the doc's entity-embedding distribution and the graph baseline is exactly that instrument
+- **Hypothesis** - per-doc Sinkhorn divergence stays in a tight band on the healthy wave and responds to injected off-domain documents at >= 2x smaller injection than the type-frequency JSD needs - semantic drift shows in embedding space before it shows in type mix
+- **Prediction** - clean band on wave 1b; the campaign's single spike doc is NOT an outlier here (its entities were on-domain - the remap spike was an identity event, not a semantic one; the two instruments measure different things, which is the point)
+- **Acceptance bar** - differential sensitivity + wave specificity; refuted if the divergence just tracks document length or entity count
+- **Experiment** - replay over wave-1b per-doc entity embeddings + injection; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H140 The completeness meter - what the chunks hold that the graph does not
+
+- **Grounding** - the audit doctrine wants "the graph knows what it doesn't know"; per-document transport cost from chunk-embedding mass to the document's extracted-entity embedding mass measures exactly the content extraction left behind (expensive chunk mass = nothing in the graph accepts it cheaply)
+- **Hypothesis** - per-chunk transport residual correlates with the known extraction gaps (the H21 zero-chunk finding class, refusal-probe subjects) at rank correlation >= 0.5, giving the completeness audit a per-document instrument
+- **Prediction** - table-heavy and stylized-rendering chunks (H51's suspects) carry the highest residuals
+- **Acceptance bar** - correlation clause against the labeled gap inventory; refuted if residuals track chunk length/genre instead of extraction quality
+- **Experiment** - chunk vs entity embedding bags per document (chunk embeddings exist for retrieval; else Titan on a sample); mostly runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R13-H141 Transport in the posterior - the integration test
+
+- **Grounding** - H129 swaps the likelihood for a calibrated scorer; this asks whether TRANSPORT features specifically (WMD distance + unmatched-mass residual + barycenter coherence) add calibration beyond whatever scorer wins - i.e., is OT a better likelihood or just another correlated signal
+- **Hypothesis** - adding transport features to the winning H129 configuration lifts held-out decision accuracy by >= 5 further points or reduces ECE by >= 0.05; otherwise OT stays a detector-side tool and the posterior keeps the simpler likelihood
+- **Prediction** - the unmatched-mass residual is the only transport feature that survives feature selection (it is the one thing no similarity scalar expresses)
+- **Acceptance bar** - either clause on held-out folds; a null result is a clean simplification verdict
+- **Experiment** - after H132/H133 land and H129 has a baseline
+- **Result** - pending
+- **Verdict** - pending
+
