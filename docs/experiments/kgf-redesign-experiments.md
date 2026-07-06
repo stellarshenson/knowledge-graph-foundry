@@ -408,8 +408,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - in-wave accuracy >= proposition-graph accuracy on the same wave-1 probes; manual audit finds zero fidelity-class residuals; if accuracy drops, record which query types need synthesis a pointer cannot provide (the honest failure mode)
 - **Prior art** - Evidence Units (arXiv 2604.00500) groups spans with provenance in Neo4j but for document organization, not QA-graph construction; the Extractive-Abstractive Spectrum (arXiv 2411.17375) proves abstractive generation trades verifiability for fluency but does not build a hollow KG; no system proves a proposition-free graph matches a proposition graph on QA
 - **Experiment** - <br>method: hollow-ingest variant over wave-1 documents into a scratch graph; run the 5 in-wave probes through a span-assembly reader; compare accuracy and fidelity-residual count against the R05 proposition graph
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - measured in [`graph_topology_r10.ipynb`](../../notebooks/graph_topology_r10.ipynb) over the 127 SAME_AS edges, 26 labeled (6 false / 20 same-name true). AFRC (4 - deg_u - deg_v + 3x triangles) separates at AUC 0.617 vs the 0.7 bar
+- **Verdict** - REFUTED - curvature carries only weak identity signal here, and the reason is structural: at median degree 1 the graph has almost no triangles ANYWHERE, so the triangle bonus that gives AFRC its discriminative power (per Fesser-Weber) has nothing to work with. The sparsity diagnosis applies to the whole structural-detector family (see H88/H97) - on a star-forest graph, text and embedding signals dominate structural ones, consistent with H95's null-leaning registration and OWL2Vec*'s lexical-dominance ablation
 
 ### R06-H28 Types are decoration - the scramble test
 
@@ -421,8 +421,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - measured accuracy delta reported both ways; a null (< 5%) is registered as evidence typing is retrieval-inert and reframes curing as an audit-only investment; a non-null (>= 5%) is registered as the first causal evidence in the program that curing pays at retrieval time - either is a publishable result
 - **Prior art** - argues against the null: OMD-GraphRAG (arXiv 2603.25152) and SG-KBQA (arXiv 2502.12737) both show schema guidance lifts QA, but via removal/guidance ablations that confound schema with structure; the isolated scramble test is unrun in the cited literature
 - **Experiment** - <br>method: on the R05 wave graph, permute all `:Type` labels by a fixed random derangement (vary the derangement by seed offset per trial), re-run all in-wave probes, compare to the unscrambled baseline; repeat with types fully removed
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - same notebook: effective resistance from the giant-component Laplacian pseudoinverse. AUC 0.458 - WORSE than chance - and the R >= 0.95 threshold recovers 17% of false merges while flagging 1 presumed-true pair
+- **Verdict** - REFUTED decisively, and the mechanism is instructive: most SAME_AS endpoints are degree-1 leaves whose ONLY edge is the SAME_AS itself, so R = 1 for TRUE aliases too - a true alias of a leaf is also a sole bridge. The redundancy premise (shared neighbors reconnect true pairs) requires a density this graph does not have. Black et al.'s instrument is sound; the corpus shape defeats it. Together with H87 this closes the curvature/resistance route to false-closure detection on sparse product graphs - the embedding/adjudication route (H97 signal at AUC 0.756, H101, H121) is what remains
 
 ### R06-H29 Duplicates are features - resolve at read time
 
@@ -434,8 +434,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - the cross-type duplicate probe class answers >= the merged graph; read-time resolution stays within the retrieval latency budget (measure hop count and wall-clock); no false cross-entity bleed introduced by alias-walk
 - **Prior art** - partial: the (0.85)^n multi-hop-poisoning analysis and DEG-RAG (arXiv 2510.14271, which argues FOR ingest denoising) frame the cost of bad merges; query-time entity resolution (Bhattacharya-Getoor, JAIR 2007) is the theoretical ancestor but predates KG-QA and never compared against ingest-merge on this task
 - **Experiment** - <br>method: ingest a wave with resolution disabled but alias-edge extraction on; read-time resolver over alias neighbourhoods; compare cross-type duplicate probe accuracy and latency against the merged R05 graph
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - top-5 hubs audited (degrees 214/150/122/76/74). The registered conviction pattern (anomalous incident curvature + component strand) FIRED on the top hub (z = -3.09, 100% stranded) - and forensic inspection then exposed the instrument, not the hub: incident AFRC is mechanically negative for any high-degree node (the -deg term), so the z-score is degree-confounded; strandedness is natural for a star center. The hub itself is clean: single source document, zero foreign-brand neighbors among 200 - a manual's subject with its extracted relation star
+- **Verdict** - CONFIRMED (hubs legitimate) - with the instrument correction recorded as the real finding: curvature z-scores CANNOT serve as over-merge conviction on hubs; the working test is provenance purity (source-document count + foreign-family neighbor scan), which is cheap, deterministic, and now the registered audit for future hubs
 
 ### R06-H30 The question-native graph - extract what a document can answer
 
@@ -447,8 +447,8 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Acceptance bar** - in-wave accuracy >= the proposition graph on wave-1 probes; >= 70% of out-of-wave probes refused through question-coverage gaps with < 10% false refusal; question-match retrieval alone (no entity hop) reaches the answering span
 - **Prior art** - novel: the query-expansion survey (arXiv 2509.07794) and QA-Expand (arXiv 2502.08557) generate questions to expand queries at retrieval time; none make questions first-class graph citizens or audit cohort question-coverage - the closest published ideas stop at auxiliary expansion
 - **Experiment** - <br>method: question-native ingest over wave-1 documents into a scratch graph; question-to-question retrieval reader; measure in-wave accuracy, out-of-wave refusal, and whether coverage-gap abstention beats the H17 vector-score null
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - 18 SAME_AS clusters of size >= 3; max member-to-centroid embedding distance ranks bad clusters at AUC 0.756, but the registered operating point (top-2k flagged) recovers only 33% of bad clusters at precision 0.17 - the bar (70% recall, precision > 0.5) fails
+- **Verdict** - REFUTED at the registered bar despite real signal (AUC 0.756 > chance): with only 18 clusters and 3 labeled-bad, the ranking cannot be thresholded usefully - small-n saturation again. The variance signal survives as a RANKING input for H101's adjudication queue (send the highest-variance clusters to the LLM first), not as a standalone filter; CCA's prediction (text geometry cannot see what the resolver missed) held at the decision level
 
 ### R06-H31 Small model plus audit loop beats big model single-pass
 

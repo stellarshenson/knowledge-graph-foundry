@@ -1,0 +1,1339 @@
+{
+  "h87": {
+    "auc": 0.6166666666666667,
+    "verdict": "REFUTED",
+    "n_labeled": 26
+  },
+  "h88": {
+    "auc": 0.45833333333333337,
+    "recall": 0.16666666666666666,
+    "true_flagged": 1,
+    "verdict": "REFUTED"
+  },
+  "h91": {
+    "autopsy": [
+      {
+        "name": "iBreeze CPAP System",
+        "degree": 214,
+        "afrc_z": -3.0863957211305104,
+        "stranded_neighbors": 213,
+        "stranded_frac": 1.0
+      },
+      {
+        "name": "Philips Respironics",
+        "degree": 150,
+        "afrc_z": -2.005158029655729,
+        "stranded_neighbors": 52,
+        "stranded_frac": 0.348993288590604
+      },
+      {
+        "name": "AirSense 11",
+        "degree": 122,
+        "afrc_z": -1.4458368911490571,
+        "stranded_neighbors": 75,
+        "stranded_frac": 0.6198347107438017
+      },
+      {
+        "name": "DreamStation CPAP Pro",
+        "degree": 76,
+        "afrc_z": -0.6730461749901022,
+        "stranded_neighbors": 15,
+        "stranded_frac": 0.2
+      },
+      {
+        "name": "RESmart CPAP",
+        "degree": 74,
+        "afrc_z": -0.5941761652340476,
+        "stranded_neighbors": 26,
+        "stranded_frac": 0.3561643835616438
+      }
+    ],
+    "verdict": "REFUTED (over-merge sink found)"
+  },
+  "h97": {
+    "auc": 0.7555555555555555,
+    "recall": 0.3333333333333333,
+    "precision": 0.16666666666666666,
+    "n_clusters": 18,
+    "verdict": "REFUTED",
+    "clusters": [
+      {
+        "members": [
+          "AirFit P10 bedside starter kit",
+          "AirFit P10 for AirMini",
+          "Transcend P10 battery",
+          "AirFit P10"
+        ],
+        "n": 4,
+        "mean_pair_cos": 0.42778658866882324,
+        "max_centroid_dist": 0.33770567178726196,
+        "bad": false
+      },
+      {
+        "members": [
+          "BreathSensor cable (SD20, adult, 220 con",
+          "Sandman SD20",
+          "Body Position Sensor Sandman SD20"
+        ],
+        "n": 3,
+        "mean_pair_cos": 0.4326910674571991,
+        "max_centroid_dist": 0.2713099718093872,
+        "bad": true
+      },
+      {
+        "members": [
+          "CT2 effort sensor",
+          "CT2, pediatric",
+          "CT2 adult Alice 5",
+          "CT2, adult"
+        ],
+        "n": 4,
+        "mean_pair_cos": 0.6578719019889832,
+        "max_centroid_dist": 0.18304133415222168,
+        "bad": false
+      },
+      {
+        "members": [
+          "CoughAssist T70 Roll Stand",
+          "CoughAssist T70 Foot Pedal",
+          "CoughAssist T70 Battery Cover",
+          "CoughAssist T70 Carrying Case",
+          "CoughAssist T70 Circuit Retainer",
+          "CoughAssist T70 Water Trap",
+          "CoughAssist T70",
+          "CoughAssist T70 Oximetry Interface Kit",
+          "CoughAssist T70 Circuit - Infant 6ft"
+        ],
+        "n": 9,
+        "mean_pair_cos": 0.5956064462661743,
+        "max_centroid_dist": 0.3723256587982178,
+        "bad": false
+      },
+      {
+        "members": [
+          "Cylinder cart MD15 ME24 MD22 ME36",
+          "Large cylinder bag MD15 MD22",
+          "MD15 cylinder US 2000 psi",
+          "MD22 cylinder US 3000 psi"
+        ],
+        "n": 4,
+        "mean_pair_cos": 0.66986083984375,
+        "max_centroid_dist": 0.15873992443084717,
+        "bad": false
+      },
+      {
+        "members": [
+          "DreamStation SpO2 module",
+          "SpO2 sensor (finger clip)",
+          "SpO2 extension cable",
+          "SpO2",
+          "SpO2 Kit",
+          "DreamStation Cellular/SpO2 Modem",
+          "Nonin SpO2 assembly"
+        ],
+        "n": 7,
+        "mean_pair_cos": 0.48109880089759827,
+        "max_centroid_dist": 0.49047744274139404,
+        "bad": false
+      },
+      {
+        "members": [
+          "Sleepware G3 Getting Started Guide, Engl",
+          "Sleepware G3",
+          "Sleepware G3, Multi-language",
+          "G3 A20",
+          "Sleepware G3, English only"
+        ],
+        "n": 5,
+        "mean_pair_cos": 0.5206032991409302,
+        "max_centroid_dist": 0.41150063276290894,
+        "bad": false
+      },
+      {
+        "members": [
+          "GO2 carrying case",
+          "GO2 finger oximeter",
+          "GO2 oximeter",
+          "GO2 lanyard"
+        ],
+        "n": 4,
+        "mean_pair_cos": 0.5524831414222717,
+        "max_centroid_dist": 0.1989363431930542,
+        "bad": false
+      },
+      {
+        "members": [
+          "Auto",
+          "CPAP mask",
+          "DreamStation CPAP",
+          "MANU",
+          "Sleep apnea",
+          "APAP",
+          "SleepStyle 200 Series",
+          "Oxygen concentrator",
+          "CPAP",
+          "Filter",
+          "Flowmeter",
+          "User Manual",
+          "Outlet",
+          "Nasal mask",
+          "Air Filter",
+          "CPAP prongs",
+          "Low oxygen level alarm",
+          "Humidifier",
+          "Mask",
+          "bCPAP prongs",
+          "Handle",
+          "Therapy",
+          "Fine particle filter",
+          "Patient",
+          "HC230-Series",
+          "Gross particle filter",
+          "HC230 Standard Range",
+          "Total flowmeter",
+          "Tubing",
+          "Water trap",
+          "Apnea",
+          "Internal filter",
+          "HC230 Product Range",
+          "Cable",
+          "Device",
+          "Flow Meter"
+        ],
+        "n": 36,
+        "mean_pair_cos": 0.20920996367931366,
+        "max_centroid_dist": 0.7588760852813721,
+        "bad": true
+      },
+      {
+        "members": [
+          "Host software manual v2.0 (International",
+          "Host software manual v2.0 (Domestic)",
+          "Host software v2.0",
+          "Host software manual v2.0 (French)",
+          "Host software manual v2.0 (Spanish)"
+        ],
+        "n": 5,
+        "mean_pair_cos": 0.7853356599807739,
+        "max_centroid_dist": 0.23814356327056885,
+        "bad": false
+      },
+      {
+        "members": [
+          "MB08 cylinder US 3000 psi",
+          "M4 cylinder US 2000 psi",
+          "M4 cylinder Canada 2000 psi",
+          "Medium cylinder bag M4 M6 MB08"
+        ],
+        "n": 4,
+        "mean_pair_cos": 0.6852803826332092,
+        "max_centroid_dist": 0.2143324613571167,
+        "bad": false
+      },
+      {
+        "members": [
+          "RJ9 to 2.5mm 3 inch Female Adapter Cable",
+          "Nurse Call RJ9 Cable Open Ends",
+          "RJ9 to 1/4 inch Nurse Call Cable Alarm C"
+        ],
+        "n": 3,
+        "mean_pair_cos": 0.673814058303833,
+        "max_centroid_dist": 0.14876461029052734,
+        "bad": false
+      },
+      {
+        "members": [
+          "PTAF2",
+          "PTAF2 High level cable (7', 1/8 male con",
+          "PTAF2 Startup Kit",
+          "PTAF2 cable",
+          "PTAF2 extension cable",
+          "PTAF2 Extension with coupler (25')"
+        ],
+        "n": 6,
+        "mean_pair_cos": 0.5929020047187805,
+        "max_centroid_dist": 0.276214599609375,
+        "bad": false
+      },
+      {
+        "members": [
+          "WristOx2 3150",
+          "Sensor adapter WristOx2 3150",
+          "WristOx2 wrist band 10 inch",
+          "USB PC download cable WristOx2",
+          "WristOx2",
+          "USB PC download cable for WristOx2",
+          "WristOx2 3150 pulse oximeter"
+        ],
+        "n": 7,
+        "mean_pair_cos": 0.5238745808601379,
+        "max_centroid_dist": 0.3125728368759155,
+        "bad": true
+      },
+      {
+        "members": [
+          "Trilogy100 Exhalation Port Block Active",
+          "Trilogy100 ventilator",
+          "Trilogy100"
+        ],
+        "n": 3,
+        "mean_pair_cos": 0.6249756813049316,
+        "max_centroid_dist": 0.2517613172531128,
+        "bad": false
+      },
+      {
+        "members": [
+          "Trilogy O2 quick-disconnect insert",
+          "High Precision O2 Concentration Detectio",
+          "Oxymixer Air and O2 Blender",
+          "Air and O2 Hoses",
+          "O2 enrichment attachments"
+        ],
+        "n": 5,
+        "mean_pair_cos": 0.3851475417613983,
+        "max_centroid_dist": 0.4578673243522644,
+        "bad": false
+      },
+      {
+        "members": [
+          "AirFit F30 bedside starter kit Small",
+          "AirFit F30",
+          "AirFit F30 for AirMini"
+        ],
+        "n": 3,
+        "mean_pair_cos": 0.60877925157547,
+        "max_centroid_dist": 0.24932318925857544,
+        "bad": false
+      },
+      {
+        "members": [
+          "ResMed AirFit N20 Classic",
+          "AirFit N20 Classic",
+          "AirFit N20"
+        ],
+        "n": 3,
+        "mean_pair_cos": 0.6932363510131836,
+        "max_centroid_dist": 0.19269514083862305,
+        "bad": false
+      }
+    ]
+  },
+  "sa_edges": [
+    {
+      "a": "AirFit P10",
+      "b": "Transcend P10 battery",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -4,
+      "R": 1.0000000000000289
+    },
+    {
+      "a": "Alice LoFlo C5 Sidestream module",
+      "b": "LoFlo C5 Sidestream module",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 1,
+      "R": 0.414347669112192
+    },
+    {
+      "a": "Body Position Sensor Sandman SD20",
+      "b": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "m": "model_code",
+      "label": "false",
+      "afrc": -1,
+      "R": 1.0
+    },
+    {
+      "a": "Body Position Sensor Sandman SD20",
+      "b": "Sandman SD20",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -1,
+      "R": 0.47517958186825193
+    },
+    {
+      "a": "CT2 adult Alice 5",
+      "b": "CT2 effort sensor",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -6,
+      "R": 0.4563294656555159
+    },
+    {
+      "a": "CT2 adult Alice 5",
+      "b": "CT2, adult",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 1,
+      "R": 0.5910205916034696
+    },
+    {
+      "a": "CT2 adult Alice 5",
+      "b": "CT2, pediatric",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 1,
+      "R": 0.5910205916034696
+    },
+    {
+      "a": "Control FiO2 Display",
+      "b": "FiO2 Table",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 3,
+      "R": 0.6666666666666674
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Battery Cover",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 0.9999999999999994
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Carrying Case",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 1.0000000000000004
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Circuit - Infant 6ft",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 0.9999999999999997
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Circuit Retainer",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 1.0000000000000002
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Foot Pedal",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 0.9999999999999991
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Oximetry Interface Kit",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 1.0000000000000004
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Roll Stand",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 1.0000000000000004
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Water Trap",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -28,
+      "R": 1.0000000000000004
+    },
+    {
+      "a": "Cylinder cart MD15 ME24 MD22 ME36",
+      "b": "Large cylinder bag MD15 MD22",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 2,
+      "R": 0.4555743853412819
+    },
+    {
+      "a": "Cylinder cart MD15 ME24 MD22 ME36",
+      "b": "MD15 cylinder US 2000 psi",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -3,
+      "R": 0.38486504554791345
+    },
+    {
+      "a": "Cylinder cart MD15 ME24 MD22 ME36",
+      "b": "MD22 cylinder US 3000 psi",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -1,
+      "R": 0.4600635819763612
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "DreamStation SpO2 module",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -6,
+      "R": 0.40754713397557873
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "Nonin SpO2 assembly",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -10,
+      "R": 0.5733892487635496
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -5,
+      "R": 0.6417322732513907
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2 Kit",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -5,
+      "R": 0.5920285115304997
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2 extension cable",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -2,
+      "R": 0.6045834345404273
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2 sensor (finger clip)",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -4,
+      "R": 0.41833373816170993
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -31,
+      "R": 0.33030762262635566
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3 Getting Started Guide, English",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -26,
+      "R": 0.4266546291140271
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3, English only",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -32,
+      "R": 0.30296799355787707
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3, Multi-language",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -32,
+      "R": 0.43560869829893656
+    },
+    {
+      "a": "GO2 carrying case",
+      "b": "GO2 finger oximeter",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 1,
+      "R": 0.6666666666666674
+    },
+    {
+      "a": "GO2 carrying case",
+      "b": "GO2 lanyard",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 2,
+      "R": 0.6666666666666661
+    },
+    {
+      "a": "GO2 carrying case",
+      "b": "GO2 oximeter",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -1,
+      "R": 0.9999999999999996
+    },
+    {
+      "a": "HC230 Product Range",
+      "b": "HC230 Standard Range",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -8,
+      "R": 0.5742304596766098
+    },
+    {
+      "a": "HC230 Product Range",
+      "b": "HC230-Series",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -20,
+      "R": 0.5742304596766095
+    },
+    {
+      "a": "HL7 bi-directional interface",
+      "b": "HL7 inbound only interface",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 4,
+      "R": 0.5
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (French)",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -1,
+      "R": 1.0
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (International English)",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -1,
+      "R": 1.0000000000000009
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -1,
+      "R": 1.0000000000000009
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software v2.0",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -2,
+      "R": 1.000000000000004
+    },
+    {
+      "a": "M10 oxygen concentrator",
+      "b": "Millennium M10",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 3,
+      "R": 0.2694167728193094
+    },
+    {
+      "a": "M4 cylinder Canada 2000 psi",
+      "b": "M4 cylinder US 2000 psi",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -3,
+      "R": 0.47653235618127177
+    },
+    {
+      "a": "M4 cylinder Canada 2000 psi",
+      "b": "Medium cylinder bag M4 M6 MB08",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 1,
+      "R": 0.5680648830885959
+    },
+    {
+      "a": "MB08 cylinder US 3000 psi",
+      "b": "Medium cylinder bag M4 M6 MB08",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -1,
+      "R": 0.6611123790765341
+    },
+    {
+      "a": "MC13 cylinder US 3000 psi",
+      "b": "Small cylinder bag M9 MC13",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -2,
+      "R": 0.5757996718465552
+    },
+    {
+      "a": "MD300W314B4",
+      "b": "Wrist Pulse Oximeter MD300W314B4",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 3,
+      "R": 0.6666666666666671
+    },
+    {
+      "a": "Nurse Call RJ9 Cable Open Ends",
+      "b": "RJ9 to 1/4 inch Nurse Call Cable Alarm Closed",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 2,
+      "R": 0.625
+    },
+    {
+      "a": "Nurse Call RJ9 Cable Open Ends",
+      "b": "RJ9 to 2.5mm 3 inch Female Adapter Cable",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 2,
+      "R": 0.625
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 Extension with coupler (25')",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -12,
+      "R": 1.0
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 High level cable (7', 1/8 male connector)",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -12,
+      "R": 1.0000000000000009
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 Startup Kit",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -15,
+      "R": 0.3595702487445923
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 cable",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -12,
+      "R": 0.9999999999999996
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 extension cable",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -12,
+      "R": 0.9999999999999998
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable WristOx2",
+      "m": "model_code",
+      "label": "false",
+      "afrc": -1,
+      "R": 0.6226415094339615
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable for WristOx2",
+      "m": "model_code",
+      "label": "false",
+      "afrc": -1,
+      "R": 0.5990566037735849
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -10,
+      "R": 0.6415094339622641
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 3150",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -3,
+      "R": 0.3962264150943392
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 3150 pulse oximeter",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -5,
+      "R": 0.4905660377358485
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 wrist band 10 inch",
+      "m": "model_code",
+      "label": "false",
+      "afrc": -1,
+      "R": 0.5990566037735849
+    },
+    {
+      "a": "Trilogy100",
+      "b": "Trilogy100 Exhalation Port Block Active",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -55,
+      "R": 0.9999999999999997
+    },
+    {
+      "a": "Trilogy100",
+      "b": "Trilogy100 ventilator",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -43,
+      "R": 0.19355104957699504
+    },
+    {
+      "a": "APAP",
+      "b": "Auto",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -12,
+      "R": 0.3603366405599657
+    },
+    {
+      "a": "APAP",
+      "b": "CPAP",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -17,
+      "R": 0.21143422584242696
+    },
+    {
+      "a": "APAP",
+      "b": "Device",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -10,
+      "R": 0.5661419903344409
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "CPAP",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -35,
+      "R": 0.1640986122265614
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "CPAP prongs",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5694936951108097
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Cable",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5310832695211564
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Device",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5661419903344409
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Filter",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -24,
+      "R": 0.2490739104400751
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Fine particle filter",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -17,
+      "R": 0.397227443081439
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Flowmeter",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -21,
+      "R": 0.38564235530896207
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Gross particle filter",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -17,
+      "R": 0.397227443081439
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Handle",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5443098351848259
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Humidifier",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -40,
+      "R": 0.15994708243447892
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Internal filter",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5694936951108096
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Low oxygen level alarm",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5694936951108094
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "MANU",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -21,
+      "R": 0.3247872929642198
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Outlet",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -21,
+      "R": 0.38588441417580666
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Oxygen concentrator",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -16,
+      "R": 0.5461666268085369
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Patient",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5310832695211566
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Total flowmeter",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -19,
+      "R": 0.5694936951108094
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Tubing",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -21,
+      "R": 0.3173667696728368
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "User Manual",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -21,
+      "R": 0.3579260433117486
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Water trap",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -16,
+      "R": 0.5461666268085369
+    },
+    {
+      "a": "Apnea",
+      "b": "CPAP",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -23,
+      "R": 0.20609118893176398
+    },
+    {
+      "a": "Apnea",
+      "b": "CPAP mask",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -12,
+      "R": 0.30913617378096875
+    },
+    {
+      "a": "Apnea",
+      "b": "Mask",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -24,
+      "R": 0.19356377595690474
+    },
+    {
+      "a": "Apnea",
+      "b": "Nasal mask",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -6,
+      "R": 0.3721889604777323
+    },
+    {
+      "a": "Apnea",
+      "b": "Sleep apnea",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -10,
+      "R": 0.5396195670494741
+    },
+    {
+      "a": "Apnea",
+      "b": "Therapy",
+      "m": "explicit_assertion",
+      "label": "unknown",
+      "afrc": -6,
+      "R": 1.0000000000000004
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Air Filter",
+      "m": "deictic_assertion",
+      "label": "false",
+      "afrc": -56,
+      "R": 0.16413573486687966
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Filter",
+      "m": "deictic_assertion",
+      "label": "false",
+      "afrc": -51,
+      "R": 0.2084101697217436
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "MANU",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -51,
+      "R": 0.2992010870281917
+    },
+    {
+      "a": "SleepStyle 200 Series",
+      "b": "HC230-Series",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -23,
+      "R": 0.15719376353682815
+    },
+    {
+      "a": "SleepStyle 200 Series",
+      "b": "MANU",
+      "m": "deictic_assertion",
+      "label": "unknown",
+      "afrc": -20,
+      "R": 0.32408080031405156
+    },
+    {
+      "a": "Air Filter Cover",
+      "b": "Air filter cover",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": 0,
+      "R": 0.6823655226402173
+    },
+    {
+      "a": "Apnea Hypopnea Index",
+      "b": "Apnea-Hypopnea Index",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": 0,
+      "R": 0.6823284614023539
+    },
+    {
+      "a": "Auto EPAP",
+      "b": "Auto-EPAP",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -1,
+      "R": 0.6239789223868486
+    },
+    {
+      "a": "Auto Off",
+      "b": "Auto-Off",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": 2,
+      "R": 0.43765167078446265
+    },
+    {
+      "a": "Auto On",
+      "b": "Auto-On",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": 4,
+      "R": 0.5
+    },
+    {
+      "a": "Auto Ramp",
+      "b": "AutoRamp",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -2,
+      "R": 0.5433829266548105
+    },
+    {
+      "a": "Auto Start",
+      "b": "autoSTART",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -2,
+      "R": 0.6294390576653821
+    },
+    {
+      "a": "C-Flex",
+      "b": "C-Flex+",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -3,
+      "R": 0.3795828448889298
+    },
+    {
+      "a": "CISPR 11",
+      "b": "CISPR11",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -1,
+      "R": 0.6160439843719523
+    },
+    {
+      "a": "Flow Meter",
+      "b": "Flowmeter",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -6,
+      "R": 0.5185821644529847
+    },
+    {
+      "a": "Full face mask",
+      "b": "Full-Face Mask",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -8,
+      "R": 0.35493495084209664
+    },
+    {
+      "a": "ISO 80601-2-70:2015",
+      "b": "ISO 80601-2-70:2015",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -17,
+      "R": 0.33150748834819677
+    },
+    {
+      "a": "Nasal Cannulas Adult",
+      "b": "Nasal cannulas (adult)",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -1,
+      "R": 0.6201803109718016
+    },
+    {
+      "a": "Performance Tubing (22mm)",
+      "b": "Performance Tubing 22mm",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -5,
+      "R": 0.4532696779231864
+    },
+    {
+      "a": "Pre-heat",
+      "b": "Preheat",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -4,
+      "R": 0.5955064897377804
+    },
+    {
+      "a": "Pressure Start Stop Button",
+      "b": "Pressure Start/Stop Button",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": 2,
+      "R": 0.6019007901373258
+    },
+    {
+      "a": "ResMed AirSense 10",
+      "b": "ResMed Airsense10",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": 0,
+      "R": 1.0000000000000029
+    },
+    {
+      "a": "Smart Ramp",
+      "b": "SmartRamp",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -4,
+      "R": 0.46837740443047127
+    },
+    {
+      "a": "Ultra-Fine Filter Disposable 1 Pack",
+      "b": "Ultra-fine Filter Disposable 1-pack",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": -6,
+      "R": 0.5479641478400884
+    },
+    {
+      "a": "ezRIP module (abdomen)",
+      "b": "ezRIP module, abdomen",
+      "m": "normalized_name",
+      "label": "true",
+      "afrc": 0,
+      "R": 0.7040501492713032
+    },
+    {
+      "a": "20 cmH2O",
+      "b": "40 cmH2O",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 3,
+      "R": 0.6666666666666663
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "High Precision O2 Concentration Detection",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -3,
+      "R": 0.6239890188620851
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "O2 enrichment attachments",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -4,
+      "R": 0.5661437936584925
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "Oxymixer Air and O2 Blender",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 0,
+      "R": 0.5963839536403484
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "Trilogy O2 quick-disconnect insert",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -3,
+      "R": 0.6154280316448163
+    },
+    {
+      "a": "AirFit F10",
+      "b": "AirFit F10 for Her",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 3,
+      "R": 0.666666666666667
+    },
+    {
+      "a": "AirFit F20 for Her",
+      "b": "AirTouch F20",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 0,
+      "R": 0.5963980865444363
+    },
+    {
+      "a": "AirFit F30",
+      "b": "AirFit F30 bedside starter kit Small",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -3,
+      "R": 0.6055378962088818
+    },
+    {
+      "a": "AirFit F30",
+      "b": "AirFit F30 for AirMini",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 2,
+      "R": 0.6228375440232087
+    },
+    {
+      "a": "AirFit N20",
+      "b": "AirFit N20 Classic",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 0,
+      "R": 0.6072245625477456
+    },
+    {
+      "a": "AirFit N20",
+      "b": "ResMed AirFit N20 Classic",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": 2,
+      "R": 0.46656381643310674
+    },
+    {
+      "a": "AirFit P10",
+      "b": "AirFit P10 bedside starter kit",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -3,
+      "R": 1.000000000000002
+    },
+    {
+      "a": "AirFit P10",
+      "b": "AirFit P10 for AirMini",
+      "m": "model_code",
+      "label": "unknown",
+      "afrc": -4,
+      "R": 0.5387160766931958
+    }
+  ]
+}
