@@ -45,13 +45,13 @@ Each lever changes one subsystem over the baseline build and is verified either 
 | hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
 |---|---|---|---|---|---|
 | R01-H1 | temporal model | bitemporal edges + contradiction reconciliation + entity versioning | supersede-query returns current value, history retained | temporal probe passes, non-lossy | **Promoted** |
-| R01-H2 | retrieval | PPR seeded from vector top-k (GDS PageRank) | multi-hop answerability up, single-hop not down | >= baseline multi-hop, no single-hop regression | pending |
-| R01-H3 | extraction | gleaning re-prompt + entity/relation split | recall up (entities+rels/doc, orphan_rate down) | recall up, duplicate_name_density not up | pending |
-| R01-H4 | resolution | FAISS ANN blocking + LLM judge on defer zone | blocking sub-quadratic, defer decided better | dup density <= baseline, blocking O(n log n) | pending |
-| R01-H5 | type consolidation | embed-block-verify, re-runnable, light isa | post-cure synonyms still merge | late synonym types merged | pending |
-| R01-H6 | retrieval cost | community summaries global-only | local-query LLM cost down, answerability flat | cost down, no answerability loss | pending |
-| R01-H7 | curing/calibration | Chao1 min-sample floor + learned/held-out calibration | no premature cure, no overfit curve | cure blocked below floor | pending |
-| R01-H8 | resolution/drift | union-find split guard + contradiction-rate alarm | over-merges split, fact-drift distinguished | snowball reduced, alarm fires on fact drift | pending |
+| R01-H2 | retrieval | PPR seeded from vector top-k (GDS PageRank) | multi-hop answerability up, single-hop not down | >= baseline multi-hop, no single-hop regression | **Promoted** |
+| R01-H3 | extraction | gleaning re-prompt + entity/relation split | recall up (entities+rels/doc, orphan_rate down) | recall up, duplicate_name_density not up | **Promoted** |
+| R01-H4 | resolution | FAISS ANN blocking + LLM judge on defer zone | blocking sub-quadratic, defer decided better | dup density <= baseline, blocking O(n log n) | **Promoted** |
+| R01-H5 | type consolidation | embed-block-verify, re-runnable, light isa | post-cure synonyms still merge | late synonym types merged | **Kept** (corpus regression, superseded by R02-H10) |
+| R01-H6 | retrieval cost | community summaries global-only | local-query LLM cost down, answerability flat | cost down, no answerability loss | **Promoted** |
+| R01-H7 | curing/calibration | Chao1 min-sample floor + learned/held-out calibration | no premature cure, no overfit curve | cure blocked below floor | **Promoted** |
+| R01-H8 | resolution/drift | union-find split guard + contradiction-rate alarm | over-merges split, fact-drift distinguished | snowball reduced, alarm fires on fact drift | **Kept** (unexercised live) |
 | R01-H9 | model routing | separate extraction model from orchestrator model | cheaper extractor holds recall at lower cost | recall/quality flat vs single strong model, cost down | pending (capability shipped) |
 
 ## Setup
@@ -82,8 +82,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - keep the vector index as the seeder; run PPR from the top-k entities; take top-N PPR nodes plus their source chunks as LLM context
 - **Prediction** - cross-device multi-attribute questions answerable that 1-hop misses; single-hop unaffected
 - **Acceptance bar** - multi-hop answerability >= baseline, no single-hop regression
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - cross-device multi-attribute probe ("AirSense 11 vs iBreeze: pressure ranges, ramp, humidification") answered with grounded per-device specifics (pressure 4-20 cmH2O both, SmartStart vs Preheat/Auto Start, HumidAir 11 tub vs Humidity feature) - unreachable for fixed 1-hop which cannot assemble two neighbourhoods; single-fact probe ("weight of AirSense 11" -> 1130 g) intact. Qualitative probe pair, not an A/B - the 1-hop baseline was replaced, so the comparison is capability, not delta
+- **Verdict** - Promoted; multi-hop comparison demonstrably answered, no single-hop regression observed
 
 ### R01-H3 Gleaning + entity/relation split
 
@@ -92,8 +92,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - after the first instructor pass, re-prompt for missed entities/relations (1-2 rounds); run entity and relation extraction as separate calls
 - **Prediction** - recall up, orphan_rate down, avg_degree up, duplicate_name_density flat
 - **Acceptance bar** - recall up and duplicate_name_density not above baseline
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - CPAP rebuild: 4601 entities (+237% vs 1366), 6717 relationships (+294% vs 1704), orphan_rate 0.059 (baseline 0.127, -53%), avg_degree 2.92 (+17%), duplicate_name_density 0.002 (baseline 0.003 - guardrail holds, DOWN despite 3.4x entities). Costs recorded: ~66 min wall-clock for 26 documents; side finding - relationship-type proliferation (334 native types, entropy 6.22 vs 2.22): gleaning recalls more relation surface than consolidation governs; relation-type consolidation is an open item
+- **Verdict** - Promoted; both bar conditions met decisively
 
 ### R01-H4 ANN blocking + LLM-judged defer zone
 
@@ -102,8 +102,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - FAISS HNSW top-k neighbours per type instead of all-pairs; LLM judge on defer-band pairs only
 - **Prediction** - blocking scales sub-quadratically; defer-band merges more accurate; duplicate_name_density <= baseline
 - **Acceptance bar** - duplicate_name_density <= baseline and blocking complexity sub-quadratic
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - duplicate_name_density 0.002 <= 0.003 baseline on a 3.4x larger graph; ANN blocking (FAISS IndexFlatIP top-k above ann_min_entities=200) engaged on the rebuild's per-document sets and the cure-time buffer, complexity guarantee test-pinned. Defer-zone LLM judge shipped but off by default (llm_defer_judge=False) - unexercised in this run, its live value unmeasured
+- **Verdict** - Promoted on blocking; judge carries no verdict yet
 
 ### R01-H5 Re-runnable hybrid type consolidation
 
@@ -112,8 +112,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - embed each type's definition, block by cosine, LLM-verify each candidate merge; allow bounded re-cure on a post-cure type-count burst; keep a light isa layer instead of a flat collapse
 - **Prediction** - a synonym type introduced after curing gets merged; distinct facets kept
 - **Acceptance bar** - late synonym merged without collapsing distinct types
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - mechanism bar met and test-pinned (embed-block-verify merges synonyms, rejects distinct facets, should_recure reopens on a burst). Corpus outcome is a recorded regression: the cured CPAP ontology holds 65 types vs the baseline's 7 - consolidation under-collapsed because gleaning-boosted extraction promotes spec values (PressureRange, PressureReliefRange, PressureSetting, RampTimeRange, Weight, Warranty, Dimension) to types, and embed-block-verify correctly refuses to merge genuinely distinct value categories. The failure is upstream typing, not the consolidation mechanism
+- **Verdict** - Kept at its own bar; corpus regression recorded and superseded by R02-H10 (values-as-properties + demotion guard), which attacks the cause instead of the symptom
 
 ### R01-H6 Community summaries global-only
 
@@ -122,8 +122,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - PPR path for entity/multi-hop queries; community summaries computed and retrieved only for global queries
 - **Prediction** - local-query LLM cost down, entity-query answerability flat
 - **Acceptance bar** - cost down and answerability not down
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - ingest paid zero community-summary LLM cost (summaries computed only by the explicit optimize call: 82 communities, 82 summaries, modularity 0.830); local probes (comparison, single-fact) answered via the PPR path without touching summaries
+- **Verdict** - Promoted; cost moved out of the ingest path with no local-answerability loss observed
 
 ### R01-H7 Curing + calibration hardening
 
@@ -132,8 +132,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - block the cure gate until a minimum observation count; replace isotonic-on-collected-pairs with a fixed documented threshold below the label floor (temperature scaling on held-out above it); learn resolution LRs where labels exist
 - **Prediction** - cure cannot fire below the floor; calibration does not overfit
 - **Acceptance bar** - cure blocked below the floor
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - floor test-pinned and live: cure fired at document 10 (plateau reason) with the min-sample floor active, versus document 5 on the baseline - no sub-floor cure possible; stability at cure jsd 0.0036, chao1 0.918, dH 0.028; calibration correctly stayed on the fixed documented threshold below the 100-label floor (no isotonic-on-noise)
+- **Verdict** - Promoted; the gate cannot fire early and the calibration overfit path is closed
 
 ### R01-H8 Transitivity guard + fact-drift alarm
 
@@ -142,8 +142,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - after union-find, split components whose internal links are weak; add contradiction-rate per window (incoming edges that invalidate a live edge) as the fact-drift alarm, demoting remap+JSD to the schema-recure trigger
 - **Prediction** - snowballed components split; a fact-drift scenario raises contradiction-rate without raising schema JSD
 - **Acceptance bar** - over-merge split verified and fact-drift alarm distinct from schema drift
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - both mechanisms test-pinned (split guard breaks weak-cohesion components; contradiction-rate alarm fires on invalidations without moving schema JSD). Live corpus never exercised them: 100% of 6717 edges remained valid (spec-sheet corpora do not contradict themselves within one rebuild), 0 invalidations, so the alarm and the split guard carry mechanism verdicts only
+- **Verdict** - Kept; guarantees pinned by tests, live exercise awaits a corpus with superseding facts (S2 scenario)
 
 ### R01-H9 Separate extraction model from orchestrator model
 
@@ -154,6 +154,25 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Acceptance bar** - recall and duplicate_name_density flat vs single strong model, cost down
 - **Result** - pending (capability shipped, measurement not yet run)
 - **Verdict** - pending
+
+### R01 results - CPAP rebuild (26 documents, full R1-R8 engine, 2026-07-06)
+
+Corpus-level deltas against the baseline row; scorecard `reports/scorecard-20260706-105015.json`, run log `logs/cpap-rebuild.log`.
+
+| measure | baseline | R01 rebuild | delta | reading |
+|---|---|---|---|---|
+| entity_count | 1366 | 4601 | +237% | gleaning recall (H3) |
+| relationship_count | 1704 | 6717 | +294% | gleaning recall (H3) |
+| orphan_rate | 0.127 | 0.059 | -53% | recall connects structure (H3) |
+| duplicate_name_density | 0.003 | 0.002 | down | resolution holds at 3.4x scale (H3/H4 guardrail) |
+| avg_degree | 2.49 | 2.92 | +17% | still far below the ~8.75 SOTA band (R02-H13 target) |
+| modularity (Leiden) | 0.81 | 0.830 | flat-up | community structure preserved (82 communities) |
+| entity types (cured) | 7 | 65 | regression | value-as-type promotion (H5 reading, R02-H10 target) |
+| relationship types | ~10 (entropy 2.22) | 334 (entropy 6.22) | regression | ungoverned relation surface - open item |
+| cured at document | 5 | 10 (plateau) | later | more types to stabilize; floor active (H7) |
+| temporal capability | none | bitemporal live, 357 entity versions, 100% edges valid | closed | H1; contradiction path unexercised on this corpus |
+
+The batch reading: the recall and longevity levers landed decisively (recall roughly tripled while duplicates went DOWN); the cost is an ungoverned type surface - 65 entity types and 334 relationship types - which is exactly the retrieval-first problem R02 pre-registers against. Wall-clock ~66 min / 26 documents with per-mention re-embedding (DEF-1) the dominant inefficiency.
 
 ## R02 - retrieval-first graph shape (pre-registered 2026-07-06)
 
