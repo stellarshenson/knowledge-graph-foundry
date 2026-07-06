@@ -1,0 +1,84 @@
+{
+  "baseline_recall": 0.696969696969697,
+  "cosine_sweep": [
+    {
+      "M": 1,
+      "recall": 0.696969696969697,
+      "base_recall": 0.696969696969697,
+      "tok_delta": 0.11337517320074997,
+      "lost": []
+    },
+    {
+      "M": 2,
+      "recall": 0.696969696969697,
+      "base_recall": 0.696969696969697,
+      "tok_delta": 0.21161735539435433,
+      "lost": []
+    },
+    {
+      "M": 3,
+      "recall": 0.7272727272727273,
+      "base_recall": 0.696969696969697,
+      "tok_delta": 0.308147906648192,
+      "lost": []
+    },
+    {
+      "M": 5,
+      "recall": 0.7575757575757576,
+      "base_recall": 0.696969696969697,
+      "tok_delta": 0.48729861167712674,
+      "lost": []
+    }
+  ],
+  "novelty_sweep": [
+    {
+      "M": 1,
+      "recall": 0.696969696969697,
+      "tok_delta": 0.14888472301464395,
+      "lost": [],
+      "recovered": []
+    },
+    {
+      "M": 2,
+      "recall": 0.7272727272727273,
+      "tok_delta": 0.21838237291819484,
+      "lost": [],
+      "recovered": [
+        [
+          "P19",
+          "constant lower pressure"
+        ]
+      ]
+    },
+    {
+      "M": 3,
+      "recall": 0.7272727272727273,
+      "tok_delta": 0.25641861602412575,
+      "lost": [],
+      "recovered": [
+        [
+          "P19",
+          "constant lower pressure"
+        ]
+      ]
+    },
+    {
+      "M": 5,
+      "recall": 0.7575757575757576,
+      "tok_delta": 0.31893389844323083,
+      "lost": [],
+      "recovered": [
+        [
+          "P03",
+          "28 dB(A)"
+        ],
+        [
+          "P19",
+          "constant lower pressure"
+        ]
+      ]
+    }
+  ],
+  "operating_M": null,
+  "verdict": "REFUTED"
+}
