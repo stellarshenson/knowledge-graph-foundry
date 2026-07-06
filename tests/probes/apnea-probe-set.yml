@@ -1,0 +1,409 @@
+description: Benchmark document corpus probe set - 47 synthetic QA pairs with gold answers; cluster field maps each probe
+  to its source-document cluster (answerable once that cluster is ingested)
+probes:
+- id: AQ01
+  question: Why might a home sleep study be insufficient for diagnosing Upper Airway Resistance Syndrome (UARS)?
+  gold_answer: Home sleep studies may be insufficient for diagnosing Upper Airway Resistance Syndrome (UARS) because they
+    typically focus on measuring the Apnea-Hypopnea Index (AHI), which may not capture the full spectrum of sleep-disordered
+    breathing. UARS is characterized by Respiratory Effort-Related Arousals (RERAs), which indicate flow limitations leading
+    to arousals. These RERAs are often not measured in home sleep studies. Consequently, individuals with UARS may show a
+    low AHI but still experience persistent symptoms, necessitating further evaluation through in-lab polysomnography to accurately
+    assess RERAs and other sleep disturbances.
+  source_topic: Do I have UARS?
+  cluster: 14
+- id: AQ02
+  question: How does high altitude affect CPAP therapy, and what adjustments might be necessary?
+  gold_answer: High altitude can impact CPAP therapy due to decreased absolute air pressure. While CPAP devices typically
+    compensate for altitude changes up to about 8000 feet, adjustments may be necessary above this level. Some users report
+    increased Central Apnea events at high altitudes. Possible adjustments include reducing pressure support (PS) and minimum
+    pressure. Self-titration skills are valuable for CPAP users traveling to high-altitude locations, as they may need to
+    fine-tune their settings for optimal therapy effectiveness.
+  source_topic: xPAP setting changes at high altitudes (above 8000 feet)?
+  cluster: 3
+- id: AQ03
+  question: How do replacement frequencies differ between nasal pillows and other CPAP mask components?
+  gold_answer: Replacement frequencies for CPAP mask components vary, with nasal pillows typically requiring more frequent
+    replacement than other parts. Nasal pillows are often replaced every 6 to 9 months due to their direct face contact and
+    wear. In contrast, mask frames and tubing are usually replaced less frequently, with some users changing them every few
+    months to annually or even longer. The replacement schedule depends on individual usage, care practices, and visible wear.
+    Some users employ a rotation system for nasal pillows to extend their lifespan.
+  source_topic: Nasal Pillow P10 mask cleaning question
+  cluster: 80
+- id: AQ04
+  question: What are the key recommendations for individuals using CPAP therapy while wearing braces?
+  gold_answer: 'For individuals using CPAP therapy while wearing braces, key recommendations include: 1) Consulting with both
+    a dentist/orthodontist and sleep medicine physician to address potential interactions. 2) Exploring different CPAP mask
+    types to find one that fits comfortably and securely with braces. 3) Adjusting CPAP mask straps to avoid excessive pressure
+    on the braces. 4) Considering the use of dental wax or other protective materials to minimize irritation from braces.
+    These steps can help ensure effective CPAP therapy while maintaining orthodontic treatment.'
+  source_topic: CPAP and braces
+  cluster: 38
+- id: AQ05
+  question: What types of sleep apnea metrics can be analyzed using tools like SleepyHead?
+  gold_answer: Sleep data analysis tools like SleepyHead allow CPAP users to examine various sleep apnea metrics. These include
+    the Apnea-Hypopnea Index (AHI), different types of respiratory events (such as obstructive apneas, central apneas, and
+    hypopneas), pressure levels used during therapy, and mask leak rates. By analyzing these metrics, users can identify patterns
+    in their sleep data, troubleshoot issues with their therapy, and potentially optimize their CPAP settings for more effective
+    treatment.
+  source_topic: Increased AHI due to weight loss
+  cluster: 21
+- id: AQ06
+  question: What are some common factors that contribute to non-compliance with CPAP therapy?
+  gold_answer: Several factors can contribute to non-compliance with CPAP therapy. These include mask discomfort, which can
+    make it difficult for users to sleep comfortably, and side effects such as dry mouth or nasal congestion. Some individuals
+    may experience claustrophobia when wearing the mask, leading to anxiety and reduced usage. Additionally, a lack of perceived
+    benefit can discourage consistent use, especially if improvements in sleep quality or daytime functioning are not immediately
+    noticeable.
+  source_topic: New To CPAP - Need Help Finding Mask, Reliable Dealer
+  cluster: 72
+- id: AQ07
+  question: How does a subnet mask determine if two devices are on the same network?
+  gold_answer: A subnet mask determines if two devices are on the same network by defining which parts of their IP addresses
+    must match. For a common subnet mask of 255.255.255.0, the first three octets of the IP addresses must be identical for
+    devices to be on the same subnet. For example, devices with IP addresses 192.168.1.10 and 192.168.1.20 are on the same
+    network, while 192.168.1.10 and 192.168.50.10 are not. The last octet must be unique for each device to avoid conflicts
+    within the network.
+  source_topic: New Router- No FlashAir anymore
+  cluster: 96
+- id: AQ08
+  question: Is OSCAR software compatible with Android devices?
+  gold_answer: No, OSCAR (Open Source CPAP Analysis Reporter) is not natively compatible with Android devices. This sleep
+    data analysis software is designed for use on desktop operating systems. Users who want to analyze their CPAP sleep data
+    using OSCAR will need to use a compatible desktop computer rather than an Android smartphone or tablet.
+  source_topic: Download onto Android
+  cluster: 106
+- id: AQ09
+  question: What is the purpose of sleep apnea congresses for healthcare professionals?
+  gold_answer: Sleep apnea congresses serve as professional conferences for healthcare providers to discuss and share the
+    latest advancements in sleep-disordered breathing (SDB) diagnosis and treatment. These events provide a platform for presenting
+    new research, exchanging clinical practices, and exploring technological innovations in sleep medicine. By attending these
+    congresses, healthcare professionals can stay updated on current trends and challenges in managing sleep apnea and related
+    conditions.
+  source_topic: Just for info - sleep apnoea congress February in USA
+  cluster: 93
+- id: AQ10
+  question: Can CPAP therapy cause or increase central apneas?
+  gold_answer: Yes, CPAP therapy can potentially cause or increase central apneas in some individuals. While central apneas
+    may not be present in initial sleep studies, they can emerge or increase after starting CPAP treatment. However, a few
+    isolated central apneas per night, especially if short in duration, may not be clinically significant. These events are
+    sometimes called "sleep garbage" and can occur during sleep transitions. It's important to monitor the frequency and pattern
+    of central apneas, as a sustained or increasing occurrence may require further evaluation.
+  source_topic: Can CPAP therapy cause Total Clear Airway Apneas
+  cluster: 84
+- id: AQ11
+  question: How does the ResMed AirSense 10 AutoSet adjust pressure during sleep?
+  gold_answer: The ResMed AirSense 10 AutoSet automatically adjusts pressure levels throughout the night based on the user's
+    needs. It continuously monitors for respiratory events and changes the pressure accordingly to provide optimal therapy.
+    This automatic adjustment helps ensure that the user receives the appropriate pressure at all times during sleep, potentially
+    improving the effectiveness of the sleep apnea treatment.
+  source_topic: ResScan help
+  cluster: 100
+- id: AQ12
+  question: Why might CPAP devices have weaker wireless signal strength compared to cell phones?
+  gold_answer: CPAP devices may have weaker wireless signal strength compared to cell phones due to differences in design
+    priorities and target users. CPAP manufacturers often focus primarily on ensuring compliance data transmission to Durable
+    Medical Equipment (DME) providers, rather than optimizing connectivity for patient use. This approach can result in less
+    robust wireless capabilities in CPAP devices compared to consumer electronics like smartphones, which are designed with
+    strong connectivity as a key feature.
+  source_topic: ResMed Stonewalling Legitimate Question on MyAir
+  cluster: 86
+- id: AQ13
+  question: What are some common causes of the "No supported data found" error in OSCAR software?
+  gold_answer: The "No supported data found" error in OSCAR software can occur due to several reasons. These include file
+    format incompatibility between the CPAP machine and OSCAR, selecting the wrong folder during data import, operating system
+    compatibility issues (especially for Mac OS users), and potential data corruption. This error essentially means that OSCAR
+    is unable to recognize or locate the CPAP data files on the storage medium, such as an SD card, during the import process.
+  source_topic: no supported data was found
+  cluster: 106
+- id: AQ14
+  question: How can chin tucking affect CPAP therapy, and what solution is suggested?
+  gold_answer: Chin tucking during sleep can lead to airway closure, even when CPAP pressure settings are high. This position
+    can compromise the effectiveness of CPAP therapy by obstructing the airway. To address this issue, using a neck brace
+    is suggested as a solution. The neck brace helps maintain proper neck alignment, particularly when sleeping on the back,
+    preventing the chin from tucking and keeping the airway open for more effective CPAP therapy.
+  source_topic: Back to using my AirFit F20
+  cluster: 72
+- id: AQ15
+  question: What warranty options are typically available for CPAP machines in Australia?
+  gold_answer: In Australia, CPAP machines typically come with a standard 2-year warranty when purchased from local suppliers.
+    ResMed offers an extended warranty program called SleepVantage for additional coverage. Some local suppliers may also
+    provide options to purchase up to 5 years of total warranty coverage. These warranty options help protect the investment
+    in CPAP therapy and provide peace of mind for users in case of equipment issues.
+  source_topic: SecondWind CPAP
+  cluster: 95
+- id: AQ16
+  question: Why might CPAP users need to report their therapy usage data to third parties?
+  gold_answer: CPAP users may need to report their therapy usage data to third parties for compliance reasons, particularly
+    in certain professions. Government agencies like the Department of Transportation (DOT) or the Federal Aviation Administration
+    (FAA) may require regular reporting of CPAP therapy usage and sleep data. This compliance reporting is separate from insurance
+    requirements and is typically managed through the patient's sleep doctor, who collects and transfers the necessary data
+    using appropriate hardware.
+  source_topic: Micro SD Card For DreamStation Go
+  cluster: 100
+- id: AQ17
+  question: What financial challenge do CPAP users often face when replacing specific mask parts?
+  gold_answer: CPAP users often face the financial challenge of having to purchase entire mask kits to obtain a single replacement
+    part. This situation can significantly increase out-of-pocket expenses, especially when insurance doesn't cover these
+    supplies. For example, to replace a specific component like the elbow for the ResMed Quatro Air FFM, users might need
+    to buy a complete mask kit, which is considerably more expensive than just the needed part.
+  source_topic: Cant find a part for Quatro Air FFM for her
+  cluster: 72
+- id: AQ18
+  question: Where does OSCAR typically store user data on a computer?
+  gold_answer: OSCAR typically stores user data in the "~/Documents/OSCAR_Data" directory on the user's computer. This location
+    is where CPAP data imported from SD cards or other sources is saved for analysis. Checking this directory can be helpful
+    when troubleshooting data import issues or unexpected software behavior.
+  source_topic: OSCAR quit unexpectedly
+  cluster: 106
+- id: AQ19
+  question: How is ideal body weight (IBW) used in determining ventilator settings?
+  gold_answer: Ideal body weight (IBW) is used in respiratory therapy to calculate appropriate ventilator settings, particularly
+    the target tidal volume (Vt). A common approach is to use 6 ml/kg of IBW to determine the target Vt. This calculation
+    helps ensure that ventilator settings are tailored to the patient's body size, rather than their actual weight, which
+    may not reflect their lung capacity. The IBW-based calculations can influence settings like the Target Va on iVAPS machines,
+    though variations in IBW formulas may lead to differences in the final settings.
+  source_topic: Setting Target Va on iVAPS machine
+  cluster: 85
+- id: AQ20
+  question: What are the main types of CPAP/BiPAP masks and how do they differ?
+  gold_answer: 'There are three main types of CPAP/BiPAP masks: nasal masks, nasal pillow masks, and full-face masks. Nasal
+    masks cover only the nose and are suitable for nose breathers. Nasal pillow masks have soft cushions that fit directly
+    into the nostrils, offering minimal contact. Full-face masks cover both the nose and mouth, making them ideal for mouth
+    breathers or those with nasal congestion. The choice of mask depends on individual breathing patterns, comfort preferences,
+    and specific therapy needs.'
+  source_topic: Getting New Aircurve 10 Bilevel today
+  cluster: 90
+- id: AQ21
+  question: What are Xylimelts and how do they help with dry mouth?
+  gold_answer: Xylimelts are oral dissolving tablets that adhere to the teeth or gums. They slowly release xylitol, a natural
+    sweetener that stimulates saliva production, helping to alleviate dry mouth symptoms. These tablets are particularly useful
+    for individuals experiencing dry mouth due to medical conditions, medications, or CPAP therapy. Xylimelts can be found
+    in most drugstores, typically located near toothpaste or Biotene products.
+  source_topic: A question
+  cluster: 65
+- id: AQ22
+  question: What are some troubleshooting steps for missing data in OSCAR software?
+  gold_answer: To troubleshoot missing data in OSCAR software, users can try several steps. First, verify that all relevant
+    waveforms are selected in OSCAR's preferences under File > Preferences > Waveforms. Next, ensure the correct CPAP device
+    is selected in OSCAR's device profile. If data is still missing, reformat the SD card and allow the CPAP machine to record
+    data for several nights before reimporting it into OSCAR. This process can help determine if the issue is due to data
+    corruption or device incompatibility.
+  source_topic: OSCAR - No data summary only
+  cluster: 106
+- id: AQ23
+  question: How can shingles affect sleep apnea treatment?
+  gold_answer: Shingles, a painful viral infection caused by the reactivation of the varicella-zoster virus, can significantly
+    impact sleep apnea treatment. The discomfort associated with shingles can make it more challenging for patients to adhere
+    to their sleep apnea therapy, such as using CPAP machines. This reduced adherence can potentially worsen sleep apnea symptoms
+    and overall health outcomes. Managing shingles effectively is important to ensure continued compliance with sleep apnea
+    treatment and maintain overall health.
+  source_topic: Obstructive and Central Sleep Apnea
+  cluster: 89
+- id: AQ24
+  question: How can CPAP users optimize their therapy settings?
+  gold_answer: CPAP users can optimize their therapy settings through several methods. They can monitor symptoms like snoring,
+    which may indicate a need for pressure adjustments. Newer machines, such as the ResMed AirSense 10 AutoSet, offer automatic
+    pressure adjustment features. Users can also analyze their sleep data using software like OSCAR and consult with experts
+    to fine-tune their settings. This combination of self-monitoring, advanced machine features, and professional guidance
+    helps ensure the most effective CPAP therapy.
+  source_topic: Whats the best new machine??
+  cluster: 57
+- id: AQ25
+  question: How often should CPAP mask cushions be replaced and why?
+  gold_answer: CPAP mask cushions should typically be replaced after about 12 months of use, or sooner if needed. Regular
+    replacement is necessary because skin oils can degrade the cushion over time, leading to poor sealing and increased air
+    leakage. A cushion used for a year may no longer provide an adequate seal, compromising therapy effectiveness. Following
+    manufacturer guidelines for replacement schedules helps maintain proper mask fit, reduce leakage, and ensure optimal CPAP
+    therapy performance.
+  source_topic: Mask Usage , in particular Mask Leakage
+  cluster: 71
+- id: AQ26
+  question: How can CPAP users enhance their airflow and comfort during therapy?
+  gold_answer: CPAP users can enhance airflow and comfort during therapy through several methods. Devices like the SleepRes
+    V-Com can be used to improve inspiratory comfort and airflow. To address dryness and congestion, inline moisture devices
+    can be utilized as an alternative to machine-specific humidification systems. Additionally, ensuring proper mask fit and
+    selecting appropriate accessories are crucial steps in optimizing comfort and effectiveness of CPAP therapy.
+  source_topic: Q-lite Muffler to AirMini Mask Adapter Availability??
+  cluster: 23
+- id: AQ27
+  question: How is nocturia related to sleep apnea?
+  gold_answer: Nocturia, the frequent need to urinate at night, can be a symptom of sleep apnea. While often associated with
+    urological issues, nocturia may lead individuals to seek medical help and undergo sleep studies. Treating sleep apnea
+    can initially reduce nocturia symptoms. However, the recurrence of nocturia despite ongoing sleep apnea treatment suggests
+    the need for further medical evaluation to identify potential underlying causes and adjust treatment strategies.
+  source_topic: Nocturia was gone, now back
+  cluster: 32
+- id: AQ28
+  question: What factors should be considered when selecting a battery pack for CPAP travel?
+  gold_answer: When selecting a battery pack for CPAP travel, several factors should be considered. These include the weight
+    and size of the battery, its capacity to power the CPAP machine for the required duration, recharge options available
+    at the destination, and the specific power requirements of the CPAP device. The availability of electricity for recharging
+    at the travel location is also crucial. For international or remote travel, such as to the Amazon, additional planning
+    may be necessary to ensure consistent power supply for the CPAP machine throughout the trip.
+  source_topic: Battery Pack for travel
+  cluster: 26
+- id: AQ29
+  question: What are some strategies to reduce nasal mask irritation for new CPAP users?
+  gold_answer: Several strategies can help reduce nasal mask irritation for new CPAP users. These include allowing an adjustment
+    period for the skin, applying lanolin-based creams as a protective barrier, using thin hypoallergenic medical tape between
+    the mask and skin, carefully adjusting the mask to reduce pressure on sensitive areas, and maintaining proper mask hygiene.
+    In some cases, switching to a different mask model with a softer interface, such as the ResMed N30i, may be beneficial.
+    These approaches can help minimize soreness, redness, and skin breakdown often experienced at the point of contact between
+    the mask and skin.
+  source_topic: New User - Sore under nose
+  cluster: 72
+- id: AQ30
+  question: Can CPAP therapy lead to increased flatulence, and why?
+  gold_answer: Yes, CPAP therapy can potentially lead to increased flatulence. This is primarily due to aerophagia, a condition
+    where air is swallowed during CPAP use. The excess air in the digestive system can cause bloating, abdominal discomfort,
+    and increased gas, resulting in more flatulence. To manage this side effect, patients may need to adjust their CPAP pressure
+    settings or try positional therapy. If the issue persists, it's advisable to consult with a healthcare provider to optimize
+    the treatment and minimize discomfort.
+  source_topic: Am I understanding flatulence could be in my future?
+  cluster: 12
+- id: AQ31
+  question: How long does a ResMed CPAP machine store detailed therapy data on its SD card?
+  gold_answer: A ResMed CPAP machine typically stores detailed therapy data on its SD card for about 30 days. More specifically,
+    it keeps detailed data for approximately 30 days and flow data for about 7 days. However, the machine retains summary
+    data for up to a year. This storage system allows for comprehensive short-term analysis while maintaining long-term trends
+    in therapy usage and effectiveness.
+  source_topic: New ResScan version 5.5 now available [old version]
+  cluster: 100
+- id: AQ32
+  question: What are the typical resistance values for the heater and sensor in a ClimateLine heated hose?
+  gold_answer: In a ClimateLine heated hose, the typical resistance values are approximately 5 Ohms for the heater and around
+    175 Ohms for the sensor. These specific resistance values are important for determining the functionality of the heated
+    hose. If measured resistance values differ significantly from these expected ranges, it may indicate a problem with the
+    hose's components.
+  source_topic: Heated Hose Damaged?
+  cluster: 77
+- id: AQ33
+  question: What types of sleep data are important for analyzing CPAP therapy effectiveness?
+  gold_answer: Important sleep data for analyzing CPAP therapy effectiveness includes apnea events, breathing flow disturbances,
+    and various breathing parameters. This data provides crucial insights into the patient's sleep patterns and the performance
+    of the CPAP machine. By examining these metrics, clinicians and patients can assess therapy effectiveness, identify potential
+    issues, and make informed decisions about treatment adjustments to optimize outcomes.
+  source_topic: Luna G3 Data Request
+  cluster: 106
+- id: AQ34
+  question: What are some common issues that CPAP users may encounter during troubleshooting?
+  gold_answer: Common issues that CPAP users may encounter during troubleshooting include mask leaks, air pressure problems,
+    device malfunctions, and software errors. These issues can affect the effectiveness of the therapy and user comfort. To
+    address these problems, users may need to consult their device's user manual, seek assistance from healthcare providers
+    or equipment suppliers, or interpret error codes displayed on the CPAP machine. Regular maintenance and checks can help
+    prevent many of these common issues.
+  source_topic: 'RE: ResScan CPAP Reporting Software'
+  cluster: 100
+- id: AQ35
+  question: What are the key respiratory events monitored in CPAP therapy?
+  gold_answer: The key respiratory events monitored in CPAP therapy are apneas, hypopneas, and respiratory effort-related
+    arousals (RERAs). These events are crucial indicators of sleep apnea severity and are used to assess the effectiveness
+    of CPAP treatment. Regular monitoring of these respiratory events, along with therapy compliance data, helps healthcare
+    providers adjust treatment plans and ensure optimal outcomes for patients using CPAP therapy.
+  source_topic: RERA - I can't view
+  cluster: 15
+- id: AQ36
+  question: How can users address the issue of data from one device appearing in the profile of another device in OSCAR?
+  gold_answer: To address the issue of data from one device appearing in the profile of another device in OSCAR, users can
+    utilize the "purge data" function. This feature clears the profile of any unintended data. After purging, users should
+    note that the daily view may not be accessible until new data is imported. Additionally, it's crucial to ensure that the
+    correct device description is associated with each active profile to properly identify the source of the respiratory data
+    and prevent future mix-ups.
+  source_topic: Running 2 Oscar on same computer
+  cluster: 106
+- id: AQ37
+  question: How can CPAP humidification affect nasal congestion?
+  gold_answer: CPAP humidification can significantly impact nasal congestion. Insufficient humidity can lead to dryness and
+    irritation of the nasal passages, potentially worsening congestion. Conversely, excessive humidity might also cause issues.
+    Finding the right balance is crucial for comfort and effectiveness. CPAP users experiencing nasal congestion should adjust
+    their humidifier settings, potentially using heated humidifiers or heated hoses, to achieve optimal humidity levels that
+    alleviate congestion without causing other problems.
+  source_topic: Nasal congestion early morning
+  cluster: 39
+- id: AQ38
+  question: How can users access therapy and blower hours on some Respironics CPAP and BiPAP devices?
+  gold_answer: On certain Respironics CPAP and BiPAP devices, users can access therapy and blower hours through the patient
+    menu. By selecting the "Phone-In" option within this menu, both therapy and blower hours may be displayed. However, it's
+    important to note that this method might not be available on all Respironics models, especially those that were manufactured
+    before the System One series.
+  source_topic: Where are blower hours on a Respironics Bipap Auto? Pre - system 1 model
+  cluster: 73
+- id: AQ39
+  question: Why can't OSCAR data files be stored directly on cloud services?
+  gold_answer: OSCAR data files cannot be stored directly on cloud services due to latency issues that would interfere with
+    the software's proper functioning. The OSCAR software requires quick access to data files, which is best achieved when
+    they are stored locally on the computer's hard drive. While users can back up their OSCAR_Data directory to cloud storage
+    for safekeeping, the active data used by the software must be kept on a local drive to ensure optimal performance and
+    reliability.
+  source_topic: Help with Oscar Installation
+  cluster: 106
+- id: AQ40
+  question: What potential issues can arise when using data analysis software with CPAP devices?
+  gold_answer: When using data analysis software with CPAP devices, several potential issues can arise due to compatibility
+    problems. These include the software failing to recognize the CPAP device, misinterpreting the data, or producing inaccurate
+    reports. Such issues can occur due to differences in CPAP device models, firmware versions, and the specific data analysis
+    tools being used. To avoid these problems, users should verify compatibility between their CPAP device and the analysis
+    software before attempting to import or analyze their sleep data.
+  source_topic: CARD-T0-CLOUD
+  cluster: 100
+- id: AQ41
+  question: What key parameters did the patient monitor to assess the effectiveness of their CPAP therapy?
+  gold_answer: The patient monitored several key parameters to assess the effectiveness of their CPAP therapy. These included
+    the Apnea-Hypopnea Index (AHI), flow limitation, tidal volume, and minute ventilation. Additionally, they tracked respiratory
+    rate and spontaneous arousals. The patient also analyzed the relationship between sleep apnea events and sleep stages,
+    particularly noting events clustered during REM sleep. By monitoring these parameters, the patient was able to evaluate
+    their therapy's effectiveness and make informed decisions about potential treatment adjustments or surgical interventions.
+  source_topic: Talk me into or out of surgery
+  cluster: 47
+- id: AQ42
+  question: What is Expiratory Pressure Relief (EPR) in CPAP therapy and how does it work?
+  gold_answer: Expiratory Pressure Relief (EPR) is a feature available on some CPAP machines that lowers the air pressure
+    during exhalation. This feature is designed to make CPAP therapy more comfortable for users by reducing the effort required
+    to breathe out against the constant air pressure. EPR can potentially help reduce hypopneas and clear airway events, enhancing
+    overall therapy effectiveness. However, it's important to note that EPR settings should be adjusted carefully, as improper
+    settings may negatively impact therapy for some individuals.
+  source_topic: Low SpO2 dips
+  cluster: 99
+- id: AQ43
+  question: How do nasal pillow masks differ from full-face CPAP masks in terms of air delivery?
+  gold_answer: Nasal pillow masks and full-face CPAP masks differ significantly in their air delivery methods. Nasal pillow
+    masks insert slightly into the nostrils, delivering air directly through the nose. This design can be more effective in
+    opening nasal passages for some users. Full-face masks, on the other hand, cover both the nose and mouth, delivering air
+    to both airways simultaneously. Full-face masks are often recommended for mouth breathers or those with nasal congestion,
+    as they ensure consistent air delivery regardless of breathing patterns.
+  source_topic: Why would cushion size affect how well I breathe?
+  cluster: 72
+- id: AQ44
+  question: What is OSCAR software used for in CPAP therapy?
+  gold_answer: OSCAR (Open Source CPAP Analysis Reporter) is a software tool designed for analyzing respiratory data from
+    CPAP machines. It allows users to import and examine detailed information from their CPAP therapy sessions, helping them
+    monitor their treatment progress and identify potential issues. OSCAR provides a way for patients to gain insights into
+    their sleep apnea therapy beyond what may be available through manufacturer-specific software.
+  source_topic: Oscar setup
+  cluster: 106
+- id: AQ45
+  question: What types of data are typically generated by CPAP machines during sleep therapy?
+  gold_answer: CPAP machines typically generate several types of data during sleep therapy. This includes usage hours, which
+    track how long the device was used each night. Pressure settings are also recorded, showing the air pressure levels delivered
+    throughout the night. Additionally, the machines log respiratory events, such as apneas or hypopneas. This comprehensive
+    data is crucial for monitoring the effectiveness of the therapy and allows healthcare providers to make necessary adjustments
+    to optimize treatment.
+  source_topic: Ordinal 4540 Not Found SH 1.0.0b2
+  cluster: 100
+- id: AQ46
+  question: What causes mineral scale buildup in CPAP humidifier chambers and how can it be prevented?
+  gold_answer: Mineral scale buildup in CPAP humidifier chambers is primarily caused by water evaporation, especially when
+    using tap water with high mineral content. This buildup is typically confined to the water tank and doesn't affect the
+    CPAP machine's internal components or tubing. To prevent or manage scale buildup, users can use distilled water instead
+    of tap water and perform regular cleaning of the humidifier chamber with vinegar to remove any existing mineral deposits.
+  source_topic: Distilled water storage
+  cluster: 79
+- id: AQ47
+  question: What is "exhale puffing" in the context of CPAP therapy, and how does it affect expiratory flow rate waveforms?
+  gold_answer: '"Exhale puffing" is a phenomenon in CPAP therapy where a user inhales through the nose but exhales primarily
+    through the mouth. This breathing pattern can cause anomalies in expiratory flow rate waveforms, typically resulting in
+    a diminished or absent expiratory portion of the waveform. When analyzing CPAP data logs using software like OSCAR, users
+    may observe these irregularities as cutoffs or unusual shapes during the exhalation phase. Understanding this pattern
+    can help in interpreting CPAP data and potentially addressing issues in therapy effectiveness.'
+  source_topic: Odd Expiratory Flow Rate Waveform
+  cluster: 52

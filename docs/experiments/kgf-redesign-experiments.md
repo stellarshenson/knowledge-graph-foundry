@@ -373,3 +373,13 @@ The regime doctrine operationalized: a use case narrows every stage, and failure
 - **Experiment** - <br>source: [`[paper digest] Predicting Completeness in Knowledge Bases.md`](../../references/papers/), [`[paper digest] Completeness Recall and Negation in Open-World KBs.md`](../../references/papers/), [`[paper digest] UnCommonSense.md`](../../references/papers/), [`[paper digest] GenIC.md`](../../references/papers/), [`[paper digest] EvoRAG.md`](../../references/papers/)<br>method: per-type attribute prevalence over the rebuilt graph (threshold ~0.7 sibling prevalence), gap queue -> repair, gap ledger -> abstention check on the 4 unanswerable probes
 - **Result** - pending
 - **Verdict** - pending
+
+## R05 - longevity campaign on the benchmark document corpus (pre-registered 2026-07-06)
+
+The long hypothesis: KGF's lifecycle machinery (curing, drift, calibration, audits) earns its keep only under sustained multi-wave operation - unmeasurable at 26 documents, measurable at thousands. Corpus: 10,763 deduplicated reference articles (9.4M chars, 105 topic clusters); waves are cluster-sliced JSONL files in `data/interim/apnea-waves/` (6 waves, 5,101 docs planned; adaptive extension to the full corpus). Engine: local gpt-oss-120b (vLLM, 96GB card, zero API cost); embeddings Bedrock Titan. Graph: dedicated third Neo4j container. Probes: 47 synthetic QA pairs with gold answers (`tests/probes/apnea-probe-set.yml`), each mapped to its source cluster - 24 fall inside the planned waves, 23 remain out-of-corpus controls that must be refused until (unless) their cluster is ingested.
+
+| hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
+|---|---|---|---|---|---|
+| R05-H24 | lifecycle at scale | curing + consolidation under 6 cluster-shifted waves | type system stays bounded while content grows ~10x | type count <= 30 at campaign end; chao1 saturation maintained; drift signal fires on >= 1 cluster transition | pending |
+| R05-H25 | zero-cost extractor | gpt-oss-120b extraction + propositions + grounded reader | product thesis holds on a local engine | in-wave probe accuracy >= 0.75 (corrected scorer) | pending |
+| R05-H26 | coverage growth | fixed probe set re-run after each wave | answerability tracks cluster membership monotonically | in-wave probes flip to answered as their cluster lands; out-of-wave probes >= 70% refused throughout | pending |

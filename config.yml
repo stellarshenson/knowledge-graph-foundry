@@ -1,7 +1,6 @@
-# Quota routing (2026-07-06): Sonnet/Haiku daily Bedrock quotas exhausted;
-# reader + orchestrator on Bedrock Opus 4.5 (own quota, verified live).
-# Delete when quotas reset.
+# Default engine: Bedrock Sonnet 4.5 (quota verified reset 2026-07-06).
+# Failover doctrine when a daily quota trips: Sonnet -> Haiku -> Opus -> local.
 llm:
   engine: frontier
-  model: bedrock/eu.anthropic.claude-opus-4-5-20251101-v1:0
+  model: bedrock/eu.anthropic.claude-sonnet-4-5-20250929-v1:0
   region: eu-central-1

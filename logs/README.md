@@ -13,3 +13,5 @@ Background job logs for Knowledge Graph Foundry.
 - `h10-optimize.log` - communities + propositions + densification on the rebuilt graph
 - `probe-eval-phaseA.log`, `probe-eval-weak.log`, `probe-eval-r03.log` - probe evaluation notebook executions
 - `repair-p09.log`, `repair-p19.log` - R04 targeted repair runs against the rebuilt graph
+- `vllm-server.log` - local gpt-oss-120b vLLM server (port 8010, 96GB card)
+- `r05-wave-*.log` - R05 longevity campaign wave ingestions on the local engine

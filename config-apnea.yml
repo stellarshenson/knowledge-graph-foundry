@@ -1,0 +1,14 @@
+# R05 campaign config: benchmark document corpus on the local engine.
+# Graph lives in the dedicated third Neo4j container; LLM served locally
+# (gpt-oss-120b via vLLM on the 96GB card); embeddings stay on Bedrock Titan.
+neo4j:
+  uri: bolt://user-konrad.jelen-kgf-neo4j3:7687
+  user: neo4j
+  password: kgfoundry
+
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 180
