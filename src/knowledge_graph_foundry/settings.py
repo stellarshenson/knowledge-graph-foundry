@@ -104,6 +104,7 @@ class GraphRAGSettings(BaseModel):
 class LoadSettings(BaseModel):
     batch_size: int = 500
     entity_versioning: bool = True  # snapshot prior entity state on content change
+    provenance_nodes: bool = True  # R02-H12/S6: Chunk+Document nodes, MENTIONED_IN edges
     functional_relationship_types: list[str] = []  # single-valued rels: a new target supersedes
 
 

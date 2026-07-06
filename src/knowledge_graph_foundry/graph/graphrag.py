@@ -160,8 +160,11 @@ def ppr_query(
             return []
         try:
             session.run("CALL gds.graph.drop($name, false)", name=_PPR_PROJECTION).consume()
+            # R02-H12: chunks join the projection (HippoRAG 2 passage nodes) so
+            # passage and entity relevance diffuse jointly; _PPR_STREAM still
+            # filters returned nodes to entities
             session.run(
-                "CALL gds.graph.project($name, 'Entity', "
+                "CALL gds.graph.project($name, ['Entity', 'Chunk'], "
                 "{ALL: {type: '*', orientation: 'UNDIRECTED'}})",
                 name=_PPR_PROJECTION,
             ).consume()

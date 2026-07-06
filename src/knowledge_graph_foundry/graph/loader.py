@@ -44,7 +44,15 @@ SET e.name = row.name,
 SET e += row.props
 WITH e, row
 CALL apoc.create.addLabels(e, row.types) YIELD node
-RETURN count(node) AS n
+WITH e, row
+CALL {
+    WITH e, row
+    UNWIND row.source_chunks AS cid
+    MATCH (c:Chunk {id: cid})
+    MERGE (e)-[:MENTIONED_IN]->(c)
+    RETURN count(*) AS mentions
+}
+RETURN count(e) AS n
 """
 
 _RELATIONSHIP_QUERY = """

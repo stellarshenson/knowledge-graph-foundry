@@ -354,7 +354,30 @@ class Foundry:
                 concurrency=self.settings.extraction.concurrency,
                 extraction_cfg=self.settings.extraction,
             )
+            if self.settings.load.provenance_nodes:
+                self._load_provenance(document, chunks, file_path.name)
         return result.entities, result.relationships
+
+    def _load_provenance(self, document, chunks, source_name: str) -> None:
+        """R02-H12/S6: persist Document + Chunk nodes so passages join the PPR
+        projection and every entity is traceable to its source text."""
+        with self.driver.session() as session:
+            session.run(
+                "MERGE (d:KGFDocument {id: $id}) "
+                "ON CREATE SET d.name = $name, d.created_at = timestamp()",
+                id=document.id,
+                name=source_name,
+            ).consume()
+            session.run(
+                "UNWIND $rows AS row "
+                "MERGE (c:Chunk {id: row.id}) "
+                "ON CREATE SET c.text = row.text, c.index = row.index, "
+                "c.created_at = timestamp() "
+                "WITH c MATCH (d:KGFDocument {id: $doc_id}) "
+                "MERGE (c)-[:PART_OF]->(d)",
+                rows=[{"id": c.id, "text": c.text, "index": i} for i, c in enumerate(chunks)],
+                doc_id=document.id,
+            ).consume()
 
     def _embed(self, entities: list[Entity]) -> list[Entity]:
         from knowledge_graph_foundry.extraction import generate_embeddings
