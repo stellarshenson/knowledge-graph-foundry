@@ -316,3 +316,60 @@ Failure inspection revealed the deterministic scorer was too strict for prose go
 | B0 rebuilt, full | H10 rebuild | Opus 4.5 | **0.917** (0.792) | 0.90 | **1.00** | 0.83 (0.33) | 4/4 |
 
 Corrected reading: multi-hop was never broken - 5 of 6 multi-hop probes answer correctly on all graphs; the "0.33 wall" was the scorer. H11's deltas survive (A0 -> A1 +4.2pts, weak parity holds at 0.875 = strong reader's A1). The two REAL failures on the rebuilt graph are both extraction gaps with evidence recall 0.0: P09 (SleepStyle 200 dimensions never extracted) and P19 (SmartRamp mechanism sentence never extracted) - the reader correctly reports graph absence for P09. Final honest scoreboard on the rebuilt graph: 22/24 answerable correct + 4/4 correct refusals = 26/28. Both residuals are the R04 targeted-repair case: failing probe names its source document.
+
+## R04 - use-case regime loop (pre-registered 2026-07-06)
+
+The regime doctrine operationalized: a use case narrows every stage, and failures against the regime's own probes drive targeted graph repair. First slice implemented: `Foundry.repair(question, sources)` - focused re-extraction of named documents that bypasses ingest fingerprints, requires STABLE, and injects the failing question into the extraction purpose.
+
+| hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
+|---|---|---|---|---|---|
+| R04-H18 | targeted repair | question-focused re-extraction of the failing probe's source | extraction-gap probes flip to correct | both rebuilt-graph residuals (P09, P19) answer correctly post-repair; no previously-correct probe regresses | **Refuted as implemented** - neither flipped; yielded the failure taxonomy (identity gap, fidelity gap) |
+| R04-H19 | probe generation | probes generated from the regime (purpose + seed), not hand-written | regime coverage without curation cost | generated set covers all seeded types; >= 80% of generated probes well-formed | pending |
+| R04-H20 | saturation criterion | repair loop iterates until weak-reader parity and abstention-only residuals | convergence, not endless repair | loop terminates; terminal residuals are all correct abstentions | pending |
+| R04-H21 | identity audit | alias edges from explicit assertions + shared-source attribute-fingerprint detector | identity-gap probes flip | P09 correct; SmartRamp/Smart Ramp class of intra-doc duplicates merged | pending |
+| R04-H22 | fidelity audit | verbatim source sentences bound to entities as quote-propositions | fidelity-gap probes flip | P19 correct under the deterministic scorer; no regression | pending |
+| R04-H23 | completeness audit | type-cohort attribute expectation (PCWA) computes gaps at ingest; gap queue drives repair-from-source and doubles as the abstention signal | gaps surface before any query fails | P09-class gap auto-detected with zero probes; recorded gaps refuse matching unanswerables | pending |
+
+### R04-H18 Targeted repair of extraction gaps
+
+- **Hypothesis** - because both genuine probe failures are extraction gaps (evidence recall 0.0) with known source documents, re-extracting only those documents with the failing question injected into the purpose will surface the missing facts and flip the probes, without touching the rest of the graph
+- **Lever** - post-hoc graph repair; ingest pipeline, retrieval and reader all held fixed
+- **Mechanism** - purpose-conditioned extraction already steers what gets extracted (the gap exists because the general purpose did not emphasize dimensions/ramp mechanics); narrowing the purpose to the failing question is the regime doctrine applied at document granularity
+- **Prediction** - P09 (SleepStyle 200 dimensions) and P19 (SmartRamp vs standard ramp) answer correctly post-repair; entity/relationship deltas small (single-digit); no regression on the 26 previously-correct probes
+- **Acceptance bar** - both probes correct under the corrected scorer; scoreboard 28/28
+- **Experiment** - <br>method: `kgf repair "<probe question>" <source.pdf>` against the rebuilt graph (Opus 4.5 extractor), then re-query both probes and re-score; regression spot-check on the comparison probe sharing P09's entity (SleepStyle vs iBreeze dimensions)
+- **Result** - neither probe flipped, and the diagnosis reclassifies both failures. P09 is an IDENTITY gap, not a missing fact: the dimensions have been in the graph all along as `prop_dimensions_mm=275 x 170 x 140` on `HC230 Product Range`; the manual specs the device under its model code and states the alias explicitly ("Please refer to the HC230-Series Product range listed in the Appendix") - that linking sentence was never extracted as an edge, so re-extraction keeps attaching specs to the spec-table name forever. P19 is a FIDELITY gap: the repair worked mechanically (14 entities, 13 relationships; answer improved from "not in graph" to a correct-direction explanation) but the extractor stored a paraphrase ("adjusts pressure based on breathing patterns") where the source sentence carries the precise mechanism ("maintains a constant lower pressure until the device detects that you require more pressure"); the answer scores 0.438 against the 0.6 bar. Side effect observed: the repair pass spawned `SmartRamp` alongside the pre-existing `Smart Ramp` - alias sprawl, the identity disease at small scale
+- **Verdict** - Refuted as implemented, and the refutation is the batch's key finding: the residuals of a proposition-saturated graph are REPRESENTATION failures (identity, fidelity), not recall failures - re-running the same lossy abstraction cannot fix either. Successors H21 (identity) and H22 (fidelity) target the two classes directly
+
+### R04-H21 Identity audit - alias edges from assertion and evidence
+
+- **Hypothesis** - because the P09 failure is two names for one device with no connecting edge, extracting explicit alias assertions ("refer to the X-Series", "also known as") as SAME_AS edges, plus a deterministic detector (entities sharing source documents where one carries the attribute cluster the other's type-siblings all have), will connect alias pairs and flip identity-gap probes
+- **Lever** - post-extraction alias resolution; extraction and retrieval unchanged
+- **Mechanism** - identity is the one job no flat proposition store can do; the existing cross-type Bayesian resolution missed these pairs because name similarity is near zero ("SleepStyle 200 Series" vs "HC230 Product Range") - the signal lives in explicit textual assertions and shared-source attribute fingerprints instead
+- **Prediction** - P09 flips with zero new extraction; intra-doc duplicate pairs (SmartRamp/Smart Ramp, AutoRamp/Auto Ramp) merge
+- **Acceptance bar** - P09 correct; no false alias edge on the 28-probe set (spot-check merged pairs)
+- **Experiment** - <br>method: alias pass over the rebuilt graph, then re-query P09 and the SleepStyle-vs-iBreeze comparison probe
+- **Result** - pending
+- **Verdict** - pending
+
+### R04-H22 Fidelity audit - verbatim evidence propositions
+
+- **Hypothesis** - because LLM extraction abstracts (lossy exactly where a question needs precision), binding the exact source sentence to the entity as a quote-proposition at extraction/repair time gives the reader lossless evidence and flips fidelity-gap probes
+- **Lever** - ingest-time content addition; deterministic sentence selection, no new LLM calls
+- **Mechanism** - extends the proven H11 mechanism (ingest-time content is what works) from rendered facts to verbatim quotes; unlike H12's whole-chunk passages (null), quotes are fact-anchored and enter the context through the proposition channel that measurably works
+- **Prediction** - P19 flips; fidelity failures vanish as a class; context growth bounded (sentences, not chunks)
+- **Acceptance bar** - P19 correct under the deterministic scorer; no probe regression
+- **Experiment** - <br>method: quote-proposition pass for repair-touched entities on the rebuilt graph; re-query P19
+- **Result** - pending
+- **Verdict** - pending
+
+### R04-H23 Completeness audit - the graph knows what it doesn't know
+
+- **Hypothesis** - because P09-class gaps are computable without any probe (14 of 15 device entities carry `prop_dimensions*`; SleepStyle 200 does not), a type-cohort attribute-expectation audit (partial closed-world assumption) run at ingest time will surface gaps before any query fails, feed the targeted-repair queue, and - as recorded negative knowledge - provide the attribute-existence abstention signal H17 failed to get from vector scores
+- **Lever** - post-ingest audit stage; produces a gap queue consumed by repair and a gap ledger consulted at query time
+- **Mechanism** - completeness prediction is established KB research (obligatory-relation F1 90-100%, WSDM 2017; "if 9/10 siblings have it, the 10th should" per the PCWA survey; informative negations per UnCommonSense) but published gap-fillers use LLM parametric knowledge (GenIC) and published feedback loops stop at triplet edits (EvoRAG) - nobody wires cohort-gap detection to repair-from-source; the research thread confirmed the void explicitly
+- **Prediction** - the SleepStyle dimensions gap is auto-detected with zero probes; repair-from-source or an honest "corpus does not state it" negative record results; recorded gaps refuse matching unanswerable questions structurally
+- **Acceptance bar** - P09-class gap surfaces in the audit; >= 70% of unanswerable probes refused via the gap ledger with < 10% false refusal (the H17 bar, now with the right signal)
+- **Experiment** - <br>source: [`[paper digest] Predicting Completeness in Knowledge Bases.md`](../../references/papers/), [`[paper digest] Completeness Recall and Negation in Open-World KBs.md`](../../references/papers/), [`[paper digest] UnCommonSense.md`](../../references/papers/), [`[paper digest] GenIC.md`](../../references/papers/), [`[paper digest] EvoRAG.md`](../../references/papers/)<br>method: per-type attribute prevalence over the rebuilt graph (threshold ~0.7 sibling prevalence), gap queue -> repair, gap ledger -> abstention check on the 4 unanswerable probes
+- **Result** - pending
+- **Verdict** - pending

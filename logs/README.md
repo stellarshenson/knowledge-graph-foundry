@@ -12,3 +12,4 @@ Background job logs for Knowledge Graph Foundry.
 - `cpap-rebuild-h10-resume.log` - resumed H10 rebuild on Haiku extraction after Bedrock quota outage
 - `h10-optimize.log` - communities + propositions + densification on the rebuilt graph
 - `probe-eval-phaseA.log`, `probe-eval-weak.log`, `probe-eval-r03.log` - probe evaluation notebook executions
+- `repair-p09.log`, `repair-p19.log` - R04 targeted repair runs against the rebuilt graph
