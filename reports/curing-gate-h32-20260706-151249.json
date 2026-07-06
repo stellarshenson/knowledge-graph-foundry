@@ -1,0 +1,114 @@
+{
+  "band": [
+    168,
+    205
+  ],
+  "results": {
+    "100": {
+      "saturation_doc_95pct": 96,
+      "final_types": 17,
+      "a_v1_plateau": [
+        5,
+        "plateau"
+      ],
+      "b_chao1_composite": [
+        10,
+        "converged"
+      ],
+      "c_point_plus_200floor": [
+        26,
+        "plateau"
+      ],
+      "d_missing_mass_ucb": [
+        20,
+        "plateau"
+      ]
+    },
+    "200": {
+      "saturation_doc_95pct": 138,
+      "final_types": 21,
+      "a_v1_plateau": [
+        5,
+        "plateau"
+      ],
+      "b_chao1_composite": [
+        10,
+        "converged"
+      ],
+      "c_point_plus_200floor": [
+        26,
+        "plateau"
+      ],
+      "d_missing_mass_ucb": [
+        20,
+        "plateau"
+      ]
+    },
+    "205": {
+      "saturation_doc_95pct": 168,
+      "final_types": 22,
+      "a_v1_plateau": [
+        5,
+        "plateau"
+      ],
+      "b_chao1_composite": [
+        10,
+        "converged"
+      ],
+      "c_point_plus_200floor": [
+        26,
+        "plateau"
+      ],
+      "d_missing_mass_ucb": [
+        20,
+        "plateau"
+      ]
+    }
+  },
+  "verdicts": [
+    {
+      "gate": "a_v1_plateau",
+      "cure_doc": 5,
+      "reason": "plateau",
+      "inside_saturation_band": false,
+      "cure_doc_at_truncations": [
+        5,
+        5,
+        5
+      ]
+    },
+    {
+      "gate": "b_chao1_composite",
+      "cure_doc": 10,
+      "reason": "converged",
+      "inside_saturation_band": false,
+      "cure_doc_at_truncations": [
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "gate": "c_point_plus_200floor",
+      "cure_doc": 26,
+      "reason": "plateau",
+      "inside_saturation_band": false,
+      "cure_doc_at_truncations": [
+        26,
+        26,
+        26
+      ]
+    },
+    {
+      "gate": "d_missing_mass_ucb",
+      "cure_doc": 20,
+      "reason": "plateau",
+      "inside_saturation_band": false,
+      "cure_doc_at_truncations": [
+        20,
+        20,
+        20
+      ]
+    }
+  ]
+}

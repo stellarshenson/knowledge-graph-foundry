@@ -95,6 +95,43 @@ class TestCuringDetector:
             d.record(self._stable_record())
         assert d.is_converged() is True  # 5 >= floor
 
+    def test_evidence_gate_blocks_wave1_premature_cure(self):
+        """DEF-3: the exact wave-1 failure - a flat 3-doc window over ~20
+        observations satisfied the plateau and cured at document 4 of 481."""
+        d = CuringDetector(CuringSettings())
+        for occ, single in ((8.0, 6.0), (13.0, 3.0), (17.0, 2.0), (20.0, 2.0)):
+            d.record(
+                {
+                    "js_divergence": 0.01,
+                    "chao1_coverage": 0.96,
+                    "entropy_shannon_delta": 0.005,
+                    "unique_types": 7.0,
+                    "total_occurrences": occ,
+                    "singletons": single,
+                }
+            )
+        assert d.should_cure() == (False, "fluid")  # 20 obs << 200 evidence floor
+
+    def test_missing_mass_blocks_cure_despite_evidence_mass(self):
+        """DEF-3: Good-Turing - 10% singleton mass means the next observation
+        has ~10% probability of being an unseen type; not saturated."""
+        d = CuringDetector(CuringSettings())
+        for _ in range(4):
+            rec = self._stable_record()
+            rec.update({"total_occurrences": 500.0, "singletons": 50.0})
+            d.record(rec)
+        assert d.should_cure() == (False, "fluid")
+
+    def test_saturated_stream_cures(self):
+        """DEF-3: mass floor met and missing mass under threshold -> cure."""
+        d = CuringDetector(CuringSettings())
+        for _ in range(4):
+            rec = self._stable_record()
+            rec.update({"total_occurrences": 500.0, "singletons": 10.0})
+            d.record(rec)
+        cure, reason = d.should_cure()
+        assert cure and reason == "converged"
+
     def test_force_at_max_fluid_documents(self):
         cfg = CuringSettings(max_fluid_documents=4)
         d = CuringDetector(cfg)
