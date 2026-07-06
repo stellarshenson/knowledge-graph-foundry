@@ -207,3 +207,8 @@ cython_debug/
 # PyPI configuration file
 .pypirclogs/*.log
 logs/*.jsonl
+
+# external corpora - large binaries kept out of git, annotations tracked
+data/external/cpap-datasheets-and-manuals/
+data/external/cpap-datasheets-and-manuals.zip
+data/external/apnea-articles/apnea_slice.jsonl
