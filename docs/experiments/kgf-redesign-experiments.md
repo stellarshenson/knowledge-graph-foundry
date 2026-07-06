@@ -1032,3 +1032,457 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Result** - pending
 - **Verdict** - pending
 
+## R10 - research-grounded round: the improvement gradient, curvature detectors, learned quality, ontology optima (pre-registered 2026-07-06)
+
+Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG quality, information-theoretic optima, ontology optimization) fed this round; all 24 load-bearing papers are downloaded and digested in `references/papers/` per the papers skill. The round answers the project owner's driving question - **is there an optimum graph for a given use case, with a gradient that says "improvement still possible"?** - with a two-axis doctrine now under test. Axis 1, ingest saturation, is already instrumented (Good-Turing missing mass 98.55% forward coverage, Heaps b=0.803): it says whether there is more VOCABULARY to discover. Axis 2, task utility, is new: a scalar foundry potential Phi(G) = probe-evidence sufficiency minus lambda x token cost, whose per-edit gain Delta-Phi over the admissible edit set (add/remove/merge/materialize/retype) IS the requested gradient. If Phi is empirically monotone submodular (the RPQ view-selection paper proves exactly this for workload-benefit objectives), greedy edit selection carries the (1-1/e) Nemhauser guarantee and a swap-stable fixed point is a rigorous "no single edit improves" certificate (Krause-Golovin). The MDL residual (VoG) supplies the use-case-agnostic complement - compression-optimum vs retrieval-optimum divergence is itself a registered prediction. Four themes: the gradient (H81-H86), curvature/topology detectors repurposed from over-squashing theory to defect detection (H87-H91), learned quality at honest scale (H92-H97), ontology optima (H98-H100). Grounded throughout in measured facts: direct-render recall 0.697 (23/33), the 6 PROP-ATTACHED golds, 91% on-seed carriage, 47 cross-type duplicates, 44% resolver calibration, 39-entity prune set.
+
+| id | theme | grounding (papers in references/papers/) | claim | runnable without completions |
+|----|-------|------------------------------------------|-------|------------------------------|
+| H81 | gradient | RPQ view selection (submodular benefit, 9.73x), Krause-Golovin, GIB | the foundry potential Phi is empirically submodular; per-edit Delta-Phi is the improvement gradient; a swap-stable fixed point certifies "no improvement possible" | yes |
+| H82 | gradient | VoG MDL summarization | a two-part MDL residual gives the use-case-agnostic second axis; its fixed point = "no structure left to explain"; it DIVERGES from Phi_task | yes |
+| H83 | gradient | both potentials | the sign pair (Delta-Phi_task, Delta-Phi_MDL) classifies edits: retrieval-deficient / bloat / missing structure - and predicts probe failure classes | yes |
+| H84 | gradient | GIB subgraph recognition | a thin task-sufficient subgraph exists: <=30% of edges preserve >=95% probe recall; the knee is the IB certificate | yes |
+| H85 | gradient | in-house GT/Heaps + two-axis doctrine | ingest saturation and task-utility gradient are weakly correlated - saturated is not optimal | yes |
+| H86 | gradient | RPQ view selection | materializing top-k probe-evidence path views cuts query cost >=30% at equal recall; honest risk: 91% on-seed leaves little traversal to precompute | yes |
+| H87 | curvature | Topping SDRF, Fesser-Weber AFRC | augmented Forman-Ricci curvature separates false SAME_AS closure edges from true aliases at AUC >= 0.7 | yes |
+| H88 | curvature | Black effective resistance | residual effective resistance (graph minus edge) validates SAME_AS: spurious closures are sole bridges (high), true co-references are redundant (low) | yes |
+| H89 | curvature | Rengaswami inter-community curvature bound | curvature-thresholded pairs beat name similarity on the 47-duplicate record at matched recall - an embedding-free duplicate detector | yes |
+| H90 | curvature | Knowledge Persistence (Bastos) | Betti curves (H0 collapse, spurious H1) detect injected over-merge before the production remap trigger; flat on healthy waves | yes |
+| H91 | curvature | AFRC + component analysis | super-hub autopsy: the degree-236 node is a legitimate hub (curvature-normal), not an over-merge sink - either verdict feeds H64 audit priority | yes |
+| H92 | learned | ULTRA (177k params, zero-shot MRR 0.395 > supervised 0.344) | pretrained ULTRA scores our edges at AUC >= 0.75 inference-only; risk: 12-type relation graph is degenerate for its relation-graph conditioning | yes |
+| H93 | learned | ULTRA + CCA (similar-noise is the hard case) | ULTRA bottom-decile edges are >=3x enriched for real extraction errors vs a random decile | after H92 |
+| H94 | learned | in-context clustering ER (150% over pairwise, 5x fewer calls) | zero-shot LLM clustering resolves the 47 cross-type duplicates at F1 >= 0.8, beating the 44%-calibrated Bayesian resolver | needs local model |
+| H95 | learned | OWL2Vec* lexical-dominance ablation | null-leaning: from-scratch structural embeddings LOSE to Titan text embeddings for duplicate ranking at 2.8k nodes; constructive refuter: concat wins by >0.05 AUC | yes |
+| H96 | learned | GSL survey (LDS/IDGL/SLAPS; dense relaxation feasible at 2.8k) | the relaxed gradient dL_probe/dA_ij ranks discrete edit proposals better than embedding-similarity ranking | yes |
+| H97 | learned | Titan geometry + H34 false-closure evidence | intra-chain embedding variance flags >=70% of false SAME_AS closures - the cheapest pre-filter for H58's chain guard | yes |
+| H98 | ontology | LLM-KGC survey (NO published granularity objective - open problem), AutoSchemaKG (no stopping rule), MDL frame | at least one single-step type merge/split improves probe answerability - the curing gate froze a saturated but task-suboptimal granularity | partial |
+| H99 | ontology | Box2EL (geometry carries subsumption - repurposed at instance level), OWL2Vec*, LLMs4OL (taxonomy discovery weak: F1 0.66) | type-region containment over entity embeddings finds latent hierarchy and flags type mislabels at precision > 0.6 | partial |
+| H100 | ontology | ROMEO task-based evaluation | per-probe structural metric profiles (population, connectivity, relationship diversity) predict probe pass/fail at AUC > 0.7 | yes |
+
+### R10-H81 The foundry potential - a submodular gradient with a stopping certificate
+
+- **Grounding** - Pang et al. prove workload-benefit view selection on graph databases is monotone submodular and reap a 9.73x speedup greedily ([paper digest] rpq materialized view selection); Nemhauser/Krause-Golovin give greedy (1-1/e) and the swap-stable local-optimum certificate; GIB provides the task-conditioned compression frame, and our gold probes collapse its intractable MI term to countable coverage
+- **Hypothesis** - define Phi(G) = sum over probes of rendered-evidence sufficiency minus lambda x context tokens, over the admissible edit set {add edge, remove edge, merge nodes, split node, materialize proposition/view, retype}; Phi is empirically monotone submodular, per-edit Delta-Phi is THE improvement gradient the project owner asked for, and a swap-stable fixed point (no single edit with Delta-Phi > 0) is a computable "improvement still possible = false" certificate
+- **Prediction** - greedy edit selection on the CPAP graph lifts direct-render recall 0.697 -> >=0.9 within +10% tokens; realized single-edit gains decay monotonically (empirical submodularity); at the fixed point, sampled multi-edit combinations (pairs/triples) improve Phi in <5% of draws
+- **Acceptance bar** - all three clauses; refuted if supermodular interactions are frequent (pairs beating their singles' sum) - then single-edit gradients cannot certify optimality and the certificate needs local search over bounded neighborhoods
+- **Experiment** - deterministic edit-replay on the H34 harness; candidate edits from the measured gap decomposition (H61) and detector outputs; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H82 The MDL residual - "no structure left to explain"
+
+- **Grounding** - VoG two-part MDL ([paper digest] vog graph summarization mdl): admit a structure iff it reduces total bits; the fixed point is the canonical compression stopping certificate
+- **Hypothesis** - a two-part MDL over a KG vocabulary (type-blocks, stars, chains, clique-ish alias clusters) yields Phi_MDL = bits saved; its per-edit delta is the use-case-AGNOSTIC gradient; and it diverges from Phi_task - the compression optimum is not the retrieval optimum
+- **Prediction** - on the CPAP graph the MDL gradient flattens while the task gradient is still positive (or vice versa on bloat regions); the divergence set is non-empty and interpretable
+- **Acceptance bar** - divergence demonstrated and classified; refuted (interestingly) if the two fixed points coincide - one potential would suffice for both hygiene and retrieval
+- **Experiment** - numpy MDL encoder over the projected graph + shared edit set with H81; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H83 The gradient sign-pair - a defect taxonomy from two potentials
+
+- **Grounding** - H81 + H82 jointly; the diagnostic reading of disagreement between a task-conditioned and a task-agnostic objective
+- **Hypothesis** - the per-edit sign pair (Delta-Phi_task, Delta-Phi_MDL) classifies graph regions: (+,0) structurally complete but retrieval-deficient (missing materialization - the 6 PROP-ATTACHED golds should land here), (0,+) removable bloat (dark-matter catalog mass), (+,+) genuinely missing structure (unlinked mode families)
+- **Prediction** - the classification aligns with the measured failure inventory (PROP-ATTACHED golds -> (+,0); the H63 dark 25% -> (0,+) dominated)
+- **Acceptance bar** - alignment on >=80% of the labeled cases; refuted if the sign pair is uncorrelated with failure class
+- **Experiment** - joint replay over H81/H82's edit set; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H84 The thin sufficient subgraph - an IB knee certificate
+
+- **Grounding** - GIB-subgraph recognition ([paper digest] gib subgraph recognition): a subgraph "as informative as possible with less redundant structure" exists and is much smaller than the input; our 91%-on-seed measurement predicts the shell is thin here
+- **Hypothesis** - ablating edges in ascending gold-path participation order, <=30% of edges preserve >=95% probe evidence recall; the recall-vs-budget curve has a knee, which is the IB-flavored counterpart of H80's structural composite (the two rankings' agreement is reported)
+- **Prediction** - knee exists before 30% retention; the retained core is dominated by seed-incident and alias edges
+- **Acceptance bar** - knee found; refuted if recall degrades smoothly under any removal order (no compressible bottleneck - the IB framing fails on this graph)
+- **Experiment** - staged ablation replay (shares H80's harness); runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H85 Saturated is not optimal - the two axes are independent
+
+- **Grounding** - in-house Good-Turing UCB (H32) and Heaps (H47) instrument the ingest axis; H81 instruments the task axis; the doctrine says they answer different questions
+- **Hypothesis** - per-type missing mass and residual per-type task gradient (max Delta-Phi over edits touching that type) are weakly correlated (|r| < 0.3): a vocabulary-saturated graph can still carry a large retrieval-utility gradient
+- **Prediction** - the CPAP graph (fully cured, missing mass ~1.5%) still shows positive task gradient concentrated on the render/materialization edit class
+- **Acceptance bar** - weak correlation + positive residual gradient; refuted if missing mass predicts the task gradient (r -> 1) - one estimator would suffice
+- **Experiment** - correlation over H81's per-type gains; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H86 Evidence-path views - the RPQ materialization transfer
+
+- **Grounding** - Pang et al. prove the workload-benefit objective monotone submodular and reach 9.73x on Wikidata query logs ([paper digest] rpq materialized view selection); our materialization stage is the same problem with probes as the workload
+- **Hypothesis** - greedily materializing top-k probe-evidence path views (cached per-seed renders, shortcut edges, surfaced propositions) cuts query-time cost (tokens + hops) >=30% at equal evidence recall, with a benefit-per-token knee stable under probe bootstrap (knee location variance < 20%)
+- **Prediction** - the honest risk is registered as a clause: with 91% of evidence already on-seed, the traversal left to precompute may be too small - the win, if any, concentrates in the PROP-ATTACHED and alias-merge render work
+- **Acceptance bar** - cost cut at equal recall + stable knee; refuted if no view set reduces cost at equal recall (materialization is already saturated)
+- **Experiment** - deterministic view-replay on the H34 harness; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H87 Curvature flags the false closure - AFRC on SAME_AS edges
+
+- **Grounding** - Topping et al. prove negatively curved edges are the structural bridges ([paper digest] curvature over-squashing sdrf); Fesser-Weber's AFRC recovers Ollivier-Ricci's discrimination in linear time ([paper digest] afrc augmented forman-ricci curvature); we repurpose from GNN-enablement (irrelevant here - evidence is <=2 hops) to defect detection
+- **Hypothesis** - false SAME_AS closure edges (the MANU / DreamStation CPAP / bCPAP prongs class) carry significantly more negative AFRC than true co-reference edges - a spurious identity bridge connects two neighborhoods that share no triangles
+- **Prediction** - AUC >= 0.7 separating labeled false from true SAME_AS edges by edge AFRC
+- **Acceptance bar** - AUC >= 0.7; refuted at AUC <= 0.55 (curvature carries no identity signal)
+- **Experiment** - networkx AFRC over all SAME_AS edges + labeled defect set; milliseconds at 3.9k edges; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H88 Effective resistance audits SAME_AS - redundancy means true
+
+- **Grounding** - Black et al. bound information flow by effective resistance and compute it from the Laplacian pseudoinverse ([paper digest] effective resistance over-squashing); inverted here: instead of ADDING low-resistance edges for GNN depth, we AUDIT existing identity edges by residual redundancy
+- **Hypothesis** - deleting a true SAME_AS edge leaves LOW residual resistance between its endpoints (shared neighborhood reconnects them); deleting a spurious closure edge leaves HIGH residual resistance (it was the sole bridge) - a threshold recovers >=70% of known false closures at zero loss on true aliases
+- **Prediction** - the residual-resistance distributions separate cleanly; the false-closure members are extreme outliers
+- **Acceptance bar** - >=70% recall at zero true-alias loss; refuted if distributions are indistinguishable
+- **Experiment** - scipy pseudoinverse at 2.8k nodes; runs now; on confirmation joins H58's chain guard as a second deterministic prong
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H89 The curvature bound finds cross-type duplicates - no embeddings needed
+
+- **Grounding** - Rengaswami-Bourni-Maroulas prove inter-community edges carry provably more negative curvature ([paper digest] ricci curvature community structure); cross-type duplicates are by construction pairs bridging two type-communities the ontology froze apart
+- **Hypothesis** - curvature-thresholded candidate pairs (with the principled inter-community cutoff, not a tuned magic number) recover the 47-duplicate record at higher precision than name-similarity at matched recall
+- **Prediction** - the curvature detector wins at matched recall; its false-positive head is same-family siblings, filterable by the existing description-contrast feature
+- **Acceptance bar** - precision > name-similarity baseline at matched recall; refuted otherwise
+- **Experiment** - AFRC + threshold sweep vs the labeled record; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H90 Betti curves as the over-merge alarm - topology before distribution
+
+- **Grounding** - Knowledge Persistence computes persistence diagrams over graph filtrations at ~0.04% of ranking-evaluation cost ([paper digest] knowledge persistence kg evaluation); over-merge collapses H0 (swelling giant component) and injects spurious H1 cycles
+- **Hypothesis** - Betti curves per ingest snapshot detect injected over-merge (merge-undo replay in reverse) at lower injection rates than the production remap-rate trigger, and stay flat on the healthy wave - the topological sibling of H77's spectral early warning (both race the production trigger; the round reports which wins)
+- **Prediction** - H0/H1 respond at <=half the injection rate the remap trigger needs; zero false movement on wave-1b snapshots
+- **Acceptance bar** - differential sensitivity + specificity; refuted if flat or coincident with the production trigger
+- **Experiment** - persistence over shortest-path filtration (2.8k nodes, scipy/ripser-lite implementation); runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H91 Super-hub autopsy - is degree 236 an entity or an accident?
+
+- **Grounding** - the H61 census found max degree 236 against a median of 1; a hub that large is either a legitimate category/manufacturer or an over-merge sink accreting edges from falsely-identified members
+- **Hypothesis** - (registered in the null direction) the top hubs are legitimate: their incident-edge AFRC matches the graph norm and their removal changes component count only as expected for a hub; the alternative outcome - anomalous curvature + H0 splitting - would mark them as over-merge artifacts and reprioritize H64's audit
+- **Prediction** - legitimate verdict for the top-5 hubs
+- **Acceptance bar** - either outcome is recorded as a verdict; the hypothesis fails only if the instruments cannot distinguish (curvature normal AND component behavior anomalous, or vice versa, with no adjudication)
+- **Experiment** - per-hub incident curvature + removal component census; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H92 ULTRA scores our edges - zero-shot structural plausibility
+
+- **Grounding** - ULTRA is a 177k-parameter KG foundation model: zero-shot MRR 0.395 across 57 graphs beats supervised SOTA 0.344, no per-graph training ([paper digest] ultra kg foundation model); NBFNet supplies the interpretable path mechanism beneath it
+- **Hypothesis** - a pretrained checkpoint (ultra_50g), inference-only, ranks held-out true edges above corrupted negatives on our graph at AUC >= 0.75 - structural plausibility for free
+- **Prediction** - AUC >= 0.75 on 200 held-out edges vs relation- and tail-corrupted negatives; the registered risk: our ~12-relation vocabulary gives ULTRA's relation-graph conditioning a thin substrate and may collapse scoring toward chance
+- **Acceptance bar** - AUC >= 0.75 confirms; AUC ~ 0.5 refutes (relation-graph degeneracy) - either way the scale question is answered for the class
+- **Experiment** - checkpoint inference on GPU idle window; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H93 The bottom decile is where the errors live - ULTRA as defect detector
+
+- **Grounding** - CCA shows structure-only error detectors collapse on semantically-similar noise (0.945 -> 0.633 precision) - exactly the LLM-extraction failure mode ([paper digest] cca kg error detection contrastive); ULTRA's score plus our text evidence is the fusion CCA argues for
+- **Hypothesis** - the bottom ULTRA-score decile of existing edges is >=3x enriched for real extraction errors vs a random decile
+- **Prediction** - 30-vs-30 audited edges (LLM-adjudicated against source chunks, then inspected) show the enrichment; the flagged set feeds the gap ledger per the self-auditing doctrine
+- **Acceptance bar** - >=3x enrichment; refuted if extraction errors are structurally plausible hallucinations (enrichment ~1x) - CCA's warning realized, and text-side detection becomes the only route
+- **Experiment** - sequenced after H92; local-model adjudication
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H94 Cluster, don't compare - LLM in-context resolution of the 47
+
+- **Grounding** - in-context clustering ER reports up to 150% accuracy gains over pairwise matching at 5x fewer calls, zero-shot, optimal at ~9 records per call ([paper digest] llm in-context clustering entity resolution); our Bayesian resolver measures 44% calibration - coin-flip territory (H54's replay is the demolition case; this is the replacement candidate)
+- **Hypothesis** - zero-shot in-context clustering over the 47 cross-type duplicates plus matched distractors resolves them at F1 >= 0.8, and its whole-set reasoning natively avoids the false transitive closures that pairwise-then-union created
+- **Prediction** - F1 >= 0.8 with zero new false closures; registered risk: over-merging same-family siblings (the known hardest negatives)
+- **Acceptance bar** - F1 >= 0.8 AND sibling precision >= pairwise baseline; refuted if sibling over-merge drops precision below the Bayesian resolver
+- **Experiment** - local 120B post-wave window (~50 calls); on confirmation this is the H54 two-rule system's third rule
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H95 Text beats structure at this scale - the honest null
+
+- **Grounding** - OWL2Vec*'s ablation shows lexical signal dominates structure (MRR 0.213 word-based vs 0.154 structure-only) ([paper digest] owl2vec ontology embedding); 2.8k nodes starve from-scratch structural embeddings
+- **Hypothesis** - (null-leaning, registered to protect against structure-embedding enthusiasm) node2vec/from-scratch-GNN embeddings rank the labeled duplicate pairs WORSE than Titan text embeddings by >0.05 AUC
+- **Prediction** - text wins; the constructive refuter is the interesting outcome: text+structure concatenation beating text alone by >0.05 AUC would prove structure carries complementary identity signal worth engineering
+- **Acceptance bar** - either the null holds (stop investing in trained structural embeddings) or the concat refuter fires (invest in fusion) - a decision either way
+- **Experiment** - node2vec (CPU minutes at 2.8k nodes) + ranking AUC; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H96 The relaxed gradient proposes edits - differentiable structure as ranker
+
+- **Grounding** - the GSL survey's direct-parameterization family (LDS/IDGL/SLAPS) treats adjacency as a parameter with literal task gradients; dense relaxation at 2.8k nodes (~7.8M entries) is memory-trivial ([paper digest] graph structure learning survey); the honest transfer to a discrete auditable KG is proposal RANKING, not soft storage
+- **Hypothesis** - ranking candidate edits by the relaxed gradient d(probe loss)/dA_ij yields higher precision@k of edits whose realized Delta-Phi_task > 0 than embedding-similarity ranking
+- **Prediction** - gradient ranking wins at k=20; the differentiable probe loss is a soft-render surrogate (seed-similarity-weighted coverage of gold carriers)
+- **Acceptance bar** - precision@20 > embedding baseline; refuted if the discrete/continuous gap dominates (gradient <= baseline) - GSL does not transfer and H81's heuristic proposal set stands
+- **Experiment** - torch soft-adjacency surrogate + replay verification against H81's realized gains; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H97 Chain variance - the cheapest false-closure filter
+
+- **Grounding** - the false SAME_AS members (MANU, DreamStation CPAP, bCPAP prongs) were surfaced by H34's render forensics; Titan embedding geometry is already paid for; H58's chain guard needs a pre-filter ordering
+- **Hypothesis** - SAME_AS chains whose intra-chain pairwise cosine variance exceeds a data-derived threshold contain >=70% of known false closures
+- **Prediction** - variance flags the labeled defects; registered risk: the resolver merged them BECAUSE text similarity was high - the distinction may be invisible to Titan (the refuter CCA's similar-noise finding predicts)
+- **Acceptance bar** - >=70% recall at precision > 0.5; refuted if false members are uniformly high-similarity (signal absent from text geometry - structural detectors H87/H88 become the only route)
+- **Experiment** - numpy over stored embeddings; minutes; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H98 The granularity gap - is the cured inventory task-optimal?
+
+- **Grounding** - the LLM-KGC survey states outright there is "no explicit guidance on granularity choices or optimization objectives" - an open problem ([paper digest] llm kg construction survey); AutoSchemaKG never stops discovering (92% schema alignment but no gate) ([paper digest] autoschemakg dynamic schema induction) - our Good-Turing gate is the differentiator, but it stops on SATURATION, not task UTILITY
+- **Hypothesis** - at least one single-step type merge or split (embedding-cluster-proposed) improves aggregate probe answerability - the gate froze a statistically-saturated but task-suboptimal granularity; refutation would validate the gate as task-optimal too
+- **Prediction** - >=1 improving operator exists on the CPAP inventory (12 types); type edits plug into H81's potential as the retype edit class
+- **Acceptance bar** - improving operator found and verified by probe replay; refuted if no single-step operator improves - the cured inventory is a local task optimum (strong validation, worth publishing either way)
+- **Experiment** - operator enumeration + re-map (deterministic label rewrite) + probe replay; local-model assist for split assignments
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H99 Geometry finds the latent hierarchy - boxes over a flat ontology
+
+- **Grounding** - Box2EL proves geometric containment carries subsumption (median rank 60-80% better on GALEN/GO) but consumes authored axioms we lack ([paper digest] box2el dual box embeddings); the repurposing - fit regions per type over ENTITY embeddings and test containment - is unvalidated; LLMs4OL flags taxonomy discovery as the weak LLM task (F1 0.66), so the LLM cross-check is itself at risk ([paper digest] llms4ol 2024 overview)
+- **Hypothesis** - (a) type-region containment over entity embeddings finds >=2 latent subsumption pairs in the flat 12-type inventory, agreeing with an LLM-elicited subsumption DAG above chance (kappa > 0.4); (b) region outliers flag type-assignment errors at precision > 0.6 on audit
+- **Prediction** - the technical-product inventory contains latent accessory/consumable-under-product structure that geometry recovers
+- **Acceptance bar** - both clauses; refuted if no containment beats a shuffled-label baseline (the ontology is genuinely flat) or outliers are legitimate long-tail members
+- **Experiment** - Gaussian/box region fit per type (numpy) + one local-model DAG elicitation pass + audit; partial now
+- **Result** - pending
+- **Verdict** - pending
+
+### R10-H100 Structural profiles predict probe fate - ROMEO re-derived for retrieval
+
+- **Grounding** - task-based ontology evaluation derives task-specific structural metrics whose profiles predict task performance (class-richness-0 ontologies produce only terminology questions) ([paper digest] task-based ontology evaluation); the metric derivation transfers, the metric VALUES do not - we re-derive against probe-answering
+- **Hypothesis** - per-probe-subgraph structural profiles (type population, average connectivity, relationship-type diversity, proposition density) predict probe pass/fail at AUC > 0.7 - the graph's structural health explains retrieval success
+- **Prediction** - proposition density and relationship diversity dominate the profile (consistent with the 0.58 calibration correlate and H34's channel census)
+- **Acceptance bar** - AUC > 0.7; refuted if no profile correlates - extraction fidelity dominates structure entirely (H51's claim gains indirect support)
+- **Experiment** - metric computation per probe-touched subgraph + logistic fit with leave-one-out; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+## R11 - the weak-flank round: identity layer, render gap, the SOTA comparison, and the persistent failures (pre-registered 2026-07-06)
+
+The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47 cross-type duplicates on record and a Bayesian resolver measuring 44% calibration accuracy on 25 pairs; (2) the RENDER GAP - 6 of 33 golds live in propositions attached to rendered seeds yet invisible to the render, currently rescued by channel redundancy (redundancy doing the work of correctness); (3) the SOTA CLAIM - the goal demands head-to-head comparison against published methods, and that benchmark has not been run. Plus the persistent failure modes: the unlinked mode-family probe, extraction-variance consolidation, and the single-spike drift evidence problem. This round does not duplicate the standing registrations (H54 Bayesian replay, H58 fifth detector, H56 proposition closure, R10's H87-H89/H92-H97 detectors) - it supplies what they all lack: statistical footing (a labeled identity benchmark two orders larger than 25 pairs), decision-theoretic structure (cost-split thresholds, constraint vetoes, ensemble arbitration), the direct render fix, and the goal-critical published-baseline harness. Themes: identity (H101-H107), retrieval correctness (H108-H112), the SOTA benchmark (H113-H117), persistent failures operationalized (H118-H120).
+
+| id | theme | weak spot attacked | claim | runnable without completions |
+|----|-------|--------------------|-------|------------------------------|
+| H101 | identity | every resolver metric rests on 25 labeled pairs | a 200+ pair identity benchmark (detector-generated candidates, evidence-adjudicated) moves measured resolver metrics by >=10 points - the 44% figure is itself unreliable | needs local model |
+| H102 | identity | single 0.6 merge threshold | cost-sensitive dual thresholds (merge / defer-to-audit / reject) cut false merges >=50% at equal true-merge recall | after H101 |
+| H103 | identity | no hard negative constraints | identity invariants (different manufacturer, incompatible spec values -> never merge) veto >=80% of the 47-duplicate error class at zero true-merge loss | yes |
+| H104 | identity | merges are effectively irreversible in practice | split-and-remerge replay reproduces <=90% of merges; the unstable remainder is enriched for the defect set - instability IS an error signal | yes |
+| H105 | identity | same-family siblings are the hardest negatives | resolver precision on a sibling stress set is >=20 points below overall; description-contrast closes half the gap | needs local model |
+| H106 | identity | detectors act independently | reliability-weighted ensemble arbitration (4 deterministic + Bayesian + structural + LLM-clustering) beats every individual at F1 with <=half the false merges | after H101 |
+| H107 | identity | resolution blamed for upstream faults | >=60% of the 47 duplicates root-cause to extraction variance or parse artifacts UPSTREAM of the resolver - resolution alone cannot fix them | yes |
+| H108 | retrieval | the 6 PROP-ATTACHED golds (0.909 vs 0.636 gap) | rendering top-M attached propositions per seed (probe-ranked, fixed budget) lifts direct-render recall 0.697 -> >=0.85 at <=+10% tokens | yes |
+| H109 | retrieval | redundancy masks fragility | >=25% of golds are single-channel (one failure from loss); the channel-knockout matrix quantifies it; H108 halves the single-channel count | yes |
+| H110 | retrieval | probe wording is a hidden variable | >=3 probes flip pass/fail under paraphrase; multi-query seed union at matched budget restores them | embeddings only |
+| H111 | retrieval | abstention is unmeasured | gap-ledger + coverage-bound abstention achieves precision >=0.9 at recall >=0.8 on unanswerable probes | needs local model |
+| H112 | retrieval | context ordering is untested folklore | reader accuracy varies <=2 points across head-tail / relevance-sorted / random block orderings - the dial closes either way | needs local model |
+| H113 | sota | the goal's comparison claim is unrun | KGF >= GraphRAG, LightRAG, HippoRAG-2, vector-RAG and BM25-RAG on evidence recall AND answer accuracy at matched reader and token budget on the benchmark corpus | needs local model |
+| H114 | sota | no external-validity evidence | on a public multi-hop QA slice with published numbers, KGF lands within 5 points of published GraphRAG-class results without corpus-specific tuning | needs local model |
+| H115 | sota | cost story unquantified | KGF's ingest-heavy design amortizes: query-time cost <=50% of GraphRAG-class at equal accuracy past a measurable break-even query count | with H113 |
+| H116 | sota | "architecturally sound" needs ablation evidence | every retained stage (propositions, resolution, curing, bitemporal) contributes >=1 point on the H113 harness - no dead weight ships | with H113 |
+| H117 | sota | longevity claim vs baselines untested | under corpus corruption (near-duplicate docs, contradictory versions, OCR noise), KGF degrades <=half as much as vanilla RAG baselines | with H113 |
+| H118 | failures | the unlinked mode-family probe (det 9/10) | targeted repair (H56 generation + H58 collective evidence) closes it AND generalizes: >=2 other unlinked mode families found and linked | needs local model |
+| H119 | failures | consolidation instability across runs | 5x re-extraction variance (entity-set Jaccard) drops >=50% with temperature-0 + canonicalization prompt - determinism is a prompt property, not a model property | needs local model |
+| H120 | failures | single-spike drift evidence (doc 75 class) | H59's binomial-LLR CUSUM shipped behind a flag replays wave 1b with zero false alarms and matched detection on injected shifts - then becomes the default | yes |
+
+### R11-H101 The identity benchmark - 25 pairs cannot carry the layer
+
+- **Weak spot** - the 44% calibration figure, the resolver threshold, and every merge-quality claim rest on 25 ground-truth pairs; at that n a single flipped label moves accuracy 4 points - the measurement itself is the first defect
+- **Hypothesis** - a 200+ pair labeled identity benchmark - candidates generated by ALL standing detectors (four deterministic, Bayesian defer zone, neighbor-Jaccard twins, curvature bridges, chain variance), adjudicated by the local model against source-chunk evidence with human-auditable evidence strings - shifts at least one headline resolver metric by >=10 points, proving the 25-pair figures were noise-dominated
+- **Prediction** - calibration accuracy moves off 44% by >=10 points in either direction; the benchmark stratifies into named difficulty tiers (siblings, cross-type, alias-chains, distractors)
+- **Acceptance bar** - benchmark shipped + metric shift demonstrated; refuted if 200-pair metrics reproduce the 25-pair figures within 5 points (the small sample was honest after all)
+- **Experiment** - candidate generation deterministic now; adjudication on the local model post-wave; every R11 identity entry conditions on this artifact
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H102 Merge, defer, or reject - decision theory replaces the single threshold
+
+- **Weak spot** - one scalar threshold (0.6) forces a binary decision where the cost structure is asymmetric: a false merge corrupts renders and closures silently, a false non-merge costs a duplicate context block
+- **Hypothesis** - cost-sensitive dual thresholds - merge above t_hi, defer-to-audit between, reject below t_lo, with t_hi/t_lo set by the measured false-merge:false-split cost ratio on H101's benchmark - cut false merges >=50% at equal true-merge recall, with the defer queue small enough to audit (<=10% of decisions)
+- **Prediction** - the optimal t_hi sits well above 0.6; the defer zone catches the sibling tier disproportionately
+- **Acceptance bar** - both clauses on held-out benchmark folds; refuted if the posterior is so miscalibrated that no threshold pair beats the single cut (H54's numerology verdict confirmed from a second direction)
+- **Experiment** - threshold sweep on H101; deterministic after H101
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H103 Identity invariants - what must never merge
+
+- **Weak spot** - the resolver has no hard-constraint layer; domain-obvious vetoes (different manufacturers' products, incompatible physical spec values) are currently soft evidence at best
+- **Hypothesis** - a deterministic invariant veto - conflicting manufacturer provenance, numerically incompatible same-key spec values (weight 1.3kg vs 2.1kg), disjoint model-number families - eliminates >=80% of the 47-duplicate error CLASS at zero measured true-merge loss
+- **Prediction** - >=80% of the labeled defects violate at least one invariant; zero true pairs on H101 do
+- **Acceptance bar** - both clauses; refuted if true aliases routinely violate the invariants (e.g. manufacturer strings too noisy to trust) - then invariants demote to soft features
+- **Experiment** - invariant evaluation over the labeled sets; deterministic, runs now against the 47 + 25 records, re-verified on H101 when it lands
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H104 Instability is an error signal - the split-and-remerge probe
+
+- **Weak spot** - merges are recorded but never re-derived; a merge the resolver would not reproduce is a merge nobody should trust
+- **Hypothesis** - bitemporal versioning permits lossless un-merge; replaying resolution over split-back candidates reproduces <=90% of standing merges, and the unstable remainder is >=3x enriched for the known defect set - reproducibility under replay is a zero-label error detector
+- **Prediction** - instability concentrates in cross-type and sibling merges; stable merges are near-100% clean
+- **Acceptance bar** - enrichment >=3x; refuted if instability is uniform noise uncorrelated with defects
+- **Experiment** - split-remerge replay on a graph copy; deterministic, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H105 The sibling stress set - measure the hardest negatives directly
+
+- **Weak spot** - same-manufacturer adjacent-model products (the 200 vs 600 series class) are the known hardest negatives, but no metric isolates them - overall precision hides the cliff
+- **Hypothesis** - resolver precision on a purpose-built sibling stress set sits >=20 points below overall precision; adding the description-contrast feature (already used in cross-type resolution) closes >=half the gap
+- **Prediction** - the stress set exposes the cliff; contrast helps; the residual failures need invariants (H103), not more similarity
+- **Acceptance bar** - both clauses; refuted if sibling precision matches overall (the fear was unfounded - retire the sibling narrative)
+- **Experiment** - stress-set construction from model-number families (deterministic) + local-model adjudication of labels
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H106 Ensemble arbitration - reliability weights over independent detectors
+
+- **Weak spot** - detectors run as an unordered pile; agreement and conflict carry no formal weight, so one noisy source can push a merge alone
+- **Hypothesis** - per-source reliability weights learned on H101 (a simple Dawid-Skene-style or logistic arbitration over detector votes: 4 deterministic + Bayesian + structural Jaccard/curvature + LLM clustering) beat every individual source at F1 while committing <=half the false merges of the best individual
+- **Prediction** - the deterministic detectors get near-veto weights on their fire conditions; the Bayesian source gets weight only in the defer band; structural sources add recall on non-textual duplicates
+- **Acceptance bar** - F1 > best individual AND false merges <= half; refuted if sources are too correlated for arbitration to add anything (ensemble ~ best single)
+- **Experiment** - arbitration fit + held-out folds on H101; after H101
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H107 Root-cause the 47 - is identity even the guilty layer?
+
+- **Weak spot** - the 47 cross-type duplicates are booked as resolver failures, but the resolver can only merge what extraction presents; blaming the identity layer for upstream variance would misdirect all of R11
+- **Hypothesis** - partitioning all 47 by root cause - extraction variance (same document, different surface forms across runs), parse artifacts (H51's territory), genuine cross-document ambiguity, true resolver misses - attributes >=60% upstream of the resolver
+- **Prediction** - extraction variance dominates; the true resolver-miss share is <=25%, resetting expectations for what H94/H102/H103 can fix
+- **Acceptance bar** - partition complete with evidence strings per case; the 60% clause decides routing (upstream -> H119 determinism work; resolver -> H102/H103/H106)
+- **Experiment** - forensic classification against source chunks; deterministic against stored provenance, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H108 Surface the attached propositions - the direct render fix
+
+- **Weak spot** - 6 of 33 golds (18%) live in propositions ABOUT already-rendered seeds but invisible to the render (H61's discovery); the full pipeline rescues them through the global proposition channel - redundancy doing the work of correctness
+- **Hypothesis** - rendering the top-M propositions attached to each seed (ranked by probe-embedding similarity, within a fixed +10% token budget) lifts direct-render evidence recall from 0.697 (23/33) to >=0.85, with full-context recall held at 1.0 and no displacement of currently-rendered evidence
+- **Prediction** - all 6 PROP-ATTACHED golds recovered at M<=3; the token budget holds because attached propositions are short
+- **Acceptance bar** - >=0.85 direct recall at <=+10% tokens, zero displacement; refuted if ranked attached propositions crowd out relation lines that other probes need (the H22 fixed-budget lesson firing again)
+- **Experiment** - render-replay extension of the H61 harness; deterministic, runs now; on confirmation ships to `pipeline._retrieve_local` as a flagged render option
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H109 The knockout matrix - how fragile is ceiling recall?
+
+- **Weak spot** - full-pipeline recall 1.0 is carried by overlapping channels; nobody has measured how many golds survive on exactly one channel - single points of failure invisible at the ceiling
+- **Hypothesis** - a channel-knockout matrix (ablate each of vec / alias / prop_text / prop_node per probe) shows >=25% of golds are single-channel; H108's render fix cuts the single-channel count by >=half - correctness replacing redundancy
+- **Prediction** - the prop_text channel carries the most exclusive golds (per H34's rescue census); knockout fragility concentrates on the same probes that paraphrase-flip in H110
+- **Acceptance bar** - matrix shipped + the halving demonstrated post-H108; refuted if golds are near-uniformly multi-channel (redundancy is genuine depth - the fragility narrative retires)
+- **Experiment** - ablation replay on the H34 harness; deterministic, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H110 Paraphrase stress - is the entry point question-surface-sensitive?
+
+- **Weak spot** - every probe result rests on one phrasing per question; vector seeding is sensitive to surface form and no invariance measurement exists
+- **Hypothesis** - under 5 systematic paraphrases per probe (embeddings only), >=3 probes flip pass/fail on pure-seed evidence recall; a multi-query seed union (union of top-k over paraphrases, matched total budget) restores the flipped probes
+- **Prediction** - flips concentrate on probes whose seeds came from name-matching rather than description-matching; the union costs nothing at matched budget (H53's elasticity discovery reapplied)
+- **Acceptance bar** - both clauses; refuted if recall is paraphrase-invariant (the entry point is robust - a strong stability credential worth recording)
+- **Experiment** - paraphrase generation (local model, ~150 short calls) + Titan embedding + seed replay; near-runnable
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H111 Calibrated abstention - refusing well is part of correctness
+
+- **Weak spot** - the refusal-control probes exist (R05) but abstention currently rides on heuristics; the self-auditing doctrine says the gap ledger should DRIVE refusal, and that link is unmeasured
+- **Hypothesis** - an abstention rule composed from the gap ledger plus coverage bounds (H57's per-inventory UCBs) achieves precision >=0.9 at recall >=0.8 on unanswerable probes, beating the current heuristic on both
+- **Prediction** - coverage-bound features dominate the rule; false refusals concentrate on probes answerable only via propositions (fixable by H108's surfacing)
+- **Acceptance bar** - precision/recall clause on the refusal set; refuted if the ledger signals are uncorrelated with answerability
+- **Experiment** - rides the wave-end refusal probe cycle (local reader); sequenced with R05
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H112 Does block order matter? - closing a folklore dial
+
+- **Weak spot** - the head-tail interleave in the renderer is inherited folklore ("lost in the middle"); it has never been tested against alternatives on this system
+- **Hypothesis** - (null-leaning) reader answer accuracy varies <=2 points across head-tail interleave, relevance-sorted, and random block orderings at identical content - ordering is not a lever at this context length
+- **Prediction** - the null holds (contexts are short enough that position effects vanish)
+- **Acceptance bar** - either the null (retire the dial, keep the simplest ordering) or a >=3-point spread (adopt the winner) - the dial closes both ways
+- **Experiment** - 3x probe cycle with reordered contexts (local reader); post-wave window
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H113 The head-to-head - KGF against the published field
+
+- **Weak spot** - THE goal-critical gap: "achieved SOTA in comparison to other methods published" is a comparison claim, and no comparison has run
+- **Hypothesis** - on the benchmark corpus + 28-probe gold set, with the SAME local reader and matched context token budgets, KGF meets or beats GraphRAG (Microsoft), LightRAG, HippoRAG-2, plain vector RAG, and BM25 RAG on BOTH evidence recall and answer accuracy
+- **Prediction** - KGF wins evidence recall outright (the ingest-time work pays); answer accuracy is closest against HippoRAG-2; vector RAG is the honest floor that must be beaten decisively to justify the graph at all (H37/H52's question, now asked externally)
+- **Acceptance bar** - >= on both metrics vs every baseline; ANY loss is recorded verbatim and becomes the next round's target - the bar cannot be adjusted after seeing results
+- **Experiment** - baseline harness (their official implementations, our corpus, one reader); local 120B, multi-day post-wave; the single highest-priority completion-dependent item in the program
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H114 External validity - a public benchmark with published numbers
+
+- **Weak spot** - the probe set is self-authored; a skeptic discounts any self-graded benchmark
+- **Hypothesis** - on a public multi-hop QA slice where GraphRAG-class numbers are published (2WikiMultiHopQA or MuSiQue subset sized to the local budget), KGF lands within 5 points of the published leaders without corpus-specific tuning (same config that ships)
+- **Prediction** - KGF's evidence recall transfers; answer accuracy depends on the reader more than the graph (and is reported with the reader controlled)
+- **Acceptance bar** - within 5 points; a larger gap is recorded with a forensic delta analysis (what the public corpus has that ours lacks)
+- **Experiment** - one public slice, ingest + probe cycle on the local model; post-wave
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H115 The amortization curve - when does ingest-heavy win?
+
+- **Weak spot** - KGF spends heavily at ingest (extraction, resolution, curing); without a cost frontier the design choice is taste, not evidence
+- **Hypothesis** - measured end-to-end (build cost + N x query cost), KGF's query-time cost is <=50% of GraphRAG-class at equal accuracy, giving a break-even N beyond which KGF is strictly cheaper - the longevity regime the project targets
+- **Prediction** - break-even lands at modest N (hundreds of queries) because KGF's query path is 2 vector lookups + renders while summary-graph methods re-synthesize
+- **Acceptance bar** - frontier published with all costs (tokens, wall-clock, dollars); refuted if KGF's query path is not materially cheaper at equal accuracy
+- **Experiment** - instrumented runs alongside H113
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H116 The ablation ladder - every shipped stage must earn a point
+
+- **Weak spot** - "architecturally sound" is asserted; the goal's reviewer will ask which stages actually carry the result
+- **Hypothesis** - on the H113 harness, ablating each stage (propositions, entity resolution, curing/typed ontology, bitemporal validity) costs >=1 probe-metric point each - no dead weight in the shipped configuration
+- **Prediction** - propositions cost the most (H34's channel census), bitemporal the least on a static corpus (its value is longevity, measured instead by H117)
+- **Acceptance bar** - every stage >=1 point or the stage is flagged for removal per the simplification doctrine (the H37 precedent: measured theater gets cut)
+- **Experiment** - 4 ablated builds + probe cycles; with H113's infrastructure
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H117 Degradation under dirt - the longevity differentiator
+
+- **Weak spot** - the longevity claim (months of operation on accumulating, imperfect corpora) has no comparative evidence
+- **Hypothesis** - under controlled corpus corruption (10% near-duplicate documents, contradictory revised versions, OCR-noise injection), KGF's accuracy degrades <=half as much as vector-RAG and BM25-RAG baselines - the identity + bitemporal machinery is FOR this, and this is where it shows
+- **Prediction** - contradictory versions are where bitemporal wins visibly; near-duplicates are where resolution wins; OCR noise hits everyone (H51's parse sensitivity)
+- **Acceptance bar** - <=half degradation vs both baselines; refuted if KGF degrades comparably - the maintenance machinery fails its core promise and the finding outranks every other in the program
+- **Experiment** - corrupted-corpus variants + H113 harness; post-wave
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H118 Close the mode-family probe - and prove the fix generalizes
+
+- **Weak spot** - the unlinked mode-family probe (det 9/10 on query answerability) has persisted across three releases; every prior fix attempt was global machinery hoping to catch it incidentally
+- **Hypothesis** - a targeted repair - H56's coverage-gap proposition generation plus H58's shared-specification collective evidence, applied to the failing family - closes the probe deterministically AND the same detector sweep finds >=2 OTHER unlinked mode families in the campaign graph, proving the fix is a class repair, not a spot patch
+- **Prediction** - the family links via shared spec values; the campaign graph contains parallel cases
+- **Acceptance bar** - probe passes + >=2 generalization finds; refuted if the family only links with hand-written evidence (the failure is extraction-fundamental, routed to H119)
+- **Experiment** - detector sweep deterministic; generation needs the local model; post-wave
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H119 Extraction determinism - variance is a prompt property
+
+- **Weak spot** - the consolidation instability (same documents, different entity surfaces across runs) drives duplicates upstream of every resolver fix (H107's predicted dominant root cause)
+- **Hypothesis** - re-extracting the same 10-document set 5x, entity-set Jaccard variance drops >=50% under temperature-0 decoding plus a canonicalization prompt (naming rules: fullest form, no marketing suffixes, singular) versus the production prompt - determinism is substantially a prompt property, not an inherent LLM limitation
+- **Prediction** - naming variance (surface forms) collapses; genuine content variance (which entities matter) persists at a lower floor - the residual defines the resolver's irreducible workload
+- **Acceptance bar** - >=50% variance reduction at equal extraction recall (no entities lost to rigidity); refuted if variance persists (inherent nondeterminism - the resolver keeps its full workload and H101's benchmark becomes even more critical)
+- **Experiment** - 5x2 extraction runs on the local model; post-wave GPU window
+- **Result** - pending
+- **Verdict** - pending
+
+### R11-H120 Ship the evidence-weighted detector - from verdict to default
+
+- **Weak spot** - H50 proved the spike-doc false-alarm class and H59 registered the fix (binomial-LLR CUSUM), but the production detector still runs all-3-consecutive; a proven-better instrument sitting unshipped is a weak spot of process, not knowledge
+- **Hypothesis** - H59's detector, implemented behind a config flag and replayed against the FULL wave-1b remap stream (spike doc included) plus injected sustained shifts, produces zero false alarms and detection delay <= the production criterion at matched ARL0 - clearing it for default-on in the next minor release
+- **Prediction** - clean replay; the flag flips
+- **Acceptance bar** - zero false alarms on realized stream AND matched-or-better detection on injections; refuted if implementation-vs-harness divergence appears (the harness idealized something production breaks)
+- **Experiment** - extends drift.py behind `drift.detector_variant`; deterministic replay; runs after H59's harness verdict lands
+- **Result** - pending
+- **Verdict** - pending
+
