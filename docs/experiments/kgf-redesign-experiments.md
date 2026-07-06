@@ -383,3 +383,80 @@ The long hypothesis: KGF's lifecycle machinery (curing, drift, calibration, audi
 | R05-H24 | lifecycle at scale | curing + consolidation under 6 cluster-shifted waves | type system stays bounded while content grows ~10x | type count <= 30 at campaign end; chao1 saturation maintained; drift signal fires on >= 1 cluster transition | pending |
 | R05-H25 | zero-cost extractor | gpt-oss-120b extraction + propositions + grounded reader | product thesis holds on a local engine | in-wave probe accuracy >= 0.75 (corrected scorer) | pending |
 | R05-H26 | coverage growth | fixed probe set re-run after each wave | answerability tracks cluster membership monotonically | in-wave probes flip to answered as their cluster lands; out-of-wave probes >= 70% refused throughout | pending |
+
+## R06 - contrarian round: falsify KGF's own load-bearing assumptions (pre-registered 2026-07-06)
+
+Every round through R05 assumed KGF's architecture is right and tuned inside it. R06 attacks the architecture. Five hypotheses each name an assumption the whole design rests on and pre-register the experiment that would break it - the point is falsification, not confirmation, so a null that hardens an assumption is as valuable as a flip that overturns it. Priors were checked against the 2023-2026 literature before registration (six-source sweep); each row carries an honest novelty verdict and the sources are in `references/papers/`. Same engine and corpus as R05 (local gpt-oss-120b, benchmark article corpus, neo4j3), so R06 rides the R05 waves rather than needing its own build - each hypothesis is measured on a completed wave graph.
+
+| hypothesis | assumption attacked | lever | predicted | acceptance bar | prior art | verdict |
+|---|---|---|---|---|---|---|
+| R06-H27 | facts belong in the graph | hollow graph: store only identity + attribute-existence + verbatim provenance spans, zero paraphrased propositions; assemble answers from spans at query time | fidelity failure becomes structurally impossible; QA not worse than the proposition graph | in-wave accuracy >= proposition-graph accuracy; zero fidelity-class failures by construction | partial - span grounding + paraphrase-fidelity loss documented (Extractive-Abstractive Spectrum; Evidence Units), no hollow end-to-end system proven on QA | pending |
+| R06-H28 | ontology quality drives accuracy | scramble type labels on a cured wave graph post-hoc, re-run all probes | if QA moves < 5%, typing is causally inert for retrieval and only earns its keep as the H23 audit baseline | measured QA delta under label scramble; either outcome recorded (null hardens audit-only thesis, non-null is first causal proof curing pays) | argues against - ontology ablations degrade QA (OMD-GraphRAG; SG-KBQA generalization), but nobody ran the scramble test specifically | pending |
+| R06-H29 | merge at ingest | keep duplicate entities, add alias edges, resolve at read time | wrong-merge errors (unrecoverable) vanish; the persistent cross-type duplicate failure class disappears by redefinition | cross-type duplicate probes answer without ingest merge; no read-time latency regression past budget | partial - ingest-merge errors shown to compound on multi-hop ((0.85)^n); query-time resolution is old (Bhattacharya-Getoor 2007) but unproven vs ingest-merge on modern KG-QA | pending |
+| R06-H30 | extract what a document says | question-native graph: extract answerable questions as first-class nodes bound to verbatim spans; completeness = expected-question coverage per type cohort; retrieval = question-to-question match | unifies retrieval, abstention and the H23 audit in one structure; out-of-scope questions refuse structurally | in-wave accuracy >= proposition graph; >= 70% out-of-wave refused via coverage gap; retrieval is question-match only | novel - doc2query/HyDE/QA-Expand generate questions for expansion, none make them first-class KG nodes with cohort coverage auditing | pending |
+| R06-H31 | one frontier pass extracts best | small local model (gpt-oss-120b) in a verify-and-repair loop vs one Bedrock-Sonnet single pass, same wave, same probes | test-time compute inversion: loop on the free local model beats the paid single pass | local-loop graph QA >= single-pass QA at zero API cost; extraction recall not lower | partial - small-model self-correction (ISC) and test-time verification proven for reasoning, never measured on KG extraction; distillation variants need the big model, the loop here does not | pending |
+
+### R06-H27 The hollow graph - no propositions, only pointers
+
+- **Hypothesis** - because the P19 fidelity failure is caused by the extractor paraphrasing a load-bearing sentence, a graph that never stores a paraphrase cannot fail that way; storing only entity identity (nodes + alias edges), attribute-existence claims (that entity E has an attribute A, never A's value) and provenance pointers to verbatim source spans makes fidelity failure structurally impossible while the graph still routes a reader to the exact spans that answer
+- **Assumption attacked** - that propositional knowledge (subject-relation-object triples with LLM-rendered content) belongs in the graph at all; H22 adds quotes alongside propositions, H27 says quotes are the only content and propositions are the disease
+- **Lever** - a hollow-graph ingest variant: extraction emits (entity, attribute-name, span-pointer) not (entity, relation, value); reader assembles from spans
+- **Mechanism** - identity is the one job flat storage cannot do and provenance spans are lossless by definition; the graph becomes an index over verbatim evidence, not a paraphrase of it - the retrieval-first doctrine taken to its limit (all fidelity work shifts to zero, because nothing is transformed)
+- **Prediction** - in-wave QA accuracy not worse than the proposition graph on the same wave; the fidelity-gap failure class (P19 type) is empty by construction; context size bounded by spans not chunks
+- **Acceptance bar** - in-wave accuracy >= proposition-graph accuracy on the same wave-1 probes; manual audit finds zero fidelity-class residuals; if accuracy drops, record which query types need synthesis a pointer cannot provide (the honest failure mode)
+- **Prior art** - Evidence Units (arXiv 2604.00500) groups spans with provenance in Neo4j but for document organization, not QA-graph construction; the Extractive-Abstractive Spectrum (arXiv 2411.17375) proves abstractive generation trades verifiability for fluency but does not build a hollow KG; no system proves a proposition-free graph matches a proposition graph on QA
+- **Experiment** - <br>method: hollow-ingest variant over wave-1 documents into a scratch graph; run the 5 in-wave probes through a span-assembly reader; compare accuracy and fidelity-residual count against the R05 proposition graph
+- **Result** - pending
+- **Verdict** - pending
+
+### R06-H28 Types are decoration - the scramble test
+
+- **Hypothesis** - because retrieval is driven by embeddings and graph proximity rather than type labels, permuting the type labels on a cured graph will barely move QA accuracy; if so, the ontology's only causal contribution is as the cohort baseline the H23 completeness audit needs, not as a retrieval signal - which would mean months of curing machinery earns its keep only at audit time
+- **Assumption attacked** - that ontology/type quality has a large causal effect on retrieval and QA (the implicit justification for curing, consolidation, calibration)
+- **Lever** - post-hoc label permutation on a completed wave graph; nothing else changed
+- **Mechanism** - a scramble is the cleanest possible ablation - same nodes, same edges, same embeddings, same content, only the type strings permuted; any accuracy delta is attributable to typing alone, isolating what removal ablations (which also drop structure) cannot
+- **Prediction** - QA delta < 5% absolute under a full label scramble; a matched control (drop types entirely) no worse than scramble
+- **Acceptance bar** - measured accuracy delta reported both ways; a null (< 5%) is registered as evidence typing is retrieval-inert and reframes curing as an audit-only investment; a non-null (>= 5%) is registered as the first causal evidence in the program that curing pays at retrieval time - either is a publishable result
+- **Prior art** - argues against the null: OMD-GraphRAG (arXiv 2603.25152) and SG-KBQA (arXiv 2502.12737) both show schema guidance lifts QA, but via removal/guidance ablations that confound schema with structure; the isolated scramble test is unrun in the cited literature
+- **Experiment** - <br>method: on the R05 wave graph, permute all `:Type` labels by a fixed random derangement (vary the derangement by seed offset per trial), re-run all in-wave probes, compare to the unscrambled baseline; repeat with types fully removed
+- **Result** - pending
+- **Verdict** - pending
+
+### R06-H29 Duplicates are features - resolve at read time
+
+- **Hypothesis** - because a wrong ingest-time merge is unrecoverable and destroys provenance-specific context, keeping duplicate entities connected by alias edges (the H21 machinery) and resolving them only at read time preserves per-source context and eliminates the entire wrong-merge error class; the persistent cross-type duplicate failure (47 pairs at v29) stops being a defect and becomes the intended representation
+- **Assumption attacked** - that entity resolution must happen at ingest and that a merged graph is cleaner than a duplicate-rich one
+- **Lever** - a no-ingest-merge variant plus a read-time resolver that walks alias edges to gather a query's entity cluster
+- **Mechanism** - merging is a lossy, irreversible commit made under maximum uncertainty (one document's worth of evidence); deferring it to read time makes it reversible, query-conditioned, and evidence-complete - the resolution runs over the whole alias neighbourhood, not one mention
+- **Prediction** - cross-type duplicate probes answer correctly without any ingest merge; no read-time latency regression beyond the retrieval budget; duplicate_name_density stops being a quality signal
+- **Acceptance bar** - the cross-type duplicate probe class answers >= the merged graph; read-time resolution stays within the retrieval latency budget (measure hop count and wall-clock); no false cross-entity bleed introduced by alias-walk
+- **Prior art** - partial: the (0.85)^n multi-hop-poisoning analysis and DEG-RAG (arXiv 2510.14271, which argues FOR ingest denoising) frame the cost of bad merges; query-time entity resolution (Bhattacharya-Getoor, JAIR 2007) is the theoretical ancestor but predates KG-QA and never compared against ingest-merge on this task
+- **Experiment** - <br>method: ingest a wave with resolution disabled but alias-edge extraction on; read-time resolver over alias neighbourhoods; compare cross-type duplicate probe accuracy and latency against the merged R05 graph
+- **Result** - pending
+- **Verdict** - pending
+
+### R06-H30 The question-native graph - extract what a document can answer
+
+- **Hypothesis** - because retrieval, abstention and completeness auditing are all really about questions, inverting extraction to emit answerable questions as first-class nodes (each bound to the verbatim span that answers it) unifies all three: retrieval becomes question-to-question matching, completeness becomes expected-question coverage per type cohort, and an out-of-scope query refuses structurally when no stored question matches
+- **Assumption attacked** - that a knowledge graph should represent what documents assert (entity-centric triples) rather than what they can answer (question-centric nodes)
+- **Lever** - a question-native ingest variant: per chunk, extract answerable questions + their answering spans + the entity/type they concern; index questions
+- **Mechanism** - doc2query proved generated questions improve retrieval, but as throwaway expansion; promoting questions to persistent typed nodes gives the graph an abstention signal (no matching question = refuse) and a completeness metric (cohort question-coverage) that entity graphs lack, folding H23 and H17's failed abstention into the structure itself
+- **Prediction** - in-wave accuracy >= proposition graph; out-of-wave refusal >= 70% via coverage-gap (a question with no stored analogue); retrieval needs no entity traversal
+- **Acceptance bar** - in-wave accuracy >= the proposition graph on wave-1 probes; >= 70% of out-of-wave probes refused through question-coverage gaps with < 10% false refusal; question-match retrieval alone (no entity hop) reaches the answering span
+- **Prior art** - novel: the query-expansion survey (arXiv 2509.07794) and QA-Expand (arXiv 2502.08557) generate questions to expand queries at retrieval time; none make questions first-class graph citizens or audit cohort question-coverage - the closest published ideas stop at auxiliary expansion
+- **Experiment** - <br>method: question-native ingest over wave-1 documents into a scratch graph; question-to-question retrieval reader; measure in-wave accuracy, out-of-wave refusal, and whether coverage-gap abstention beats the H17 vector-score null
+- **Result** - pending
+- **Verdict** - pending
+
+### R06-H31 Small model plus audit loop beats big model single-pass
+
+- **Hypothesis** - because the self-auditing repair loop can find and fix identity/fidelity/completeness gaps, a small local model (gpt-oss-120b, free) run inside that loop produces a graph at least as good as a single pass of a frontier API model (Bedrock Sonnet) - test-time compute inversion applied to graph construction, where iteration on cheap local inference substitutes for one expensive strong pass
+- **Assumption attacked** - that KG quality tracks extractor model strength, so the strongest available single-pass model is the right default
+- **Lever** - two builds of the same wave: gpt-oss-120b + verify-and-repair loop vs Bedrock Sonnet single pass; identical probes
+- **Mechanism** - a single pass has one shot to catch every fact; a loop re-reads under focus (the R04 repair mechanism) and closes cohort gaps (H23), trading the frontier model's per-call quality for many cheap corrective calls - the same test-time-compute logic that beats parameter scaling on reasoning, never yet measured on extraction
+- **Prediction** - local-loop graph QA >= single-pass QA; extraction recall (entities+rels/doc) not lower; API cost zero vs the Sonnet pass
+- **Acceptance bar** - in-wave accuracy of the local-loop graph >= the Sonnet single-pass graph on the same wave; recall proxy not lower; the loop terminates (bounded iterations)
+- **Prior art** - partial: Small Language Model Can Self-Correct (arXiv 2401.07301) shows 6B models self-correct via fine-tuning but do not beat GPT-4; the Trust-but-Verify survey (arXiv 2508.16665) confirms test-time verification scales - neither measures small-loop vs big-single-pass on KG extraction, and the self-correction results do not reach frontier single-pass parity, so this is the risky one
+- **Experiment** - <br>method: build wave-1 twice (local-loop vs Sonnet single-pass), same documents, same probe set, compare accuracy, recall proxy and cost
+- **Result** - pending
+- **Verdict** - pending
