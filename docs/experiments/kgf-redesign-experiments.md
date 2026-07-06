@@ -180,10 +180,10 @@ Second batch, grounded in the six-thread external research round recorded in [`.
 
 | hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
 |---|---|---|---|---|---|
-| R02-H10 | extraction typing | values-as-properties constraint + cure-time value-likeness demotion guard | type proliferation killed at source | cured types <= 15 on CPAP, no gold entity lost | pending |
-| R02-H11 | graph shape | ingest-time proposition (semantic-unit) nodes, embedded, citation-carrying | weak-reader accuracy up, tokens down | evidence recall +10% and weak-reader accuracy up vs entity-only context | pending |
-| R02-H12 | retrieval topology | passage nodes inside PPR projection, tiered reset weights | multi-hop evidence recall up | evidence recall +5% vs post-hoc chunk attach, query latency < 2x | pending |
-| R02-H13 | graph density | kNN similarity edges + defer-band alias edges | coherent local density up, recall up | avg_degree >= 4.0 and entity recall +5%, duplicate_name_density not up | pending |
+| R02-H10 | extraction typing | values-as-properties constraint + cure-time value-likeness demotion guard | type proliferation killed at source | cured types <= 15 on CPAP, no gold entity lost | **Kept** (19 types, bar missed narrowly; -71%, residual is synonym pairs) |
+| R02-H11 | graph shape | ingest-time proposition (semantic-unit) nodes, embedded, citation-carrying | weak-reader accuracy up, tokens down | evidence recall +10% and weak-reader accuracy up vs entity-only context | **Promoted** (+10.6% recall, weak reader reaches strong parity) |
+| R02-H12 | retrieval topology | passage nodes inside PPR projection, tiered reset weights | multi-hop evidence recall up | evidence recall +5% vs post-hoc chunk attach, query latency < 2x | **Refuted (null)** (B0 = B1 exactly) |
+| R02-H13 | graph density | kNN similarity edges + defer-band alias edges | coherent local density up, recall up | avg_degree >= 4.0 and entity recall +5%, duplicate_name_density not up | **Refuted (null)** on recall (degree bar met, zero retrieval delta) |
 
 ### R02-H10 Values-as-properties extraction constraint
 
@@ -192,9 +192,9 @@ Second batch, grounded in the six-thread external research round recorded in [`.
 - **Mechanism** - extraction schema forbids value-like type names; demotion guard classifies each candidate type by member-name statistics (fraction of digit/unit-dominant tokens) and folds attribute-like types into properties before curing metrics see them
 - **Prediction** - cured type count drops from the R01 rebuild's measured count (order 66) to <= 15; JSD/Chao1 gates operate on a legitimate inventory and cure earlier
 - **Acceptance bar** - cured types <= 15 on the CPAP rebuild AND no gold entity (devices, manufacturers, modes) lost from the graph
-- **Experiment** - <br>source: [`[paper digest] Microsoft GraphRAG.md`](../../references/papers/) (claims/covariates model), [`[paper digest] NodeRAG.md`](../../references/papers/) (attribute nodes are entity summaries, never values)<br>method: modify extraction prompts + add demotion pass; re-run CPAP ingest; diff type inventory and gold entity list
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: [`[paper digest] Microsoft GraphRAG.md`](../../references/papers/) (claims/covariates model), [`[paper digest] NodeRAG.md`](../../references/papers/) (attribute nodes are entity summaries, never values)<br>method: modify extraction prompts + add demotion pass; re-run CPAP ingest; diff type inventory and gold entity list<br>caveat: rebuild ran mixed-model after a Bedrock quota outage (docs 1-15 Sonnet 4.5, docs 16-27 Haiku 4.5 via the resume path) - live exercise of R01-H9 routing
+- **Result** - cured types 65 -> 19 (-71%); every value-costume type eliminated (no PressureRange/Weight/Warranty/Dimension; Specification absorbs demotions, 199 members); no gold entity lost (devices, manufacturers, modes all present); 1597 entities carry spec properties; curing statistics healthier at cure (chao1 0.991 vs 0.918, jsd 0.0105). Bar missed narrowly: 19 > 15 - the residual is synonym PAIRS (Condition/MedicalCondition, Feature/ClinicalFeature) that embed-verify treats as distinct facets, a different failure mode than value promotion
+- **Verdict** - Kept; the registered disease (value promotion) is cured and both guardrails hold, but the numeric gate missed at 19 vs 15 - the residual belongs to synonym consolidation, tracked as its own follow-up, not to this lever
 
 ### R02-H11 Proposition nodes as first-class retrieval targets
 
@@ -203,9 +203,9 @@ Second batch, grounded in the six-thread external research round recorded in [`.
 - **Mechanism** - NodeRAG semantic-unit pattern: content nodes carry what retrieval returns; entity names remain entry points; propositions seed and rank in PPR
 - **Prediction** - evidence recall on the probe set up >= 10%; weak-reader accuracy up; context tokens per query down or flat
 - **Acceptance bar** - evidence recall +10% and weak-reader accuracy improves vs entity-description context, token budget not up more than 20%
-- **Experiment** - <br>source: [`[paper digest] NodeRAG.md`](../../references/papers/) (retrieval ratio 94.9% vs 86.3%, MuSiQue 46.3% at 5.9k tokens)<br>method: proposition generator in the load path, proposition label + embedding, retrieval assembly prefers propositions; probe set A/B
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: [`[paper digest] NodeRAG.md`](../../references/papers/) (retrieval ratio 94.9% vs 86.3%, MuSiQue 46.3% at 5.9k tokens)<br>method: DETERMINISTIC proposition rendering (one sentence per valid relationship + one per entity property set) - faithful by construction, zero LLM cost, idempotent content-hash ids; 8508 backfilled on the R01 graph; probe set A/B via propositions_enabled
+- **Result** - evidence recall 0.396 -> 0.438 (+10.6% relative, meets the +10% bar); strong-reader accuracy 0.708 -> 0.750; false refusals down 0.333 -> 0.250; context 1.19x (within the 1.2x cap). Weak-reader arm (Haiku 4.5): 0.708 -> 0.750 - REACHING STRONG-READER PARITY, the product goal in one number. Ingest cost: zero LLM (deterministic rendering), embeddings served through the DEF-1 cache
+- **Verdict** - Promoted; all three bar conditions met and the weak-reader parity result is the strongest finding of the batch
 
 ### R02-H12 Passage nodes inside the PPR projection
 
@@ -214,9 +214,9 @@ Second batch, grounded in the six-thread external research round recorded in [`.
 - **Mechanism** - HippoRAG 2 composite graph: dense passage signal and sparse phrase signal fuse inside one PPR run instead of post-hoc
 - **Prediction** - evidence recall up >= 5% on multi-hop probes; single-fact probes unaffected
 - **Acceptance bar** - evidence recall +5% vs post-hoc chunk attachment with no single-fact regression and query latency under 2x
-- **Experiment** - <br>source: [`[paper digest] HippoRAG 2.md`](../../references/papers/) (passage-node removal costs 11 recall@5 points on MuSiQue)<br>method: extend the GDS projection with chunk nodes + weighted sourceNodes; probe set A/B against R01 retrieval
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: [`[paper digest] HippoRAG 2.md`](../../references/papers/) (passage-node removal costs 11 recall@5 points on MuSiQue)<br>method: KGFDocument + Chunk nodes persisted at ingest, MENTIONED_IN from entity loader, PPR projection spans Entity+Chunk via the PPR_NODE_LABELS seam; phase B ablation B0 (chunks in) vs B1 (chunks out) on the same rebuilt graph, same reader
+- **Result** - B0 and B1 IDENTICAL on every measure (recall 0.333, accuracy 0.792, multi-hop 0.33, context within 1%). Multi-hop failure attribution shows why: of 4 failing multi-hop probes, 2 have evidence recall 1.0 (reader-side failure, ranking irrelevant) and 2 have recall 0.0 (evidence absent from the graph - no projection can rank what is not there). Provenance value stands regardless: S6 audit trace and future citation ids ride on the same nodes. Side find: the live integration suite caught GDS rejecting projections naming absent labels - fixed with a label-intersection guard
+- **Verdict** - Refuted (null) at this corpus/probe scale; the HippoRAG 2 gain did not transfer - kept as infrastructure (provenance, audit), not as a retrieval claim
 
 ### R02-H13 Similarity-edge densification
 
@@ -225,9 +225,9 @@ Second batch, grounded in the six-thread external research round recorded in [`.
 - **Mechanism** - HippoRAG synonym-edge pattern scoped: hard merge stays primary, similarity edges connect near-neighbours so PPR can traverse lexical/semantic variants; defer-band pairs get alias edges instead of forced decisions
 - **Prediction** - avg_degree rises to >= 4.0; entity recall on probes up >= 5%; orphan absorption as a side effect, not a target
 - **Acceptance bar** - avg_degree >= 4.0 and entity recall +5% with duplicate_name_density not above baseline
-- **Experiment** - <br>source: [`[paper digest] HippoRAG.md`](../../references/papers/) (synonym edges cosine > 0.8), [`[paper digest] When to Use Graphs in RAG.md`](../../references/papers/) (degree 8.75 vs 1.48 winners/losers), kNN augmentation study (+6.4% entity recall, p=0.000043)<br>method: post-load kNN pass over entity embeddings, gated cosine threshold; probe set A/B
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: [`[paper digest] HippoRAG.md`](../../references/papers/) (synonym edges cosine > 0.8), [`[paper digest] When to Use Graphs in RAG.md`](../../references/papers/) (degree 8.75 vs 1.48 winners/losers), kNN augmentation study (+6.4% entity recall, p=0.000043)<br>method: post-load kNN pass over entity embeddings via the vector index (sub-quadratic), id-ordered MERGE; A1 vs A2 on the same graph, same reader
+- **Result** - 5640 SIMILAR_TO edges created on the R01 graph (avg_degree 2.92 -> 5.37, degree bar met; 3839 more on the rebuilt graph -> 5.47); retrieval delta ZERO - A2 identical to A1 on recall, accuracy, and context to within one character. Reading: kNN edges derived from the same embedding space that drives vector seeding add only redundant paths - anything they connect, the seeder already found; the literature's gains came from sparser-seeded systems. Orphan absorption was real as a side effect (orphan_rate 0.099 -> 0.041 on the rebuilt graph)
+- **Verdict** - Refuted (null) on the recall bar; the degree target alone is a vanity number - kept only as orphan absorption infrastructure, and the guardrail held (duplicate density flat)
 
 ## R03 - query-side context assembly (pre-registered 2026-07-06)
 
@@ -235,10 +235,10 @@ Query-time batch over the R02 graph shape; each lever independent of the others,
 
 | hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
 |---|---|---|---|---|---|
-| R03-H14 | seeding | query-to-triple linking alongside entity seeds | seed quality up | evidence recall +5%, no latency blowup | pending |
-| R03-H15 | query handling | comparison decomposition into per-entity retrievals | comparison accuracy up | comparison probe accuracy +10%, tokens < 1.5x | pending |
-| R03-H16 | serialization | PPR-ordered per-entity blocks, head+tail placement, per-claim citations | weak-reader accuracy and faithfulness up | weak-reader accuracy +10% and faithfulness >= 0.9 | pending |
-| R03-H17 | abstention | structural coverage verdict (seed neighbourhood, path connectivity, community overlap) | unanswerables refused | >= 70% correct refusal on unanswerable probes, < 10% false refusal | pending |
+| R03-H14 | seeding | query-to-triple linking alongside entity seeds | seed quality up | evidence recall +5%, no latency blowup | **Refuted (null)** (off = on exactly) |
+| R03-H15 | query handling | comparison decomposition into per-entity retrievals | comparison accuracy up | comparison probe accuracy +10%, tokens < 1.5x | **Refuted (null)** at the 0.875 ceiling (fired on 5/8, zero delta) |
+| R03-H16 | serialization | PPR-ordered per-entity blocks, head+tail placement, per-claim citations | weak-reader accuracy and faithfulness up | weak-reader accuracy +10% and faithfulness >= 0.9 | **Refuted (null)** (context too short for the effect) |
+| R03-H17 | abstention | structural coverage verdict (seed neighbourhood, path connectivity, community overlap) | unanswerables refused | >= 70% correct refusal on unanswerable probes, < 10% false refusal | **Refuted** (top-score signal inert; system refusal 100% via grounded reader) |
 
 ### R03-H14 Query-to-triple seeding
 
@@ -247,9 +247,9 @@ Query-time batch over the R02 graph shape; each lever independent of the others,
 - **Mechanism** - HippoRAG 2 query-to-triple linking: triple embeddings capture predicate semantics entity names miss
 - **Prediction** - evidence recall up >= 5%, biggest gain on attribute questions
 - **Acceptance bar** - evidence recall +5% with no meaningful latency increase
-- **Experiment** - <br>source: [`[paper digest] HippoRAG 2.md`](../../references/papers/) (+12.5% recall@5 average, +21 on MuSiQue)<br>method: embed relation sentences at load, vector-match query against triples, union seed sets; probe A/B
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: [`[paper digest] HippoRAG 2.md`](../../references/papers/) (+12.5% recall@5 average, +21 on MuSiQue)<br>method: proposition nodes double as triple embeddings; proposition_seeding toggle isolates seed extension from context effect; 24 answerable probes, Opus 4.5 reader, densified R01 graph
+- **Result** - off and on identical (recall 0.438, accuracy 0.750). Reading: with propositions already IN the context, extending the PPR seed set through their ABOUT entities adds nothing - the facts arrive through the content channel before the seeding channel can matter. HippoRAG 2's gain assumed triples were seeds only, not returned content
+- **Verdict** - Refuted (null); superseded by the stronger H11 mechanism that subsumes it
 
 ### R03-H15 Comparison-query decomposition
 
@@ -258,9 +258,9 @@ Query-time batch over the R02 graph shape; each lever independent of the others,
 - **Mechanism** - structural split (entity list x attribute), not LLM-guessed decomposition - shallow by construction, no error propagation
 - **Prediction** - comparison probe accuracy up >= 10%; context efficiency improves
 - **Acceptance bar** - comparison accuracy +10% with combined context under 1.5x single-query tokens
-- **Experiment** - <br>source: RT-RAG / EfficientRAG findings (decomposition +7% F1 / +6% EM, ~10x context efficiency) via traversal research thread in [`../sota-decision.md`](../sota-decision.md)<br>method: comparison detector in query(), per-entity PPR, deduplicated union; probe A/B on comparison items
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: RT-RAG / EfficientRAG findings (decomposition +7% F1 / +6% EM, ~10x context efficiency) via traversal research thread in [`../sota-decision.md`](../sota-decision.md)<br>method: deterministic pattern split in query(), per-entity retrieval, deduplicated union; 8 comparison probes, toggle A/B, Opus 4.5 reader
+- **Result** - decomposition verified firing on 5/8 comparison probes (pattern coverage gap on "which device tolerates/offers ..." phrasings); accuracy identical off and on at 0.875 - the strong reader with propositions already answers these comparisons from blended context. On the rebuilt graph comparisons reached 1.00 (decomposition on, not ablated there). The +10% bar had only 12.5% headroom at this ceiling
+- **Verdict** - Refuted (null) at this probe ceiling; retained as routing capability, re-adjudicate on a harder comparison set or weaker reader before widening patterns
 
 ### R03-H16 Reasoning-ordered context serialization with citations
 
@@ -269,9 +269,9 @@ Query-time batch over the R02 graph shape; each lever independent of the others,
 - **Mechanism** - lost-in-the-middle mitigation + StrictCitations grounding, both measured strongest in the small-model band
 - **Prediction** - weak-reader accuracy up >= 10%; faithfulness >= 0.9; no cost increase
 - **Acceptance bar** - weak-reader accuracy +10% and faithfulness >= 0.9 on the probe set
-- **Experiment** - <br>source: [`[paper digest] Lost in the Middle.md`](../../references/papers/), [`[paper digest] Instruction Tuning LLMs on Graphs.md`](../../references/papers/) (structured blocks beat flat triples, largest gain small models), [`[paper digest] Let Me Speak Freely.md`](../../references/papers/) (no forced JSON answers: -10-15% reasoning)<br>method: serializer A/B with identical retrieval; faithfulness scored as verifiable/total statements
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: [`[paper digest] Lost in the Middle.md`](../../references/papers/), [`[paper digest] Instruction Tuning LLMs on Graphs.md`](../../references/papers/) (structured blocks beat flat triples, largest gain small models), [`[paper digest] Let Me Speak Freely.md`](../../references/papers/) (no forced JSON answers: -10-15% reasoning)<br>method: head+tail interleave toggle with identical retrieval; 24 answerable probes, Opus 4.5 reader
+- **Result** - off and on identical (accuracy 0.750). Reading: lost-in-the-middle degradation is a LONG-context pathology (the >30% losses are measured at 10k+ token contexts); KGF's capped context (~4k chars on the R01 graph) is too short for ordering to matter. The per-claim citation instruction (not ablated separately) rode along in all arms. Faithfulness metric (statement decomposition) not yet instrumented - noted as measurement debt
+- **Verdict** - Refuted (null) at current context lengths; the interleave stays (zero cost) and becomes testable if context budgets grow - e.g. the rebuilt graph's 15.7k-char contexts
 
 ### R03-H17 Structural abstention signal
 
@@ -280,6 +280,26 @@ Query-time batch over the R02 graph shape; each lever independent of the others,
 - **Mechanism** - structural signals (empty neighbourhood, no connecting path, low overlap) measure what the graph knows, independent of reader confidence
 - **Prediction** - >= 70% of unanswerable probes refused; < 10% of answerable probes falsely refused
 - **Acceptance bar** - correct refusal >= 70% and false refusal < 10% on the probe set
-- **Experiment** - <br>source: HRAG graph cross-validation (76% correct refusal vs 0%) via topology research thread in [`../sota-decision.md`](../sota-decision.md)<br>method: coverage scorer over retrieval internals; probe set includes deliberately unanswerable items (off-corpus devices, absent attributes)
-- **Result** - pending
-- **Verdict** - pending
+- **Experiment** - <br>source: HRAG graph cross-validation (76% correct refusal vs 0%) via topology research thread in [`../sota-decision.md`](../sota-decision.md)<br>method: coverage gate on best retrieval score (abstention_min_score 0.75); 4 unanswerable + 24 answerable probes; score-distribution analysis with the gate disabled
+- **Result** - the implemented signal (top vector/proposition score) is inert: with propositions on, the gate abstained on 0/4 unanswerables (and falsely on 1 answerable with propositions off). Distribution analysis kills the whole signal class: unanswerable top-scores (0.79-0.86) sit INSIDE the answerable range (0.74-0.95) - no threshold exists. Root cause is conceptual: vector similarity measures topical proximity, not answerability; an unanswerable question about an in-corpus device retrieves excellent context that lacks the asked attribute. System-level refusal was still 100% correct in every run - owed to the strict grounding prompt and the reader, not the gate
+- **Verdict** - Refuted for the top-score signal; the pre-registered richer signals (asked-attribute existence against entity properties/propositions, path connectivity) remain the open path - answerability is an attribute-existence problem, not a similarity problem
+
+### R02/R03 results - probe measurements across graphs and readers
+
+| run | graph | reader | evidence recall | accuracy | single_fact | comparison | multi_hop | refusal | ctx chars |
+|---|---|---|---|---|---|---|---|---|---|
+| A0 baseline | R01 | Sonnet 4.5 | 0.396 | 0.708 | 0.80 | 0.88 | 0.33 | 4/4 | 3253 |
+| A1 +propositions | R01 | Sonnet 4.5 | 0.438 | 0.750 | 0.90 | 0.88 | 0.33 | 4/4 | 3876 |
+| A2 +similarity edges | R01 | Sonnet 4.5 | 0.438 | 0.750 | 0.90 | 0.88 | 0.33 | 4/4 | 3877 |
+| W0 weak, no props | R01 | Haiku 4.5 | - | 0.708 | 0.90 | 0.75 | 0.33 | 4/4 | - |
+| W1 weak, props | R01 | Haiku 4.5 | - | 0.750 | 0.90 | 0.88 | 0.33 | 4/4 | - |
+| B0 rebuilt, full | H10 rebuild | Opus 4.5 | 0.333 | **0.792** | 0.90 | **1.00** | 0.33 | 4/4 | 15693 |
+| B1 rebuilt, no passages | H10 rebuild | Opus 4.5 | 0.333 | 0.792 | 0.90 | 1.00 | 0.33 | 4/4 | 15801 |
+
+Batch reading, honest and in full:
+
+- **The batch's one big win is ingest-time content**: propositions moved every dial they were predicted to move and lifted the weak reader to strong parity - the product thesis ("the graph does the lifting") confirmed in one number
+- **Six pre-registered levers returned nulls or refutations** - topology and query-side tuning add nothing once propositions saturate a probe set of this size; that coherent negative is itself the finding, and it validates the retrieval-first doctrine (work belongs at ingest)
+- **Multi-hop 0.33 never moved across any graph, reader, or lever** - failure attribution on the rebuilt graph: 2 of 4 failures have evidence recall 1.0 (reader/serialization side), 2 have 0.0 (facts absent from the graph - repairable only by targeted re-extraction, the R04 loop)
+- **Metric lesson** - verbatim-substring evidence recall dropped on the rebuilt graph (0.438 -> 0.333) while accuracy ROSE to the batch best (0.792, comparisons perfect): facts rephrased as properties/propositions evade the verbatim matcher; accuracy is the outcome gate, verbatim recall is now a diagnostic only
+- **Caveats** - phase B reader is Opus 4.5 (quota failover), so B-vs-A accuracy deltas are reader-confounded (B0-vs-B1 within-phase comparison is clean); rebuilt-graph context grew 4x (property dumps + decomposition union) - a token-budget item for the ops batch; faithfulness metric not yet instrumented (measurement debt)

@@ -18,6 +18,20 @@ Consolidated acceptance criteria for the KGF v2 rewrite: a CLI+TUI system that b
 - [CLI](#cli)
 - [TUI](#tui)
 - [End-to-End CPAP](#end-to-end-cpap)
+- [SOTA Acceptance Frame](#sota-acceptance-frame)
+
+## SOTA Acceptance Frame
+
+Two-sided bar governing every regime-narrowing change: hold the general control, win the specific regime. General-purpose operation is the default regime when no use case is provided.
+
+- [ ] **General control held** - default-regime KGF not worse than published SOTA mechanisms on general operation: probe categories (single-fact, comparison, multi-hop, abstention) never regress below the pre-change measurement when a regime feature ships
+  - log: 2026-07-06 criterion added; current floor = phase A/B probe measurements
+- [ ] **Regime dominance** - with a use case provided, the regime-derived probe set saturates: weak-reader parity with the strong reader, residual failures provably corpus-absence (correct abstention), not retrieval loss
+  - log: 2026-07-06 criterion added; loop pre-registered as R04
+- [ ] **Two-sided measurement** - every R04+ change reports BOTH the regime delta and the general-control delta; a regime win that regresses the control does not ship
+  - log: 2026-07-06 criterion added
+- [ ] **Edge: no use case provided** - system operates in the default regime with generic materialization and a general probe set; no regime machinery blocks basic operation
+  - log: 2026-07-06 criterion added
 
 ## Foundation
 
