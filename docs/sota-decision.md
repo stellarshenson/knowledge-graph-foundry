@@ -1,5 +1,7 @@
 # SOTA Decision - Knowledge Graph Foundry
 
+Research-decision rationale document. Not the canonical SOTA document - the canonical `docs/kgf-sota.md` (**Canonical SOTA Document**) will be written when the experiment arc converges, carrying surviving measured components only. Hypotheses derived from this rationale are pre-registered and adjudicated exclusively in the canonical experiments log, [`experiments/kgf-redesign-experiments.md`](experiments/kgf-redesign-experiments.md).
+
 Grounded evaluation of every core KGF design choice against current literature (2023-2026), not against the archived v1. Five independent research passes covered KG construction, ontology/schema induction, entity resolution, incremental/temporal KG maintenance, and GraphRAG retrieval. Each verdict is keep / change / throw-away with a cited basis. Willing to discard working mechanisms where they are not state of the art.
 
 ## Verdict table
@@ -113,6 +115,8 @@ Metrics are tracked only where they gate a decision. Hierarchy: outcome metrics 
 - **Maintain** - query-failure rate as a first-class maintenance trigger flagging graph regions for re-extraction; per-community drift baselines stored as community properties
 
 ## Priority-ordered change plan (R02/R03 batches)
+
+Falsifiable hypotheses, predictions, and acceptance bars for items 1-8 are pre-registered in the canonical experiments log ([`experiments/kgf-redesign-experiments.md`](experiments/kgf-redesign-experiments.md), batches R02 and R03) - the log is the system of record for verdicts; this list is the design rationale only.
 
 Retrieval-first structural batch (R02):
 

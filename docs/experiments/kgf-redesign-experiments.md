@@ -144,3 +144,123 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Acceptance bar** - over-merge split verified and fact-drift alarm distinct from schema drift
 - **Result** - pending (this batch)
 - **Verdict** - pending
+
+### R01-H9 Separate extraction model from orchestrator model
+
+- **Hypothesis** - because extraction is high-volume and mechanical while orchestration (clustering, judging, summarizing) is low-volume and judgment-heavy, routing extraction to a cheaper model will hold recall and quality at materially lower cost
+- **Lever** - `Settings.extraction_llm` (bulk extractor) vs `Settings.llm` (orchestrator); single-model run is the control
+- **Mechanism** - `Foundry.extraction_engine` resolves to a separately configured engine when `extraction_llm` is set, falling back to the orchestrator engine when None
+- **Prediction** - entities/relationships per document within 10% of the single-strong-model run at lower per-document cost
+- **Acceptance bar** - recall and duplicate_name_density flat vs single strong model, cost down
+- **Result** - pending (capability shipped, measurement not yet run)
+- **Verdict** - pending
+
+## R02 - retrieval-first graph shape (pre-registered 2026-07-06)
+
+Second batch, grounded in the six-thread external research round recorded in [`../sota-decision.md`](../sota-decision.md) (R02 section) with all cited papers archived under [`../../references/papers/`](../../references/papers/). Directive driving the batch: perfect context in 1-2 hops for weak reader models - work shifts from query time to ingest time. Baseline for all bars is the R01 rebuild measurement (verdicts above, measurement in progress). A shared probe set is part of this batch's setup: 25-30 questions over the CPAP corpus with gold evidence - comparison, single-fact, multi-hop, and deliberately unanswerable items - scored on answer accuracy, evidence recall, faithfulness (verifiable/total statements), and abstention correctness, with a weak reader (Haiku-class) alongside the standard reader.
+
+| hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
+|---|---|---|---|---|---|
+| R02-H10 | extraction typing | values-as-properties constraint + cure-time value-likeness demotion guard | type proliferation killed at source | cured types <= 15 on CPAP, no gold entity lost | pending |
+| R02-H11 | graph shape | ingest-time proposition (semantic-unit) nodes, embedded, citation-carrying | weak-reader accuracy up, tokens down | evidence recall +10% and weak-reader accuracy up vs entity-only context | pending |
+| R02-H12 | retrieval topology | passage nodes inside PPR projection, tiered reset weights | multi-hop evidence recall up | evidence recall +5% vs post-hoc chunk attach, query latency < 2x | pending |
+| R02-H13 | graph density | kNN similarity edges + defer-band alias edges | coherent local density up, recall up | avg_degree >= 4.0 and entity recall +5%, duplicate_name_density not up | pending |
+
+### R02-H10 Values-as-properties extraction constraint
+
+- **Hypothesis** - because LLM extraction promotes measured values ("4-20 cmH2O") to entity types (PressureRange, Weight, Warranty) and no SOTA system does this, constraining extraction to emit unit/measure/range strings as properties or claims on the parent entity - with a deterministic value-likeness demotion guard at cure time as backstop - will collapse the type inventory to the legitimate domain types without losing any gold entity
+- **Lever** - extraction prompt schema + cure-time demotion guard; corpus, engine, resolution held fixed
+- **Mechanism** - extraction schema forbids value-like type names; demotion guard classifies each candidate type by member-name statistics (fraction of digit/unit-dominant tokens) and folds attribute-like types into properties before curing metrics see them
+- **Prediction** - cured type count drops from the R01 rebuild's measured count (order 66) to <= 15; JSD/Chao1 gates operate on a legitimate inventory and cure earlier
+- **Acceptance bar** - cured types <= 15 on the CPAP rebuild AND no gold entity (devices, manufacturers, modes) lost from the graph
+- **Experiment** - <br>source: [`[paper digest] Microsoft GraphRAG.md`](../../references/papers/) (claims/covariates model), [`[paper digest] NodeRAG.md`](../../references/papers/) (attribute nodes are entity summaries, never values)<br>method: modify extraction prompts + add demotion pass; re-run CPAP ingest; diff type inventory and gold entity list
+- **Result** - pending
+- **Verdict** - pending
+
+### R02-H11 Proposition nodes as first-class retrieval targets
+
+- **Hypothesis** - because weak readers fail when forced to synthesize scattered entity descriptions at query time, generating self-contained proposition sentences at ingest (entity + key edges folded into standalone facts with source chunk ids), embedding them, and returning them as the primary context unit will raise weak-reader accuracy while cutting context tokens
+- **Lever** - ingest-time proposition generation + retrieval returns propositions before chunks; extraction, resolution, PPR core held fixed
+- **Mechanism** - NodeRAG semantic-unit pattern: content nodes carry what retrieval returns; entity names remain entry points; propositions seed and rank in PPR
+- **Prediction** - evidence recall on the probe set up >= 10%; weak-reader accuracy up; context tokens per query down or flat
+- **Acceptance bar** - evidence recall +10% and weak-reader accuracy improves vs entity-description context, token budget not up more than 20%
+- **Experiment** - <br>source: [`[paper digest] NodeRAG.md`](../../references/papers/) (retrieval ratio 94.9% vs 86.3%, MuSiQue 46.3% at 5.9k tokens)<br>method: proposition generator in the load path, proposition label + embedding, retrieval assembly prefers propositions; probe set A/B
+- **Result** - pending
+- **Verdict** - pending
+
+### R02-H12 Passage nodes inside the PPR projection
+
+- **Hypothesis** - because attaching chunks after PPR severs passage relevance from graph diffusion, adding chunk nodes to the PPR projection with a low reset weight will propagate passage and entity relevance jointly and raise multi-hop evidence recall
+- **Lever** - PPR projection contents + reset-weight tiering (passages ~0.05, entities/propositions 1.0); seeds and damping held fixed
+- **Mechanism** - HippoRAG 2 composite graph: dense passage signal and sparse phrase signal fuse inside one PPR run instead of post-hoc
+- **Prediction** - evidence recall up >= 5% on multi-hop probes; single-fact probes unaffected
+- **Acceptance bar** - evidence recall +5% vs post-hoc chunk attachment with no single-fact regression and query latency under 2x
+- **Experiment** - <br>source: [`[paper digest] HippoRAG 2.md`](../../references/papers/) (passage-node removal costs 11 recall@5 points on MuSiQue)<br>method: extend the GDS projection with chunk nodes + weighted sourceNodes; probe set A/B against R01 retrieval
+- **Result** - pending
+- **Verdict** - pending
+
+### R02-H13 Similarity-edge densification
+
+- **Hypothesis** - because KGF's avg_degree 2.49 sits near the density of measurably failing systems (1.48) and far below winning ones (~8.75), adding cosine-gated kNN similarity edges between entities plus alias edges for the resolution defer band will densify coherent local clusters and raise entity recall without inflating duplicates
+- **Lever** - similarity/alias edge creation at load time; resolution merges, PPR, extraction held fixed
+- **Mechanism** - HippoRAG synonym-edge pattern scoped: hard merge stays primary, similarity edges connect near-neighbours so PPR can traverse lexical/semantic variants; defer-band pairs get alias edges instead of forced decisions
+- **Prediction** - avg_degree rises to >= 4.0; entity recall on probes up >= 5%; orphan absorption as a side effect, not a target
+- **Acceptance bar** - avg_degree >= 4.0 and entity recall +5% with duplicate_name_density not above baseline
+- **Experiment** - <br>source: [`[paper digest] HippoRAG.md`](../../references/papers/) (synonym edges cosine > 0.8), [`[paper digest] When to Use Graphs in RAG.md`](../../references/papers/) (degree 8.75 vs 1.48 winners/losers), kNN augmentation study (+6.4% entity recall, p=0.000043)<br>method: post-load kNN pass over entity embeddings, gated cosine threshold; probe set A/B
+- **Result** - pending
+- **Verdict** - pending
+
+## R03 - query-side context assembly (pre-registered 2026-07-06)
+
+Query-time batch over the R02 graph shape; each lever independent of the others, all measured on the shared probe set.
+
+| hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
+|---|---|---|---|---|---|
+| R03-H14 | seeding | query-to-triple linking alongside entity seeds | seed quality up | evidence recall +5%, no latency blowup | pending |
+| R03-H15 | query handling | comparison decomposition into per-entity retrievals | comparison accuracy up | comparison probe accuracy +10%, tokens < 1.5x | pending |
+| R03-H16 | serialization | PPR-ordered per-entity blocks, head+tail placement, per-claim citations | weak-reader accuracy and faithfulness up | weak-reader accuracy +10% and faithfulness >= 0.9 | pending |
+| R03-H17 | abstention | structural coverage verdict (seed neighbourhood, path connectivity, community overlap) | unanswerables refused | >= 70% correct refusal on unanswerable probes, < 10% false refusal | pending |
+
+### R03-H14 Query-to-triple seeding
+
+- **Hypothesis** - because a query names relations as often as entities ("pressure range of X"), embedding relation sentences and seeding PPR from matched triples plus entities will raise evidence recall over entity-only seeding
+- **Lever** - seed construction; PPR core and context assembly held fixed
+- **Mechanism** - HippoRAG 2 query-to-triple linking: triple embeddings capture predicate semantics entity names miss
+- **Prediction** - evidence recall up >= 5%, biggest gain on attribute questions
+- **Acceptance bar** - evidence recall +5% with no meaningful latency increase
+- **Experiment** - <br>source: [`[paper digest] HippoRAG 2.md`](../../references/papers/) (+12.5% recall@5 average, +21 on MuSiQue)<br>method: embed relation sentences at load, vector-match query against triples, union seed sets; probe A/B
+- **Result** - pending
+- **Verdict** - pending
+
+### R03-H15 Comparison-query decomposition
+
+- **Hypothesis** - because "A vs B on X" requires covering two entity neighbourhoods and one-shot retrieval splits its budget badly between them, decomposing into per-entity sub-retrievals and unioning contexts will raise comparison accuracy at bounded cost
+- **Lever** - query routing for detected comparisons; retrieval per sub-query unchanged
+- **Mechanism** - structural split (entity list x attribute), not LLM-guessed decomposition - shallow by construction, no error propagation
+- **Prediction** - comparison probe accuracy up >= 10%; context efficiency improves
+- **Acceptance bar** - comparison accuracy +10% with combined context under 1.5x single-query tokens
+- **Experiment** - <br>source: RT-RAG / EfficientRAG findings (decomposition +7% F1 / +6% EM, ~10x context efficiency) via traversal research thread in [`../sota-decision.md`](../sota-decision.md)<br>method: comparison detector in query(), per-entity PPR, deduplicated union; probe A/B on comparison items
+- **Result** - pending
+- **Verdict** - pending
+
+### R03-H16 Reasoning-ordered context serialization with citations
+
+- **Hypothesis** - because flat concatenation buries key facts mid-context (>30% degradation) and uncited claims invite fabrication, serializing per-entity blocks (name, propositions, relationship facts, source snippet) ordered by PPR score with top items at head and tail, and forcing per-claim citation ids, will raise weak-reader accuracy and faithfulness
+- **Lever** - context assembly format only; retrieval set identical
+- **Mechanism** - lost-in-the-middle mitigation + StrictCitations grounding, both measured strongest in the small-model band
+- **Prediction** - weak-reader accuracy up >= 10%; faithfulness >= 0.9; no cost increase
+- **Acceptance bar** - weak-reader accuracy +10% and faithfulness >= 0.9 on the probe set
+- **Experiment** - <br>source: [`[paper digest] Lost in the Middle.md`](../../references/papers/), [`[paper digest] Instruction Tuning LLMs on Graphs.md`](../../references/papers/) (structured blocks beat flat triples, largest gain small models), [`[paper digest] Let Me Speak Freely.md`](../../references/papers/) (no forced JSON answers: -10-15% reasoning)<br>method: serializer A/B with identical retrieval; faithfulness scored as verifiable/total statements
+- **Result** - pending
+- **Verdict** - pending
+
+### R03-H17 Structural abstention signal
+
+- **Hypothesis** - because reader-model confidence is a proven-useless refusal signal (0% correct abstention) while graph structure is not, emitting a coverage verdict from seed-neighbourhood size, path connectivity between query entities, and community overlap - and refusing or clarifying when coverage is thin - will catch most unanswerable questions without suppressing answerable ones
+- **Lever** - pre-generation coverage gate; retrieval and generation unchanged when coverage passes
+- **Mechanism** - structural signals (empty neighbourhood, no connecting path, low overlap) measure what the graph knows, independent of reader confidence
+- **Prediction** - >= 70% of unanswerable probes refused; < 10% of answerable probes falsely refused
+- **Acceptance bar** - correct refusal >= 70% and false refusal < 10% on the probe set
+- **Experiment** - <br>source: HRAG graph cross-validation (76% correct refusal vs 0%) via topology research thread in [`../sota-decision.md`](../sota-decision.md)<br>method: coverage scorer over retrieval internals; probe set includes deliberately unanswerable items (off-corpus devices, absent attributes)
+- **Result** - pending
+- **Verdict** - pending
