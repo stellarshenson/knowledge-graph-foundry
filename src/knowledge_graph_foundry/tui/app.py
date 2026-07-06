@@ -41,6 +41,9 @@ FEED_SIGNALS = [
     "drift.decision",
     "fsm.transition",
     "load.completed",
+    "propositions.generated",
+    "densify.completed",
+    "query.abstained",
 ]
 
 

@@ -40,6 +40,10 @@ SIGNALS = [
     "load.completed",
     "graphrag.communities",
     "graphrag.scorecard",
+    "propositions.generated",
+    "densify.completed",
+    # query
+    "query.abstained",
     # drift
     "drift.warning",
     "drift.decision",
