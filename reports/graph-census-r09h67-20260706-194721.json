@@ -1,0 +1,250 @@
+{
+  "golds_total": 33,
+  "carried": 33,
+  "orphans": [],
+  "buckets_prod": {
+    "0": 30,
+    "2": 2,
+    "1": 1
+  },
+  "buckets_wide": {
+    "0": 31,
+    "2": 2
+  },
+  "near_share": 1.0,
+  "mid_share": 0.0,
+  "verdict": "CONFIRMED",
+  "census": [
+    {
+      "probe": "P01",
+      "gold": "1130 g",
+      "n_carriers": 6,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P01",
+      "gold": "40 oz",
+      "n_carriers": 175,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P02",
+      "gold": "4 to 20 cm H2O",
+      "n_carriers": 287,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P03",
+      "gold": "28 dB(A)",
+      "n_carriers": 48,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P04",
+      "gold": "2 years",
+      "n_carriers": 1265,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P05",
+      "gold": "0 to 45 min",
+      "n_carriers": 1550,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P06",
+      "gold": "380 mL",
+      "n_carriers": 14,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P07",
+      "gold": "2,591 m",
+      "n_carriers": 1265,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P08",
+      "gold": "Typical power consumption: 9.0W",
+      "n_carriers": 2,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P09",
+      "gold": "275mm x 170mm x 140mm",
+      "n_carriers": 1,
+      "d_prod": 2,
+      "d_wide": 2
+    },
+    {
+      "probe": "P10",
+      "gold": "SD card: > 1 year",
+      "n_carriers": 1574,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P11",
+      "gold": "1106 g",
+      "n_carriers": 3,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P11",
+      "gold": "1130 g",
+      "n_carriers": 6,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P12",
+      "gold": "28 dB(A)",
+      "n_carriers": 48,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P12",
+      "gold": "26 dB(A)",
+      "n_carriers": 71,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P13",
+      "gold": "3,010 m",
+      "n_carriers": 1060,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P13",
+      "gold": "2,591 m",
+      "n_carriers": 1265,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P14",
+      "gold": "380 mL",
+      "n_carriers": 14,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P14",
+      "gold": "290 ml",
+      "n_carriers": 13,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P15",
+      "gold": "1.98kg",
+      "n_carriers": 1,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P15",
+      "gold": "2.4 kg",
+      "n_carriers": 24,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P16",
+      "gold": "275mm x 170mm x 140mm",
+      "n_carriers": 1,
+      "d_prod": 2,
+      "d_wide": 2
+    },
+    {
+      "probe": "P16",
+      "gold": "238*178*128 mm",
+      "n_carriers": 1,
+      "d_prod": 1,
+      "d_wide": 0
+    },
+    {
+      "probe": "P17",
+      "gold": "0-60 mins",
+      "n_carriers": 9,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P17",
+      "gold": "0 to 45 min",
+      "n_carriers": 1550,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P18",
+      "gold": "26.6 dBA",
+      "n_carriers": 1,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P18",
+      "gold": "27 dBA",
+      "n_carriers": 50,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P19",
+      "gold": "constant lower pressure",
+      "n_carriers": 17,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P20",
+      "gold": "AutoSet for Her",
+      "n_carriers": 100,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P21",
+      "gold": "gradually acclimate",
+      "n_carriers": 1,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P22",
+      "gold": "amplitude of oscillations",
+      "n_carriers": 3,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P23",
+      "gold": "sleep onset detection",
+      "n_carriers": 44,
+      "d_prod": 0,
+      "d_wide": 0
+    },
+    {
+      "probe": "P24",
+      "gold": "reduces the pressure during expiration",
+      "n_carriers": 54,
+      "d_prod": 0,
+      "d_wide": 0
+    }
+  ]
+}
