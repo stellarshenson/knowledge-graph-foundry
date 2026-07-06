@@ -1,0 +1,267 @@
+{
+  "degree": {
+    "n": 2531,
+    "median": 1.0,
+    "p90": 5.0,
+    "max": 236,
+    "over_cap": 62,
+    "top_decile_mean": 13.474842767295597
+  },
+  "decomposition": {
+    "SEEDING": 8,
+    "BASE": 18,
+    "PROP-ATTACHED": 6,
+    "REL<=15": 1
+  },
+  "detail": [
+    {
+      "probe": "P01",
+      "gold": "1130 g",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P01",
+      "gold": "40 oz",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P02",
+      "gold": "4 to 20 cm H2O",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P03",
+      "gold": "28 dB(A)",
+      "placement": "PROP-ATTACHED",
+      "hub": "e_e537f09c8b28cedf",
+      "hub_degree": null
+    },
+    {
+      "probe": "P04",
+      "gold": "2 years",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P05",
+      "gold": "0 to 45 min",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P06",
+      "gold": "380 mL",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P07",
+      "gold": "2,591 m",
+      "placement": "REL<=15",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P08",
+      "gold": "Typical power consumption: 9.0W",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P09",
+      "gold": "275mm x 170mm x 140mm",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P10",
+      "gold": "SD card: > 1 year",
+      "placement": "PROP-ATTACHED",
+      "hub": "e_5512431e30bb86d9",
+      "hub_degree": 2
+    },
+    {
+      "probe": "P11",
+      "gold": "1106 g",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P11",
+      "gold": "1130 g",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P12",
+      "gold": "28 dB(A)",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P12",
+      "gold": "26 dB(A)",
+      "placement": "PROP-ATTACHED",
+      "hub": "e_d252fa6fa35d5d90",
+      "hub_degree": 1
+    },
+    {
+      "probe": "P13",
+      "gold": "3,010 m",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P13",
+      "gold": "2,591 m",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P14",
+      "gold": "380 mL",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P14",
+      "gold": "290 ml",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P15",
+      "gold": "1.98kg",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P15",
+      "gold": "2.4 kg",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P16",
+      "gold": "275mm x 170mm x 140mm",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P16",
+      "gold": "238*178*128 mm",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P17",
+      "gold": "0-60 mins",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P17",
+      "gold": "0 to 45 min",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P18",
+      "gold": "26.6 dBA",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P18",
+      "gold": "27 dBA",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P19",
+      "gold": "constant lower pressure",
+      "placement": "PROP-ATTACHED",
+      "hub": "e_5ae3fd4b0940e794",
+      "hub_degree": 3
+    },
+    {
+      "probe": "P20",
+      "gold": "AutoSet for Her",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P21",
+      "gold": "gradually acclimate",
+      "placement": "BASE",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P22",
+      "gold": "amplitude of oscillations",
+      "placement": "SEEDING",
+      "hub": null,
+      "hub_degree": null
+    },
+    {
+      "probe": "P23",
+      "gold": "sleep onset detection",
+      "placement": "PROP-ATTACHED",
+      "hub": "e_07416e4afae95b03",
+      "hub_degree": 3
+    },
+    {
+      "probe": "P24",
+      "gold": "reduces the pressure during expiration",
+      "placement": "PROP-ATTACHED",
+      "hub": "e_d336ea3fcafea949",
+      "hub_degree": 1
+    }
+  ],
+  "recovery": {
+    "storage": {
+      "present": 23,
+      "recovered": [],
+      "lost": []
+    },
+    "neighbor_degree": {
+      "present": 23,
+      "recovered": [],
+      "lost": []
+    },
+    "entropy": {
+      "present": 23,
+      "recovered": [],
+      "lost": []
+    }
+  },
+  "verdict": "REFUTED"
+}

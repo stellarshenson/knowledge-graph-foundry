@@ -761,7 +761,7 @@ Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack a
 - **Hypothesis** - proposition coverage is uneven (optimize-time generation from descriptions plus the H22 quote scan) and the gaps predict remaining seed misses; a per-chunk coverage audit followed by targeted quote-proposition generation lifts the pure-proposition channel materially
 - **Prediction** - >=20% of evidence-bearing chunks carry zero propositions; closing the gaps lifts proposition-channel evidence recall >=15 points on the H34 harness, with the trigram diversity filter keeping the context clean
 - **Acceptance bar** - the recall lift lands without displacing currently-retrieved evidence; refuted if coverage is already saturated (audit finds <5% gaps)
-- **Experiment** - deterministic coverage audit + generation extension + H34 re-measure; embeddings only, runs now
+- **Experiment** - deterministic coverage audit + generation extension + H34 re-measure; embeddings only, runs now. Scope extended by the H61 discovery (2026-07-06): the audit must also count attached-but-unrendered propositions - 6 of 33 golds (18%) sit in propositions ABOUT already-rendered seed nodes that the global proposition channel fails to retrieve; the closure step gains a render half (surface top-M attached propositions per seeded node)
 - **Result** - pending
 - **Verdict** - pending
 
@@ -839,8 +839,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - top-decile nodes hold >=3x the cap in relations; >=2 of 28 probes have a gold edge truncated on at least one rendered hub; re-render with the same TOTAL edge budget reallocated by degree quantile recovers them
 - **Acceptance bar** - recovery at matched total budget; refuted if truncated hub edges never carry gold (uniform caps vindicated, hubs are generic)
 - **Experiment** - deterministic: degree census + truncation audit + matched-budget re-render on the H34 harness; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - audit in [`probe_render_r09h61.ipynb`](../../notebooks/probe_render_r09h61.ipynb). The degree premise is wrong at render scale: median degree 1, p90 = 5, only 62 of 2531 connected entities (2.4%) exceed the cap of 15, top-decile mean 13.5 = 0.9x cap (bar was 3x). Gap decomposition of the 33 golds against the vec-8 render: BASE 18 (rendered fine), REL<=15 1, REL-TRUNC **0** - not a single gold lives in a truncated relation line - SEEDING 8 (carrier not among the 8 vector seeds; the H53 top_k lever), PROP-ATTACHED 6. Matched-budget re-ranking (storage vs neighbor-degree vs type-entropy round-robin) is a three-way tie at 23/33 presence - ordering is irrelevant because nothing gold-bearing is ever truncated. The discovery is the PROP-ATTACHED bucket: 6 golds (18%) sit in propositions ATTACHED to an already-rendered seed node, invisible because production renders only propositions the separate global proposition vector channel happens to retrieve - the node is in the context, its proposition carries the answer, the render does not show it. That - not truncation - is the H67 gap (0.909 carriage vs 0.636 rendered)
+- **Verdict** - REFUTED - uniform caps are vindicated on this corpus; hubs are not being truncated out of their gold. The render gap decomposes as seeding (8, fixed by vector@16 per H53) + attached-but-unrendered propositions (6, a render-surfacing fix: show top-M attached propositions per seeded node - routed into H56's experiment design as the closure step's render half). H78 and H79 are pre-adjudicated by the same measurement (see their entries)
 
 ### R09-H62 Structural twins - neighbor-Jaccard finds duplicates text cannot
 
@@ -1009,8 +1009,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - evidence recall >= uniform on all 28 probes, strictly > on >=2; the reallocation interacts positively with vector@16 seeding (more seeds -> more rendered nodes -> budget discipline matters more)
 - **Acceptance bar** - Pareto (zero probes lose); refuted if ranked truncation loses golds that arbitrary-order LIMIT happened to keep - then ORDERING is the real problem and H79 takes over
 - **Experiment** - matched-budget re-render replay on the H34 harness; deterministic, runs now, sequenced after H61
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - adjudicated by the H61 audit (same harness, same intervention space): zero golds live beyond position 15 on any rendered node, and degree-quantile reallocation cannot improve on a cap that discards nothing - all allocation policies tie at 23/33 presence
+- **Verdict** - REFUTED by premise collapse (H61): there is no truncation to reallocate around. The Pareto claim holds vacuously (no probe loses) but the strict-gain clause fails (no probe gains). Uniform LIMIT 15 stays
 
 ### R09-H79 Entropy-ranked rendering - the calibration correlate becomes a policy
 
@@ -1019,8 +1019,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - entropy-ranked render >= production on evidence recall at matched budget; entropy-rank + H78 allocation combined gains >=2 probes over production render; entropy-rank alone beats PPR-rank (retiring PPR's last remaining job)
 - **Acceptance bar** - matched-budget win; refuted if entropy rank is indistinguishable from random (the 0.58 correlate was calibration-specific, not retrieval-general - a useful negative for the calibration layer too)
 - **Experiment** - re-render replay with three ranking policies on the H34 harness; deterministic, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - adjudicated inside the H61 audit: type-entropy round-robin ranking vs neighbor-degree vs storage order is a three-way tie at 23/33 gold presence - with no gold-bearing relation ever truncated, the ordering of the 15 rendered lines cannot change what evidence appears
+- **Verdict** - REFUTED per the registered bar (entropy rank indistinguishable from arbitrary order). The 0.58 rel-type-diversity correlate stays a calibration signal, not a render policy; PPR's last remaining job is retired by parsimony (H37), not replaced by entropy
 
 ### R09-H80 The sparsification safety line - how much graph is dead weight
 
