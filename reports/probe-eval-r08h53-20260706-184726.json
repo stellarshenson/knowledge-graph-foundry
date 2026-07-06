@@ -1,0 +1,189 @@
+{
+  "mean_bm25": 0.5833333333333334,
+  "mean_vector": 0.6666666666666666,
+  "mean_union": 0.75,
+  "relative_gap": 0.12499999999999989,
+  "mean_seed_overlap": 2.2916666666666665,
+  "bm25_wins": [
+    "P01",
+    "P19"
+  ],
+  "vector_wins": [
+    "P04",
+    "P12",
+    "P16",
+    "P21",
+    "P24"
+  ],
+  "per_probe": {
+    "P01": {
+      "recall_bm25": 1.0,
+      "recall_vector": 0.0,
+      "recall_union": 1.0,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P02": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 0,
+      "n_bm25_seeds": 8
+    },
+    "P03": {
+      "recall_bm25": 0.0,
+      "recall_vector": 0.0,
+      "recall_union": 0.0,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P04": {
+      "recall_bm25": 0.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 2,
+      "n_bm25_seeds": 8
+    },
+    "P05": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 5,
+      "n_bm25_seeds": 8
+    },
+    "P06": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 5,
+      "n_bm25_seeds": 8
+    },
+    "P07": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P08": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P09": {
+      "recall_bm25": 0.0,
+      "recall_vector": 0.0,
+      "recall_union": 0.0,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P10": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 2,
+      "n_bm25_seeds": 8
+    },
+    "P11": {
+      "recall_bm25": 0.5,
+      "recall_vector": 0.5,
+      "recall_union": 0.5,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P12": {
+      "recall_bm25": 0.0,
+      "recall_vector": 0.5,
+      "recall_union": 0.5,
+      "seed_overlap": 0,
+      "n_bm25_seeds": 8
+    },
+    "P13": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P14": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 2,
+      "n_bm25_seeds": 8
+    },
+    "P15": {
+      "recall_bm25": 0.5,
+      "recall_vector": 0.5,
+      "recall_union": 0.5,
+      "seed_overlap": 2,
+      "n_bm25_seeds": 8
+    },
+    "P16": {
+      "recall_bm25": 0.0,
+      "recall_vector": 0.5,
+      "recall_union": 0.5,
+      "seed_overlap": 4,
+      "n_bm25_seeds": 8
+    },
+    "P17": {
+      "recall_bm25": 0.5,
+      "recall_vector": 0.5,
+      "recall_union": 0.5,
+      "seed_overlap": 1,
+      "n_bm25_seeds": 8
+    },
+    "P18": {
+      "recall_bm25": 0.5,
+      "recall_vector": 0.5,
+      "recall_union": 0.5,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P19": {
+      "recall_bm25": 1.0,
+      "recall_vector": 0.0,
+      "recall_union": 1.0,
+      "seed_overlap": 1,
+      "n_bm25_seeds": 8
+    },
+    "P20": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 3,
+      "n_bm25_seeds": 8
+    },
+    "P21": {
+      "recall_bm25": 0.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 0,
+      "n_bm25_seeds": 8
+    },
+    "P22": {
+      "recall_bm25": 0.0,
+      "recall_vector": 0.0,
+      "recall_union": 0.0,
+      "seed_overlap": 2,
+      "n_bm25_seeds": 8
+    },
+    "P23": {
+      "recall_bm25": 1.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 2,
+      "n_bm25_seeds": 8
+    },
+    "P24": {
+      "recall_bm25": 0.0,
+      "recall_vector": 1.0,
+      "recall_union": 1.0,
+      "seed_overlap": 0,
+      "n_bm25_seeds": 8
+    }
+  },
+  "verdict": "INCONCLUSIVE"
+}

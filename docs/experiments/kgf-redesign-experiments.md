@@ -687,3 +687,121 @@ Sixteen candidate hypotheses attacking assumptions R01-R06 left standing. Trigge
 - **Experiment** - <br>data: realized post-cure remap series from the wave-1b control metanode (246 docs, 1 nonzero - the clean-stream silence check) + realized entities-per-doc distribution (neo4j3) driving a Binomial synthetic baseline (remaps_i ~ Bin(n_i, p), x_i = remaps_i/n_i - reproduces the small-denominator burstiness)<br>method: numpy-only notebook ([`drift_cfar_h50.ipynb`](../../notebooks/drift_cfar_h50.ipynb)); detectors: production all-3-consecutive, CA-CFAR (trailing window 16, guard 2), OS-CFAR (75th percentile), CFAR 2-of-3 binary integration, CUSUM (quiescent-adaptation reference + design-shift allowance); step (+0.30) and ramp (10-doc onset) shifts, 200 trials each, 40-doc detection horizon; zero LLM calls<br>iteration trail: iteration 1's calibration was degenerate and each failure was itself evidence - a censored ARL0 band let never-alarms pass as calibrated; the epsilon floor turned OS-CFAR into a fixed threshold on quiet floors (the zero-floor pathology predicted by the H33 note); and the first CUSUM used a TRAILING median reference, which self-masks exactly like CFAR - replaced with quiescent-only EWMA adaptation (mu0 updates only while S=0)
 - **Result** - CFAR REFUTED at every noise floor (p0 = 0.01/0.05/0.10), all detectors at matched ARL0 ~500. Ramp-shift miss rates: CUSUM 0.00/0.00/0.00, CA-CFAR 0.87/0.85/0.81, OS-CFAR 0.23/0.99/0.73, CFAR 2-of-3 (the steelman) 0.84/0.63/0.60. The self-masking signature is visible in the delay distribution: when CFAR detects at all, its median delay is 0-1 docs - it catches the onset spike or never, because after the reference window fills with shifted values the threshold rises with the drift. OS-CFAR's one good showing (miss 0.09 at p0=0.01) is the epsilon-floor degeneracy: alpha ~167 x eps = a de-facto FIXED threshold - it competed by ceasing to be CFAR. Two pre-registration surprises recorded: (1) the production all-3-consecutive criterion MATCHED CUSUM (miss 0.00 everywhere, delay 2-7 vs 0-7 docs) - the pre-registered clause that production loses on ramps is refuted at this shift size (+0.30 clears its threshold, so consecutive exceedance is near-certain); its structural weakness - a sustained shift BELOW the threshold that CUSUM would accumulate - was not in this experiment's scope. (2) On the realized clean series, CA- and OS-CFAR false-alarmed on the single spike document (point-chasing on real data; production and 2-of-3 stayed silent) - but so did plain-rate CUSUM, whose h calibrated at p0=0.05 does not transfer to the real stream's p0~0.004: the H33 note's entity-count evidence weighting is needed for spike robustness regardless of detector choice
 - **Verdict** - Confirmed (CFAR formally refuted) per the pre-registered bar: every CFAR variant, including the m-of-n steelman, exceeds 2x CUSUM's ramp miss rate at matched false-alarm budget, at all three noise floors. The H33 design note stands, now with data. Two routing consequences for H33's fallback decision: the production criterion is REHABILITATED for large shifts (it matched CUSUM at delta=0.30) and the open question narrows to sub-threshold sustained drift, where accumulation should win by construction; and any successor criterion must weight per-document evidence by entity count - the real-stream check showed spike vulnerability is a noise-model problem, not a detector-family problem
+
+## R08 - contrarian slate 3 + conformist deepening (pre-registered 2026-07-06)
+
+Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack assumptions no prior round touched - the parsing layer beneath everything, the merge step that creates every defect class, the embedding bill, the Bayesian machinery, and the project's own use-case doctrine (the audit-the-auditor entry). Five conformist hypotheses (H56-H60) ride the round's strongest confirmed results and established literature, digging deeper instead of turning tables: the proposition channel (best rescuer in H34), the Good-Turing estimator family (H32), the alias audit (H21), the CUSUM class (H50), and evidence-based pruning (Less-is-More, digested). Contrarian entries get a literature sweep before running (registration does not claim novelty); conformist entries cite papers already digested in `references/papers/`.
+
+| id | camp | assumption attacked / grounding | claim | runnable without completions |
+|----|------|--------------------------------|-------|------------------------------|
+| H51 | contrarian | PDF->text parsing is neutral plumbing | parsing loses more than every downstream improvement gained; the H21 forensic (subject name in ZERO chunks of its own manual) is the tip | yes |
+| H52 | contrarian | one merged graph is the product | merge nothing: per-document micro-graphs + query-time federation deletes resolution, curing and drift machinery | partial |
+| H53 | contrarian | vector embeddings earn their bill at seeding | BM25 over the same entity text matches Titan seeds on a spec-heavy corpus | yes |
+| H54 | contrarian | Bayesian resolution earns its complexity | at 44% measured calibration accuracy the posterior is numerology; two deterministic rules + defer-to-audit reproduce its decisions | yes |
+| H55 | contrarian | the use-case regime doctrine (purpose narrows every stage) | purpose-blind ingest matches purpose-driven on both probe sets - the purpose changes what the ontology CALLS things, not what retrieval finds | no |
+| H56 | conformist | propositions are the measured best rescue channel (H34) + evidence-units literature | coverage is uneven and the gaps predict seed misses; targeted generation lifts the channel materially | yes |
+| H57 | conformist | Good-Turing missing-mass UCB promoted (H32) | one estimator family, three inventories: relationship types and per-entity property keys get the same coverage bound - H23's statistical footing | yes |
+| H58 | conformist | alias audit promoted (H21) + collective ER literature (Bhattacharya-Getoor) | a fifth detector - shared-specification evidence with property-agreement chain guard - finds aliases text cannot and fixes the false *1..2 closure | yes |
+| H59 | conformist | CUSUM class superiority proven (H50), gaps identified precisely | binomial log-likelihood-ratio increments make CUSUM single-spike immune and cross-floor calibration-stable | yes |
+| H60 | conformist | Less-is-More denoising (digested, SUPPORTS) + our measured de-cluttering wins (H22 iters 2-3) | pruning low-evidence elements improves precision without recall loss - the graph should hold LESS | partial |
+
+### R08-H51 The parse is the bottleneck - loss upstream of everything
+
+- **Hypothesis** - because the pipeline treats PDF-to-text parsing as neutral plumbing while the H21 iteration-4 forensic showed a document's own subject name ('SleepStyle 200 Series') appearing in ZERO of its chunks (stylized rendering), parsing loses named strings and table structure BEFORE extraction runs - and this upstream loss exceeds what any single downstream improvement (R02-R04 deltas: 1-2 probes each) recovered
+- **Assumption attacked** - every hypothesis so far started from chunk text as ground truth; none audited the text against the source bytes
+- **Prediction** - a deterministic multi-parser fidelity audit (named-string preservation, numeric-token preservation, table-cell recovery across pdftotext/pdfplumber-class parsers) finds >=20% of documents losing at least one entity-name string present in the source; at least one persistent failure (OSA consolidation or SleepStyle modes) roots upstream in parse loss, not extraction
+- **Acceptance bar** - material loss found AND one persistent-failure root cause moves upstream; refuted if named-string preservation >=99% across parsers (parsing vindicated, chunk text is trustworthy ground)
+- **Experiment** - deterministic parser diff over the CPAP + campaign corpora; zero LLM calls, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H52 Merge nothing - federate reads instead of merging writes
+
+- **Hypothesis** - because every major defect class so far (cross-type duplicates, premature cure, alias fragmentation, drift) exists ONLY because ingestion merges entities into one global graph, per-document micro-graphs with query-time federation - retrieve per-document subgraphs, union ANSWER evidence rather than entities - deletes entity resolution, curing and the drift machinery while matching probe accuracy
+- **Assumption attacked** - that a single resolved graph is the product and resolution/curing/drift are unavoidable costs of having one
+- **Prediction** - federated retrieval over the provenance-preserved graph (source_documents already stored per entity) lands within 1 probe of 28/28 on CPAP; ingest cost drops (no resolution calls); query cost rises <=2x
+- **Acceptance bar** - probe parity + machinery deletion; refuted if cross-document probes (comparisons, multi-doc identity like P09) collapse without ingest-time merging - the expected refuter, which is exactly why it must be measured rather than assumed
+- **Experiment** - federation retrieval mode prototype + probe cycle (reader required - local model or post-quota)
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H53 The embedding bill is optional - BM25 matches Titan at seeding
+
+- **Hypothesis** - because the corpus class is specification-heavy (model codes, part numbers, exact feature names) where lexical match is strong by construction, BM25 over the exact text the entity embeddings encode (type: name - description[:200], embeddings.py:48) matches the Titan vector index on direct-seed gold coverage (H34's metric) - the per-query embedding call and the vector index are optional for seeding on this regime
+- **Assumption attacked** - that dense retrieval is a prerequisite for graph entry; the whole R01-R07 stack assumed a vector index at its base
+- **Prediction** - BM25 top-8 seeds land within 10% of the vector top-8 on pure-seed evidence recall on the 28-probe set; the UNION of the two channels beats both (established dense+sparse complementarity), making hybrid seeding the constructive consequence either way
+- **Acceptance bar** - confirmed if BM25 is within 10% relative (or better); refuted if the vector index beats BM25 by >25% relative on pure-seed recall
+- **Experiment** - extends the H34 harness ([`probe_eval_r08h53.ipynb`](../../notebooks/probe_eval_r08h53.ipynb)): BM25 (k1=1.5, b=0.75) over the identical embedding text, same render, same matcher, same golds; zero LLM calls, zero embedding calls for the BM25 side; two controls added during the run - RRF fusion at matched k=8 budget, and vector-alone at k=16 (the budget control that decides whether a union gain is fusion or just budget)
+- **Result** - pure-seed evidence recall at k=8: BM25 0.583 vs vector 0.667 - a 12.5% relative gap, inside the pre-registered dead zone (>10%, <25%). Seed overlap only 2.5/8 (the channels retrieve different nodes; BM25 wins P01/P19, vector wins 5 probes). The hybrid story then collapsed under controls: RRF at matched k=8 scores 0.646 (BELOW pure vector - fusion displaces good dense seeds), union at 16 seeds scores 0.750, but vector-ALONE at 16 seeds scores 0.854 - the union's gain was pure budget, and diluting any budget with BM25 seeds strictly loses to spending it all on the dense channel. The unplanned discovery is the seed-budget elasticity: doubling top_k from 8 to 16 lifts pure-seed recall 0.667 -> 0.854 (+28% relative), the cheapest seed-gap fix measured to date
+- **Verdict** - Inconclusive per the strict pre-registered bar, but constructively resolved AGAINST the contrarian claim: the embedding bill is not optional on this corpus (BM25 12.5% behind at matched budget), and the dense+sparse complementarity consequence is refuted by the budget control (vector@16 > union@16 > rrf@8). Routing consequences: (1) the H34 seed-gap remediation ladder now starts with the trivial lever - raise top_k (0.854 at k=16 vs 0.667 at k=8) with the H22 diversity filter guarding context bloat - BEFORE the clever levers (H40 answer-form probes, H41 split index), which must now beat vector@16, not vector@8; (2) BM25 survives only as a zero-cost fallback when no embedding provider is reachable (engine-matrix degraded mode), not as a quality play
+
+### R08-H54 The Bayesian layer is numerology at measured 44% calibration
+
+- **Hypothesis** - because the measured calibration of the cross-type resolver sits at chance (25 ground-truth pairs, 44% accuracy, 2-point isotonic curve) yet merges still mostly work, the posterior machinery (prior x LR_desc x LR_emb x LR_cooc against a 0.6 threshold) is decoration over what is effectively name-identity plus embedding-similarity; two deterministic rules plus a defer-to-audit queue reproduce >=90% of its decisions with explainable evidence strings
+- **Assumption attacked** - that probabilistic resolution machinery earns its complexity; grounded in our own weak calibration measurement, not in taste
+- **Prediction** - decision replay over the logged cross-type decisions (77 in the v28 record; more on the campaign graph) shows >=90% agreement with a two-rule system; among disagreements, the identity audit sides with the deterministic rule at least as often as with the posterior
+- **Acceptance bar** - agreement + parity on audit adjudication; refuted if the posterior's defer zone uniquely prevents measured false merges the rules would commit
+- **Experiment** - deterministic decision replay + audit adjudication of disagreements; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H55 The purpose is a placebo - audit the project's own doctrine
+
+- **Hypothesis** - because the use-case regime doctrine (purpose narrows typing, materialization, routing, probes, drift) was adopted by design conviction rather than ablation, a purpose-blind ingest of the same corpus (generic purpose string) matches the purpose-driven graph on both probe sets - the purpose changes what the ontology CALLS things and how the operator reads the graph, not what retrieval finds
+- **Assumption attacked** - the project's own most-cherished doctrine; this is the round's audit-the-auditor entry, and a refutation here would be the cheapest good news of the campaign (doctrine survives as governance and explainability value even if the retrieval claim falls)
+- **Prediction** - purpose-blind CPAP rebuild lands within 1 probe of 28/28; type inventories differ visibly while retrieval metrics do not
+- **Acceptance bar** - parity refutes the doctrine's RETRIEVAL claim specifically; doctrine confirmed if purpose-blind drops >=3 probes
+- **Experiment** - one CPAP rebuild under a generic purpose + full probe cycle (extraction LLM required - local model or post-quota)
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H56 Deepen the best channel - proposition coverage audit and closure
+
+- **Grounding** - propositions are the measured best rescue channel (H34: 10 of 12 non-seed golds; R02-H11: +10.6% evidence recall, lifts a weak reader to strong-reader parity); fine-grained evidence-unit retrieval is established practice (evidence-units paper, digested)
+- **Hypothesis** - proposition coverage is uneven (optimize-time generation from descriptions plus the H22 quote scan) and the gaps predict remaining seed misses; a per-chunk coverage audit followed by targeted quote-proposition generation lifts the pure-proposition channel materially
+- **Prediction** - >=20% of evidence-bearing chunks carry zero propositions; closing the gaps lifts proposition-channel evidence recall >=15 points on the H34 harness, with the trigram diversity filter keeping the context clean
+- **Acceptance bar** - the recall lift lands without displacing currently-retrieved evidence; refuted if coverage is already saturated (audit finds <5% gaps)
+- **Experiment** - deterministic coverage audit + generation extension + H34 re-measure; embeddings only, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H57 One estimator family, three inventories - Good-Turing for completeness
+
+- **Grounding** - the missing-mass UCB is promoted (H32: 98.55% forward coverage, scale-free, truncation-invariant); Good-Turing is the calibrated estimator of unseen mass for ANY categorical inventory, not just entity types
+- **Hypothesis** - the same UCB applied to the relationship-type inventory and to per-entity-type property-key inventories gives H23's completeness audit its statistical footing: "the graph knows what it doesn't know" becomes a per-inventory coverage bound, and low-coverage cohorts predict probe refusals
+- **Prediction** - at wave-1b end the relationship-type missing mass sits <=5% while per-type property coverage varies widely; cohorts with UCB > 0.2 contain the majority of refusal-control failures in the campaign probe cycle
+- **Acceptance bar** - coverage bounds rank-correlate with refusals; refuted if the bounds are flat across cohorts (uninformative)
+- **Experiment** - pure graph counting now; correlation against the per-wave probe cycles as they land
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H58 Collective-evidence alias detector - the fifth detector
+
+- **Grounding** - the alias audit is promoted (H21: 28/28, four deterministic detectors); collective/relational entity resolution (Bhattacharya-Getoor, digested) shows relationship evidence resolves what attribute similarity cannot
+- **Hypothesis** - a fifth deterministic detector - shared-specification evidence (two entities agreeing on >=k identical property VALUES, e.g. the same dimensions_mm and the same power figure) gated by document or neighborhood overlap - finds true aliases the four textual detectors miss; the same property-agreement test, required for SAME_AS chain traversal, removes the false *1..2 closure members H34 observed (MANU, DreamStation CPAP, bCPAP prongs) without losing P09
+- **Prediction** - >=3 new true aliases on the campaign graph at the standing zero-false-alias bar; the chain guard drops all three false closure members
+- **Acceptance bar** - evidence-listed inspection confirms zero false; refuted if generic value collisions ('2 years' warranty) dominate the candidate set beyond filtering
+- **Experiment** - extend `graph/aliases.py` + inspection listing + P09 regression; deterministic, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H59 Evidence-weighted CUSUM - close the two gaps H50 measured
+
+- **Grounding** - H50 formally refuted CFAR and left CUSUM the class winner with two measured gaps: the plain-rate form false-alarmed on the real stream's single small-denominator spike, and its threshold calibrated at one noise floor did not transfer to another
+- **Hypothesis** - CUSUM on the per-document binomial log-likelihood ratio - increment log[Bin(remaps_i; n_i, p1) / Bin(remaps_i; n_i, p0)] - is single-spike immune by construction (a rate of 1.0 on a 2-entity document carries little evidence) and calibration-stable across noise floors (the LLR folds the noise model into the statistic)
+- **Prediction** - on the H50 harness: zero alarms on the realized clean series including the spike document; a threshold calibrated at p0=0.05 lands in the ARL0 band at 0.01 and 0.10 without recalibration; detection miss/delay matches or beats plain CUSUM at matched budget
+- **Acceptance bar** - all three clauses; refuted if the LLR form loses detection power at matched budget
+- **Experiment** - extends the [`drift_cfar_h50.ipynb`](../../notebooks/drift_cfar_h50.ipynb) harness; numpy only, runs now; on confirmation this becomes H33's fallback criterion candidate
+- **Result** - pending
+- **Verdict** - pending
+
+### R08-H60 The graph should hold less - evidence-based pruning
+
+- **Grounding** - Less-is-More KG denoising (digested, SUPPORTS verdict) plus our own measured de-cluttering wins: H22 iteration 2 (removing alias-clone propositions fixed retrieval starvation) and iteration 3 (de-cluttering exposed a reader over-attribution error that clutter had masked)
+- **Hypothesis** - pruning low-evidence elements - entities with single-mention provenance, no properties and no propositions; relationships with orphaned endpoints or no currently-valid interval - improves retrieval precision and context cleanliness without recall loss
+- **Prediction** - the prune candidate set covers >=15% of campaign-graph entities; probe metrics hold after pruning-on-copy; per-query context length drops measurably; no gold-carrying element is ever in the candidate set (checked before delete, reversible via versioning)
+- **Acceptance bar** - zero probe regression + measurable context cleanup; refuted if any gold-carrying element qualifies for pruning (the criteria are then wrong, not the graph)
+- **Experiment** - prune-on-copy + evidence-recall probe cycle (completion-free variant now; answer variant post-quota)
+- **Result** - pending
+- **Verdict** - pending
+
