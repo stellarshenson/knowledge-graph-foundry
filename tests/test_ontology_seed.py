@@ -97,7 +97,7 @@ class TestStructuredSeed:
         mode = ontology.types["OperatingMode"]
         assert mode.description == "a device mode"
         assert mode.properties == ["pressure", "ramp"]
-        assert mode.status == "confirmed"
+        assert mode.status == "seeded"
         assert mode.encounters == 0
         rel = ontology.relationship_types["SUPPORTS_MODE"]
         assert rel.description == "device supports a mode"
@@ -108,7 +108,7 @@ class TestStructuredSeed:
         seed.write_text("types: [device, operating_mode, Accessory]\n")
         ontology = load_seed(seed, PURPOSE)
         assert set(ontology.types) == {"Device", "OperatingMode", "Accessory"}
-        assert all(t.status == "confirmed" for t in ontology.types.values())
+        assert all(t.status == "seeded" for t in ontology.types.values())
 
     def test_json_seed(self, tmp_path):
         seed = tmp_path / "seed.json"
@@ -133,7 +133,7 @@ class TestOwlSeed:
         assert ontology.purpose == PURPOSE
         assert set(ontology.types) == {"Device", "OperatingMode"}
         assert ontology.types["Device"].description == "A CPAP therapy device"
-        assert ontology.types["Device"].status == "confirmed"
+        assert ontology.types["Device"].status == "seeded"
         assert set(ontology.relationship_types) == {"SUPPORTS_MODE"}
 
     def test_unparseable_owl_raises_seed_error_naming_file(self, tmp_path):
@@ -160,6 +160,6 @@ class TestFreeformSeed:
         assert any(PURPOSE in m["content"] for m in engine.messages)
         assert ontology.purpose == PURPOSE
         assert set(ontology.types) == {"SleepMode"}
-        assert ontology.types["SleepMode"].status == "confirmed"
+        assert ontology.types["SleepMode"].status == "seeded"
         assert ontology.types["SleepMode"].encounters == 0
         assert "SUPPORTS_MODE" in ontology.relationship_types

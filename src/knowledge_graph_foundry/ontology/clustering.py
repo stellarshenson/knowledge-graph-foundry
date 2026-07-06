@@ -192,6 +192,8 @@ def cluster_types(
     else:
         remap = _embed_verify_remap(ontology, purpose, engine, embed_fn)
 
+    # seeded types are user-governed: they may absorb others, never merge away
+    remap = {s: t for s, t in remap.items() if ontology.types[s].status != "seeded"}
     remap = _collapse_chains(remap)
     if not remap:
         return ontology, {}
@@ -241,6 +243,8 @@ def demote_value_types(
     for type_name, names in member_names.items():
         if type_name == target or type_name not in ontology.types or not names:
             continue
+        if ontology.types[type_name].status == "seeded":
+            continue  # user-governed types are never demoted
         mean_likeness = sum(value_likeness(n) for n in names) / len(names)
         if mean_likeness >= fraction:
             remap[type_name] = target

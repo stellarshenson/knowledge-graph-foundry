@@ -223,3 +223,35 @@ class TestValueTypeDemotion:
         result, remap = demote_value_types(onto, members)
         assert remap == {"Weight": "Specification", "Dimension": "Specification"}
         assert result.types["Specification"].encounters == 6  # 3 + 3 from _ontology helper
+
+
+class TestSeededTypeProtection:
+    """S7 scenario: seeded (user-governed) types are never demoted or clustered away."""
+
+    def test_seeded_value_like_type_not_demoted(self):
+        from knowledge_graph_foundry.ontology.clustering import demote_value_types
+
+        onto = _ontology("PressureRange")
+        onto.types["PressureRange"].status = "seeded"
+        members = {"PressureRange": ["4-20 cmH2O", "3-15 cmH2O"]}
+        result, remap = demote_value_types(onto, members)
+        assert remap == {}
+        assert "PressureRange" in result.types
+
+    def test_seeded_type_never_merges_away(self):
+        onto = _ontology("Standard", "RegulatoryStandard", "Product")
+        onto.types["RegulatoryStandard"].status = "seeded"
+        engine = VerifyEngine(verify_same=True)
+        result, remap = cluster_types(onto, onto.purpose, engine, embed_fn=_fake_embed)
+        assert "RegulatoryStandard" in result.types
+        assert "RegulatoryStandard" not in remap
+
+    def test_seeded_type_can_absorb_others(self):
+        onto = _ontology("Standard", "RegulatoryStandard", "Product")
+        # seeded target with more encounters wins merge direction
+        onto.types["Standard"].status = "seeded"
+        onto.types["Standard"].encounters = 10
+        engine = VerifyEngine(verify_same=True)
+        result, remap = cluster_types(onto, onto.purpose, engine, embed_fn=_fake_embed)
+        assert remap == {"RegulatoryStandard": "Standard"}
+        assert "Standard" in result.types

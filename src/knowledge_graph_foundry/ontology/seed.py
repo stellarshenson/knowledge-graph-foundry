@@ -139,7 +139,8 @@ def _normalize_freeform(text: str, purpose: str, engine: Engine) -> Ontology:
 def _build_ontology(
     purpose: str, types: list[SeedType], rel_types: list[SeedRelationshipType]
 ) -> Ontology:
-    """Assemble the Ontology - every seeded type is confirmed with zero encounters."""
+    """Assemble the Ontology - seeded types carry status "seeded": treated as
+    confirmed, and protected from demotion and from being clustered away."""
     ontology = Ontology(purpose=purpose)
     for seed_type in types:
         name = normalize_type_name(seed_type.name)
@@ -148,7 +149,7 @@ def _build_ontology(
             description=seed_type.description,
             properties=seed_type.properties,
             encounters=0,
-            status="confirmed",
+            status="seeded",
         )
     for rel in rel_types:
         ontology.relationship_types[rel.name] = RelationshipTypeDef(

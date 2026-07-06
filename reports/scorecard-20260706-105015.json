@@ -1,0 +1,16 @@
+{
+  "communities": {
+    "communities": 82,
+    "modularity": 0.8304541777024288,
+    "node_count": 4601
+  },
+  "summaries": 82,
+  "scorecard": {
+    "entity_count": 4601,
+    "relationship_count": 6717,
+    "orphan_rate": 0.05933492718974136,
+    "duplicate_name_density": 0.0019560965007606734,
+    "relationship_type_entropy": 6.218169152710302,
+    "avg_degree": 2.919800043468811
+  }
+}
