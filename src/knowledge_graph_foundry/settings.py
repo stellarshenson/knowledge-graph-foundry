@@ -83,6 +83,7 @@ class LoadSettings(BaseModel):
 
 
 class Settings(BaseModel):
+    lease_ttl_seconds: int = 180  # ingest run lease staleness window
     neo4j: Neo4jSettings = Neo4jSettings()
     llm: LLMSettings = LLMSettings()
     embeddings: EmbeddingSettings = EmbeddingSettings()

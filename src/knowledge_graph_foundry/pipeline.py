@@ -132,7 +132,36 @@ class Foundry:
         }
 
     def ingest(self, path: Path) -> dict:
-        """Ingest a file, directory or zip through the full lifecycle."""
+        """Ingest a file, directory or zip through the full lifecycle.
+
+        Exactly one ingester may run at a time: the run claims a
+        graph-resident lease first (see graph/lock.py) and heartbeats it
+        after every document; a concurrent ingest fails fast naming the
+        holder, and a stale lease from a crashed run is reclaimed."""
+        from knowledge_graph_foundry.graph.lock import (
+            acquire_lease,
+            lease_holder,
+            new_run_id,
+            release_lease,
+        )
+
+        run_id = new_run_id()
+        if not acquire_lease(self.driver, run_id, self.settings.lease_ttl_seconds):
+            holder = lease_holder(self.driver) or {}
+            raise FoundryError(
+                "another ingestion run holds the lease "
+                f"(holder {holder.get('holder', '?')}, run {holder.get('run_id', '?')}, "
+                f"last heartbeat {holder.get('age_seconds', 0):.0f}s ago); "
+                "wait for it to finish or let a stale lease expire"
+            )
+        try:
+            return self._ingest_locked(path, run_id)
+        finally:
+            release_lease(self.driver, run_id)
+
+    def _ingest_locked(self, path: Path, run_id: str) -> dict:
+        from knowledge_graph_foundry.graph.lock import heartbeat
+
         state = self._load_state()
         if not state or not state.get("fsm_state") or state["fsm_state"] == "EMPTY":
             raise FoundryError("project not initialized - run `kgf init` first")
@@ -217,7 +246,13 @@ class Foundry:
                     drift.begin_recure()
                 state_drift = verdict.action
 
-            # persist after EVERY document - resumability is the contract
+            # persist after EVERY document - resumability is the contract;
+            # the heartbeat keeps the lease live and detects a takeover
+            if not heartbeat(self.driver, run_id):
+                raise FoundryError(
+                    "ingest lease lost mid-run (stale takeover) - aborting to avoid "
+                    "concurrent state mutation; state through the previous document is persisted"
+                )
             self._save_state(
                 {
                     "fsm_state": lifecycle.state,

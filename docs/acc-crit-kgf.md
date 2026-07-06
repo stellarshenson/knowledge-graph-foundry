@@ -38,6 +38,12 @@ Consolidated acceptance criteria for the KGF v2 rewrite: a CLI+TUI system that b
 - [x] **Edge: config file missing** - defaults apply, warning logged, run proceeds
   - log: 2026-07-06 criterion added
   - log: 2026-07-06 implemented (v0.1.2)
+- [x] **Run lease** - graph-resident (:KGFLock) lease claimed atomically before ingest, heartbeated after every document, released on completion or error; TTL stored on the lock governs staleness
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **Edge: concurrent ingest** - second ingester fails fast naming the holder, its run id and heartbeat age
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **Edge: crashed run** - stale lease (no heartbeat within TTL) is reclaimed by the next ingester; the original run detects the takeover on its next heartbeat and aborts without mutating state
+  - log: 2026-07-06 criterion added and implemented (v0.1.2); verified live against neo4j
 
 ## LLM Engines
 
