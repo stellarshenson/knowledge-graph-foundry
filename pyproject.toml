@@ -84,6 +84,10 @@ where = ["src"]
 include = ["knowledge_graph_foundry*"]
 exclude = ["tests*"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["@archive", ".venv", "data", "notebooks"]
+
 [tool.ruff]
 line-length = 99
 src = ["src/knowledge_graph_foundry"]
