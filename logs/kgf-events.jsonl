@@ -1,0 +1,29 @@
+{"ts": "2026-07-06T08:30:57.780336+00:00", "event": "document.started", "path": "data/interim/smoke/BC-Dreamstation-Standard-CPAP.pdf"}
+{"ts": "2026-07-06T08:31:28.230005+00:00", "event": "extraction.completed", "chunks": 1, "entities": 17, "relationships": 17}
+{"ts": "2026-07-06T08:31:30.797841+00:00", "event": "fsm.transition", "state": "CURING"}
+{"ts": "2026-07-06T08:31:30.797914+00:00", "event": "ontology.type_emerged", "type": "CPAPDevice"}
+{"ts": "2026-07-06T08:31:30.797943+00:00", "event": "ontology.type_emerged", "type": "Manufacturer"}
+{"ts": "2026-07-06T08:31:30.797953+00:00", "event": "ontology.type_emerged", "type": "OperatingMode"}
+{"ts": "2026-07-06T08:31:30.797962+00:00", "event": "ontology.type_emerged", "type": "ComfortFeature"}
+{"ts": "2026-07-06T08:31:30.797972+00:00", "event": "ontology.type_emerged", "type": "DiagnosticFeature"}
+{"ts": "2026-07-06T08:31:30.797979+00:00", "event": "ontology.type_emerged", "type": "PatientEngagementFeature"}
+{"ts": "2026-07-06T08:31:30.797986+00:00", "event": "ontology.type_emerged", "type": "ReportingFeature"}
+{"ts": "2026-07-06T08:31:30.797993+00:00", "event": "ontology.type_emerged", "type": "SoftwareSystem"}
+{"ts": "2026-07-06T08:31:30.798001+00:00", "event": "ontology.type_emerged", "type": "Accessory"}
+{"ts": "2026-07-06T08:31:30.798009+00:00", "event": "ontology.type_emerged", "type": "ConnectivityTechnology"}
+{"ts": "2026-07-06T08:31:30.798050+00:00", "event": "ontology.type_confirmed", "type": "ComfortFeature"}
+{"ts": "2026-07-06T08:31:30.798096+00:00", "event": "ontology.type_confirmed", "type": "SoftwareSystem"}
+{"ts": "2026-07-06T08:31:30.798114+00:00", "event": "ontology.type_confirmed", "type": "Accessory"}
+{"ts": "2026-07-06T08:31:30.798123+00:00", "event": "ontology.type_confirmed", "type": "ConnectivityTechnology"}
+{"ts": "2026-07-06T08:31:30.798133+00:00", "event": "ontology.evolved", "documents": 1, "types": 10, "entities": 17}
+{"ts": "2026-07-06T08:31:30.798227+00:00", "event": "curing.metrics", "doc_index": 0, "unique_types": 10.0, "total_occurrences": 17.0, "singletons": 6.0, "doubletons": 2.0, "entropy_shannon": 3.101881223476018, "entropy_shannon_delta": NaN, "kl_divergence": NaN, "js_divergence": NaN, "type_accumulation_rate": 10.0, "gini_coefficient": 0.28823529411764703, "zipf_r_squared": 0.902778441681536, "heaps_beta": NaN, "chao1_estimate": 19.0, "chao1_coverage": 0.5263157894736842, "ace_estimate": 17.772727272727277, "entropy_shannon_var": NaN, "js_divergence_var": NaN, "gini_coefficient_var": NaN, "chao1_coverage_var": NaN}
+{"ts": "2026-07-06T08:31:30.840094+00:00", "event": "document.completed", "path": "data/interim/smoke/BC-Dreamstation-Standard-CPAP.pdf", "entities": 17}
+{"ts": "2026-07-06T08:31:30.840164+00:00", "event": "document.started", "path": "data/interim/smoke/airstart-10-cpap_fact-sheet_apac_eng.pdf"}
+{"ts": "2026-07-06T08:31:47.296226+00:00", "event": "extraction.completed", "chunks": 1, "entities": 7, "relationships": 7}
+{"ts": "2026-07-06T08:31:48.423824+00:00", "event": "ontology.type_confirmed", "type": "CPAPDevice"}
+{"ts": "2026-07-06T08:31:48.423869+00:00", "event": "ontology.type_confirmed", "type": "Manufacturer"}
+{"ts": "2026-07-06T08:31:48.423879+00:00", "event": "ontology.type_confirmed", "type": "OperatingMode"}
+{"ts": "2026-07-06T08:31:48.423890+00:00", "event": "ontology.evolved", "documents": 2, "types": 10, "entities": 24}
+{"ts": "2026-07-06T08:31:48.424030+00:00", "event": "curing.metrics", "doc_index": 1, "unique_types": 10.0, "total_occurrences": 25.0, "singletons": 3.0, "doubletons": 4.0, "entropy_shannon": 3.048884070537636, "entropy_shannon_delta": 0.05299715293838192, "kl_divergence": 0.08676357230188395, "js_divergence": 0.021723943973886835, "type_accumulation_rate": 0.0, "gini_coefficient": 0.332, "zipf_r_squared": 0.9064042047813381, "heaps_beta": NaN, "chao1_estimate": 11.125, "chao1_coverage": 0.898876404494382, "ace_estimate": 12.086776859504132, "entropy_shannon_var": 0.0007021745548935609, "js_divergence_var": NaN, "gini_coefficient_var": 0.00047883737024221544, "chao1_coverage_var": 0.03470035296615015}
+{"ts": "2026-07-06T08:31:48.454627+00:00", "event": "document.completed", "path": "data/interim/smoke/airstart-10-cpap_fact-sheet_apac_eng.pdf", "entities": 7}
+{"ts": "2026-07-06T08:31:48.454695+00:00", "event": "load.completed", "documents": 2, "entities": 24, "relationships": 24, "cured": false}

@@ -24,7 +24,7 @@ class Neo4jSettings(BaseModel):
 
 class LLMSettings(BaseModel):
     engine: Literal["frontier", "claude-cli", "local-gpu"] = "frontier"
-    model: str = "bedrock/eu.anthropic.claude-sonnet-4-20250514-v1:0"
+    model: str = "bedrock/eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
     temperature: float = 0.0
     max_retries: int = 3
     timeout: int = 120
