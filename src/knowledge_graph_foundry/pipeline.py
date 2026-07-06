@@ -5,6 +5,7 @@ public operation restores state from it first and persists back after.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Optional
@@ -237,9 +238,19 @@ class Foundry:
 
         summary = {"documents": 0, "entities": 0, "relationships": 0, "cured": ontology.cured}
         documents_processed = state.get("documents_processed", 0)
+        # resume contract: name+content fingerprints of completed documents;
+        # a killed run skips what it finished, a REVISED file (same name, new
+        # content) gets a new fingerprint and is re-ingested (S2 drift flow)
+        processed_documents = set(state.get("processed_documents", []))
         state_drift = None
 
         for file_path in files:
+            fingerprint = (
+                f"{file_path.name}:{hashlib.sha1(file_path.read_bytes()).hexdigest()[:16]}"
+            )
+            if fingerprint in processed_documents:
+                emit("document.skipped", path=str(file_path), reason="already ingested")
+                continue
             emit("document.started", path=str(file_path))
             try:
                 entities, relationships = self._extract_file(file_path, purpose, ontology)
@@ -253,6 +264,7 @@ class Foundry:
                 continue
 
             entities = self._embed(entities)
+            processed_documents.add(fingerprint)
             documents_processed += 1
             summary["documents"] += 1
             summary["entities"] += len(entities)
@@ -299,6 +311,7 @@ class Foundry:
                     "calibration": calibrator.to_json() if calibrator else None,
                     "drift": drift.to_dict() if drift else None,
                     "documents_processed": documents_processed,
+                    "processed_documents": sorted(processed_documents),
                     "drift_verdict": state_drift if lifecycle.state == "STABLE" else None,
                 }
             )
