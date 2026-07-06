@@ -473,7 +473,10 @@ class BayesianTypeResolver:
             sorted_probs = sorted(posterior.values(), reverse=True)
             top2_gap = sorted_probs[0] - sorted_probs[1] if len(sorted_probs) >= 2 else 1.0
             if top2_gap < 0.15 and entity.description and self._neo4j_config is not None:
-                from knowledge_graph_foundry.curing.graph_query import GraphQueryRequest, query_graph
+                from knowledge_graph_foundry.curing.graph_query import (
+                    GraphQueryRequest,
+                    query_graph,
+                )
 
                 request = GraphQueryRequest(
                     query_type="entity_search",

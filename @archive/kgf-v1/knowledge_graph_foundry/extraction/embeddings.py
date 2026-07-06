@@ -20,7 +20,6 @@ from loguru import logger
 
 from knowledge_graph_foundry.types.extraction import Entity
 
-
 # Module-level state: the provider locked in for the current run
 _active_provider: Optional[str] = None
 _local_model = None  # cached sentence-transformers model instance

@@ -17,7 +17,11 @@ from loguru import logger
 from knowledge_graph_foundry.extraction.chunking import chunk_text
 from knowledge_graph_foundry.extraction.dedup import deduplicate, normalize_entity_ids
 from knowledge_graph_foundry.extraction.embeddings import generate_embeddings
-from knowledge_graph_foundry.extraction.extract import LLMAuthError, create_extraction_client, extract_chunk
+from knowledge_graph_foundry.extraction.extract import (
+    LLMAuthError,
+    create_extraction_client,
+    extract_chunk,
+)
 from knowledge_graph_foundry.extraction.rate_limiter import TokenBucketRateLimiter
 
 

@@ -2,7 +2,9 @@
 
 import typer
 
-app = typer.Typer(name="kgf", help="Knowledge Graph Foundry - build and maintain Neo4j knowledge graphs.")
+app = typer.Typer(
+    name="kgf", help="Knowledge Graph Foundry - build and maintain Neo4j knowledge graphs."
+)
 
 
 @app.command()

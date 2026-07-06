@@ -1227,7 +1227,9 @@ def _ingest_fluid(
 
                 # Validate merges before applying
                 all_entities = accumulator.all_entities()
-                from knowledge_graph_foundry.curing.merge_validation import validate_type_clustering
+                from knowledge_graph_foundry.curing.merge_validation import (
+                    validate_type_clustering,
+                )
 
                 validation = validate_type_clustering(
                     type_mapping,
