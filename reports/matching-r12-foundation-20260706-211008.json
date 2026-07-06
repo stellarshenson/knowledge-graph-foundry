@@ -1,0 +1,1570 @@
+{
+  "pair_set": {
+    "total": 252,
+    "classes": {
+      "variance": 47,
+      "resolver_miss": 19,
+      "samename": 20,
+      "false_merge": 6,
+      "sibling": 40,
+      "random": 120
+    }
+  },
+  "h131": {
+    "results": {
+      "raw": {
+        "iqr": 0.7639108039438725,
+        "auc_dup_vs_hard": 0.8877654196157736
+      },
+      "center": {
+        "iqr": 0.8784243190893903,
+        "auc_dup_vs_hard": 0.8923154701718908
+      },
+      "whiten": {
+        "iqr": 0.5516833793607601,
+        "auc_dup_vs_hard": 0.9011627906976745
+      },
+      "abtt1": {
+        "iqr": 0.8719188300892711,
+        "auc_dup_vs_hard": 0.8996461071789685
+      },
+      "abtt3": {
+        "iqr": 0.8656396605074406,
+        "auc_dup_vs_hard": 0.8918099089989889
+      },
+      "abtt5": {
+        "iqr": 0.8631147621199489,
+        "auc_dup_vs_hard": 0.8887765419615773
+      },
+      "abtt10": {
+        "iqr": 0.8475017552264035,
+        "auc_dup_vs_hard": 0.8902932254802831
+      }
+    },
+    "best": "whiten",
+    "spread_ratio": 0.7221829780552422,
+    "auc_gain": 0.013397371081900866,
+    "verdict": "REFUTED"
+  },
+  "h130": {
+    "auc_strings": 0.877906976744186,
+    "auc_var_strings": 0.8553191489361702,
+    "auc_var_emb": 0.946808510638298,
+    "auc_emb_all": 0.9011627906976745,
+    "interim": "PENDING NEURAL (strings trail embeddings)"
+  },
+  "pairs": [
+    {
+      "a": "CPAP",
+      "b": "CPAP mode",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "CPAP mode",
+      "b": "Standard CPAP",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Ultra-fine filter",
+      "b": "Ultra-Fine Filter Disposable 1 Pack",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Ultra-fine filter, disposable (1 per pack)",
+      "b": "Ultra-Fine Filter Disposable 1 Pack",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Pre-heat humidifier",
+      "b": "Pre-heat Humidifier Option",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "AirSense 10 CPAP",
+      "b": "AirSense 10 Elite",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "AirSense 10 AutoSet",
+      "b": "AirSense 10 AutoSet for Her",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "RESmart Auto CPAP System",
+      "b": "RESmart CPAP",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "BMC Medical Co.",
+      "b": "BMC Medical Co., Ltd.",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "IEC60601",
+      "b": "EN 60601-1",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Actual Pressure Display",
+      "b": "Pressure Display",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "APAP",
+      "b": "APAP therapy",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "APAP",
+      "b": "APAP Mode",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "CPAP",
+      "b": "Standard CPAP",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "RESmart Auto CPAP System",
+      "b": "RESmart CPAP V1.0",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Continuous Flow Oxygen Delivery",
+      "b": "Continuous flow",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Dubai",
+      "b": "Goldengate Holdings Limited",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Diamedica Bubble CPAP",
+      "b": "Bubble CPAP Diamedica",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Amara",
+      "b": "Amara full face mask",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "DreamStation Auto CPAP",
+      "b": "DreamStation CPAP Pro",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Heated tube 15mm",
+      "b": "DreamStation 15mm heated tube",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Pollen Filter Reusable",
+      "b": "Pollen (foam) filter, reusable (1 per pack)",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Pollen Foam Filter Reusable 1 Pack",
+      "b": "Pollen Filter Reusable",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Ultra-fine filter, disposable (1 per pack)",
+      "b": "Ultra-fine Filter Disposable 1-pack",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Ramp Feature",
+      "b": "Ramp function",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "FOT",
+      "b": "Forced Oscillatory Technique",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "EN 60601-1-1",
+      "b": "EN 60601-1",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Standard air filter",
+      "b": "Air11 Filter - standard",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Auto Stop",
+      "b": "SmartStop",
+      "y": 1,
+      "cls": "resolver_miss"
+    },
+    {
+      "a": "Standard air tubing",
+      "b": "Standard",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Resvent",
+      "b": "Resvent Medical Technology Co., Ltd.",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Mask Expired",
+      "b": "Mask Expiration Alert",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Transcend 365 miniCPAP transcend heater wick pack",
+      "b": "Transcend 365 miniCPAP heater wick pack of six",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Eson\u2122 nasal mask",
+      "b": "Eson\u2122 mask",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Salter Cannula Paediatric",
+      "b": "Salter Cannula Infant",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "DreamStation BIPAP Auto",
+      "b": "DreamStation Auto APAP",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Remstar BiPAP Pro",
+      "b": "Remstar Bipap Auto",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Medela Healthcare Clario AC/DC Suction Pump",
+      "b": "Medela Healthcare Clario Home Care Pump AC/DC",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "REMstar SE with Heated Tube humidifier",
+      "b": "REMstar SE with humidifier",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "BiPAP Pro Bi-Flex",
+      "b": "BiPAP Auto Bi-Flex",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "BiPAP Auto Bi-Flex with humidifier",
+      "b": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "BiPAP autoSV Advanced with Heated Tube humidifier",
+      "b": "BiPAP autoSV Advanced with humidifier",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Pollen Foam Filter Reusable 1 Pack",
+      "b": "Pollen (foam) filter, reusable (1 per pack)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Wireless flow modem",
+      "b": "Wired flow modem",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "1/4 inch to 2.5mm NC Nurse Call Cable",
+      "b": "Nurse Call Adaptor Cable",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "OptiChamber Diamond, 10 pk, Canada",
+      "b": "OptiChamber Diamond, 10 pk",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Portable Design",
+      "b": "Lightweight, self-contained, portable design",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "EverFlo oxygen concentrator",
+      "b": "EverFlo oxygen concentrator, transfill",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "SimplyFlo travel case",
+      "b": "Travel accessory case",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "EverGo oxygen concentrator",
+      "b": "EverGo",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Petite size",
+      "b": "Petite",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "EasyLife without headgear, medium",
+      "b": "EasyLife without headgear, small",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "EasyLife cushion set, medium",
+      "b": "EasyLife cushion set, small",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "EasyLife cushion set, medium",
+      "b": "EasyLife cushion set, large",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Pro-Flow nasal cannula",
+      "b": "Pro-Flow adult nasal cannula",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Host software manual v2.0 (International English)",
+      "b": "Host software manual v2.0 (French)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Host software manual v2.0 (International English)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Host software manual v2.0 (French)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Cannula or titration filter",
+      "b": "Cannula titration filter (50 pack)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Cannula titration filter (50 pack)",
+      "b": "Cannula or titration filter 10 pack",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "b": "BreathSensor cable (adult, 249 connector, 2-pin keyhole, orange)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Thermistor (1 channel, pediatric small, nasal bridgemount, 2.5mm connector)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Thermistor (oral, adult, 1.5mm connectors)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 249 connector, 2-pin keyhole)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Thermistor (oral, adult, 1.5mm connectors)",
+      "b": "Thermistor (oral, adult, 249 connector, 2-pin keyhole)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Thermistor (oral, adult, 249 connector, 2-pin keyhole)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 249 connector, 2-pin keyhole)",
+      "y": 1,
+      "cls": "variance"
+    },
+    {
+      "a": "Air Filter Cover",
+      "b": "Air filter cover",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Apnea Hypopnea Index",
+      "b": "Apnea-Hypopnea Index",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Auto EPAP",
+      "b": "Auto-EPAP",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Auto Off",
+      "b": "Auto-Off",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Auto On",
+      "b": "Auto-On",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Auto Ramp",
+      "b": "AutoRamp",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Auto Start",
+      "b": "autoSTART",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "C-Flex",
+      "b": "C-Flex+",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "CISPR 11",
+      "b": "CISPR11",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Flow Meter",
+      "b": "Flowmeter",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Full face mask",
+      "b": "Full-Face Mask",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "ISO 80601-2-70:2015",
+      "b": "ISO 80601-2-70:2015",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Nasal Cannulas Adult",
+      "b": "Nasal cannulas (adult)",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Performance Tubing (22mm)",
+      "b": "Performance Tubing 22mm",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Pre-heat",
+      "b": "Preheat",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Pressure Start Stop Button",
+      "b": "Pressure Start/Stop Button",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "ResMed AirSense 10",
+      "b": "ResMed Airsense10",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Smart Ramp",
+      "b": "SmartRamp",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Ultra-Fine Filter Disposable 1 Pack",
+      "b": "Ultra-fine Filter Disposable 1-pack",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "ezRIP module (abdomen)",
+      "b": "ezRIP module, abdomen",
+      "y": 1,
+      "cls": "samename"
+    },
+    {
+      "a": "Body Position Sensor Sandman SD20",
+      "b": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "y": 0,
+      "cls": "false_merge"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable WristOx2",
+      "y": 0,
+      "cls": "false_merge"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable for WristOx2",
+      "y": 0,
+      "cls": "false_merge"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 wrist band 10 inch",
+      "y": 0,
+      "cls": "false_merge"
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Air Filter",
+      "y": 0,
+      "cls": "false_merge"
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Filter",
+      "y": 0,
+      "cls": "false_merge"
+    },
+    {
+      "a": "Salter Extension Tubing 2m",
+      "b": "Salter Extension Tubing 9.1m Green",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "AirFit F10 for Her",
+      "b": "AirFit F30 for AirMini",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "CoughAssist T70 Circuit - Infant 6ft",
+      "b": "CoughAssist T70 Circuit Retainer",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Thermocouple airflow sensor 1 channel binder connector",
+      "b": "Thermocouple airflow sensor (1 channel, adult, binder connector P1757)",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit Alice 5/LE 84\"",
+      "b": "ezRIP adult kit 249 84\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit 1.5mm 84\"",
+      "b": "ezRIP adult kit 249 16\"/20\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Body position sensor, 249",
+      "b": "Body Position Sensor Sandman SD20",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "MD15 cylinder US 2000 psi",
+      "b": "MD22 cylinder US 3000 psi",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "15mm Tubing",
+      "b": "22mm Tubing",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Body Position Sensor DC 3.5mm",
+      "b": "Body Position Sensor Sandman SD20",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit Alice 5/LE 84 inches",
+      "b": "ezRIP adult kit 249 16\"/20\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Body position sensor, 249",
+      "b": "Body Position Sensor DC 3.5mm",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit 1.5mm 84\"",
+      "b": "ezRIP adult kit 249 84\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "zRIP module Alice 5 1.5mm connectors",
+      "b": "zRIP module Alice 3 LEMO 2-pin connector",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "WristOx2 3150",
+      "b": "WristOx2",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "EEG/EMG/EOG, 48 inches, gold cup",
+      "b": "EEG/EMG/EOG leads 72 in.",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Thermocouple nasal/oral airflow sensor 1 channel",
+      "b": "Thermocouple nasal/oral airflow sensor (6 single element, adult, 1.5mm connectors)",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit Alice 5/LE 84\"",
+      "b": "ezRIP adult kit 249 16\"/20\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "920 oximeter",
+      "b": "930 Oximeter",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit 1.5mm 84\"",
+      "b": "ezRIP adult kit Alice 5/LE 84\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit Alice 5/LE 84 inches",
+      "b": "ezRIP adult kit 249 84\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Body Position Sensor DC 3.5mm",
+      "b": "Body Position Sensor Bio-Logic 220",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 249 connector, 2-pin keyhole)",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Body position sensor, 249",
+      "b": "Body Position Sensor Bio-Logic 220",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit Alice 5/LE 84 inches",
+      "b": "ezRIP adult kit 1.5mm 84\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "zRIP module Alice 5",
+      "b": "zRIP module Alice 5 1.5mm connectors",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ST-3 Sensor Tester",
+      "b": "ST-3 Sensor Tester Alice 5",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Body Position Sensor Bio-Logic 220",
+      "b": "Body Position Sensor Sandman SD20",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "AirFit F20 for Her",
+      "b": "AirFit F30 for AirMini",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "AirFit F10",
+      "b": "AirFit F30",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Thermistor (oral, adult, 1.5mm connectors)",
+      "b": "Thermistor (oral, adult, 249 connector, 2-pin keyhole)",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ezRIP adult kit 249 84\"",
+      "b": "ezRIP adult kit 249 16\"/20\"",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Level 2 Sleep Study",
+      "b": "Level 3/4 Sleep Study",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "EN ISO 13485:2003",
+      "b": "EN ISO 5356-1:2015",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "ResMed AirFit N30",
+      "b": "ResMed AirFit N20 Classic",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Double-sided tape for 934 sensor",
+      "b": "Double sided tape for 935 and 953",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Connecting cable auxiliary input 10 feet",
+      "b": "Connecting cable 8130 auxiliary input to external device 10 feet",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "zRIP module Alice 5",
+      "b": "zRIP module Alice 3 LEMO 2-pin connector",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "AirFit F20 for Her",
+      "b": "AirFit F10 for Her",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "AirSense 11 AutoSet",
+      "b": "AirSense 10 AutoSet",
+      "y": 0,
+      "cls": "sibling"
+    },
+    {
+      "a": "Latex-free",
+      "b": "Magnetic clips for easy assembly",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "CT2, pediatric",
+      "b": "Flexible Tube",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Prescriber/Clinician Mode",
+      "b": "Tidal volume targeting",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Cabinet integrated pediatric flow meter kit",
+      "b": "Respiratory distress syndrome",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Soft touch child mask",
+      "b": "DSX200S11",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Wisp headgear large size",
+      "b": "Respiratory Rate",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Alice PDx case overlay",
+      "b": "Alice PDx LM sensor",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Red marks",
+      "b": "Sizing gauge",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "LAN interface",
+      "b": "Automatic Humidification Mode",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "ARTP Sleep Apnoea Consortium",
+      "b": "Nasal Cannulas Adult",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Device dimensions",
+      "b": "High Inspiration Pressure",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "1120668",
+      "b": "Housing Material",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Three Levels Alarm System",
+      "b": "Low resistance valve",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Humidify",
+      "b": "Wireless flow modem",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Thermocouple nasal/oral airflow sensor 1 channel",
+      "b": "Easy insertion tubing 2m",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "EMC",
+      "b": "Aerosol therapy",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "3B Medical Luna",
+      "b": "Air inlet filter",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Auto-EPAP",
+      "b": "Resvent Logo",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "zRIP Alice 3 driver module",
+      "b": "Heated Delivery Tube",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Mouse pad",
+      "b": "Pro-Wrap",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Silicon Rubber Canal",
+      "b": "GoLox carrying case",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "15 mm Minimum Distance",
+      "b": "RESmart AutoCPAP",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "1/4 inch to 2.5mm NC Nurse Call Cable",
+      "b": "Vibrating mesh technology",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Auto Stop",
+      "b": "BreathSensor cable (adult, 249 connector, 2-pin keyhole, orange)",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Elbow quick release tabs",
+      "b": "Maximum Water Level Mark",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "DreamStation disposable ultra-fine filter pack of six",
+      "b": "Standard Heated Humidifier",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Standard tubing",
+      "b": "Patient Menu",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Chennai",
+      "b": "Aspira go 30",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Device Buzzer Alarm",
+      "b": "ISO 3744",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "SD card cover",
+      "b": "Gel spacer retrofit assortment pack",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Germany",
+      "b": "Rainout Protection",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "P1692",
+      "b": "Low Resistance Valves",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Intelligent Pulse Delivery",
+      "b": "PTAF Lite for Alice 5",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Spontaneous/Timed mode",
+      "b": "RollFit seal",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Standard Tube",
+      "b": "DreamPort Sleep Solution",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Full-Face Mask",
+      "b": "EasyLife without headgear, small",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Lanyard black 20 inch",
+      "b": "Control Dial",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "GoLife",
+      "b": "Chamber Pitting",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Full-face mask only",
+      "b": "NOZO-15",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Facial irritation",
+      "b": "Humidifier Tub Cooling Time",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "improved forehead support",
+      "b": "NAEPP-endorsed three-zone management system",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "OptiChamber Diamond, 10 pk, Canada",
+      "b": "Auto Humidity control",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Altitude Adjustment",
+      "b": "7 Inch TFT LCD Screen",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Leak compensation technology",
+      "b": "Actiware software",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Bluetooth Wireless Technology",
+      "b": "Warnings and cautions",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Total Run Time",
+      "b": "Output analog cable 3 feet",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Equipment Hypopnoea",
+      "b": "Mucus expulsion",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Electrolytic oxidising chlorine solutions",
+      "b": "A/B aux input signal splitter",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Trilogy100 ventilator",
+      "b": "Medium soft sensor 8 pin",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "DC Power Adapter Cable",
+      "b": "TrueBlue headgear",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "6T-CONVKIT",
+      "b": "Contraindications",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Wash-bin",
+      "b": "Treatment and components of care",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Mobile cart",
+      "b": "Connector",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Thermistor (oral, adult, 1.5mm connectors)",
+      "b": "Eco Smart humidifier",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Air and Oxygen Blender",
+      "b": "Leakage Volume",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Icon Pt Premo Cpap System",
+      "b": "DreamStation 80W power supply",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Oximetry accessory",
+      "b": "Heated Tube humidifier upgrade kit",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Air Outlet Port",
+      "b": "Peak Expiratory Flow Rate",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Foam (cover)",
+      "b": "Humidifier connector tube",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "ELK-200C CPAP System",
+      "b": "Actiwatch 2 hospital band pack",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Circuit parts",
+      "b": "Cannula titration filter",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Humidifier connector tube",
+      "b": "Sensor case",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "recent cranial surgery",
+      "b": "Leak compensation technology",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Personal Best",
+      "b": "Therapy ON Mode",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Flow signal conditioner kit",
+      "b": "WristOx2 3150",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Auto CPAP Mode",
+      "b": "zRIP effort belt pediatric",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "DreamStation reusable pollen filter",
+      "b": "MicroElite 12VDC (car) adapter",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "AirFit F20 for Her",
+      "b": "Elektrogenesis",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Pressure on bridge of nose",
+      "b": "Bubble CPAP Chamber",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "AirSense",
+      "b": "Heated Patient Circuit",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Electromagnetic Compatibility",
+      "b": "Gel spacer retrofit assortment pack",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "DSX200S11",
+      "b": "Prior History of Head Trauma",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "SideStream",
+      "b": "Non-Heated Patient Circuit",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "M10 oxygen concentrator",
+      "b": "Expiratory tubing",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Decreased cardiac output",
+      "b": "ST-3 Sensor Tester",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Masimo LNCS DCI adult reusable sensor",
+      "b": "Fabric frame",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Sensor YL",
+      "b": "Bacterial Filter Cotton",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Download cable",
+      "b": "ECG lead wires, 72 inches, domestic",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Ramp Duration",
+      "b": "Therapy mode",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Air inlet retainer kits",
+      "b": "female patients",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Noninvasive Respiratory Support",
+      "b": "827-0003E",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "CPAP titration",
+      "b": "Piezo Signal",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Flaem RF7+",
+      "b": "Drive Medical Heavy Duty Suction Pump - Model 18600",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Pulse-dose",
+      "b": "Performance Tubing (22mm)",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Chemical Disinfection",
+      "b": "35\u00b0C",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Data transfer",
+      "b": "Level 2 Sleep Study",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Filter Media",
+      "b": "DC-DC cable",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "VideoEase CCTV balun",
+      "b": "ComfortGel Blue premium headgear",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "EN13274-7",
+      "b": "Modular CCTV power through balun",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Authorized ResMed Service Agent",
+      "b": "Wired Modem",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Lung Simulator",
+      "b": "Respironics screwdriver",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Airflow Limitation",
+      "b": "Deep breath trigger",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Pressure Transducer",
+      "b": "Pressure Start Stop Button",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "AirFit P10 bedside starter kit",
+      "b": "Lung Simulator",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "SimplyGo carry case",
+      "b": "Recommended Water Type",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "PR",
+      "b": "Sleep apnea awareness resource",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Sami the Seal Carrying Case",
+      "b": "Dynamic Pulse Wave",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Air inlet retainer kits",
+      "b": "SleepWeaver Advance",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Fine-glide Forehead Adjuster",
+      "b": "Premium forehead pad",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Trilogy filter",
+      "b": "IP Rating",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Bacteria filter 22 mm single use",
+      "b": "Vac Sax taper connector",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "prisma HUB",
+      "b": "BMCares App",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Humidifier Output",
+      "b": "Piezo PLM Kit",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Out-of-the-box simplicity",
+      "b": "VentiCool headgear",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Tubing Length",
+      "b": "Standard CPAP Range",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Flow Triggering",
+      "b": "Sleep/Wakefulness Detection",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Dry powdered inhalers",
+      "b": "P1804",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "zRIP wireset Alice PDx 249 connector",
+      "b": "Touch Screen Interface",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "APAP Download Software",
+      "b": "Manual Flow Control",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "QuickFit elastic headgear",
+      "b": "Flowmeter",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "16 cm",
+      "b": "CPAP therapy",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "prisma HUB",
+      "b": "Cabinet integrated pediatric flow meter kit",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "BiPAP Pro Bi-Flex",
+      "b": "Amara",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Actual Pressure Display",
+      "b": "Remote troubleshooting",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "PR",
+      "b": "Remote Alarm Adapter Cable",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Direct Sunlight",
+      "b": "Daily Progress Feedback",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Suction Device",
+      "b": "Nostril conformance",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "HFNC",
+      "b": "Pressure Stability Testing",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "P1416",
+      "b": "O2 enrichment attachments",
+      "y": 0,
+      "cls": "random"
+    },
+    {
+      "a": "Cheyne-Stokes respiration detection",
+      "b": "WiFi Module",
+      "y": 0,
+      "cls": "random"
+    }
+  ]
+}

@@ -1601,8 +1601,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - strings match neural on variance, lose on siblings - the constructive outcome is a CASCADE: strings resolve the cheap 71%, neural handles the hard 29%
 - **Acceptance bar** - within 0.03 on variance; the cascade ships if both halves win their class; refuted if neural dominates even pure surface variance
 - **Experiment** - python-Levenshtein (existing dependency) + logistic; runs now, no GPU
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - interim (same notebook): the 4-feature string logistic scores 0.878 overall and 0.855 on the variance-vs-sibling class - trailing even the whitened bi-encoder (0.947 on variance) by 0.09, three times the 0.03 parity bar. The cascade premise weakens before the neural winners even run
+- **Verdict** - pending final vs H121/H123, but leaning REFUTED: embeddings dominate on this corpus even for pure surface variance (product names carry semantics strings cannot see - 'EverGo' vs 'EverGo oxygen concentrator' is trivial for both, but 'FOT' vs 'Forced Oscillatory Technique' is invisible to every string feature and easy for the embedder). The classic stack survives only as the model-code equality feature, already a detector
 
 ### R12-H131 Isotropize the space - the saturation is partly geometry
 
@@ -1611,8 +1611,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - the spread materializes; part of the "saturation" dissolves as geometry rather than semantics; the residual saturation is the true bi-encoder class limit that H121 addresses
 - **Acceptance bar** - both clauses; refuted if whitened cosine ranks no better (the compression was semantic, not geometric - the class limit is real and the cross-encoder route is mandatory)
 - **Experiment** - numpy over stored embeddings; runs now, no GPU; transforms also re-tested under H123's winner
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - measured in [`matching_models_r12.ipynb`](../../notebooks/matching_models_r12.ipynb) on the interim pair set (252 pairs: 47 variance + 19 resolver-miss + 20 same-name positives; 40 siblings + 6 false merges hard negatives; 120 random). Transform sweep (centering, PCA whitening, all-but-top-k for k in 1/3/5/10) fit on all 2798 entity vectors: duplicate-vs-hard-negative AUC moved raw 0.888 -> whiten 0.901 (+0.013, bar was +0.05); the similarity spread RATIO came out 0.7x (whitening narrowed the pair-set IQR rather than widening it). Both clauses fail
+- **Verdict** - REFUTED, with the diagnosis worth more than a confirmation: raw cosine's RANKING was never broken by geometry - AUC 0.888 against hard negatives means the order is largely right even inside the compressed 0.93-0.99 band, because AUC is rank-based and insensitive to value compression. What the compression actually breaks is THRESHOLDING and calibration (a fixed 0.6 cut on values crammed into a 0.06-wide band) - which relocates the fix from the geometry (H131, dead) to the calibration layer (H129) and the pair-scoring class (H121). The registered refuter clause fires exactly as written: the class limit is real, the cross-encoder route is mandatory for the residual
 
 ## R13 - the optimal-transport round: identity, drift and completeness as transport problems (pre-registered 2026-07-06)
 
