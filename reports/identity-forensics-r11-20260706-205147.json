@@ -1,0 +1,114 @@
+{
+  "same_as_total": 127,
+  "by_method": {
+    "model_code": {
+      "n": 73,
+      "false": 4,
+      "veto": 8
+    },
+    "explicit_assertion": {
+      "n": 9,
+      "false": 0,
+      "veto": 0
+    },
+    "deictic_assertion": {
+      "n": 25,
+      "false": 2,
+      "veto": 0
+    },
+    "normalized_name": {
+      "n": 20,
+      "false": 0,
+      "veto": 0
+    }
+  },
+  "labeled_false": 6,
+  "veto_coverage": 0.16666666666666666,
+  "presumed_true_vetoed": 0,
+  "false_merges": [
+    {
+      "a": "Body Position Sensor Sandman SD20",
+      "b": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "method": "model_code",
+      "evidence": "sd20",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_part_number",
+          1719.0,
+          1112.0
+        ]
+      ]
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable WristOx2",
+      "method": "model_code",
+      "evidence": "wristox2",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable for WristOx2",
+      "method": "model_code",
+      "evidence": "wristox2",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 wrist band 10 inch",
+      "method": "model_code",
+      "evidence": "wristox2",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Air Filter",
+      "method": "deictic_assertion",
+      "evidence": "Refer to the \u201cInstalling/Replacing the Air Filters\u201d section of this manual.",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Filter",
+      "method": "deictic_assertion",
+      "evidence": "Refer to the \u201cInstalling/Replacing the Air Filters\u201d section of this manual.",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    }
+  ],
+  "candidates": 0,
+  "partition_counts": {},
+  "upstream_share": 0.0,
+  "candidate_detail": [],
+  "h103": "REFUTED (interim)",
+  "h107": "REFUTED (interim)"
+}

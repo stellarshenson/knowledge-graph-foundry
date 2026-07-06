@@ -1,0 +1,718 @@
+{
+  "class_shape": {
+    "disjoint": 0,
+    "same_type": 58,
+    "overlap": 8
+  },
+  "partition_counts": {
+    "extraction_variance": 47,
+    "resolver_visible_miss": 19
+  },
+  "upstream_share": 0.7121212121212122,
+  "h107": "CONFIRMED",
+  "same_as_by_method": {
+    "model_code": {
+      "n": 73,
+      "false": 4,
+      "veto": 8
+    },
+    "explicit_assertion": {
+      "n": 9,
+      "false": 0,
+      "veto": 0
+    },
+    "deictic_assertion": {
+      "n": 25,
+      "false": 2,
+      "veto": 0
+    },
+    "normalized_name": {
+      "n": 20,
+      "false": 0,
+      "veto": 0
+    }
+  },
+  "labeled_false_merges": [
+    {
+      "a": "Body Position Sensor Sandman SD20",
+      "b": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "method": "model_code",
+      "evidence": "sd20",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_part_number",
+          1719.0,
+          1112.0
+        ]
+      ]
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable WristOx2",
+      "method": "model_code",
+      "evidence": "wristox2",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable for WristOx2",
+      "method": "model_code",
+      "evidence": "wristox2",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 wrist band 10 inch",
+      "method": "model_code",
+      "evidence": "wristox2",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Air Filter",
+      "method": "deictic_assertion",
+      "evidence": "Refer to the \u201cInstalling/Replacing the Air Filters\u201d section of this manual.",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Filter",
+      "method": "deictic_assertion",
+      "evidence": "Refer to the \u201cInstalling/Replacing the Air Filters\u201d section of this manual.",
+      "label_false": true,
+      "veto_manu": false,
+      "veto_spec": false,
+      "veto_any": false,
+      "presumed_true": false,
+      "spec_detail": []
+    }
+  ],
+  "veto_coverage_interim": 0.16666666666666666,
+  "vetoed_unlabeled": [
+    {
+      "a": "AirFit P10",
+      "b": "Transcend P10 battery",
+      "method": "model_code",
+      "evidence": "p10",
+      "label_false": false,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_part_number",
+          380023.0,
+          503098.0
+        ]
+      ]
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Circuit - Infant 6ft",
+      "method": "model_code",
+      "evidence": "t70",
+      "label_false": false,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_hcpcs_code",
+          482.0,
+          7020.0
+        ]
+      ]
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "DreamStation SpO2 module",
+      "method": "model_code",
+      "evidence": "spo2",
+      "label_false": false,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_part_number",
+          100621.0,
+          1121694.0
+        ]
+      ]
+    },
+    {
+      "a": "GO2 carrying case",
+      "b": "GO2 oximeter",
+      "method": "model_code",
+      "evidence": "go2",
+      "label_false": false,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_part_number",
+          1062965.0,
+          2.0
+        ]
+      ]
+    },
+    {
+      "a": "M10 oxygen concentrator",
+      "b": "Millennium M10",
+      "method": "model_code",
+      "evidence": "m10",
+      "label_false": false,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_part_number",
+          10.0,
+          10600.0
+        ]
+      ]
+    },
+    {
+      "a": "20 cmH2O",
+      "b": "40 cmH2O",
+      "method": "model_code",
+      "evidence": "cmh2o",
+      "label_false": false,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_value",
+          20.0,
+          40.0
+        ]
+      ]
+    },
+    {
+      "a": "AirFit N20",
+      "b": "ResMed AirFit N20 Classic",
+      "method": "model_code",
+      "evidence": "n20",
+      "label_false": false,
+      "veto_manu": false,
+      "veto_spec": true,
+      "veto_any": true,
+      "presumed_true": false,
+      "spec_detail": [
+        [
+          "prop_part_number_large",
+          380022.0,
+          63725.0
+        ],
+        [
+          "prop_part_number_small",
+          380020.0,
+          63723.0
+        ],
+        [
+          "prop_part_number_medium",
+          380021.0,
+          63724.0
+        ]
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "a": "CPAP",
+      "b": "CPAP mode",
+      "type_rel": "same_type",
+      "cosine": 0.988,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "CPAP mode",
+      "b": "Standard CPAP",
+      "type_rel": "same_type",
+      "cosine": 0.933,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Ultra-fine filter",
+      "b": "Ultra-Fine Filter Disposable 1 Pack",
+      "type_rel": "same_type",
+      "cosine": 0.921,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Ultra-fine filter, disposable (1 per pack)",
+      "b": "Ultra-Fine Filter Disposable 1 Pack",
+      "type_rel": "same_type",
+      "cosine": 0.913,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Pre-heat humidifier",
+      "b": "Pre-heat Humidifier Option",
+      "type_rel": "overlap",
+      "cosine": 0.904,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "AirSense 10 CPAP",
+      "b": "AirSense 10 Elite",
+      "type_rel": "same_type",
+      "cosine": 0.925,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "AirSense 10 AutoSet",
+      "b": "AirSense 10 AutoSet for Her",
+      "type_rel": "same_type",
+      "cosine": 0.919,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "RESmart Auto CPAP System",
+      "b": "RESmart CPAP",
+      "type_rel": "overlap",
+      "cosine": 0.906,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "BMC Medical Co.",
+      "b": "BMC Medical Co., Ltd.",
+      "type_rel": "overlap",
+      "cosine": 0.963,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "IEC60601",
+      "b": "EN 60601-1",
+      "type_rel": "same_type",
+      "cosine": 0.908,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Actual Pressure Display",
+      "b": "Pressure Display",
+      "type_rel": "same_type",
+      "cosine": 0.925,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "APAP",
+      "b": "APAP therapy",
+      "type_rel": "overlap",
+      "cosine": 0.933,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "APAP",
+      "b": "APAP Mode",
+      "type_rel": "same_type",
+      "cosine": 0.908,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "CPAP",
+      "b": "Standard CPAP",
+      "type_rel": "same_type",
+      "cosine": 0.938,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "RESmart Auto CPAP System",
+      "b": "RESmart CPAP V1.0",
+      "type_rel": "overlap",
+      "cosine": 0.904,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Continuous Flow Oxygen Delivery",
+      "b": "Continuous flow",
+      "type_rel": "same_type",
+      "cosine": 0.958,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Dubai",
+      "b": "Goldengate Holdings Limited",
+      "type_rel": "same_type",
+      "cosine": 0.946,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Diamedica Bubble CPAP",
+      "b": "Bubble CPAP Diamedica",
+      "type_rel": "same_type",
+      "cosine": 0.918,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Amara",
+      "b": "Amara full face mask",
+      "type_rel": "overlap",
+      "cosine": 0.97,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "DreamStation Auto CPAP",
+      "b": "DreamStation CPAP Pro",
+      "type_rel": "overlap",
+      "cosine": 0.919,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Heated tube 15mm",
+      "b": "DreamStation 15mm heated tube",
+      "type_rel": "same_type",
+      "cosine": 0.941,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Pollen Filter Reusable",
+      "b": "Pollen (foam) filter, reusable (1 per pack)",
+      "type_rel": "same_type",
+      "cosine": 0.943,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Pollen Foam Filter Reusable 1 Pack",
+      "b": "Pollen Filter Reusable",
+      "type_rel": "same_type",
+      "cosine": 0.915,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Ultra-fine filter, disposable (1 per pack)",
+      "b": "Ultra-fine Filter Disposable 1-pack",
+      "type_rel": "same_type",
+      "cosine": 0.955,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Ramp Feature",
+      "b": "Ramp function",
+      "type_rel": "same_type",
+      "cosine": 0.926,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "FOT",
+      "b": "Forced Oscillatory Technique",
+      "type_rel": "same_type",
+      "cosine": 0.975,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "EN 60601-1-1",
+      "b": "EN 60601-1",
+      "type_rel": "same_type",
+      "cosine": 0.966,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Standard air filter",
+      "b": "Air11 Filter - standard",
+      "type_rel": "same_type",
+      "cosine": 0.965,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Auto Stop",
+      "b": "SmartStop",
+      "type_rel": "overlap",
+      "cosine": 0.91,
+      "cause": "resolver_visible_miss"
+    },
+    {
+      "a": "Standard air tubing",
+      "b": "Standard",
+      "type_rel": "same_type",
+      "cosine": 0.906,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Resvent",
+      "b": "Resvent Medical Technology Co., Ltd.",
+      "type_rel": "same_type",
+      "cosine": 0.936,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Mask Expired",
+      "b": "Mask Expiration Alert",
+      "type_rel": "same_type",
+      "cosine": 0.922,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Transcend 365 miniCPAP transcend heater wick pack",
+      "b": "Transcend 365 miniCPAP heater wick pack of six",
+      "type_rel": "same_type",
+      "cosine": 0.937,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Eson\u2122 nasal mask",
+      "b": "Eson\u2122 mask",
+      "type_rel": "same_type",
+      "cosine": 0.944,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Salter Cannula Paediatric",
+      "b": "Salter Cannula Infant",
+      "type_rel": "same_type",
+      "cosine": 0.917,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "DreamStation BIPAP Auto",
+      "b": "DreamStation Auto APAP",
+      "type_rel": "same_type",
+      "cosine": 0.908,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Remstar BiPAP Pro",
+      "b": "Remstar Bipap Auto",
+      "type_rel": "same_type",
+      "cosine": 0.914,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Medela Healthcare Clario AC/DC Suction Pump",
+      "b": "Medela Healthcare Clario Home Care Pump AC/DC",
+      "type_rel": "same_type",
+      "cosine": 0.928,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "REMstar SE with Heated Tube humidifier",
+      "b": "REMstar SE with humidifier",
+      "type_rel": "same_type",
+      "cosine": 0.91,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "BiPAP Pro Bi-Flex",
+      "b": "BiPAP Auto Bi-Flex",
+      "type_rel": "same_type",
+      "cosine": 0.928,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "BiPAP Auto Bi-Flex with humidifier",
+      "b": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+      "type_rel": "same_type",
+      "cosine": 0.917,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "BiPAP autoSV Advanced with Heated Tube humidifier",
+      "b": "BiPAP autoSV Advanced with humidifier",
+      "type_rel": "same_type",
+      "cosine": 0.91,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Pollen Foam Filter Reusable 1 Pack",
+      "b": "Pollen (foam) filter, reusable (1 per pack)",
+      "type_rel": "same_type",
+      "cosine": 0.909,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Wireless flow modem",
+      "b": "Wired flow modem",
+      "type_rel": "same_type",
+      "cosine": 0.914,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "1/4 inch to 2.5mm NC Nurse Call Cable",
+      "b": "Nurse Call Adaptor Cable",
+      "type_rel": "same_type",
+      "cosine": 0.901,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "OptiChamber Diamond, 10 pk, Canada",
+      "b": "OptiChamber Diamond, 10 pk",
+      "type_rel": "same_type",
+      "cosine": 0.931,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Portable Design",
+      "b": "Lightweight, self-contained, portable design",
+      "type_rel": "same_type",
+      "cosine": 0.955,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "EverFlo oxygen concentrator",
+      "b": "EverFlo oxygen concentrator, transfill",
+      "type_rel": "same_type",
+      "cosine": 0.906,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "SimplyFlo travel case",
+      "b": "Travel accessory case",
+      "type_rel": "same_type",
+      "cosine": 0.917,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "EverGo oxygen concentrator",
+      "b": "EverGo",
+      "type_rel": "same_type",
+      "cosine": 0.983,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Petite size",
+      "b": "Petite",
+      "type_rel": "same_type",
+      "cosine": 0.918,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "EasyLife without headgear, medium",
+      "b": "EasyLife without headgear, small",
+      "type_rel": "same_type",
+      "cosine": 0.926,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "EasyLife cushion set, medium",
+      "b": "EasyLife cushion set, small",
+      "type_rel": "same_type",
+      "cosine": 0.915,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "EasyLife cushion set, medium",
+      "b": "EasyLife cushion set, large",
+      "type_rel": "same_type",
+      "cosine": 0.91,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Pro-Flow nasal cannula",
+      "b": "Pro-Flow adult nasal cannula",
+      "type_rel": "same_type",
+      "cosine": 0.993,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Host software manual v2.0 (International English)",
+      "b": "Host software manual v2.0 (French)",
+      "type_rel": "same_type",
+      "cosine": 0.901,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Host software manual v2.0 (International English)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "type_rel": "same_type",
+      "cosine": 0.911,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Host software manual v2.0 (French)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "type_rel": "same_type",
+      "cosine": 0.906,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Cannula or titration filter",
+      "b": "Cannula titration filter (50 pack)",
+      "type_rel": "same_type",
+      "cosine": 0.901,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Cannula titration filter (50 pack)",
+      "b": "Cannula or titration filter 10 pack",
+      "type_rel": "same_type",
+      "cosine": 0.906,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "b": "BreathSensor cable (adult, 249 connector, 2-pin keyhole, orange)",
+      "type_rel": "same_type",
+      "cosine": 0.908,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Thermistor (1 channel, pediatric small, nasal bridgemount, 2.5mm connector)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "type_rel": "same_type",
+      "cosine": 0.923,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Thermistor (oral, adult, 1.5mm connectors)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "type_rel": "same_type",
+      "cosine": 0.912,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 249 connector, 2-pin keyhole)",
+      "type_rel": "same_type",
+      "cosine": 0.956,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Thermistor (oral, adult, 1.5mm connectors)",
+      "b": "Thermistor (oral, adult, 249 connector, 2-pin keyhole)",
+      "type_rel": "same_type",
+      "cosine": 0.911,
+      "cause": "extraction_variance"
+    },
+    {
+      "a": "Thermistor (oral, adult, 249 connector, 2-pin keyhole)",
+      "b": "Thermistor (1 channel, nasal/oral, adult, 249 connector, 2-pin keyhole)",
+      "type_rel": "same_type",
+      "cosine": 0.931,
+      "cause": "extraction_variance"
+    }
+  ]
+}

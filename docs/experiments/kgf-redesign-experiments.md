@@ -1313,8 +1313,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - >=80% of the labeled defects violate at least one invariant; zero true pairs on H101 do
 - **Acceptance bar** - both clauses; refuted if true aliases routinely violate the invariants (e.g. manufacturer strings too noisy to trust) - then invariants demote to soft features
 - **Experiment** - invariant evaluation over the labeled sets; deterministic, runs now against the 47 + 25 records, re-verified on H101 when it lands
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - evaluated in [`identity_forensics_r11.ipynb`](../../notebooks/identity_forensics_r11.ipynb) over the 127 SAME_AS edges (method provenance: model_code 73, deictic_assertion 25, normalized_name 20, explicit_assertion 9). A category-lexicon label rule (independent signal family) marked 6 false merges; the invariants (manufacturer conflict, numeric spec incompatibility) caught 1 of 6 - coverage 0.17 vs the 0.80 bar. Diagnosis is signal SPARSITY, not principle: manufacturer evidence exists on only ~12% of entities (339 MANUFACTURED_BY edges + 53 props over 2798), so most pairs have nothing to veto on; meanwhile the invariants fired on 8 pairs the weak name-lexicon could NOT label (spec-value conflicts on model_code merges) - likely true catches the label rule misses, undecidable without adjudication. Zero presumed-true (same-name) pairs were vetoed
+- **Verdict** - REFUTED as-registered on current signals, with the cause identified as label-and-signal starvation on both sides of the measurement: the 0.80 bar is unreachable while manufacturer coverage sits at 12%, and the 6-pair label set is too weak to score against. Routes to H101 (adjudicated labels) plus a signal-enrichment prerequisite: manufacturer inference from document provenance (a manual's subject family implies its entities' manufacturer) before re-testing. The invariant CONCEPT survives - its 8 unlabeled fires on model_code merges are the most suspicious edges in the graph
 
 ### R11-H104 Instability is an error signal - the split-and-remerge probe
 
@@ -1353,8 +1353,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - extraction variance dominates; the true resolver-miss share is <=25%, resetting expectations for what H94/H102/H103 can fix
 - **Acceptance bar** - partition complete with evidence strings per case; the 60% clause decides routing (upstream -> H119 determinism work; resolver -> H102/H103/H106)
 - **Experiment** - forensic classification against source chunks; deterministic against stored provenance, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - the inventory itself was the first finding: at embedding cosine >= 0.90 the rebuilt graph contains ZERO disjoint-type pairs - the "47 cross-type duplicates" class of the old defect record does not exist on the current engine (all 71 high-cosine unmerged pairs are same-type 62 / overlapping-type 9; minus SAME_AS-linked, 66 candidates). The registered partition then ran on the real class: extraction_variance 47 (71% - same document emitted both surface forms: 'Pro-Flow nasal cannula' vs 'Pro-Flow adult nasal cannula', 'EverGo oxygen concentrator' vs 'EverGo', 'CPAP' vs 'CPAP mode'), resolver_visible_miss 19 (29% - blocking saw the pair at cosine > 0.85, resolution declined), surface_variant 0, cross_document_ambiguity 0. Upstream share 0.71 vs the 0.60 bar; the resolver-miss share (0.29) slightly exceeds the predicted <=0.25
+- **Verdict** - CONFIRMED - the duplicate problem roots upstream of the resolver: 71% is extraction surface-form variance within single documents, exactly H119's territory (canonicalization prompt + temperature-0), and no resolver improvement can prevent what extraction keeps re-creating. Routing per the registered clause: H119 is promoted to the primary identity lever; H102/H103/H106 address the remaining 29%. Class-shape discovery routed to the gap assessment: the weak-flank framing updates from "47 cross-type duplicates" to "66 same-type variance pairs plus the model_code false-merge surface (H103's 8 suspicious fires)" 
 
 ### R11-H108 Surface the attached propositions - the direct render fix
 
