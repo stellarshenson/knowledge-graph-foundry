@@ -158,3 +158,48 @@ class TestRepair:
         assert seen["path"] == "a.txt"  # re-extracted despite the fingerprint
         assert "what is the weight of device X?" in seen["purpose"]  # focus injected
         assert summary["documents"] == 1
+
+
+class TestRepurpose:
+    """Long-lived graphs survive their owners changing the use case."""
+
+    def test_repurpose_requires_stable(self, lease_patches):
+        store: dict = {}
+        _seed_state(store)  # INITIALIZING
+        f = _foundry(store)
+        with pytest.raises(Exception, match="STABLE"):
+            f.repurpose("a different objective")
+
+    def test_repurpose_keeps_history_and_steers_future_extraction(
+        self, tmp_path, lease_patches
+    ):
+        _files(tmp_path, ["a.txt"])
+        store: dict = {}
+        _seed_state(store)
+        store["fsm_state"] = "STABLE"
+
+        f = _foundry(store)
+        result = f.repurpose("new objective for the same graph")
+        assert result["previous_purpose"] == "test purpose"
+        assert result["purpose_changes"] == 1
+        assert store["purpose"] == "new objective for the same graph"
+        assert store["purpose_history"][0]["purpose"] == "test purpose"
+        assert store["purpose_history"][0]["replaced_at"]
+
+        # identical purpose is rejected
+        with pytest.raises(Exception, match="identical"):
+            f.repurpose("new objective for the same graph")
+
+        # a subsequent ingest extracts under the NEW purpose
+        f2 = _foundry(store)
+        f2._load_state = lambda: dict(store)
+        seen = {}
+
+        def spy_extract(path, purpose, ontology):
+            seen["purpose"] = purpose
+            return _entity_for(path), []
+
+        f2._extract_file = spy_extract
+        f2._embed = lambda e: e
+        f2.ingest(tmp_path)
+        assert seen["purpose"] == "new objective for the same graph"

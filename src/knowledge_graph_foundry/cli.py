@@ -129,6 +129,27 @@ def optimize(config: Optional[Path] = typer.Option(None, help="Path to config.ym
 
 
 @app.command()
+def repurpose(
+    purpose: str = typer.Argument(..., help="The new use case driving future extraction"),
+    seed: Optional[str] = typer.Option(
+        None, help="Optional extra seed types: YAML/JSON/OWL path or freeform text"
+    ),
+    config: Optional[Path] = typer.Option(None, help="Path to config.yml"),
+) -> None:
+    """Change the graph's use case in place (old purpose kept in history)."""
+    foundry = _foundry(config)
+    try:
+        result = foundry.repurpose(purpose, seed)
+    except Exception as exc:
+        _fail(str(exc))
+    console.print(f"repurposed - now: [bold]{result['purpose']}[/bold]")
+    console.print(f"[dim]previous: {result['previous_purpose']} (change #{result['purpose_changes']})[/dim]")
+    if result["seeded_types_added"]:
+        console.print(f"seeded types added: {', '.join(result['seeded_types_added'])}")
+    foundry.close()
+
+
+@app.command()
 def repair(
     question: str = typer.Argument(..., help="The failing question to repair the graph for"),
     sources: list[Path] = typer.Argument(..., help="Source documents to re-extract with focus"),

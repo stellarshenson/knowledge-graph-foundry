@@ -140,6 +140,53 @@ class Foundry:
         )
         return ontology
 
+    def repurpose(self, purpose: str, seed: Optional[str] = None) -> dict:
+        """Change the graph's use case in place - the long-lived-graph answer to
+        an owner changing their mind about what the graph is for. The old purpose
+        is appended to purpose_history (the objective is bitemporal too); future
+        ingestion and repair extract under the new purpose. An optional seed
+        merges additional protected types into the live ontology without
+        touching existing ones. Requires a STABLE graph; no re-ingest."""
+        from datetime import datetime, timezone
+
+        state = self._load_state()
+        if not state or state.get("fsm_state") != "STABLE":
+            raise FoundryError("repurpose requires a STABLE graph")
+        old_purpose = state.get("purpose", "")
+        if purpose == old_purpose:
+            raise FoundryError("new purpose is identical to the current one")
+        history = state.get("purpose_history") or []
+        history.append(
+            {
+                "purpose": old_purpose,
+                "replaced_at": datetime.now(timezone.utc).isoformat(),
+            }
+        )
+        ontology = Ontology(**state["ontology"]) if state.get("ontology") else Ontology()
+        ontology.purpose = purpose
+        seeded_added: list[str] = []
+        if seed:
+            seed_source: Path | str = Path(seed) if Path(seed).exists() else seed
+            seeded = load_seed(seed_source, purpose, engine=self.engine)
+            for name, tdef in seeded.types.items():
+                if name not in ontology.types:
+                    ontology.types[name] = tdef
+                    seeded_added.append(name)
+        state.update(
+            {
+                "purpose": purpose,
+                "purpose_history": history,
+                "ontology": ontology.model_dump(),
+            }
+        )
+        self._save_state(state)
+        return {
+            "purpose": purpose,
+            "previous_purpose": old_purpose,
+            "purpose_changes": len(history),
+            "seeded_types_added": seeded_added,
+        }
+
     def status(self) -> dict:
         state = self._load_state()
         if not state:
