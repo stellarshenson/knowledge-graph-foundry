@@ -84,6 +84,17 @@ class TestCuringDetector:
         cure, reason = d.should_cure()
         assert cure and reason == "plateau"
 
+    def test_min_sample_floor_blocks_premature_cure(self):
+        """R7: even a converged record cannot cure below the Chao1 sample floor."""
+        cfg = CuringSettings(min_documents=1, min_samples_before_cure=5)
+        d = CuringDetector(cfg)
+        for _ in range(3):
+            d.record(self._stable_record())
+        assert d.is_converged() is False  # 3 < floor of 5
+        for _ in range(2):
+            d.record(self._stable_record())
+        assert d.is_converged() is True  # 5 >= floor
+
     def test_force_at_max_fluid_documents(self):
         cfg = CuringSettings(max_fluid_documents=4)
         d = CuringDetector(cfg)

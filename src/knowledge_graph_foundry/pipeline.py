@@ -239,12 +239,15 @@ class Foundry:
                     summary["cured"] = True
                     buffer = None
             else:
-                remap_rate = self._stable_load(entities, relationships, ontology, calibrator)
+                remap_rate, invalidated = self._stable_load(
+                    entities, relationships, ontology, calibrator
+                )
                 verdict = drift.record_document(remap_rate, self._frequencies(entities))
+                fact_verdict = drift.record_contradictions(invalidated, len(entities))
                 if verdict.action == "recure":
                     lifecycle.recure()
                     drift.begin_recure()
-                state_drift = verdict.action
+                state_drift = fact_verdict.action if fact_verdict else verdict.action
 
             # persist after EVERY document - resumability is the contract;
             # the heartbeat keeps the lease live and detects a takeover
@@ -303,6 +306,7 @@ class Foundry:
                 ontology,
                 self.engine,
                 concurrency=self.settings.extraction.concurrency,
+                extraction_cfg=self.settings.extraction,
             )
         return result.entities, result.relationships
 
@@ -314,6 +318,16 @@ class Foundry:
         except Exception as exc:
             logger.warning(f"embeddings unavailable, continuing without: {exc}")
             return entities
+
+    def _embed_texts(self, texts: list[str]) -> list[list[float]]:
+        """Embed raw texts (for R5 type clustering) via the embeddings module."""
+        from knowledge_graph_foundry.extraction import generate_embeddings
+
+        probes = [
+            Entity.create(f"t{i}", types=["Type"], description=t) for i, t in enumerate(texts)
+        ]
+        embedded = generate_embeddings(probes, self.settings.embeddings)
+        return [e.embedding or [] for e in embedded]
 
     def _consolidate(
         self,
@@ -329,12 +343,16 @@ class Foundry:
             load_relationships,
         )
 
-        ontology, type_remap = cluster_types(buffer.ontology, purpose, self.engine)
+        ontology, type_remap = cluster_types(
+            buffer.ontology, purpose, self.engine, embed_fn=self._embed_texts
+        )
         entities = [
             e.model_copy(update={"types": apply_type_remap(e.types, type_remap)})
             for e in buffer.entities
         ]
-        result = resolve_entities(entities, self.settings.resolution, calibrator)
+        result = resolve_entities(
+            entities, self.settings.resolution, calibrator, engine=self.engine
+        )
         relationships = remap_relationships(buffer.relationships, result.id_map)
 
         ensure_indexes(
@@ -368,14 +386,17 @@ class Foundry:
         relationships: list[Relationship],
         ontology: Ontology,
         calibrator: Optional[PosteriorCalibrator],
-    ) -> float:
+    ) -> tuple[float, int]:
         """Resolve one post-cure document against the live graph and load it.
-        Returns the remap rate (fraction of entities with types outside the
-        cured ontology) feeding drift detection."""
+        Returns (remap_rate, invalidated) - the fraction of entities typed
+        outside the cured ontology (schema drift) and the count of edges
+        superseded by reconciliation (fact drift)."""
         from knowledge_graph_foundry.graph.graphrag import vector_query
         from knowledge_graph_foundry.graph.loader import load_entities, load_relationships
 
-        result = resolve_entities(entities, self.settings.resolution, calibrator)
+        result = resolve_entities(
+            entities, self.settings.resolution, calibrator, engine=self.engine
+        )
         id_map = dict(result.id_map)
 
         # Bayesian match against live graph candidates via the vector index
@@ -419,10 +440,11 @@ class Foundry:
         load_relationships(
             self.driver, merged_relationships, batch_size=self.settings.load.batch_size
         )
-        self._reconcile(merged_relationships)
+        invalidated = self._reconcile(merged_relationships)
 
         unknown = sum(1 for e in merged_entities if not any(t in ontology.types for t in e.types))
-        return unknown / len(merged_entities) if merged_entities else 0.0
+        remap_rate = unknown / len(merged_entities) if merged_entities else 0.0
+        return remap_rate, invalidated
 
     def _reconcile(self, relationships: list[Relationship]) -> int:
         """Invalidate prior functional edges superseded by these; returns the

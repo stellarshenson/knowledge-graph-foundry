@@ -69,6 +69,36 @@ class TestDriftDetector:
     def test_serialization_roundtrip(self):
         d = DriftDetector(CFG, CURED)
         d.record_document(0.5, CURED)
+        d.record_contradictions(2, 10)
         restored = DriftDetector.from_dict(d.to_dict(), CFG)
         assert restored.cured_frequencies == CURED
         assert restored._remap_rates == [0.5]
+        assert restored._contradictions == [0.2]
+
+
+class TestFactDriftAlarm:
+    def test_no_alarm_below_window(self):
+        d = DriftDetector(CFG, CURED)
+        assert d.record_contradictions(5, 10) is None
+
+    def test_sustained_contradictions_raise_fact_drift(self):
+        d = DriftDetector(CFG, CURED)  # window 3, threshold 0.2
+        verdicts = [d.record_contradictions(5, 10) for _ in range(3)]  # rate 0.5
+        assert verdicts[-1] is not None
+        assert verdicts[-1].action == "fact_drift"
+        assert verdicts[-1].evidence["contradiction_rate"] > CFG.contradiction_rate_threshold
+
+    def test_low_contradiction_rate_no_alarm(self):
+        d = DriftDetector(CFG, CURED)
+        for _ in range(5):
+            v = d.record_contradictions(0, 10)  # no invalidations
+        assert v is None
+
+    def test_fact_drift_distinct_from_schema_drift(self):
+        """Fact drift fires on invalidations while the type distribution (schema)
+        stays put - the two signals are independent."""
+        d = DriftDetector(CFG, CURED)
+        schema_verdicts = [d.record_document(0.05, CURED) for _ in range(3)]  # stable schema
+        fact_verdicts = [d.record_contradictions(4, 10) for _ in range(3)]  # facts churning
+        assert all(v.action == "none" for v in schema_verdicts)
+        assert fact_verdicts[-1] is not None and fact_verdicts[-1].action == "fact_drift"

@@ -15,6 +15,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import NamedTuple, Optional
 
+from knowledge_graph_foundry.engines.base import Engine
 from knowledge_graph_foundry.events import emit
 from knowledge_graph_foundry.models import (
     Entity,
@@ -23,7 +24,9 @@ from knowledge_graph_foundry.models import (
     normalize_name,
 )
 from knowledge_graph_foundry.resolution.bayesian import evidence
+from knowledge_graph_foundry.resolution.blocking import ann_candidates
 from knowledge_graph_foundry.resolution.calibration import PosteriorCalibrator
+from knowledge_graph_foundry.resolution.judge import judge_pair
 from knowledge_graph_foundry.resolution.similarity import (
     cosine_similarity,
     name_similarity,
@@ -113,21 +116,45 @@ def _fuzzy_candidates(entities: list[Entity], threshold: float) -> set[tuple[int
     return pairs
 
 
-def _synonym_candidates(entities: list[Entity], threshold: float) -> set[tuple[int, int]]:
-    """Within-type embedding pairs above the synonym threshold."""
-    blocks: dict[str, list[int]] = defaultdict(list)
-    for idx, entity in enumerate(entities):
-        if entity.embedding:
-            for t in entity.types:
-                blocks[t].append(idx)
-    pairs: set[tuple[int, int]] = set()
-    for members in blocks.values():
+def _pair_similarity(a: Entity, b: Entity, cfg: ResolutionSettings) -> float:
+    """Cohesion signal for the split guard: embedding cosine when both sides
+    carry a vector, otherwise the Bayesian posterior over name and description."""
+    if a.embedding and b.embedding:
+        return cosine_similarity(a.embedding, b.embedding)
+    return evidence(a, b, cfg).posterior
+
+
+def _split_low_cohesion(
+    components: list[list[int]], entities: list[Entity], cfg: ResolutionSettings
+) -> list[list[int]]:
+    """R8 split guard: break snowballed A~B~C over-merges. A component with
+    more than two members whose average pairwise cohesion falls below
+    `split_guard_min_avg_similarity` sheds any member whose mean similarity to
+    the rest is below that threshold into a singleton."""
+    result: list[list[int]] = []
+    for members in components:
+        if len(members) <= 2:
+            result.append(members)
+            continue
+        sims: dict[tuple[int, int], float] = {}
         for pos, i in enumerate(members):
             for j in members[pos + 1 :]:
-                sim = cosine_similarity(entities[i].embedding, entities[j].embedding)
-                if sim >= threshold:
-                    pairs.add((min(i, j), max(i, j)))
-    return pairs
+                sims[(i, j)] = _pair_similarity(entities[i], entities[j], cfg)
+        mean = sum(sims.values()) / len(sims)
+        if mean >= cfg.split_guard_min_avg_similarity:
+            result.append(members)
+            continue
+        kept: list[int] = []
+        for i in members:
+            others = [m for m in members if m != i]
+            member_mean = sum(sims[(min(i, m), max(i, m))] for m in others) / len(others)
+            if member_mean < cfg.split_guard_min_avg_similarity:
+                result.append([i])
+            else:
+                kept.append(i)
+        if kept:
+            result.append(kept)
+    return result
 
 
 def resolve_entities(
@@ -135,6 +162,7 @@ def resolve_entities(
     cfg: ResolutionSettings,
     calibrator: Optional[PosteriorCalibrator] = None,
     name_candidate_threshold: float = 0.82,
+    engine: Optional[Engine] = None,
 ) -> ResolutionResult:
     """Resolve a batch of entities; returns merged entities, an id remap for
     relationship rewriting, and every pairwise decision for forensics."""
@@ -143,7 +171,9 @@ def resolve_entities(
         return ResolutionResult(collapsed, {}, [])
 
     candidates = _fuzzy_candidates(collapsed, name_candidate_threshold)
-    candidates |= _synonym_candidates(collapsed, cfg.synonym_cluster_threshold)
+    candidates |= ann_candidates(
+        collapsed, cfg.ann_top_k, cfg.ann_min_entities, cfg.synonym_cluster_threshold
+    )
 
     decisions: list[ResolutionDecision] = []
     uf = _UnionFind(len(collapsed))
@@ -158,6 +188,9 @@ def resolve_entities(
             else:
                 verdict = "block"
             decision = decision.model_copy(update={"posterior": calibrated, "decision": verdict})
+        if decision.decision == "defer" and cfg.llm_defer_judge and engine is not None:
+            same = judge_pair(collapsed[i], collapsed[j], engine)
+            decision = decision.model_copy(update={"decision": "merge" if same else "block"})
         decisions.append(decision)
         emit(f"resolution.{decision.decision}", **decision.model_dump())
         if decision.decision == "merge":
@@ -167,10 +200,13 @@ def resolve_entities(
     for idx in range(len(collapsed)):
         groups[uf.find(idx)].append(idx)
 
+    components = [sorted(members) for members in groups.values()]
+    if cfg.split_guard:
+        components = _split_low_cohesion(components, collapsed, cfg)
+
     resolved: list[Entity] = []
     id_map: dict[str, str] = {}
-    for members in groups.values():
-        members.sort()
+    for members in components:
         merged = collapsed[members[0]]
         for idx in members[1:]:
             merged = merge_entities(merged, collapsed[idx])

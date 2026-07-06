@@ -10,7 +10,12 @@ from pydantic import BaseModel, Field
 
 from knowledge_graph_foundry.engines.base import Engine
 from knowledge_graph_foundry.events import emit
-from knowledge_graph_foundry.extraction.prompts import extraction_messages
+from knowledge_graph_foundry.extraction.prompts import (
+    entity_only_messages,
+    extraction_messages,
+    gleaning_messages,
+    relation_only_messages,
+)
 from knowledge_graph_foundry.models import (
     Chunk,
     Entity,
@@ -20,6 +25,7 @@ from knowledge_graph_foundry.models import (
     entity_id,
 )
 from knowledge_graph_foundry.ontology.seed import normalize_type_name
+from knowledge_graph_foundry.settings import ExtractionSettings
 
 _CAMEL_BOUNDARY = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
 
@@ -56,11 +62,75 @@ class WireExtraction(BaseModel):
     relationships: list[WireRelationship] = Field(default_factory=list)
 
 
+def _first_pass(
+    chunk_text: str, purpose: str, ontology: Ontology, engine: Engine, cfg: ExtractionSettings
+) -> WireExtraction:
+    """Run the initial extraction: combined single call, or split entity-then-relation calls."""
+    if not cfg.split_entity_relation:
+        return engine.complete(extraction_messages(chunk_text, purpose, ontology), WireExtraction)
+
+    ent = engine.complete(entity_only_messages(chunk_text, purpose, ontology), WireExtraction)
+    names = [we.name for we in ent.entities]
+    rel = engine.complete(
+        relation_only_messages(chunk_text, names, purpose, ontology), WireExtraction
+    )
+    return WireExtraction(entities=ent.entities, relationships=rel.relationships)
+
+
+def _gather_wire(
+    chunk_text: str, purpose: str, ontology: Ontology, engine: Engine, cfg: ExtractionSettings
+) -> WireExtraction:
+    """First pass plus gleaning rounds; dedup entities by id and relationships by endpoints/type."""
+    entities: list[WireEntity] = []
+    relationships: list[WireRelationship] = []
+    seen_entities: set[str] = set()
+    seen_relationships: set[tuple[str, str, str]] = set()
+
+    def _merge(wire: WireExtraction) -> int:
+        added = 0
+        for we in wire.entities:
+            eid = entity_id(we.name)
+            if eid in seen_entities:
+                continue
+            seen_entities.add(eid)
+            entities.append(we)
+            added += 1
+        for wr in wire.relationships:
+            key = (
+                entity_id(wr.source),
+                entity_id(wr.target),
+                normalize_relationship_type(wr.type),
+            )
+            if key in seen_relationships:
+                continue
+            seen_relationships.add(key)
+            relationships.append(wr)
+            added += 1
+        return added
+
+    _merge(_first_pass(chunk_text, purpose, ontology, engine, cfg))
+
+    for _ in range(cfg.gleaning_rounds):
+        existing = [we.name for we in entities]
+        glean = engine.complete(
+            gleaning_messages(chunk_text, existing, purpose, ontology), WireExtraction
+        )
+        if _merge(glean) == 0:
+            break
+
+    return WireExtraction(entities=entities, relationships=relationships)
+
+
 def extract_chunk(
-    chunk: Chunk, purpose: str, ontology: Ontology, engine: Engine
+    chunk: Chunk,
+    purpose: str,
+    ontology: Ontology,
+    engine: Engine,
+    extraction_cfg: ExtractionSettings | None = None,
 ) -> ExtractionResult:
-    """Extract one chunk: LLM call, wire-to-domain conversion, relationship validation."""
-    wire = engine.complete(extraction_messages(chunk.text, purpose, ontology), WireExtraction)
+    """Extract one chunk: LLM call(s), wire-to-domain conversion, relationship validation."""
+    cfg = extraction_cfg or ExtractionSettings()
+    wire = _gather_wire(chunk.text, purpose, ontology, engine, cfg)
 
     entities = [
         Entity.create(
@@ -112,13 +182,15 @@ def extract_document(
     ontology: Ontology,
     engine: Engine,
     concurrency: int = 4,
+    extraction_cfg: ExtractionSettings | None = None,
 ) -> ExtractionResult:
     """Extract all chunks in parallel; failing chunks are skipped, order preserved."""
+    cfg = extraction_cfg or ExtractionSettings()
     results: list[ExtractionResult | None] = [None] * len(chunks)
 
     def _run(index: int, chunk: Chunk) -> None:
         try:
-            results[index] = extract_chunk(chunk, purpose, ontology, engine)
+            results[index] = extract_chunk(chunk, purpose, ontology, engine, cfg)
         except Exception as exc:
             emit("extraction.warning", reason=f"chunk extraction failed: {exc}", chunk=chunk.id)
 

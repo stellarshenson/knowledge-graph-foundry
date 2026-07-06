@@ -1,8 +1,12 @@
 """Tests for the Bayesian resolution core."""
 
+import math
+
 from knowledge_graph_foundry.models import Entity, Relationship
 from knowledge_graph_foundry.resolution import (
+    MatchVerdict,
     PosteriorCalibrator,
+    ann_candidates,
     evidence,
     remap_relationships,
     resolve_entities,
@@ -79,11 +83,13 @@ class TestResolveEntities:
 
     def test_fuzzy_names_with_shared_evidence_merge(self):
         a = _entity(
-            "DreamStation 2", description="auto CPAP device by Philips with humidifier",
+            "DreamStation 2",
+            description="auto CPAP device by Philips with humidifier",
             source_chunks=["c1"],
         )
         b = _entity(
-            "DreamStation2", description="Philips auto CPAP device with humidifier",
+            "DreamStation2",
+            description="Philips auto CPAP device with humidifier",
             source_chunks=["c1"],
         )
         result = resolve_entities([a, b], CFG)
@@ -100,14 +106,18 @@ class TestResolveEntities:
     def test_synonym_embedding_candidates_within_type(self):
         emb = [1.0, 0.0, 0.0]
         a = _entity(
-            "circuit tubing", ["Component"],
+            "circuit tubing",
+            ["Component"],
             description="flexible tube connecting device to mask",
-            embedding=emb, source_chunks=["c9"],
+            embedding=emb,
+            source_chunks=["c9"],
         )
         b = _entity(
-            "connecting tubing", ["Component"],
+            "connecting tubing",
+            ["Component"],
             description="flexible tube connecting the device to a mask",
-            embedding=emb, source_chunks=["c9"],
+            embedding=emb,
+            source_chunks=["c9"],
         )
         result = resolve_entities([a, b], CFG)
         assert len(result.entities) == 1
@@ -146,6 +156,129 @@ class TestRemapRelationships:
     def test_self_loops_dropped(self):
         rels = [Relationship(source_id="e_a", target_id="e_b", type="REL")]
         assert remap_relationships(rels, {"e_b": "e_a"}) == []
+
+
+class _FakeEngine:
+    """Engine stub returning a fixed match verdict for the defer judge."""
+
+    name = "fake"
+
+    def __init__(self, same: bool):
+        self._same = same
+
+    def complete(self, messages, response_model):
+        return response_model(same=self._same, reason="stub")
+
+
+class TestAnnBlocking:
+    def test_parity_with_brute_force_on_small_block(self):
+        ents = [
+            _entity("tube one", ["Component"], embedding=[1.0, 0.0, 0.0]),
+            _entity("tube two", ["Component"], embedding=[1.0, 0.0, 0.0]),
+            _entity("air mask", ["Component"], embedding=[0.0, 1.0, 0.0]),
+        ]
+        brute = ann_candidates(ents, top_k=10, min_entities=100)
+        ann = ann_candidates(ents, top_k=10, min_entities=2)
+        assert brute == ann == {(0, 1)}
+
+    def test_ann_path_used_above_min_entities(self, monkeypatch):
+        import knowledge_graph_foundry.resolution.blocking as blk
+
+        def _boom(*args, **kwargs):
+            raise AssertionError("brute-force path used above min_entities")
+
+        monkeypatch.setattr(blk, "_brute_force", _boom)
+        ents = [
+            _entity("alpha", ["Component"], embedding=[1.0, 0.0, 0.0]),
+            _entity("bravo", ["Component"], embedding=[1.0, 0.0, 0.0]),
+        ]
+        assert blk.ann_candidates(ents, top_k=5, min_entities=2) == {(0, 1)}
+
+    def test_entities_without_embedding_skipped(self):
+        ents = [
+            _entity("no vec one", ["Component"]),
+            _entity("no vec two", ["Component"]),
+        ]
+        assert ann_candidates(ents, top_k=5, min_entities=100) == set()
+
+
+class TestDeferJudge:
+    def _defer_pair(self):
+        a = _entity("AirCurve 10", description="alpha beta gamma")
+        b = _entity("AirCurve 11", description="gamma delta epsilon")
+        return a, b
+
+    def test_defer_pair_is_in_the_band(self):
+        a, b = self._defer_pair()
+        assert evidence(a, b, CFG).decision == "defer"
+
+    def test_judge_merges_when_same(self):
+        cfg = ResolutionSettings(llm_defer_judge=True)
+        a, b = self._defer_pair()
+        result = resolve_entities([a, b], cfg, engine=_FakeEngine(True))
+        assert len(result.entities) == 1
+
+    def test_judge_keeps_separate_when_not_same(self):
+        cfg = ResolutionSettings(llm_defer_judge=True)
+        a, b = self._defer_pair()
+        result = resolve_entities([a, b], cfg, engine=_FakeEngine(False))
+        assert len(result.entities) == 2
+
+    def test_no_engine_defer_behaves_as_before(self):
+        cfg = ResolutionSettings(llm_defer_judge=True)
+        a, b = self._defer_pair()
+        result = resolve_entities([a, b], cfg)  # flag on, no engine
+        assert len(result.entities) == 2
+
+    def test_verdict_model(self):
+        assert MatchVerdict(same=True, reason="x").same is True
+
+
+class TestSplitGuard:
+    def _snowball(self, c_embedding):
+        # A~B strong, B~C / A~C weak: names snowball all three together;
+        # embeddings decide cohesion.
+        return [
+            Entity.create(
+                "dreamstation pro",
+                types=["Product"],
+                description="portable auto cpap therapy machine",
+                embedding=[1.0, 0.0, 0.0],
+                source_chunks=["c1"],
+            ),
+            Entity.create(
+                "dreamstation pros",
+                types=["Product"],
+                description="portable auto cpap therapy machine",
+                embedding=[1.0, 0.0, 0.0],
+                source_chunks=["c1"],
+            ),
+            Entity.create(
+                "dreamstation pro x",
+                types=["Product"],
+                description="portable auto cpap therapy machine",
+                embedding=c_embedding,
+                source_chunks=["c1"],
+            ),
+        ]
+
+    def test_snowball_split_into_correct_components(self):
+        weak = [0.2, math.sqrt(1 - 0.04), 0.0]  # cosine 0.2 to A and B
+        result = resolve_entities(self._snowball(weak), ResolutionSettings())
+        names = {e.name for e in result.entities}
+        assert len(result.entities) == 2
+        assert "dreamstation pro x" in names  # weak member split off
+
+    def test_cohesive_component_left_intact(self):
+        strong = [1.0, 0.0, 0.0]  # identical to A and B
+        result = resolve_entities(self._snowball(strong), ResolutionSettings())
+        assert len(result.entities) == 1
+
+    def test_split_guard_disabled_keeps_snowball(self):
+        weak = [0.2, math.sqrt(1 - 0.04), 0.0]
+        cfg = ResolutionSettings(split_guard=False)
+        result = resolve_entities(self._snowball(weak), cfg)
+        assert len(result.entities) == 1
 
 
 class TestCalibration:

@@ -25,8 +25,14 @@ class CuringDetector:
         self._records.append(dict(metrics))
 
     def is_converged(self) -> bool:
-        """Composite criterion on the latest record."""
-        if len(self._records) < self.cfg.min_documents:
+        """Composite criterion on the latest record.
+
+        R7: the Chao1 coverage estimator fluctuates wildly on tiny samples,
+        so the gate is blocked until min_samples_before_cure documents have
+        been recorded - a minimum-observation floor, not just min_documents.
+        """
+        floor = max(self.cfg.min_documents, self.cfg.min_samples_before_cure)
+        if len(self._records) < floor:
             return False
         latest = self._records[-1]
         return (

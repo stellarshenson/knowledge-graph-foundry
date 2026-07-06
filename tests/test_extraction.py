@@ -19,7 +19,12 @@ from knowledge_graph_foundry.extraction.extractor import (
     normalize_relationship_type,
     structured_mapping,
 )
-from knowledge_graph_foundry.extraction.prompts import extraction_messages
+from knowledge_graph_foundry.extraction.prompts import (
+    entity_only_messages,
+    extraction_messages,
+    gleaning_messages,
+    relation_only_messages,
+)
 from knowledge_graph_foundry.models import (
     Chunk,
     Ontology,
@@ -28,6 +33,7 @@ from knowledge_graph_foundry.models import (
     chunk_id,
     entity_id,
 )
+from knowledge_graph_foundry.settings import ExtractionSettings
 
 PURPOSE = "map CPAP devices, their components and operating modes"
 
@@ -309,3 +315,115 @@ class TestNormalizeRelationshipType:
     )
     def test_normalization(self, raw, expected):
         assert normalize_relationship_type(raw) == expected
+
+
+class SequenceEngine:
+    """Returns canned WireExtraction responses in call order; records messages."""
+
+    name = "sequence"
+
+    def __init__(self, responses: list[BaseModel]):
+        self.responses = list(responses)
+        self.calls: list[list[dict[str, str]]] = []
+
+    def complete(self, messages: list[dict[str, str]], response_model: type) -> BaseModel:
+        self.calls.append(messages)
+        if self.responses:
+            return self.responses.pop(0)
+        return WireExtraction()
+
+
+class TestGleaning:
+    def test_gleaning_adds_missed_entities_without_duplicating(self):
+        first = WireExtraction(entities=[WireEntity(name="E1", types=["Product"])])
+        glean = WireExtraction(
+            entities=[
+                WireEntity(name="E1", types=["Product"]),  # duplicate, must not repeat
+                WireEntity(name="E2", types=["Product"]),  # newly gleaned
+            ]
+        )
+        engine = SequenceEngine([first, glean])
+        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=1)
+
+        result = extract_chunk(_chunk("glean text"), PURPOSE, Ontology(), engine, cfg)
+
+        assert [e.name for e in result.entities] == ["E1", "E2"]
+        assert len(engine.calls) == 2  # first pass + one gleaning round
+
+    def test_gleaning_stops_on_empty_round(self):
+        first = WireExtraction(entities=[WireEntity(name="E1", types=["Product"])])
+        engine = SequenceEngine([first, WireExtraction()])  # empty gleaning round
+        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=3)
+
+        result = extract_chunk(_chunk("stop text"), PURPOSE, Ontology(), engine, cfg)
+
+        assert [e.name for e in result.entities] == ["E1"]
+        assert len(engine.calls) == 2  # stopped after the empty round, not 4
+
+    def test_gleaning_rounds_zero_disables(self):
+        first = WireExtraction(entities=[WireEntity(name="E1", types=["Product"])])
+        would_glean = WireExtraction(entities=[WireEntity(name="E2", types=["Product"])])
+        engine = SequenceEngine([first, would_glean])
+        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=0)
+
+        result = extract_chunk(_chunk("noglean text"), PURPOSE, Ontology(), engine, cfg)
+
+        assert [e.name for e in result.entities] == ["E1"]
+        assert len(engine.calls) == 1  # gleaning disabled, single call
+
+
+class TestSplitEntityRelation:
+    def test_split_mode_issues_separate_entity_then_relation_calls(self):
+        entities = WireExtraction(
+            entities=[
+                WireEntity(name="DreamStation", types=["Product"]),
+                WireEntity(name="Philips", types=["Manufacturer"]),
+            ]
+        )
+        relations = WireExtraction(
+            relationships=[
+                WireRelationship(source="DreamStation", target="Philips", type="made by")
+            ]
+        )
+        engine = SequenceEngine([entities, relations])
+        cfg = ExtractionSettings(split_entity_relation=True, gleaning_rounds=0)
+
+        result = extract_chunk(_chunk("split text"), PURPOSE, Ontology(), engine, cfg)
+
+        assert len(engine.calls) == 2
+        assert "ENTITIES ONLY" in engine.calls[0][0]["content"]
+        assert "RELATIONSHIPS ONLY" in engine.calls[1][0]["content"]
+        # relation pass is told which entities were extracted
+        assert "DreamStation" in engine.calls[1][0]["content"]
+        assert [e.name for e in result.entities] == ["DreamStation", "Philips"]
+        assert result.relationships[0].type == "MADE_BY"
+
+    def test_split_false_keeps_single_combined_call(self):
+        combined = WireExtraction(
+            entities=[WireEntity(name="DreamStation", types=["Product"])],
+        )
+        engine = SequenceEngine([combined])
+        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=0)
+
+        result = extract_chunk(_chunk("combined text"), PURPOSE, Ontology(), engine, cfg)
+
+        assert len(engine.calls) == 1
+        assert "ENTITIES ONLY" not in engine.calls[0][0]["content"]
+        assert [e.name for e in result.entities] == ["DreamStation"]
+
+
+class TestSplitAndGleaningPrompts:
+    def test_purpose_present_in_entity_relation_gleaning_prompts(self):
+        ontology = Ontology(purpose=PURPOSE)
+        entity_msgs = entity_only_messages("chunk text", PURPOSE, ontology)
+        relation_msgs = relation_only_messages("chunk text", ["DreamStation"], PURPOSE, ontology)
+        gleaning_msgs = gleaning_messages("chunk text", ["DreamStation"], PURPOSE, ontology)
+
+        assert PURPOSE in entity_msgs[0]["content"]
+        assert PURPOSE in relation_msgs[0]["content"]
+        assert PURPOSE in gleaning_msgs[0]["content"]
+        # extracted entity names are injected into the relation and gleaning prompts
+        assert "DreamStation" in relation_msgs[0]["content"]
+        assert "DreamStation" in gleaning_msgs[0]["content"]
+        # user turn carries the chunk text
+        assert entity_msgs[1] == {"role": "user", "content": "chunk text"}

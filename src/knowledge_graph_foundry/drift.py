@@ -11,7 +11,7 @@ is only ever a recommendation with the evidence attached.
 from __future__ import annotations
 
 import math
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 from knowledge_graph_foundry.events import emit
 from knowledge_graph_foundry.settings import DriftSettings
@@ -47,7 +47,27 @@ class DriftDetector:
         self.cured_frequencies = dict(cured_frequencies)
         self._remap_rates: list[float] = []
         self._window_frequencies: list[dict[str, int]] = []
+        self._contradictions: list[int] = []  # R8: per-document invalidation counts
         self._recuring = False
+
+    def record_contradictions(self, invalidated: int, entities: int) -> Optional[DriftVerdict]:
+        """R8 fact-drift alarm: track the rate of edges invalidated per document
+        (superseding facts). Sustained high contradiction-rate is the real
+        signal that the world is moving under the graph - distinct from schema
+        drift (remap + JSD). Returns a fact_drift verdict when the windowed rate
+        crosses the threshold, else None."""
+        rate = invalidated / entities if entities else 0.0
+        self._contradictions.append(rate)
+        window = self.cfg.window
+        if len(self._contradictions) < window:
+            return None
+        recent = self._contradictions[-window:]
+        mean_rate = sum(recent) / window
+        if mean_rate > self.cfg.contradiction_rate_threshold:
+            evidence = {"contradiction_rate": mean_rate, "window": window}
+            emit("drift.warning", action="fact_drift", **evidence)
+            return DriftVerdict("fact_drift", evidence)
+        return None
 
     def record_document(self, remap_rate: float, type_frequencies: dict[str, int]) -> DriftVerdict:
         """Record one post-cure document and return the current verdict."""
@@ -107,6 +127,7 @@ class DriftDetector:
             "cured_frequencies": self.cured_frequencies,
             "remap_rates": self._remap_rates,
             "window_frequencies": self._window_frequencies,
+            "contradictions": self._contradictions,
             "recuring": self._recuring,
         }
 
@@ -115,5 +136,6 @@ class DriftDetector:
         detector = cls(cfg, data.get("cured_frequencies", {}))
         detector._remap_rates = list(data.get("remap_rates", []))
         detector._window_frequencies = [dict(f) for f in data.get("window_frequencies", [])]
+        detector._contradictions = list(data.get("contradictions", []))
         detector._recuring = bool(data.get("recuring", False))
         return detector
