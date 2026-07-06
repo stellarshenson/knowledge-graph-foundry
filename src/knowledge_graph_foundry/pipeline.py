@@ -342,8 +342,14 @@ class Foundry:
             vector_dimensions=self.settings.graphrag.vector_dimensions,
             vector_index_name=self.settings.graphrag.vector_index_name,
         )
-        load_entities(self.driver, result.entities, batch_size=self.settings.load.batch_size)
+        load_entities(
+            self.driver,
+            result.entities,
+            batch_size=self.settings.load.batch_size,
+            versioning=self.settings.load.entity_versioning,
+        )
         load_relationships(self.driver, relationships, batch_size=self.settings.load.batch_size)
+        self._reconcile(relationships)
 
         ontology.cured = True
         emit(
@@ -404,13 +410,29 @@ class Foundry:
             e.model_copy(update={"id": id_map.get(e.id, e.id)}) for e in result.entities
         ]
         merged_relationships = remap_relationships(relationships, id_map)
-        load_entities(self.driver, merged_entities, batch_size=self.settings.load.batch_size)
+        load_entities(
+            self.driver,
+            merged_entities,
+            batch_size=self.settings.load.batch_size,
+            versioning=self.settings.load.entity_versioning,
+        )
         load_relationships(
             self.driver, merged_relationships, batch_size=self.settings.load.batch_size
         )
+        self._reconcile(merged_relationships)
 
         unknown = sum(1 for e in merged_entities if not any(t in ontology.types for t in e.types))
         return unknown / len(merged_entities) if merged_entities else 0.0
+
+    def _reconcile(self, relationships: list[Relationship]) -> int:
+        """Invalidate prior functional edges superseded by these; returns the
+        contradiction count (fed to fact-drift monitoring)."""
+        functional = self.settings.load.functional_relationship_types
+        if not functional:
+            return 0
+        from knowledge_graph_foundry.graph.temporal import reconcile_contradictions
+
+        return reconcile_contradictions(self.driver, relationships, functional)
 
     def _frequencies(self, entities: list[Entity]) -> dict[str, int]:
         freqs: dict[str, int] = {}

@@ -1,12 +1,17 @@
-"""Batched, idempotent graph loading.
+"""Batched, idempotent, bitemporal graph loading.
 
-Entities MERGE on id; description keeps the longer of existing and incoming
-(CASE on size), embedding keeps the last non-null value, provenance arrays
-are unioned and deduplicated via apoc.coll.toSet. Extraction properties are
-flattened to prop_<key>; non-scalar values are JSON-serialized. Type labels
-are applied additively via apoc.create.addLabels. Relationships use native
-types via apoc.merge.relationship with empty ident props, so reloading the
-same batch never duplicates nodes or relationships.
+Entities MERGE on id; description keeps the longer of existing and incoming,
+embedding keeps the last non-null value, provenance arrays are unioned. When
+entity versioning is on, the pre-update entity state is snapshotted to a
+(:KGFEntityVersion) node linked by HAD_VERSION before the update - the
+evolution record. Nothing is overwritten silently.
+
+Relationships are bitemporal: every edge carries created_at / expired_at
+(transaction time - when learned / retracted) and valid_from / valid_to
+(valid time - when true in the world). Loading sets created_at and valid_from
+on first sight and never deletes; superseding facts are handled by
+graph/temporal.py, which sets valid_to on the prior edge rather than removing
+it. Reloading the same batch never duplicates nodes or relationships.
 """
 
 from __future__ import annotations
@@ -22,13 +27,20 @@ from knowledge_graph_foundry.models import Entity, Relationship
 _ENTITY_QUERY = """
 UNWIND $rows AS row
 MERGE (e:Entity {id: row.id})
+WITH e, row,
+     (e.description IS NOT NULL
+      AND ($versioning)
+      AND (size(row.description) > size(coalesce(e.description, ''))
+           OR size([l IN row.types WHERE NOT l IN labels(e)]) > 0)) AS versionize
+CALL apoc.do.when(versionize, $version_action, 'RETURN null AS v', {e: e}) YIELD value
 SET e.name = row.name,
     e.description = CASE
         WHEN e.description IS NULL OR size(row.description) > size(e.description)
         THEN row.description ELSE e.description END,
     e.embedding = coalesce(row.embedding, e.embedding),
     e.source_documents = apoc.coll.toSet(coalesce(e.source_documents, []) + row.source_documents),
-    e.source_chunks = apoc.coll.toSet(coalesce(e.source_chunks, []) + row.source_chunks)
+    e.source_chunks = apoc.coll.toSet(coalesce(e.source_chunks, []) + row.source_chunks),
+    e.updated_at = timestamp()
 SET e += row.props
 WITH e, row
 CALL apoc.create.addLabels(e, row.types) YIELD node
@@ -39,7 +51,10 @@ _RELATIONSHIP_QUERY = """
 UNWIND $rows AS row
 MATCH (s:Entity {id: row.source_id})
 MATCH (t:Entity {id: row.target_id})
-CALL apoc.merge.relationship(s, row.type, {}, {description: row.description}, t, {}) YIELD rel
+CALL apoc.merge.relationship(
+    s, row.type, {}, {description: row.description}, t,
+    {created_at: timestamp(), valid_from: timestamp(), valid_to: null, expired_at: null}
+) YIELD rel
 SET rel.description = CASE
         WHEN rel.description IS NULL OR size(row.description) > size(rel.description)
         THEN row.description ELSE rel.description END,
@@ -48,6 +63,12 @@ SET rel.description = CASE
     rel.source_chunks = apoc.coll.toSet(coalesce(rel.source_chunks, []) + row.source_chunks)
 RETURN count(rel) AS n
 """
+
+
+_VERSION_ACTION = (
+    "CREATE (v:KGFEntityVersion) SET v = properties(e), v.versioned_at = timestamp() "
+    "CREATE (e)-[:HAD_VERSION]->(v) RETURN v"
+)
 
 
 def _flatten_properties(properties: dict[str, Any]) -> dict[str, Any]:
@@ -78,8 +99,11 @@ def ensure_indexes(driver: Driver, vector_dimensions: int, vector_index_name: st
         session.run(vector_query).consume()
 
 
-def load_entities(driver: Driver, entities: list[Entity], batch_size: int = 500) -> int:
-    """Upsert entities in batches; returns total upserted."""
+def load_entities(
+    driver: Driver, entities: list[Entity], batch_size: int = 500, versioning: bool = True
+) -> int:
+    """Upsert entities in batches; returns total upserted. When versioning is
+    on, a content change snapshots the prior state to a KGFEntityVersion node."""
     total = 0
     with driver.session() as session:
         for start in range(0, len(entities), batch_size):
@@ -97,7 +121,9 @@ def load_entities(driver: Driver, entities: list[Entity], batch_size: int = 500)
                 }
                 for e in batch
             ]
-            session.run(_ENTITY_QUERY, rows=rows).single()
+            session.run(
+                _ENTITY_QUERY, rows=rows, versioning=versioning, version_action=_VERSION_ACTION
+            ).single()
             total += len(batch)
             emit("load.batch", kind="entities", batch=start // batch_size, size=len(batch))
     emit("load.completed", kind="entities", total=total)
@@ -107,7 +133,8 @@ def load_entities(driver: Driver, entities: list[Entity], batch_size: int = 500)
 def load_relationships(
     driver: Driver, relationships: list[Relationship], batch_size: int = 500
 ) -> int:
-    """Upsert relationships in batches; rows with missing endpoints are skipped."""
+    """Upsert relationships in batches; rows with missing endpoints are skipped.
+    New edges get transaction-time and valid-time stamps."""
     total = 0
     with driver.session() as session:
         for start in range(0, len(relationships), batch_size):

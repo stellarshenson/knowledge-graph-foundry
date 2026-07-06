@@ -44,7 +44,7 @@ Each lever changes one subsystem over the baseline build and is verified either 
 
 | hypothesis | lever | mechanism | predicted | acceptance bar | verdict |
 |---|---|---|---|---|---|
-| R01-H1 | temporal model | bitemporal edges + contradiction reconciliation + entity versioning | supersede-query returns current value, history retained | temporal probe passes, non-lossy | pending |
+| R01-H1 | temporal model | bitemporal edges + contradiction reconciliation + entity versioning | supersede-query returns current value, history retained | temporal probe passes, non-lossy | **Promoted** |
 | R01-H2 | retrieval | PPR seeded from vector top-k (GDS PageRank) | multi-hop answerability up, single-hop not down | >= baseline multi-hop, no single-hop regression | pending |
 | R01-H3 | extraction | gleaning re-prompt + entity/relation split | recall up (entities+rels/doc, orphan_rate down) | recall up, duplicate_name_density not up | pending |
 | R01-H4 | resolution | FAISS ANN blocking + LLM judge on defer zone | blocking sub-quadratic, defer decided better | dup density <= baseline, blocking O(n log n) | pending |
@@ -71,8 +71,8 @@ Eight levers, pre-registered above, implemented and verified one at a time. Comp
 - **Mechanism** - add valid_from/valid_to and created_at/expired_at to edges; on ingest, hybrid-search existing edges between the same entity pair, LLM-check contradiction, and on temporal overlap set the old edge's valid_to; retrieval defaults to currently-valid; entity property/type changes retain prior versions
 - **Prediction** - a superseding-fact probe returns the current value, and the prior fact is queryable as history; nothing is deleted
 - **Acceptance bar** - temporal probe passes and is non-lossy (old edge present with valid_to set)
-- **Result** - pending (this batch)
-- **Verdict** - pending
+- **Result** - every edge carries created_at/valid_from on load and valid_to/expired_at (null = live); reconcile_contradictions invalidates prior functional edges (valid_to set, not deleted); entity versioning snapshots prior state to KGFEntityVersion on content change only. Live probe: HAS_CEO Alice → Bob returns Bob as current, Alice retained with valid_to set; idempotent reload creates no version. 5 temporal tests pass (2 unit, 3 live)
+- **Verdict** - Promoted; the disqualifying longevity gap is closed - the graph is now bi-temporal and non-lossy
 
 ### R01-H2 PPR retrieval seeded from vector top-k
 

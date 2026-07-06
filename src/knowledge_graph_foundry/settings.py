@@ -80,6 +80,8 @@ class GraphRAGSettings(BaseModel):
 
 class LoadSettings(BaseModel):
     batch_size: int = 500
+    entity_versioning: bool = True  # snapshot prior entity state on content change
+    functional_relationship_types: list[str] = []  # single-valued rels: a new target supersedes
 
 
 class Settings(BaseModel):

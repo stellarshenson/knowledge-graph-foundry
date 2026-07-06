@@ -83,7 +83,9 @@ class TestLoadRelationships:
         query = run_queries(session)[0]
         assert "MATCH (s:Entity {id: row.source_id})" in query
         assert "MATCH (t:Entity {id: row.target_id})" in query
-        assert "apoc.merge.relationship(s, row.type" in query
+        assert "apoc.merge.relationship(" in query
+        assert "valid_from: timestamp()" in query  # bitemporal on-create stamp
+        assert "valid_to: null" in query
         assert "apoc.coll.toSet" in query
 
     def test_batching(self):
