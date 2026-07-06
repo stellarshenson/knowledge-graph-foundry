@@ -1,10 +1,6 @@
-# Temporary quota-outage override (2026-07-06): Sonnet 4.5 daily Bedrock quota
-# exhausted mid-run; both roles route to Haiku 4.5 until reset. Delete after.
+# Temporary quota-outage override (2026-07-06): Bedrock daily quotas exhausted
+# (Sonnet, then Haiku). Reader routes through the local claude-cli engine.
+# Embeddings stay on Bedrock Titan (separate quota, still live). Delete after.
 llm:
-  engine: frontier
-  model: bedrock/eu.anthropic.claude-haiku-4-5-20251001-v1:0
-  region: eu-central-1
-extraction_llm:
-  engine: frontier
-  model: bedrock/eu.anthropic.claude-haiku-4-5-20251001-v1:0
-  region: eu-central-1
+  engine: claude-cli
+  model: haiku

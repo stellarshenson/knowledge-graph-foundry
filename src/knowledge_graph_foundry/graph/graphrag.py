@@ -16,6 +16,10 @@ from knowledge_graph_foundry.events import emit
 _PROJECTION_NAME = "kgf_leiden"
 _PPR_PROJECTION = "kgf_ppr"
 
+# R02-H12: node labels in the PPR projection - chunks diffuse relevance
+# jointly with entities (HippoRAG 2 passage nodes); ablations may override
+PPR_NODE_LABELS = ("Entity", "Chunk")
+
 
 class CommunitySummary(BaseModel):
     """LLM summary of one entity community."""
@@ -165,9 +169,10 @@ def ppr_query(
             # passage and entity relevance diffuse jointly; _PPR_STREAM still
             # filters returned nodes to entities
             session.run(
-                "CALL gds.graph.project($name, ['Entity', 'Chunk'], "
+                "CALL gds.graph.project($name, $labels, "
                 "{ALL: {type: '*', orientation: 'UNDIRECTED'}})",
                 name=_PPR_PROJECTION,
+                labels=list(PPR_NODE_LABELS),
             ).consume()
             seed_node_ids = [
                 row["nid"]
