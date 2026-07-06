@@ -14,6 +14,7 @@ Consolidated acceptance criteria for the KGF v2 rewrite: a CLI+TUI system that b
 - [Graph Loading](#graph-loading)
 - [GraphRAG Optimization](#graphrag-optimization)
 - [Drift Detection](#drift-detection)
+- [Temporal and Longevity](#temporal-and-longevity)
 - [CLI](#cli)
 - [TUI](#tui)
 - [End-to-End CPAP](#end-to-end-cpap)
@@ -255,6 +256,33 @@ Consolidated acceptance criteria for the KGF v2 rewrite: a CLI+TUI system that b
 - [x] **Edge: drift during RECURING** - additional drift signals coalesce, no nested recure
   - log: 2026-07-06 criterion added
   - log: 2026-07-06 implemented (v0.1.2)
+- [x] **Fact-drift alarm** - contradiction-rate per window (edges invalidated by supersession) raises a fact_drift verdict distinct from schema drift (R8)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+
+## Temporal and Longevity
+
+SOTA-driven redesign for months-long operation (R1): the graph is bi-temporal and non-lossy, so it answers current-versus-historical and keeps an evolution record.
+
+- [x] **Bitemporal edges** - every relationship carries created_at/expired_at (transaction time) and valid_from/valid_to (valid time); loading stamps them, nothing is deleted (R1)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **Contradiction reconciliation** - for functional relationship types, a superseding fact sets the prior edge's valid_to to the new valid_from (invalidate, not delete) (R1)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2); live probe HAS_CEO Alice -> Bob
+- [x] **Time-aware read** - current_relationships returns valid_to IS NULL edges; relationship_history returns the full ordered timeline; local retrieval context filters to currently-valid (R1)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **Entity versioning** - a content change (longer description or new labels) snapshots the prior entity state to a KGFEntityVersion node via HAD_VERSION; idempotent reloads create no version (R1)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **PPR retrieval** - Personalized PageRank seeded from the vector top-k reaches beyond one hop for multi-hop questions; global/thematic questions route to community summaries (R2/R6)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2); live probe reaches a 2-3 hop node
+- [x] **Gleaning + split extraction** - a bounded gleaning re-prompt plus separate entity and relation passes raise extraction recall (R3)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **ANN blocking + defer judge** - FAISS top-k blocking above a per-type size keeps resolution sub-quadratic; the 0.4-0.6 defer band routes to an LLM judge when enabled (R4)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **Re-runnable type consolidation** - embed -> block -> LLM-verify replaces the one-shot flat pass; should_recure reopens consolidation on a post-cure type burst (R5)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **Curing and calibration hardening** - Chao1 minimum-sample floor blocks premature curing; TemperatureScaler with a held-out label floor replaces isotonic-on-tiny-sets (R7)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
+- [x] **Transitivity split guard** - a correlation-clustering split pass after union-find breaks snowballed over-merges (R8)
+  - log: 2026-07-06 criterion added and implemented (v0.1.2)
 
 ## CLI
 
