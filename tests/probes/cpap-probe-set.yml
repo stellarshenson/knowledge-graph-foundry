@@ -1,0 +1,265 @@
+# CPAP knowledge-graph retrieval probe set
+# 28 grounded QA probes. Answers verified against text extracted by the
+# project reader (knowledge_graph_foundry.ingest.readers.read_document).
+# Categories: 10 single_fact, 8 comparison, 6 multi_hop, 4 unanswerable.
+
+- id: P01
+  category: single_fact
+  question: "What is the weight of the ResMed AirSense 11 with its standard humidifier tub?"
+  gold_answer: "40 oz (1130 g)"
+  gold_evidence:
+    - "1130 g"
+    - "40 oz"
+  sources:
+    - "ResMed-Airsense-11-Manual.pdf"
+
+- id: P02
+  category: single_fact
+  question: "What is the operating pressure range of the DreamStation CPAP?"
+  gold_answer: "4 to 20 cm H2O"
+  gold_evidence:
+    - "4 to 20 cm H2O"
+  sources:
+    - "BC-Dreamstation-Standard-CPAP.pdf"
+
+- id: P03
+  category: single_fact
+  question: "What is the sound pressure level of the Resvent iBreeze CPAP?"
+  gold_answer: "28 dB(A) sound pressure level (36 dB(A) sound power level)"
+  gold_evidence:
+    - "28 dB(A)"
+  sources:
+    - "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+
+- id: P04
+  category: single_fact
+  question: "What is the warranty period of the DreamStation CPAP device?"
+  gold_answer: "2 years"
+  gold_evidence:
+    - "2 years"
+  sources:
+    - "BC-Dreamstation-Standard-CPAP.pdf"
+
+- id: P05
+  category: single_fact
+  question: "What is the ramp time setting on the DreamStation CPAP?"
+  gold_answer: "0 to 45 min (5-minute increments)"
+  gold_evidence:
+    - "0 to 45 min"
+  sources:
+    - "BC-Dreamstation-Standard-CPAP.pdf"
+
+- id: P06
+  category: single_fact
+  question: "What is the maximum water capacity of the ResMed AirSense 11 humidifier tub?"
+  gold_answer: "380 mL"
+  gold_evidence:
+    - "380 mL"
+  sources:
+    - "ResMed-Airsense-11-Manual.pdf"
+
+- id: P07
+  category: single_fact
+  question: "What is the operating altitude range of the ResMed AirStart 10 CPAP?"
+  gold_answer: "Sea level to 2,591 m"
+  gold_evidence:
+    - "2,591 m"
+  sources:
+    - "airstart-10-cpap_fact-sheet_apac_eng.pdf"
+
+- id: P08
+  category: single_fact
+  question: "What is the typical power consumption of the ResMed AirSense 11?"
+  gold_answer: "9.0 W typical (71.9 W peak) on the 65W AC adaptor"
+  gold_evidence:
+    - "Typical power consumption: 9.0W"
+  sources:
+    - "ResMed-Airsense-11-Manual.pdf"
+
+- id: P09
+  category: single_fact
+  question: "What are the dimensions of the Fisher & Paykel SleepStyle 200?"
+  gold_answer: "275mm x 170mm x 140mm (10.8\" x 6.7\" x 5.5\")"
+  gold_evidence:
+    - "275mm x 170mm x 140mm"
+  sources:
+    - "SleepStyle_200_Operating_Manual.pdf"
+
+- id: P10
+  category: single_fact
+  question: "What is the data storage capacity of the DreamStation CPAP SD card?"
+  gold_answer: "SD card: greater than 1 year; on-board memory: under 6 months"
+  gold_evidence:
+    - "SD card: > 1 year"
+  sources:
+    - "BC-Dreamstation-Standard-CPAP.pdf"
+
+- id: P11
+  category: comparison
+  question: "Which is lighter, the ResMed AirStart 10 or the ResMed AirSense 11?"
+  gold_answer: "The AirStart 10 is lighter at 1106 g versus 1130 g for the AirSense 11 (with humidifier tub)"
+  gold_evidence:
+    - "1106 g"
+    - "1130 g"
+  sources:
+    - "airstart-10-cpap_fact-sheet_apac_eng.pdf"
+    - "ResMed-Airsense-11-Manual.pdf"
+
+- id: P12
+  category: comparison
+  question: "Which is quieter, the Resvent iBreeze or the Loewenstein prisma SMART?"
+  gold_answer: "The prisma SMART is quieter at approx. 26 dB(A), versus 28 dB(A) for the iBreeze"
+  gold_evidence:
+    - "28 dB(A)"
+    - "26 dB(A)"
+  sources:
+    - "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+    - "PrismaSmart-and-Soft-Max-Brochure.pdf"
+
+- id: P13
+  category: comparison
+  question: "Which device tolerates a higher operating altitude, the ResMed AirSense 11 or the ResMed AirStart 10?"
+  gold_answer: "The AirSense 11 goes higher, to 3,010 m, versus 2,591 m for the AirStart 10"
+  gold_evidence:
+    - "3,010 m"
+    - "2,591 m"
+  sources:
+    - "ResMed-Airsense-11-Manual.pdf"
+    - "airstart-10-cpap_fact-sheet_apac_eng.pdf"
+
+- id: P14
+  category: comparison
+  question: "Which has the larger humidifier water capacity, the ResMed AirSense 11 or the Resvent iBreeze?"
+  gold_answer: "The AirSense 11 holds more at 380 mL, versus 290 ml for the iBreeze"
+  gold_evidence:
+    - "380 mL"
+    - "290 ml"
+  sources:
+    - "ResMed-Airsense-11-Manual.pdf"
+    - "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+
+- id: P15
+  category: comparison
+  question: "Which is heavier with its humidifier, the DreamStation CPAP or the BMC RESmart Auto CPAP?"
+  gold_answer: "The RESmart is heavier at 2.4 kg (with InH2 humidifier), versus 1.98 kg for the DreamStation (with humidifier)"
+  gold_evidence:
+    - "1.98kg"
+    - "2.4 kg"
+  sources:
+    - "BC-Dreamstation-Standard-CPAP.pdf"
+    - "BMC_RESmart_AutoCPAP_User_Manual.pdf"
+
+- id: P16
+  category: comparison
+  question: "What are the dimensions of the Fisher & Paykel SleepStyle 200 compared with the Resvent iBreeze?"
+  gold_answer: "SleepStyle 200 is 275mm x 170mm x 140mm; iBreeze is 238*178*128 mm"
+  gold_evidence:
+    - "275mm x 170mm x 140mm"
+    - "238*178*128 mm"
+  sources:
+    - "SleepStyle_200_Operating_Manual.pdf"
+    - "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+
+- id: P17
+  category: comparison
+  question: "Which offers a longer ramp time, the Resvent iBreeze or the DreamStation CPAP?"
+  gold_answer: "The iBreeze offers a longer ramp of 0-60 mins, versus 0 to 45 min for the DreamStation"
+  gold_evidence:
+    - "0-60 mins"
+    - "0 to 45 min"
+  sources:
+    - "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+    - "BC-Dreamstation-Standard-CPAP.pdf"
+
+- id: P18
+  category: comparison
+  question: "Which is quieter, the ResMed AirStart 10 or the ResMed AirSense 11?"
+  gold_answer: "The AirStart 10 is marginally quieter at 26.6 dBA, versus 27 dBA for the AirSense 11"
+  gold_evidence:
+    - "26.6 dBA"
+    - "27 dBA"
+  sources:
+    - "airstart-10-cpap_fact-sheet_apac_eng.pdf"
+    - "ResMed-Airsense-11-Manual.pdf"
+
+- id: P19
+  category: multi_hop
+  question: "On the DreamStation, what does the SmartRamp mode do differently from the standard ramp mode?"
+  gold_answer: "SmartRamp maintains a constant lower pressure until the device detects that you require more pressure (standard ramp increases pressure at a steady rate)"
+  gold_evidence:
+    - "constant lower pressure"
+  sources:
+    - "DreamStation_CPAP_User_Manual.pdf"
+
+- id: P20
+  category: multi_hop
+  question: "Which ResMed device has a therapy algorithm designed specifically for women?"
+  gold_answer: "The AirSense 10 AutoSet for Her"
+  gold_evidence:
+    - "AutoSet for Her"
+  sources:
+    - "Airsense-Brochure.pdf"
+
+- id: P21
+  category: multi_hop
+  question: "What is the purpose of the EZ-Start feature on the DreamStation CPAP Pro?"
+  gold_answer: "EZ-Start makes automatic, personalized adjustments to CPAP pressure to help patients gradually acclimate to their prescribed level of therapy"
+  gold_evidence:
+    - "gradually acclimate"
+  sources:
+    - "DreamStation_CPAP_Pro_DataSheet.pdf"
+
+- id: P22
+  category: multi_hop
+  question: "On the Seattle-PAP bubble CPAP system, what does the 135-degree angle in the submersed tubing accomplish?"
+  gold_answer: "It increases the amplitude of the pressure oscillations, giving effects similar to high frequency oscillatory ventilation"
+  gold_evidence:
+    - "amplitude of oscillations"
+  sources:
+    - "Seattle-PAP-V5-en-in.pdf"
+
+- id: P23
+  category: multi_hop
+  question: "What does the ResMed AutoRamp feature rely on to know when to ramp up to the prescribed pressure?"
+  gold_answer: "Sleep onset detection - it ramps up once it detects the patient has fallen asleep"
+  gold_evidence:
+    - "sleep onset detection"
+  sources:
+    - "Airsense-Brochure.pdf"
+
+- id: P24
+  category: multi_hop
+  question: "On the ResMed AirSense 11, what does the EPR feature do during breathing?"
+  gold_answer: "EPR reduces the pressure during expiration by the set level, but never below 4.0 cm H2O"
+  gold_evidence:
+    - "reduces the pressure during expiration"
+  sources:
+    - "ResMed-Airsense-11-Manual.pdf"
+
+- id: P25
+  category: unanswerable
+  question: "What is the sound pressure level in decibels of the Fisher & Paykel SleepStyle 200?"
+  gold_answer: "UNANSWERABLE"
+  gold_evidence: []
+  sources: []
+
+- id: P26
+  category: unanswerable
+  question: "What is the weight of the Breas Z2 Auto travel CPAP?"
+  gold_answer: "UNANSWERABLE"
+  gold_evidence: []
+  sources: []
+
+- id: P27
+  category: unanswerable
+  question: "What is the retail price of the Resvent iBreeze Auto CPAP?"
+  gold_answer: "UNANSWERABLE"
+  gold_evidence: []
+  sources: []
+
+- id: P28
+  category: unanswerable
+  question: "On what date was the ResMed AirSense 11 released?"
+  gold_answer: "UNANSWERABLE"
+  gold_evidence: []
+  sources: []
