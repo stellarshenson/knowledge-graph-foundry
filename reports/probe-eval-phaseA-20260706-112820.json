@@ -1,0 +1,816 @@
+{
+  "summaries": [
+    {
+      "label": "A0_baseline",
+      "evidence_recall": 0.3958333333333333,
+      "answer_accuracy": 0.7083333333333334,
+      "accuracy_by_category": {
+        "single_fact": 0.8,
+        "comparison": 0.875,
+        "multi_hop": 0.3333333333333333
+      },
+      "correct_refusal": 1.0,
+      "false_refusal": 0.3333333333333333,
+      "avg_context_chars": 3253
+    },
+    {
+      "label": "A1_propositions",
+      "evidence_recall": 0.4375,
+      "answer_accuracy": 0.75,
+      "accuracy_by_category": {
+        "single_fact": 0.9,
+        "comparison": 0.875,
+        "multi_hop": 0.3333333333333333
+      },
+      "correct_refusal": 1.0,
+      "false_refusal": 0.25,
+      "avg_context_chars": 3876
+    },
+    {
+      "label": "A2_densified",
+      "evidence_recall": 0.4375,
+      "answer_accuracy": 0.75,
+      "accuracy_by_category": {
+        "single_fact": 0.9,
+        "comparison": 0.875,
+        "multi_hop": 0.3333333333333333
+      },
+      "correct_refusal": 1.0,
+      "false_refusal": 0.25,
+      "avg_context_chars": 3877
+    }
+  ],
+  "results": {
+    "A0_baseline": {
+      "label": "A0_baseline",
+      "rows": [
+        {
+          "id": "P01",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 1587,
+          "answer": "The ResMed AirSense 11 with its standard humidifier tub weighs 40 oz (1130 grams)."
+        },
+        {
+          "id": "P02",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 1817,
+          "answer": "The operating pressure range of the DreamStation CPAP is 4-20 cmH2O (centimeters of water)."
+        },
+        {
+          "id": "P03",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 1802,
+          "answer": "The sound pressure level of the Resvent iBreeze CPAP is 28 dB(A) with an uncertainty of \u00b12 dB(A)."
+        },
+        {
+          "id": "P04",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 5423,
+          "answer": "The DreamStation CPAP device has a 2-year warranty period. Specifically, the DreamStation CPAP Pro has a 2-year warranty, and the DreamStation Auto CPAP also has a 2-year warranty."
+        },
+        {
+          "id": "P05",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 3019,
+          "answer": "The ramp time setting on the DreamStation CPAP ranges from 0 to 45 minutes, adjustable in 5-minute increments. This is part of the Smart Ramp feature, which allows the device to gradually increase pressure from a lower starting pressure to the prescribed therapy pressure, helping users fall asleep more comfortably."
+        },
+        {
+          "id": "P06",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 1865,
+          "answer": "The maximum water capacity of the ResMed AirSense 11 humidifier tub is 380 mL."
+        },
+        {
+          "id": "P07",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2207,
+          "answer": "The operating altitude range of the ResMed AirStart 10 CPAP is sea level to 2591 meters (0 to 2591m)."
+        },
+        {
+          "id": "P08",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 3771,
+          "answer": "The typical power consumption of the ResMed AirSense 11 is 9.0 W (watts)."
+        },
+        {
+          "id": "P09",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": false,
+          "false_refusal": true,
+          "context_chars": 1933,
+          "answer": "The knowledge graph does not contain information about the dimensions of the Fisher & Paykel SleepStyle 200. While there are several SleepStyle models mentioned (Fisher & Paykel SleepStyle, SleepStyle CPAP, SleepStyle Auto), none of them include dimensional specifications, and the SleepStyle 200 specifically is not present in the provided context."
+        },
+        {
+          "id": "P10",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 1849,
+          "answer": "The DreamStation CPAP SD card has a data storage capacity of more than 1 year."
+        },
+        {
+          "id": "P11",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 3963,
+          "answer": "The knowledge graph does not contain weight information for the ResMed AirStart 10, so I cannot determine which device is lighter. However, the AirSense 11 (both Elite and AutoSet models) has a minimum weight of 66 lb (30 kg), and the AirSense 11 with humidifier tub weighs 40 oz (1130 grams). Note: There appears to be an inconsistency in the weight data for the AirSense 11 models in the graph."
+        },
+        {
+          "id": "P12",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 3713,
+          "answer": "Based on the provided knowledge graph, the Resvent iBreeze is quieter with a sound pressure level of 28 dB(A) (\u00b12 dB(A) uncertainty). There is no sound pressure level information available in the graph for the Loewenstein prisma SMART, so a direct comparison cannot be made."
+        },
+        {
+          "id": "P13",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 3803,
+          "answer": "The knowledge graph does not contain information about the operating altitude tolerance for the ResMed AirSense 11. While there is information showing that the AirStart 10 CPAP operates at altitudes from sea level to 2591m, there is no corresponding operating altitude specification provided for any AirSense 11 model. Therefore, I cannot determine which device tolerates a higher operating altitude based on the available information."
+        },
+        {
+          "id": "P14",
+          "category": "comparison",
+          "evidence_recall": 0.5,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 4342,
+          "answer": "The Resvent iBreeze has the larger humidifier water capacity. The iBreeze humidifier has a water capacity of 290 ml. However, the knowledge graph does not provide specific water capacity information for the ResMed AirSense 11's humidifier (HumidAir 11), so a direct comparison cannot be made with certainty based on the available data."
+        },
+        {
+          "id": "P15",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": false,
+          "false_refusal": true,
+          "context_chars": 3546,
+          "answer": "The knowledge graph does not contain information about the weight of the DreamStation CPAP with its humidifier or the weight of the BMC RESmart Auto CPAP with its humidifier. The graph only shows that the DreamStation CPAP weighs 1.33 kg without the humidifier (including power supply), but no weight information is provided for when the humidifier is attached. Additionally, there is no weight information available for the BMC RESmart Auto CPAP in either configuration (with or without humidifier). Therefore, it is not possible to determine which device is heavier with its humidifier based on the available information."
+        },
+        {
+          "id": "P16",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 2813,
+          "answer": "Based on the provided knowledge graph, I can only provide the dimensions for the Resvent iBreeze, but not for the Fisher & Paykel SleepStyle 200.\n\nThe Resvent iBreeze dimensions are:\n- Length: 238 mm\n- Width: 178 mm\n- Height: 128 mm\n\nUnfortunately, the knowledge graph does not contain specific dimension information for the Fisher & Paykel SleepStyle 200 or SleepStyle 200 Series, so a direct comparison cannot be made with the available data."
+        },
+        {
+          "id": "P17",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 6462,
+          "answer": "The knowledge graph does not contain specific ramp time information for the Resvent iBreeze CPAP System. However, for the DreamStation CPAP devices, the Smart Ramp time range is 0 to 45 minutes with 5-minute increments. Without the ramp time specifications for the Resvent iBreeze, I cannot determine which device offers a longer ramp time."
+        },
+        {
+          "id": "P18",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 5248,
+          "answer": "The knowledge graph does not contain information about the noise levels or quietness of either the ResMed AirStart 10 or the ResMed AirSense 11, so I cannot determine which device is quieter based on the provided context."
+        },
+        {
+          "id": "P19",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 2053,
+          "answer": "On the DreamStation, SmartRamp mode differs from standard ramp mode in how it manages pressure during the ramp period. SmartRamp mode maintains a constant lower pressure until the device detects the need for more pressure (specifically detecting airflow changes), allowing users to fall asleep to lower pressures. In contrast, standard ramp mode increases pressure at a steady rate until it reaches the prescription setting. This makes SmartRamp more responsive to the user's actual needs rather than following a fixed pressure increase schedule."
+        },
+        {
+          "id": "P20",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 6584,
+          "answer": "The ResMed device with a therapy algorithm designed specifically for women is the AirSense 10 AutoSet for Her. This device features the AutoSet for Her algorithm, which is designed to respond to female-specific characteristics of sleep apnea and sensitively detects flow limitation for steady and comfortable pressure changes."
+        },
+        {
+          "id": "P21",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 2566,
+          "answer": "The purpose of the EZ-Start feature on the DreamStation CPAP Pro is to provide automatic, personalized adjustments to CPAP pressure designed to help patients gradually acclimate to their prescribed level of therapy. This feature helps new CPAP users adjust to their treatment by automatically adjusting the pressure over a period of up to 30 days."
+        },
+        {
+          "id": "P22",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 2880,
+          "answer": "The 135-degree angle in the submersed tubing of the Seattle-PAP bubble CPAP system is designed to increase the amplitude of oscillations. This design feature enhances the pressure oscillations that are characteristic of bubble CPAP therapy."
+        },
+        {
+          "id": "P23",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 3186,
+          "answer": "The ResMed AutoRamp feature relies on sleep onset detection to know when to ramp up to the prescribed pressure. According to the knowledge graph, AutoRamp is a feature with sleep onset detection that starts with low pressure and ramps up to prescribed pressure once the patient falls asleep."
+        },
+        {
+          "id": "P24",
+          "category": "multi_hop",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2370,
+          "answer": "The EPR (Expiratory Pressure Relief) feature on the ResMed AirSense 11 makes it easier to breathe out and helps users get used to therapy. It provides expiratory pressure relief during exhalation, reducing the pressure when the user breathes out. The feature can be set to different levels (Level 1: 1.0 cmH2O, Level 2: 2.0 cmH2O, Level 3: 3.0 cmH2O) or turned off completely, while maintaining a minimum pressure of 4.0 cmH2O."
+        },
+        {
+          "id": "P25",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2940,
+          "answer": "The knowledge graph does not contain specific sound pressure level information for the Fisher & Paykel SleepStyle 200. While there is an entity for \"Fisher & Paykel SleepStyle\" (a CPAP device), no sound pressure level specifications in decibels are associated with this device in the provided context."
+        },
+        {
+          "id": "P26",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2032,
+          "answer": "The knowledge graph does not contain information about the weight of the Breas Z2 Auto travel CPAP. While the graph includes information about other travel CPAP devices like the Z1 Auto Travel CPAP Machine (10 ounces) and the AirMini AutoSet (0.66 pounds), there is no specific entry for the Breas Z2 Auto."
+        },
+        {
+          "id": "P27",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 3262,
+          "answer": "The knowledge graph does not contain information about the retail price of the Resvent iBreeze Auto CPAP. While the graph includes detailed specifications and warranty information for the iBreeze CPAP System, no pricing information is provided for this device."
+        },
+        {
+          "id": "P28",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4063,
+          "answer": "The knowledge graph does not contain information about the release date of the ResMed AirSense 11."
+        }
+      ]
+    },
+    "A1_propositions": {
+      "label": "A1_propositions",
+      "rows": [
+        {
+          "id": "P01",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2099,
+          "answer": "The weight of the ResMed AirSense 11 with its standard humidifier tub is 40 oz (1130 grams)."
+        },
+        {
+          "id": "P02",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2440,
+          "answer": "The operating pressure range of the DreamStation CPAP is 4-20 cmH2O."
+        },
+        {
+          "id": "P03",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2389,
+          "answer": "The sound pressure level of the Resvent iBreeze CPAP is 28 dB(A) with an uncertainty of \u00b12 dB(A)."
+        },
+        {
+          "id": "P04",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 5983,
+          "answer": "The warranty period of the DreamStation CPAP device is 2 years. This is confirmed by multiple sources in the knowledge graph: the DreamStation CPAP Pro has a 2-year warranty, the DreamStation Auto CPAP has a 2-year warranty, and there is a general 2 years US warranty for DreamStation CPAP devices."
+        },
+        {
+          "id": "P05",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 3491,
+          "answer": "The ramp time setting on the DreamStation CPAP is 0 to 45 minutes, adjustable in 5-minute increments. The device features a Ramp Function (also called Smart Ramp on some DreamStation models), which allows the pressure to gradually increase from a lower starting pressure to the prescribed therapy pressure over the selected time period."
+        },
+        {
+          "id": "P06",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2345,
+          "answer": "The maximum water capacity of the ResMed AirSense 11 humidifier tub is 380 mL."
+        },
+        {
+          "id": "P07",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2983,
+          "answer": "The operating altitude range of the ResMed AirStart 10 CPAP is sea level to 2591 meters (0-2591m)."
+        },
+        {
+          "id": "P08",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4382,
+          "answer": "The typical power consumption of the ResMed AirSense 11 is 9.0 W (watts). This is the normal operating power consumption of the device, which uses a 65W AC adaptor."
+        },
+        {
+          "id": "P09",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": false,
+          "false_refusal": true,
+          "context_chars": 2446,
+          "answer": "The knowledge graph does not contain information about the dimensions of the Fisher & Paykel SleepStyle 200. While the graph confirms that the SleepStyle 200 Series is manufactured by Fisher & Paykel Healthcare and is documented in an Operating Manual, no specific dimensional measurements (such as height, width, depth, or weight) are provided."
+        },
+        {
+          "id": "P10",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2350,
+          "answer": "The DreamStation CPAP SD card has a data storage capacity of greater than 1 year (> 1 year)."
+        },
+        {
+          "id": "P11",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 4567,
+          "answer": "The knowledge graph does not contain weight information for the ResMed AirStart 10, so I cannot determine which device is lighter. \n\nFor the ResMed AirSense 11, the available weight information shows:\n- AirSense 11 weight: 40 oz (1130 grams) with humidifier tub\n- AirSense 11 Elite and AutoSet models: minimum weight of 66 lb (30 kg), though this appears to be inconsistent with the 40 oz measurement and may refer to a different specification\n\nWithout weight data for the AirStart 10, a comparison cannot be made."
+        },
+        {
+          "id": "P12",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 4158,
+          "answer": "Based on the provided knowledge graph, the Resvent iBreeze has a sound pressure level of 28 dB(A) (with an uncertainty of \u00b12 dB(A)). However, there is no information available in the knowledge graph about the Loewenstein prisma SMART or its noise level. Therefore, I cannot determine which device is quieter as the comparison data for the prisma SMART is not present in the provided context."
+        },
+        {
+          "id": "P13",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4339,
+          "answer": "Based on the provided knowledge graph, the AirStart 10 has a tested operating altitude range from sea level to 2591m. However, there is no operating altitude information provided for the ResMed AirSense 11. Therefore, I cannot determine which device tolerates a higher operating altitude from the available information."
+        },
+        {
+          "id": "P14",
+          "category": "comparison",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4873,
+          "answer": "The ResMed AirSense 11 has the larger humidifier water capacity at 380 mL, compared to the Resvent iBreeze which has a 290 mL water capacity."
+        },
+        {
+          "id": "P15",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": false,
+          "false_refusal": true,
+          "context_chars": 4121,
+          "answer": "The knowledge graph does not provide sufficient information to answer this question. While it states that the DreamStation CPAP weighs 1.33kg without humidifier, there is no specific weight given for the DreamStation CPAP WITH its humidifier. For the BMC RESmart Auto CPAP, the graph mentions \"Device Size with Humidifier\" and \"Device Weight\" as properties but does not provide the actual numerical weight values. Without the actual weights of both devices with their humidifiers, a comparison cannot be made."
+        },
+        {
+          "id": "P16",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 3281,
+          "answer": "Based on the knowledge graph, the iBreeze CPAP System has dimensions of 238mm (length) \u00d7 178mm (width) \u00d7 128mm (height). However, specific dimensions for the Fisher & Paykel SleepStyle 200 are not provided in the knowledge graph, so a complete comparison cannot be made."
+        },
+        {
+          "id": "P17",
+          "category": "comparison",
+          "evidence_recall": 0.5,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 6932,
+          "answer": "Based on the provided knowledge graph, the DreamStation CPAP offers a longer ramp time. The DreamStation CPAP has a ramp time specification of 0 to 45 minutes. However, there is no specific ramp time information provided for the Resvent iBreeze CPAP System in the knowledge graph, so a direct comparison cannot be fully confirmed."
+        },
+        {
+          "id": "P18",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 5823,
+          "answer": "The knowledge graph does not contain information about the noise levels or quietness of either the ResMed AirStart 10 or the ResMed AirSense 11. While both devices are mentioned in the graph, there are no specifications about their sound output, decibel levels, or comparative noise characteristics that would allow for a determination of which device is quieter."
+        },
+        {
+          "id": "P19",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 2467,
+          "answer": "SmartRamp mode differs from standard ramp mode in how it manages pressure during the ramp period. SmartRamp maintains a constant lower pressure until the device detects a need for more pressure (specifically detecting airflow needs), and allows users to fall asleep to lower pressures than standard ramp mode. In contrast, standard ramp mode increases pressure at a steady rate until it reaches the prescription setting. This makes SmartRamp more responsive to the user's actual needs rather than following a fixed pressure increase schedule."
+        },
+        {
+          "id": "P20",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 7374,
+          "answer": "The ResMed device that has a therapy algorithm designed specifically for women is the AirSense 10 AutoSet for Her. This device features the AutoSet for Her algorithm, which is designed to respond to female-specific characteristics of sleep apnea. The algorithm sensitively detects flow limitation and provides steady and comfortable pressure changes, with a tailored response to each flow-limited breath. There is also mention of the AirSense 11 AutoSet for Her as being intended for female patients."
+        },
+        {
+          "id": "P21",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 2956,
+          "answer": "The EZ-Start feature on the DreamStation CPAP Pro provides automatic, personalized adjustments to CPAP pressure designed to help patients gradually acclimate to their prescribed level of therapy. It adjusts pressure over a 30-day period to help new users get comfortable with their CPAP treatment."
+        },
+        {
+          "id": "P22",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 3312,
+          "answer": "The 135-degree angle in the submersed tubing of the Seattle-PAP bubble CPAP system is designed to increase the amplitude of oscillations. This patented design creates continuous positive airway pressure and pressure oscillations, which help reduce the work of breathing for patients."
+        },
+        {
+          "id": "P23",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 4605,
+          "answer": "The ResMed AutoRamp feature relies on sleep onset detection to know when to ramp up to the prescribed pressure. AutoRamp starts with low pressure and ramps up to the prescribed pressure after detecting that the patient has fallen asleep."
+        },
+        {
+          "id": "P24",
+          "category": "multi_hop",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2763,
+          "answer": "On the ResMed AirSense 11, the EPR (Expiratory Pressure Relief) feature makes it easier to breathe out and helps users get used to therapy. EPR reduces the pressure during exhalation, providing relief when breathing out. The feature can be set to different levels (Level 1: 1.0 cmH2O, Level 2: 2.0 cmH2O, Level 3: 3.0 cmH2O) or turned off completely. It maintains a minimum pressure of 4.0 cmH2O."
+        },
+        {
+          "id": "P25",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 3674,
+          "answer": "The knowledge graph does not contain information about the sound pressure level in decibels of the Fisher & Paykel SleepStyle 200 specifically. While there is information about the Fisher & Paykel SleepStyle device and its features (such as SleepStyle expiratory relief, SensAwake, and ThermoSmart), no sound pressure level specification is provided for this model or the SleepStyle 200 variant."
+        },
+        {
+          "id": "P26",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2633,
+          "answer": "The knowledge graph does not contain information about the weight of the Breas Z2 Auto travel CPAP. The graph includes information about other travel CPAP devices such as the Z1 Auto Travel CPAP Machine (10 ounces) and the AirMini AutoSet (0.66 pounds), but the Breas Z2 Auto is not mentioned."
+        },
+        {
+          "id": "P27",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 5253,
+          "answer": "The knowledge graph does not contain information about the retail price of the Resvent iBreeze Auto CPAP. While the graph includes information about the iBreeze CPAP System manufactured by Resvent, including its specifications and warranty details, no pricing information is provided for this device."
+        },
+        {
+          "id": "P28",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4490,
+          "answer": "The knowledge graph does not contain information about the release date of the ResMed AirSense 11."
+        }
+      ]
+    },
+    "A2_densified": {
+      "label": "A2_densified",
+      "rows": [
+        {
+          "id": "P01",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2099,
+          "answer": "The weight of the ResMed AirSense 11 with its standard humidifier tub is 40 oz (1130 grams)."
+        },
+        {
+          "id": "P02",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2440,
+          "answer": "The operating pressure range of the DreamStation CPAP is 4-20 cmH2O."
+        },
+        {
+          "id": "P03",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2389,
+          "answer": "The sound pressure level of the Resvent iBreeze CPAP is 28 dB(A) with an uncertainty of \u00b12 dB(A)."
+        },
+        {
+          "id": "P04",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 5983,
+          "answer": "The warranty period of the DreamStation CPAP device is 2 years. This is confirmed by multiple sources in the knowledge graph: the DreamStation CPAP Pro has a 2-year warranty, the DreamStation Auto CPAP has a 2-year warranty, and there is a general 2 years US warranty for DreamStation CPAP devices."
+        },
+        {
+          "id": "P05",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 3491,
+          "answer": "The ramp time setting on the DreamStation CPAP is 0 to 45 minutes in 5-minute increments."
+        },
+        {
+          "id": "P06",
+          "category": "single_fact",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2345,
+          "answer": "The maximum water capacity of the ResMed AirSense 11 humidifier tub is 380 mL."
+        },
+        {
+          "id": "P07",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2983,
+          "answer": "The operating altitude range of the ResMed AirStart 10 CPAP is sea level to 2591 meters (0-2591m)."
+        },
+        {
+          "id": "P08",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4382,
+          "answer": "The typical power consumption of the ResMed AirSense 11 is 9.0 W (watts). This is the normal operating power consumption, while the device uses a 65W AC adaptor that can handle peak power demands."
+        },
+        {
+          "id": "P09",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": false,
+          "false_refusal": true,
+          "context_chars": 2446,
+          "answer": "The knowledge graph does not contain information about the dimensions of the Fisher & Paykel SleepStyle 200. While the graph confirms that the SleepStyle 200 Series is manufactured by Fisher & Paykel Healthcare and is documented in an Operating Manual, no specific dimensional measurements (such as height, width, depth, or weight) are provided."
+        },
+        {
+          "id": "P10",
+          "category": "single_fact",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2350,
+          "answer": "The DreamStation CPAP SD card has a data storage capacity of greater than 1 year (> 1 year)."
+        },
+        {
+          "id": "P11",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 4567,
+          "answer": "The knowledge graph does not contain weight information for the ResMed AirStart 10, so I cannot determine which device is lighter. \n\nFor the ResMed AirSense 11, the available weight information shows:\n- AirSense 11 weight: 40 oz (1130 grams) with humidifier tub\n- AirSense 11 Elite and AutoSet models: minimum weight of 66 lb (30 kg), though this appears to be inconsistent with the 40 oz measurement and may refer to a different specification\n\nWithout weight data for the AirStart 10, a comparison cannot be made."
+        },
+        {
+          "id": "P12",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 4158,
+          "answer": "Based on the provided knowledge graph, the Resvent iBreeze has a sound pressure level of 28 dB(A) (with an uncertainty of \u00b12 dB(A)). However, there is no information available in the graph about the Loewenstein prisma SMART or its noise level. Therefore, I cannot determine which device is quieter as the comparison data for the prisma SMART is not present in the provided context."
+        },
+        {
+          "id": "P13",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4339,
+          "answer": "Based on the provided knowledge graph, the AirStart 10 has a tested operating altitude range from sea level to 2591m. However, there is no operating altitude information provided for the ResMed AirSense 11. Therefore, I cannot determine which device tolerates a higher operating altitude from the available information."
+        },
+        {
+          "id": "P14",
+          "category": "comparison",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4873,
+          "answer": "The ResMed AirSense 11 has the larger humidifier water capacity at 380 mL, compared to the Resvent iBreeze which has a 290 mL water capacity."
+        },
+        {
+          "id": "P15",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": false,
+          "false_refusal": true,
+          "context_chars": 4121,
+          "answer": "The knowledge graph does not provide sufficient information to answer this question. While it states that the DreamStation CPAP weighs 1.33kg without humidifier, there is no specific weight given for the DreamStation CPAP WITH its humidifier. For the BMC RESmart Auto CPAP, the graph mentions \"Device Size with Humidifier\" and \"Device Weight\" but does not provide the actual numerical weight values. Without the actual weights of both devices with their humidifiers, a comparison cannot be made."
+        },
+        {
+          "id": "P16",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 3281,
+          "answer": "Based on the knowledge graph, the iBreeze CPAP System has dimensions of 238mm (length) \u00d7 178mm (width) \u00d7 128mm (height). However, specific dimensions for the Fisher & Paykel SleepStyle 200 are not provided in the knowledge graph, so a complete comparison cannot be made."
+        },
+        {
+          "id": "P17",
+          "category": "comparison",
+          "evidence_recall": 0.5,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 6932,
+          "answer": "Based on the provided knowledge graph, the DreamStation CPAP offers a longer ramp time. The DreamStation CPAP has a ramp time specification of 0 to 45 minutes. However, there is no specific ramp time information provided for the Resvent iBreeze CPAP System in the knowledge graph, so a direct comparison cannot be fully confirmed."
+        },
+        {
+          "id": "P18",
+          "category": "comparison",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": true,
+          "context_chars": 5874,
+          "answer": "The knowledge graph does not contain information about the noise levels or quietness of either the ResMed AirStart 10 or the ResMed AirSense 11. While both devices are mentioned in the graph, there are no properties or facts related to their sound output, decibel levels, or comparative quietness."
+        },
+        {
+          "id": "P19",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 2467,
+          "answer": "SmartRamp mode differs from standard ramp mode in how it manages pressure during the ramp period. SmartRamp maintains a constant lower pressure until the device detects a need for more pressure (specifically detecting airflow needs), and allows users to fall asleep to lower pressures than standard ramp mode. In contrast, standard ramp mode increases pressure at a steady rate until it reaches the prescription setting. This makes SmartRamp more responsive to the user's actual needs rather than following a fixed pressure increase schedule."
+        },
+        {
+          "id": "P20",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 7374,
+          "answer": "The ResMed device that has a therapy algorithm designed specifically for women is the AirSense 10 AutoSet for Her. This device features the AutoSet for Her algorithm, which is designed to respond to female-specific characteristics of sleep apnea. The algorithm sensitively detects flow limitation and provides steady and comfortable pressure changes, with a tailored response to each flow-limited breath. There is also mention of the AirSense 11 AutoSet for Her being intended for female patients."
+        },
+        {
+          "id": "P21",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 2956,
+          "answer": "The EZ-Start feature on the DreamStation CPAP Pro provides automatic, personalized adjustments to CPAP pressure designed to help patients gradually acclimate to their prescribed level of therapy. It adjusts pressure over a 30-day period to help new users get comfortable with their CPAP treatment."
+        },
+        {
+          "id": "P22",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 3312,
+          "answer": "The 135-degree angle in the submersed tubing of the Seattle-PAP bubble CPAP system is designed to increase the amplitude of oscillations. This patented design creates continuous positive airway pressure and pressure oscillations, which help reduce the work of breathing for patients."
+        },
+        {
+          "id": "P23",
+          "category": "multi_hop",
+          "evidence_recall": 1.0,
+          "correct": false,
+          "false_refusal": false,
+          "context_chars": 4605,
+          "answer": "The ResMed AutoRamp feature relies on sleep onset detection to know when to ramp up to the prescribed pressure. AutoRamp starts with low pressure and ramps up to the prescribed pressure after detecting that the patient has fallen asleep."
+        },
+        {
+          "id": "P24",
+          "category": "multi_hop",
+          "evidence_recall": 0.0,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2763,
+          "answer": "On the ResMed AirSense 11, the EPR (Expiratory Pressure Relief) feature makes it easier to breathe out and helps users get used to therapy. EPR reduces the pressure during exhalation, providing relief when breathing out. The feature can be set at different levels (Level 1: 1.0 cmH2O, Level 2: 2.0 cmH2O, Level 3: 3.0 cmH2O) or turned off completely. It maintains a minimum pressure of 4.0 cmH2O during operation."
+        },
+        {
+          "id": "P25",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 3674,
+          "answer": "The knowledge graph does not contain information about the sound pressure level in decibels of the Fisher & Paykel SleepStyle 200 specifically. While there is information about the Fisher & Paykel SleepStyle device and its features (such as SleepStyle expiratory relief, SensAwake, and ThermoSmart), no sound pressure level specification is provided for this model or the SleepStyle 200 variant."
+        },
+        {
+          "id": "P26",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 2633,
+          "answer": "The knowledge graph does not contain information about the weight of the Breas Z2 Auto travel CPAP. The graph includes information about other travel CPAP devices such as the Z1 Auto Travel CPAP Machine (10 ounces) and the AirMini AutoSet (0.66 pounds), but the Breas Z2 Auto is not mentioned."
+        },
+        {
+          "id": "P27",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 5253,
+          "answer": "The knowledge graph does not contain information about the retail price of the Resvent iBreeze Auto CPAP. While the graph includes information about the iBreeze CPAP System manufactured by Resvent, including its specifications and warranty details, no pricing information is provided for this device."
+        },
+        {
+          "id": "P28",
+          "category": "unanswerable",
+          "evidence_recall": null,
+          "correct": true,
+          "false_refusal": false,
+          "context_chars": 4490,
+          "answer": "The knowledge graph does not contain information about the release date of the ResMed AirSense 11."
+        }
+      ]
+    }
+  }
+}

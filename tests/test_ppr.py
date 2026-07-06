@@ -71,3 +71,36 @@ class TestPprIntegration:
         ids = {r["id"] for r in ranked}
         # C and D are 2-3 hops from the A seed; PPR should reach beyond 1 hop
         assert c in ids or d in ids
+
+
+class TestDecomposeComparison:
+    """R03-H15: structural comparison decomposition, no LLM."""
+
+    def test_compare_and_form(self):
+        from knowledge_graph_foundry.graph.graphrag import decompose_comparison
+
+        subs = decompose_comparison(
+            "Compare the AirSense 11 and the iBreeze Auto CPAP: pressure ranges, ramp features"
+        )
+        assert subs == [
+            "AirSense 11 pressure ranges, ramp features",
+            "iBreeze Auto CPAP pressure ranges, ramp features",
+        ]
+
+    def test_vs_form(self):
+        from knowledge_graph_foundry.graph.graphrag import decompose_comparison
+
+        subs = decompose_comparison("AirSense 11 vs DreamStation: pressure range?")
+        assert subs == ["AirSense 11 pressure range", "DreamStation pressure range"]
+
+    def test_which_is_form(self):
+        from knowledge_graph_foundry.graph.graphrag import decompose_comparison
+
+        subs = decompose_comparison("Which is lighter, the AirSense 11 or the DreamStation?")
+        assert subs == ["AirSense 11 lighter", "DreamStation lighter"]
+
+    def test_non_comparison_returns_none(self):
+        from knowledge_graph_foundry.graph.graphrag import decompose_comparison
+
+        assert decompose_comparison("What is the weight of the AirSense 11?") is None
+        assert decompose_comparison("What warranty does ResMed provide?") is None

@@ -649,13 +649,54 @@ class Foundry:
                     "path": "global",
                 }
 
-        context_lines, supporting = self._retrieve_local(question)
+        # R03-H15: comparisons decompose into per-entity retrievals, unioned
+        from knowledge_graph_foundry.graph.graphrag import decompose_comparison
+
+        sub_questions = (
+            decompose_comparison(question)
+            if self.settings.graphrag.decompose_comparisons
+            else None
+        )
+        if sub_questions:
+            context_lines, supporting = [], []
+            coverage = {"top_score": 0.0}
+            for sub in sub_questions:
+                lines, names, cov = self._retrieve_local(sub)
+                for line in lines:
+                    if line not in context_lines:
+                        context_lines.append(line)
+                for name in names:
+                    if name not in supporting:
+                        supporting.append(name)
+                coverage["top_score"] = max(coverage["top_score"], cov["top_score"])
+            path = "ppr+decomposed"
+        else:
+            context_lines, supporting, coverage = self._retrieve_local(question)
+            path = "ppr" if self.settings.graphrag.ppr_enabled else "vector"
+
+        # R03-H17: structural abstention - do not generate over thin coverage
+        if (
+            self.settings.graphrag.abstention_enabled
+            and coverage["top_score"] < self.settings.graphrag.abstention_min_score
+        ):
+            emit("query.abstained", question=question, **coverage)
+            return {
+                "answer": (
+                    "The graph does not contain enough information to answer this "
+                    f"question (best retrieval score {coverage['top_score']:.2f})."
+                ),
+                "supporting_entities": [],
+                "path": "abstained",
+            }
+
         result = self.engine.complete(
             [
                 {
                     "role": "system",
                     "content": "Answer strictly from the provided knowledge graph context. "
-                    "Name the entities supporting the answer. Say so when the graph lacks the answer.",
+                    "After each factual claim, cite the supporting entity in parentheses. "
+                    "Name the entities supporting the answer. Say so when the graph lacks "
+                    "the answer.",
                 },
                 {
                     "role": "user",
@@ -668,12 +709,14 @@ class Foundry:
         return {
             "answer": result.answer,
             "supporting_entities": result.supporting_entities or supporting,
-            "path": "ppr" if self.settings.graphrag.ppr_enabled else "vector",
+            "path": path,
         }
 
-    def _retrieve_local(self, question: str) -> tuple[list[str], list[str]]:
+    def _retrieve_local(self, question: str) -> tuple[list[str], list[str], dict]:
         """Local retrieval: vector top-k seeds, expanded by PPR when enabled,
-        each node rendered with its properties and currently-valid relations."""
+        each node rendered with its properties and currently-valid relations.
+        Returns (context_lines, supporting_names, coverage) - coverage carries
+        the structural signals the abstention gate reads (R03-H17)."""
         from knowledge_graph_foundry.extraction import generate_embeddings
         from knowledge_graph_foundry.graph.graphrag import ppr_query, vector_query
 
@@ -688,6 +731,7 @@ class Foundry:
 
         # R02-H11: proposition hits are primary evidence AND extra PPR seeds
         fact_lines: list[str] = []
+        hits: list[dict] = []
         seed_ids = [s["id"] for s in seeds]
         if self.settings.graphrag.propositions_enabled:
             from knowledge_graph_foundry.graph.propositions import proposition_query
@@ -703,10 +747,11 @@ class Foundry:
                 logger.debug(f"proposition retrieval unavailable: {exc}")
                 hits = []
             fact_lines = [h["text"] for h in hits]
-            for h in hits:
-                for eid in h["entity_ids"]:
-                    if eid not in seed_ids:
-                        seed_ids.append(eid)
+            if self.settings.graphrag.proposition_seeding:  # R03-H14
+                for h in hits:
+                    for eid in h["entity_ids"]:
+                        if eid not in seed_ids:
+                            seed_ids.append(eid)
 
         nodes = seeds
         if self.settings.graphrag.ppr_enabled:
@@ -725,9 +770,16 @@ class Foundry:
                         seen.add(n["id"])
                         nodes.append(n)
 
-        context_lines: list[str] = []
-        if fact_lines:
-            context_lines.append("## Facts\n" + "\n".join(f"- {t}" for t in fact_lines))
+        # R03-H17 coverage signals: best vector/proposition hit score
+        coverage = {
+            "top_score": max(
+                [s.get("score", 0.0) for s in seeds]
+                + [h.get("score", 0.0) for h in hits]
+                or [0.0]
+            )
+        }
+
+        entity_blocks: list[str] = []
         supporting: list[str] = []
         with self.driver.session() as session:
             for node in nodes:
@@ -745,13 +797,23 @@ class Foundry:
                     k.removeprefix("prop_"): v for k, v in props.items() if k.startswith("prop_")
                 }
                 supporting.append(node["name"])
-                context_lines.append(
+                entity_blocks.append(
                     f"## {node['name']} ({', '.join(node.get('types', []))})\n"
                     f"{node.get('description', '')}\n"
                     f"Properties: {json.dumps(spec, default=str)}\n"
                     "Relations: " + "; ".join(f"{r['rel']} -> {r['name']}" for r in rows)
                 )
-        return context_lines, supporting
+
+        # R03-H16: lost-in-the-middle mitigation - blocks arrive relevance-
+        # ordered; interleave so the strongest sit at the head AND the tail
+        if self.settings.graphrag.context_head_tail and len(entity_blocks) > 3:
+            entity_blocks = entity_blocks[0::2] + entity_blocks[1::2][::-1]
+
+        context_lines: list[str] = []
+        if fact_lines:
+            context_lines.append("## Facts\n" + "\n".join(f"- {t}" for t in fact_lines))
+        context_lines.extend(entity_blocks)
+        return context_lines, supporting, coverage
 
     def current_relationships(self, entity_id: str) -> list[dict]:
         """Currently-valid outgoing edges of an entity (R1 time-aware read)."""

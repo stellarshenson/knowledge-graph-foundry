@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import math
-from typing import Any
+import re
+from typing import Any, Optional
 
 from loguru import logger
 from neo4j import Driver
@@ -199,6 +200,46 @@ def global_summaries(driver: Driver, limit: int = 20) -> list[dict[str, Any]]:
             "MATCH (c:KGFCommunity) RETURN c.title AS title, c.summary AS summary LIMIT $limit",
             limit=limit,
         ).data()
+
+
+_COMPARISON_PATTERNS = (
+    # "compare (the) X and/with/to/vs (the) Y[: aspects]"
+    re.compile(
+        r"compare\s+(?:the\s+)?(.+?)\s+(?:and|with|to|vs\.?|versus)\s+(?:the\s+)?(.+?)"
+        r"(?:\s*[:,]\s*(.+))?[.?]?$",
+        re.IGNORECASE,
+    ),
+    # "X vs Y[: aspects]" / "X versus Y ..."
+    re.compile(
+        r"^(?:the\s+)?(.+?)\s+(?:vs\.?|versus)\s+(?:the\s+)?(.+?)(?:\s*[:,]\s*(.+))?[.?]?$",
+        re.IGNORECASE,
+    ),
+    # "which (one) is <aspect>, (the) X or (the) Y"
+    re.compile(
+        r"which\s+(?:one\s+|device\s+|machine\s+)?(?:is|has)\s+(?:a\s+|the\s+)?(.+?)[,:]\s*"
+        r"(?:the\s+)?(.+?)\s+or\s+(?:the\s+)?(.+?)\??$",
+        re.IGNORECASE,
+    ),
+)
+
+
+def decompose_comparison(question: str) -> Optional[list[str]]:
+    """R03-H15: structurally split a comparison question into per-entity
+    sub-queries ("A vs B on X" -> "A X", "B X"). Deterministic - no LLM, no
+    error propagation. Returns None when the question is not a comparison."""
+    for i, pattern in enumerate(_COMPARISON_PATTERNS):
+        m = pattern.search(question.strip())
+        if not m:
+            continue
+        if i == 2:  # "which is <aspect>, X or Y"
+            aspect, x, y = m.group(1), m.group(2), m.group(3)
+        else:
+            x, y, aspect = m.group(1), m.group(2), m.group(3) or ""
+        x, y, aspect = x.strip(" ?.,"), y.strip(" ?.,"), (aspect or "").strip(" ?.,")
+        if not x or not y or len(x) > 80 or len(y) > 80:
+            return None
+        return [f"{x} {aspect}".strip(), f"{y} {aspect}".strip()]
+    return None
 
 
 def is_global_query(question: str) -> bool:
