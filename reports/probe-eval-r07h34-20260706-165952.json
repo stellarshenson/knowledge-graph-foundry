@@ -1,0 +1,441 @@
+{
+  "census": {
+    "vec": 21,
+    "alias": 0,
+    "prop_text": 2,
+    "prop_node": 8,
+    "ppr": 0,
+    "missing": 2
+  },
+  "direct_seed_share": 0.6774193548387096,
+  "recall_pure_vector": 0.6666666666666666,
+  "recall_full": 0.9375,
+  "ablation_drop": 0.2888888888888889,
+  "rescued_probes": [
+    "P01",
+    "P03",
+    "P19",
+    "P22"
+  ],
+  "per_probe": {
+    "P01": {
+      "recall_vec": 0.0,
+      "recall_full": 1.0
+    },
+    "P02": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P03": {
+      "recall_vec": 0.0,
+      "recall_full": 1.0
+    },
+    "P04": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P05": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P06": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P07": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P08": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P09": {
+      "recall_vec": 0.0,
+      "recall_full": 0.0
+    },
+    "P10": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P11": {
+      "recall_vec": 0.5,
+      "recall_full": 1.0
+    },
+    "P12": {
+      "recall_vec": 0.5,
+      "recall_full": 1.0
+    },
+    "P13": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P14": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P15": {
+      "recall_vec": 0.5,
+      "recall_full": 1.0
+    },
+    "P16": {
+      "recall_vec": 0.5,
+      "recall_full": 0.5
+    },
+    "P17": {
+      "recall_vec": 0.5,
+      "recall_full": 1.0
+    },
+    "P18": {
+      "recall_vec": 0.5,
+      "recall_full": 1.0
+    },
+    "P19": {
+      "recall_vec": 0.0,
+      "recall_full": 1.0
+    },
+    "P20": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P21": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P22": {
+      "recall_vec": 0.0,
+      "recall_full": 1.0
+    },
+    "P23": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    },
+    "P24": {
+      "recall_vec": 1.0,
+      "recall_full": 1.0
+    }
+  },
+  "rows": [
+    {
+      "probe": "P01",
+      "gold": "1130 g",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P01",
+      "gold": "40 oz",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P02",
+      "gold": "4 to 20 cm H2O",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P03",
+      "gold": "28 dB(A)",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P04",
+      "gold": "2 years",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P05",
+      "gold": "0 to 45 min",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P06",
+      "gold": "380 mL",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P07",
+      "gold": "2,591 m",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P08",
+      "gold": "Typical power consumption: 9.0W",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P09",
+      "gold": "275mm x 170mm x 140mm",
+      "channel": "missing",
+      "in_full_context": false
+    },
+    {
+      "probe": "P10",
+      "gold": "SD card: > 1 year",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P11",
+      "gold": "1106 g",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P11",
+      "gold": "1130 g",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P12",
+      "gold": "28 dB(A)",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P12",
+      "gold": "26 dB(A)",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P13",
+      "gold": "3,010 m",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P13",
+      "gold": "2,591 m",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P14",
+      "gold": "380 mL",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P14",
+      "gold": "290 ml",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P15",
+      "gold": "1.98kg",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P15",
+      "gold": "2.4 kg",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P16",
+      "gold": "275mm x 170mm x 140mm",
+      "channel": "missing",
+      "in_full_context": false
+    },
+    {
+      "probe": "P16",
+      "gold": "238*178*128 mm",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P17",
+      "gold": "0-60 mins",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P17",
+      "gold": "0 to 45 min",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P18",
+      "gold": "26.6 dBA",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P18",
+      "gold": "27 dBA",
+      "channel": "prop_node",
+      "in_full_context": true
+    },
+    {
+      "probe": "P19",
+      "gold": "constant lower pressure",
+      "channel": "prop_text",
+      "in_full_context": true
+    },
+    {
+      "probe": "P20",
+      "gold": "AutoSet for Her",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P21",
+      "gold": "gradually acclimate",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P22",
+      "gold": "amplitude of oscillations",
+      "channel": "prop_text",
+      "in_full_context": true
+    },
+    {
+      "probe": "P23",
+      "gold": "sleep onset detection",
+      "channel": "vec",
+      "in_full_context": true
+    },
+    {
+      "probe": "P24",
+      "gold": "reduces the pressure during expiration",
+      "channel": "vec",
+      "in_full_context": true
+    }
+  ],
+  "verdict": "CONFIRMED",
+  "channel_sizes": {
+    "P01": {
+      "n_seeds": 8,
+      "n_prop_seeds": 15,
+      "n_ppr_only": 1
+    },
+    "P02": {
+      "n_seeds": 8,
+      "n_prop_seeds": 12,
+      "n_ppr_only": 1
+    },
+    "P03": {
+      "n_seeds": 8,
+      "n_prop_seeds": 11,
+      "n_ppr_only": 1
+    },
+    "P04": {
+      "n_seeds": 8,
+      "n_prop_seeds": 10,
+      "n_ppr_only": 0
+    },
+    "P05": {
+      "n_seeds": 8,
+      "n_prop_seeds": 8,
+      "n_ppr_only": 1
+    },
+    "P06": {
+      "n_seeds": 8,
+      "n_prop_seeds": 11,
+      "n_ppr_only": 1
+    },
+    "P07": {
+      "n_seeds": 8,
+      "n_prop_seeds": 8,
+      "n_ppr_only": 1
+    },
+    "P08": {
+      "n_seeds": 8,
+      "n_prop_seeds": 8,
+      "n_ppr_only": 3
+    },
+    "P09": {
+      "n_seeds": 8,
+      "n_prop_seeds": 6,
+      "n_ppr_only": 2
+    },
+    "P10": {
+      "n_seeds": 8,
+      "n_prop_seeds": 8,
+      "n_ppr_only": 3
+    },
+    "P11": {
+      "n_seeds": 8,
+      "n_prop_seeds": 12,
+      "n_ppr_only": 0
+    },
+    "P12": {
+      "n_seeds": 8,
+      "n_prop_seeds": 15,
+      "n_ppr_only": 0
+    },
+    "P13": {
+      "n_seeds": 8,
+      "n_prop_seeds": 7,
+      "n_ppr_only": 2
+    },
+    "P14": {
+      "n_seeds": 8,
+      "n_prop_seeds": 12,
+      "n_ppr_only": 1
+    },
+    "P15": {
+      "n_seeds": 8,
+      "n_prop_seeds": 12,
+      "n_ppr_only": 0
+    },
+    "P16": {
+      "n_seeds": 8,
+      "n_prop_seeds": 12,
+      "n_ppr_only": 0
+    },
+    "P17": {
+      "n_seeds": 8,
+      "n_prop_seeds": 15,
+      "n_ppr_only": 0
+    },
+    "P18": {
+      "n_seeds": 8,
+      "n_prop_seeds": 8,
+      "n_ppr_only": 1
+    },
+    "P19": {
+      "n_seeds": 8,
+      "n_prop_seeds": 6,
+      "n_ppr_only": 2
+    },
+    "P20": {
+      "n_seeds": 8,
+      "n_prop_seeds": 12,
+      "n_ppr_only": 1
+    },
+    "P21": {
+      "n_seeds": 8,
+      "n_prop_seeds": 10,
+      "n_ppr_only": 0
+    },
+    "P22": {
+      "n_seeds": 8,
+      "n_prop_seeds": 4,
+      "n_ppr_only": 3
+    },
+    "P23": {
+      "n_seeds": 8,
+      "n_prop_seeds": 9,
+      "n_ppr_only": 3
+    },
+    "P24": {
+      "n_seeds": 8,
+      "n_prop_seeds": 7,
+      "n_ppr_only": 2
+    }
+  }
+}

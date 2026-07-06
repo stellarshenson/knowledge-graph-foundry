@@ -1,0 +1,295 @@
+{
+  "mean_containment": 0.9944444444444445,
+  "ppr_exclusive_probes": [
+    "P10"
+  ],
+  "onehop_exclusive_probes": [
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P07",
+    "P09",
+    "P10",
+    "P11",
+    "P12",
+    "P13",
+    "P14",
+    "P15",
+    "P16",
+    "P17",
+    "P18",
+    "P19",
+    "P20",
+    "P23",
+    "P24"
+  ],
+  "per_probe": {
+    "P01": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 180,
+      "n_onehop_beyond": 167,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "1130 g",
+        "40 oz"
+      ]
+    },
+    "P02": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 170,
+      "n_onehop_beyond": 162,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "4 to 20 cm H2O"
+      ]
+    },
+    "P03": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 255,
+      "n_onehop_beyond": 247,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "28 dB(A)"
+      ]
+    },
+    "P04": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 319,
+      "n_onehop_beyond": 308,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "2 years"
+      ]
+    },
+    "P05": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 314,
+      "n_onehop_beyond": 301,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "0 to 45 min"
+      ]
+    },
+    "P06": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 161,
+      "n_onehop_beyond": 153,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": []
+    },
+    "P07": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 207,
+      "n_onehop_beyond": 198,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "2,591 m"
+      ]
+    },
+    "P08": {
+      "containment": 0.9333333333333333,
+      "n_ppr": 15,
+      "n_ppr_beyond": 1,
+      "n_onehop": 209,
+      "n_onehop_beyond": 198,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": []
+    },
+    "P09": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 82,
+      "n_onehop_beyond": 69,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "275mm x 170mm x 140mm"
+      ]
+    },
+    "P10": {
+      "containment": 0.9333333333333333,
+      "n_ppr": 15,
+      "n_ppr_beyond": 1,
+      "n_onehop": 176,
+      "n_onehop_beyond": 168,
+      "gold_in_ppr_beyond": [
+        "SD card: > 1 year"
+      ],
+      "gold_in_onehop_beyond": [
+        "SD card: > 1 year"
+      ]
+    },
+    "P11": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 221,
+      "n_onehop_beyond": 206,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "1130 g"
+      ]
+    },
+    "P12": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 409,
+      "n_onehop_beyond": 393,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "28 dB(A)",
+        "26 dB(A)"
+      ]
+    },
+    "P13": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 211,
+      "n_onehop_beyond": 197,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "3,010 m",
+        "2,591 m"
+      ]
+    },
+    "P14": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 399,
+      "n_onehop_beyond": 384,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "380 mL",
+        "290 ml"
+      ]
+    },
+    "P15": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 223,
+      "n_onehop_beyond": 209,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "1.98kg",
+        "2.4 kg"
+      ]
+    },
+    "P16": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 292,
+      "n_onehop_beyond": 277,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "275mm x 170mm x 140mm"
+      ]
+    },
+    "P17": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 409,
+      "n_onehop_beyond": 394,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "0-60 mins",
+        "0 to 45 min"
+      ]
+    },
+    "P18": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 222,
+      "n_onehop_beyond": 208,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "27 dBA"
+      ]
+    },
+    "P19": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 79,
+      "n_onehop_beyond": 67,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "constant lower pressure"
+      ]
+    },
+    "P20": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 209,
+      "n_onehop_beyond": 194,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "AutoSet for Her"
+      ]
+    },
+    "P21": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 333,
+      "n_onehop_beyond": 320,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": []
+    },
+    "P22": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 37,
+      "n_onehop_beyond": 25,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": []
+    },
+    "P23": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 74,
+      "n_onehop_beyond": 66,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "sleep onset detection"
+      ]
+    },
+    "P24": {
+      "containment": 1.0,
+      "n_ppr": 15,
+      "n_ppr_beyond": 0,
+      "n_onehop": 163,
+      "n_onehop_beyond": 155,
+      "gold_in_ppr_beyond": [],
+      "gold_in_onehop_beyond": [
+        "reduces the pressure during expiration"
+      ]
+    }
+  },
+  "verdict": "CONFIRMED"
+}

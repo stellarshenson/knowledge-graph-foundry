@@ -487,3 +487,189 @@ Every round through R05 assumed KGF's architecture is right and tuned inside it.
 - **Experiment** - <br>data: wave 1b live run (cured at doc 7, 481 documents total), event log drift records + end-of-wave forward-coverage replay<br>method: monitor drift.decision events; at wave end, replay the realized stream to compute post-cure new-type mass and the forward coverage of the doc-7 cured set; if refuted, re-run the H32 replay harness with a windowed-mean remap criterion before touching production code
 - **Result** - pending
 - **Verdict** - pending
+
+## R07 - contrarian slate 2: the entry point, the graph's right to exist, and the reader (pre-registered 2026-07-06)
+
+Sixteen candidate hypotheses attacking assumptions R01-R06 left standing. Trigger: the P09 forensic showed the vector index - the ONLY entry point into the graph - failing on a probe the graph could answer, rescued only by structure (SAME_AS). If the entry mechanism is the weakest link, every downstream improvement is bounded by it. The slate generalizes: which of KGF's components are load-bearing and which are theater? Literature sweeps pending per hypothesis at scheduling time (prior-art column deliberately left open - novelty is checked before a hypothesis runs, not before it is registered). Status: candidate pool; H34 scheduled immediately (retrieval-only, no completions needed - runs under the exhausted Bedrock quota).
+
+| id | assumption attacked | contrarian claim | runnable without completions |
+|----|--------------------|------------------|------------------------------|
+| H34 | vector top-k finds the entry node | seeds mostly miss the gold node; PPR/propositions/aliases do the real work | yes |
+| H35 | curing must happen (FSM exists) | never cure - resolve type equivalence at read time, delete the lifecycle | partial |
+| H36 | chunking is neutral preprocessing | chunk boundaries destroy extraction context; whole-doc extraction beats chunked | no |
+| H37 | PPR expansion earns its keep | at <5k entities PPR = 1-hop neighborhood render; the random walk is theater | yes |
+| H38 | relationships carry the answers | probes are answered by properties + propositions; edges are navigation, not knowledge | yes |
+| H39 | resolution must be precision-biased | over-merge + read-time split beats under-merge + alias patching (H29 complement) | partial |
+| H40 | embed the question as the probe | question-form embeddings mismatch entity surfaces; embed a hypothetical answer instead | yes |
+| H41 | one mixed vector index suffices | name-embeddings and description-embeddings live in different subspaces; split the channels | yes |
+| H42 | the graph answers questions | the graph should only ROUTE to source chunks; answers re-derived from text can't inherit graph errors | no |
+| H43 | gleaning (multi-pass extraction) pays | with audits in place, single-pass + audit >= multi-pass without audits, at lower cost | no |
+| H44 | drift lives in ingestion signals | remap-rate drift is a proxy; probe-refusal-rate drift is the operative signal | partial |
+| H45 | graph quality is the binding constraint | reader variance exceeds ALL graph-improvement deltas measured in R02-R04 | no |
+| H46 | community summaries earn the global path | the global path fires rarely and loses to decomposed local retrieval when it does | no |
+| H47 | graph growth tracks corpus growth | with working resolution, entities saturate (Heaps flattening); linear growth = resolution failure signal | yes |
+| H48 | generated propositions are needed | quote propositions (H22 kind) replace generated ones entirely; extraction should copy, never write | partial |
+| H49 | ingest order is not ours to choose | a buffered curriculum (reorder within a window) presents representative content to the curing gate earlier | no |
+
+### R07-H34 The entry point is the weakest link - seeds mostly miss
+
+- **Hypothesis** - because the vector index is the sole entry into the graph (`_retrieve_local`: question embedding -> top-k seeds -> everything else expands from there), and P09 proved a gold node with near-zero question similarity is invisible to it, a material fraction of currently-passing probes pass DESPITE the seed set, not because of it - the gold evidence enters context via proposition hits, PPR expansion, or alias rendering after mediocre seeding
+- **Assumption attacked** - that vector top-k reliably finds the first node for traversal; every R02-R04 improvement silently assumed the entry point works
+- **Lever** - measurement only (this hypothesis changes no code); its verdict routes H40/H41
+- **Mechanism** - per-probe seed attribution: for each probe, identify the graph nodes carrying gold evidence (evidence-substring match over node properties, propositions, alias-cluster renders), then classify how each entered context: (a) direct vector seed, (b) proposition-hit seed, (c) PPR-expansion only, (d) alias render only; ablate each channel and measure evidence-recall delta
+- **Prediction** - <=60% of gold-carrying nodes are direct vector seeds on the 28-probe CPAP set; at least 3 probes rely entirely on channels (b)-(d); ablating PPR + propositions + aliases (pure vector top-k render) drops evidence recall by >=25%
+- **Acceptance bar** - confirmed if direct-seed share <=60% or the pure-vector ablation drops recall >=25%; refuted if direct seeding alone achieves >=90% of full-pipeline evidence recall (entry point vindicated, H40/H41 deprioritized)
+- **Experiment** - <br>data: rebuilt CPAP graph (neo4j2), 28-probe set with gold evidence<br>method: retrieval-only notebook ([`probe_eval_r07h34.ipynb`](../../notebooks/probe_eval_r07h34.ipynb)) - embed each question (Titan, alive), run vector top-k / proposition query / PPR / alias render separately, attribute gold-evidence entry per channel, ablation grid; zero completions needed<br>cost: ~30 embedding calls
+- **Result** - 33 gold strings over 24 evidence-bearing probes; full-pipeline evidence recall 1.000 (every gold surfaced - retrieval is complete). Channel census (first-hit attribution in production order): direct vector seed 21 (63.6%), proposition-seeded node render 8, proposition text 2, alias-cluster merge 2 (both the P09/P16 dimensions - the H21 story verbatim), PPR-expansion-only 0, missing 0. Pure-vector ablation: recall 0.667 vs 1.000 full - a 33.3% drop; five probes (P01, P03, P09, P19, P22) carry ZERO gold in the pure-vector context. Matcher required three iterations, each a finding about surface forms: strict substring scored 23/33 golds "missing" while the scoreboard passes 28/28 (unit variants: 28 dB(A) vs 28 dBA); token-majority still missed values whose UNIT lives in the property key (dimensions_mm: "275 x 170 x 140" vs gold "275mm x 170mm x 140mm") - fixed with a unit-stripped numeric-skeleton match. Side observation for H39: the SAME_AS *1..2 closure of SleepStyle 200 Series contains false members (MANU, DreamStation CPAP, bCPAP prongs) via chained model-code/deictic edges - harmless today (setdefault + LIMIT 5) but a live over-merge surface
+- **Verdict** - Confirmed via the ablation clause (33.3% >= 25% bar; direct-seed share 0.636 sits just above the 0.60 clause). The entry point works but is structurally leaky: a third of the evidence enters through channels that exist only because R02-R04 built them, and the biggest rescuer is proposition seeding (R03-H14, 10 golds), not PPR - which contributed ZERO golds, a direct pre-signal for H37 (PPR is theater). Routing consequence: H40 (answer-form probes) and H41 (split index) are promoted to scheduled - both target exactly the 12 golds that vector seeding misses
+
+### R07-H35 Never cure - the lifecycle should not exist
+
+- **Hypothesis** - because three gate designs (v1 plateau, count floors, missing-mass UCB) chased a decision H32/H33 proved unmakeable in principle on a non-stationary stream, the contrarian resolution is to never make it: keep types fluid forever, maintain a continuously-updated type-equivalence clustering (the fluid-state exploration mechanism already shown to work), and resolve type identity at read time - deleting the FSM, the curing gate, the drift-triggered recure path, and the premature-cure failure class in one move
+- **Assumption attacked** - that a knowledge graph needs a curing event at all; the entire EMPTY->CURING->STABLE->RECURING lifecycle assumes types must freeze
+- **Lever** - ontology lifecycle; extraction and resolution untouched
+- **Prediction** - on the wave-1b stream, a never-cure run with read-time type clustering matches the cured run's probe accuracy within noise while eliminating all drift warnings and recure machinery; consolidation cost shifts to a background clustering pass whose staleness does not affect probe outcomes
+- **Acceptance bar** - probe parity (within 1 probe on the 47-set) AND no query-latency regression >20%; refuted if uncured type sprawl degrades retrieval (entity fragmentation across never-merged type variants)
+- **Experiment** - <br>method: replay wave 1b with curing disabled + periodic type clustering; same probe cycle; compare accuracy, latency, operational complexity<br>note: H32's gate remains the best one-shot criterion if this refutes; nothing regresses
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H36 Chunking destroys the context extraction needs
+
+- **Hypothesis** - because chunk boundaries are set by token arithmetic, not meaning, entities and relations spanning a boundary are systematically under-extracted (the OSA-consolidation variance and the SleepStyle unlinked-modes failures both sit near boundaries), and whole-document extraction with a long-context model recovers them - chunking is not neutral preprocessing but the largest unmeasured source of extraction loss
+- **Assumption attacked** - that per-chunk extraction with fixed windows is an implementation detail rather than a quality decision
+- **Prediction** - whole-doc extraction on the 10-doc CPAP corpus yields >=10% more cross-section relationships and closes at least one persistent failure (OSA consolidation or SleepStyle modes); per-entity precision does not drop
+- **Acceptance bar** - both prediction clauses; refuted if whole-doc extraction hallucinates more (audit-detected fidelity errors rise)
+- **Experiment** - rebuild CPAP twice (chunked vs whole-doc, same model), diff the graphs, run the 28-probe set + fidelity audit on both
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H37 PPR is theater at this scale
+
+- **Hypothesis** - because PPR's value proposition is global structure discovery but KGF graphs are small (<5k entities) and seed-local, the ranked expansion PPR returns is statistically indistinguishable from a plain 1-hop neighborhood of the seeds - the damping, projection, and GDS machinery buy nothing a MATCH clause doesn't
+- **Assumption attacked** - R01-H2's promotion; PPR was adopted from literature on graphs 100-1000x larger
+- **Prediction** - node-set overlap between PPR top-n and 1-hop-of-seeds >=80% on the probe workloads; probe outcomes identical under swap
+- **Acceptance bar** - refuted (PPR vindicated) if PPR-only nodes carry gold evidence on >=2 probes; confirmed if swap changes no probe outcome
+- **Experiment** - retrieval-only ([`probe_eval_r07h37.ipynb`](../../notebooks/probe_eval_r07h37.ipynb)): run both expansions per probe on the CPAP graph, diff node sets, test gold placement in the disjoint sets; zero completions
+- **Result** - mean containment 0.994: PPR's top-15 is 99.4% seeds-plus-1-hop - the random walk adds essentially no reach at this scale. PPR-exclusive gold (beyond 1 hop) on exactly 1 probe (P10), under the 2-probe refuter bar. The sharper finding inverts the question: on 20 of 24 probes, gold strings sit in 1-hop neighbours that PPR RANKED OUT of its top-15 - PPR at this scale is not an expander but a lossy filter on the 1-hop neighbourhood (caveat recorded: the 1-hop-beyond set is larger than PPR's budget, so this measures what the ranking discards, not that an equal-budget swap wins; the discards were compensated by the proposition channels - full recall stayed 1.0 in H34)
+- **Verdict** - Confirmed. PPR ships nothing a MATCH clause doesn't at <5k entities, consistent with its H34 zero-gold channel census. Consequence: PPR stays for now (it is not HARMFUL - removal is a simplification, not a quality fix) but the expansion budget question is reopened - a gold-aware look at WHICH 1-hop neighbours matter (relation-type priors, property density) is the successor question, and any future scale claim for PPR must be re-proven on a graph 100x this size
+
+### R07-H38 The graph's edges are navigation, not knowledge
+
+- **Hypothesis** - because R02-H10 moved values into properties and H22 moved evidence into propositions, the relationships themselves no longer carry answers - they only shape PPR's walk; measured per-probe, gold evidence enters context via node properties, propositions, and alias renders, with relationship-line renders contributing to zero probes
+- **Assumption attacked** - that the edge inventory (1745 rels in v28) is knowledge; it may be scaffolding whose only job is connectivity for traversal
+- **Prediction** - masking all relationship lines from rendered context changes <=1 probe outcome on the 28-set; masking node properties or propositions breaks >=8 each
+- **Acceptance bar** - confirmed if the asymmetry holds; refuted if relation lines are load-bearing for >=3 probes (multi-hop probes are the expected refuters - the interesting result is WHICH probes need edges)
+- **Experiment** - context-ablation on saved retrieval outputs; needs a reader for final answers (quota) but evidence-recall variant runs completion-free
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H39 Resolution should over-merge and split at read time
+
+- **Hypothesis** - because the H21/H22 arc proved read-time machinery (alias clusters, diversity filters) can repair identity, the precision-biased merge threshold (0.6 posterior) sits on the wrong side: merging aggressively (0.4) and splitting at read time via provenance (each merged entity keeps source_documents; a reader-facing split is a render decision) recovers the cross-type duplicates that survived every threshold tune since v19
+- **Assumption attacked** - that a wrong merge is costlier than a missed merge; with provenance-carrying merges, wrong merges are reversible - missed merges silently fragment evidence forever
+- **Prediction** - threshold 0.4 + provenance-split render closes >=3 of the 47 v28 cross-type duplicates without breaking any currently-passing probe
+- **Acceptance bar** - duplicate count drops >=30% with probe parity; refuted if any probe regresses from a bad merge the split render fails to repair
+- **Experiment** - re-run cross-type resolution at 0.4 on a graph copy, add split render, measure duplicates + probes
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H40 Embed the answer, not the question
+
+- **Hypothesis** - because entity embeddings encode names + descriptions (declarative surface) while probe embeddings encode interrogative surface, the two live in mismatched regions of embedding space - P09's failure class; embedding a HYPOTHETICAL answer sentence (cheap template or tiny-model draft: "The dimensions of X are ...") as the probe closes the gap without touching the index
+- **Assumption attacked** - that the question is the right retrieval probe; every KGF retrieval since R01 embeds the raw question
+- **Prediction** - answer-form probes lift direct-seed gold-node hits (H34's metric) by >=15 percentage points on the probes H34 flags as seed-misses
+- **Acceptance bar** - direct-seed share rises with no regression on currently-seeded probes; refuted if templated answer-forms inject noise that displaces good seeds
+- **Experiment** - runs on H34's harness with a second probe column; template variant is completion-free
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H41 Split the vector index - names and descriptions are different subspaces
+
+- **Hypothesis** - because a single embedding per entity averages name identity with descriptive content, entities with short names and long descriptions match questions on neither; separate name-embedding and description-embedding channels (two indexes, union the top-k) retrieve both identity-matches and content-matches that the mixed embedding dilutes away
+- **Assumption attacked** - one vector per node, one index per graph
+- **Prediction** - union-of-channels top-k contains the gold node for >=2 probes the mixed index misses (H34 provides the miss list)
+- **Acceptance bar** - net gold-node coverage rises; refuted if the union just widens k (same gain from raising top_k on the mixed index)
+- **Experiment** - build the two-channel index on CPAP, re-run H34 attribution; embeddings only
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H42 The graph should route, never answer
+
+- **Hypothesis** - because every graph error class found so far (over-attribution, alias fragmentation, premature cure) corrupted ANSWERS while the source chunks stayed correct, the durable architecture treats the graph as a ROUTER: retrieval resolves which source chunks matter (via entities, propositions, aliases), but the reader's context is built from the chunks themselves - graph errors can misroute (recoverable, measurable) but can never inject false content
+- **Assumption attacked** - that the graph render IS the context; the self-auditing-foundry doctrine says the graph is a quality controller, not a retrieval index - this hypothesis takes that doctrine literally at query time
+- **Prediction** - chunk-context answering matches graph-context accuracy on the 28-set while eliminating the H22 iter-3 over-attribution class entirely; context length grows <=2x
+- **Acceptance bar** - parity + zero attribution errors; refuted if chunk contexts bury the signal (recall drops on multi-hop probes where the graph render concentrates evidence)
+- **Experiment** - swap render source on saved retrievals, re-answer; needs completions (post-quota)
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H43 Audits replace gleaning
+
+- **Hypothesis** - because gleaning (R01-H3 multi-pass extraction) and the R04 audits (identity, fidelity, completeness) target the same failure - extraction missed something - but audits are deterministic, targeted, and post-hoc while gleaning is a blanket second LLM pass, single-pass extraction + the audit suite recovers >= gleaning's contribution at a fraction of the cost
+- **Assumption attacked** - R01-H3's promotion predates the audit machinery; its value was never re-measured after H21/H22 shipped
+- **Prediction** - on a CPAP rebuild without gleaning (audits on), entity/relation counts drop <=5% and probe accuracy holds 28/28; ingest cost drops ~35%
+- **Acceptance bar** - probe parity at materially lower cost; refuted if gleaning-only entities carry gold evidence
+- **Experiment** - one rebuild + probe cycle (post-quota)
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H44 Drift lives in the answers, not the remap rates
+
+- **Hypothesis** - because remap-rate drift (H33's signal) measures ontology-fit while the system's contract is answer quality, the operative drift detector is a standing probe panel replayed periodically: refusal-rate and answer-churn drift catch degradation that remap rates miss (a graph can drift ontologically while answering fine, and rot semantically while types stay stable)
+- **Assumption attacked** - that ingestion-side statistics are sufficient sentinels; ties to H30 (question-native coverage as a first-class signal)
+- **Prediction** - on the wave campaign, probe-churn between waves flags at least one degradation event that produces zero drift warnings
+- **Acceptance bar** - one confirmed miss by the remap detector caught by probe churn; inconclusive if the campaign stays clean on both
+- **Experiment** - piggybacks on R05's per-wave probe cycles - free; comparison at campaign end
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H45 The reader is the bigger term
+
+- **Hypothesis** - because R02-R04 graph improvements moved probe accuracy by 1-2 probes each while informal observation shows reader swaps (Sonnet vs gpt-oss-120b) moving results more, the variance decomposition is inverted: reader choice explains more outcome variance than all graph improvements combined - meaning further graph work has lower marginal value than reader/prompt work
+- **Assumption attacked** - the project's central bet that graph quality is the binding constraint
+- **Prediction** - frozen-graph reader matrix (3+ readers x 28 probes) shows inter-reader spread >= the total R02-R04 improvement delta (4 probes)
+- **Acceptance bar** - spread measured honestly either way; a confirmed result redirects effort, a refuted one validates the roadmap - both outcomes are valuable
+- **Experiment** - reader matrix on the frozen CPAP graph (post-quota for API readers; local reader now)
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H46 The global path is dead weight
+
+- **Hypothesis** - because community summaries exist to answer corpus-thematic questions but `is_global_query` routes only a thin slice of real workloads and decomposed local retrieval (R03-H15) already unions evidence across entities, deleting the global path and routing everything through decomposed local retrieval loses nothing measurable
+- **Assumption attacked** - R01-H6 kept summaries for the global path; the path's actual hit rate was never audited
+- **Prediction** - on both probe sets plus a synthetic thematic-question set, global-path answers are matched or beaten by forced-local answers; the path fires on <10% of queries
+- **Acceptance bar** - refuted if thematic probes need summaries (expected refuter: "what themes does the corpus cover" class); confirmed otherwise - then summaries move to an on-demand report feature, off the query path
+- **Experiment** - route-forcing flag + probe cycles (needs completions for answer comparison; routing census is free now)
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H47 Entity growth must saturate - linearity is a defect signal
+
+- **Hypothesis** - because a fixed domain has finite entities, a working resolution pipeline must show Heaps-law flattening in cumulative entity count as the campaign corpus grows; sustained linear growth means resolution is leaking duplicates at scale - making the growth curve a free, always-on, corpus-size-independent resolution health metric (the structural sibling of H32's missing-mass gate, applied to entities instead of types)
+- **Assumption attacked** - that entity count growing with corpus size is normal progress; nobody checks the second derivative
+- **Prediction** - wave 1b's cumulative entity curve fits Heaps K*n^b with b<0.9; per-wave b rising toward 1.0 over the campaign flags resolution leakage before duplicate counts do
+- **Acceptance bar** - the fitted exponent is stable and the metric flags known-bad segments (the premature-cure run's curve should show measurably higher b); refuted if b is noise-dominated at wave scale
+- **Experiment** - pure event-log/graph analysis ([`entity_growth_h47.ipynb`](../../notebooks/entity_growth_h47.ipynb)) - runs now, zero LLM calls
+- **Result** - interim (wave 1b at 130/481 docs, 802 placeable entities): global Heaps fit b = 0.803 (K = 16.0) - saturating, under the 0.9 bar. Windowed exponents: 0.811 (docs 6-35), 0.753 (36-65), 0.833 (66-95), 0.966 (96-125) - the final window is near-linear. Boundary check: the whole prefix is ONE document cluster (c34), so the uptick is not a content-shift artefact; it is either 30-doc window noise or the first sign of resolution leakage at scale. The premature-run comparison clause is not computable (that graph was wiped; only type-level observations survive in the H32 replay) - recorded as a scope limitation
+- **Verdict** - Interim confirmed (b < 0.9 on the realized prefix); final verdict at wave end with the full 481-doc fit. The windowed uptick is exactly the alarm shape the hypothesis proposes to operationalize - if wave-end windows sustain b > 0.9, the metric graduates from health check to defect signal and a resolution forensic follows
+
+### R07-H48 Extraction should copy, never write
+
+- **Hypothesis** - because H22's verbatim quote propositions carry provenance by construction and cannot paraphrase-drift, while generated propositions add an LLM rewrite between source and reader, replacing ALL generated propositions with quote propositions loses no probe and removes a hallucination surface (the aggressive half of H27's hollow graph, scoped to the proposition channel)
+- **Assumption attacked** - that generated propositions add abstraction value over selected quotes
+- **Prediction** - quote-only proposition channel holds 28/28 on CPAP and matches proposition-recall on the campaign set; generated-only propositions carry unique gold evidence on zero probes
+- **Acceptance bar** - parity confirms; refuted if generated propositions synthesize cross-sentence facts quotes cannot express (expected refuter: aggregation probes)
+- **Experiment** - channel-masking on saved retrievals (recall variant completion-free); answer variant post-quota
+- **Result** - pending
+- **Verdict** - pending
+
+### R07-H49 The foundry should choose its own reading order
+
+- **Hypothesis** - because H33 proved cure quality depends on what the stream shows the gate early, and the foundry controls a buffer even in streaming operation (documents queue before ingest), reordering WITHIN a buffer window - diversity-first by embedding dispersion, cheap and corpus-size-independent - presents representative content to the curing gate earlier and reduces both premature cures and recure churn without violating the unbounded-stream doctrine
+- **Assumption attacked** - that ingest order is exogenous; the stream is unbounded but the buffer is ours
+- **Prediction** - replaying wave 1b with a 20-doc diversity buffer moves the UCB cure point later (past the doc-7 early cure) and raises cure-time forward coverage by >=5 points
+- **Acceptance bar** - forward coverage rises on replay across 3 shuffle seeds; refuted if the effect is within shuffle noise
+- **Experiment** - extends the H32 replay harness; embeddings only, runs now
+- **Result** - pending
+- **Verdict** - pending
