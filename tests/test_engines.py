@@ -81,3 +81,68 @@ class TestFactory:
     def test_frontier_selected(self):
         engine = create_engine(LLMSettings(engine="frontier"))
         assert engine.name == "frontier"
+
+
+class TestEngineMatrix:
+    """Goal contract: OpenAI API, Anthropic API, Bedrock, vLLM, llama.cpp all route."""
+
+    def _frontier_with_spy(self, cfg):
+        engine = create_engine(cfg)
+        spy = MagicMock()
+        spy.chat.completions.create.return_value = Answer(value=1, label="ok")
+        engine._client = spy
+        return engine, spy
+
+    def _create_kwargs(self, spy):
+        return spy.chat.completions.create.call_args.kwargs
+
+    def test_bedrock_model_string_and_region(self, monkeypatch):
+        monkeypatch.delenv("AWS_REGION_NAME", raising=False)
+        cfg = LLMSettings(
+            engine="frontier",
+            model="bedrock/eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
+            region="eu-central-1",
+        )
+        engine, spy = self._frontier_with_spy(cfg)
+        engine.complete([{"role": "user", "content": "hi"}], Answer)
+        assert self._create_kwargs(spy)["model"].startswith("bedrock/")
+        import os
+
+        assert os.environ["AWS_REGION_NAME"] == "eu-central-1"
+
+    def test_anthropic_api_model_string(self):
+        cfg = LLMSettings(engine="frontier", model="anthropic/claude-sonnet-4-5")
+        engine, spy = self._frontier_with_spy(cfg)
+        engine.complete([{"role": "user", "content": "hi"}], Answer)
+        assert self._create_kwargs(spy)["model"] == "anthropic/claude-sonnet-4-5"
+
+    def test_openai_api_model_string(self):
+        cfg = LLMSettings(engine="frontier", model="openai/gpt-4o")
+        engine, spy = self._frontier_with_spy(cfg)
+        engine.complete([{"role": "user", "content": "hi"}], Answer)
+        assert self._create_kwargs(spy)["model"] == "openai/gpt-4o"
+
+    def test_vllm_endpoint_routing(self):
+        cfg = LLMSettings(
+            engine="local-gpu",
+            model="Qwen/Qwen2.5-14B-Instruct",
+            base_url="http://localhost:8000/v1",
+        )
+        engine, spy = self._frontier_with_spy(cfg)
+        engine.complete([{"role": "user", "content": "hi"}], Answer)
+        kwargs = self._create_kwargs(spy)
+        assert kwargs["model"] == "openai/Qwen/Qwen2.5-14B-Instruct"
+        assert kwargs["api_base"] == "http://localhost:8000/v1"
+
+    def test_llamacpp_endpoint_routing(self):
+        # llama.cpp llama-server exposes the same OpenAI-compatible surface
+        cfg = LLMSettings(
+            engine="local-gpu",
+            model="qwen2.5-14b-instruct-q4_k_m",
+            base_url="http://localhost:8080/v1",
+        )
+        engine, spy = self._frontier_with_spy(cfg)
+        engine.complete([{"role": "user", "content": "hi"}], Answer)
+        kwargs = self._create_kwargs(spy)
+        assert kwargs["model"] == "openai/qwen2.5-14b-instruct-q4_k_m"
+        assert kwargs["api_base"] == "http://localhost:8080/v1"

@@ -63,6 +63,19 @@ Notable knobs:
 - **GraphRAG** - `ppr_enabled`, `ppr_top_n`, `top_k`, `vector_dimensions`, `community_min_size`
 - **Load** - `entity_versioning`, `functional_relationship_types` (edge types where a new target supersedes the old)
 
+### Engine matrix
+
+Five inference backends through three engine types; pick with `LLMSettings.engine` + `model` (+ `base_url` for local servers). Any backend can serve either role (orchestrator or extractor).
+
+| Backend | engine | model example | notes |
+|---|---|---|---|
+| AWS Bedrock | `frontier` | `bedrock/eu.anthropic.claude-sonnet-4-5-20250929-v1:0` | `region` setting exported as AWS_REGION_NAME; live-verified |
+| Anthropic API | `frontier` | `anthropic/claude-sonnet-4-5` | needs ANTHROPIC_API_KEY |
+| OpenAI API | `frontier` | `openai/gpt-4o` | needs OPENAI_API_KEY |
+| vLLM | `local-gpu` | `Qwen/Qwen2.5-14B-Instruct` + `base_url="http://host:8000/v1"` | OpenAI-compatible server; JSON mode |
+| llama.cpp | `local-gpu` | `qwen2.5-14b-instruct-q4_k_m` + `base_url="http://host:8080/v1"` | llama-server exposes the same OpenAI-compatible surface |
+| Claude Code CLI | `claude-cli` | `sonnet` | subprocess `claude -p` with JSON-schema prompt + one repair round; no API key, uses the local login |
+
 ### Role-based LLM routing
 
 Extraction is high-volume; orchestration (type clustering, contradiction and defer judging, community summaries, query answering) is low-volume but benefits from a stronger model. Configure them independently:
