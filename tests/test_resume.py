@@ -118,3 +118,43 @@ class TestKillResume:
         f3._embed = lambda e: e
         assert f3.ingest(tmp_path)["documents"] == 1
         f3._extract_file.assert_called_once()
+
+
+class TestRepair:
+    """R04 first slice: targeted repair re-extracts named sources with focus."""
+
+    def test_repair_requires_stable(self, tmp_path, lease_patches):
+        store: dict = {}
+        _seed_state(store)  # INITIALIZING
+        f = _foundry(store)
+        with pytest.raises(Exception, match="STABLE"):
+            f.repair("some question", [tmp_path / "a.txt"])
+
+    def test_repair_bypasses_fingerprint_and_focuses_extraction(self, tmp_path, lease_patches):
+        paths = _files(tmp_path, ["a.txt"])
+        store: dict = {}
+        _seed_state(store)
+        store["fsm_state"] = "STABLE"
+        # simulate a completed ingest of a.txt (fingerprint recorded)
+        import hashlib
+
+        fp = f"a.txt:{hashlib.sha1(paths[0].read_bytes()).hexdigest()[:16]}"
+        store["processed_documents"] = [fp]
+
+        f = _foundry(store)
+        seen = {}
+
+        def spy_extract(path, purpose, ontology):
+            seen["path"] = path.name
+            seen["purpose"] = purpose
+            return _entity_for(path), []
+
+        f._extract_file = spy_extract
+        f._embed = lambda e: e
+        f._stable_load = lambda e, r, o, c: (0.0, 0)
+        f.settings.graphrag.propositions_enabled = False
+        summary = f.repair("what is the weight of device X?", [paths[0]])
+
+        assert seen["path"] == "a.txt"  # re-extracted despite the fingerprint
+        assert "what is the weight of device X?" in seen["purpose"]  # focus injected
+        assert summary["documents"] == 1

@@ -358,6 +358,56 @@ class Foundry:
                 self._load_provenance(document, chunks, file_path.name)
         return result.entities, result.relationships
 
+    def repair(self, question: str, sources: "list[str | Path]") -> dict:
+        """R04 targeted repair: a failing question names its source documents;
+        re-extract them with the question as extraction focus and load the new
+        facts into the live graph. Deliberately bypasses the resume fingerprint
+        skip (repair re-reads on purpose); requires a STABLE graph."""
+        from knowledge_graph_foundry.graph.lock import acquire_lease, new_run_id, release_lease
+        from knowledge_graph_foundry.graph.propositions import generate_propositions
+
+        state = self._load_state()
+        if not state or state.get("fsm_state") != "STABLE":
+            raise FoundryError("repair requires a STABLE graph")
+        purpose = state.get("purpose", "")
+        ontology = Ontology(**state["ontology"])
+        calibrator = (
+            PosteriorCalibrator.from_json(state["calibration"])
+            if state.get("calibration")
+            else None
+        )
+        focused = f"{purpose}\nRepair focus - extract the facts that answer: {question}"
+
+        run_id = new_run_id()
+        if not acquire_lease(self.driver, run_id, self.settings.lease_ttl_seconds):
+            raise FoundryError("another ingestion run holds the lease")
+        summary = {"documents": 0, "entities": 0, "relationships": 0, "invalidated": 0}
+        try:
+            for source in sources:
+                path = Path(source)
+                emit("document.started", path=str(path), repair=True)
+                entities, relationships = self._extract_file(path, focused, ontology)
+                if not entities:
+                    emit("document.skipped", path=str(path), reason="no entities")
+                    continue
+                entities = self._embed(entities)
+                _, invalidated = self._stable_load(entities, relationships, ontology, calibrator)
+                summary["documents"] += 1
+                summary["entities"] += len(entities)
+                summary["relationships"] += len(relationships)
+                summary["invalidated"] += invalidated
+                emit("document.completed", path=str(path), entities=len(entities), repair=True)
+            if self.settings.graphrag.propositions_enabled and summary["entities"]:
+                summary["propositions"] = generate_propositions(
+                    self.driver,
+                    self._embed_texts,
+                    self.settings.graphrag.proposition_index_name,
+                    self.settings.graphrag.vector_dimensions,
+                )
+        finally:
+            release_lease(self.driver, run_id)
+        return summary
+
     def _load_provenance(self, document, chunks, source_name: str) -> None:
         """R02-H12/S6: persist Document + Chunk nodes so passages join the PPR
         projection and every entity is traceable to its source text."""

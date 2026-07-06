@@ -129,6 +129,22 @@ def optimize(config: Optional[Path] = typer.Option(None, help="Path to config.ym
 
 
 @app.command()
+def repair(
+    question: str = typer.Argument(..., help="The failing question to repair the graph for"),
+    sources: list[Path] = typer.Argument(..., help="Source documents to re-extract with focus"),
+    config: Optional[Path] = typer.Option(None, help="Path to config.yml"),
+) -> None:
+    """Targeted repair: re-extract named documents focused on a failing question."""
+    foundry = _foundry(config)
+    try:
+        result = foundry.repair(question, [str(s) for s in sources])
+    except Exception as exc:
+        _fail(str(exc))
+    console.print(json.dumps(result, indent=2, default=str))
+    foundry.close()
+
+
+@app.command()
 def query(
     question: str = typer.Argument(..., help="Question to answer over the graph"),
     config: Optional[Path] = typer.Option(None, help="Path to config.yml"),

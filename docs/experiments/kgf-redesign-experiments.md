@@ -303,3 +303,16 @@ Batch reading, honest and in full:
 - **Multi-hop 0.33 never moved across any graph, reader, or lever** - failure attribution on the rebuilt graph: 2 of 4 failures have evidence recall 1.0 (reader/serialization side), 2 have 0.0 (facts absent from the graph - repairable only by targeted re-extraction, the R04 loop)
 - **Metric lesson** - verbatim-substring evidence recall dropped on the rebuilt graph (0.438 -> 0.333) while accuracy ROSE to the batch best (0.792, comparisons perfect): facts rephrased as properties/propositions evade the verbatim matcher; accuracy is the outcome gate, verbatim recall is now a diagnostic only
 - **Caveats** - phase B reader is Opus 4.5 (quota failover), so B-vs-A accuracy deltas are reader-confounded (B0-vs-B1 within-phase comparison is clean); rebuilt-graph context grew 4x (property dumps + decomposition union) - a token-budget item for the ops batch; faithfulness metric not yet instrumented (measurement debt)
+
+### Scoring correction (2026-07-06, supersedes the accuracy figures above)
+
+Failure inspection revealed the deterministic scorer was too strict for prose gold answers: with no numeric tokens it required the whole gold sentence as a verbatim substring, so correct paraphrases ("provides automatic, personalized adjustments" vs gold "makes automatic, personalized adjustments") scored wrong. Corrected scorer: numeric golds unchanged (value-token majority); prose golds score by content-word overlap >= 0.6 (stopwords dropped, 6-char prefix stems). All persisted runs re-adjudicated from saved answers - no re-execution, ablation arms remain identical so every null verdict stands; only absolute levels change.
+
+| run | graph | reader | accuracy (was) | single_fact | comparison | multi_hop (was) | refusal |
+|---|---|---|---|---|---|---|---|
+| A0 baseline | R01 | Sonnet 4.5 | 0.833 (0.708) | 0.80 | 0.88 | 0.83 (0.33) | 4/4 |
+| A1 +propositions | R01 | Sonnet 4.5 | 0.875 (0.750) | 0.90 | 0.88 | 0.83 (0.33) | 4/4 |
+| W1 weak, props | R01 | Haiku 4.5 | 0.875 (0.750) | 0.90 | 0.88 | 0.83 (0.33) | 4/4 |
+| B0 rebuilt, full | H10 rebuild | Opus 4.5 | **0.917** (0.792) | 0.90 | **1.00** | 0.83 (0.33) | 4/4 |
+
+Corrected reading: multi-hop was never broken - 5 of 6 multi-hop probes answer correctly on all graphs; the "0.33 wall" was the scorer. H11's deltas survive (A0 -> A1 +4.2pts, weak parity holds at 0.875 = strong reader's A1). The two REAL failures on the rebuilt graph are both extraction gaps with evidence recall 0.0: P09 (SleepStyle 200 dimensions never extracted) and P19 (SmartRamp mechanism sentence never extracted) - the reader correctly reports graph absence for P09. Final honest scoreboard on the rebuilt graph: 22/24 answerable correct + 4/4 correct refusals = 26/28. Both residuals are the R04 targeted-repair case: failing probe names its source document.
