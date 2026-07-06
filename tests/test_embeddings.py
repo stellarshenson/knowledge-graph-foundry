@@ -229,3 +229,42 @@ class TestRunProviderLock:
         result = generate_embeddings([], _cfg(provider="sentence-transformers"))
         assert result == []
         assert emb_mod._active_provider is None
+
+
+class TestEmbeddingCache:
+    """DEF-1: identical mention texts embed once per run."""
+
+    @patch("knowledge_graph_foundry.extraction.embeddings.boto3")
+    def test_repeat_text_served_from_cache(self, mock_boto3):
+        fake = [0.5] * 1024
+        mock_client = _mock_bedrock_client(mock_boto3, fake)
+
+        generate_embeddings([_entity("ResMed"), _entity("CPAP")], _cfg())
+        assert mock_client.invoke_model.call_count == 2
+
+        # same texts again (new Entity objects) - zero new API calls
+        again = generate_embeddings([_entity("ResMed"), _entity("CPAP")], _cfg())
+        assert mock_client.invoke_model.call_count == 2
+        assert again[0].embedding == fake
+        assert again[1].embedding == fake
+
+    @patch("knowledge_graph_foundry.extraction.embeddings.boto3")
+    def test_duplicates_within_one_call_still_dispatch_once_each(self, mock_boto3):
+        fake = [0.5] * 1024
+        mock_client = _mock_bedrock_client(mock_boto3, fake)
+
+        # two distinct texts + one repeat of an already-cached text
+        generate_embeddings([_entity("ResMed")], _cfg())
+        generate_embeddings([_entity("ResMed"), _entity("AirSense 11")], _cfg())
+        assert mock_client.invoke_model.call_count == 2  # ResMed once, AirSense once
+
+    @patch("knowledge_graph_foundry.extraction.embeddings.boto3")
+    def test_changed_description_is_a_cache_miss(self, mock_boto3):
+        fake = [0.5] * 1024
+        mock_client = _mock_bedrock_client(mock_boto3, fake)
+
+        generate_embeddings([_entity("ResMed")], _cfg())
+        grown = _entity("ResMed")
+        grown.description = "A manufacturer of CPAP devices headquartered in San Diego"
+        generate_embeddings([grown], _cfg())
+        assert mock_client.invoke_model.call_count == 2  # different text, re-embedded

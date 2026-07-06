@@ -27,12 +27,19 @@ _BATCH_SIZE = 25
 _active_provider: Optional[str] = None
 _local_model = None  # cached sentence-transformers model instance
 
+# DEF-1 embedding cache: (provider, model, text) -> vector. The same mention
+# text recurs hundreds of times within one ingest run (per-chunk mentions,
+# recurring entities across documents); embed each unique text once per run.
+_CACHE_MAX = 16384
+_cache: dict[tuple[str, str, str], list[float]] = {}
+
 
 def reset_provider_state() -> None:
-    """Reset the locked provider state. Intended for tests."""
+    """Reset the locked provider state and cache. Intended for tests."""
     global _active_provider, _local_model
     _active_provider = None
     _local_model = None
+    _cache.clear()
 
 
 def _entity_text(entity: Entity) -> str:
@@ -166,14 +173,35 @@ def generate_embeddings(entities: list[Entity], cfg: EmbeddingSettings) -> list[
 
     resolved_provider, resolved_model = _resolve_provider(cfg)
 
+    # DEF-1: serve cache hits, dispatch only unique unseen texts
+    misses: list[Entity] = []
+    hits = 0
+    for entity in entities:
+        cached = _cache.get((resolved_provider, resolved_model, _entity_text(entity)))
+        if cached is not None:
+            entity.embedding = cached
+            hits += 1
+        else:
+            misses.append(entity)
+
+    if not misses:
+        logger.info("Embeddings: {}/{} from cache", hits, len(entities))
+        return entities
+
     try:
-        embedded = _dispatch(resolved_provider, entities, resolved_model)
+        embedded = _dispatch(resolved_provider, misses, resolved_model)
         _active_provider = resolved_provider
+        for entity in misses:
+            if entity.embedding and len(_cache) < _CACHE_MAX:
+                _cache[(resolved_provider, resolved_model, _entity_text(entity))] = (
+                    entity.embedding
+                )
         logger.info(
-            "Generated embeddings for {}/{} entities via {}",
+            "Generated embeddings for {}/{} entities via {} ({} cache hits)",
             embedded,
-            len(entities),
+            len(misses),
             resolved_provider,
+            hits,
         )
         return entities
 
