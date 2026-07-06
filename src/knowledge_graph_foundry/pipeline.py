@@ -403,7 +403,20 @@ class Foundry:
                 self.driver, self.engine, self.settings.graphrag.community_min_size
             )
         card = scorecard(self.driver)
-        return {"communities": communities, "summaries": summaries, "scorecard": card}
+        result = {"communities": communities, "summaries": summaries, "scorecard": card}
+        self._persist_scorecard(result)
+        return result
+
+    def _persist_scorecard(self, result: dict) -> None:
+        from datetime import datetime, timezone
+
+        reports = Path("reports")
+        if not reports.is_dir():
+            return
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+        path = reports / f"scorecard-{stamp}.json"
+        path.write_text(json.dumps(result, indent=2, default=str))
+        logger.info(f"scorecard saved to {path}")
 
     def query(self, question: str) -> dict:
         """Answer a question over the graph: vector candidates + neighbourhood

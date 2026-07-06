@@ -1,58 +1,71 @@
-# 
+# Knowledge Graph Foundry
 
-Knowledge Graph Foundry - production-grade, data-science-driven system that builds and continuously maintains Neo4j knowledge graphs with purpose-driven construction, drift detection and GraphRAG optimization
+Knowledge Graph Foundry (KGF) builds a Neo4j knowledge graph from structured and unstructured data and keeps maintaining it as the schema evolves and data drifts. It is data-science driven: schema stability is declared by information-theoretic convergence, entity merges by a Bayesian posterior, and rebuilds by statistical drift evidence - never by heuristics. The target operating mode is continuous: weeks to months of ingestion against one living graph, serving a stated purpose.
 
-> **Note**: Generated with copier-data-science template v1.2+
-> For template documentation, visit [copier-data-science](https://github.com/stellarshenson/copier-data-science)
+- **Purpose-driven construction** - a free-text purpose ("compare CPAP machines") guides extraction, seed normalization and type clustering
+- **Fluid-to-cured lifecycle** - documents buffer in memory while the type system is fluid; curing fires when JSD < 0.02, Chao1 coverage > 0.95 and entropy delta < 0.01
+- **Bayesian entity resolution** - continuous name-similarity prior times likelihood ratios for description, embedding and co-occurrence evidence; merge / defer / block zones; isotonic calibration
+- **Identity decoupled from type** - entity identity derives from the normalized name; types are multi-label attributes, so dual-role entities are one node with several labels
+- **Drift detection** - windowed remap-rate and distribution-divergence verdicts (warn / recure / rebuild) on every post-cure document
+- **GraphRAG optimization** - GDS Leiden communities with LLM summaries, vector index retrieval, quality scorecards persisted per run
+- **Three LLM engines** - frontier API (Bedrock / Anthropic / OpenAI via litellm), local `claude -p` subprocess, local GPU (any OpenAI-compatible endpoint such as vLLM)
+- **Resumable by design** - lifecycle state, ontology, calibration and the fluid buffer persist in the graph control metanode; any session resumes from the graph alone
 
 ## Quick Start
 
 ```bash
-make install
+make install                      # create .venv and install
+docker compose up -d              # Neo4j 5 with APOC + GDS
+# set NEO4J_URI / NEO4J_USER / NEO4J_PASSWORD in .env
+
+kgf init "compare CPAP machines"  # store purpose, verify Neo4j
+kgf ingest data/raw/manuals/      # file, directory or zip
+kgf status                        # lifecycle, counts, stability metrics
+kgf optimize                      # communities, summaries, scorecard
+kgf query "AirSense 11 vs DreamStation pressure range?"
+kgf tui                           # live dashboard
 ```
 
-## Makefile Targets
+Supported inputs: pdf, docx, html, md, txt (unstructured); parquet, csv, tsv, xlsx, json, jsonl (structured - a column mapping is inferred once per source by the LLM, then applied deterministically). Seed schemas: freeform text, YAML/JSON, OWL.
 
-- `make install` - Create environment and install package
-- `make test` - Run tests
-- `make lint` / `make format` - Check / fix code style
-- `make build` - Build distributable wheel
-- `make clean` - Remove compiled files and caches
-- `make help` - Show all available targets
+## Architecture
 
-## Best Practices
+```
+src/knowledge_graph_foundry/
+├── settings.py       # pydantic settings: neo4j, llm, extraction, curing, drift
+├── engines/          # frontier (litellm+instructor), claude-cli, local-gpu
+├── ingest/           # format readers, tiktoken chunking with stable ids
+├── ontology/         # seeds (freeform/YAML/OWL), fluid buffer, stability metrics, curing
+├── extraction/       # purpose-injected extraction, embeddings (Bedrock + CPU fallback)
+├── resolution/       # Bayesian posterior, union-find, isotonic calibration
+├── graph/            # idempotent loaders, control metanode, GDS communities, scorecard
+├── drift.py          # windowed drift verdicts: none / warn / recure / rebuild
+├── pipeline.py       # Foundry orchestrator over the lifecycle FSM
+├── cli.py            # kgf init/ingest/status/optimize/query/wipe/tui
+└── tui/              # Textual dashboard: status, stability, drift, event feed
+```
 
-- **Notebooks**: Name with number prefix, initials, description - `01-jqp-data-exploration.ipynb`
-- **Data**: Keep `raw/` immutable, use `interim/` for transforms, `processed/` for final datasets
-- **Source code**: Refactor reusable notebook code into `src/knowledge_graph_foundry/` modules
-- **Models**: Store trained models in `models/` with clear naming
+Design details in `docs/DESIGN.md`; acceptance criteria in `docs/acc-crit-kgf.md`; defects in `docs/defects.md`. Lessons distilled from the archived v1 (28 benchmark iterations) in `references/kgf-v1-lessons.md`.
+
+## Development
+
+- `make install` - create environment and install package
+- `make test` - run the suite (no network or live Neo4j needed)
+- `KGF_INTEGRATION=1 pytest tests/test_graph_integration.py` - live Neo4j integration tests
+- `make lint` / `make format` - ruff check / fix
 
 ## Project Organization
 
 ```
-├── Makefile           <- Makefile with convenience commands
-├── README.md          <- The top-level README for developers
-├── data
-│   ├── external       <- Data from third party sources
-│   ├── interim        <- Intermediate data that has been transformed
-│   ├── processed      <- The final, canonical data sets for modeling
-│   └── raw            <- The original, immutable data dump
-│
-├── models             <- Trained and serialized models
-├── notebooks          <- Jupyter notebooks
-├── pyproject.toml     <- Project configuration and dependencies
-├── references         <- Data dictionaries, manuals, explanatory materials
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures
-├── tests              <- Test files
-└── src
-    └── knowledge_graph_foundry   <- Source code for this project
-        ├── __init__.py
-        ├── config.py      <- Configuration variables
-        ├── dataset.py     <- Data download/generation scripts
-        ├── features.py    <- Feature engineering code
-        ├── modeling
-        │   ├── predict.py <- Model inference
-        │   └── train.py   <- Model training
-        └── plots.py       <- Visualization code
+├── data/raw          # immutable source data
+├── data/interim      # intermediate transforms
+├── data/processed    # final datasets
+├── docs              # design, acceptance criteria, defects
+├── logs              # run and event logs
+├── notebooks         # analysis notebooks
+├── references        # v1 lessons and reference material
+├── reports           # quality scorecards per run
+└── src/knowledge_graph_foundry
 ```
+
+> **Note**: scaffolded with [copier-data-science](https://github.com/stellarshenson/copier-data-science)

@@ -27,3 +27,39 @@
 {"ts": "2026-07-06T08:31:48.424030+00:00", "event": "curing.metrics", "doc_index": 1, "unique_types": 10.0, "total_occurrences": 25.0, "singletons": 3.0, "doubletons": 4.0, "entropy_shannon": 3.048884070537636, "entropy_shannon_delta": 0.05299715293838192, "kl_divergence": 0.08676357230188395, "js_divergence": 0.021723943973886835, "type_accumulation_rate": 0.0, "gini_coefficient": 0.332, "zipf_r_squared": 0.9064042047813381, "heaps_beta": NaN, "chao1_estimate": 11.125, "chao1_coverage": 0.898876404494382, "ace_estimate": 12.086776859504132, "entropy_shannon_var": 0.0007021745548935609, "js_divergence_var": NaN, "gini_coefficient_var": 0.00047883737024221544, "chao1_coverage_var": 0.03470035296615015}
 {"ts": "2026-07-06T08:31:48.454627+00:00", "event": "document.completed", "path": "data/interim/smoke/airstart-10-cpap_fact-sheet_apac_eng.pdf", "entities": 7}
 {"ts": "2026-07-06T08:31:48.454695+00:00", "event": "load.completed", "documents": 2, "entities": 24, "relationships": 24, "cured": false}
+{"ts": "2026-07-06T08:32:32.688454+00:00", "event": "document.started", "path": "data/raw/cpap-datasheets-and-manuals/0-20190113114505.pdf"}
+{"ts": "2026-07-06T08:33:03.344730+00:00", "event": "extraction.completed", "chunks": 1, "entities": 20, "relationships": 24}
+{"ts": "2026-07-06T08:33:06.105645+00:00", "event": "fsm.transition", "state": "CURING"}
+{"ts": "2026-07-06T08:33:06.105722+00:00", "event": "ontology.type_emerged", "type": "CPAPDevice"}
+{"ts": "2026-07-06T08:33:06.105752+00:00", "event": "ontology.type_emerged", "type": "OperatingMode"}
+{"ts": "2026-07-06T08:33:06.105765+00:00", "event": "ontology.type_emerged", "type": "ComfortFeature"}
+{"ts": "2026-07-06T08:33:06.105775+00:00", "event": "ontology.type_emerged", "type": "Feature"}
+{"ts": "2026-07-06T08:33:06.105854+00:00", "event": "ontology.type_emerged", "type": "Accessory"}
+{"ts": "2026-07-06T08:33:06.105876+00:00", "event": "ontology.type_emerged", "type": "Humidifier"}
+{"ts": "2026-07-06T08:33:06.105890+00:00", "event": "ontology.type_emerged", "type": "Software"}
+{"ts": "2026-07-06T08:33:06.105901+00:00", "event": "ontology.type_emerged", "type": "Manufacturer"}
+{"ts": "2026-07-06T08:33:06.105947+00:00", "event": "ontology.type_confirmed", "type": "OperatingMode"}
+{"ts": "2026-07-06T08:33:06.105957+00:00", "event": "ontology.type_confirmed", "type": "ComfortFeature"}
+{"ts": "2026-07-06T08:33:06.105964+00:00", "event": "ontology.type_confirmed", "type": "Feature"}
+{"ts": "2026-07-06T08:33:06.105970+00:00", "event": "ontology.type_confirmed", "type": "Accessory"}
+{"ts": "2026-07-06T08:33:06.105976+00:00", "event": "ontology.type_confirmed", "type": "Humidifier"}
+{"ts": "2026-07-06T08:33:06.105985+00:00", "event": "ontology.evolved", "documents": 1, "types": 8, "entities": 20}
+{"ts": "2026-07-06T08:33:06.106076+00:00", "event": "curing.metrics", "doc_index": 0, "unique_types": 8.0, "total_occurrences": 23.0, "singletons": 3.0, "doubletons": 1.0, "entropy_shannon": 2.6798066535975913, "entropy_shannon_delta": NaN, "kl_divergence": NaN, "js_divergence": NaN, "type_accumulation_rate": 8.0, "gini_coefficient": 0.3641304347826087, "zipf_r_squared": 0.883636773744062, "heaps_beta": NaN, "chao1_estimate": 12.5, "chao1_coverage": 0.64, "ace_estimate": 10.391818181818184, "entropy_shannon_var": NaN, "js_divergence_var": NaN, "gini_coefficient_var": NaN, "chao1_coverage_var": NaN}
+{"ts": "2026-07-06T08:33:06.133975+00:00", "event": "document.completed", "path": "data/raw/cpap-datasheets-and-manuals/0-20190113114505.pdf", "entities": 20}
+{"ts": "2026-07-06T08:33:06.134037+00:00", "event": "document.started", "path": "data/raw/cpap-datasheets-and-manuals/1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf"}
+{"ts": "2026-07-06T08:33:54.829700+00:00", "event": "extraction.completed", "chunks": 2, "entities": 48, "relationships": 63}
+{"ts": "2026-07-06T08:34:00.876143+00:00", "event": "ontology.type_confirmed", "type": "CPAPDevice"}
+{"ts": "2026-07-06T08:34:00.876199+00:00", "event": "ontology.type_confirmed", "type": "Software"}
+{"ts": "2026-07-06T08:34:00.876209+00:00", "event": "ontology.type_confirmed", "type": "Manufacturer"}
+{"ts": "2026-07-06T08:34:00.876218+00:00", "event": "ontology.evolved", "documents": 2, "types": 8, "entities": 68}
+{"ts": "2026-07-06T08:34:00.876347+00:00", "event": "curing.metrics", "doc_index": 1, "unique_types": 8.0, "total_occurrences": 71.0, "singletons": 0.0, "doubletons": 1.0, "entropy_shannon": 2.7290468096887173, "entropy_shannon_delta": 0.049240156091125975, "kl_divergence": 0.25926671101779813, "js_divergence": 0.07065989772450593, "type_accumulation_rate": 0.0, "gini_coefficient": 0.33274647887323944, "zipf_r_squared": 0.7710489192228112, "heaps_beta": NaN, "chao1_estimate": 8.0, "chao1_coverage": 1.0, "ace_estimate": 8.0, "entropy_shannon_var": 0.0006061482429696126, "js_divergence_var": NaN, "gini_coefficient_var": 0.0002462381721303085, "chao1_coverage_var": 0.0324}
+{"ts": "2026-07-06T08:34:00.923960+00:00", "event": "document.completed", "path": "data/raw/cpap-datasheets-and-manuals/1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf", "entities": 48}
+{"ts": "2026-07-06T08:34:00.924021+00:00", "event": "document.started", "path": "data/raw/cpap-datasheets-and-manuals/3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf"}
+{"ts": "2026-07-06T08:34:50.637097+00:00", "event": "extraction.completed", "chunks": 8, "entities": 80, "relationships": 112}
+{"ts": "2026-07-06T08:34:59.286997+00:00", "event": "ontology.evolved", "documents": 3, "types": 8, "entities": 148}
+{"ts": "2026-07-06T08:34:59.287191+00:00", "event": "curing.metrics", "doc_index": 2, "unique_types": 8.0, "total_occurrences": 153.0, "singletons": 0.0, "doubletons": 0.0, "entropy_shannon": 2.8244558834587616, "entropy_shannon_delta": 0.09540907377004437, "kl_divergence": 0.0309149529490564, "js_divergence": 0.008021911224018304, "type_accumulation_rate": 0.0, "gini_coefficient": 0.25735294117647056, "zipf_r_squared": 0.7195760928892874, "heaps_beta": -1.9553310341933656e-15, "chao1_estimate": 8.0, "chao1_coverage": 1.0, "ace_estimate": 8.0, "entropy_shannon_var": 0.003605653780996213, "js_divergence_var": 0.0009808793382088173, "gini_coefficient_var": 0.0020078412617515794, "chao1_coverage_var": 0.028800000000000003}
+{"ts": "2026-07-06T08:34:59.384536+00:00", "event": "document.completed", "path": "data/raw/cpap-datasheets-and-manuals/3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf", "entities": 80}
+{"ts": "2026-07-06T08:34:59.384602+00:00", "event": "document.started", "path": "data/raw/cpap-datasheets-and-manuals/ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf"}
+{"ts": "2026-07-06T08:35:31.654694+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[COMPATIBLE_WITH]-> Data Storage Software", "chunk": "c_47c8c3315654c4a0"}
+{"ts": "2026-07-06T08:35:31.654968+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_FEATURE]-> Internal Battery Backup", "chunk": "c_47c8c3315654c4a0"}
+{"ts": "2026-07-06T08:35:31.654992+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[COMPATIBLE_WITH]-> Carry Bag", "chunk": "c_47c8c3315654c4a0"}
