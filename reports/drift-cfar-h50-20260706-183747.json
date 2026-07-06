@@ -1,0 +1,220 @@
+{
+  "calibrated": {
+    "0.01|production": {
+      "scalar": 0.020003738403320315,
+      "arl0": 624.0333333333333,
+      "in_band": false
+    },
+    "0.01|ca_cfar": {
+      "scalar": 100.75,
+      "arl0": 544.2533333333333,
+      "in_band": true
+    },
+    "0.01|os_cfar": {
+      "scalar": 166.66603469848633,
+      "arl0": 416.62666666666667,
+      "in_band": false
+    },
+    "0.01|cfar_2of3": {
+      "scalar": 50.875,
+      "arl0": 447.02666666666664,
+      "in_band": true
+    },
+    "0.01|cusum": {
+      "scalar": 0.0089013671875,
+      "arl0": 564.86,
+      "in_band": true
+    },
+    "0.05|production": {
+      "scalar": 0.111875,
+      "arl0": 519.4666666666667,
+      "in_band": true
+    },
+    "0.05|ca_cfar": {
+      "scalar": 9.572265625,
+      "arl0": 457.64,
+      "in_band": true
+    },
+    "0.05|os_cfar": {
+      "scalar": 75.8125,
+      "arl0": 426.5133333333333,
+      "in_band": true
+    },
+    "0.05|cfar_2of3": {
+      "scalar": 5.67578125,
+      "arl0": 488.6,
+      "in_band": true
+    },
+    "0.05|cusum": {
+      "scalar": 0.11423828124999999,
+      "arl0": 432.74,
+      "in_band": true
+    },
+    "0.1|production": {
+      "scalar": 0.2000003814697266,
+      "arl0": 823.2133333333334,
+      "in_band": false
+    },
+    "0.1|ca_cfar": {
+      "scalar": 5.2861328125,
+      "arl0": 521.8466666666667,
+      "in_band": true
+    },
+    "0.1|os_cfar": {
+      "scalar": 3.53271484375,
+      "arl0": 529.78,
+      "in_band": true
+    },
+    "0.1|cfar_2of3": {
+      "scalar": 3.53271484375,
+      "arl0": 553.1933333333334,
+      "in_band": true
+    },
+    "0.1|cusum": {
+      "scalar": 0.17666015624999998,
+      "arl0": 455.32,
+      "in_band": true
+    }
+  },
+  "race": {
+    "0.01|step|production": {
+      "miss_rate": 0.0,
+      "median_delay": 2.0
+    },
+    "0.01|step|ca_cfar": {
+      "miss_rate": 0.77,
+      "median_delay": 0.0
+    },
+    "0.01|step|os_cfar": {
+      "miss_rate": 0.09,
+      "median_delay": 0.0
+    },
+    "0.01|step|cfar_2of3": {
+      "miss_rate": 0.675,
+      "median_delay": 1.0
+    },
+    "0.01|step|cusum": {
+      "miss_rate": 0.0,
+      "median_delay": 0.0
+    },
+    "0.01|ramp|production": {
+      "miss_rate": 0.0,
+      "median_delay": 4.0
+    },
+    "0.01|ramp|ca_cfar": {
+      "miss_rate": 0.87,
+      "median_delay": 2.0
+    },
+    "0.01|ramp|os_cfar": {
+      "miss_rate": 0.225,
+      "median_delay": 3.0
+    },
+    "0.01|ramp|cfar_2of3": {
+      "miss_rate": 0.84,
+      "median_delay": 2.0
+    },
+    "0.01|ramp|cusum": {
+      "miss_rate": 0.0,
+      "median_delay": 4.0
+    },
+    "0.05|step|production": {
+      "miss_rate": 0.0,
+      "median_delay": 2.0
+    },
+    "0.05|step|ca_cfar": {
+      "miss_rate": 0.5,
+      "median_delay": 0.0
+    },
+    "0.05|step|os_cfar": {
+      "miss_rate": 0.99,
+      "median_delay": 0.0
+    },
+    "0.05|step|cfar_2of3": {
+      "miss_rate": 0.235,
+      "median_delay": 1.0
+    },
+    "0.05|step|cusum": {
+      "miss_rate": 0.0,
+      "median_delay": 0.0
+    },
+    "0.05|ramp|production": {
+      "miss_rate": 0.0,
+      "median_delay": 5.0
+    },
+    "0.05|ramp|ca_cfar": {
+      "miss_rate": 0.855,
+      "median_delay": 4.0
+    },
+    "0.05|ramp|os_cfar": {
+      "miss_rate": 0.995,
+      "median_delay": 1.0
+    },
+    "0.05|ramp|cfar_2of3": {
+      "miss_rate": 0.63,
+      "median_delay": 5.0
+    },
+    "0.05|ramp|cusum": {
+      "miss_rate": 0.0,
+      "median_delay": 6.0
+    },
+    "0.1|step|production": {
+      "miss_rate": 0.0,
+      "median_delay": 2.0
+    },
+    "0.1|step|ca_cfar": {
+      "miss_rate": 0.515,
+      "median_delay": 1.0
+    },
+    "0.1|step|os_cfar": {
+      "miss_rate": 0.44,
+      "median_delay": 1.0
+    },
+    "0.1|step|cfar_2of3": {
+      "miss_rate": 0.245,
+      "median_delay": 1.0
+    },
+    "0.1|step|cusum": {
+      "miss_rate": 0.0,
+      "median_delay": 1.0
+    },
+    "0.1|ramp|production": {
+      "miss_rate": 0.0,
+      "median_delay": 7.0
+    },
+    "0.1|ramp|ca_cfar": {
+      "miss_rate": 0.805,
+      "median_delay": 5.0
+    },
+    "0.1|ramp|os_cfar": {
+      "miss_rate": 0.73,
+      "median_delay": 5.5
+    },
+    "0.1|ramp|cfar_2of3": {
+      "miss_rate": 0.6,
+      "median_delay": 6.0
+    },
+    "0.1|ramp|cusum": {
+      "miss_rate": 0.0,
+      "median_delay": 7.0
+    }
+  },
+  "clean_series_alarms": {
+    "production": null,
+    "ca_cfar": [
+      75
+    ],
+    "os_cfar": [
+      75
+    ],
+    "cfar_2of3": null,
+    "cusum": [
+      75
+    ]
+  },
+  "verdicts": {
+    "0.01": "CFAR_REFUTED",
+    "0.05": "CFAR_REFUTED",
+    "0.1": "CFAR_REFUTED"
+  },
+  "overall": "CFAR_REFUTED"
+}

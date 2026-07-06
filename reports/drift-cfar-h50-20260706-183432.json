@@ -1,0 +1,199 @@
+{
+  "calibrated": {
+    "0.01|production": {
+      "scalar": 0.525,
+      "arl0": 600.0
+    },
+    "0.01|ca_cfar": {
+      "scalar": 200.5,
+      "arl0": 586.185
+    },
+    "0.01|os_cfar": {
+      "scalar": 200.5,
+      "arl0": 514.83
+    },
+    "0.01|cfar_2of3": {
+      "scalar": 200.5,
+      "arl0": 600.0
+    },
+    "0.01|cusum": {
+      "scalar": 2.505,
+      "arl0": 600.0
+    },
+    "0.05|production": {
+      "scalar": 0.525,
+      "arl0": 600.0
+    },
+    "0.05|ca_cfar": {
+      "scalar": 200.5,
+      "arl0": 600.0
+    },
+    "0.05|os_cfar": {
+      "scalar": 200.5,
+      "arl0": 558.995
+    },
+    "0.05|cfar_2of3": {
+      "scalar": 200.5,
+      "arl0": 600.0
+    },
+    "0.05|cusum": {
+      "scalar": 2.505,
+      "arl0": 600.0
+    },
+    "0.1|production": {
+      "scalar": 0.525,
+      "arl0": 600.0
+    },
+    "0.1|ca_cfar": {
+      "scalar": 200.5,
+      "arl0": 600.0
+    },
+    "0.1|os_cfar": {
+      "scalar": 200.5,
+      "arl0": 600.0
+    },
+    "0.1|cfar_2of3": {
+      "scalar": 200.5,
+      "arl0": 600.0
+    },
+    "0.1|cusum": {
+      "scalar": 2.505,
+      "arl0": 600.0
+    }
+  },
+  "race": {
+    "0.01|step|production": {
+      "miss_rate": 0.99,
+      "median_delay": 14.0
+    },
+    "0.01|step|ca_cfar": {
+      "miss_rate": 0.84,
+      "median_delay": 0.0
+    },
+    "0.01|step|os_cfar": {
+      "miss_rate": 0.115,
+      "median_delay": 0.0
+    },
+    "0.01|step|cfar_2of3": {
+      "miss_rate": 0.89,
+      "median_delay": 1.0
+    },
+    "0.01|step|cusum": {
+      "miss_rate": 0.99,
+      "median_delay": 10.0
+    },
+    "0.01|ramp|production": {
+      "miss_rate": 0.995,
+      "median_delay": 24.0
+    },
+    "0.01|ramp|ca_cfar": {
+      "miss_rate": 0.96,
+      "median_delay": 3.0
+    },
+    "0.01|ramp|os_cfar": {
+      "miss_rate": 0.405,
+      "median_delay": 3.0
+    },
+    "0.01|ramp|cfar_2of3": {
+      "miss_rate": 0.99,
+      "median_delay": 4.5
+    },
+    "0.01|ramp|cusum": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.05|step|production": {
+      "miss_rate": 0.975,
+      "median_delay": 21.0
+    },
+    "0.05|step|ca_cfar": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.05|step|os_cfar": {
+      "miss_rate": 0.99,
+      "median_delay": 1.0
+    },
+    "0.05|step|cfar_2of3": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.05|step|cusum": {
+      "miss_rate": 0.995,
+      "median_delay": 12.0
+    },
+    "0.05|ramp|production": {
+      "miss_rate": 0.975,
+      "median_delay": 24.0
+    },
+    "0.05|ramp|ca_cfar": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.05|ramp|os_cfar": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.05|ramp|cfar_2of3": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.05|ramp|cusum": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.1|step|production": {
+      "miss_rate": 0.79,
+      "median_delay": 20.0
+    },
+    "0.1|step|ca_cfar": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.1|step|os_cfar": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.1|step|cfar_2of3": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.1|step|cusum": {
+      "miss_rate": 0.995,
+      "median_delay": 6.0
+    },
+    "0.1|ramp|production": {
+      "miss_rate": 0.84,
+      "median_delay": 24.5
+    },
+    "0.1|ramp|ca_cfar": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.1|ramp|os_cfar": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.1|ramp|cfar_2of3": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    },
+    "0.1|ramp|cusum": {
+      "miss_rate": 1.0,
+      "median_delay": null
+    }
+  },
+  "clean_series_alarms": {
+    "production": null,
+    "ca_cfar": 75,
+    "os_cfar": 75,
+    "cfar_2of3": null,
+    "cusum": null
+  },
+  "verdicts": {
+    "0.01": "CFAR_VINDICATED",
+    "0.05": "CFAR_VINDICATED",
+    "0.1": "CFAR_REFUTED"
+  },
+  "overall": "MIXED"
+}
