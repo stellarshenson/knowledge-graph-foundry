@@ -62,6 +62,7 @@ class CuringSettings(BaseModel):
     entropy_delta_threshold: float = 0.01
     min_documents: int = 3
     max_fluid_documents: int = 20
+    min_encounters_to_confirm: int = 2
 
 
 class DriftSettings(BaseModel):
