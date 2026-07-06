@@ -805,3 +805,230 @@ Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack a
 - **Result** - pending
 - **Verdict** - pending
 
+## R09 - graph topology round: structural markers, communities, rebuild policy, and the metric-traversal coupling (pre-registered 2026-07-06)
+
+The graph has almost no structural self-knowledge. What exists today: GDS Leiden runs at optimize time and writes `communityId` to every entity (`graph/graphrag.py:52`) but NOTHING reads it at query time; the Heaps exponent (H47) is the only macro structural marker; the rebuild trigger is JSD over type frequencies (drift.py) - a distributional signal, blind to topology; density has been touched twice from the retrieval side (H22 de-cluttering, H60 pruning); and H37/H67-class traversal facts exist only where a hypothesis happened to need them. This round builds the instrument panel deliberately - degree structure, neighborhood overlap, reachability, betweenness, assortativity, core decomposition, hop-distance law, community quality, spectral connectivity - with one standing doctrine, the H37 lesson generalized: **a metric earns a place on the panel only if it (a) predicts probe outcomes, (b) triggers a maintenance action earlier or cheaper than an existing trigger, or (c) improves a traversal/render decision at matched budget. Anything else is dashboard decoration and gets recorded as such.** Four themes: structural health markers (H61-H67), communities (H68-H72), rebuild policy (H73-H76), metric-traversal coupling (H77-H80). Literature sweeps precede any design change that ships (registration claims no novelty); grounded against our own measured facts throughout - the 0.58 rel-type-diversity calibration correlate (v28), the vector@16 = 0.854 bar (H53), the false SAME_AS closure members (H34), the 47 cross-type duplicates (v29 defect record).
+
+| id | theme | grounding / assumption attacked | claim | runnable without completions |
+|----|-------|--------------------------------|-------|------------------------------|
+| H61 | markers | render caps are uniform (LIMIT 15 rels, 5 aliases) over a heavy-tailed degree distribution | uniform caps silently discard gold on hubs; degree-aware truncation recovers it at matched budget | yes |
+| H62 | markers | duplicate detection is text/embedding-driven | duplicates are structural twins first: neighbor-Jaccard ranks true duplicate pairs better than embedding similarity | yes |
+| H63 | markers | every entity is assumed retrievable in principle | >=30% of entities are 2-hop dark matter under production seeding, and dark matter is mostly the low-evidence prune set (H60 overlap >=70%) | yes |
+| H64 | markers | all nodes are equal for merge-risk purposes | evidence paths concentrate through few high-betweenness cut vertices; a bad merge there damages 3x more than on periphery | yes |
+| H65 | markers | Heaps (H47) is the only resolution-leak marker | degree assortativity is its topological companion: stable disassortative when healthy, rising when duplicate hubs link each other | partial |
+| H66 | markers | no compact structural fingerprint exists | the k-core shell profile is stable across waves and gold evidence concentrates in middle shells (>=70%) | yes |
+| H67 | markers | traversal depth is an open design dial | the seed-to-gold hop distribution is bimodal - 0-2 hops or disconnected; no traversal of ANY depth rescues missing golds (generalizes H37) | yes |
+| H68 | communities | Leiden communities are assumed topical | communities are provenance artifacts: NMI(community, dominant source doc) >= 0.6 - documents rediscovered, not topics | yes |
+| H69 | communities | seeds are picked by vector score alone | seed-community concentration predicts misses; community-diversified seeding beats the vector@16 = 0.854 bar | yes |
+| H70 | communities | merge decisions ignore community structure | false merges are >=2x more likely cross-community; a community-mismatch veto removes the false SAME_AS closures without losing P09 | yes |
+| H71 | communities | R6 demoted community summaries by argument | measured retest: context cores add <=1 marginal gold at local granularity - retire from the local path with numbers, not taste | partial |
+| H72 | communities | graph density is only ever reduced | intra-community transitive closure flips >=1 multi-hop probe to direct-seed answerable at zero context-precision cost (tension pair with H80) | yes |
+| H73 | rebuild | incremental maintenance is assumed lossy vs rebuild | full rebuild and maintained graph are retrieval-equivalent (+-1 probe) while structurally divergent - maintenance debt is retrieval-invisible at this horizon | no |
+| H74 | rebuild | JSD over type frequencies is the rebuild trigger | a composite of structural deltas (Heaps residual, assortativity, dark-matter, shell-profile JSD) fires earlier with zero false alarms | partial |
+| H75 | rebuild | rebuild is all-or-nothing | community-scoped partial rebuild recovers >=80% of full-rebuild benefit at <=30% cost | no |
+| H76 | rebuild | ingest order is assumed immaterial | reverse-order ingest diverges >=10% in inventory but <=2% in probe recall - path dependence lives in identity, not retrieval | no |
+| H77 | coupling | connectivity is not monitored | algebraic connectivity + effective diameter move before type-frequency JSD under structural degradation (injection replay) | yes |
+| H78 | coupling | render budget is uniform per node | degree-quantile budget allocation is Pareto-better: no probe loses, H61's truncation victims recover, context length unchanged | yes |
+| H79 | coupling | render candidate ranking uses PPR (theater per H37) | relationship-type entropy - the top v28 calibration correlate (0.58) - ranks render candidates better than PPR at matched budget | yes |
+| H80 | coupling | edge pruning has no measured safety line | bottom 30% of edges by (betweenness x evidence x validity) composite are removable with ZERO evidence-recall loss; the knee locates the operating point | yes |
+
+### R09-H61 Hub truncation - uniform render caps on a heavy-tailed graph
+
+- **Grounding** - the per-node render caps relations at LIMIT 15 and aliases at 5 uniformly (`pipeline.py` render spec); entity-graph degree distributions are heavy-tailed, so a uniform cap is a silent lossy filter exactly on the nodes most likely to be retrieved
+- **Hypothesis** - top-decile-degree nodes carry several times more relations than the cap admits, and on the probe set at least some gold relation edges rank outside the arbitrary top-15 on rendered hubs - evidence recall is lost to truncation, not to seeding
+- **Prediction** - top-decile nodes hold >=3x the cap in relations; >=2 of 28 probes have a gold edge truncated on at least one rendered hub; re-render with the same TOTAL edge budget reallocated by degree quantile recovers them
+- **Acceptance bar** - recovery at matched total budget; refuted if truncated hub edges never carry gold (uniform caps vindicated, hubs are generic)
+- **Experiment** - deterministic: degree census + truncation audit + matched-budget re-render on the H34 harness; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H62 Structural twins - neighbor-Jaccard finds duplicates text cannot
+
+- **Grounding** - duplicates enter as parallel nodes sharing neighborhoods (same manufacturer, same category, same spec values) before any SAME_AS links them; every production detector is text- or embedding-driven; collective ER literature says relationships resolve what attributes cannot
+- **Hypothesis** - neighbor-set Jaccard over the entity graph ranks true duplicate pairs above embedding cosine ranking, and the two signals combined strictly dominate either alone
+- **Prediction** - on the labeled duplicate inventory (47 cross-type duplicates, v29 record + campaign additions), Jaccard MAP > embedding MAP; combined rank raises MAP further; the false-positive head of the Jaccard ranking is dominated by siblings (same-family models), which the description-contrast feature already used in cross-type resolution filters
+- **Acceptance bar** - MAP improvement with sibling filtering; refuted if structural ranking is uninformative (graph topology knows less about identity than text does)
+- **Experiment** - deterministic ranking comparison on labeled pairs; runs now; on confirmation the signal feeds H58's fifth detector as a sixth evidence term
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H63 Dark matter - the census of the unreachable
+
+- **Grounding** - retrieval-first doctrine promises perfect context in 1-2 hops, which presumes the evidence is within 2 hops of SOME seed; nothing has ever measured how much of the graph is reachable at all under the production seed budget
+- **Hypothesis** - a material fraction of entities is 2-hop dark matter - never inside seeds-plus-2-hops for any probe - and dark matter is substantially the same population as the H60 low-evidence prune set (single mention, no properties, no propositions)
+- **Prediction** - >=30% of campaign-graph entities are dark under vector@16 seeding across the probe set; >=70% of dark matter qualifies for the H60 prune candidate set; zero gold-carrying entities are dark
+- **Acceptance bar** - overlap confirms pruning is safe precisely because the prunable mass is already unreachable; CRITICALLY refuted if gold-carrying or high-evidence entities are dark - that converts the finding from a hygiene fact into a seeding-gap alarm and routes to H40/H41/H69
+- **Experiment** - deterministic reachability census (BFS from per-probe seed sets); runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H64 Betweenness bottlenecks - where a bad merge hurts most
+
+- **Grounding** - merge errors are currently treated as uniformly costly; graph theory says inter-region paths concentrate through few cut vertices, so error cost should be wildly non-uniform
+- **Hypothesis** - seed-to-gold evidence paths concentrate through a small high-betweenness set; corrupting a bottleneck node (simulated bad merge/split) degrades multi-hop probe recall several times more than corrupting a random node - merge-audit priority should be betweenness-weighted
+- **Prediction** - top-1% betweenness nodes lie on >=50% of seed-to-gold shortest paths; simulated corruption at bottlenecks degrades recall >=3x random-node corruption; the campaign graph's bottleneck set is small enough (<=30 nodes) for per-wave manual-grade auditing
+- **Acceptance bar** - concentration + differential damage; refuted if paths spread uniformly (then audit priority by degree or evidence count instead)
+- **Experiment** - GDS betweenness (approximate) + path census + corruption replay on a copy; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H65 Assortativity trend - the topological companion to Heaps
+
+- **Grounding** - H47 watches identity-leak VOLUME (vocabulary growth); nothing watches leak TOPOLOGY. A healthy spec-graph is disassortative - hubs (manufacturers, categories, common spec values) bind periphery; duplicate hubs linking each other push degree assortativity upward
+- **Hypothesis** - degree assortativity r stays in a narrow disassortative band across a healthy wave and responds measurably to injected resolution leaks - a second-order drift marker orthogonal to remap rate (which sees only what resolution DID, not what it missed)
+- **Prediction** - wave-1b series holds r < -0.05 throughout with band width < 0.1; merge-undo injection replay (un-merging known true aliases at increasing rate) moves r upward monotonically and detectably at >=10% injection
+- **Acceptance bar** - stability + injection sensitivity; refuted if r is noisy or flat under injection (not a marker - record as decoration per the panel doctrine)
+- **Experiment** - snapshot series reconstruction (approximate, from first-seen positions and edge provenance) + injection replay; partial now, exact series from wave 2 onward if promoted
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H66 The k-core fingerprint - shells as structural identity
+
+- **Grounding** - no compact, corpus-size-independent fingerprint of graph structure exists; the k-core shell-index distribution is cheap, deterministic, and captures density layering in one histogram
+- **Hypothesis** - gold evidence concentrates in the middle shells - the periphery (shell 1) holds orphan mentions, the max core holds generic hubs - and the shell profile is stable across healthy waves, making profile divergence a structural regime-change alarm
+- **Prediction** - >=70% of gold-evidence entities sit in shells 2..k_max-1; profile JS-divergence between healthy wave snapshots < 0.05; the premature-cure failure mode (over-merge) would have shown as max-core inflation
+- **Acceptance bar** - concentration + stability; refuted if gold spreads uniformly across shells (core number carries no evidence signal)
+- **Experiment** - core decomposition (networkx/scipy on the projected entity graph) + gold mapping via the H34 harness; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H67 The hop-distance law - no traversal depth rescues a missing gold
+
+- **Grounding** - H37 showed PPR specifically adds nothing over seeds+1-hop; the open general question is whether ANY traversal mechanism of any depth could - i.e., what the seed-to-gold graph-distance distribution actually looks like; retrieval-first doctrine (perfect context in 1-2 hops) predicts its shape
+- **Hypothesis** - the distribution is bimodal: gold evidence is either within 0-2 hops of a production seed or in a different connected component / beyond any practical radius - the 3-5 hop band is nearly empty, so traversal-depth engineering is a dead lever and only seeding (H40/H41/H69) or densification (H72) can recover misses
+- **Prediction** - >=90% of reachable golds at <=2 hops from the nearest seed; <5% in the 3-5 hop band; misses are disconnection, not distance
+- **Acceptance bar** - bimodality confirms and permanently closes the traversal-depth design dial; refuted if a material 3-4 hop band exists - then deeper traversal is a REAL lever, the retrieval-first doctrine needs an amendment, and H37's verdict was scale-specific rather than structural
+- **Experiment** - shortest-path census from per-probe production seeds to gold nodes; deterministic, runs now; the round's flagship - every coupling hypothesis (H78-H80) interprets against this distribution
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H68 Communities as provenance artifacts - documents rediscovered
+
+- **Grounding** - Leiden communities exist on every entity (`communityId`, written at optimize) but their SEMANTICS were never audited; extraction is per-document, so co-mention edges are document-local by construction - the null hypothesis for any KG built this way is that community structure recapitulates document boundaries
+- **Hypothesis** - normalized mutual information between community assignment and dominant source document is high (>=0.6) - the communities are provenance artifacts, and any community-based feature is document-identity in disguise until cross-document resolution breaks the correspondence
+- **Prediction** - NMI >= 0.6 on the campaign graph at wave-1b end; the correspondence WEAKENS as waves accumulate (cross-doc merges braid documents together) - NMI trend down across waves is itself a resolution-quality signal
+- **Acceptance bar** - high NMI confirms (and demotes naive community features); refuted if NMI < 0.3 - communities genuinely cross-document, semantically real, and H69-H71 gain a stronger footing
+- **Experiment** - re-run Leiden on the campaign graph + NMI census; deterministic GDS + sklearn, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H69 Community-diversified seeding - beat vector@16 with structure
+
+- **Grounding** - the standing seed bar is vector@16 = 0.854 (H53 budget control); vector seeds are picked by score alone, and score-similar entities cluster - if all 16 seeds land in 1-2 communities, the probe sees one region of the graph however large the budget
+- **Hypothesis** - seed-community concentration predicts evidence misses, and enforcing community diversity (swap tail seeds for the next-best candidates from unrepresented communities) beats the pure-vector allocation at matched budget
+- **Prediction** - probes whose 16 seeds span <=2 communities have measurably lower evidence recall; diversified@16 >= 0.90 vs the 0.854 bar
+- **Acceptance bar** - matched-budget win; refuted if concentration does not correlate with misses (communities carry no retrieval signal - expected under an H68 artifact verdict, which is why H68 runs first)
+- **Experiment** - deterministic re-seeding replay on the H34/H53 harness; runs now, sequenced after H68
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H70 The conductance merge gate - cross-community merges are suspect
+
+- **Grounding** - the false SAME_AS closure members H34 exposed (MANU, DreamStation CPAP, bCPAP prongs) and the 47 cross-type duplicates form a labeled merge-error inventory; community membership was never a resolution feature
+- **Hypothesis** - false merges are disproportionately cross-community (>=2x the rate of true merges); a community-mismatch veto - or a Bayesian LR term if H54 leaves the posterior standing - removes false closures without touching legitimate cross-document aliases
+- **Prediction** - the labeled false set shows >=2x cross-community rate; applying the veto retroactively drops the false closure members while P09 (legitimate multi-doc identity) survives
+- **Acceptance bar** - differential + P09 regression-free; refuted if community membership is independent of merge correctness
+- **Experiment** - deterministic replay over the labeled decision inventory; runs now, sequenced after H68 (an artifact verdict there weakens but does not kill this - provenance mismatch is itself evidence)
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H71 Context cores retested - numbers where R6 used argument
+
+- **Grounding** - R6/H46 demoted community summaries to the global-only path largely by argument; H34's attribution harness now exists to measure channel value exactly; propositions are the proven best rescue channel (10 of 12 non-seed golds)
+- **Hypothesis** - community-summary nodes ("context cores") as a local seeding/render channel add at most 1 marginal gold over vector@16 + propositions at spec-heavy probe granularity - the wrong granularity for local probes, whatever their global/thematic value
+- **Prediction** - <=1 marginal gold on the 28-probe set; the channel's contexts displace higher-value proposition content at matched budget (net negative or flat)
+- **Acceptance bar** - <=1 marginal gold retires cores from the local path permanently (with numbers this time); >=3 marginal golds reinstates them and reopens R6
+- **Experiment** - summary generation for campaign communities (completions - local model or post-quota) + H34 attribution extension; partial now (harness prep deterministic)
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H72 Closure densification - the graph earns edges inside tight communities
+
+- **Grounding** - density has only ever been REDUCED (H22, H60); the H67 hop census will show whether misses are distance; hierarchical relations (PART_OF, SUPPORTS_MODE, COMPATIBLE_WITH) are transitively meaningful within tight communities - the tension pair with H80, by design: one adds edges, one removes, the probe set adjudicates optimal density from both sides
+- **Hypothesis** - materializing transitive closure edges for hierarchy-class relations WITHIN high-density communities (provenance-marked as inferred) flips at least one multi-hop probe to direct-seed answerable at zero context-precision cost
+- **Prediction** - >=1 P09/P22-class probe flips; inferred edges never displace gold in renders (they enter below extracted edges in render ranking); closure inflation stays bounded (<=15% edge growth)
+- **Acceptance bar** - flip without displacement; refuted if inferred edges bloat contexts or displace gold (the H22 lesson: context is a fixed budget)
+- **Experiment** - deterministic closure computation on a graph copy + H34 probe replay; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H73 Rebuild equals maintenance - is the debt retrieval-visible?
+
+- **Grounding** - the rebuild decision engine exists (drift verdicts) but the COST of not rebuilding was never measured; the fear that incremental maintenance accumulates retrieval-relevant debt is an assumption
+- **Hypothesis** - a from-scratch re-ingest of the identical corpus and the incrementally maintained graph are retrieval-equivalent (within 1 probe / 2% evidence recall) while structurally divergent (entity inventory, type assignments) - maintenance debt is real but retrieval-invisible at this horizon, so rebuild cadence should be driven by structure-hygiene markers (H65/H66/H77), not recall fear
+- **Prediction** - probe metrics within noise; inventory divergence >=10% of entities; the divergent mass is dominated by low-evidence periphery (connects to H63's dark matter)
+- **Acceptance bar** - equivalence + divergence localized to periphery; refuted if the rebuild recovers probes the maintained graph misses (maintenance debt is retrieval-real - rebuild triggers must tighten)
+- **Experiment** - full re-extraction of wave 1b into a fresh graph (local model, post-wave GPU window) + dual probe cycle; needs completions
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H74 The composite rebuild trigger - structure fires before distribution
+
+- **Grounding** - the production rebuild trigger is JSD over type frequencies - blind to topology by construction; this round instruments Heaps residual (H47), assortativity trend (H65), dark-matter delta (H63) and shell-profile divergence (H66); a composite of orthogonal markers should dominate any single one
+- **Hypothesis** - the structural composite predicts probe-recall degradation at least one wave earlier than the JSD trigger, with zero false fires on healthy waves
+- **Prediction** - backtested over the R05 wave snapshots + per-wave probe cycles as they land: composite leads JSD on any true degradation event; on the (so far) healthy campaign, NEITHER fires - the composite's specificity clause
+- **Acceptance bar** - earlier + specific; refuted if JSD alone matches the composite (parsimony wins - the panel stays diagnostic, the trigger stays simple)
+- **Experiment** - backtest as R05 probe cycles accumulate; partial now (marker series), full adjudication needs >=2 wave cycles
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H75 Partial rebuild - repair the sick community, not the graph
+
+- **Grounding** - rebuild is currently all-or-nothing; if degradation localizes (H68-H70 give community-level quality signals), full rebuild wastes extraction on healthy regions
+- **Hypothesis** - when markers localize degradation to specific communities, re-extracting ONLY the documents touching those communities recovers >=80% of the full-rebuild recall benefit at <=30% of the extraction cost
+- **Prediction** - on an induced-degradation graph copy (merge-undo injection concentrated in one community), community-scoped repair closes >=80% of the probe gap at the predicted cost fraction
+- **Acceptance bar** - the 80/30 clause; refuted if degradation delocalizes on repair (fixing one community exposes cross-community damage - rebuild is genuinely global)
+- **Experiment** - induced degradation + scoped re-extraction (completions - local model) + probe cycle; queue for the wave-3+ window
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H76 Order invariance - path dependence lives in identity, not retrieval
+
+- **Grounding** - ingest order determines curing content, merge order and description survivorship; whether any of that matters to the USER-VISIBLE surface was never measured; H54's decision replay gives the identity-layer half of the answer, this gives the retrieval half
+- **Hypothesis** - reverse-order ingest of wave 1b yields >=10% entity-inventory divergence (path-dependent identity) but <=2% probe-recall divergence (retrieval robust to history) - the foundry's product is the retrieval surface, not the inventory, and inventory determinism is worth less engineering than it tempts
+- **Prediction** - inventory symmetric difference >=10%; probe metrics within 2%; type inventories nearly identical (curing converges to the same ontology from either direction - a strong vote for the curing gate's stability)
+- **Acceptance bar** - the split verdict (identity diverges, retrieval does not); refuted in the interesting direction if retrieval diverges too - ingest order becomes a first-class quality variable and curriculum effects (H49) gain standing
+- **Experiment** - full reverse-order re-ingest (completions - local model); queue behind H73, shares its fresh-graph infrastructure
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H77 Connectivity moves first - the spectral early-warning channel
+
+- **Grounding** - type-frequency JSD sees the graph as a bag of labels; fragmentation - the graph pulling apart into loosely-coupled blobs as resolution degrades - shows in algebraic connectivity (Fiedler value) and effective diameter before it shows in label mix
+- **Hypothesis** - under structural degradation, connectivity markers move before and more monotonically than JSD: an injection replay (merge-undo at increasing rates) shows algebraic connectivity of the giant component falling and effective diameter rising detectably at injection rates where JSD is still flat
+- **Prediction** - on healthy wave-1b snapshots both marker families are flat; under injection, connectivity responds at <=half the injection rate JSD needs; the two-family panel (spectral + distributional) dominates either alone
+- **Acceptance bar** - differential sensitivity; refuted if JSD responds first or simultaneously (distribution is sufficient, spectral is decoration)
+- **Experiment** - scipy Laplacian eigensolve on the projected giant component + sampled BFS diameter + injection replay; deterministic, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H78 Degree-aware render budgets - Pareto over uniform caps
+
+- **Grounding** - direct consequence of H61: if uniform caps truncate gold on hubs, the fix must not simply raise limits (context is a fixed budget - H22); the budget must be REALLOCATED - periphery nodes render everything they have, hubs get a ranked top-k, total token budget unchanged
+- **Hypothesis** - degree-quantile budget allocation is Pareto-better than uniform LIMIT 15/5: no probe loses evidence, H61's truncation victims recover, and context length stays within +-5%
+- **Prediction** - evidence recall >= uniform on all 28 probes, strictly > on >=2; the reallocation interacts positively with vector@16 seeding (more seeds -> more rendered nodes -> budget discipline matters more)
+- **Acceptance bar** - Pareto (zero probes lose); refuted if ranked truncation loses golds that arbitrary-order LIMIT happened to keep - then ORDERING is the real problem and H79 takes over
+- **Experiment** - matched-budget re-render replay on the H34 harness; deterministic, runs now, sequenced after H61
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H79 Entropy-ranked rendering - the calibration correlate becomes a policy
+
+- **Grounding** - relationship-type diversity was the TOP positive calibration correlate in v28 (0.58) - an unexploited measured signal; PPR ranking is theater at this scale (H37); render ordering currently falls back to arbitrary storage order within the LIMIT
+- **Hypothesis** - ranking a node's rendered relations (and hub render priority generally) by relationship-type entropy beats both PPR-rank and arbitrary order at matched budget: type-diverse neighborhoods carry more answerable structure per token than type-monotone ones
+- **Prediction** - entropy-ranked render >= production on evidence recall at matched budget; entropy-rank + H78 allocation combined gains >=2 probes over production render; entropy-rank alone beats PPR-rank (retiring PPR's last remaining job)
+- **Acceptance bar** - matched-budget win; refuted if entropy rank is indistinguishable from random (the 0.58 correlate was calibration-specific, not retrieval-general - a useful negative for the calibration layer too)
+- **Experiment** - re-render replay with three ranking policies on the H34 harness; deterministic, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R09-H80 The sparsification safety line - how much graph is dead weight
+
+- **Grounding** - H60 prunes ELEMENTS by evidence; the edge-level twin ranks edges by a traversal-relevance composite (approximate edge betweenness x evidence count x validity status) and asks how much is removable before retrieval notices; the deliberate tension pair with H72 - the probe set adjudicates optimal density from both directions
+- **Hypothesis** - the bottom 30% of edges by composite are removable with zero evidence-recall loss on both probe sets; degradation begins somewhere past that - the knee locates the graph's measured operating density
+- **Prediction** - zero-loss plateau extends to >=25-30% removal; the knee sits before 50%; removed edges are dominated by SIMILAR_TO leftovers, stale-interval versions, and provenance-thin extractions - the same population three independent hygiene signals (H60, H63, this) keep converging on
+- **Acceptance bar** - plateau + knee located; refuted if ANY removal level below 20% loses gold - the graph is already at optimal density, pruning doctrine caps out, and H72's densification direction wins the tension pair
+- **Experiment** - staged edge removal on a graph copy + probe replay per stage; deterministic, runs now
+- **Result** - pending
+- **Verdict** - pending
+
