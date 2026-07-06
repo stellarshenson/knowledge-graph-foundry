@@ -67,3 +67,138 @@
 {"ts": "2026-07-06T09:31:47.427714+00:00", "event": "curing.metrics", "doc_index": 2, "unique_types": 28.0, "total_occurrences": 381.0, "singletons": 4.0, "doubletons": 1.0, "entropy_shannon": 4.001382236821273, "entropy_shannon_delta": 0.1697574253062335, "kl_divergence": 0.3906346956743851, "js_divergence": 0.10628451346268095, "type_accumulation_rate": 4.0, "gini_coefficient": 0.5647731533558306, "zipf_r_squared": 0.8612416940084302, "heaps_beta": 0.1043143805228605, "chao1_estimate": 36.0, "chao1_coverage": 0.7777777777777778, "ace_estimate": 30.053700203038577, "entropy_shannon_var": 0.005350711543714463, "js_divergence_var": 0.0010358287717666672, "gini_coefficient_var": 0.0011584006677419518, "chao1_coverage_var": 0.01226124712374091}
 {"ts": "2026-07-06T09:31:47.636459+00:00", "event": "document.completed", "path": "data/external/cpap-datasheets-and-manuals/3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf", "entities": 249}
 {"ts": "2026-07-06T09:31:47.636531+00:00", "event": "document.started", "path": "data/external/cpap-datasheets-and-manuals/ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf"}
+{"ts": "2026-07-06T09:32:45.257965+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_ELECTRICAL_REQUIREMENT]-> Maximum 100 Watts with Humidifier", "chunk": "c_a9b1377f7032b767"}
+{"ts": "2026-07-06T09:32:45.258301+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_ELECTRICAL_REQUIREMENT]-> Class II Double Insulated Device", "chunk": "c_a9b1377f7032b767"}
+{"ts": "2026-07-06T09:32:45.258338+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[REQUIRES]-> Air Filter Cleansing/Replacement", "chunk": "c_a9b1377f7032b767"}
+{"ts": "2026-07-06T09:32:57.649113+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_PRESSURE_RANGE]-> Minimum pressure 2-4 hPa", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649390+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_PRESSURE_RANGE]-> Maximum pressure 20 hPa", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649414+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_FEATURE]-> Pressure increment 0.5 hPa", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649426+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_FEATURE]-> Pressure stability low range \u00b10.5 hPa", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649436+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_FEATURE]-> Pressure stability high range \u00b11.0 hPa", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649444+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_FEATURE]-> Short term pressure variability <1.0 hPa", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649451+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_FEATURE]-> Maximum flow capability >30 LPM", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649459+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[REQUIRES]-> EN ISO 80601-2-70:2020", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649465+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_FEATURE]-> Altitude adjustment algorithm", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649473+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[REQUIRES]-> 20 minute stabilization period", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649479+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[COMPATIBLE_WITH]-> Wireless/Bluetooth add-on module", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649495+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[INCLUDES]-> External power supply", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649501+00:00", "event": "extraction.warning", "reason": "dangling relationship: Accessory -[REQUIRES]-> Warm water and mild detergent cleaning", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649508+00:00", "event": "extraction.warning", "reason": "dangling relationship: Tubing -[REQUIRES]-> Low temperature steam disinfection 90\u00b0C", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649515+00:00", "event": "extraction.warning", "reason": "dangling relationship: Tubing -[REQUIRES]-> Ethylene oxide disinfection", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:32:57.649521+00:00", "event": "extraction.warning", "reason": "dangling relationship: Humidifier -[REQUIRES]-> Vinegar solution for mineral deposit removal", "chunk": "c_0bed6c6548f6a785"}
+{"ts": "2026-07-06T09:33:26.672224+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[TREATS]-> Obstructive Sleep Apnoea", "chunk": "c_47c8c3315654c4a0"}
+{"ts": "2026-07-06T09:33:26.672522+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[TREATS]-> Obstructive Sleep Apnoea/Hypopnoea Syndrome", "chunk": "c_47c8c3315654c4a0"}
+{"ts": "2026-07-06T09:33:26.672544+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[TREATS]-> Obesity Hypoventilation Syndrome", "chunk": "c_47c8c3315654c4a0"}
+{"ts": "2026-07-06T09:33:26.672555+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[ASSOCIATED_WITH]-> Bacterial Colonization", "chunk": "c_47c8c3315654c4a0"}
+{"ts": "2026-07-06T09:33:26.672588+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_SPECIFICATION]-> Noise Level", "chunk": "c_47c8c3315654c4a0"}
+{"ts": "2026-07-06T09:34:27.747369+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_IDENTIFIER]-> Serial Number", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747842+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[RUNS_SOFTWARE]-> Firmware Version", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747863+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[SUPPORTS_MODE]-> Auto-Adjusting Mode", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747874+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[POWERED_BY]-> Mains Power", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747883+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_SPECIFICATION]-> Battery Backup Duration", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747891+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[HAS_COMPONENT]-> Patient Connection Port", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747932+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[COMPATIBLE_WITH]-> Heated Delivery Tube", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747942+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDevice -[COMPATIBLE_WITH]-> Non-Heated Delivery Tube", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.747949+00:00", "event": "extraction.warning", "reason": "dangling relationship: Manufacturer -[PROVIDES]-> Clinical Trial Evidence", "chunk": "c_66a239873f04de7e"}
+{"ts": "2026-07-06T09:34:27.748132+00:00", "event": "extraction.completed", "chunks": 12, "entities": 363, "relationships": 331}
+{"ts": "2026-07-06T09:34:59.297074+00:00", "event": "ontology.type_emerged", "type": "Standard"}
+{"ts": "2026-07-06T09:34:59.297132+00:00", "event": "ontology.type_emerged", "type": "ClinicalGuideline"}
+{"ts": "2026-07-06T09:34:59.297162+00:00", "event": "ontology.type_emerged", "type": "SafetyAlert"}
+{"ts": "2026-07-06T09:34:59.297172+00:00", "event": "ontology.type_emerged", "type": "RegulatoryBody"}
+{"ts": "2026-07-06T09:34:59.297180+00:00", "event": "ontology.type_emerged", "type": "RegulatoryStandard"}
+{"ts": "2026-07-06T09:34:59.297190+00:00", "event": "ontology.type_emerged", "type": "TestingProcedure"}
+{"ts": "2026-07-06T09:34:59.297199+00:00", "event": "ontology.type_emerged", "type": "PerformanceMetric"}
+{"ts": "2026-07-06T09:34:59.297211+00:00", "event": "ontology.type_emerged", "type": "Organization"}
+{"ts": "2026-07-06T09:34:59.297220+00:00", "event": "ontology.type_emerged", "type": "RegulatoryRequirement"}
+{"ts": "2026-07-06T09:34:59.297364+00:00", "event": "ontology.type_emerged", "type": "Sensor"}
+{"ts": "2026-07-06T09:34:59.297383+00:00", "event": "ontology.type_emerged", "type": "TestProtocol"}
+{"ts": "2026-07-06T09:34:59.297391+00:00", "event": "ontology.type_emerged", "type": "Specification"}
+{"ts": "2026-07-06T09:34:59.297405+00:00", "event": "ontology.type_emerged", "type": "HardwareRequirement"}
+{"ts": "2026-07-06T09:34:59.297412+00:00", "event": "ontology.type_emerged", "type": "OutputFormat"}
+{"ts": "2026-07-06T09:34:59.297421+00:00", "event": "ontology.type_emerged", "type": "PowerSource"}
+{"ts": "2026-07-06T09:34:59.297430+00:00", "event": "ontology.type_emerged", "type": "Condition"}
+{"ts": "2026-07-06T09:34:59.297438+00:00", "event": "ontology.type_emerged", "type": "Issue"}
+{"ts": "2026-07-06T09:34:59.297450+00:00", "event": "ontology.type_emerged", "type": "PhysiologicalParameter"}
+{"ts": "2026-07-06T09:34:59.297485+00:00", "event": "ontology.type_emerged", "type": "Document"}
+{"ts": "2026-07-06T09:34:59.297521+00:00", "event": "ontology.type_emerged", "type": "DocumentType"}
+{"ts": "2026-07-06T09:34:59.297528+00:00", "event": "ontology.type_emerged", "type": "DeviceIdentifier"}
+{"ts": "2026-07-06T09:34:59.297534+00:00", "event": "ontology.type_emerged", "type": "SoftwareVersion"}
+{"ts": "2026-07-06T09:34:59.297541+00:00", "event": "ontology.type_emerged", "type": "TestMetric"}
+{"ts": "2026-07-06T09:34:59.297548+00:00", "event": "ontology.type_emerged", "type": "EnvironmentalCondition"}
+{"ts": "2026-07-06T09:34:59.297557+00:00", "event": "ontology.type_emerged", "type": "Component"}
+{"ts": "2026-07-06T09:34:59.297564+00:00", "event": "ontology.type_emerged", "type": "TestParameter"}
+{"ts": "2026-07-06T09:34:59.297572+00:00", "event": "ontology.type_emerged", "type": "PressureSetting"}
+{"ts": "2026-07-06T09:34:59.297579+00:00", "event": "ontology.type_emerged", "type": "TestComponent"}
+{"ts": "2026-07-06T09:34:59.297586+00:00", "event": "ontology.type_emerged", "type": "TestSequence"}
+{"ts": "2026-07-06T09:34:59.297596+00:00", "event": "ontology.type_emerged", "type": "BreathingPattern"}
+{"ts": "2026-07-06T09:34:59.297602+00:00", "event": "ontology.type_emerged", "type": "PhysicalPhenomenon"}
+{"ts": "2026-07-06T09:34:59.297609+00:00", "event": "ontology.type_emerged", "type": "RespiratoryParameter"}
+{"ts": "2026-07-06T09:34:59.297616+00:00", "event": "ontology.type_emerged", "type": "PhysiologicalEvent"}
+{"ts": "2026-07-06T09:34:59.297646+00:00", "event": "ontology.type_emerged", "type": "Identifier"}
+{"ts": "2026-07-06T09:34:59.297654+00:00", "event": "ontology.type_emerged", "type": "TestEquipment"}
+{"ts": "2026-07-06T09:34:59.297666+00:00", "event": "ontology.type_emerged", "type": "Evidence"}
+{"ts": "2026-07-06T09:34:59.297953+00:00", "event": "ontology.type_confirmed", "type": "ComplianceMeter"}
+{"ts": "2026-07-06T09:34:59.297975+00:00", "event": "ontology.type_confirmed", "type": "Indication"}
+{"ts": "2026-07-06T09:34:59.297985+00:00", "event": "ontology.type_confirmed", "type": "IntendedUser"}
+{"ts": "2026-07-06T09:34:59.297991+00:00", "event": "ontology.type_confirmed", "type": "Standard"}
+{"ts": "2026-07-06T09:34:59.297997+00:00", "event": "ontology.type_confirmed", "type": "ClinicalGuideline"}
+{"ts": "2026-07-06T09:34:59.298003+00:00", "event": "ontology.type_confirmed", "type": "TestingProcedure"}
+{"ts": "2026-07-06T09:34:59.298013+00:00", "event": "ontology.type_confirmed", "type": "PerformanceMetric"}
+{"ts": "2026-07-06T09:34:59.298019+00:00", "event": "ontology.type_confirmed", "type": "Organization"}
+{"ts": "2026-07-06T09:34:59.298024+00:00", "event": "ontology.type_confirmed", "type": "Sensor"}
+{"ts": "2026-07-06T09:34:59.298029+00:00", "event": "ontology.type_confirmed", "type": "TestProtocol"}
+{"ts": "2026-07-06T09:34:59.298034+00:00", "event": "ontology.type_confirmed", "type": "Specification"}
+{"ts": "2026-07-06T09:34:59.298039+00:00", "event": "ontology.type_confirmed", "type": "OutputFormat"}
+{"ts": "2026-07-06T09:34:59.298044+00:00", "event": "ontology.type_confirmed", "type": "PowerSource"}
+{"ts": "2026-07-06T09:34:59.298049+00:00", "event": "ontology.type_confirmed", "type": "Condition"}
+{"ts": "2026-07-06T09:34:59.298054+00:00", "event": "ontology.type_confirmed", "type": "Issue"}
+{"ts": "2026-07-06T09:34:59.298059+00:00", "event": "ontology.type_confirmed", "type": "PhysiologicalParameter"}
+{"ts": "2026-07-06T09:34:59.298065+00:00", "event": "ontology.type_confirmed", "type": "Document"}
+{"ts": "2026-07-06T09:34:59.298070+00:00", "event": "ontology.type_confirmed", "type": "EnvironmentalCondition"}
+{"ts": "2026-07-06T09:34:59.298075+00:00", "event": "ontology.type_confirmed", "type": "Component"}
+{"ts": "2026-07-06T09:34:59.298080+00:00", "event": "ontology.type_confirmed", "type": "TestParameter"}
+{"ts": "2026-07-06T09:34:59.298085+00:00", "event": "ontology.type_confirmed", "type": "PressureSetting"}
+{"ts": "2026-07-06T09:34:59.298090+00:00", "event": "ontology.type_confirmed", "type": "TestSequence"}
+{"ts": "2026-07-06T09:34:59.298095+00:00", "event": "ontology.type_confirmed", "type": "TestEquipment"}
+{"ts": "2026-07-06T09:34:59.298102+00:00", "event": "ontology.evolved", "documents": 4, "types": 64, "entities": 739}
+{"ts": "2026-07-06T09:34:59.298569+00:00", "event": "curing.metrics", "doc_index": 3, "unique_types": 64.0, "total_occurrences": 745.0, "singletons": 17.0, "doubletons": 9.0, "entropy_shannon": 4.581089254084631, "entropy_shannon_delta": 0.5797070172633578, "kl_divergence": 0.2904236453796637, "js_divergence": 0.0900594152943943, "type_accumulation_rate": 36.0, "gini_coefficient": 0.6956585570469799, "zipf_r_squared": 0.9453221929290653, "heaps_beta": 0.39051109235284637, "chao1_estimate": 80.05555555555556, "chao1_coverage": 0.7994448299791811, "ace_estimate": 79.87025109240389, "entropy_shannon_var": 0.08275380448214986, "js_divergence_var": 0.0007471516094831681, "gini_coefficient_var": 0.005804393431375193, "chao1_coverage_var": 0.015154222463802481}
+{"ts": "2026-07-06T09:34:59.740234+00:00", "event": "document.completed", "path": "data/external/cpap-datasheets-and-manuals/ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf", "entities": 363}
+{"ts": "2026-07-06T09:34:59.740309+00:00", "event": "document.started", "path": "data/external/cpap-datasheets-and-manuals/Airsense-Brochure.pdf"}
+{"ts": "2026-07-06T09:36:20.274711+00:00", "event": "extraction.completed", "chunks": 1, "entities": 51, "relationships": 91}
+{"ts": "2026-07-06T09:36:24.633404+00:00", "event": "ontology.type_confirmed", "type": "BreathingPattern"}
+{"ts": "2026-07-06T09:36:24.633459+00:00", "event": "ontology.type_confirmed", "type": "RespiratoryParameter"}
+{"ts": "2026-07-06T09:36:24.633472+00:00", "event": "ontology.evolved", "documents": 5, "types": 64, "entities": 790}
+{"ts": "2026-07-06T09:36:24.634163+00:00", "event": "curing.metrics", "doc_index": 4, "unique_types": 64.0, "total_occurrences": 796.0, "singletons": 15.0, "doubletons": 7.0, "entropy_shannon": 4.6031199223164805, "entropy_shannon_delta": 0.022030668231849404, "kl_divergence": 0.007495050233285204, "js_divergence": 0.0019872982576761835, "type_accumulation_rate": 0.0, "gini_coefficient": 0.6923288316582915, "zipf_r_squared": 0.942892476377063, "heaps_beta": 0.43932408729819206, "chao1_estimate": 80.07142857142857, "chao1_coverage": 0.7992863514719001, "ace_estimate": 76.39583693771627, "entropy_shannon_var": 0.1075026699959575, "js_divergence_var": 0.0016845791672370643, "gini_coefficient_var": 0.006884718456169206, "chao1_coverage_var": 0.014976579620289938}
+{"ts": "2026-07-06T09:36:25.320926+00:00", "event": "document.completed", "path": "data/external/cpap-datasheets-and-manuals/Airsense-Brochure.pdf", "entities": 51}
+{"ts": "2026-07-06T09:36:25.321005+00:00", "event": "document.started", "path": "data/external/cpap-datasheets-and-manuals/BC-Dreamstation-Standard-CPAP.pdf"}
+{"ts": "2026-07-06T09:37:44.760628+00:00", "event": "extraction.completed", "chunks": 1, "entities": 74, "relationships": 68}
+{"ts": "2026-07-06T09:37:51.134194+00:00", "event": "ontology.type_confirmed", "type": "PressureReliefRange"}
+{"ts": "2026-07-06T09:37:51.134260+00:00", "event": "ontology.evolved", "documents": 6, "types": 64, "entities": 864}
+{"ts": "2026-07-06T09:37:51.135144+00:00", "event": "curing.metrics", "doc_index": 5, "unique_types": 64.0, "total_occurrences": 870.0, "singletons": 14.0, "doubletons": 8.0, "entropy_shannon": 4.63439267151995, "entropy_shannon_delta": 0.03127274920346945, "kl_divergence": 0.023919114864519513, "js_divergence": 0.006831864436300109, "type_accumulation_rate": 0.0, "gini_coefficient": 0.6906968390804598, "zipf_r_squared": 0.9308047488464136, "heaps_beta": 0.453624966873213, "chao1_estimate": 76.25, "chao1_coverage": 0.839344262295082, "ace_estimate": 74.99071064870354, "entropy_shannon_var": 0.11733242980451297, "js_divergence_var": 0.0018010112989645358, "gini_coefficient_var": 0.004454180824729453, "chao1_coverage_var": 0.011344684887825111}
+{"ts": "2026-07-06T09:37:51.732709+00:00", "event": "document.completed", "path": "data/external/cpap-datasheets-and-manuals/BC-Dreamstation-Standard-CPAP.pdf", "entities": 74}
+{"ts": "2026-07-06T09:37:51.732791+00:00", "event": "document.started", "path": "data/external/cpap-datasheets-and-manuals/BMC_RESmart_AutoCPAP_User_Manual.pdf"}
+{"ts": "2026-07-06T09:39:04.803453+00:00", "event": "extraction.warning", "reason": "dangling relationship: Sensitive setting -[USED_IN]-> Auto mode", "chunk": "c_4d96d81dd9084f88"}
+{"ts": "2026-07-06T09:40:48.457178+00:00", "event": "extraction.completed", "chunks": 7, "entities": 470, "relationships": 502}
+{"ts": "2026-07-06T09:41:27.424911+00:00", "event": "ontology.type_emerged", "type": "Equipment"}
+{"ts": "2026-07-06T09:41:27.424973+00:00", "event": "ontology.type_emerged", "type": "FrequencyRange"}
+{"ts": "2026-07-06T09:41:27.424996+00:00", "event": "ontology.type_emerged", "type": "Location"}
+{"ts": "2026-07-06T09:41:27.425332+00:00", "event": "ontology.type_confirmed", "type": "SafetyAlert"}
+{"ts": "2026-07-06T09:41:27.425344+00:00", "event": "ontology.type_confirmed", "type": "RegulatoryStandard"}
+{"ts": "2026-07-06T09:41:27.425352+00:00", "event": "ontology.type_confirmed", "type": "RegulatoryRequirement"}
+{"ts": "2026-07-06T09:41:27.425360+00:00", "event": "ontology.type_confirmed", "type": "DeviceIdentifier"}
+{"ts": "2026-07-06T09:41:27.425368+00:00", "event": "ontology.type_confirmed", "type": "PhysicalPhenomenon"}
+{"ts": "2026-07-06T09:41:27.425374+00:00", "event": "ontology.type_confirmed", "type": "PhysiologicalEvent"}
+{"ts": "2026-07-06T09:41:27.425381+00:00", "event": "ontology.type_confirmed", "type": "Identifier"}
+{"ts": "2026-07-06T09:41:27.425387+00:00", "event": "ontology.type_confirmed", "type": "Evidence"}
+{"ts": "2026-07-06T09:41:27.425394+00:00", "event": "ontology.type_confirmed", "type": "Equipment"}
+{"ts": "2026-07-06T09:41:27.425400+00:00", "event": "ontology.type_confirmed", "type": "FrequencyRange"}
+{"ts": "2026-07-06T09:41:27.425406+00:00", "event": "ontology.type_confirmed", "type": "Location"}
+{"ts": "2026-07-06T09:41:27.425413+00:00", "event": "ontology.evolved", "documents": 7, "types": 67, "entities": 1334}
+{"ts": "2026-07-06T09:41:27.426300+00:00", "event": "curing.metrics", "doc_index": 6, "unique_types": 67.0, "total_occurrences": 1372.0, "singletons": 6.0, "doubletons": 4.0, "entropy_shannon": 5.054149978602769, "entropy_shannon_delta": 0.41975730708281933, "kl_divergence": 0.23202014523406697, "js_divergence": 0.06908323016918919, "type_accumulation_rate": 3.0, "gini_coefficient": 0.609090117923502, "zipf_r_squared": 0.8476248561832054, "heaps_beta": 0.4362704101313369, "chao1_estimate": 71.5, "chao1_coverage": 0.9370629370629371, "ace_estimate": 70.04704579809898, "entropy_shannon_var": 0.11259543774732217, "js_divergence_var": 0.0018376007034741205, "gini_coefficient_var": 0.0028937204844867166, "chao1_coverage_var": 0.003230438809787383}
+{"ts": "2026-07-06T09:41:28.408632+00:00", "event": "document.completed", "path": "data/external/cpap-datasheets-and-manuals/BMC_RESmart_AutoCPAP_User_Manual.pdf", "entities": 470}
+{"ts": "2026-07-06T09:41:28.408716+00:00", "event": "document.started", "path": "data/external/cpap-datasheets-and-manuals/Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf"}
+{"ts": "2026-07-06T09:42:41.496721+00:00", "event": "extraction.completed", "chunks": 1, "entities": 62, "relationships": 65}
+{"ts": "2026-07-06T09:42:47.133927+00:00", "event": "ontology.evolved", "documents": 8, "types": 67, "entities": 1396}
+{"ts": "2026-07-06T09:42:47.134960+00:00", "event": "curing.metrics", "doc_index": 7, "unique_types": 67.0, "total_occurrences": 1438.0, "singletons": 6.0, "doubletons": 3.0, "entropy_shannon": 5.066636097387738, "entropy_shannon_delta": 0.012486118784968525, "kl_divergence": 0.002752028463050779, "js_divergence": 0.000704845294195125, "type_accumulation_rate": 0.0, "gini_coefficient": 0.6055259170074523, "zipf_r_squared": 0.8391112189740896, "heaps_beta": 0.4247924235165253, "chao1_estimate": 73.0, "chao1_coverage": 0.9178082191780822, "ace_estimate": 69.93189096664949, "entropy_shannon_var": 0.04981234444251848, "js_divergence_var": 0.001448924701876834, "gini_coefficient_var": 0.001761849298316667, "chao1_coverage_var": 0.003410054323387507}
+{"ts": "2026-07-06T09:42:48.170372+00:00", "event": "document.completed", "path": "data/external/cpap-datasheets-and-manuals/Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf", "entities": 62}
+{"ts": "2026-07-06T09:42:48.170452+00:00", "event": "document.started", "path": "data/external/cpap-datasheets-and-manuals/CPAP-Machines-Brochure.pdf"}

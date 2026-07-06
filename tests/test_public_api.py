@@ -31,6 +31,43 @@ class TestPublicSurface:
         assert s.graphrag.ppr_top_n == 20
 
 
+class TestSimplestForm:
+    def test_zero_arg_foundry_loads_settings(self, tmp_path, monkeypatch):
+        monkeypatch.chdir(tmp_path)  # no config.yml -> defaults
+        f = Foundry()
+        assert isinstance(f.settings, Settings)
+
+    def test_build_exported(self):
+        assert callable(kgf.build)
+
+    def test_build_inits_when_empty_then_ingests(self):
+        """build() inits an empty project and ingests in one call."""
+        foundry = MagicMock()
+        foundry.status.return_value = {"fsm_state": "EMPTY"}
+        with patch("knowledge_graph_foundry.pipeline.Foundry.from_config", return_value=foundry):
+            returned = kgf.build("compare CPAP machines", "data/manuals/")
+        foundry.init_project.assert_called_once_with("compare CPAP machines", None)
+        foundry.ingest.assert_called_once_with("data/manuals/")
+        assert returned is foundry
+
+    def test_build_skips_init_when_already_initialized(self):
+        foundry = MagicMock()
+        foundry.status.return_value = {"fsm_state": "STABLE"}
+        with patch("knowledge_graph_foundry.pipeline.Foundry.from_config", return_value=foundry):
+            kgf.build("purpose", "more/docs/")
+        foundry.init_project.assert_not_called()
+        foundry.ingest.assert_called_once()
+
+    def test_build_with_explicit_settings_and_optimize(self):
+        foundry = MagicMock()
+        foundry.status.return_value = {"fsm_state": "EMPTY"}
+        with patch("knowledge_graph_foundry.pipeline.Foundry", return_value=foundry):
+            kgf.build("p", None, settings=Settings(), optimize=True)
+        foundry.init_project.assert_called_once()
+        foundry.ingest.assert_not_called()  # no source
+        foundry.optimize.assert_called_once()
+
+
 class TestFoundryLibraryUse:
     def test_context_manager_closes(self):
         f = Foundry(Settings())

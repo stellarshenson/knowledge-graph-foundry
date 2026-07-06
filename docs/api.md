@@ -2,7 +2,20 @@
 
 Knowledge Graph Foundry is usable as a component in any Python application. Everything the CLI does is available programmatically through one entrypoint (`Foundry`) and one fully-typed configuration object (`Settings`). Import from the package top level.
 
-## Quick use
+The API follows progressive disclosure: trivial in the simplest form, arbitrarily configurable when you need it. Neo4j connection defaults come from the environment (`NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD`) or a `.env` file, so the simplest form carries no configuration at all.
+
+## Simplest form
+
+```python
+import knowledge_graph_foundry as kgf
+
+graph = kgf.build("compare CPAP machines", "data/manuals/")   # one call
+print(graph.query("AirSense 11 vs DreamStation pressure range?"))
+```
+
+`build` initializes the project when the graph is empty (idempotent - call again to ingest more), ingests the source, and returns a live `Foundry` to query. Pass `optimize=True` to also run community detection and the scorecard.
+
+## Full control
 
 ```python
 from knowledge_graph_foundry import Foundry, Settings, Neo4jSettings
@@ -19,7 +32,7 @@ with Foundry(settings) as kgf:          # context manager closes the driver
     kgf.optimize()                                  # communities, summaries, scorecard
 ```
 
-`Foundry.from_config(path)` builds the same from a `config.yml` with environment overrides (`NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD`).
+`Foundry()` with no arguments loads settings from `config.yml` (if present) with env overrides; `Foundry(settings)` configures everything explicitly; `Foundry.from_config(path)` loads a specific config file. `build(..., settings=...)` or `build(..., config_path=...)` threads the same choices through the one-call form.
 
 ## Entrypoint - Foundry
 

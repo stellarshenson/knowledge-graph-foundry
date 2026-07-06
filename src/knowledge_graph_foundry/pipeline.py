@@ -35,7 +35,7 @@ from knowledge_graph_foundry.resolution import (
     remap_relationships,
     resolve_entities,
 )
-from knowledge_graph_foundry.settings import Settings
+from knowledge_graph_foundry.settings import Settings, load_settings
 
 
 class FoundryError(RuntimeError):
@@ -43,8 +43,11 @@ class FoundryError(RuntimeError):
 
 
 class Foundry:
-    def __init__(self, settings: Settings):
-        self.settings = settings
+    def __init__(self, settings: Optional[Settings] = None):
+        # Zero-arg use is the simplest form: settings load from config.yml (if
+        # present) with .env / environment overrides. Pass a Settings to
+        # configure anything explicitly.
+        self.settings = settings if settings is not None else load_settings()
         self._driver = None
         self._engine: Optional[Engine] = None
         self._extraction_engine: Optional[Engine] = None
@@ -671,3 +674,33 @@ class Foundry:
         """Delete all graph content and the control metanode."""
         with self.driver.session() as session:
             session.run("MATCH (n) DETACH DELETE n")
+
+
+def build(
+    purpose: str,
+    source: "str | Path | None" = None,
+    *,
+    settings: Optional[Settings] = None,
+    config_path: Optional[Path] = None,
+    seed: Optional[str] = None,
+    optimize: bool = False,
+) -> Foundry:
+    """Simplest form: build (or extend) a graph in one call and return a live
+    Foundry to query.
+
+        graph = build("compare CPAP machines", "data/manuals/")
+        print(graph.query("AirSense 11 vs DreamStation pressure range?"))
+
+    Initializes the project when the graph is empty (idempotent - safe to call
+    again to ingest more), ingests ``source`` when given, and optionally runs
+    GraphRAG optimization. Configure anything by passing ``settings`` (full
+    control) or ``config_path`` (a config.yml); omit both for env/defaults.
+    """
+    foundry = Foundry(settings) if settings is not None else Foundry.from_config(config_path)
+    if foundry.status().get("fsm_state", "EMPTY") == "EMPTY":
+        foundry.init_project(purpose, seed)
+    if source is not None:
+        foundry.ingest(source)
+    if optimize:
+        foundry.optimize()
+    return foundry

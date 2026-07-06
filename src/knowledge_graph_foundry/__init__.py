@@ -47,7 +47,7 @@ from knowledge_graph_foundry.models import (
     entity_id,
     normalize_name,
 )
-from knowledge_graph_foundry.pipeline import Foundry, FoundryError
+from knowledge_graph_foundry.pipeline import Foundry, FoundryError, build
 from knowledge_graph_foundry.settings import (
     CuringSettings,
     DriftSettings,
@@ -69,6 +69,7 @@ except PackageNotFoundError:  # pragma: no cover - source checkout without insta
 
 __all__ = [
     # entrypoint
+    "build",
     "Foundry",
     "FoundryError",
     # configuration (full surface)
