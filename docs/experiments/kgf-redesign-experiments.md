@@ -1503,6 +1503,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 | H129 | calibration transfer | isotonic calibration of the winning scorer lifts resolver calibration from 44% to >= 70% held-out - fix the posterior by replacing its likelihood | after H121/H101 |
 | H130 | string-theoretic revival | null-leaning: on the VARIANCE class (71% of the problem), tuned string features match neural scorers - the classic ER stack suffices where the defect is surface form | yes |
 | H131 | anisotropy removal | the 0.93-0.99 saturation is partly GEOMETRY: mean-centering + whitening/ABTT over the stored Titan vectors spreads the similarity distribution and lifts duplicate-ranking AUC >= 0.05 with zero new models | yes |
+| H142 | self-calibrating loop | the builder adjudicates its own defer-band decisions with the resident LLM and recalibrates on schedule - active-learning calibration as a pipeline stage | post-wave |
+| H143 | NLI + cross-encoder complementarity | the contradiction channel and the relevance channel miss different pairs; the ensemble beats the better individual by >= 0.04 AUC | yes (GPU 0/2) |
 
 ### R12-H121 The cross-encoder sees the pair - joint attention for identity
 
@@ -1718,6 +1720,26 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - table-heavy and stylized-rendering chunks (H51's suspects) carry the highest residuals
 - **Acceptance bar** - correlation clause against the labeled gap inventory; refuted if residuals track chunk length/genre instead of extraction quality
 - **Experiment** - chunk vs entity embedding bags per document (chunk embeddings exist for retrieval; else Titan on a sample); mostly runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H142 The self-calibrating identity loop - the builder labels its own doubt
+
+- **Grounding** - (user-directed, 2026-07-06) H129 calibrates ONCE on a static label set; but the foundry runs for months and its decision distribution drifts with the corpus; the defer band already isolates exactly the decisions worth labeling; an LLM adjudicator is already resident (the extraction model) - the loop closes itself: sample defer-band decisions -> LLM adjudicates against source chunks with evidence strings -> labels accumulate in the graph -> isotonic recalibration re-fits on schedule -> thresholds adapt. Active-learning calibration as a PIPELINE STAGE, not a one-shot experiment
+- **Hypothesis** - a self-calibration loop (adjudicate up to N=20 defer-band pairs per ingest batch, refit isotonic when >=30 new labels) keeps held-out decision accuracy within 5 points of an oracle calibrated on ALL labels, at <=5% of the oracle's labeling cost - and beats the static H129 calibration by >=10 points after one corpus shift (wave 2 vs wave 1 material)
+- **Prediction** - the loop's accuracy tracks the oracle; the static calibration decays across waves; adjudication cost stays bounded because the defer band shrinks as calibration improves (the loop consumes its own fuel)
+- **Acceptance bar** - all three clauses on the campaign waves; refuted if LLM adjudication labels are too noisy to calibrate on (measured against H101's human-auditable evidence strings - the noise rate itself is a deliverable)
+- **Experiment** - simulated loop on wave-1b decisions + live on wave 2; local model; post-wave
+- **Result** - pending
+- **Verdict** - pending
+
+### R12-H143 NLI and the cross-encoder are different instruments - measure the complementarity
+
+- **Grounding** - (user-directed, 2026-07-06) H121 (cross-encoder) and H122 (NLI) both score pairs, but they answer different questions: the cross-encoder scores RELEVANCE-shaped similarity, NLI scores directional LOGICAL relation (entailment/contradiction/neutral) - the contradiction channel has no cross-encoder counterpart, and the entailment asymmetry detects containment no symmetric scorer can express
+- **Hypothesis** - the two signals are complementary, not redundant: an ensemble (cross-encoder score + both NLI directions + contradiction probability) beats the better individual by >= 0.04 AUC on the interim set, with NLI's contradiction channel contributing the sibling separation and the cross-encoder contributing the variance-pair recall
+- **Prediction** - error sets barely overlap: cross-encoder misses structured contradictions (one spec value differs in otherwise-identical records), NLI misses fuzzy paraphrase identity; the ensemble's defer-band deployment (H128) uses NLI contradiction as a cheap veto BEFORE the cross-encoder runs
+- **Acceptance bar** - >= 0.04 ensemble gain + the error-set analysis; refuted if the signals correlate > 0.9 (one suffices - keep the cheaper)
+- **Experiment** - extends the H121/H122 GPU harness with the ensemble arm; runs with that batch
 - **Result** - pending
 - **Verdict** - pending
 
