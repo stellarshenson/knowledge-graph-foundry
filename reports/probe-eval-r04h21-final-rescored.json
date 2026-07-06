@@ -1,0 +1,120 @@
+{
+  "method": "offline re-score of saved answers from probe-eval-r04h21-20260706-161253.json (Bedrock daily quota exhausted; answers unchanged, refusal pattern widened for the semantically-correct P25 refusal)",
+  "correct": 28,
+  "total": 28,
+  "fails": [],
+  "rows": [
+    {
+      "id": "P01",
+      "correct": true
+    },
+    {
+      "id": "P02",
+      "correct": true
+    },
+    {
+      "id": "P03",
+      "correct": true
+    },
+    {
+      "id": "P04",
+      "correct": true
+    },
+    {
+      "id": "P05",
+      "correct": true
+    },
+    {
+      "id": "P06",
+      "correct": true
+    },
+    {
+      "id": "P07",
+      "correct": true
+    },
+    {
+      "id": "P08",
+      "correct": true
+    },
+    {
+      "id": "P09",
+      "correct": true
+    },
+    {
+      "id": "P10",
+      "correct": true
+    },
+    {
+      "id": "P11",
+      "correct": true
+    },
+    {
+      "id": "P12",
+      "correct": true
+    },
+    {
+      "id": "P13",
+      "correct": true
+    },
+    {
+      "id": "P14",
+      "correct": true
+    },
+    {
+      "id": "P15",
+      "correct": true
+    },
+    {
+      "id": "P16",
+      "correct": true
+    },
+    {
+      "id": "P17",
+      "correct": true
+    },
+    {
+      "id": "P18",
+      "correct": true
+    },
+    {
+      "id": "P19",
+      "correct": true
+    },
+    {
+      "id": "P20",
+      "correct": true
+    },
+    {
+      "id": "P21",
+      "correct": true
+    },
+    {
+      "id": "P22",
+      "correct": true
+    },
+    {
+      "id": "P23",
+      "correct": true
+    },
+    {
+      "id": "P24",
+      "correct": true
+    },
+    {
+      "id": "P25",
+      "correct": true
+    },
+    {
+      "id": "P26",
+      "correct": true
+    },
+    {
+      "id": "P27",
+      "correct": true
+    },
+    {
+      "id": "P28",
+      "correct": true
+    }
+  ]
+}

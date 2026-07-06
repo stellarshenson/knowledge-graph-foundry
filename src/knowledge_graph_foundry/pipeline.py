@@ -896,10 +896,24 @@ class Foundry:
                 spec = {
                     k.removeprefix("prop_"): v for k, v in props.items() if k.startswith("prop_")
                 }
+                # R04-H21: the alias cluster is one identity - surface facts
+                # recorded under any SAME_AS name for the retrieved name
+                aliases = session.run(
+                    "MATCH (e:Entity {id: $id})-[:SAME_AS*1..2]-(a:Entity) "
+                    "WHERE a.id <> $id RETURN DISTINCT a.name AS name, properties(a) AS props "
+                    "LIMIT 5",
+                    id=node["id"],
+                ).data()
+                alias_names = [a["name"] for a in aliases]
+                for a in aliases:
+                    for k, v in a["props"].items():
+                        if k.startswith("prop_"):
+                            spec.setdefault(k.removeprefix("prop_"), v)
                 supporting.append(node["name"])
                 entity_blocks.append(
                     f"## {node['name']} ({', '.join(node.get('types', []))})\n"
-                    f"{node.get('description', '')}\n"
+                    + (f"Also known as: {', '.join(alias_names)}\n" if alias_names else "")
+                    + f"{node.get('description', '')}\n"
                     f"Properties: {json.dumps(spec, default=str)}\n"
                     "Relations: " + "; ".join(f"{r['rel']} -> {r['name']}" for r in rows)
                 )

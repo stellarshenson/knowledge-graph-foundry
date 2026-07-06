@@ -1,0 +1,919 @@
+{
+  "alias_edges": 127,
+  "edges": [
+    {
+      "a": "bCPAP prongs",
+      "b": "CPAP",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "CPAP prongs",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Cable",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Device",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Filter",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Fine particle filter",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Flowmeter",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Gross particle filter",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Handle",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Humidifier",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Internal filter",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Low oxygen level alarm",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "MANU",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Outlet",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Oxygen concentrator",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Patient",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Total flowmeter",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Tubing",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "User Manual",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "Water trap",
+      "m": "deictic_assertion",
+      "ev": "**Do not leave water in bCPAP bottle, water trap or humidifier when device is not in use** ## PREVENTIVE MAINTENANCE - The bCPAP device should be turned on weekly to a total flow of 10 L/min and allowed to run for at least 15 minutes - For preventive maintenance of the oxygen concentrator component "
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Air Filter",
+      "m": "deictic_assertion",
+      "ev": "Refer to the \u201cInstalling/Replacing the Air Filters\u201d section of this manual."
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "Filter",
+      "m": "deictic_assertion",
+      "ev": "Refer to the \u201cInstalling/Replacing the Air Filters\u201d section of this manual."
+    },
+    {
+      "a": "DreamStation CPAP",
+      "b": "MANU",
+      "m": "deictic_assertion",
+      "ev": "Refer to the \u201cInstalling/Replacing the Air Filters\u201d section of this manual."
+    },
+    {
+      "a": "SleepStyle 200 Series",
+      "b": "HC230-Series",
+      "m": "deictic_assertion",
+      "ev": "Please refer to the HC230-Series Product range listed in the Appendix section of this manual."
+    },
+    {
+      "a": "SleepStyle 200 Series",
+      "b": "MANU",
+      "m": "deictic_assertion",
+      "ev": "Please refer to the HC230-Series Product range listed in the Appendix section of this manual."
+    },
+    {
+      "a": "APAP",
+      "b": "Auto",
+      "m": "explicit_assertion",
+      "ev": "Autoadjusting CPAP devices are commonly referred to as APAP devices."
+    },
+    {
+      "a": "APAP",
+      "b": "CPAP",
+      "m": "explicit_assertion",
+      "ev": "Autoadjusting CPAP devices are commonly referred to as APAP devices."
+    },
+    {
+      "a": "APAP",
+      "b": "Device",
+      "m": "explicit_assertion",
+      "ev": "Autoadjusting CPAP devices are commonly referred to as APAP devices."
+    },
+    {
+      "a": "Apnea",
+      "b": "CPAP",
+      "m": "explicit_assertion",
+      "ev": "# SLEEP APNEA THERAPY CATALOGUE 1 ### **Nasal CPAP Masks** Also known as the _nasal mask_ , the nasal mask is worn over the nose only."
+    },
+    {
+      "a": "Apnea",
+      "b": "CPAP mask",
+      "m": "explicit_assertion",
+      "ev": "# SLEEP APNEA THERAPY CATALOGUE 1 ### **Nasal CPAP Masks** Also known as the _nasal mask_ , the nasal mask is worn over the nose only."
+    },
+    {
+      "a": "Apnea",
+      "b": "Mask",
+      "m": "explicit_assertion",
+      "ev": "# SLEEP APNEA THERAPY CATALOGUE 1 ### **Nasal CPAP Masks** Also known as the _nasal mask_ , the nasal mask is worn over the nose only."
+    },
+    {
+      "a": "Apnea",
+      "b": "Nasal mask",
+      "m": "explicit_assertion",
+      "ev": "# SLEEP APNEA THERAPY CATALOGUE 1 ### **Nasal CPAP Masks** Also known as the _nasal mask_ , the nasal mask is worn over the nose only."
+    },
+    {
+      "a": "Apnea",
+      "b": "Sleep apnea",
+      "m": "explicit_assertion",
+      "ev": "# SLEEP APNEA THERAPY CATALOGUE 1 ### **Nasal CPAP Masks** Also known as the _nasal mask_ , the nasal mask is worn over the nose only."
+    },
+    {
+      "a": "Apnea",
+      "b": "Therapy",
+      "m": "explicit_assertion",
+      "ev": "# SLEEP APNEA THERAPY CATALOGUE 1 ### **Nasal CPAP Masks** Also known as the _nasal mask_ , the nasal mask is worn over the nose only."
+    },
+    {
+      "a": "AirFit P10",
+      "b": "Transcend P10 battery",
+      "m": "model_code",
+      "ev": "p10"
+    },
+    {
+      "a": "Alice LoFlo C5 Sidestream module",
+      "b": "LoFlo C5 Sidestream module",
+      "m": "model_code",
+      "ev": "c5"
+    },
+    {
+      "a": "Body Position Sensor Sandman SD20",
+      "b": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "m": "model_code",
+      "ev": "sd20"
+    },
+    {
+      "a": "Body Position Sensor Sandman SD20",
+      "b": "Sandman SD20",
+      "m": "model_code",
+      "ev": "sd20"
+    },
+    {
+      "a": "CT2 adult Alice 5",
+      "b": "CT2 effort sensor",
+      "m": "model_code",
+      "ev": "ct2"
+    },
+    {
+      "a": "CT2 adult Alice 5",
+      "b": "CT2, adult",
+      "m": "model_code",
+      "ev": "ct2"
+    },
+    {
+      "a": "CT2 adult Alice 5",
+      "b": "CT2, pediatric",
+      "m": "model_code",
+      "ev": "ct2"
+    },
+    {
+      "a": "Control FiO2 Display",
+      "b": "FiO2 Table",
+      "m": "model_code",
+      "ev": "fio2"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Battery Cover",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Carrying Case",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Circuit - Infant 6ft",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Circuit Retainer",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Foot Pedal",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Oximetry Interface Kit",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Roll Stand",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "CoughAssist T70",
+      "b": "CoughAssist T70 Water Trap",
+      "m": "model_code",
+      "ev": "t70"
+    },
+    {
+      "a": "Cylinder cart MD15 ME24 MD22 ME36",
+      "b": "Large cylinder bag MD15 MD22",
+      "m": "model_code",
+      "ev": "md15"
+    },
+    {
+      "a": "Cylinder cart MD15 ME24 MD22 ME36",
+      "b": "MD15 cylinder US 2000 psi",
+      "m": "model_code",
+      "ev": "md15"
+    },
+    {
+      "a": "Cylinder cart MD15 ME24 MD22 ME36",
+      "b": "MD22 cylinder US 3000 psi",
+      "m": "model_code",
+      "ev": "md22"
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "DreamStation SpO2 module",
+      "m": "model_code",
+      "ev": "spo2"
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "Nonin SpO2 assembly",
+      "m": "model_code",
+      "ev": "spo2"
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2",
+      "m": "model_code",
+      "ev": "spo2"
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2 Kit",
+      "m": "model_code",
+      "ev": "spo2"
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2 extension cable",
+      "m": "model_code",
+      "ev": "spo2"
+    },
+    {
+      "a": "DreamStation Cellular/SpO2 Modem",
+      "b": "SpO2 sensor (finger clip)",
+      "m": "model_code",
+      "ev": "spo2"
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3",
+      "m": "model_code",
+      "ev": "g3"
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3 Getting Started Guide, English",
+      "m": "model_code",
+      "ev": "g3"
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3, English only",
+      "m": "model_code",
+      "ev": "g3"
+    },
+    {
+      "a": "G3 A20",
+      "b": "Sleepware G3, Multi-language",
+      "m": "model_code",
+      "ev": "g3"
+    },
+    {
+      "a": "GO2 carrying case",
+      "b": "GO2 finger oximeter",
+      "m": "model_code",
+      "ev": "go2"
+    },
+    {
+      "a": "GO2 carrying case",
+      "b": "GO2 lanyard",
+      "m": "model_code",
+      "ev": "go2"
+    },
+    {
+      "a": "GO2 carrying case",
+      "b": "GO2 oximeter",
+      "m": "model_code",
+      "ev": "go2"
+    },
+    {
+      "a": "HC230 Product Range",
+      "b": "HC230 Standard Range",
+      "m": "model_code",
+      "ev": "hc230"
+    },
+    {
+      "a": "HC230 Product Range",
+      "b": "HC230-Series",
+      "m": "model_code",
+      "ev": "hc230"
+    },
+    {
+      "a": "HL7 bi-directional interface",
+      "b": "HL7 inbound only interface",
+      "m": "model_code",
+      "ev": "hl7"
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (French)",
+      "m": "model_code",
+      "ev": "v2"
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (International English)",
+      "m": "model_code",
+      "ev": "v2"
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "m": "model_code",
+      "ev": "v2"
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software v2.0",
+      "m": "model_code",
+      "ev": "v2"
+    },
+    {
+      "a": "M10 oxygen concentrator",
+      "b": "Millennium M10",
+      "m": "model_code",
+      "ev": "m10"
+    },
+    {
+      "a": "M4 cylinder Canada 2000 psi",
+      "b": "M4 cylinder US 2000 psi",
+      "m": "model_code",
+      "ev": "m4"
+    },
+    {
+      "a": "M4 cylinder Canada 2000 psi",
+      "b": "Medium cylinder bag M4 M6 MB08",
+      "m": "model_code",
+      "ev": "m4"
+    },
+    {
+      "a": "MB08 cylinder US 3000 psi",
+      "b": "Medium cylinder bag M4 M6 MB08",
+      "m": "model_code",
+      "ev": "mb08"
+    },
+    {
+      "a": "MC13 cylinder US 3000 psi",
+      "b": "Small cylinder bag M9 MC13",
+      "m": "model_code",
+      "ev": "mc13"
+    },
+    {
+      "a": "MD300W314B4",
+      "b": "Wrist Pulse Oximeter MD300W314B4",
+      "m": "model_code",
+      "ev": "md300w314b4"
+    },
+    {
+      "a": "Nurse Call RJ9 Cable Open Ends",
+      "b": "RJ9 to 1/4 inch Nurse Call Cable Alarm Closed",
+      "m": "model_code",
+      "ev": "rj9"
+    },
+    {
+      "a": "Nurse Call RJ9 Cable Open Ends",
+      "b": "RJ9 to 2.5mm 3 inch Female Adapter Cable",
+      "m": "model_code",
+      "ev": "rj9"
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 Extension with coupler (25')",
+      "m": "model_code",
+      "ev": "ptaf2"
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 High level cable (7', 1/8 male connector)",
+      "m": "model_code",
+      "ev": "ptaf2"
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 Startup Kit",
+      "m": "model_code",
+      "ev": "ptaf2"
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 cable",
+      "m": "model_code",
+      "ev": "ptaf2"
+    },
+    {
+      "a": "PTAF2",
+      "b": "PTAF2 extension cable",
+      "m": "model_code",
+      "ev": "ptaf2"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable WristOx2",
+      "m": "model_code",
+      "ev": "wristox2"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "USB PC download cable for WristOx2",
+      "m": "model_code",
+      "ev": "wristox2"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2",
+      "m": "model_code",
+      "ev": "wristox2"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 3150",
+      "m": "model_code",
+      "ev": "wristox2"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 3150 pulse oximeter",
+      "m": "model_code",
+      "ev": "wristox2"
+    },
+    {
+      "a": "Sensor adapter WristOx2 3150",
+      "b": "WristOx2 wrist band 10 inch",
+      "m": "model_code",
+      "ev": "wristox2"
+    },
+    {
+      "a": "Trilogy100",
+      "b": "Trilogy100 Exhalation Port Block Active",
+      "m": "model_code",
+      "ev": "trilogy100"
+    },
+    {
+      "a": "Trilogy100",
+      "b": "Trilogy100 ventilator",
+      "m": "model_code",
+      "ev": "trilogy100"
+    },
+    {
+      "a": "20 cmH2O",
+      "b": "40 cmH2O",
+      "m": "model_code",
+      "ev": "cmh2o"
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "High Precision O2 Concentration Detection",
+      "m": "model_code",
+      "ev": "o2"
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "O2 enrichment attachments",
+      "m": "model_code",
+      "ev": "o2"
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "Oxymixer Air and O2 Blender",
+      "m": "model_code",
+      "ev": "o2"
+    },
+    {
+      "a": "Air and O2 Hoses",
+      "b": "Trilogy O2 quick-disconnect insert",
+      "m": "model_code",
+      "ev": "o2"
+    },
+    {
+      "a": "AirFit F10",
+      "b": "AirFit F10 for Her",
+      "m": "model_code",
+      "ev": "f10"
+    },
+    {
+      "a": "AirFit F20 for Her",
+      "b": "AirTouch F20",
+      "m": "model_code",
+      "ev": "f20"
+    },
+    {
+      "a": "AirFit F30",
+      "b": "AirFit F30 bedside starter kit Small",
+      "m": "model_code",
+      "ev": "f30"
+    },
+    {
+      "a": "AirFit F30",
+      "b": "AirFit F30 for AirMini",
+      "m": "model_code",
+      "ev": "f30"
+    },
+    {
+      "a": "AirFit N20",
+      "b": "AirFit N20 Classic",
+      "m": "model_code",
+      "ev": "n20"
+    },
+    {
+      "a": "AirFit N20",
+      "b": "ResMed AirFit N20 Classic",
+      "m": "model_code",
+      "ev": "n20"
+    },
+    {
+      "a": "AirFit P10",
+      "b": "AirFit P10 bedside starter kit",
+      "m": "model_code",
+      "ev": "p10"
+    },
+    {
+      "a": "AirFit P10",
+      "b": "AirFit P10 for AirMini",
+      "m": "model_code",
+      "ev": "p10"
+    },
+    {
+      "a": "Air Filter Cover",
+      "b": "Air filter cover",
+      "m": "normalized_name",
+      "ev": "airfiltercover"
+    },
+    {
+      "a": "Apnea Hypopnea Index",
+      "b": "Apnea-Hypopnea Index",
+      "m": "normalized_name",
+      "ev": "apneahypopneaindex"
+    },
+    {
+      "a": "Auto EPAP",
+      "b": "Auto-EPAP",
+      "m": "normalized_name",
+      "ev": "autoepap"
+    },
+    {
+      "a": "Auto Off",
+      "b": "Auto-Off",
+      "m": "normalized_name",
+      "ev": "autooff"
+    },
+    {
+      "a": "Auto On",
+      "b": "Auto-On",
+      "m": "normalized_name",
+      "ev": "autoon"
+    },
+    {
+      "a": "Auto Ramp",
+      "b": "AutoRamp",
+      "m": "normalized_name",
+      "ev": "autoramp"
+    },
+    {
+      "a": "Auto Start",
+      "b": "autoSTART",
+      "m": "normalized_name",
+      "ev": "autostart"
+    },
+    {
+      "a": "C-Flex",
+      "b": "C-Flex+",
+      "m": "normalized_name",
+      "ev": "cflex"
+    },
+    {
+      "a": "CISPR 11",
+      "b": "CISPR11",
+      "m": "normalized_name",
+      "ev": "cispr11"
+    },
+    {
+      "a": "Flow Meter",
+      "b": "Flowmeter",
+      "m": "normalized_name",
+      "ev": "flowmeter"
+    },
+    {
+      "a": "Full face mask",
+      "b": "Full-Face Mask",
+      "m": "normalized_name",
+      "ev": "fullfacemask"
+    },
+    {
+      "a": "ISO 80601-2-70:2015",
+      "b": "ISO 80601-2-70:2015",
+      "m": "normalized_name",
+      "ev": "iso806012702015"
+    },
+    {
+      "a": "Nasal Cannulas Adult",
+      "b": "Nasal cannulas (adult)",
+      "m": "normalized_name",
+      "ev": "nasalcannulasadult"
+    },
+    {
+      "a": "Performance Tubing (22mm)",
+      "b": "Performance Tubing 22mm",
+      "m": "normalized_name",
+      "ev": "performancetubing22mm"
+    },
+    {
+      "a": "Pre-heat",
+      "b": "Preheat",
+      "m": "normalized_name",
+      "ev": "preheat"
+    },
+    {
+      "a": "Pressure Start Stop Button",
+      "b": "Pressure Start/Stop Button",
+      "m": "normalized_name",
+      "ev": "pressurestartstopbutton"
+    },
+    {
+      "a": "ResMed AirSense 10",
+      "b": "ResMed Airsense10",
+      "m": "normalized_name",
+      "ev": "resmedairsense10"
+    },
+    {
+      "a": "Smart Ramp",
+      "b": "SmartRamp",
+      "m": "normalized_name",
+      "ev": "smartramp"
+    },
+    {
+      "a": "Ultra-Fine Filter Disposable 1 Pack",
+      "b": "Ultra-fine Filter Disposable 1-pack",
+      "m": "normalized_name",
+      "ev": "ultrafinefilterdisposable1pack"
+    },
+    {
+      "a": "ezRIP module (abdomen)",
+      "b": "ezRIP module, abdomen",
+      "m": "normalized_name",
+      "ev": "ezripmoduleabdomen"
+    }
+  ],
+  "p09_recall_before": 0.0,
+  "p09_recall_after": 0.0,
+  "p09_answer": "The dimensions of the Fisher & Paykel SleepStyle 200 depend on whether the humidifier is included:\n\n- **Without humidifier**: 15.7 x 19.3 x 8.4 cm (SleepStyle 200 Series)\n- **With humidifier**: 29.7 x 19.3 x 8.4 cm (SleepStyle 200 Series)\n\nThe device can also be expressed as 275 x 170 x 140 mm or 10.8 x 6.7 x 5.5 inches (SleepStyle 200 Series).",
+  "scoreboard": {
+    "correct": 27,
+    "total": 28,
+    "fails": [
+      "P25"
+    ]
+  },
+  "rows": [
+    {
+      "id": "P01",
+      "correct": true,
+      "answer": "The weight of the ResMed AirSense 11 with its standard humidifier tub is 1130 grams or 40 ounces (AirSense 11)."
+    },
+    {
+      "id": "P02",
+      "correct": true,
+      "answer": "The operating pressure range of the DreamStation CPAP is 4-20 cm H2O (DreamStation CPAP). This pressure is measured at the mask (Mode pressure range CPAP). When used with EPR (Expiratory Pressure Relief) mode, the pressure range remains 4-20 cm H2O, though EPR reduces the pressure during expiration by 1.0, 2.0, or 3.0 cm H2O depending on the level set, but the delivered pressure will not drop below 4.0 cm H2O (Mode pressure range CPAP)."
+    },
+    {
+      "id": "P03",
+      "correct": true,
+      "answer": "The sound pressure level of the Resvent iBreeze CPAP is 28 dB (iBreeze CPAP System). The measurement has an uncertainty of 2 dB (iBreeze CPAP System)."
+    },
+    {
+      "id": "P04",
+      "correct": true,
+      "answer": "The warranty period of the DreamStation CPAP device is 2 years (DreamStation CPAP). The DreamStation CPAP Pro, which is a related model, also has a warranty of 2 years (DreamStation CPAP Pro)."
+    },
+    {
+      "id": "P05",
+      "correct": true,
+      "answer": "The knowledge graph does not explicitly state the specific ramp time setting value for the DreamStation CPAP. However, it does provide information about the Smart Ramp feature on DreamStation devices. The Smart Ramp on DreamStation CPAP Pro has a time range of 0 to 45 minutes with 5-minute increments (DreamStation CPAP Pro, Smart Ramp). The DreamStation CPAP Pro's starting ramp pressure is patient adjustable (DreamStation CPAP Pro). The graph does not specify a default ramp time value specifically for the DreamStation CPAP model."
+    },
+    {
+      "id": "P06",
+      "correct": true,
+      "answer": "The maximum water capacity of the ResMed AirSense 11 humidifier tub is 380 mL (Water Capacity, AirSense 11)."
+    },
+    {
+      "id": "P07",
+      "correct": true,
+      "answer": "The operating altitude range of the ResMed AirStart 10 CPAP is Sea level to 2,591 m (AirStart 10 CPAP). This is equivalent to approximately 8,500 feet."
+    },
+    {
+      "id": "P08",
+      "correct": true,
+      "answer": "The typical power consumption of the ResMed AirSense 11 is 9.0W (AirSense 11). The peak power consumption is 71.9W (AirSense 11)."
+    },
+    {
+      "id": "P09",
+      "correct": true,
+      "answer": "The dimensions of the Fisher & Paykel SleepStyle 200 depend on whether the humidifier is included:\n\n- **Without humidifier**: 15.7 x 19.3 x 8.4 cm (SleepStyle 200 Series)\n- **With humidifier**: 29.7 x 19.3 x 8.4 cm (SleepStyle 200 Series)\n\nThe device can also be expressed as 275 x 170 x 140 mm or 10.8 x 6.7 x 5.5 inches (SleepStyle 200 Series)."
+    },
+    {
+      "id": "P10",
+      "correct": true,
+      "answer": "The data storage capacity of the DreamStation CPAP SD card is greater than 1 year (DreamStation CPAP, DreamStation CPAP Pro, SD Card)."
+    },
+    {
+      "id": "P11",
+      "correct": true,
+      "answer": "The knowledge graph lacks specific weight information for the ResMed AirStart 10 and the ResMed AirSense 11 that would allow for a direct comparison. \n\nThe AirStart 10 CPAP has a weight of 1106 g (AirStart 10 CPAP). The AirSense 11 has a weight of 1130 g with either the standard humidifier or cleanable humidifier (AirSense 11). \n\nBased on these weights, the ResMed AirStart 10 at 1106 g is lighter than the ResMed AirSense 11 at 1130 g."
+    },
+    {
+      "id": "P12",
+      "correct": true,
+      "answer": "The Resvent iBreeze is quieter than the Loewenstein prisma SMART. The iBreeze CPAP System has a sound pressure level of 28 dB (iBreeze CPAP System), while the prisma SOFT plus (which is part of the same product line as the prisma SMART) has a sound pressure level of 26 dB at 10 hPa (prisma SOFT plus). However, it's important to note that the graph does not contain specific noise level data for the prisma SMART model itself - only for the prisma SOFT plus variant."
+    },
+    {
+      "id": "P13",
+      "correct": true,
+      "answer": "The ResMed AirSense 11 tolerates a higher operating altitude. The AirSense 11 has a maximum operating altitude of 3010 m (AirSense 11), while the AirStart 10 CPAP has a maximum operating altitude of 2591 m (AirStart 10 CPAP)."
+    },
+    {
+      "id": "P14",
+      "correct": true,
+      "answer": "The ResMed AirSense 11 has the larger humidifier water capacity. The AirSense 11 has a water capacity of 380 mL (AirSense 11), while the Resvent iBreeze has a water capacity of 290 mL (iBreeze CPAP System)."
+    },
+    {
+      "id": "P15",
+      "correct": true,
+      "answer": "The DreamStation CPAP with its humidifier is heavier. The DreamStation CPAP weighs 1.98 kg (4.37 lbs) with humidifier (DreamStation CPAP). The graph lacks information about the weight of the BMC RESmart Auto CPAP with humidifier. While the RESmart CPAP (a related model) weighs 2.4 kg with humidifier (RESmart CPAP), this weight is for the RESmart CPAP model, not the RESmart Auto CPAP model specifically asked about."
+    },
+    {
+      "id": "P16",
+      "correct": true,
+      "answer": "Based on the knowledge graph:\n\n**Fisher & Paykel SleepStyle 200 dimensions:**\n- With humidifier: 29.7 x 19.3 x 8.4 cm (SleepStyle 200 Series)\n- Without humidifier: 15.7 x 19.3 x 8.4 cm (SleepStyle 200 Series)\n- Also listed as: 275 x 170 x 140 mm or 10.8 x 6.7 x 5.5 inches (SleepStyle 200 Series)\n\n**Resvent iBreeze dimensions:**\n- 238 x 178 x 128 mm (length x width x height) (iBreeze CPAP System)\n\nFor comparison, converting the SleepStyle 200 dimensions (275 x 170 x 140 mm) to the same format as the iBreeze:\n- SleepStyle 200: 275 x 170 x 140 mm\n- Resvent iBreeze: 238 x 178 x 128 mm\n\nThe SleepStyle 200 is longer (275 mm vs 238 mm) and taller (140 mm vs 128 mm), while the iBreeze is slightly wider (178 mm vs 170 mm)."
+    },
+    {
+      "id": "P17",
+      "correct": true,
+      "answer": "Based on the knowledge graph, the DreamStation CPAP offers a longer ramp time. The DreamStation CPAP Pro has a smart ramp time range of 0 to 45 minutes (DreamStation CPAP Pro), while the iBreeze CPAP System's ramp time specifications are not explicitly stated in the graph. The graph only confirms that the iBreeze CPAP System has a Ramp Time feature (iBreeze CPAP System), but does not provide the specific duration range for comparison."
+    },
+    {
+      "id": "P18",
+      "correct": true,
+      "answer": "The ResMed AirStart 10 is quieter than the ResMed AirSense 11. The AirStart 10 has a sound pressure level of 26.6 dBA (AirStart 10 CPAP), while the AirSense 11 has a noise level of 35 dBA (Noise Level, AirSense 11). Both measurements have an uncertainty of \u00b12 dBA."
+    },
+    {
+      "id": "P19",
+      "correct": true,
+      "answer": "On the DreamStation, SmartRamp mode differs from standard ramp mode in how it adjusts pressure. SmartRamp is an intelligent ramp mode that automatically adjusts pressure based on patient breathing patterns (SmartRamp), whereas the standard ramp mode uses a fixed time-based pressure increase (SmartRamp). \n\nMore specifically, SmartRamp maintains a constant lower pressure until the device detects that you require more pressure (DreamStation). In contrast, the standard ramp function gradually increases pressure over a set time period - it reduces pressure and then gradually increases the pressure to the prescription setting so you can fall asleep more comfortably (Ramp).\n\nSmartRamp is similar to AutoRamp (SmartRamp), which senses when the user falls asleep and adjusts ramp time appropriately (Auto Ramp), rather than following a predetermined time schedule."
+    },
+    {
+      "id": "P20",
+      "correct": true,
+      "answer": "The ResMed AirSense 10 AutoSet for Her is the device that has a therapy algorithm designed specifically for women (ResMed AirSense 10 AutoSet for Her, AirSense 10 AutoSet for Her). This device features the AutoSet for Her algorithm, which is the first dedicated algorithm designed to treat obstructive sleep apnea in female patients (AutoSet for Her algorithm). The algorithm is specifically designed to respond to female-specific characteristics of sleep apnea, addressing the higher instances of flow limitation often seen in women (AutoSet for Her algorithm, ResMed AirSense 10 AutoSet for Her). It sensitively detects flow limitation early to apply pressure changes steadily and comfortably throughout the night with minimal sleep disturbance (AutoSet for Her algorithm)."
+    },
+    {
+      "id": "P21",
+      "correct": true,
+      "answer": "The purpose of the EZ-Start feature on the DreamStation CPAP Pro is to provide automatic, personalized adjustments to CPAP pressure designed to help patients gradually acclimate to their prescribed level of therapy (EZ-Start). Specifically, EZ-Start enhances patient acclimation (EZ-Start) and provides personalized adjustments (EZ-Start) to make the therapy more comfortable during the initial adaptation period."
+    },
+    {
+      "id": "P22",
+      "correct": true,
+      "answer": "On the Seattle-PAP bubble CPAP system, the 135-degree angle in the submersed tubing increases the amplitude of oscillations, thus providing effects similar to high frequency oscillatory ventilation for improving gas exchange and offering more efficient respiratory support compared to other methods of noninvasive respiratory support (Seattle-PAP, Pressure Oscillations, High Frequency Oscillatory Ventilation, Gas exchange). These pressure oscillations improve gas exchange and reduce respiratory muscle work (Bubble CPAP Therapy)."
+    },
+    {
+      "id": "P23",
+      "correct": true,
+      "answer": "The ResMed AutoRamp feature relies on sleep onset detection to know when to ramp up to the prescribed pressure (AutoRamp with sleep onset detection, Auto Ramp). The feature is designed to begin by delivering a low start pressure to help the patient fall asleep with ease, and then it responds by comfortably ramping up to the prescribed pressure the moment it detects sleep onset (AutoRamp with sleep onset detection)."
+    },
+    {
+      "id": "P24",
+      "correct": true,
+      "answer": "On the ResMed AirSense 11, the EPR (Expiratory Pressure Relief) feature gently lowers the pressure delivered when you exhale, making it easier to breathe out against the air pressure (Expiratory pressure relief). When EPR is enabled, you may find it easier to breathe out (EPR). The feature has three levels of pressure reduction: Level 1 reduces pressure by 1.0 cmH2O, Level 2 reduces by 2.0 cmH2O, and Level 3 reduces by 3.0 cmH2O (EPR). The minimum pressure for EPR operation is 4.0 cmH2O (EPR)."
+    },
+    {
+      "id": "P25",
+      "correct": false,
+      "answer": "Based on the knowledge graph, the Fisher & Paykel SleepStyle 200 Series does not have a specific sound pressure level value explicitly stated. However, there is a general sound pressure level entity with a value of 27 dBA (sound pressure level), measured according to ISO 80601-2-70:2015 and ISO 80601-2-79:2018 standards with an uncertainty of 2 dBA. Additionally, the graph mentions that the acceptable noise range (Sound Pressure Level) should be less than 28dB at 10 hPa/cmH2O at a distance of 1 metre under independent, standardized assessment conditions (Noise Level Standard). Without explicit attribution of the 27 dBA value to the SleepStyle 200 Series specifically, I cannot definitively confirm this is the sound pressure level for that particular device."
+    },
+    {
+      "id": "P26",
+      "correct": true,
+      "answer": "The knowledge graph does not contain information about the weight of the Breas Z2 Auto travel CPAP. The graph includes weight specifications for several other CPAP devices, such as the RESmart CPAP (3.5 lbs), iBreeze CPAP System (1.60 kg), RespirAir nebuliser compressor system (1.45 kg), and others, but the Breas Z2 Auto is not mentioned in the provided context."
+    },
+    {
+      "id": "P27",
+      "correct": true,
+      "answer": "The knowledge graph does not contain information about the retail price of the Resvent iBreeze Auto CPAP. While the graph includes detailed technical specifications, features, and manufacturer information for the iBreeze CPAP System, no pricing information is provided for any of its models, including the iBreeze 20A (Auto) or iBreeze 20A Pro variants."
+    },
+    {
+      "id": "P28",
+      "correct": true,
+      "answer": "The knowledge graph does not contain information about the release date of the ResMed AirSense 11."
+    }
+  ]
+}
