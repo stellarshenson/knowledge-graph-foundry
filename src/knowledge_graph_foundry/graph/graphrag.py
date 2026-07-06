@@ -13,6 +13,7 @@ from knowledge_graph_foundry.engines.base import Engine
 from knowledge_graph_foundry.events import emit
 
 _PROJECTION_NAME = "kgf_leiden"
+_PPR_PROJECTION = "kgf_ppr"
 
 
 class CommunitySummary(BaseModel):
@@ -123,6 +124,98 @@ def vector_query(
             top_k=top_k,
             embedding=embedding,
         ).data()
+
+
+_PPR_STREAM = """
+CALL gds.pageRank.stream($name, {
+    sourceNodes: $seed_ids,
+    dampingFactor: $damping,
+    maxIterations: 20
+}) YIELD nodeId, score
+WITH gds.util.asNode(nodeId) AS node, score
+WHERE node:Entity
+RETURN node.id AS id, node.name AS name, labels(node) AS types,
+       node.description AS description, score
+ORDER BY score DESC
+LIMIT $top_n
+"""
+
+
+def ppr_query(
+    driver: Driver, seed_ids: list[str], top_n: int, damping: float = 0.85
+) -> list[dict[str, Any]]:
+    """Personalized PageRank seeded from the given entity ids.
+
+    Propagates relevance across the whole entity graph in one pass (implicit
+    multi-hop), unlike a fixed 1-hop expansion. Projects a temporary undirected
+    graph, runs GDS PageRank with the seeds as source nodes, returns the top-N
+    ranked entities. Falls back to an empty list when the graph is too small.
+    Grounded in HippoRAG 2 / NodeRAG.
+    """
+    if not seed_ids:
+        return []
+    with driver.session() as session:
+        node_count = session.run("MATCH (e:Entity) RETURN count(e) AS n").single()["n"]
+        if node_count < 2:
+            return []
+        try:
+            session.run("CALL gds.graph.drop($name, false)", name=_PPR_PROJECTION).consume()
+            session.run(
+                "CALL gds.graph.project($name, 'Entity', "
+                "{ALL: {type: '*', orientation: 'UNDIRECTED'}})",
+                name=_PPR_PROJECTION,
+            ).consume()
+            seed_node_ids = [
+                row["nid"]
+                for row in session.run(
+                    "MATCH (e:Entity) WHERE e.id IN $ids RETURN id(e) AS nid", ids=seed_ids
+                )
+            ]
+            if not seed_node_ids:
+                return []
+            rows = session.run(
+                _PPR_STREAM,
+                name=_PPR_PROJECTION,
+                seed_ids=seed_node_ids,
+                damping=damping,
+                top_n=top_n,
+            ).data()
+        except Exception as exc:
+            logger.warning(f"PPR query fell back (graph issue): {exc}")
+            return []
+        finally:
+            session.run("CALL gds.graph.drop($name, false)", name=_PPR_PROJECTION).consume()
+    emit("graphrag.communities", ppr_seeds=len(seed_ids), ppr_results=len(rows))
+    return rows
+
+
+def global_summaries(driver: Driver, limit: int = 20) -> list[dict[str, Any]]:
+    """Community summaries for global sensemaking queries (R6 global path)."""
+    with driver.session() as session:
+        return session.run(
+            "MATCH (c:KGFCommunity) RETURN c.title AS title, c.summary AS summary LIMIT $limit",
+            limit=limit,
+        ).data()
+
+
+def is_global_query(question: str) -> bool:
+    """Heuristic router: global/thematic questions go to community summaries,
+    entity/multi-hop questions go to PPR (R6)."""
+    q = question.lower()
+    global_markers = (
+        "overall",
+        "in general",
+        "across all",
+        "themes",
+        "summarize",
+        "summary of",
+        "what kinds of",
+        "what types of",
+        "landscape",
+        "high level",
+        "high-level",
+    )
+    return any(m in q for m in global_markers)
 
 
 def scorecard(driver: Driver) -> dict[str, Any]:

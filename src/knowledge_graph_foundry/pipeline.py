@@ -476,48 +476,43 @@ class Foundry:
         logger.info(f"scorecard saved to {path}")
 
     def query(self, question: str) -> dict:
-        """Answer a question over the graph: vector candidates + neighbourhood
-        context to the LLM."""
+        """Answer a question over the graph. Global/thematic questions use
+        community summaries; entity and multi-hop questions use Personalized
+        PageRank seeded from the vector top-k (R2/R6), with currently-valid
+        neighbourhood context (R1 time-aware)."""
         from pydantic import BaseModel, Field
 
-        from knowledge_graph_foundry.extraction import generate_embeddings
-        from knowledge_graph_foundry.graph.graphrag import vector_query
-
-        probe = Entity.create(question[:80], types=["Query"], description=question)
-        embedded = generate_embeddings([probe], self.settings.embeddings)
-        candidates = vector_query(
-            self.driver,
-            embedded[0].embedding,
-            self.settings.graphrag.vector_index_name,
-            top_k=self.settings.graphrag.top_k,
+        from knowledge_graph_foundry.graph.graphrag import (
+            global_summaries,
+            is_global_query,
         )
-        context_lines = []
-        with self.driver.session() as session:
-            for candidate in candidates:
-                rows = session.run(
-                    "MATCH (e:Entity {id: $id})-[r]-(n:Entity) "
-                    "RETURN type(r) AS rel, n.name AS name, n.description AS description "
-                    "LIMIT 15",
-                    id=candidate["id"],
-                ).data()
-                props = session.run(
-                    "MATCH (e:Entity {id: $id}) RETURN properties(e) AS props",
-                    id=candidate["id"],
-                ).single()["props"]
-                spec = {
-                    k.removeprefix("prop_"): v for k, v in props.items() if k.startswith("prop_")
-                }
-                context_lines.append(
-                    f"## {candidate['name']} ({', '.join(candidate.get('types', []))})\n"
-                    f"{candidate.get('description', '')}\n"
-                    f"Properties: {json.dumps(spec, default=str)}\n"
-                    "Relations: " + "; ".join(f"{r['rel']} -> {r['name']}" for r in rows)
-                )
 
         class Answer(BaseModel):
             answer: str
             supporting_entities: list[str] = Field(default_factory=list)
 
+        if self.settings.graphrag.ppr_enabled and is_global_query(question):
+            summaries = global_summaries(self.driver)
+            if summaries:
+                context = "\n\n".join(f"## {s['title']}\n{s['summary']}" for s in summaries)
+                result = self.engine.complete(
+                    [
+                        {
+                            "role": "system",
+                            "content": "Answer from these knowledge-graph community summaries. "
+                            "Say so if they do not cover the question.",
+                        },
+                        {"role": "user", "content": f"Question: {question}\n\n{context}"},
+                    ],
+                    Answer,
+                )
+                return {
+                    "answer": result.answer,
+                    "supporting_entities": result.supporting_entities,
+                    "path": "global",
+                }
+
+        context_lines, supporting = self._retrieve_local(question)
         result = self.engine.complete(
             [
                 {
@@ -533,7 +528,68 @@ class Foundry:
             ],
             Answer,
         )
-        return {"answer": result.answer, "supporting_entities": result.supporting_entities}
+        return {
+            "answer": result.answer,
+            "supporting_entities": result.supporting_entities or supporting,
+            "path": "ppr" if self.settings.graphrag.ppr_enabled else "vector",
+        }
+
+    def _retrieve_local(self, question: str) -> tuple[list[str], list[str]]:
+        """Local retrieval: vector top-k seeds, expanded by PPR when enabled,
+        each node rendered with its properties and currently-valid relations."""
+        from knowledge_graph_foundry.extraction import generate_embeddings
+        from knowledge_graph_foundry.graph.graphrag import ppr_query, vector_query
+
+        probe = Entity.create(question[:80], types=["Query"], description=question)
+        embedded = generate_embeddings([probe], self.settings.embeddings)
+        seeds = vector_query(
+            self.driver,
+            embedded[0].embedding,
+            self.settings.graphrag.vector_index_name,
+            top_k=self.settings.graphrag.top_k,
+        )
+        nodes = seeds
+        if self.settings.graphrag.ppr_enabled:
+            ranked = ppr_query(
+                self.driver,
+                [s["id"] for s in seeds],
+                top_n=self.settings.graphrag.ppr_top_n,
+                damping=self.settings.graphrag.ppr_damping,
+            )
+            if ranked:
+                # union seeds and PPR-ranked nodes, seeds first, dedup by id
+                seen = set()
+                nodes = []
+                for n in seeds + ranked:
+                    if n["id"] not in seen:
+                        seen.add(n["id"])
+                        nodes.append(n)
+
+        context_lines: list[str] = []
+        supporting: list[str] = []
+        with self.driver.session() as session:
+            for node in nodes:
+                rows = session.run(
+                    "MATCH (e:Entity {id: $id})-[r]-(n:Entity) "
+                    "WHERE r.valid_to IS NULL "
+                    "RETURN type(r) AS rel, n.name AS name LIMIT 15",
+                    id=node["id"],
+                ).data()
+                props = session.run(
+                    "MATCH (e:Entity {id: $id}) RETURN properties(e) AS props",
+                    id=node["id"],
+                ).single()["props"]
+                spec = {
+                    k.removeprefix("prop_"): v for k, v in props.items() if k.startswith("prop_")
+                }
+                supporting.append(node["name"])
+                context_lines.append(
+                    f"## {node['name']} ({', '.join(node.get('types', []))})\n"
+                    f"{node.get('description', '')}\n"
+                    f"Properties: {json.dumps(spec, default=str)}\n"
+                    "Relations: " + "; ".join(f"{r['rel']} -> {r['name']}" for r in rows)
+                )
+        return context_lines, supporting
 
     def wipe(self) -> None:
         """Delete all graph content and the control metanode."""
