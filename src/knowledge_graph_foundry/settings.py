@@ -96,6 +96,9 @@ class GraphRAGSettings(BaseModel):
     propositions_enabled: bool = True  # R02-H11: fact sentences as retrieval targets
     proposition_index_name: str = "kgf_proposition_embeddings"
     proposition_top_k: int = 8  # propositions retrieved per query
+    similarity_edges_enabled: bool = True  # R02-H13: kNN densification for PPR reach
+    similarity_threshold: float = 0.8  # cosine gate for SIMILAR_TO edges
+    similarity_top_k: int = 5  # neighbours considered per entity
 
 
 class LoadSettings(BaseModel):

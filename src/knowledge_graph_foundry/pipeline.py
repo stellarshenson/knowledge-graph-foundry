@@ -557,11 +557,22 @@ class Foundry:
                 self.settings.graphrag.proposition_index_name,
                 self.settings.graphrag.vector_dimensions,
             )
+        similarity_edges = 0
+        if self.settings.graphrag.similarity_edges_enabled:
+            from knowledge_graph_foundry.graph.densify import add_similarity_edges
+
+            similarity_edges = add_similarity_edges(
+                self.driver,
+                self.settings.graphrag.vector_index_name,
+                threshold=self.settings.graphrag.similarity_threshold,
+                top_k=self.settings.graphrag.similarity_top_k,
+            )
         card = scorecard(self.driver)
         result = {
             "communities": communities,
             "summaries": summaries,
             "propositions": propositions,
+            "similarity_edges": similarity_edges,
             "scorecard": card,
         }
         self._persist_scorecard(result)
@@ -699,7 +710,7 @@ class Foundry:
             for node in nodes:
                 rows = session.run(
                     "MATCH (e:Entity {id: $id})-[r]-(n:Entity) "
-                    "WHERE r.valid_to IS NULL "
+                    "WHERE r.valid_to IS NULL AND type(r) <> 'SIMILAR_TO' "
                     "RETURN type(r) AS rel, n.name AS name LIMIT 15",
                     id=node["id"],
                 ).data()
