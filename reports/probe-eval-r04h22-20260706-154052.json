@@ -1,0 +1,9 @@
+{
+  "p19_recall_before": 0.0,
+  "p19_recall_after": 0.0,
+  "p19_answer_after": "On the DreamStation, SmartRamp mode differs from standard ramp mode in how it adjusts pressure during therapy initiation. SmartRamp automatically adjusts pressure based on patient breathing patterns (SmartRamp), whereas standard ramp uses a fixed time-based pressure increase (SmartRamp). \n\nIn contrast, the standard Ramp feature reduces pressure and then gradually increases the pressure to the prescription setting over a fixed time period to help patients fall asleep more comfortably (Ramp). The standard ramp operates on a time-based schedule with durations ranging from 0-60 minutes in 5-minute increments (Ramp).\n\nThe key difference is that SmartRamp is intelligent and responsive to the patient's actual breathing patterns, while standard ramp follows a predetermined time-based pressure increase regardless of the patient's breathing status.",
+  "quotes_created": 406,
+  "regressions": [
+    "P01"
+  ]
+}

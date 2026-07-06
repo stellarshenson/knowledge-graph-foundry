@@ -1,0 +1,7 @@
+{
+  "p19_recall_before": 1.0,
+  "p19_recall_after": 1.0,
+  "p19_answer_after": "On the DreamStation, SmartRamp mode differs from standard ramp mode in how it adjusts pressure. While a standard ramp mode uses a fixed time-based pressure increase (SmartRamp), SmartRamp maintains a constant lower pressure until the device detects that you require more pressure (Alternately, the SmartRamp mode maintains a constant lower pressure until the device detects that you require more pressure). In other words, SmartRamp is an intelligent ramp mode that automatically adjusts pressure based on patient breathing patterns (SmartRamp), whereas standard ramp gradually increases pressure over a set time period regardless of whether the patient has fallen asleep (Ramp).",
+  "quotes_created": 1,
+  "regressions": []
+}

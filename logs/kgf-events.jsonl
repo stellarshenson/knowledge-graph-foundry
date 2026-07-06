@@ -6426,3 +6426,560 @@
 {"ts": "2026-07-06T15:15:40.142916+00:00", "event": "load.completed", "kind": "relationships", "total": 13}
 {"ts": "2026-07-06T15:15:40.150587+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2132.txt", "entities": 12}
 {"ts": "2026-07-06T15:15:40.150708+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2154.txt"}
+{"ts": "2026-07-06T15:15:59.694817+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 3}
+{"ts": "2026-07-06T15:16:00.311278+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:16:00.311331+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:16:00.315975+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 3, "skipped": 0}
+{"ts": "2026-07-06T15:16:00.316029+00:00", "event": "load.completed", "kind": "relationships", "total": 3}
+{"ts": "2026-07-06T15:16:00.322905+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2154.txt", "entities": 6}
+{"ts": "2026-07-06T15:16:00.323017+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d21707.txt"}
+{"ts": "2026-07-06T15:16:25.072565+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 1}
+{"ts": "2026-07-06T15:16:25.849390+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:16:25.849442+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:16:25.852353+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 1, "skipped": 0}
+{"ts": "2026-07-06T15:16:25.852393+00:00", "event": "load.completed", "kind": "relationships", "total": 1}
+{"ts": "2026-07-06T15:16:25.852461+00:00", "event": "drift.warning", "remap_rates": [0.0, 0.0, 0.3333333333333333], "jsd": 0.08102105208041058, "window": 3, "action": "warn"}
+{"ts": "2026-07-06T15:16:25.858862+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d21707.txt", "entities": 6}
+{"ts": "2026-07-06T15:16:25.858971+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2187.txt"}
+{"ts": "2026-07-06T15:16:38.417853+00:00", "event": "extraction.completed", "chunks": 1, "entities": 3, "relationships": 2}
+{"ts": "2026-07-06T15:16:38.795473+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 3}
+{"ts": "2026-07-06T15:16:38.795528+00:00", "event": "load.completed", "kind": "entities", "total": 3}
+{"ts": "2026-07-06T15:16:38.798983+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 2, "skipped": 0}
+{"ts": "2026-07-06T15:16:38.799031+00:00", "event": "load.completed", "kind": "relationships", "total": 2}
+{"ts": "2026-07-06T15:16:38.799102+00:00", "event": "drift.warning", "remap_rates": [0.0, 0.3333333333333333, 0.0], "jsd": 0.13934674245063966, "window": 3, "action": "warn"}
+{"ts": "2026-07-06T15:16:38.806611+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2187.txt", "entities": 3}
+{"ts": "2026-07-06T15:16:38.806721+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d22090.txt"}
+{"ts": "2026-07-06T15:17:17.691874+00:00", "event": "extraction.completed", "chunks": 1, "entities": 8, "relationships": 8}
+{"ts": "2026-07-06T15:17:18.660211+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 8}
+{"ts": "2026-07-06T15:17:18.660267+00:00", "event": "load.completed", "kind": "entities", "total": 8}
+{"ts": "2026-07-06T15:17:18.665301+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:17:18.665345+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:17:18.665432+00:00", "event": "drift.warning", "remap_rates": [0.3333333333333333, 0.0, 0.0], "jsd": 0.14223293532273434, "window": 3, "action": "warn"}
+{"ts": "2026-07-06T15:17:18.672660+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d22090.txt", "entities": 8}
+{"ts": "2026-07-06T15:17:18.672778+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2219.txt"}
+{"ts": "2026-07-06T15:17:49.550991+00:00", "event": "extraction.completed", "chunks": 1, "entities": 7, "relationships": 8}
+{"ts": "2026-07-06T15:17:50.488846+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 7}
+{"ts": "2026-07-06T15:17:50.488903+00:00", "event": "load.completed", "kind": "entities", "total": 7}
+{"ts": "2026-07-06T15:17:50.494189+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:17:50.494241+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:17:50.501564+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2219.txt", "entities": 7}
+{"ts": "2026-07-06T15:17:50.501691+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d22313.txt"}
+{"ts": "2026-07-06T15:18:02.037482+00:00", "event": "extraction.completed", "chunks": 1, "entities": 2, "relationships": 1}
+{"ts": "2026-07-06T15:18:02.300511+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 2}
+{"ts": "2026-07-06T15:18:02.300562+00:00", "event": "load.completed", "kind": "entities", "total": 2}
+{"ts": "2026-07-06T15:18:02.303454+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 1, "skipped": 0}
+{"ts": "2026-07-06T15:18:02.303519+00:00", "event": "load.completed", "kind": "relationships", "total": 1}
+{"ts": "2026-07-06T15:18:02.310580+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d22313.txt", "entities": 2}
+{"ts": "2026-07-06T15:18:02.310687+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d22340.txt"}
+{"ts": "2026-07-06T15:18:42.179103+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDataAnalysisSoftware -[MONITORS]-> LeakRate", "chunk": "c_000461d5d1499f4c"}
+{"ts": "2026-07-06T15:18:42.179446+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDataAnalysisSoftware -[MONITORS]-> FlowLimitation", "chunk": "c_000461d5d1499f4c"}
+{"ts": "2026-07-06T15:18:42.179494+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDataAnalysisSoftware -[PRODUCES]-> AHITrend", "chunk": "c_000461d5d1499f4c"}
+{"ts": "2026-07-06T15:18:42.179508+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAPDataAnalysisSoftware -[MONITORS]-> RespiratoryDisturbance", "chunk": "c_000461d5d1499f4c"}
+{"ts": "2026-07-06T15:18:42.179670+00:00", "event": "extraction.completed", "chunks": 1, "entities": 14, "relationships": 11}
+{"ts": "2026-07-06T15:18:43.414071+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 14}
+{"ts": "2026-07-06T15:18:43.414125+00:00", "event": "load.completed", "kind": "entities", "total": 14}
+{"ts": "2026-07-06T15:18:43.423245+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 11, "skipped": 0}
+{"ts": "2026-07-06T15:18:43.423303+00:00", "event": "load.completed", "kind": "relationships", "total": 11}
+{"ts": "2026-07-06T15:18:43.429577+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d22340.txt", "entities": 14}
+{"ts": "2026-07-06T15:18:43.429683+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d22366.txt"}
+{"ts": "2026-07-06T15:19:06.465797+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 3}
+{"ts": "2026-07-06T15:19:06.988557+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:19:06.988654+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:19:06.993535+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 3, "skipped": 0}
+{"ts": "2026-07-06T15:19:06.993585+00:00", "event": "load.completed", "kind": "relationships", "total": 3}
+{"ts": "2026-07-06T15:19:07.001158+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d22366.txt", "entities": 4}
+{"ts": "2026-07-06T15:19:07.001297+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d22476.txt"}
+{"ts": "2026-07-06T15:19:31.178232+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 4}
+{"ts": "2026-07-06T15:19:31.754378+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:19:31.754426+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:19:31.758074+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:19:31.758110+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:19:31.764615+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d22476.txt", "entities": 4}
+{"ts": "2026-07-06T15:19:31.764725+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d22485.txt"}
+{"ts": "2026-07-06T15:19:52.161589+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 5}
+{"ts": "2026-07-06T15:19:52.799755+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:19:52.799827+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:19:52.804596+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 5, "skipped": 0}
+{"ts": "2026-07-06T15:19:52.804641+00:00", "event": "load.completed", "kind": "relationships", "total": 5}
+{"ts": "2026-07-06T15:19:52.811741+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d22485.txt", "entities": 6}
+{"ts": "2026-07-06T15:19:52.811852+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2253.txt"}
+{"ts": "2026-07-06T15:20:17.779222+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 5}
+{"ts": "2026-07-06T15:20:18.355304+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:20:18.355361+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:20:18.359906+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 5, "skipped": 0}
+{"ts": "2026-07-06T15:20:18.359962+00:00", "event": "load.completed", "kind": "relationships", "total": 5}
+{"ts": "2026-07-06T15:20:18.366249+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2253.txt", "entities": 4}
+{"ts": "2026-07-06T15:20:18.366376+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d22917.txt"}
+{"ts": "2026-07-06T15:20:44.262257+00:00", "event": "extraction.completed", "chunks": 1, "entities": 9, "relationships": 8}
+{"ts": "2026-07-06T15:20:45.551010+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 9}
+{"ts": "2026-07-06T15:20:45.551067+00:00", "event": "load.completed", "kind": "entities", "total": 9}
+{"ts": "2026-07-06T15:20:45.556099+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:20:45.556132+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:20:45.561962+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d22917.txt", "entities": 9}
+{"ts": "2026-07-06T15:20:45.562073+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23171.txt"}
+{"ts": "2026-07-06T15:21:30.194504+00:00", "event": "extraction.warning", "reason": "dangling relationship: AHI -[TRACKS]-> Apnea", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194801+00:00", "event": "extraction.warning", "reason": "dangling relationship: AHI -[TRACKS]-> Hypopnea", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194824+00:00", "event": "extraction.warning", "reason": "dangling relationship: ODI -[TRACKS]-> OxygenDesaturation", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194837+00:00", "event": "extraction.warning", "reason": "dangling relationship: PSG -[MONITORS]-> EEG", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194846+00:00", "event": "extraction.warning", "reason": "dangling relationship: PSG -[MONITORS]-> EOG", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194854+00:00", "event": "extraction.warning", "reason": "dangling relationship: PSG -[MONITORS]-> EMG", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194862+00:00", "event": "extraction.warning", "reason": "dangling relationship: PSG -[MONITORS]-> Heart rate", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194870+00:00", "event": "extraction.warning", "reason": "dangling relationship: PSG -[MONITORS]-> Oxygen saturation", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.194878+00:00", "event": "extraction.warning", "reason": "dangling relationship: ODI -[USES_DEVICE]-> Wellue O2Ring", "chunk": "c_ffe2d8b88541296c"}
+{"ts": "2026-07-06T15:21:30.195009+00:00", "event": "extraction.completed", "chunks": 1, "entities": 13, "relationships": 8}
+{"ts": "2026-07-06T15:21:31.605018+00:00", "event": "resolution.merge", "left_id": "e_b5155f4193cf0542", "right_id": "e_eba81c2562aacefb", "prior": 0.5913043478260871, "lr_description": 0.8571428571428571, "lr_embedding": 1.2177067506430754, "lr_cooccurrence": 1.5, "posterior": 0.6937359786366584, "decision": "merge"}
+{"ts": "2026-07-06T15:21:31.605189+00:00", "event": "resolution.defer", "left_id": "e_028d410761f3e9fb", "right_id": "e_451b3bd1371c7485", "prior": 0.6971428571428572, "lr_description": 0.3, "lr_embedding": 0.9691772725937003, "lr_cooccurrence": 1.5, "posterior": 0.5009784224993634, "decision": "defer"}
+{"ts": "2026-07-06T15:21:31.673345+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 12}
+{"ts": "2026-07-06T15:21:31.673397+00:00", "event": "load.completed", "kind": "entities", "total": 12}
+{"ts": "2026-07-06T15:21:31.691401+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 7, "skipped": 0}
+{"ts": "2026-07-06T15:21:31.691462+00:00", "event": "load.completed", "kind": "relationships", "total": 7}
+{"ts": "2026-07-06T15:21:31.698181+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23171.txt", "entities": 13}
+{"ts": "2026-07-06T15:21:31.698290+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2326.txt"}
+{"ts": "2026-07-06T15:21:58.605935+00:00", "event": "extraction.completed", "chunks": 1, "entities": 9, "relationships": 8}
+{"ts": "2026-07-06T15:21:59.743269+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 9}
+{"ts": "2026-07-06T15:21:59.743364+00:00", "event": "load.completed", "kind": "entities", "total": 9}
+{"ts": "2026-07-06T15:21:59.748401+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:21:59.748451+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:21:59.754172+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2326.txt", "entities": 9}
+{"ts": "2026-07-06T15:21:59.754264+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2332.txt"}
+{"ts": "2026-07-06T15:22:38.502553+00:00", "event": "extraction.completed", "chunks": 1, "entities": 11, "relationships": 8}
+{"ts": "2026-07-06T15:22:39.715324+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 11}
+{"ts": "2026-07-06T15:22:39.715380+00:00", "event": "load.completed", "kind": "entities", "total": 11}
+{"ts": "2026-07-06T15:22:39.720260+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:22:39.720309+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:22:39.726366+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2332.txt", "entities": 11}
+{"ts": "2026-07-06T15:22:39.726633+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23412.txt"}
+{"ts": "2026-07-06T15:23:01.386907+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 4}
+{"ts": "2026-07-06T15:23:02.022435+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:23:02.022487+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:23:02.026450+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:23:02.026489+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:23:02.031986+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23412.txt", "entities": 6}
+{"ts": "2026-07-06T15:23:02.032082+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23454.txt"}
+{"ts": "2026-07-06T15:23:20.453038+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 5}
+{"ts": "2026-07-06T15:23:21.171383+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:23:21.171438+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:23:21.175826+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 5, "skipped": 0}
+{"ts": "2026-07-06T15:23:21.175872+00:00", "event": "load.completed", "kind": "relationships", "total": 5}
+{"ts": "2026-07-06T15:23:21.181351+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23454.txt", "entities": 6}
+{"ts": "2026-07-06T15:23:21.181448+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23486.txt"}
+{"ts": "2026-07-06T15:23:48.167704+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 7}
+{"ts": "2026-07-06T15:23:49.348985+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 10}
+{"ts": "2026-07-06T15:23:49.349043+00:00", "event": "load.completed", "kind": "entities", "total": 10}
+{"ts": "2026-07-06T15:23:49.354211+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 7, "skipped": 0}
+{"ts": "2026-07-06T15:23:49.354266+00:00", "event": "load.completed", "kind": "relationships", "total": 7}
+{"ts": "2026-07-06T15:23:49.361221+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23486.txt", "entities": 10}
+{"ts": "2026-07-06T15:23:49.361336+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23539.txt"}
+{"ts": "2026-07-06T15:24:18.429979+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 4}
+{"ts": "2026-07-06T15:24:19.141403+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:24:19.141462+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:24:19.145089+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:24:19.145125+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:24:19.150987+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23539.txt", "entities": 6}
+{"ts": "2026-07-06T15:24:19.151167+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23589.txt"}
+{"ts": "2026-07-06T15:24:40.855292+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 2}
+{"ts": "2026-07-06T15:24:41.383624+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:24:41.383676+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:24:41.416371+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 2, "skipped": 0}
+{"ts": "2026-07-06T15:24:41.416431+00:00", "event": "load.completed", "kind": "relationships", "total": 2}
+{"ts": "2026-07-06T15:24:41.423116+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23589.txt", "entities": 4}
+{"ts": "2026-07-06T15:24:41.423216+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23699.txt"}
+{"ts": "2026-07-06T15:25:05.440995+00:00", "event": "extraction.completed", "chunks": 1, "entities": 5, "relationships": 5}
+{"ts": "2026-07-06T15:25:06.117991+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 5}
+{"ts": "2026-07-06T15:25:06.118047+00:00", "event": "load.completed", "kind": "entities", "total": 5}
+{"ts": "2026-07-06T15:25:06.134825+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 5, "skipped": 0}
+{"ts": "2026-07-06T15:25:06.134884+00:00", "event": "load.completed", "kind": "relationships", "total": 5}
+{"ts": "2026-07-06T15:25:06.142831+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23699.txt", "entities": 5}
+{"ts": "2026-07-06T15:25:06.142943+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2371.txt"}
+{"ts": "2026-07-06T15:25:21.578105+00:00", "event": "extraction.completed", "chunks": 1, "entities": 5, "relationships": 4}
+{"ts": "2026-07-06T15:25:22.268245+00:00", "event": "resolution.defer", "left_id": "e_9a351f94432569a8", "right_id": "e_e6a789030168de89", "prior": 0.6666666666666667, "lr_description": 0.3, "lr_embedding": 1.1084891610752687, "lr_cooccurrence": 1.5, "posterior": 0.49940936436422867, "decision": "defer"}
+{"ts": "2026-07-06T15:25:22.300758+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 5}
+{"ts": "2026-07-06T15:25:22.300810+00:00", "event": "load.completed", "kind": "entities", "total": 5}
+{"ts": "2026-07-06T15:25:22.305142+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:25:22.305204+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:25:22.312155+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2371.txt", "entities": 5}
+{"ts": "2026-07-06T15:25:22.312268+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23711.txt"}
+{"ts": "2026-07-06T15:25:56.586457+00:00", "event": "extraction.completed", "chunks": 1, "entities": 9, "relationships": 11}
+{"ts": "2026-07-06T15:25:57.672321+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 9}
+{"ts": "2026-07-06T15:25:57.672376+00:00", "event": "load.completed", "kind": "entities", "total": 9}
+{"ts": "2026-07-06T15:25:57.677728+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 11, "skipped": 0}
+{"ts": "2026-07-06T15:25:57.677774+00:00", "event": "load.completed", "kind": "relationships", "total": 11}
+{"ts": "2026-07-06T15:25:57.684061+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23711.txt", "entities": 9}
+{"ts": "2026-07-06T15:25:57.684172+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d23880.txt"}
+{"ts": "2026-07-06T15:26:22.411803+00:00", "event": "extraction.completed", "chunks": 1, "entities": 5, "relationships": 4}
+{"ts": "2026-07-06T15:26:22.982426+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 5}
+{"ts": "2026-07-06T15:26:22.982481+00:00", "event": "load.completed", "kind": "entities", "total": 5}
+{"ts": "2026-07-06T15:26:22.998676+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:26:22.998735+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:26:23.005286+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d23880.txt", "entities": 5}
+{"ts": "2026-07-06T15:26:23.005439+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d24423.txt"}
+{"ts": "2026-07-06T15:26:47.088124+00:00", "event": "extraction.completed", "chunks": 1, "entities": 7, "relationships": 6}
+{"ts": "2026-07-06T15:26:47.712356+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 7}
+{"ts": "2026-07-06T15:26:47.712409+00:00", "event": "load.completed", "kind": "entities", "total": 7}
+{"ts": "2026-07-06T15:26:47.718638+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 6, "skipped": 0}
+{"ts": "2026-07-06T15:26:47.718686+00:00", "event": "load.completed", "kind": "relationships", "total": 6}
+{"ts": "2026-07-06T15:26:47.725081+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d24423.txt", "entities": 7}
+{"ts": "2026-07-06T15:26:47.725186+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d24439.txt"}
+{"ts": "2026-07-06T15:27:14.322978+00:00", "event": "extraction.completed", "chunks": 1, "entities": 7, "relationships": 7}
+{"ts": "2026-07-06T15:27:15.094242+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 7}
+{"ts": "2026-07-06T15:27:15.094298+00:00", "event": "load.completed", "kind": "entities", "total": 7}
+{"ts": "2026-07-06T15:27:15.099503+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 7, "skipped": 0}
+{"ts": "2026-07-06T15:27:15.099559+00:00", "event": "load.completed", "kind": "relationships", "total": 7}
+{"ts": "2026-07-06T15:27:15.106031+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d24439.txt", "entities": 7}
+{"ts": "2026-07-06T15:27:15.106137+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d24671.txt"}
+{"ts": "2026-07-06T15:27:28.375325+00:00", "event": "extraction.completed", "chunks": 1, "entities": 2, "relationships": 1}
+{"ts": "2026-07-06T15:27:28.815968+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 2}
+{"ts": "2026-07-06T15:27:28.816026+00:00", "event": "load.completed", "kind": "entities", "total": 2}
+{"ts": "2026-07-06T15:27:28.819170+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 1, "skipped": 0}
+{"ts": "2026-07-06T15:27:28.819233+00:00", "event": "load.completed", "kind": "relationships", "total": 1}
+{"ts": "2026-07-06T15:27:28.826256+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d24671.txt", "entities": 2}
+{"ts": "2026-07-06T15:27:28.826375+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d24919.txt"}
+{"ts": "2026-07-06T15:27:49.994756+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 3}
+{"ts": "2026-07-06T15:27:50.910104+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:27:50.910158+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:27:50.914230+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 3, "skipped": 0}
+{"ts": "2026-07-06T15:27:50.914286+00:00", "event": "load.completed", "kind": "relationships", "total": 3}
+{"ts": "2026-07-06T15:27:50.938299+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d24919.txt", "entities": 4}
+{"ts": "2026-07-06T15:27:50.938435+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d24940.txt"}
+{"ts": "2026-07-06T15:28:23.597314+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 8}
+{"ts": "2026-07-06T15:28:24.732176+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 10}
+{"ts": "2026-07-06T15:28:24.732230+00:00", "event": "load.completed", "kind": "entities", "total": 10}
+{"ts": "2026-07-06T15:28:24.736876+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:28:24.736920+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:28:24.743392+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d24940.txt", "entities": 10}
+{"ts": "2026-07-06T15:28:24.743543+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d24955.txt"}
+{"ts": "2026-07-06T15:28:53.003626+00:00", "event": "extraction.completed", "chunks": 1, "entities": 8, "relationships": 7}
+{"ts": "2026-07-06T15:28:53.951709+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 8}
+{"ts": "2026-07-06T15:28:53.951770+00:00", "event": "load.completed", "kind": "entities", "total": 8}
+{"ts": "2026-07-06T15:28:53.956331+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 7, "skipped": 0}
+{"ts": "2026-07-06T15:28:53.956382+00:00", "event": "load.completed", "kind": "relationships", "total": 7}
+{"ts": "2026-07-06T15:28:53.964440+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d24955.txt", "entities": 8}
+{"ts": "2026-07-06T15:28:53.964620+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25.txt"}
+{"ts": "2026-07-06T15:29:13.143286+00:00", "event": "extraction.completed", "chunks": 1, "entities": 5, "relationships": 4}
+{"ts": "2026-07-06T15:29:13.721042+00:00", "event": "resolution.merge", "left_id": "e_70cafc7ba74a3fc9", "right_id": "e_caf322f0bbed721e", "prior": 0.6500000000000001, "lr_description": 0.42105263157894735, "lr_embedding": 1.5611713421833628, "lr_cooccurrence": 1.5, "posterior": 0.6467864345202501, "decision": "merge"}
+{"ts": "2026-07-06T15:29:13.747875+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:29:13.747924+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:29:13.782896+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 2, "skipped": 0}
+{"ts": "2026-07-06T15:29:13.782954+00:00", "event": "load.completed", "kind": "relationships", "total": 2}
+{"ts": "2026-07-06T15:29:13.783032+00:00", "event": "drift.warning", "remap_rates": [0.0, 0.0, 0.75], "jsd": 0.18418214086007068, "window": 3, "action": "warn"}
+{"ts": "2026-07-06T15:29:13.789983+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d25.txt", "entities": 5}
+{"ts": "2026-07-06T15:29:13.790091+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25099.txt"}
+{"ts": "2026-07-06T15:29:37.030429+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 4}
+{"ts": "2026-07-06T15:29:37.678273+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:29:37.678347+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:29:37.698296+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:29:37.698354+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:29:37.698434+00:00", "event": "drift.warning", "remap_rates": [0.0, 0.75, 0.0], "jsd": 0.21380272427653538, "window": 3, "action": "warn"}
+{"ts": "2026-07-06T15:29:37.704364+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d25099.txt", "entities": 6}
+{"ts": "2026-07-06T15:29:37.704460+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25105.txt"}
+{"ts": "2026-07-06T15:29:57.741573+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 5}
+{"ts": "2026-07-06T15:29:58.328556+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:29:58.328610+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:29:58.332943+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 5, "skipped": 0}
+{"ts": "2026-07-06T15:29:58.332986+00:00", "event": "load.completed", "kind": "relationships", "total": 5}
+{"ts": "2026-07-06T15:29:58.333057+00:00", "event": "drift.warning", "remap_rates": [0.75, 0.0, 0.0], "jsd": 0.24276786365462794, "window": 3, "action": "warn"}
+{"ts": "2026-07-06T15:29:58.338721+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d25105.txt", "entities": 4}
+{"ts": "2026-07-06T15:29:58.338843+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25114.txt"}
+{"ts": "2026-07-06T15:30:21.834411+00:00", "event": "extraction.completed", "chunks": 1, "entities": 5, "relationships": 4}
+{"ts": "2026-07-06T15:30:22.405347+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 5}
+{"ts": "2026-07-06T15:30:22.405404+00:00", "event": "load.completed", "kind": "entities", "total": 5}
+{"ts": "2026-07-06T15:30:22.409491+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:30:22.409550+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:30:22.416405+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d25114.txt", "entities": 5}
+{"ts": "2026-07-06T15:30:22.416535+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25143.txt"}
+{"ts": "2026-07-06T15:30:37.413009+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 4}
+{"ts": "2026-07-06T15:30:37.694414+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:30:37.694464+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:30:37.698454+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:30:37.698494+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:30:37.704162+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d25143.txt", "entities": 4}
+{"ts": "2026-07-06T15:30:37.704264+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d2519.txt"}
+{"ts": "2026-07-06T15:31:02.762836+00:00", "event": "extraction.completed", "chunks": 1, "entities": 8, "relationships": 7}
+{"ts": "2026-07-06T15:31:03.750524+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 8}
+{"ts": "2026-07-06T15:31:03.750581+00:00", "event": "load.completed", "kind": "entities", "total": 8}
+{"ts": "2026-07-06T15:31:03.755533+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 7, "skipped": 0}
+{"ts": "2026-07-06T15:31:03.755589+00:00", "event": "load.completed", "kind": "relationships", "total": 7}
+{"ts": "2026-07-06T15:31:03.762630+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d2519.txt", "entities": 8}
+{"ts": "2026-07-06T15:31:03.762760+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25287.txt"}
+{"ts": "2026-07-06T15:31:23.726855+00:00", "event": "extraction.completed", "chunks": 1, "entities": 5, "relationships": 4}
+{"ts": "2026-07-06T15:31:24.287848+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 5}
+{"ts": "2026-07-06T15:31:24.287911+00:00", "event": "load.completed", "kind": "entities", "total": 5}
+{"ts": "2026-07-06T15:31:24.292516+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:31:24.292565+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:31:24.299054+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d25287.txt", "entities": 5}
+{"ts": "2026-07-06T15:31:24.299156+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25624.txt"}
+{"ts": "2026-07-06T15:31:42.332511+00:00", "event": "extraction.completed", "chunks": 1, "entities": 4, "relationships": 4}
+{"ts": "2026-07-06T15:31:42.899485+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 4}
+{"ts": "2026-07-06T15:31:42.899539+00:00", "event": "load.completed", "kind": "entities", "total": 4}
+{"ts": "2026-07-06T15:31:42.903248+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 4, "skipped": 0}
+{"ts": "2026-07-06T15:31:42.903292+00:00", "event": "load.completed", "kind": "relationships", "total": 4}
+{"ts": "2026-07-06T15:31:42.909112+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d25624.txt", "entities": 4}
+{"ts": "2026-07-06T15:31:42.909211+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d25627.txt"}
+{"ts": "2026-07-06T15:32:09.954296+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10003.txt"}
+{"ts": "2026-07-06T15:32:42.400508+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 10}
+{"ts": "2026-07-06T15:32:43.701095+00:00", "event": "fsm.transition", "state": "CURING"}
+{"ts": "2026-07-06T15:32:43.701200+00:00", "event": "ontology.type_emerged", "type": "Procedure"}
+{"ts": "2026-07-06T15:32:43.701279+00:00", "event": "ontology.type_emerged", "type": "Index"}
+{"ts": "2026-07-06T15:32:43.701330+00:00", "event": "ontology.type_emerged", "type": "Device"}
+{"ts": "2026-07-06T15:32:43.701355+00:00", "event": "ontology.type_emerged", "type": "Mode"}
+{"ts": "2026-07-06T15:32:43.701367+00:00", "event": "ontology.type_emerged", "type": "Software"}
+{"ts": "2026-07-06T15:32:43.701381+00:00", "event": "ontology.type_emerged", "type": "Condition"}
+{"ts": "2026-07-06T15:32:43.701390+00:00", "event": "ontology.type_emerged", "type": "TimePeriod"}
+{"ts": "2026-07-06T15:32:43.701399+00:00", "event": "ontology.type_emerged", "type": "Concept"}
+{"ts": "2026-07-06T15:32:43.701407+00:00", "event": "ontology.type_emerged", "type": "Measurement"}
+{"ts": "2026-07-06T15:32:43.701455+00:00", "event": "ontology.type_confirmed", "type": "Measurement"}
+{"ts": "2026-07-06T15:32:43.701486+00:00", "event": "ontology.evolved", "documents": 1, "types": 9, "entities": 10}
+{"ts": "2026-07-06T15:32:43.701594+00:00", "event": "curing.metrics", "doc_index": 0, "unique_types": 9.0, "total_occurrences": 10.0, "singletons": 8.0, "doubletons": 1.0, "entropy_shannon": 3.1219280948873624, "entropy_shannon_delta": NaN, "kl_divergence": NaN, "js_divergence": NaN, "type_accumulation_rate": 9.0, "gini_coefficient": 0.08888888888888889, "zipf_r_squared": 0.549980399430098, "heaps_beta": NaN, "chao1_estimate": 41.0, "chao1_coverage": 0.21951219512195122, "ace_estimate": 45.000000000000014, "entropy_shannon_var": NaN, "js_divergence_var": NaN, "gini_coefficient_var": NaN, "chao1_coverage_var": NaN}
+{"ts": "2026-07-06T15:32:43.736417+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10003.txt", "entities": 10}
+{"ts": "2026-07-06T15:32:43.736587+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10034.txt"}
+{"ts": "2026-07-06T15:33:14.852823+00:00", "event": "extraction.completed", "chunks": 1, "entities": 15, "relationships": 7}
+{"ts": "2026-07-06T15:33:16.411986+00:00", "event": "ontology.type_confirmed", "type": "Procedure"}
+{"ts": "2026-07-06T15:33:16.412061+00:00", "event": "ontology.type_confirmed", "type": "Device"}
+{"ts": "2026-07-06T15:33:16.412092+00:00", "event": "ontology.type_confirmed", "type": "Condition"}
+{"ts": "2026-07-06T15:33:16.412105+00:00", "event": "ontology.type_confirmed", "type": "Concept"}
+{"ts": "2026-07-06T15:33:16.412115+00:00", "event": "ontology.evolved", "documents": 2, "types": 9, "entities": 25}
+{"ts": "2026-07-06T15:33:16.412269+00:00", "event": "curing.metrics", "doc_index": 1, "unique_types": 9.0, "total_occurrences": 25.0, "singletons": 4.0, "doubletons": 2.0, "entropy_shannon": 2.7132696895151085, "entropy_shannon_delta": 0.40865840537225395, "kl_divergence": 0.5049355937507306, "js_divergence": 0.1240821601103862, "type_accumulation_rate": 0.0, "gini_coefficient": 0.4266666666666667, "zipf_r_squared": 0.9450670659622913, "heaps_beta": NaN, "chao1_estimate": 13.0, "chao1_coverage": 0.6923076923076923, "ace_estimate": 14.115646258503403, "entropy_shannon_var": 0.04175042307034836, "js_divergence_var": NaN, "gini_coefficient_var": 0.02852345679012346, "chao1_coverage_var": 0.055883895539778024}
+{"ts": "2026-07-06T15:33:16.431135+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10034.txt", "entities": 15}
+{"ts": "2026-07-06T15:33:16.431267+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10206.txt"}
+{"ts": "2026-07-06T15:34:04.332776+00:00", "event": "extraction.completed", "chunks": 1, "entities": 18, "relationships": 8}
+{"ts": "2026-07-06T15:34:06.179640+00:00", "event": "ontology.type_confirmed", "type": "Index"}
+{"ts": "2026-07-06T15:34:06.179720+00:00", "event": "ontology.evolved", "documents": 3, "types": 9, "entities": 43}
+{"ts": "2026-07-06T15:34:06.179870+00:00", "event": "curing.metrics", "doc_index": 2, "unique_types": 9.0, "total_occurrences": 43.0, "singletons": 3.0, "doubletons": 1.0, "entropy_shannon": 2.479581254290326, "entropy_shannon_delta": 0.23368843522478233, "kl_divergence": 0.04561169274882924, "js_divergence": 0.011075351266451452, "type_accumulation_rate": 0.0, "gini_coefficient": 0.5219638242894057, "zipf_r_squared": 0.9658636261062532, "heaps_beta": 0.0, "chao1_estimate": 13.5, "chao1_coverage": 0.6666666666666666, "ace_estimate": 12.15702479338843, "entropy_shannon_var": 0.07046904896268834, "js_divergence_var": 0.003192634711272402, "gini_coefficient_var": 0.03452547500929209, "chao1_coverage_var": 0.04712668508638551}
+{"ts": "2026-07-06T15:34:06.208593+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10206.txt", "entities": 18}
+{"ts": "2026-07-06T15:34:06.208757+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10237.txt"}
+{"ts": "2026-07-06T15:34:34.263924+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 9}
+{"ts": "2026-07-06T15:34:35.492370+00:00", "event": "ontology.evolved", "documents": 4, "types": 9, "entities": 53}
+{"ts": "2026-07-06T15:34:35.492566+00:00", "event": "curing.metrics", "doc_index": 3, "unique_types": 9.0, "total_occurrences": 54.0, "singletons": 3.0, "doubletons": 0.0, "entropy_shannon": 2.4814061893609725, "entropy_shannon_delta": 0.0018249350706462941, "kl_divergence": 0.013650698532740705, "js_divergence": 0.0034237142120723536, "type_accumulation_rate": 0.0, "gini_coefficient": 0.5267489711934157, "zipf_r_squared": 0.9281967762556302, "heaps_beta": 0.0, "chao1_estimate": 12.0, "chao1_coverage": 0.75, "ace_estimate": 12.111111111111109, "entropy_shannon_var": 0.06864086032594324, "js_divergence_var": 0.0030430607734775426, "gini_coefficient_var": 0.0320306307543521, "chao1_coverage_var": 0.044739395232069296}
+{"ts": "2026-07-06T15:34:35.529479+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10237.txt", "entities": 10}
+{"ts": "2026-07-06T15:34:35.529641+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10290.txt"}
+{"ts": "2026-07-06T15:35:07.829508+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 6}
+{"ts": "2026-07-06T15:35:09.050354+00:00", "event": "ontology.type_confirmed", "type": "TimePeriod"}
+{"ts": "2026-07-06T15:35:09.050439+00:00", "event": "ontology.evolved", "documents": 5, "types": 9, "entities": 63}
+{"ts": "2026-07-06T15:35:09.050593+00:00", "event": "curing.metrics", "doc_index": 4, "unique_types": 9.0, "total_occurrences": 64.0, "singletons": 2.0, "doubletons": 1.0, "entropy_shannon": 2.4410641967282483, "entropy_shannon_delta": 0.0403419926327242, "kl_divergence": 0.01170118695577367, "js_divergence": 0.0029964155295973236, "type_accumulation_rate": 0.0, "gini_coefficient": 0.5381944444444444, "zipf_r_squared": 0.947418243478515, "heaps_beta": -3.153306692853895e-15, "chao1_estimate": 11.0, "chao1_coverage": 0.8181818181818182, "ace_estimate": 10.593604024434065, "entropy_shannon_var": 0.06556145133710692, "js_divergence_var": 0.0026321722680491366, "gini_coefficient_var": 0.02908793805709306, "chao1_coverage_var": 0.044707421532862605}
+{"ts": "2026-07-06T15:35:09.092659+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10290.txt", "entities": 10}
+{"ts": "2026-07-06T15:35:09.092821+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10311.txt"}
+{"ts": "2026-07-06T15:35:53.002949+00:00", "event": "extraction.completed", "chunks": 1, "entities": 16, "relationships": 16}
+{"ts": "2026-07-06T15:35:54.632709+00:00", "event": "ontology.evolved", "documents": 6, "types": 9, "entities": 79}
+{"ts": "2026-07-06T15:35:54.632950+00:00", "event": "curing.metrics", "doc_index": 5, "unique_types": 9.0, "total_occurrences": 80.0, "singletons": 2.0, "doubletons": 1.0, "entropy_shannon": 2.4440304285156667, "entropy_shannon_delta": 0.002966231787418394, "kl_divergence": 0.006309648623912866, "js_divergence": 0.0015747422683002306, "type_accumulation_rate": 0.0, "gini_coefficient": 0.5416666666666666, "zipf_r_squared": 0.9196551833901279, "heaps_beta": 2.431515934150971e-15, "chao1_estimate": 11.0, "chao1_coverage": 0.8181818181818182, "ace_estimate": 10.275663206459056, "entropy_shannon_var": 0.01042962220609084, "js_divergence_var": 0.002288741005542725, "gini_coefficient_var": 0.0018320634651597556, "chao1_coverage_var": 0.003913204122994337}
+{"ts": "2026-07-06T15:35:54.683198+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10311.txt", "entities": 16}
+{"ts": "2026-07-06T15:35:54.683386+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10321.txt"}
+{"ts": "2026-07-06T15:36:42.151340+00:00", "event": "extraction.warning", "reason": "dangling relationship: InitialPressureSetting -[DETERMINED_BY]-> SleepStudy", "chunk": "c_19dd9b108eb54c2e"}
+{"ts": "2026-07-06T15:36:42.151654+00:00", "event": "extraction.warning", "reason": "dangling relationship: PressureAdjustment -[INFLUENCED_BY]-> HealthCondition", "chunk": "c_19dd9b108eb54c2e"}
+{"ts": "2026-07-06T15:36:42.151705+00:00", "event": "extraction.warning", "reason": "dangling relationship: TherapyEffectiveness -[DEPENDS_ON]-> PressureManagement", "chunk": "c_19dd9b108eb54c2e"}
+{"ts": "2026-07-06T15:36:42.151729+00:00", "event": "extraction.warning", "reason": "dangling relationship: TherapyEffectiveness -[DEPENDS_ON]-> Adherence", "chunk": "c_19dd9b108eb54c2e"}
+{"ts": "2026-07-06T15:36:42.151882+00:00", "event": "extraction.completed", "chunks": 1, "entities": 17, "relationships": 9}
+{"ts": "2026-07-06T15:36:43.582130+00:00", "event": "ontology.evolved", "documents": 7, "types": 9, "entities": 96}
+{"ts": "2026-07-06T15:36:43.582366+00:00", "event": "curing.metrics", "doc_index": 6, "unique_types": 9.0, "total_occurrences": 97.0, "singletons": 2.0, "doubletons": 0.0, "entropy_shannon": 2.4094549687169895, "entropy_shannon_delta": 0.034575459798677155, "kl_divergence": 0.0037757891519545513, "js_divergence": 0.0009314117965986628, "type_accumulation_rate": 0.0, "gini_coefficient": 0.5498281786941581, "zipf_r_squared": 0.8971535447532167, "heaps_beta": 0.0, "chao1_estimate": 10.0, "chao1_coverage": 0.9, "ace_estimate": 10.102857142857145, "entropy_shannon_var": 0.0007229303008041449, "js_divergence_var": 1.3339598146961515e-05, "gini_coefficient_var": 0.00010204606396041111, "chao1_coverage_var": 0.006099540863177231}
+{"ts": "2026-07-06T15:36:44.545518+00:00", "event": "resolution.block", "left_id": "e_0c5e4346f510691e", "right_id": "e_626581ffcd7fd865", "prior": 0.33043478260869574, "lr_description": 0.6153846153846154, "lr_embedding": 1.8360148359481112, "lr_cooccurrence": 0.9, "posterior": 0.3341464857581838, "decision": "block"}
+{"ts": "2026-07-06T15:36:44.545760+00:00", "event": "resolution.block", "left_id": "e_0c5e4346f510691e", "right_id": "e_ebbb292b773fb44a", "prior": 0.2, "lr_description": 0.3, "lr_embedding": 1.7561893908571207, "lr_cooccurrence": 0.9, "posterior": 0.10597965995663744, "decision": "block"}
+{"ts": "2026-07-06T15:36:44.545911+00:00", "event": "resolution.defer", "left_id": "e_a094a4000a305c40", "right_id": "e_ebbb292b773fb44a", "prior": 0.6000000000000001, "lr_description": 0.9333333333333333, "lr_embedding": 1.1818650115939848, "lr_cooccurrence": 0.9, "posterior": 0.5982564191368466, "decision": "defer"}
+{"ts": "2026-07-06T15:36:44.546055+00:00", "event": "resolution.defer", "left_id": "e_20bbc0c1726dc778", "right_id": "e_5f7338b0817da633", "prior": 0.37647058823529406, "lr_description": 1.0, "lr_embedding": 1.6543513947218829, "lr_cooccurrence": 0.9, "posterior": 0.47339826718682937, "decision": "defer"}
+{"ts": "2026-07-06T15:36:44.546195+00:00", "event": "resolution.defer", "left_id": "e_943b15d2148d35b5", "right_id": "e_181a2b19865ba093", "prior": 0.7675675675675677, "lr_description": 0.3, "lr_embedding": 1.328895878917065, "lr_cooccurrence": 0.9, "posterior": 0.5423090961547525, "decision": "defer"}
+{"ts": "2026-07-06T15:36:44.546342+00:00", "event": "resolution.merge", "left_id": "e_72e91ab71993abe5", "right_id": "e_e31bd19ad94d0dfc", "prior": 0.7333333333333334, "lr_description": 0.5333333333333333, "lr_embedding": 1.885448502289061, "lr_cooccurrence": 0.9, "posterior": 0.7133678380937356, "decision": "merge"}
+{"ts": "2026-07-06T15:36:44.546484+00:00", "event": "resolution.block", "left_id": "e_626581ffcd7fd865", "right_id": "e_ebbb292b773fb44a", "prior": 0.2, "lr_description": 0.3333333333333333, "lr_embedding": 1.7776394501877222, "lr_cooccurrence": 0.9, "posterior": 0.11763898166280123, "decision": "block"}
+{"ts": "2026-07-06T15:36:44.546644+00:00", "event": "resolution.defer", "left_id": "e_1d0b7a595e7b6608", "right_id": "e_6c5f6d9d01ec11ca", "prior": 0.7428571428571429, "lr_description": 0.3, "lr_embedding": 1.3580760475331541, "lr_cooccurrence": 0.9, "posterior": 0.5143979354006837, "decision": "defer"}
+{"ts": "2026-07-06T15:36:44.766844+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 77}
+{"ts": "2026-07-06T15:36:44.766925+00:00", "event": "load.completed", "kind": "entities", "total": 77}
+{"ts": "2026-07-06T15:36:45.075499+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 59, "skipped": 0}
+{"ts": "2026-07-06T15:36:45.075594+00:00", "event": "load.completed", "kind": "relationships", "total": 59}
+{"ts": "2026-07-06T15:36:45.075655+00:00", "event": "curing.cured", "reason": "plateau", "documents": 7, "types": 9, "entities": 77}
+{"ts": "2026-07-06T15:36:45.075859+00:00", "event": "fsm.transition", "state": "STABLE"}
+{"ts": "2026-07-06T15:36:45.108974+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10321.txt", "entities": 17}
+{"ts": "2026-07-06T15:36:45.109133+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10341.txt"}
+{"ts": "2026-07-06T15:37:29.622908+00:00", "event": "extraction.completed", "chunks": 1, "entities": 19, "relationships": 18}
+{"ts": "2026-07-06T15:37:31.636001+00:00", "event": "resolution.merge", "left_id": "e_033f8d148ce2642b", "right_id": "e_c149489c93aca09a", "prior": 0.7142857142857144, "lr_description": 0.9230769230769231, "lr_embedding": 1.655678546063799, "lr_cooccurrence": 1.5, "posterior": 0.8514379683130313, "decision": "merge"}
+{"ts": "2026-07-06T15:37:31.798487+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 18}
+{"ts": "2026-07-06T15:37:31.798573+00:00", "event": "load.completed", "kind": "entities", "total": 18}
+{"ts": "2026-07-06T15:37:31.867350+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 17, "skipped": 0}
+{"ts": "2026-07-06T15:37:31.867433+00:00", "event": "load.completed", "kind": "relationships", "total": 17}
+{"ts": "2026-07-06T15:37:31.876408+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10341.txt", "entities": 19}
+{"ts": "2026-07-06T15:37:31.876585+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10424.txt"}
+{"ts": "2026-07-06T15:38:14.889476+00:00", "event": "extraction.warning", "reason": "dangling relationship: Respironics Dreamstation -[HAS_MODE]-> Auto-CPAP", "chunk": "c_28610c55212f5c6e"}
+{"ts": "2026-07-06T15:38:14.889776+00:00", "event": "extraction.warning", "reason": "dangling relationship: Respironics Dreamstation -[HAS_MODE]-> A-Flex", "chunk": "c_28610c55212f5c6e"}
+{"ts": "2026-07-06T15:38:14.889839+00:00", "event": "extraction.warning", "reason": "dangling relationship: Lower pressure settings -[INDICATES]-> Insufficient air feeling", "chunk": "c_28610c55212f5c6e"}
+{"ts": "2026-07-06T15:38:14.890001+00:00", "event": "extraction.completed", "chunks": 1, "entities": 14, "relationships": 8}
+{"ts": "2026-07-06T15:38:16.300720+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 14}
+{"ts": "2026-07-06T15:38:16.300795+00:00", "event": "load.completed", "kind": "entities", "total": 14}
+{"ts": "2026-07-06T15:38:16.388179+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:38:16.388263+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:38:16.397163+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10424.txt", "entities": 14}
+{"ts": "2026-07-06T15:38:16.397331+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10440.txt"}
+{"ts": "2026-07-06T15:38:47.732001+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 8}
+{"ts": "2026-07-06T15:38:48.869061+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 10}
+{"ts": "2026-07-06T15:38:48.869139+00:00", "event": "load.completed", "kind": "entities", "total": 10}
+{"ts": "2026-07-06T15:38:48.873628+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:38:48.873756+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:38:48.882440+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10440.txt", "entities": 10}
+{"ts": "2026-07-06T15:38:48.882609+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10455.txt"}
+{"ts": "2026-07-06T15:39:19.564862+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 7}
+{"ts": "2026-07-06T15:39:20.628883+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 10}
+{"ts": "2026-07-06T15:39:20.628962+00:00", "event": "load.completed", "kind": "entities", "total": 10}
+{"ts": "2026-07-06T15:39:20.647094+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 7, "skipped": 0}
+{"ts": "2026-07-06T15:39:20.647187+00:00", "event": "load.completed", "kind": "relationships", "total": 7}
+{"ts": "2026-07-06T15:39:20.656966+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10455.txt", "entities": 10}
+{"ts": "2026-07-06T15:39:20.657137+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10511.txt"}
+{"ts": "2026-07-06T15:39:56.873250+00:00", "event": "extraction.completed", "chunks": 1, "entities": 11, "relationships": 8}
+{"ts": "2026-07-06T15:39:57.983975+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 11}
+{"ts": "2026-07-06T15:39:57.984053+00:00", "event": "load.completed", "kind": "entities", "total": 11}
+{"ts": "2026-07-06T15:39:57.988374+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:39:57.988441+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:39:57.997449+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10511.txt", "entities": 11}
+{"ts": "2026-07-06T15:39:57.997602+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10533.txt"}
+{"ts": "2026-07-06T15:40:53.479381+00:00", "event": "extraction.completed", "chunks": 1, "entities": 14, "relationships": 22}
+{"ts": "2026-07-06T15:40:54.900783+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 14}
+{"ts": "2026-07-06T15:40:54.900862+00:00", "event": "load.completed", "kind": "entities", "total": 14}
+{"ts": "2026-07-06T15:40:54.910721+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 22, "skipped": 0}
+{"ts": "2026-07-06T15:40:54.910806+00:00", "event": "load.completed", "kind": "relationships", "total": 22}
+{"ts": "2026-07-06T15:40:54.918855+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10533.txt", "entities": 14}
+{"ts": "2026-07-06T15:40:54.919011+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10537.txt"}
+{"ts": "2026-07-06T15:41:36.489107+00:00", "event": "extraction.completed", "chunks": 1, "entities": 13, "relationships": 10}
+{"ts": "2026-07-06T15:41:37.855612+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 13}
+{"ts": "2026-07-06T15:41:37.855722+00:00", "event": "load.completed", "kind": "entities", "total": 13}
+{"ts": "2026-07-06T15:41:37.872800+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 10, "skipped": 0}
+{"ts": "2026-07-06T15:41:37.872890+00:00", "event": "load.completed", "kind": "relationships", "total": 10}
+{"ts": "2026-07-06T15:41:37.881346+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10537.txt", "entities": 13}
+{"ts": "2026-07-06T15:41:37.881499+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10538.txt"}
+{"ts": "2026-07-06T15:42:10.083847+00:00", "event": "extraction.completed", "chunks": 1, "entities": 12, "relationships": 8}
+{"ts": "2026-07-06T15:42:11.291699+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 12}
+{"ts": "2026-07-06T15:42:11.291776+00:00", "event": "load.completed", "kind": "entities", "total": 12}
+{"ts": "2026-07-06T15:42:11.307384+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:42:11.307470+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:42:11.316105+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10538.txt", "entities": 12}
+{"ts": "2026-07-06T15:42:11.316265+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10578.txt"}
+{"ts": "2026-07-06T15:42:41.801362+00:00", "event": "extraction.completed", "chunks": 1, "entities": 11, "relationships": 3}
+{"ts": "2026-07-06T15:42:43.042677+00:00", "event": "resolution.defer", "left_id": "e_febc808543f8d6f1", "right_id": "e_5b9653c64c9f2506", "prior": 0.32, "lr_description": 1.1111111111111112, "lr_embedding": 1.741451213767386, "lr_cooccurrence": 1.5, "posterior": 0.5773178779816588, "decision": "defer"}
+{"ts": "2026-07-06T15:42:43.094373+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 11}
+{"ts": "2026-07-06T15:42:43.094448+00:00", "event": "load.completed", "kind": "entities", "total": 11}
+{"ts": "2026-07-06T15:42:43.098399+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 3, "skipped": 0}
+{"ts": "2026-07-06T15:42:43.098471+00:00", "event": "load.completed", "kind": "relationships", "total": 3}
+{"ts": "2026-07-06T15:42:43.107223+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10578.txt", "entities": 11}
+{"ts": "2026-07-06T15:42:43.107380+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10617.txt"}
+{"ts": "2026-07-06T15:43:12.481106+00:00", "event": "extraction.completed", "chunks": 1, "entities": 8, "relationships": 8}
+{"ts": "2026-07-06T15:43:13.024944+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 8}
+{"ts": "2026-07-06T15:43:13.025020+00:00", "event": "load.completed", "kind": "entities", "total": 8}
+{"ts": "2026-07-06T15:43:13.032300+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:43:13.032372+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:43:13.041431+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10617.txt", "entities": 8}
+{"ts": "2026-07-06T15:43:13.041583+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10629.txt"}
+{"ts": "2026-07-06T15:43:52.336145+00:00", "event": "extraction.completed", "chunks": 1, "entities": 13, "relationships": 12}
+{"ts": "2026-07-06T15:43:54.012532+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 13}
+{"ts": "2026-07-06T15:43:54.012610+00:00", "event": "load.completed", "kind": "entities", "total": 13}
+{"ts": "2026-07-06T15:43:54.019213+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 12, "skipped": 0}
+{"ts": "2026-07-06T15:43:54.019282+00:00", "event": "load.completed", "kind": "relationships", "total": 12}
+{"ts": "2026-07-06T15:43:54.027428+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10629.txt", "entities": 13}
+{"ts": "2026-07-06T15:43:54.027572+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10638.txt"}
+{"ts": "2026-07-06T15:44:28.991213+00:00", "event": "extraction.completed", "chunks": 1, "entities": 11, "relationships": 10}
+{"ts": "2026-07-06T15:44:30.114003+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 11}
+{"ts": "2026-07-06T15:44:30.114098+00:00", "event": "load.completed", "kind": "entities", "total": 11}
+{"ts": "2026-07-06T15:44:30.118685+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 10, "skipped": 0}
+{"ts": "2026-07-06T15:44:30.118767+00:00", "event": "load.completed", "kind": "relationships", "total": 10}
+{"ts": "2026-07-06T15:44:30.128253+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10638.txt", "entities": 11}
+{"ts": "2026-07-06T15:44:30.128428+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10648.txt"}
+{"ts": "2026-07-06T15:45:11.768004+00:00", "event": "extraction.completed", "chunks": 1, "entities": 14, "relationships": 12}
+{"ts": "2026-07-06T15:45:13.223499+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 14}
+{"ts": "2026-07-06T15:45:13.223578+00:00", "event": "load.completed", "kind": "entities", "total": 14}
+{"ts": "2026-07-06T15:45:13.241083+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 12, "skipped": 0}
+{"ts": "2026-07-06T15:45:13.241170+00:00", "event": "load.completed", "kind": "relationships", "total": 12}
+{"ts": "2026-07-06T15:45:13.249339+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10648.txt", "entities": 14}
+{"ts": "2026-07-06T15:45:13.249467+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10673.txt"}
+{"ts": "2026-07-06T15:46:02.656305+00:00", "event": "extraction.completed", "chunks": 1, "entities": 17, "relationships": 14}
+{"ts": "2026-07-06T15:46:04.373939+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 17}
+{"ts": "2026-07-06T15:46:04.374018+00:00", "event": "load.completed", "kind": "entities", "total": 17}
+{"ts": "2026-07-06T15:46:04.379200+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 14, "skipped": 0}
+{"ts": "2026-07-06T15:46:04.379268+00:00", "event": "load.completed", "kind": "relationships", "total": 14}
+{"ts": "2026-07-06T15:46:04.387592+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10673.txt", "entities": 17}
+{"ts": "2026-07-06T15:46:04.387748+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10674.txt"}
+{"ts": "2026-07-06T15:46:25.012187+00:00", "event": "extraction.completed", "chunks": 1, "entities": 6, "relationships": 5}
+{"ts": "2026-07-06T15:46:25.594723+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 6}
+{"ts": "2026-07-06T15:46:25.594821+00:00", "event": "load.completed", "kind": "entities", "total": 6}
+{"ts": "2026-07-06T15:46:25.599772+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 5, "skipped": 0}
+{"ts": "2026-07-06T15:46:25.599846+00:00", "event": "load.completed", "kind": "relationships", "total": 5}
+{"ts": "2026-07-06T15:46:25.628844+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10674.txt", "entities": 6}
+{"ts": "2026-07-06T15:46:25.629009+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10687.txt"}
+{"ts": "2026-07-06T15:47:04.644537+00:00", "event": "extraction.completed", "chunks": 1, "entities": 10, "relationships": 7}
+{"ts": "2026-07-06T15:47:05.546205+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 10}
+{"ts": "2026-07-06T15:47:05.546280+00:00", "event": "load.completed", "kind": "entities", "total": 10}
+{"ts": "2026-07-06T15:47:05.550434+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 7, "skipped": 0}
+{"ts": "2026-07-06T15:47:05.550490+00:00", "event": "load.completed", "kind": "relationships", "total": 7}
+{"ts": "2026-07-06T15:47:05.558937+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10687.txt", "entities": 10}
+{"ts": "2026-07-06T15:47:05.559078+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10709.txt"}
+{"ts": "2026-07-06T15:47:51.047378+00:00", "event": "extraction.warning", "reason": "dangling relationship: SupinePosition -[LEADS_TO]-> UpperAirwayObstruction", "chunk": "c_6b3e94fb0858e4c9"}
+{"ts": "2026-07-06T15:47:51.047697+00:00", "event": "extraction.warning", "reason": "dangling relationship: SleepWakeJunk -[INDICATES]-> EventClusters", "chunk": "c_6b3e94fb0858e4c9"}
+{"ts": "2026-07-06T15:47:51.047858+00:00", "event": "extraction.completed", "chunks": 1, "entities": 17, "relationships": 10}
+{"ts": "2026-07-06T15:47:52.822572+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 17}
+{"ts": "2026-07-06T15:47:52.822655+00:00", "event": "load.completed", "kind": "entities", "total": 17}
+{"ts": "2026-07-06T15:47:52.896794+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 10, "skipped": 0}
+{"ts": "2026-07-06T15:47:52.896874+00:00", "event": "load.completed", "kind": "relationships", "total": 10}
+{"ts": "2026-07-06T15:47:52.926948+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10709.txt", "entities": 17}
+{"ts": "2026-07-06T15:47:52.927162+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10716.txt"}
+{"ts": "2026-07-06T15:48:37.786357+00:00", "event": "extraction.completed", "chunks": 1, "entities": 16, "relationships": 14}
+{"ts": "2026-07-06T15:48:39.340222+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 16}
+{"ts": "2026-07-06T15:48:39.340299+00:00", "event": "load.completed", "kind": "entities", "total": 16}
+{"ts": "2026-07-06T15:48:39.375339+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 14, "skipped": 0}
+{"ts": "2026-07-06T15:48:39.375426+00:00", "event": "load.completed", "kind": "relationships", "total": 14}
+{"ts": "2026-07-06T15:48:39.383718+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10716.txt", "entities": 16}
+{"ts": "2026-07-06T15:48:39.383865+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10730.txt"}
+{"ts": "2026-07-06T15:49:13.988854+00:00", "event": "extraction.completed", "chunks": 1, "entities": 11, "relationships": 12}
+{"ts": "2026-07-06T15:49:15.123090+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 11}
+{"ts": "2026-07-06T15:49:15.123169+00:00", "event": "load.completed", "kind": "entities", "total": 11}
+{"ts": "2026-07-06T15:49:15.127441+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 12, "skipped": 0}
+{"ts": "2026-07-06T15:49:15.127500+00:00", "event": "load.completed", "kind": "relationships", "total": 12}
+{"ts": "2026-07-06T15:49:15.135732+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10730.txt", "entities": 11}
+{"ts": "2026-07-06T15:49:15.135887+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10783.txt"}
+{"ts": "2026-07-06T15:49:57.658738+00:00", "event": "extraction.completed", "chunks": 1, "entities": 18, "relationships": 18}
+{"ts": "2026-07-06T15:49:59.376675+00:00", "event": "resolution.block", "left_id": "e_ef84a6b15a60ded5", "right_id": "e_2dff4fc90e2973f5", "prior": 0.2, "lr_description": 0.3, "lr_embedding": 1.8696628109935054, "lr_cooccurrence": 1.5, "posterior": 0.17378387566924489, "decision": "block"}
+{"ts": "2026-07-06T15:49:59.456916+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 18}
+{"ts": "2026-07-06T15:49:59.457011+00:00", "event": "load.completed", "kind": "entities", "total": 18}
+{"ts": "2026-07-06T15:49:59.523771+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 18, "skipped": 0}
+{"ts": "2026-07-06T15:49:59.523858+00:00", "event": "load.completed", "kind": "relationships", "total": 18}
+{"ts": "2026-07-06T15:49:59.533583+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10783.txt", "entities": 18}
+{"ts": "2026-07-06T15:49:59.533745+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10842.txt"}
+{"ts": "2026-07-06T15:51:03.811260+00:00", "event": "extraction.completed", "chunks": 1, "entities": 25, "relationships": 18}
+{"ts": "2026-07-06T15:51:06.330443+00:00", "event": "resolution.merge", "left_id": "e_f568c100e5595431", "right_id": "e_4c0adaf9233319f0", "prior": 0.7, "lr_description": 1.4285714285714286, "lr_embedding": 1.4450617769165963, "lr_cooccurrence": 1.5, "posterior": 0.8784240185952968, "decision": "merge"}
+{"ts": "2026-07-06T15:51:06.330643+00:00", "event": "resolution.block", "left_id": "e_b0c05be68e16c9b6", "right_id": "e_ef84a6b15a60ded5", "prior": 0.2, "lr_description": 0.625, "lr_embedding": 1.7575827182384212, "lr_cooccurrence": 1.5, "posterior": 0.29175132135837234, "decision": "block"}
+{"ts": "2026-07-06T15:51:06.438971+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 24}
+{"ts": "2026-07-06T15:51:06.439048+00:00", "event": "load.completed", "kind": "entities", "total": 24}
+{"ts": "2026-07-06T15:51:06.459591+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 17, "skipped": 0}
+{"ts": "2026-07-06T15:51:06.459678+00:00", "event": "load.completed", "kind": "relationships", "total": 17}
+{"ts": "2026-07-06T15:51:06.468496+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10842.txt", "entities": 25}
+{"ts": "2026-07-06T15:51:06.468660+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10882.txt"}
+{"ts": "2026-07-06T15:51:38.657428+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAP -[TREATS]-> Sleep apnea", "chunk": "c_83b4ffbbe111fce5"}
+{"ts": "2026-07-06T15:51:38.657737+00:00", "event": "extraction.warning", "reason": "dangling relationship: CPAP -[USES]-> Pressure settings", "chunk": "c_83b4ffbbe111fce5"}
+{"ts": "2026-07-06T15:51:38.657934+00:00", "event": "extraction.completed", "chunks": 1, "entities": 12, "relationships": 8}
+{"ts": "2026-07-06T15:51:39.977474+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 12}
+{"ts": "2026-07-06T15:51:39.977556+00:00", "event": "load.completed", "kind": "entities", "total": 12}
+{"ts": "2026-07-06T15:51:40.028880+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 8, "skipped": 0}
+{"ts": "2026-07-06T15:51:40.028965+00:00", "event": "load.completed", "kind": "relationships", "total": 8}
+{"ts": "2026-07-06T15:51:40.037434+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10882.txt", "entities": 12}
+{"ts": "2026-07-06T15:51:40.037590+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10921.txt"}
+{"ts": "2026-07-06T15:52:33.883044+00:00", "event": "extraction.completed", "chunks": 1, "entities": 16, "relationships": 16}
+{"ts": "2026-07-06T15:52:35.423127+00:00", "event": "resolution.defer", "left_id": "e_ea22ecdc0b5b65b8", "right_id": "e_b508251016cd8f5d", "prior": 0.5857142857142857, "lr_description": 0.4, "lr_embedding": 1.3261040757524971, "lr_cooccurrence": 1.5, "posterior": 0.5293900785693182, "decision": "defer"}
+{"ts": "2026-07-06T15:52:35.423373+00:00", "event": "resolution.merge", "left_id": "e_78854f9569ef6924", "right_id": "e_5b024e7202a7b97d", "prior": 0.7040000000000002, "lr_description": 1.5, "lr_embedding": 1.7009708051126193, "lr_cooccurrence": 1.5, "posterior": 0.9010145260429072, "decision": "merge"}
+{"ts": "2026-07-06T15:52:35.492717+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 15}
+{"ts": "2026-07-06T15:52:35.492792+00:00", "event": "load.completed", "kind": "entities", "total": 15}
+{"ts": "2026-07-06T15:52:35.497337+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 14, "skipped": 0}
+{"ts": "2026-07-06T15:52:35.497395+00:00", "event": "load.completed", "kind": "relationships", "total": 14}
+{"ts": "2026-07-06T15:52:35.505663+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10921.txt", "entities": 16}
+{"ts": "2026-07-06T15:52:35.505825+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d10979.txt"}
+{"ts": "2026-07-06T15:53:23.713892+00:00", "event": "extraction.completed", "chunks": 1, "entities": 16, "relationships": 14}
+{"ts": "2026-07-06T15:53:25.082479+00:00", "event": "resolution.block", "left_id": "e_165bd364fed980be", "right_id": "e_ad0053ab4f482c50", "prior": 0.2, "lr_description": 0.3, "lr_embedding": 1.6449962170892063, "lr_cooccurrence": 1.5, "posterior": 0.1561623466118548, "decision": "block"}
+{"ts": "2026-07-06T15:53:25.163222+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 16}
+{"ts": "2026-07-06T15:53:25.163299+00:00", "event": "load.completed", "kind": "entities", "total": 16}
+{"ts": "2026-07-06T15:53:25.179501+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 14, "skipped": 0}
+{"ts": "2026-07-06T15:53:25.179587+00:00", "event": "load.completed", "kind": "relationships", "total": 14}
+{"ts": "2026-07-06T15:53:25.189916+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d10979.txt", "entities": 16}
+{"ts": "2026-07-06T15:53:25.190065+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d11001.txt"}
+{"ts": "2026-07-06T15:54:13.212514+00:00", "event": "extraction.completed", "chunks": 1, "entities": 19, "relationships": 15}
+{"ts": "2026-07-06T15:54:15.099764+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 19}
+{"ts": "2026-07-06T15:54:15.099842+00:00", "event": "load.completed", "kind": "entities", "total": 19}
+{"ts": "2026-07-06T15:54:15.105188+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 15, "skipped": 0}
+{"ts": "2026-07-06T15:54:15.105315+00:00", "event": "load.completed", "kind": "relationships", "total": 15}
+{"ts": "2026-07-06T15:54:15.113221+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d11001.txt", "entities": 19}
+{"ts": "2026-07-06T15:54:15.113355+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d11051.txt"}
+{"ts": "2026-07-06T15:54:51.791455+00:00", "event": "extraction.completed", "chunks": 1, "entities": 11, "relationships": 13}
+{"ts": "2026-07-06T15:54:52.831263+00:00", "event": "load.batch", "kind": "entities", "batch": 0, "size": 11}
+{"ts": "2026-07-06T15:54:52.831341+00:00", "event": "load.completed", "kind": "entities", "total": 11}
+{"ts": "2026-07-06T15:54:52.863910+00:00", "event": "load.batch", "kind": "relationships", "batch": 0, "size": 13, "skipped": 0}
+{"ts": "2026-07-06T15:54:52.863998+00:00", "event": "load.completed", "kind": "relationships", "total": 13}
+{"ts": "2026-07-06T15:54:52.872861+00:00", "event": "document.completed", "path": "data/interim/apnea-waves/wave_01/c34_d11051.txt", "entities": 11}
+{"ts": "2026-07-06T15:54:52.873013+00:00", "event": "document.started", "path": "data/interim/apnea-waves/wave_01/c34_d11095.txt"}

@@ -793,7 +793,10 @@ class Foundry:
                     "content": "Answer strictly from the provided knowledge graph context. "
                     "After each factual claim, cite the supporting entity in parentheses. "
                     "Name the entities supporting the answer. Say so when the graph lacks "
-                    "the answer.",
+                    "the answer. Attribute a value to an entity ONLY when the context "
+                    "explicitly states it for that entity - a value stated for a different "
+                    "device, product or subject, or with no named subject, must not be "
+                    "transferred to the one asked about; say the graph lacks it instead.",
                 },
                 {
                     "role": "user",
