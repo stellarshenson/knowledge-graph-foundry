@@ -1,0 +1,10 @@
+{
+  "entities": 2798,
+  "lit_prod": 2036,
+  "lit_wide": 2098,
+  "dark_share_wide": 0.25017869907076484,
+  "prunable": 39,
+  "dark_prunable_overlap": 0.05142857142857143,
+  "dark_golds": [],
+  "verdict": "PARTIAL"
+}
