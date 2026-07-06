@@ -13,11 +13,6 @@
 /data/raw/*
 !/data/raw/.gitkeep
 
-# Runtime directories
-/.kgf/
-/tmp/
-/logs/
-
 # Mac OS-specific storage files
 .DS_Store
 
@@ -163,7 +158,12 @@ celerybeat.pid
 
 # Environments
 .env
+.env.dev
+.env.prod
+.env.stg
+.env.test
 .venv
+.nodeenv
 env/
 venv/
 ENV/
@@ -206,7 +206,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-# archived v1 data
-@archive/kgf-v1/data/
-@archive/kgf-v1/logs/
-@archive/kgf-v1/models/

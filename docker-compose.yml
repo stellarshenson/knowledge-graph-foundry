@@ -1,0 +1,34 @@
+# Neo4j graph database for Knowledge Graph Foundry
+#
+# The docker daemon in this environment prefixes container names with the
+# username, so the running container appears as `user-<user>-kgf-neo4j`.
+# The workspace shares `stellars-tech-ai-workbench_hub_network`, therefore
+# clients connect via the container name on that network (see .env NEO4J_URI),
+# not via published localhost ports.
+
+services:
+  kgf-neo4j:
+    image: neo4j:5-community
+    container_name: kgf-neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/kgfoundry
+      NEO4J_PLUGINS: '["apoc","graph-data-science"]'
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*,gds.*
+      NEO4J_server_memory_heap_max__size: 4G
+      NEO4J_server_memory_pagecache_size: 2G
+    volumes:
+      - kgf-neo4j-data:/data
+    networks:
+      - hub
+
+volumes:
+  kgf-neo4j-data:
+    external: true
+
+networks:
+  hub:
+    name: stellars-tech-ai-workbench_hub_network
+    external: true

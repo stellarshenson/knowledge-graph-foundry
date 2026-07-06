@@ -1,0 +1,25 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.3.9
+_src_path: https://github.com/stellarshenson/copier-data-science.git
+author_name: Stellars Henson <konrad.jelen@gmail.com>
+custom_config: ''
+dataset_storage: none
+dependency_file: pyproject.toml
+description: Knowledge Graph Foundry - production-grade, data-science-driven system
+    that builds and continuously maintains Neo4j knowledge graphs with purpose-driven
+    construction, drift detection and GraphRAG optimization
+docker_support: 'No'
+docs: none
+env_encryption: 'No'
+env_name: kgf
+environment_manager: uv
+git_init: 'No'
+jupyter_kernel_support: 'Yes'
+linting_and_formatting: ruff
+module_name: knowledge_graph_foundry
+open_source_license: No license file
+package_repository: 'No'
+pydata_packages: none
+python_version_choice: '3.13'
+repo_name: knowledge-graph-foundry
+testing_framework: pytest

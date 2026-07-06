@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "knowledge-graph-foundry"
+version = "0.1.2"
+description = "Knowledge Graph Foundry - production-grade, data-science-driven system that builds and continuously maintains Neo4j knowledge graphs with purpose-driven construction, drift detection and GraphRAG optimization"
+authors = [
+    { name = "Stellars Henson \u003ckonrad.jelen@gmail.com\u003e" },
+]
+readme = "README.md"
+requires-python = "~=3.12.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+    # CLI and TUI
+    "typer",
+    "textual",
+    "rich",
+    "tqdm",
+    # LLM integration
+    "litellm",
+    "instructor",
+    # Graph database
+    "neo4j",
+    # Document parsing (unstructured)
+    "pymupdf4llm",
+    "python-docx",
+    "beautifulsoup4",
+    "lxml",
+    # Structured data
+    "pandas",
+    "pyarrow",
+    "openpyxl",
+    # Chunking
+    "tiktoken",
+    # Ontology / OWL
+    "owlready2",
+    # Entity resolution and data science core
+    "numpy",
+    "scikit-learn",
+    "python-Levenshtein",
+    "faiss-cpu",
+    # Embeddings (Bedrock)
+    "boto3",
+    # Configuration and validation
+    "pydantic>=2.0",
+    "pyyaml",
+    "python-dotenv",
+    # Logging
+    "loguru",
+    # Event system
+    "blinker>=1.7",
+    # Lifecycle FSM
+    "transitions>=0.9",
+]
+
+[project.scripts]
+kgf = "knowledge_graph_foundry.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "ipykernel",
+    "ipython",
+    "nbdime",
+    "pip",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+local-embeddings = [
+    "sentence-transformers>=2.5",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["knowledge_graph_foundry*"]
+exclude = ["tests*"]
+
+[tool.ruff]
+line-length = 99
+src = ["src/knowledge_graph_foundry"]
+include = ["pyproject.toml", "src/knowledge_graph_foundry/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["knowledge_graph_foundry"]
+force-sort-within-sections = true
