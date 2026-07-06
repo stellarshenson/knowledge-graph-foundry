@@ -44,6 +44,8 @@ class ExtractionSettings(BaseModel):
     chunk_size: int = 2000
     chunk_overlap: int = 200
     concurrency: int = 4
+    gleaning_rounds: int = 1  # R3: extra "what did we miss" passes (0 disables)
+    split_entity_relation: bool = True  # R3: separate entity and relation passes
 
 
 class ResolutionSettings(BaseModel):
@@ -54,6 +56,12 @@ class ResolutionSettings(BaseModel):
     description_lr_floor: float = 0.3
     synonym_cluster_threshold: float = 0.82
     calibration_min_observations: int = 50
+    ann_top_k: int = 10  # R4: FAISS neighbours per entity for blocking
+    ann_min_entities: int = 200  # R4: use ANN blocking above this per-type size
+    llm_defer_judge: bool = False  # R4: route the 0.4-0.6 band to an LLM judge
+    calibration_min_labels: int = 100  # R7: below this, use a fixed threshold not a curve
+    split_guard: bool = True  # R8: correlation-clustering split after union-find
+    split_guard_min_avg_similarity: float = 0.5  # R8: cut components below this cohesion
 
 
 class CuringSettings(BaseModel):
@@ -63,12 +71,15 @@ class CuringSettings(BaseModel):
     min_documents: int = 3
     max_fluid_documents: int = 20
     min_encounters_to_confirm: int = 2
+    min_samples_before_cure: int = 3  # R7: Chao1 floor - block the gate below this
+    recure_type_burst: int = 3  # R5: post-cure new-type count that reopens consolidation
 
 
 class DriftSettings(BaseModel):
     remap_rate_threshold: float = 0.3
     window: int = 3
     rebuild_jsd_threshold: float = 0.15
+    contradiction_rate_threshold: float = 0.2  # R8: fact-drift alarm on invalidations/window
 
 
 class GraphRAGSettings(BaseModel):
@@ -76,6 +87,9 @@ class GraphRAGSettings(BaseModel):
     vector_index_name: str = "kgf_entity_embeddings"
     vector_dimensions: int = 1024
     top_k: int = 8
+    ppr_enabled: bool = True  # R2: PPR traversal seeded from vector top-k
+    ppr_top_n: int = 15  # R2: PPR nodes taken into the answer context
+    ppr_damping: float = 0.85  # R2: PageRank damping
 
 
 class LoadSettings(BaseModel):
