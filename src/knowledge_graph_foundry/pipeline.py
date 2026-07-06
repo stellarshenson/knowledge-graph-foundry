@@ -1,0 +1,471 @@
+"""Foundry pipeline - wires ingest -> extract -> resolve -> load per
+lifecycle phase. The graph metanode is the single source of truth: every
+public operation restores state from it first and persists back after.
+"""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Optional
+
+from loguru import logger
+
+from knowledge_graph_foundry.drift import DriftDetector
+from knowledge_graph_foundry.engines import Engine, create_engine
+from knowledge_graph_foundry.events import emit
+from knowledge_graph_foundry.fsm import Lifecycle
+from knowledge_graph_foundry.graphdb import create_driver
+from knowledge_graph_foundry.ingest.chunking import chunk_document
+from knowledge_graph_foundry.ingest.readers import (
+    is_structured,
+    iter_source_files,
+    read_document,
+    read_structured,
+)
+from knowledge_graph_foundry.models import Entity, Ontology, Relationship
+from knowledge_graph_foundry.ontology.buffer import FluidBuffer
+from knowledge_graph_foundry.ontology.clustering import apply_type_remap, cluster_types
+from knowledge_graph_foundry.ontology.curing import CuringDetector
+from knowledge_graph_foundry.ontology.metrics import StabilityMetrics
+from knowledge_graph_foundry.ontology.seed import load_seed
+from knowledge_graph_foundry.resolution import (
+    PosteriorCalibrator,
+    evidence,
+    remap_relationships,
+    resolve_entities,
+)
+from knowledge_graph_foundry.settings import Settings
+
+
+class FoundryError(RuntimeError):
+    pass
+
+
+class Foundry:
+    def __init__(self, settings: Settings):
+        self.settings = settings
+        self._driver = None
+        self._engine: Optional[Engine] = None
+
+    # -- lazy resources -------------------------------------------------
+
+    @property
+    def driver(self):
+        if self._driver is None:
+            self._driver = create_driver(self.settings.neo4j)
+        return self._driver
+
+    @property
+    def engine(self) -> Engine:
+        if self._engine is None:
+            self._engine = create_engine(self.settings.llm)
+        return self._engine
+
+    def close(self) -> None:
+        if self._driver is not None:
+            self._driver.close()
+            self._driver = None
+
+    # -- state ----------------------------------------------------------
+
+    def _load_state(self) -> dict:
+        from knowledge_graph_foundry.graph.metanode import read_control
+
+        return read_control(self.driver) or {}
+
+    def _save_state(self, state: dict) -> None:
+        from knowledge_graph_foundry.graph.metanode import write_control
+
+        write_control(self.driver, state)
+
+    # -- operations -------------------------------------------------------
+
+    def init_project(self, purpose: str, seed: Optional[str] = None) -> Ontology:
+        """Create the control metanode with purpose and optional seed."""
+        state = self._load_state()
+        if state.get("fsm_state") and state["fsm_state"] != "EMPTY":
+            raise FoundryError(
+                f"project already initialized (state {state['fsm_state']}); use wipe first"
+            )
+        seed_source: Path | str | None = seed
+        if seed and Path(seed).exists():
+            seed_source = Path(seed)
+        ontology = load_seed(seed_source, purpose, engine=self.engine if seed else None)
+        lifecycle = Lifecycle("EMPTY")
+        lifecycle.initialize()
+        self._save_state(
+            {
+                "fsm_state": lifecycle.state,
+                "purpose": purpose,
+                "ontology": ontology.model_dump(),
+                "buffer_cache": None,
+                "metrics_history": None,
+                "calibration": None,
+                "drift": None,
+            }
+        )
+        return ontology
+
+    def status(self) -> dict:
+        state = self._load_state()
+        if not state:
+            return {"fsm_state": "EMPTY"}
+        with self.driver.session() as session:
+            counts = session.run(
+                "MATCH (e:Entity) WITH count(e) AS entities "
+                "OPTIONAL MATCH (:Entity)-[r]->(:Entity) "
+                "RETURN entities, count(r) AS relationships"
+            ).single()
+        ontology = Ontology(**state["ontology"]) if state.get("ontology") else Ontology()
+        metrics_history = state.get("metrics_history") or []
+        return {
+            "fsm_state": state.get("fsm_state", "EMPTY"),
+            "purpose": state.get("purpose", ""),
+            "entities": counts["entities"],
+            "relationships": counts["relationships"],
+            "types": sorted(ontology.types),
+            "cured": ontology.cured,
+            "documents_processed": state.get("documents_processed", 0),
+            "latest_metrics": metrics_history[-1] if metrics_history else None,
+            "drift": state.get("drift_verdict"),
+        }
+
+    def ingest(self, path: Path) -> dict:
+        """Ingest a file, directory or zip through the full lifecycle."""
+        state = self._load_state()
+        if not state or not state.get("fsm_state") or state["fsm_state"] == "EMPTY":
+            raise FoundryError("project not initialized - run `kgf init` first")
+
+        lifecycle = Lifecycle(state["fsm_state"])
+        purpose = state.get("purpose", "")
+        ontology = Ontology(**state["ontology"])
+        curing_cfg = self.settings.curing
+
+        buffer: Optional[FluidBuffer] = None
+        metrics = StabilityMetrics()
+        detector = CuringDetector(curing_cfg)
+        drift: Optional[DriftDetector] = None
+        calibrator = (
+            PosteriorCalibrator.from_json(state["calibration"])
+            if state.get("calibration")
+            else None
+        )
+
+        if lifecycle.state in ("INITIALIZING", "CURING"):
+            if state.get("buffer_cache"):
+                buffer = FluidBuffer.from_dict(state["buffer_cache"], curing_cfg)
+                ontology = buffer.ontology
+            else:
+                buffer = FluidBuffer(ontology, curing_cfg)
+            if state.get("metrics_history"):
+                metrics = StabilityMetrics.from_dict({"history": state["metrics_history"]})
+                detector = CuringDetector.from_dict(
+                    {"records": state["metrics_history"]}, curing_cfg
+                )
+        elif lifecycle.state in ("STABLE", "RECURING"):
+            if state.get("drift"):
+                drift = DriftDetector.from_dict(state["drift"], self.settings.drift)
+            else:
+                drift = DriftDetector(self.settings.drift, self._cured_frequencies(ontology))
+
+        files = iter_source_files(Path(path))
+        if not files:
+            raise FoundryError(f"no supported files found under {path}")
+
+        summary = {"documents": 0, "entities": 0, "relationships": 0, "cured": ontology.cured}
+        documents_processed = state.get("documents_processed", 0)
+        state_drift = None
+
+        for file_path in files:
+            emit("document.started", path=str(file_path))
+            try:
+                entities, relationships = self._extract_file(file_path, purpose, ontology)
+            except Exception as exc:  # corrupt file: skip, continue run
+                emit("document.skipped", path=str(file_path), reason=str(exc))
+                logger.warning(f"skipping {file_path}: {exc}")
+                continue
+
+            if not entities:
+                emit("document.skipped", path=str(file_path), reason="no entities")
+                continue
+
+            entities = self._embed(entities)
+            documents_processed += 1
+            summary["documents"] += 1
+            summary["entities"] += len(entities)
+            summary["relationships"] += len(relationships)
+
+            if lifecycle.state in ("INITIALIZING", "CURING"):
+                if lifecycle.state == "INITIALIZING":
+                    lifecycle.start_curing()
+                buffer.add_document(entities, relationships)
+                ontology = buffer.ontology
+                record = metrics.record(buffer.type_frequencies())
+                detector.record(record)
+                should_cure, reason = detector.should_cure()
+                if should_cure:
+                    ontology, drift = self._consolidate(buffer, purpose, calibrator, reason)
+                    lifecycle.cure()
+                    summary["cured"] = True
+                    buffer = None
+            else:
+                remap_rate = self._stable_load(entities, relationships, ontology, calibrator)
+                verdict = drift.record_document(remap_rate, self._frequencies(entities))
+                if verdict.action == "recure":
+                    lifecycle.recure()
+                    drift.begin_recure()
+                state_drift = verdict.action
+
+            # persist after EVERY document - resumability is the contract
+            self._save_state(
+                {
+                    "fsm_state": lifecycle.state,
+                    "purpose": purpose,
+                    "ontology": ontology.model_dump(),
+                    "buffer_cache": buffer.to_dict() if buffer else None,
+                    "metrics_history": metrics.history() if buffer else None,
+                    "calibration": calibrator.to_json() if calibrator else None,
+                    "drift": drift.to_dict() if drift else None,
+                    "documents_processed": documents_processed,
+                    "drift_verdict": state_drift if lifecycle.state == "STABLE" else None,
+                }
+            )
+            emit("document.completed", path=str(file_path), entities=len(entities))
+
+        emit("load.completed", **summary)
+        return summary
+
+    # -- internals --------------------------------------------------------
+
+    def _extract_file(
+        self, file_path: Path, purpose: str, ontology: Ontology
+    ) -> tuple[list[Entity], list[Relationship]]:
+        from knowledge_graph_foundry.extraction import (
+            apply_mapping,
+            extract_document,
+            structured_mapping,
+        )
+
+        if is_structured(file_path):
+            rows = read_structured(file_path)
+            if not rows:
+                return [], []
+            mapping = structured_mapping(rows[:5], purpose, self.engine)
+            result = apply_mapping(rows, mapping, document_id=f"d_{file_path.stem}")
+        else:
+            document = read_document(file_path)
+            chunks = chunk_document(
+                document,
+                chunk_size=self.settings.extraction.chunk_size,
+                chunk_overlap=self.settings.extraction.chunk_overlap,
+            )
+            if not chunks:
+                return [], []
+            result = extract_document(
+                chunks,
+                purpose,
+                ontology,
+                self.engine,
+                concurrency=self.settings.extraction.concurrency,
+            )
+        return result.entities, result.relationships
+
+    def _embed(self, entities: list[Entity]) -> list[Entity]:
+        from knowledge_graph_foundry.extraction import generate_embeddings
+
+        try:
+            return generate_embeddings(entities, self.settings.embeddings)
+        except Exception as exc:
+            logger.warning(f"embeddings unavailable, continuing without: {exc}")
+            return entities
+
+    def _consolidate(
+        self,
+        buffer: FluidBuffer,
+        purpose: str,
+        calibrator: Optional[PosteriorCalibrator],
+        reason: str,
+    ) -> tuple[Ontology, DriftDetector]:
+        """Cure: cluster types once, resolve the whole buffer, flush to Neo4j."""
+        from knowledge_graph_foundry.graph.loader import (
+            ensure_indexes,
+            load_entities,
+            load_relationships,
+        )
+
+        ontology, type_remap = cluster_types(buffer.ontology, purpose, self.engine)
+        entities = [
+            e.model_copy(update={"types": apply_type_remap(e.types, type_remap)})
+            for e in buffer.entities
+        ]
+        result = resolve_entities(entities, self.settings.resolution, calibrator)
+        relationships = remap_relationships(buffer.relationships, result.id_map)
+
+        ensure_indexes(
+            self.driver,
+            vector_dimensions=self.settings.graphrag.vector_dimensions,
+            vector_index_name=self.settings.graphrag.vector_index_name,
+        )
+        load_entities(self.driver, result.entities, batch_size=self.settings.load.batch_size)
+        load_relationships(self.driver, relationships, batch_size=self.settings.load.batch_size)
+
+        ontology.cured = True
+        emit(
+            "curing.cured" if reason != "forced" else "curing.forced",
+            reason=reason,
+            documents=buffer.documents_processed,
+            types=len(ontology.types),
+            entities=len(result.entities),
+        )
+        drift = DriftDetector(self.settings.drift, self._cured_frequencies(ontology))
+        return ontology, drift
+
+    def _stable_load(
+        self,
+        entities: list[Entity],
+        relationships: list[Relationship],
+        ontology: Ontology,
+        calibrator: Optional[PosteriorCalibrator],
+    ) -> float:
+        """Resolve one post-cure document against the live graph and load it.
+        Returns the remap rate (fraction of entities with types outside the
+        cured ontology) feeding drift detection."""
+        from knowledge_graph_foundry.graph.graphrag import vector_query
+        from knowledge_graph_foundry.graph.loader import load_entities, load_relationships
+
+        result = resolve_entities(entities, self.settings.resolution, calibrator)
+        id_map = dict(result.id_map)
+
+        # Bayesian match against live graph candidates via the vector index
+        for entity in result.entities:
+            if not entity.embedding:
+                continue
+            try:
+                candidates = vector_query(
+                    self.driver,
+                    entity.embedding,
+                    self.settings.graphrag.vector_index_name,
+                    top_k=3,
+                )
+            except Exception:
+                break  # index not ready - identity merge by id still applies
+            for candidate in candidates:
+                if candidate["id"] == entity.id:
+                    continue
+                graph_entity = Entity(
+                    id=candidate["id"],
+                    name=candidate["name"],
+                    types=candidate.get("types", []),
+                    description=candidate.get("description", "") or "",
+                )
+                decision = evidence(entity, graph_entity, self.settings.resolution)
+                if decision.decision == "merge":
+                    id_map[entity.id] = graph_entity.id
+                    entity = entity.model_copy(update={"id": graph_entity.id})
+                    break
+
+        merged_entities = [
+            e.model_copy(update={"id": id_map.get(e.id, e.id)}) for e in result.entities
+        ]
+        merged_relationships = remap_relationships(relationships, id_map)
+        load_entities(self.driver, merged_entities, batch_size=self.settings.load.batch_size)
+        load_relationships(
+            self.driver, merged_relationships, batch_size=self.settings.load.batch_size
+        )
+
+        unknown = sum(1 for e in merged_entities if not any(t in ontology.types for t in e.types))
+        return unknown / len(merged_entities) if merged_entities else 0.0
+
+    def _frequencies(self, entities: list[Entity]) -> dict[str, int]:
+        freqs: dict[str, int] = {}
+        for entity in entities:
+            for t in entity.types:
+                freqs[t] = freqs.get(t, 0) + 1
+        return freqs
+
+    def _cured_frequencies(self, ontology: Ontology) -> dict[str, int]:
+        return {name: t.encounters for name, t in ontology.types.items()}
+
+    # -- graphrag ---------------------------------------------------------
+
+    def optimize(self) -> dict:
+        from knowledge_graph_foundry.graph.graphrag import (
+            detect_communities,
+            scorecard,
+            summarize_communities,
+        )
+
+        communities = detect_communities(self.driver, self.settings.graphrag.community_min_size)
+        summaries = 0
+        if not communities.get("skipped"):
+            summaries = summarize_communities(
+                self.driver, self.engine, self.settings.graphrag.community_min_size
+            )
+        card = scorecard(self.driver)
+        return {"communities": communities, "summaries": summaries, "scorecard": card}
+
+    def query(self, question: str) -> dict:
+        """Answer a question over the graph: vector candidates + neighbourhood
+        context to the LLM."""
+        from pydantic import BaseModel, Field
+
+        from knowledge_graph_foundry.extraction import generate_embeddings
+        from knowledge_graph_foundry.graph.graphrag import vector_query
+
+        probe = Entity.create(question[:80], types=["Query"], description=question)
+        embedded = generate_embeddings([probe], self.settings.embeddings)
+        candidates = vector_query(
+            self.driver,
+            embedded[0].embedding,
+            self.settings.graphrag.vector_index_name,
+            top_k=self.settings.graphrag.top_k,
+        )
+        context_lines = []
+        with self.driver.session() as session:
+            for candidate in candidates:
+                rows = session.run(
+                    "MATCH (e:Entity {id: $id})-[r]-(n:Entity) "
+                    "RETURN type(r) AS rel, n.name AS name, n.description AS description "
+                    "LIMIT 15",
+                    id=candidate["id"],
+                ).data()
+                props = session.run(
+                    "MATCH (e:Entity {id: $id}) RETURN properties(e) AS props",
+                    id=candidate["id"],
+                ).single()["props"]
+                spec = {
+                    k.removeprefix("prop_"): v for k, v in props.items() if k.startswith("prop_")
+                }
+                context_lines.append(
+                    f"## {candidate['name']} ({', '.join(candidate.get('types', []))})\n"
+                    f"{candidate.get('description', '')}\n"
+                    f"Properties: {json.dumps(spec, default=str)}\n"
+                    "Relations: " + "; ".join(f"{r['rel']} -> {r['name']}" for r in rows)
+                )
+
+        class Answer(BaseModel):
+            answer: str
+            supporting_entities: list[str] = Field(default_factory=list)
+
+        result = self.engine.complete(
+            [
+                {
+                    "role": "system",
+                    "content": "Answer strictly from the provided knowledge graph context. "
+                    "Name the entities supporting the answer. Say so when the graph lacks the answer.",
+                },
+                {
+                    "role": "user",
+                    "content": f"Question: {question}\n\nGraph context:\n\n"
+                    + "\n\n".join(context_lines),
+                },
+            ],
+            Answer,
+        )
+        return {"answer": result.answer, "supporting_entities": result.supporting_entities}
+
+    def wipe(self) -> None:
+        """Delete all graph content and the control metanode."""
+        with self.driver.session() as session:
+            session.run("MATCH (n) DETACH DELETE n")

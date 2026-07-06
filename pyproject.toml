@@ -87,6 +87,7 @@ exclude = ["tests*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 norecursedirs = ["@archive", ".venv", "data", "notebooks"]
+markers = ["integration: needs live neo4j"]
 
 [tool.ruff]
 line-length = 99
