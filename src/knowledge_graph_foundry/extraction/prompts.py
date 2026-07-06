@@ -21,7 +21,11 @@ Rules:
 - Relationship type names are UPPER_SNAKE_CASE (e.g. SUPPORTS_MODE)
 - Use specific entity names, never generic references like "the device" or "it"
 - Capture specifications as key-value properties; split numeric specs into value
-  and unit (e.g. "pressure": "20", "pressure_unit": "cmH2O")"""
+  and unit (e.g. "pressure": "20", "pressure_unit": "cmH2O")
+- A measured value, range, dimension, weight, duration, warranty period or rating
+  is NEVER an entity and NEVER a type - record it as a property on the entity it
+  describes (the device carries "pressure_range": "4-20 cmH2O"); do not create
+  types like PressureRange, Weight, Warranty or Dimension"""
 
 
 def _format_types(ontology: Ontology) -> str:
@@ -74,6 +78,10 @@ Rules:
 - Use specific entity names, never generic references like "the device" or "it"
 - Capture specifications as key-value properties; split numeric specs into value
   and unit (e.g. "pressure": "20", "pressure_unit": "cmH2O")
+- A measured value, range, dimension, weight, duration, warranty period or rating
+  is NEVER an entity and NEVER a type - record it as a property on the entity it
+  describes (the device carries "pressure_range": "4-20 cmH2O"); do not create
+  types like PressureRange, Weight, Warranty or Dimension
 - Return an empty relationships list"""
 
 
@@ -114,7 +122,9 @@ Already extracted (do NOT repeat these):
 
 List entities and relationships that are present in the text but NOT in the list above.
 Follow the same naming rules: entity types PascalCase, relationship types UPPER_SNAKE_CASE,
-specific entity names only. If nothing was missed, return empty lists."""
+specific entity names only. A measured value, range or rating is never an entity or a
+type - it belongs as a property on the entity it describes. If nothing was missed,
+return empty lists."""
 
 
 def entity_only_messages(chunk_text: str, purpose: str, ontology: Ontology) -> list[dict]:

@@ -25,7 +25,11 @@ from knowledge_graph_foundry.ingest.readers import (
 )
 from knowledge_graph_foundry.models import Entity, Ontology, Relationship
 from knowledge_graph_foundry.ontology.buffer import FluidBuffer
-from knowledge_graph_foundry.ontology.clustering import apply_type_remap, cluster_types
+from knowledge_graph_foundry.ontology.clustering import (
+    apply_type_remap,
+    cluster_types,
+    demote_value_types,
+)
 from knowledge_graph_foundry.ontology.curing import CuringDetector
 from knowledge_graph_foundry.ontology.metrics import StabilityMetrics
 from knowledge_graph_foundry.ontology.seed import load_seed
@@ -372,11 +376,31 @@ class Foundry:
             load_relationships,
         )
 
+        ontology = buffer.ontology
+        demotion_remap: dict[str, str] = {}
+        curing_cfg = self.settings.curing
+        if curing_cfg.value_type_demotion:
+            member_names: dict[str, list[str]] = {}
+            for e in buffer.entities:
+                for t in e.types:
+                    member_names.setdefault(t, []).append(e.name)
+            ontology, demotion_remap = demote_value_types(
+                ontology,
+                member_names,
+                fraction=curing_cfg.value_type_fraction,
+                target=curing_cfg.value_type_target,
+            )
         ontology, type_remap = cluster_types(
-            buffer.ontology, purpose, self.engine, embed_fn=self._embed_texts
+            ontology, purpose, self.engine, embed_fn=self._embed_texts
         )
         entities = [
-            e.model_copy(update={"types": apply_type_remap(e.types, type_remap)})
+            e.model_copy(
+                update={
+                    "types": apply_type_remap(
+                        apply_type_remap(e.types, demotion_remap), type_remap
+                    )
+                }
+            )
             for e in buffer.entities
         ]
         result = resolve_entities(

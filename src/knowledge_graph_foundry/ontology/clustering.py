@@ -201,6 +201,61 @@ def cluster_types(
     return consolidated, remap
 
 
+# unit tokens that mark a name token as a measured value ("4-20 cmH2O", "1.2 kg")
+_UNIT_TOKENS = frozenset(
+    "cm mm m in ft inches kg g lb lbs oz db dba hz khz l ml lpm l/min cmh2o hpa kpa psi "
+    "v w kw mah h hr hrs min s sec ms year years month months week weeks day days "
+    "c f k percent %".split()
+)
+
+
+def value_likeness(name: str) -> float:
+    """Fraction of a name's tokens that read as measured-value tokens.
+
+    A token is value-like when it starts with a digit ("4-20", "1.2") or is a
+    bare unit ("cmH2O", "kg"). "4-20 cmH2O" scores 1.0; "AirSense 11" scores 0.5.
+    """
+    tokens = [t.strip("()[],;:").lower() for t in name.split()]
+    tokens = [t for t in tokens if t]
+    if not tokens:
+        return 0.0
+    valueish = sum(1 for t in tokens if t[0].isdigit() or t in _UNIT_TOKENS)
+    return valueish / len(tokens)
+
+
+def demote_value_types(
+    ontology: Ontology,
+    member_names: dict[str, list[str]],
+    fraction: float = 0.6,
+    target: str = "Specification",
+) -> tuple[Ontology, dict[str, str]]:
+    """R02-H10 guard: fold types whose members are mostly measured values.
+
+    No SOTA system promotes values ("4-20 cmH2O") to entity types; extraction
+    is prompted against it and this deterministic pass catches what slips
+    through, folding value-like types into ``target`` so curing metrics see a
+    legitimate inventory. Returns the consolidated ontology and the remap for
+    rewriting buffered entities (same contract as ``cluster_types``).
+    """
+    remap: dict[str, str] = {}
+    for type_name, names in member_names.items():
+        if type_name == target or type_name not in ontology.types or not names:
+            continue
+        mean_likeness = sum(value_likeness(n) for n in names) / len(names)
+        if mean_likeness >= fraction:
+            remap[type_name] = target
+    if not remap:
+        return ontology, {}
+    if target not in ontology.types:
+        ontology = ontology.model_copy(deep=True)
+        ontology.types[target] = TypeDef(
+            name=target, description="Measured specification values (demoted value-like types)"
+        )
+    consolidated = _consolidate(ontology, remap)
+    emit("ontology.evolved", merges=dict(remap), stage="value_type_demotion")
+    return consolidated, remap
+
+
 def should_recure(cured_type_count: int, current_type_count: int, burst: int) -> bool:
     """True when enough new types have appeared since curing to reopen
     consolidation (a post-cure burst of >= ``burst`` new types)."""

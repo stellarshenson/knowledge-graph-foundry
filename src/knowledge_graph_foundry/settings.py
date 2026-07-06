@@ -73,6 +73,9 @@ class CuringSettings(BaseModel):
     min_encounters_to_confirm: int = 2
     min_samples_before_cure: int = 3  # R7: Chao1 floor - block the gate below this
     recure_type_burst: int = 3  # R5: post-cure new-type count that reopens consolidation
+    value_type_demotion: bool = True  # R02-H10: fold value-like types (PressureRange) at cure
+    value_type_fraction: float = 0.6  # mean member value-likeness above which a type is demoted
+    value_type_target: str = "Specification"  # type that absorbs demoted value-like types
 
 
 class DriftSettings(BaseModel):

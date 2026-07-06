@@ -157,3 +157,69 @@ class TestShouldRecure:
 
     def test_threshold_constant_exposed(self):
         assert 0.0 < MERGE_SIMILARITY_THRESHOLD < 1.0
+
+
+class TestValueTypeDemotion:
+    """R02-H10: value-like types (PressureRange, Weight) fold into Specification."""
+
+    def test_value_likeness_scores(self):
+        from knowledge_graph_foundry.ontology.clustering import value_likeness
+
+        assert value_likeness("4-20 cmH2O") == 1.0
+        assert value_likeness("1.2 kg") == 1.0
+        assert value_likeness("AirSense 11") == 0.5
+        assert value_likeness("ResMed") == 0.0
+        assert value_likeness("") == 0.0
+
+    def test_value_type_demoted_to_target(self):
+        from knowledge_graph_foundry.ontology.clustering import demote_value_types
+
+        onto = _ontology("PressureRange", "Manufacturer")
+        members = {
+            "PressureRange": ["4-20 cmH2O", "3-15 cmH2O", "4-25 cmH2O"],
+            "Manufacturer": ["ResMed", "Philips", "Fisher & Paykel"],
+        }
+        result, remap = demote_value_types(onto, members)
+        assert remap == {"PressureRange": "Specification"}
+        assert "PressureRange" not in result.types
+        assert "Specification" in result.types
+        assert "Manufacturer" in result.types
+        assert "alias:PressureRange" in result.types["Specification"].properties
+
+    def test_mixed_member_type_kept(self):
+        from knowledge_graph_foundry.ontology.clustering import demote_value_types
+
+        onto = _ontology("Warranty")
+        members = {"Warranty": ["2 years", "limited warranty", "manufacturer warranty"]}
+        result, remap = demote_value_types(onto, members)
+        assert remap == {}
+        assert "Warranty" in result.types
+
+    def test_no_demotion_returns_same_ontology(self):
+        from knowledge_graph_foundry.ontology.clustering import demote_value_types
+
+        onto = _ontology("Manufacturer", "CPAPDevice")
+        members = {"Manufacturer": ["ResMed"], "CPAPDevice": ["AirSense 11"]}
+        result, remap = demote_value_types(onto, members)
+        assert remap == {}
+        assert result is onto
+
+    def test_target_never_demotes_itself(self):
+        from knowledge_graph_foundry.ontology.clustering import demote_value_types
+
+        onto = _ontology("Specification")
+        members = {"Specification": ["4-20 cmH2O", "26 dBA"]}
+        result, remap = demote_value_types(onto, members)
+        assert remap == {}
+
+    def test_encounters_fold_into_target(self):
+        from knowledge_graph_foundry.ontology.clustering import demote_value_types
+
+        onto = _ontology("Weight", "Dimension")
+        members = {
+            "Weight": ["1.2 kg", "1130 g"],
+            "Dimension": ["116 mm", "255 mm"],
+        }
+        result, remap = demote_value_types(onto, members)
+        assert remap == {"Weight": "Specification", "Dimension": "Specification"}
+        assert result.types["Specification"].encounters == 6  # 3 + 3 from _ontology helper
