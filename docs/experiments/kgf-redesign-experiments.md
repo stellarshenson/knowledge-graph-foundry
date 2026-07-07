@@ -1892,3 +1892,58 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Result** - pending
 - **Verdict** - pending
 
+
+
+## R15 - maturity flank: generalization, shipping, and operational hardening (pre-registered 2026-07-07)
+
+Trigger: the maturity assessment (2026-07-07) - the campaign targets the identity and ingest-fidelity subsystems and the head-to-head capstone, but five maturity properties had NO registered hypothesis: corpus-class transfer, in-engine verification of offline-decided fixes, re-ingestion idempotency, shipped compaction, and silent-failure abstention. Per the standing directive (findings that raise questions must be planned as hypotheses), they are registered here.
+
+### R15-H157 Corpus-class transfer - the single-corpus overfit test
+
+- **Grounding** - every calibrated component is fit on ONE corpus class (device datasheets and manuals): the isotonic identity curve (7 support points), the curing gate (cured at doc 4-7), the drift all-3-consecutive criterion, the H84 thin-subgraph result, the probe harness itself. Nothing certifies transfer; classical calibration results (isotonic curves in particular) are notoriously dataset-bound at this support size
+- **Hypothesis** - on a structurally different technical corpus (different domain, different document genres - to be sourced with the project owner), the engine's lifecycle machinery transfers (curing gate fires and holds, no spurious recures, FSM reaches STABLE) but the identity calibration does NOT transfer within tolerance (ECE degrades > 2x) - i.e. calibration must be re-estimated per corpus, and the engine needs a self-calibration path (H142 lineage) rather than shipped constants
+- **Prediction** - lifecycle transfers, calibration breaks; the deterministic detectors (name identity, model-code) carry different false-merge surfaces per domain
+- **Acceptance bar** - both clauses measured on >= 20 documents of a second corpus; refuted (pleasantly) if calibration holds within 2x ECE - then shipped constants suffice for the corpus classes tested
+- **Experiment** - PRECONDITION: second corpus selection needs the project owner's decision (external sourcing is out of autonomous bounds); everything else is the standard ingest + probe + identity-benchmark pipeline on a scratch instance
+- **Result** - pending
+- **Verdict** - pending
+
+### R15-H158 Decided is not shipped - in-engine verification of the identity stack
+
+- **Grounding** - the identity decision stack (isotonic-calibrated cosine + NLI contradiction veto + logistic arbitration) is CONFIRMED on adjudicated labels offline (H106/H129/H128), with false merges 39 -> 11 in replay. But offline replay shares none of the engine's failure modes: threading, incremental arrival order, partial-embedding states, config plumbing. Implementation drift between a confirmed replay and a shipped subsystem is a classic maturity failure
+- **Hypothesis** - the stack implemented behind a config flag and exercised end-to-end (full re-ingest of the benchmark corpus) reproduces the offline result within tolerance: SAME_AS precision proxy 14.2% -> >= 50%, false-merge count within +-20% of the replay's 11, zero regression on the deterministic benchmark (>= 60/63)
+- **Prediction** - the stack ships cleanly but arrival-order effects (calibrated scores computed before both descriptions exist) cost some of the offline gain; the defer band absorbs most of it
+- **Acceptance bar** - all three clauses; DEGRADED if precision improves but the deterministic benchmark drops; refuted if in-engine false merges exceed the current baseline (the offline result was then an artifact of replay conditions)
+- **Experiment** - implement behind `identity_stack: v2` config flag; scratch-instance re-ingest; H101 benchmark re-run; blocked on the SOTA chain releasing the scratch instance
+- **Result** - pending
+- **Verdict** - pending
+
+### R15-H159 Idempotent re-ingestion - the same document twice is a no-op
+
+- **Grounding** - a long-lived foundry WILL see the same document again (re-crawls, moved files, overlapping batches). MERGE-based loading suggests idempotency but nothing certifies it: description-length upgrades, versioning triggers, alias accumulation, and embedding refresh could all churn on identical input. The entity-versioning subsystem makes silent churn expensive (version nodes accumulate)
+- **Hypothesis** - re-ingesting the full benchmark corpus into its own cured graph is a no-op within bounds: zero new entities, zero new relationships, zero new version nodes, < 1% property churn (timestamps exempt), and the FSM stays STABLE with no recure
+- **Prediction** - entity/relationship counts hold, but version nodes leak (the versionize predicate fires on label-set or description-length ties) - a bounded, fixable defect
+- **Acceptance bar** - all count clauses; any version-node leak is quantified and, if > 0, filed as a defect with the offending predicate identified; refuted if entity or relationship counts grow (MERGE identity is then unstable - a severe maturity defect)
+- **Experiment** - deterministic: snapshot counts, re-run `kgf ingest` on the same directory, diff; scratch instance, cheap, runs after the SOTA chain completes
+- **Result** - pending
+- **Verdict** - pending
+
+### R15-H160 Shipped compaction - inert-edge pruning as a maintenance job
+
+- **Grounding** - H84 measured 3903 of ~3905 edges with zero gold-path participation and 100% recall at 90% edge removal; H80 confirmed 20% zero-loss structural pruning; H63 catalogued the dark-matter mass. All three are FINDINGS with no shipped consumer: the engine has no compaction job, so long-horizon bloat is unbounded (the 481-doc campaign graph's inert mass grows monotonically)
+- **Hypothesis** - a workload-conditioned compaction job (retain seed-incident + gold-path-participating + recent edges; archive the rest to a cold store, not delete) reduces live-graph edges >= 50% with zero probe-recall loss, improves MDL bits (H82's instrument), and cuts render token cost measurably on the campaign-scale graph
+- **Prediction** - the win is real at campaign scale (481 docs) where inert mass dominates; at benchmark scale (26 docs) the effect is within noise
+- **Acceptance bar** - all three clauses at campaign scale; refuted if recall drops at ANY pruning level the job selects (the workload-conditioning is then insufficient and the H84 ordering does not transfer to the larger graph)
+- **Experiment** - archive-not-delete job prototype; replay probes against compacted campaign-graph copy; read-only source, writes only to a scratch copy
+- **Result** - pending
+- **Verdict** - pending
+
+### R15-H161 Silent-failure abstention - parse failures must enter the gap ledger
+
+- **Grounding** - the H144 audit found one document yielding 0 characters via the project parser - and the engine absorbed it silently: no warning surfaced, no record that the document contributed nothing. The self-auditing-foundry doctrine says exactly this class belongs in a gap ledger as an abstention signal ("this source is present but unrepresented")
+- **Hypothesis** - a deterministic ingest-time yield gate (chars/page, extraction-unit count, table-cell yield vs page count) detects 100% of an injected parse-failure set (empty output, image-only pages, encrypted files, truncated files) with < 2% false-positive rate on the healthy corpus, and each detection produces a queryable gap-ledger record the retrieval layer can cite when probes touch the affected source
+- **Prediction** - the gate is trivial to build and the false-positive rate is near zero on datasheet-class documents; the harder clause is the retrieval-side citation (gap records must be renderable when relevant, not just stored)
+- **Acceptance bar** - both clauses; refuted if healthy short documents (legitimate 1-pagers) blow the false-positive budget - then the gate needs corpus-relative baselines rather than absolute thresholds
+- **Experiment** - inject failure set into a scratch ingest; gate prototype in the ingestion layer; deterministic
+- **Result** - pending
+- **Verdict** - pending
