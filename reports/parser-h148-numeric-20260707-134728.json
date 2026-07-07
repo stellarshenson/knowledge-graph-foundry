@@ -1,0 +1,160 @@
+{
+  "hypothesis": "R14-H148",
+  "mineru": {
+    "label": "mineru2.5",
+    "ref": 0,
+    "recall": null,
+    "digit_precision": null,
+    "aligned": 0,
+    "text_recall": null,
+    "text_digit_precision": null
+  },
+  "olmocr_off": {
+    "label": "olmocr_off",
+    "ref": 541,
+    "recall": 0.8465804066543438,
+    "digit_precision": 0.5731895223420647,
+    "aligned": 649,
+    "text_recall": 0.9852125693160814,
+    "text_digit_precision": 0.5700483091787439
+  },
+  "bar": "recall >= text+0.10 AND digit_precision >= text baseline",
+  "recall_gain": 0,
+  "floor_residue_n": 16,
+  "floor_residue_vlm_lift": {
+    "mineru": 0,
+    "olmocr_off": 0
+  },
+  "floor_residue_detail": [
+    {
+      "gold": "1106 g",
+      "src": "ResMed-Airsense-11-Manual.pdf",
+      "probe": "P11",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "1130 g",
+      "src": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "probe": "P11",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "28 dB(A)",
+      "src": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "probe": "P12",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "26 dB(A)",
+      "src": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "probe": "P12",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "3,010 m",
+      "src": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "probe": "P13",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "2,591 m",
+      "src": "ResMed-Airsense-11-Manual.pdf",
+      "probe": "P13",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "380 mL",
+      "src": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "probe": "P14",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "290 ml",
+      "src": "ResMed-Airsense-11-Manual.pdf",
+      "probe": "P14",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "1.98kg",
+      "src": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "probe": "P15",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "2.4 kg",
+      "src": "BC-Dreamstation-Standard-CPAP.pdf",
+      "probe": "P15",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "275mm x 170mm x 140mm",
+      "src": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "probe": "P16",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "238*178*128 mm",
+      "src": "SleepStyle_200_Operating_Manual.pdf",
+      "probe": "P16",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "0-60 mins",
+      "src": "BC-Dreamstation-Standard-CPAP.pdf",
+      "probe": "P17",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "0 to 45 min",
+      "src": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "probe": "P17",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "26.6 dBA",
+      "src": "ResMed-Airsense-11-Manual.pdf",
+      "probe": "P18",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    },
+    {
+      "gold": "27 dBA",
+      "src": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "probe": "P18",
+      "mineru": null,
+      "olmocr_off": null,
+      "olmocr_anchored": null
+    }
+  ],
+  "floor_note": "16 (gold,src) pairs failed by ALL text parsers are cross-product pairings of probe evidence x sources; VLM coverage = spec/gold pages included in combined PDF only",
+  "verdict": "REFUTED"
+}

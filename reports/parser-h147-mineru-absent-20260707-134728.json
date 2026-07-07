@@ -1,0 +1,63 @@
+{
+  "hypothesis": "R14-H147",
+  "parser": "MinerU2.5-1.2B(vlm-engine,GPU0)",
+  "recovered": [],
+  "n_recovered": 0,
+  "n_family": 7,
+  "recall": 0.0,
+  "hallucination_candidates": [],
+  "name_precision": null,
+  "bar_recall": 0.5,
+  "bar_precision": 0.9,
+  "known_family": [
+    "SleepStyle Auto",
+    "SleepStyle CPAP",
+    "SleepStyle extended care CPAP warranty card",
+    "SleepStyle filter pack of two",
+    "SleepStyle ThermoSmart AirSpiral heated breathing tube",
+    "SleepStyle humidifier chamber",
+    "SleepStyle 200 Series"
+  ],
+  "family_recovery_matrix": {
+    "pymupdf4llm": {
+      "strict": 0,
+      "sym_stripped": 2,
+      "n": 7
+    },
+    "pdfplumber": {
+      "strict": 0,
+      "sym_stripped": 3,
+      "n": 7
+    },
+    "pypdf": {
+      "strict": 0,
+      "sym_stripped": 7,
+      "n": 7
+    },
+    "docling": {
+      "strict": 0,
+      "sym_stripped": 7,
+      "n": 7
+    },
+    "mineru2.5": {
+      "strict": 0,
+      "sym_stripped": 0,
+      "n": 7
+    },
+    "olmocr_anchored": {
+      "strict": 0,
+      "sym_stripped": 7,
+      "n": 7
+    },
+    "olmocr_off": {
+      "strict": 0,
+      "sym_stripped": 7,
+      "n": 7
+    }
+  },
+  "mineru_family_recall_sym_stripped": 0.0,
+  "absent_set_rescued_by_sym_strip": 69,
+  "absent_set_total": 676,
+  "artifact_finding": "The all-parser-absent SleepStyle family is a matching ARTIFACT: every text parser emits the names with an interposed trademark glyph (SleepStyle(TM) Auto); H51 exact normalization fails on the glyph. pypdf and docling recover 7/7 under sym-stripped matching - the class is not rendered-but-unencoded text. 69/676 of the whole absent set is rescued by sym-stripping alone.",
+  "verdict": "REFUTED (premise falsified: family is a normalization artifact, vision not necessary)"
+}

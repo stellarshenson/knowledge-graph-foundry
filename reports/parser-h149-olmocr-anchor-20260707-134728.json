@@ -1,0 +1,13 @@
+{
+  "hypothesis": "R14-H149",
+  "parser": "olmOCR-7B-0225-preview(GPU2,bf16)",
+  "anchored_recovery": 0.8105263157894737,
+  "anchor_off_recovery": 0.8736842105263158,
+  "anchored_hits": 77,
+  "anchor_off_hits": 83,
+  "n": 95,
+  "clause1_anchored_ge_half": true,
+  "clause2_off_gt_anchored": true,
+  "note": "anchor-off = empty RAW_TEXT block (image-only signal); anchored = real pypdf anchor via olmocr.get_anchor_text",
+  "verdict": "CONFIRMED"
+}

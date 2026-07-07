@@ -1,0 +1,41 @@
+{
+  "hypothesis": "R14-H150",
+  "parsers": [
+    "pymupdf4llm",
+    "pdfplumber",
+    "pypdf",
+    "docling",
+    "mineru2.5",
+    "olmocr_anchored",
+    "olmocr_off"
+  ],
+  "teds": [
+    0.0,
+    0.0,
+    0.0,
+    79.4,
+    90.67,
+    82.4,
+    82.4
+  ],
+  "name_recall_loss_set": [
+    0.0,
+    0.4105263157894737,
+    0.9368421052631579,
+    0.8631578947368421,
+    0.0,
+    0.8105263157894737,
+    0.8736842105263158
+  ],
+  "spearman": -0.1321696096086382,
+  "spearman_bench_only": -0.6324555320336759,
+  "bench_only_parsers": [
+    "docling",
+    "mineru2.5",
+    "olmocr_anchored",
+    "olmocr_off"
+  ],
+  "bar": "<0.5 confirms; >=0.8 refutes",
+  "teds_source": "MinerU2.5 90.67 OmniDocBench overall; Docling assigned 79.4 (MinerU-classic pipeline EN table-TEDS as pipeline-class proxy); olmOCR-2 82.4 olmOCR-bench proxy; H51 trio assigned 0 (no table-structure stage). dots.ocr 88.6 / Marker 54.0 not run, excluded.",
+  "verdict": "CONFIRMED"
+}

@@ -1789,8 +1789,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - the merge-loss class is a reading-order/cell-merge bug, not an information limit; catalogue-genre recovery dominates
 - **Acceptance bar** - >= 60% recovery of the loss set; refuted if Docling matches pymupdf4llm - the loss is inherent to text-layer extraction and only vision (H147) remains
 - **Experiment** - docling over the 27 documents + the H51 name-recall harness; CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (finisher 2026-07-07 after the original executor died at session limit - GPU outputs cached, scored from disk; [`parser_round_scoring.ipynb`](../../notebooks/parser_round_scoring.ipynb) / [`parser-round-final-20260707-135106.json`](../../reports/parser-round-final-20260707-135106.json)) Docling recovers 82/95 = 86.3% of the H51 loss set (bar >=60%, union-of-three baseline 75.8%) at 25.3 s/page CPU, full 27-doc coverage, with a TableFormer table-structure stage
+- **Verdict** - CONFIRMED - clears the bar, beats the union baseline at zero GPU cost; promoted as the backend-swap candidate feeding the H152/H153 row-record work
 
 ### R14-H147 Only pixels can say the absent names - pure-vision recovery
 
@@ -1799,8 +1799,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - the family is rendered-but-unencoded text, not raster logos
 - **Acceptance bar** - >= 50% recovery at name-level precision >= 0.9 (hallucinated names are worse than missing ones); refuted if recovery ~0% (raster/unrecoverable) OR precision collapses (a different failure, routed to crop-resolution work)
 - **Experiment** - MinerU2.5 on GPU 0 (24GB) over the affected documents; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (finisher 2026-07-07 after the original executor died at session limit - GPU outputs cached, scored from disk; [`parser_round_scoring.ipynb`](../../notebooks/parser_round_scoring.ipynb) / [`parser-round-final-20260707-135106.json`](../../reports/parser-round-final-20260707-135106.json)) the 7-name all-parser-absent mode family is a TRADEMARK-GLYPH NORMALIZATION ARTIFACT: pypdf/docling/olmOCR each recover 7/7 under symbol-stripped matching, and sym-strip alone rescues 69/676 of the whole absent set. MinerU2.5 itself was unmeasurable (VLM tensor-shape RuntimeError crashed 10/11 chunks, 6/107 pages covered)
+- **Verdict** - REFUTED - vision is not necessary: the 'absent' names were recoverable text all along; the standing SleepStyle/mode-family mystery dissolves into a normalization bug, and the fix is a string operator (registered H190), not a parser
 
 ### R14-H148 The numeric floor - vision lifts recall only if digits stay honest
 
@@ -1809,8 +1809,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - part of the residual is rasterized spec graphics (recoverable), part is chart-embedded (not); precision holds on tables, wobbles on plates
 - **Acceptance bar** - both clauses together; refuted if the VLM stalls at the floor (content is chart-only) OR recall rises while digit precision drops (net-negative fidelity - the floor stands as the honest limit)
 - **Experiment** - page-scoped vision pass + digit-exact scoring vs source-verified values; GPU 0/2; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (finisher 2026-07-07 after the original executor died at session limit - GPU outputs cached, scored from disk; [`parser_round_scoring.ipynb`](../../notebooks/parser_round_scoring.ipynb) / [`parser-round-final-20260707-135106.json`](../../reports/parser-round-final-20260707-135106.json)) MinerU2.5 covered 0/18 numeric-floor pages (VLM crash), dots.ocr was not run; the available vision proxy (olmOCR-off, 18/18 coverage) lifted 0/16 of the all-text-parser-failed numeric residue
+- **Verdict** - NOT MEASURABLE - the registered engines have no numeric-page coverage in this environment; the vision-necessity question survives only for the 16-pair residue (deferred as H191's trigger)
 
 ### R14-H149 Anchoring inherits the loss - olmOCR must fly blind here
 
@@ -1819,8 +1819,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - the A/B shows anchoring pulling answers toward the broken text layer
 - **Acceptance bar** - both clauses; refuted if anchored olmOCR already recovers the names (the image branch overrides bad anchors - anchoring vindicated and the cheap bulk path stays open)
 - **Experiment** - olmOCR anchored vs anchor-off over the loss-set documents; GPU 0/2; runs after H147 (shares the harness)
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (finisher 2026-07-07 after the original executor died at session limit - GPU outputs cached, scored from disk; [`parser_round_scoring.ipynb`](../../notebooks/parser_round_scoring.ipynb) / [`parser-round-final-20260707-135106.json`](../../reports/parser-round-final-20260707-135106.json)) anchored olmOCR 77/95 = 81.1%, anchor-off 83/95 = 87.4%, full 74/74 page coverage - both clauses pass
+- **Verdict** - CONFIRMED - pdf-text anchoring inherits the born-digital text-layer losses exactly as registered; image-only mode strictly dominates on this corpus class
 
 ### R14-H150 The benchmark is a prior, not a proxy - TEDS vs our names
 
@@ -1829,8 +1829,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - the correlation is positive but weak; per-corpus measurement stays mandatory
 - **Acceptance bar** - < 0.5 confirms (the H51 harness becomes the standing acceptance test for any parser change); refuted at >= 0.8 (TEDS is a valid proxy - adopt the leaderboard winner and stop re-measuring)
 - **Experiment** - assembles from H146/H147/H149 outputs; no extra runs
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (finisher 2026-07-07 after the original executor died at session limit - GPU outputs cached, scored from disk; [`parser_round_scoring.ipynb`](../../notebooks/parser_round_scoring.ipynb) / [`parser-round-final-20260707-135106.json`](../../reports/parser-round-final-20260707-135106.json)) Spearman(OmniDocBench TEDS rank, loss-set name recall) = -0.13 full set / -0.63 bench-only (bar: < 0.5); pypdf - TEDS 0, no table stage - has the HIGHEST recall at 93.7%
+- **Verdict** - CONFIRMED - leaderboard rank does not predict corpus-specific name recall; the H51 name-recall harness is promoted as the standing acceptance test for any parser change
 
 ### R14-H151 Table extraction is the decisive parser axis - necessity, not proxy
 
@@ -1839,8 +1839,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - the loss set partitions cleanly; the with-table-stage group dominates on exactly the table-region subset while both groups tie on non-table losses
 - **Acceptance bar** - both clauses; refuted if recovery is uncorrelated with table capability (the differentiator would then be reading order or glyph handling, and parser selection re-opens)
 - **Experiment** - partition the H51 loss set by table-region membership (layout detection or table-markdown span test) + per-parser recovery split from the H146-H150 harness; assembles from the parser round's outputs
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (finisher 2026-07-07 after the original executor died at session limit - GPU outputs cached, scored from disk; [`parser_round_scoring.ipynb`](../../notebooks/parser_round_scoring.ipynb) / [`parser-round-final-20260707-135106.json`](../../reports/parser-round-final-20260707-135106.json)) clause (a) PASSES: 72/95 = 75.8% of losses sit in table regions (bar 70%); clause (b) FAILS: with/without-table-stage recovery ratio ~1.0-1.15x (bar >=2x) - table-less pypdf tops recovery at 93.7% because the real differentiator is pymupdf4llm's cell-merge bug, not the presence of a table stage
+- **Verdict** - PARTIALLY CONFIRMED - losses concentrate in tables as the project owner hypothesized, but a table STAGE is not the necessary condition; escaping the broken cell-merge is - which any of pypdf/Docling/olmOCR does
 
 ### R14-H152 The row record - linearize tables verbatim, one row one unit
 
@@ -2249,5 +2249,26 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - the product-scoping noise, not the signal class, was H185's failure; calibration finds an operating point the raw threshold could not
 - **Acceptance bar** - both rates on held-out probes (label set split); refuted if no operating point on the calibrated curve satisfies both - near-domain abstention would then require the NLI/entailment instrument (H172) as its scorer, which gets registered as the follow-up
 - **Experiment** - labeled render pairs from H185's probes + the answerable set; isotonic calibration; CPU, neo4j2 read-only, runs after H188 (shares the harness; H188's set supplies answerable diversity)
+- **Result** - pending
+- **Verdict** - pending
+
+
+### R14-H190 The glyph operator - symbol-stripped normalization rescues the absent names
+
+- **Grounding** - H147's dissolution: the all-parser-absent mode family is a trademark/symbol glyph artifact, and symbol-stripped matching alone rescues 69/676 (10.2%) of the H51 absent-name set with ZERO parser change - the cheapest ingest-fidelity lever yet found; it also plausibly feeds H107's surface-form variance (glyph variants of one name embed and match differently)
+- **Hypothesis** - a deterministic normalization operator (strip/translate trademark symbols, glyph variants, non-breaking spaces, ligatures) applied at extraction AND at evidence matching (a) recovers >= 60 of the 69 sym-strip-rescuable names end-to-end in a re-parse of the loss set, (b) reduces same-name surface-form variants in the graph (measured on the H107 66-pair variance set: >= 10% of pairs become exact-match), (c) zero false conflations introduced (no two DIFFERENT names collapse to one normalized form across the corpus vocabulary)
+- **Prediction** - all three clauses; the operator ships in both the parser post-process and the resolver's name-identity detector
+- **Acceptance bar** - all three; refuted if normalization collides distinct names (clause c) - then the operator needs a whitelist rather than general rules
+- **Experiment** - operator + re-run of the H51 harness and the H107 pair census; deterministic, CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H191 The vision residue - conditional test on a working engine (deferred)
+
+- **Grounding** - H148 is NOT MEASURABLE here (MinerU2.5 VLM crash: tensor-shape RuntimeError on 10/11 chunks - an environment/version bug, filed with the run artifacts); the surviving open claim is narrow: 16 numeric-floor pairs fail EVERY text parser and the one vision proxy tested (olmOCR-off) lifted none of them
+- **Hypothesis** - CONDITIONAL, deferred until a vision engine runs in this environment (MinerU version fix, or dots.ocr): on the 16-pair residue, the working vision engine recovers >= 8 pairs with digit fidelity (no hallucinated digits, verified against source pixels)
+- **Prediction** - the residue is genuinely rasterized/vector-graphic content (the H51 forensics suggested chart-embedded values) and a real vision pass recovers about half; if it recovers none, the residue is unextractable by any parser and belongs in the gap ledger (H161) as permanent abstention territory
+- **Acceptance bar** - adjudicated when the trigger fires (a vision engine completes >= 90% page coverage on the residue's 18 pages)
+- **Experiment** - blocked on a working vision environment; the residue set and pages are versioned in the parser-round reports
 - **Result** - pending
 - **Verdict** - pending
