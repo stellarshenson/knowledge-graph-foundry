@@ -1,0 +1,190 @@
+{
+  "round": "R19",
+  "hypothesis": "H209",
+  "utc": "20260707T193825Z",
+  "graph": "neo4j2",
+  "render_fingerprint": "96ab16d299fbbc71",
+  "content_hash": "6fdc41bde495d1a3",
+  "compute": "CPU-only, deterministic, no LLM",
+  "harness_fidelity": "no_foreign_dev on original labels reproduces H205 (prose 0.917 / feature 0.833 / combined 0.928)",
+  "taxonomy": {
+    "exclusive": [
+      "AutoRamp",
+      "AutoSet for Her",
+      "C-Flex",
+      "CPAP-Check",
+      "Climate Control",
+      "EPR",
+      "EZ-Start",
+      "Opti-Start",
+      "SmartStart",
+      "System One resistance control",
+      "amplitude of oscillations",
+      "constant lower pressure"
+    ],
+    "shared": [
+      "Auto-CPAP mode",
+      "Bluetooth connectivity",
+      "Wi-Fi connectivity",
+      "adjustable humidification",
+      "adjustable ramp time",
+      "gradually acclimate",
+      "heated humidifier",
+      "integrated cellular modem",
+      "mask fit check",
+      "reduces the pressure during expiration",
+      "sleep onset detection",
+      "wireless data transfer"
+    ],
+    "label_flips": [
+      {
+        "gold": "EZ-Start",
+        "stratum": "exclusive",
+        "foreign_product": "DreamStation"
+      },
+      {
+        "gold": "EPR",
+        "stratum": "exclusive",
+        "foreign_product": "ResMed AirSense 10 AutoSet for Her"
+      },
+      {
+        "gold": "gradually acclimate",
+        "stratum": "shared",
+        "foreign_product": "DreamStation Auto CPAP with humidifier"
+      },
+      {
+        "gold": "heated humidifier",
+        "stratum": "shared",
+        "foreign_product": "AirSense 10 Elite"
+      },
+      {
+        "gold": "C-Flex",
+        "stratum": "exclusive",
+        "foreign_product": "DreamStation Auto CPAP with humidifier"
+      },
+      {
+        "gold": "CPAP-Check",
+        "stratum": "exclusive",
+        "foreign_product": "DreamStation"
+      }
+    ]
+  },
+  "clause_a": {
+    "variants": {
+      "baseline_full_cap15": {
+        "exclusive": 0.875,
+        "shared": 0.75,
+        "all": 0.812,
+        "combined": 0.907
+      },
+      "scoped_strict_cap15": {
+        "exclusive": 0.667,
+        "shared": 0.542,
+        "all": 0.604,
+        "combined": 0.804
+      },
+      "scoped_no_foreign_dev_cap15": {
+        "exclusive": 0.833,
+        "shared": 0.792,
+        "all": 0.812,
+        "combined": 0.907
+      },
+      "baseline_full_cap40": {
+        "exclusive": 0.875,
+        "shared": 0.75,
+        "all": 0.812,
+        "combined": 0.907
+      },
+      "scoped_strict_cap40": {
+        "exclusive": 0.667,
+        "shared": 0.542,
+        "all": 0.604,
+        "combined": 0.804
+      },
+      "scoped_no_foreign_dev_cap40": {
+        "exclusive": 0.833,
+        "shared": 0.792,
+        "all": 0.812,
+        "combined": 0.907
+      }
+    },
+    "primary": "scoped_no_foreign_dev_cap15",
+    "exclusive_stratum": 0.833,
+    "combined": 0.907,
+    "bar_exclusive_ge_090": false,
+    "bar_combined_ge_097": false,
+    "persisting_exclusive_errors": [
+      {
+        "gold": "constant lower pressure",
+        "prod": "DreamStation",
+        "kind": "pos_own",
+        "label": 0,
+        "pred": 1
+      },
+      {
+        "gold": "EZ-Start",
+        "prod": "DreamStation",
+        "kind": "neg_foreign",
+        "label": 1,
+        "pred": 0
+      },
+      {
+        "gold": "C-Flex",
+        "prod": "DreamStation Auto CPAP with humidifier",
+        "kind": "neg_foreign",
+        "label": 1,
+        "pred": 0
+      },
+      {
+        "gold": "CPAP-Check",
+        "prod": "DreamStation",
+        "kind": "neg_foreign",
+        "label": 1,
+        "pred": 0
+      }
+    ],
+    "provenance_gaps": [
+      {
+        "gold": "EZ-Start",
+        "prod": "DreamStation",
+        "in_full_block": false,
+        "in_scoped": false,
+        "in_product_render_cap40": false,
+        "cause": "absent-from-block (retrieval/extraction gap)"
+      },
+      {
+        "gold": "C-Flex",
+        "prod": "DreamStation Auto CPAP with humidifier",
+        "in_full_block": false,
+        "in_scoped": false,
+        "in_product_render_cap40": false,
+        "cause": "absent-from-block (retrieval/extraction gap)"
+      },
+      {
+        "gold": "CPAP-Check",
+        "prod": "DreamStation",
+        "in_full_block": true,
+        "in_scoped": false,
+        "in_product_render_cap40": false,
+        "cause": "in-block-but-on-dropped-device"
+      }
+    ],
+    "flip_sensitivity": {
+      "no_intrabrand_flip_exclusive": 0.958,
+      "no_intrabrand_flip_combined": 0.938,
+      "note": "combined>=0.97 needs bench ALL>=0.939; best observed ALL<=0.875 -> combined bar unmet under every adjudication"
+    }
+  },
+  "clause_b": {
+    "cap_raise": "15->40",
+    "render_cap_inert": true,
+    "strict_all_cap40": 0.604,
+    "exclusion_all_cap40": 0.812,
+    "gap_pts": 20.8,
+    "within_3pts": false,
+    "h211_distinction": "H211 inert cap = seed-neighbourhood render; H209 cap = per-product render section (different surface); both inert, here because legitimately-owned features are absent from the product's relation tails at any cap"
+  },
+  "refuted": true,
+  "verdict_recommendation": "REFUTED",
+  "verdict_basis": "clause (a) not met under any adjudication: combined>=0.97 robustly unmet (0.907-0.938; needs bench ALL>=0.939 vs observed 0.812-0.875), and under the committed document-evidence adjudication the exclusive stratum is 0.833<0.90 with persisting errors dominated by graph-side provenance gaps (EZ-Start/C-Flex/CPAP-Check legitimately owned by DreamStation per its own docs but never surfaced on the product in the graph). clause (b): render-cap raise inert, strict scoping stays ~21 pts below exclusion. Attribution needs graph-side provenance, not render-side scoping - exactly the registered refuter."
+}

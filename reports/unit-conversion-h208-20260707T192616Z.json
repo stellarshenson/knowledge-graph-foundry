@@ -1,0 +1,108 @@
+{
+  "round": "R19",
+  "hypothesis": "H208",
+  "utc": "20260707T192616Z",
+  "graph": "neo4j2",
+  "render_fingerprint": "96ab16d299fbbc71",
+  "content_hash": "6fdc41bde495d1a3",
+  "compute": "CPU-only, deterministic, no LLM",
+  "conversion_table": {
+    "mass_base": "gram",
+    "len_base": "mm",
+    "press_base": "cmH2O",
+    "tolerance": 0.02,
+    "units": [
+      "cm",
+      "cmh2o",
+      "g",
+      "hpa",
+      "in",
+      "inch",
+      "inches",
+      "kg",
+      "kpa",
+      "l/min",
+      "lb",
+      "lbs",
+      "lpm",
+      "mbar",
+      "ml/min",
+      "mm",
+      "oz",
+      "pound",
+      "pounds"
+    ]
+  },
+  "clause_a": {
+    "description": "H204 unit-variant conflicts reclassify as consistent",
+    "detail": [
+      {
+        "id": "C001",
+        "attribute": "weight",
+        "values": [
+          "3.5 lbs",
+          "1.6kg"
+        ],
+        "unit_variant": true,
+        "genuine_conflict": false,
+        "reclassified_consistent": true
+      },
+      {
+        "id": "C002",
+        "attribute": "ramp time",
+        "values": [
+          "60mins",
+          "10 minutes"
+        ],
+        "unit_variant": false,
+        "genuine_conflict": true,
+        "reclassified_consistent": false
+      },
+      {
+        "id": "C003",
+        "attribute": "dimensions",
+        "values": [
+          "8.66 \u00d7 7.6 \u00d7 4.4",
+          "220 \u00d7 194 \u00d7 112 mm"
+        ],
+        "unit_variant": true,
+        "genuine_conflict": false,
+        "reclassified_consistent": true
+      }
+    ],
+    "passed": true
+  },
+  "clause_b": {
+    "description": "ZERO verdict changes on frozen H194/H196 benches",
+    "h194_pairs": 60,
+    "h196_pairs": 48,
+    "h194_verdict_changes": 0,
+    "h196_verdict_changes": 0,
+    "h194_false_credits": 0,
+    "h196_false_credits": 0,
+    "h194_flip_detail": [],
+    "h196_flip_detail": [],
+    "total_verdict_changes": 0,
+    "total_false_credits": 0,
+    "passed": true
+  },
+  "clause_c": {
+    "description": "additional gold credited via cross-unit conversion in wide-v2",
+    "covered": 212,
+    "total": 219,
+    "genuine_cross_unit_credits": 0,
+    "detail": [],
+    "parse_coverage_credits_excluded": [
+      {
+        "id": "V044",
+        "gold": "4 cm H2O",
+        "rule": "spec_table_cell",
+        "trigger": "gold '4 cm H2O'(cmh2o->4.0) ~ ctx 4.0(spec:press)",
+        "genuine_conversion": false
+      }
+    ]
+  },
+  "refuted": false,
+  "verdict_recommendation": "CONFIRMED",
+  "notes": "clause (a) and (b) are the mandatory bars; clause (c) is reported either way. clause (c) = 0 genuine credits confirms the registration's predicted-uncertain outcome: the corpus stores each attribute in one unit system (weight kg, dimensions mm), so no gold is stored ONLY in a converted unit that baseline misses. The V044 parse-only 'credit' (4 cmH2O ~ 4 press, same scale factor) is excluded - not a conversion."
+}
