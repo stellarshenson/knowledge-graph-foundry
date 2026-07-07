@@ -1,0 +1,62 @@
+{
+  "batch": "R14-H190 + R14-H153",
+  "generated_utc": "20260707-141157",
+  "environment": "CPU-only, deterministic, no LLM/GPU; parser=pymupdf4llm (current project reader)",
+  "H190": {
+    "operator": "strip trademark glyphs -> NFKC -> punctuation-variant translate -> lower+collapse",
+    "clause_a_loss_recovery": {
+      "absent_total": 676,
+      "sym_strip_rescuable": 69,
+      "recovered_glyph": 69,
+      "bar": 60,
+      "passed": true,
+      "not_recovered": []
+    },
+    "clause_b_h107_exact_match": {
+      "n_pairs": 66,
+      "exact_norm": 0,
+      "exact_nospace": 0,
+      "frac": 0.0,
+      "bar": 0.1,
+      "passed": false,
+      "exact_pairs": []
+    },
+    "clause_c_vocab_collision": {
+      "vocab": 2797,
+      "collision_groups": 1,
+      "collisions": [
+        {
+          "form": "air filter cover",
+          "names": [
+            "Air Filter Cover",
+            "Air filter cover"
+          ],
+          "case_glyph_variant_only": true
+        }
+      ],
+      "false_conflations": 0,
+      "bar": 0,
+      "passed": true
+    },
+    "verdict": "PARTIAL: (a) PASS, (c) PASS (no false conflation), (b) FAIL - H107 variance is token/word-level, not glyph-level, so normalization makes 0 pairs exact"
+  },
+  "H153": {
+    "note": "Docling swap (H146) would change the input text but the header-carryover logic is format-generic; measured here on the current pymupdf4llm output to isolate the chunker fix",
+    "baseline_severed": 64,
+    "post_severed": 0,
+    "base_tokens": 235969,
+    "post_tokens": 236577,
+    "token_overhead": 0.002576609639401786,
+    "header_injections": 18,
+    "false_injections": 0,
+    "injection_rate": 0.0,
+    "total_chunks": 132,
+    "bar_severed": 0,
+    "bar_overhead": 0.02,
+    "bar_injection": 0.01,
+    "passed_severance": true,
+    "passed_overhead": true,
+    "passed_injection": true,
+    "verdict": "CONFIRMED if post_severed==0 and overhead<=2% and injection<=1%"
+  }
+}

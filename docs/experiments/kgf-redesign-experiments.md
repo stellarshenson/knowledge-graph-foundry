@@ -1862,8 +1862,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - the cheap fix closes the association loss entirely; the question that remains is whether row records add extraction lift beyond it
 - **Acceptance bar** - zero severed rows post-transform at <= 2% overhead; refuted if table-boundary detection in parser markdown misfires enough to inject false headers into prose (measured injection rate > 1%)
 - **Experiment** - chunker variant + re-run of the H144 audit; deterministic, runs when the parser round fixes the input format
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`glyph_carryover_r14.ipynb`](../../notebooks/glyph_carryover_r14.ipynb) / [`glyph-carryover-r14-20260707-141157.json`](../../reports/glyph-carryover-r14-20260707-141157.json)) chunker logic copied with char-offset instrumentation (28/28 parity vs the shipped module, which stays untouched); header-carryover post-transform: chunks holding data rows without their header get the header + separator re-printed. H144 baseline reproduced exactly (64 severed rows); post-transform 0 severed (bar 0), token overhead 0.258% (bar <=2%), 18 carryover injections with 0 false positives (rate 0.0%, bar <1% - the |---| separator anchor makes prose misfire effectively impossible). Measured on pymupdf4llm output; the logic is format-generic - re-confirm injection rate on Docling when the H146 swap lands
+- **Verdict** - CONFIRMED on every clause - the minimal co-processor closes 100% of the severance at negligible cost; ships as the chunker fix, and H152's row-records must now justify themselves on extraction lift alone
 
 ### R14-H154 Table summaries route, never answer - the fidelity boundary
 
@@ -2265,8 +2265,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - all three clauses; the operator ships in both the parser post-process and the resolver's name-identity detector
 - **Acceptance bar** - all three; refuted if normalization collides distinct names (clause c) - then the operator needs a whitelist rather than general rules
 - **Experiment** - operator + re-run of the H51 harness and the H107 pair census; deterministic, CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`glyph_carryover_r14.ipynb`](../../notebooks/glyph_carryover_r14.ipynb) / [`glyph-carryover-r14-20260707-141157.json`](../../reports/glyph-carryover-r14-20260707-141157.json)) operator = strip trademark glyphs before NFKC -> fold ligatures/fullwidth/nbsp -> translate punctuation variants -> lowercase+collapse. Clause (a) PASS decisively: 69/69 sym-strip-rescuable names recovered end-to-end on the H51 harness (bar >=60). Clause (c) PASS: 2797-name vocabulary yields exactly 1 collision group - a pure case variant of the same accessory - 0 false conflations. Clause (b) FAILS: 0/66 H107 variance pairs become exact-match - the variance is WORD-level (added qualifiers, order, expansions), not glyph-level; normalization is orthogonal to it
+- **Verdict** - PARTIALLY CONFIRMED - ships for the loss-recovery win (parser post-process + resolver name detector) with zero conflation risk; it is NOT an H107 fix - the 66-pair variance points back at extraction canonicalization (H119) exactly as H107/H184 already concluded; case-only merges under the operator are intended identity semantics, noted for the resolver config
 
 ### R14-H191 The vision residue - conditional test on a working engine (deferred)
 

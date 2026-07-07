@@ -16,3 +16,4 @@ Background job logs for Knowledge Graph Foundry.
 - `vllm-server.log` - local gpt-oss-120b vLLM server (port 8010, 96GB card)
 - `r05-wave-*.log` - R05 longevity campaign wave ingestions on the local engine
 - `potentials-r10-exec.log` - R10 potentials-family notebook execution (H81/H82/H83/H85/H86 edit-replay)
+- `entailment-r18-exec.log` - R18 entailment-instrument notebook execution (H172 NLI sufficiency scorer + H176 graded gradient)
