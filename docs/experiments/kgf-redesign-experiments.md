@@ -2133,3 +2133,58 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Experiment** - synthetic load harness on a scratch instance (index-only, no pipeline); CPU + the embedding sampler; post-chain
 - **Result** - pending
 - **Verdict** - pending
+
+
+## R19 - retrieval token economy: fanout, hop discipline, and the query-time budget (user-directed, pre-registered 2026-07-07)
+
+Trigger: the project owner's clarification - the cost worry was never ingest (H165 closed that flank) but QUERY-TIME token economy: improper retrieval degrading into hop fanout and per-traversal scale growth. The architecture claims protection by design (91% evidence on-seed, 100% within 2 hops, PPR removed, views refuted-saturated) - but no registered hypothesis measures tokens-per-query at scale, guards hub fanout, or bounds what happens on a miss. Five hypotheses close that.
+
+### R19-H179 The query token-cost curve - does render cost grow with the graph
+
+- **Grounding** - every probe render assembles seeds (top_k 16) + 1-hop neighborhood + propositions; per-seed neighborhood size grows as entities accrete provenance and hubs fatten (the H91 hub class), so p95 render cost can grow with corpus scale even while recall holds; measured today only at benchmark scale, never characterized as a distribution
+- **Hypothesis** - tokens-per-query p50 is scale-flat (the on-seed regime protects the typical query) but p95 grows measurably with graph scale (benchmark 10-doc vs 26-doc vs campaign-scale copy), driven >= 70% by 1-hop neighborhood expansion around high-degree seeds - fanout, not seed count or proposition mass
+- **Prediction** - the tail is hubs: queries whose seeds include a hub entity render 3-10x the median token cost for zero marginal recall (H84's edge-inertness has a token-side analog)
+- **Acceptance bar** - the decomposition (seed/1-hop/proposition token shares) with per-scale distributions; refuted if p95 is also flat - the design already bounds the tail and R19's guard hypotheses shrink to hygiene
+- **Experiment** - render-cost instrumentation on the existing H34 harness; 10-doc graph (neo4j2) now, 26-doc scratch and a campaign-graph read copy post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H180 The fanout guard - degree-capped rendering loses nothing
+
+- **Grounding** - 1-hop expansion is currently uncapped; the H84/H86 result (evidence is on-seed or one hop away, and almost all edges are retrieval-inert) implies a relevance-ranked cap on neighbors-per-seed should be free; hubs are where uncapped expansion pays pure token waste
+- **Hypothesis** - capping 1-hop expansion at k neighbors per seed (ranked by embedding similarity to the query, ties by recency) with k=20 preserves 100% of current probe evidence recall while cutting p95 tokens >= 40% on hub-touching queries and >= 15% overall; the recall-safe frontier (smallest k with zero loss) sits at k <= 30
+- **Prediction** - zero recall loss at k=20 on this corpus class; the guard is a config default, not a tradeoff
+- **Acceptance bar** - both clauses on the full probe set; refuted if any gold requires a neighbor ranked below k=30 (fanout is then load-bearing for the tail and the cap needs an evidence-aware exemption)
+- **Experiment** - cap sweep k in {5,10,20,30,50,unbounded} on the render harness; deterministic, CPU, neo4j2 read-only, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H181 The miss must be cheap - abstention beats expansion
+
+- **Grounding** - when seeds do not contain the evidence (the 10-missing-golds class, and every out-of-corpus question in production), the renderer today spends the full budget anyway; the classic failure mode the owner names - "improper retrieval ends in a fanout of hops" - is exactly what an engine does when it compensates for a miss by traversing wider; the gap-ledger doctrine (H161) says the correct behavior is a cheap, honest abstention signal
+- **Hypothesis** - (a) current behavior: render cost on unanswerable probes is statistically indistinguishable from answerable ones (tokens are spent blind); (b) a miss detector from already-computed signals (top-seed similarity, seed-score entropy, evidence-channel agreement) achieves >= 80% detection of unanswerable probes at <= 5% false-abstention on answerable ones; (c) wiring it to a short-circuit render cuts total tokens on the unanswerable class >= 60%
+- **Prediction** - blind spending confirmed; top-seed similarity alone is nearly sufficient (the on-seed regime makes hits look confident)
+- **Acceptance bar** - all three clauses (probe set + a 15-probe out-of-corpus set, synthesized deterministically from adjacent-domain questions); refuted if the detector cannot separate miss from hit at the bar - abstention then needs the calibrated identity-stack machinery instead of retrieval signals
+- **Experiment** - render harness + out-of-corpus probe synthesis; deterministic, CPU, neo4j2 read-only, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H182 The render budget frontier - most rendered tokens are inert
+
+- **Grounding** - H84 proved 90% of edges carry zero task evidence; the token-side analog: rank rendered units (neighbor lines, propositions) by marginal evidence probability and truncate at a budget - if evidence concentration holds at the unit level, most of every render is padding
+- **Hypothesis** - a per-query adaptive budget (units ranked by query-similarity, truncated at B tokens) achieves <= 2% evidence-recall loss at B = 50% of current mean render cost; the recall-vs-budget curve has a knee (shared instrument with H171's ingest-side frontier)
+- **Prediction** - the knee sits at 30-50% of current cost; propositions dominate the retained mass, neighbor lines dominate the discarded mass
+- **Acceptance bar** - both clauses with probe bootstrap; refuted if recall degrades linearly with budget (evidence is token-diffuse and render compression needs summarization, which P19 fidelity rules constrain)
+- **Experiment** - budget sweep on the render harness; deterministic, CPU, neo4j2 read-only, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H183 Hop discipline as a runtime certificate - 2-hop containment monitored, not assumed
+
+- **Grounding** - the 2-hop containment result (H34/H67: 100% of gold within 2 hops of seeds) is a MEASUREMENT on this corpus class, silently assumed permanent by the no-traversal design; if a future corpus breaks it (H157's transfer question), the engine would degrade recall with no signal - or worse, someone would "fix" it by re-adding deep traversal, the exact fanout regression the owner fears
+- **Hypothesis** - a cheap per-ingest containment auditor (sample probes, measure evidence hop-distance distribution, alarm when >5% of evidence exceeds 2 hops) detects an injected containment break (synthetic long-chain documents) within one ingest cycle at zero false alarms over the recorded benign history (the wave-1 drift series provides the null stream)
+- **Prediction** - the auditor is nearly free (piggybacks on existing probe replays) and the synthetic break is caught immediately; the alarm becomes the guard that keeps hop-expansion OUT of the query path permanently - traversal depth becomes a monitored invariant, not a tuning knob
+- **Acceptance bar** - detection within one cycle + zero false alarms on the benign history; refuted if long-chain synthesis cannot break containment at all on this engine (extraction always shortcuts chains into direct edges - itself a finding worth recording)
+- **Experiment** - auditor prototype + synthetic chain corpus + replay over the wave-1 event history; deterministic, CPU, runs now (scratch ingest for the synthetic docs post-chain)
+- **Result** - pending
+- **Verdict** - pending
