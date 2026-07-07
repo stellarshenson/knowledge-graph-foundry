@@ -1,0 +1,55 @@
+{
+ "hypothesis": "R21-H216",
+ "utc": "20260707T200833Z",
+ "verdict_summary": "clause(a) PASS; clause(b) NARROW (<30%, not refuted-narrow)",
+ "arm_inventories": {
+  "arm1_embedded_unique": 1566,
+  "arm1_placements": 91175,
+  "arm2_docling_pictures": 745,
+  "arm2_docling_tables": 226,
+  "arm2_docling_total": 971,
+  "arm2_coverage": "26/27 docs (catalogue OOM deviation)",
+  "arm3_vector_regions": 558
+ },
+ "clause_a": {
+  "count_disagreement": {
+   "A1_vs_A2": 0.37994891443167306,
+   "A1_vs_A3": 0.6436781609195402,
+   "A2_vs_A3": 0.4253347064881565
+  },
+  "threshold": 0.2,
+  "passes": true,
+  "dominating_arm": "Docling (Arm2)",
+  "dominating_rationale": "Docling captures raster figures (745, ~89% page-overlap with embedded objects) PLUS 226 structured tables the embedded arm misses entirely; embedded arm inflates raw count (1566 unique from 91175 placements, 281 decorative) yet captures ZERO vector-drawn tables/schematics; vector arm (Arm3) uniquely captures 558 vector-drawn tables/schematics/charts as image regions. The three inventories are materially different; no arm is a superset."
+ },
+ "clause_b": {
+  "docs_with_information_bearing_image": 27,
+  "info_bearing_doc_share": 1.0,
+  "docs_with_pixel_only_infobearing_text": 7,
+  "pixel_only_text_doc_share": 0.25925925925925924,
+  "threshold_full_breadth": 0.3,
+  "reaches_full_breadth": false,
+  "refuted_narrow_floor": 0.1,
+  "refuted_narrow": false,
+  "pixel_text_docs": {
+   "PDF RESmart Service Manual CPAP.pdf": "troubleshooting flowchart node text ('Power Supply','Wrong Version') rendered as images; not in text layer",
+   "DreamStation_CPAP_User_Manual.pdf": "device-display screenshot values ('5.5 cmH2O') pixel-only",
+   "SleepStyle_200_Operating_Manual.pdf": "regulatory rating symbol 'IPX1' rendered as image; not in text layer",
+   "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": "device screen 'Usage Summary' / iCode rendered pixel-only",
+   "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": "schematic dimension '40 mm' + chart axis/legend rendered pixel-only",
+   "ResMed-Airsense-11-Manual.pdf": "touchscreen UI menu values rendered pixel-only (product specs are live text)",
+   "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf": "device-UI screenshot values rendered pixel-only (specs are live text)"
+  },
+  "note": "Information-bearing images are common (27/27 docs). But images whose TEXT is NOT in the text layer are <30% - most rendered labels/captions/specs are dual-encoded (present in the text layer). Graph-relevant text is not hidden in pixels (see H217: 0/32 absent golds pixel-only)."
+ },
+ "class_distribution_arm1_unique": {
+  "product_photo": 1022,
+  "decorative": 281,
+  "diagram": 228,
+  "chart": 26,
+  "logo_decorative": 9
+ },
+ "information_bearing_share_arm1": 0.8148148148148148,
+ "acceptance_bar": "census complete + labels frozen (data/processed/image-census-h216.json)",
+ "verdict": "CONFIRMED-NARROW: census complete, labels frozen; three-arm inventories materially disagree (38-64% > 20%, clause a PASS); pixel-only-text clause (b) below 30% breadth threshold -> round narrows to the classes present (product photos, diagrams/schematics, rendered/vector tables), justified by NEW-content capture not hidden-text recovery; NOT refuted-narrow (info-bearing images in 27/27 docs)."
+}

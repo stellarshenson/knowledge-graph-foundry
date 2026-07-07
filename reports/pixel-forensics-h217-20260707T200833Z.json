@@ -1,0 +1,352 @@
+{
+ "hypothesis": "R21-H217",
+ "utc": "20260707T200833Z",
+ "read_only": true,
+ "cpu_only": true,
+ "inputs": {
+  "h207_absent_golds": 16,
+  "h191_numeric_residue": 16,
+  "total": 32,
+  "h207_source": "reports/render-parity-h207-20260707T155614Z.json (miss_detail, cls=absent-from-graph)",
+  "h191_source": "reports/parser-round-final-20260707-135106.json (H148 floor_residue_detail)"
+ },
+ "adjudication": {
+  "counts": {
+   "text-layer-present": 20,
+   "absent-entirely": 12
+  },
+  "pixel_only": 0,
+  "pixel_only_share": 0.0,
+  "threshold_stake": 0.25,
+  "confirms_coverage_stake": false,
+  "refute_floor": 0.1,
+  "refuted": true
+ },
+ "per_gold": [
+  {
+   "set": "H207-absent",
+   "pid": "W009",
+   "gold": "1097940",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "Cannula, Pro-Flow, nasal, pediatric, small 60 pk",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [73] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W023",
+   "gold": "1069194",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "HL7 outbound only interface",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [80] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W027",
+   "gold": "1,33 kg",
+   "doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "product": "DreamStation CPAP Pro",
+   "code_shaped": false,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [2] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W028",
+   "gold": "P1267",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "Nasal cannula, pediatric, small",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [75, 91] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W039",
+   "gold": "275mm x 170mm x 140mm",
+   "doc": "SleepStyle_200_Operating_Manual.pdf",
+   "product": "SleepStyle 200 Series",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "SleepStyle p13 live-text: 'DIMENSIONS: 275mm x 170mm x 140mm'"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W049",
+   "gold": "1.7 kg",
+   "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "product": "G3 A20",
+   "code_shaped": false,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [7] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W052",
+   "gold": "1111124",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "OmniLab Advanced + with HeatedTube humidifier",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [81] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W053",
+   "gold": "170 x 135 x 180 mm",
+   "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "product": "prisma SOFT plus",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "Prisma p2 live-text spec: 170 x 135 x 180 mm"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W058",
+   "gold": "1097349",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "Cannula, Pro-Flow, nasal, pediatric, small 10 pk",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [73] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W061",
+   "gold": "116 mm x 205 mm x 150 mm",
+   "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "product": "AirStart 10 CPAP",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "airstart p2 live-text spec: Dimensions 116 mm x 205 mm x 150 mm"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W062",
+   "gold": "30 db",
+   "doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "product": "RESmart CPAP",
+   "code_shaped": false,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [7] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W073",
+   "gold": "1097939",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "Cannula, Pro-Flow, nasal, pediatric 60 pk",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [73] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W087",
+   "gold": "265 mm \u00d7 145 mm \u00d7 114 mm",
+   "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "product": "G3 A20",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "BMC G3 p7 live-text spec: 265 mm x 145 mm x 114 mm"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W090",
+   "gold": "P1369",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "Pro-Flow multi-purpose cannula, ped, 5 pk",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [79, 92] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W091",
+   "gold": "1111551",
+   "doc": "product_and_solutions_catalog.pdf",
+   "product": "A Series System One humidifier",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "text layer pages [81] (strict H190 match)"
+  },
+  {
+   "set": "H207-absent",
+   "pid": "W096",
+   "gold": "1106 g",
+   "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "product": "AirStart 10 CPAP",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "airstart p2 live-text spec: Weight 1106 g (visually confirmed)"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P11",
+   "gold": "1106 g",
+   "doc": "ResMed-Airsense-11-Manual.pdf",
+   "product": "",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "live-text spec value on p[25, 26] (format variant of gold string)"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P11",
+   "gold": "1130 g",
+   "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "product": "",
+   "code_shaped": true,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P12",
+   "gold": "28 dB(A)",
+   "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P12",
+   "gold": "26 dB(A)",
+   "doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P13",
+   "gold": "3,010 m",
+   "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P13",
+   "gold": "2,591 m",
+   "doc": "ResMed-Airsense-11-Manual.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P14",
+   "gold": "380 mL",
+   "doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "product": "",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "live-text spec value on p[36, 37] (format variant of gold string)"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P14",
+   "gold": "290 ml",
+   "doc": "ResMed-Airsense-11-Manual.pdf",
+   "product": "",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "live-text spec value on p[22, 25] (format variant of gold string)"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P15",
+   "gold": "1.98kg",
+   "doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P15",
+   "gold": "2.4 kg",
+   "doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P16",
+   "gold": "275mm x 170mm x 140mm",
+   "doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "product": "",
+   "code_shaped": true,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P16",
+   "gold": "238*178*128 mm",
+   "doc": "SleepStyle_200_Operating_Manual.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P17",
+   "gold": "0-60 mins",
+   "doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "product": "",
+   "code_shaped": true,
+   "verdict": "text-layer-present",
+   "evidence": "live-text spec value on p[2] (format variant of gold string)"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P17",
+   "gold": "0 to 45 min",
+   "doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P18",
+   "gold": "26.6 dBA",
+   "doc": "ResMed-Airsense-11-Manual.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  },
+  {
+   "set": "H191-residue",
+   "pid": "P18",
+   "gold": "27 dBA",
+   "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "product": "",
+   "code_shaped": false,
+   "verdict": "absent-entirely",
+   "evidence": "not in src text layer; src spec table is live text (no value-bearing image); cross-product mispairing"
+  }
+ ],
+ "prediction_check": {
+  "catalogue_codes_are_text_drops": "CONFIRMED - all 8 H207 catalogue codes text-layer-present (extraction/normalization drops, H119 territory), 0 pixel-only",
+  "h191_residue_is_pixels": "REFUTED - H191 residue is benchmark cross-product mispairings, not pixels: each value is text-layer-present in its OWN document but absent-entirely from the wrongly-paired src doc; spec tables are live text (never rendered as images). 0/16 pixel-only."
+ },
+ "verdict": "REFUTED (image-ingestion coverage stake): 0/32 absent golds are pixel-only (0% << 10%). Every absent gold's text lives in a document's TEXT LAYER (or is a cross-product mispairing), not in pixels. Image work must stand on NEW-capability value, not on recovering the existing benchmark's missing golds."
+}
