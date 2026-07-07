@@ -1,0 +1,522 @@
+{
+  "hypothesis": "R11-H109",
+  "channels": [
+    "vec",
+    "alias",
+    "prop_text",
+    "prop_node"
+  ],
+  "n_golds": 33,
+  "n_surfaced": 33,
+  "n_missing": 0,
+  "n_single_channel": 20,
+  "n_multi_channel": 13,
+  "single_share_of_all": 0.6060606060606061,
+  "single_share_of_surfaced": 0.6060606060606061,
+  "channel_count_distribution": {
+    "1": 20,
+    "2": 4,
+    "3": 9,
+    "4": 0
+  },
+  "per_channel_carriage": {
+    "vec": 21,
+    "alias": 2,
+    "prop_text": 11,
+    "prop_node": 21
+  },
+  "per_channel_exclusivity": {
+    "vec": 8,
+    "alias": 2,
+    "prop_text": 2,
+    "prop_node": 8
+  },
+  "bar_single_channel": 0.25,
+  "verdict": "CONFIRMED",
+  "matrix": [
+    {
+      "probe": "P01",
+      "gold": "1130 g",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P01",
+      "gold": "40 oz",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P02",
+      "gold": "4 to 20 cm H2O",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P03",
+      "gold": "28 dB(A)",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P04",
+      "gold": "2 years",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_node"
+      ],
+      "n_channels": 2
+    },
+    {
+      "probe": "P05",
+      "gold": "0 to 45 min",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P06",
+      "gold": "380 mL",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_node"
+      ],
+      "n_channels": 2
+    },
+    {
+      "probe": "P07",
+      "gold": "2,591 m",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P08",
+      "gold": "Typical power consumption: 9.0W",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P09",
+      "gold": "275mm x 170mm x 140mm",
+      "cells": {
+        "vec": false,
+        "alias": true,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "alias"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P10",
+      "gold": "SD card: > 1 year",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P11",
+      "gold": "1106 g",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P11",
+      "gold": "1130 g",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P12",
+      "gold": "28 dB(A)",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P12",
+      "gold": "26 dB(A)",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P13",
+      "gold": "3,010 m",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P13",
+      "gold": "2,591 m",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P14",
+      "gold": "380 mL",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_node"
+      ],
+      "n_channels": 2
+    },
+    {
+      "probe": "P14",
+      "gold": "290 ml",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P15",
+      "gold": "1.98kg",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P15",
+      "gold": "2.4 kg",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_node"
+      ],
+      "n_channels": 2
+    },
+    {
+      "probe": "P16",
+      "gold": "275mm x 170mm x 140mm",
+      "cells": {
+        "vec": false,
+        "alias": true,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "alias"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P16",
+      "gold": "238*178*128 mm",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P17",
+      "gold": "0-60 mins",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P17",
+      "gold": "0 to 45 min",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P18",
+      "gold": "26.6 dBA",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P18",
+      "gold": "27 dBA",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": true
+      },
+      "channels": [
+        "prop_node"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P19",
+      "gold": "constant lower pressure",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": false
+      },
+      "channels": [
+        "prop_text"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P20",
+      "gold": "AutoSet for Her",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P21",
+      "gold": "gradually acclimate",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P22",
+      "gold": "amplitude of oscillations",
+      "cells": {
+        "vec": false,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": false
+      },
+      "channels": [
+        "prop_text"
+      ],
+      "n_channels": 1
+    },
+    {
+      "probe": "P23",
+      "gold": "sleep onset detection",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": true,
+        "prop_node": true
+      },
+      "channels": [
+        "vec",
+        "prop_text",
+        "prop_node"
+      ],
+      "n_channels": 3
+    },
+    {
+      "probe": "P24",
+      "gold": "reduces the pressure during expiration",
+      "cells": {
+        "vec": true,
+        "alias": false,
+        "prop_text": false,
+        "prop_node": false
+      },
+      "channels": [
+        "vec"
+      ],
+      "n_channels": 1
+    }
+  ]
+}

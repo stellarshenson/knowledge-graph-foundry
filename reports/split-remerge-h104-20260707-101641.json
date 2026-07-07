@@ -1,0 +1,255 @@
+{
+  "hypothesis": "R11-H104",
+  "variant": "logged-merge decision-rule replay + threshold-proximity instability",
+  "n_logged_merges": 3492,
+  "decision_rule_reproduction_rate": 1.0,
+  "ewma_alpha": 0.2,
+  "noise_band": 0.09376052397695596,
+  "near_threshold_window": [
+    0.6,
+    0.693760523976956
+  ],
+  "n_near_threshold": 570,
+  "n_comfortable": 2922,
+  "n_matched_to_h101": 32,
+  "near": {
+    "n": 6,
+    "no": 4,
+    "no_rate": 0.6666666666666666
+  },
+  "comfortable": {
+    "n": 26,
+    "no": 25,
+    "no_rate": 0.9615384615384616
+  },
+  "enrichment": 0.6933333333333332,
+  "bar_enrichment": 3.0,
+  "thin_n": false,
+  "verdict": "REFUTED",
+  "matched": [
+    {
+      "a": "C-Flex",
+      "b": "C-Flex+",
+      "posterior": 0.611,
+      "near_threshold": true,
+      "verdict": "NO"
+    },
+    {
+      "a": "Smart Ramp",
+      "b": "SmartRamp",
+      "posterior": 0.6242,
+      "near_threshold": true,
+      "verdict": "YES"
+    },
+    {
+      "a": "AirFit F20 for Her",
+      "b": "AirFit F10 for Her",
+      "posterior": 0.7111,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Level 2 Sleep Study",
+      "b": "Level 3/4 Sleep Study",
+      "posterior": 0.8089,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Flow Meter",
+      "b": "Flowmeter",
+      "posterior": 0.6516,
+      "near_threshold": true,
+      "verdict": "NO"
+    },
+    {
+      "a": "AirFit F10 for Her",
+      "b": "AirFit F20 for Her",
+      "posterior": 0.6353,
+      "near_threshold": true,
+      "verdict": "NO"
+    },
+    {
+      "a": "Full-Face Mask",
+      "b": "Full face mask",
+      "posterior": 0.7149,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Salter Extension Tubing 2m",
+      "b": "Salter Extension Tubing 9.1m Green",
+      "posterior": 0.8629,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "AirSense 10 AutoSet",
+      "b": "AirSense 11 AutoSet",
+      "posterior": 0.9379,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "AirSense 10 AutoSet",
+      "b": "AirSense 10 AutoSet for Her",
+      "posterior": 0.7944,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Remstar BiPAP Pro",
+      "b": "Remstar Bipap Auto",
+      "posterior": 0.9063,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "AirSense 10 CPAP",
+      "b": "AirSense 10 Elite",
+      "posterior": 0.8355,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "CPAP",
+      "b": "CPAP mode",
+      "posterior": 0.6454,
+      "near_threshold": true,
+      "verdict": "YES"
+    },
+    {
+      "a": "C-Flex+",
+      "b": "C-Flex",
+      "posterior": 0.8926,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "REMstar SE with humidifier",
+      "b": "REMstar SE with Heated Tube humidifier",
+      "posterior": 0.796,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "BiPAP Auto Bi-Flex",
+      "b": "BiPAP Pro Bi-Flex",
+      "posterior": 0.8731,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "BiPAP Auto Bi-Flex with humidifier",
+      "b": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+      "posterior": 0.8268,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "BiPAP autoSV Advanced with humidifier",
+      "b": "BiPAP autoSV Advanced with Heated Tube humidifier",
+      "posterior": 0.8334,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Auto EPAP",
+      "b": "Auto-EPAP",
+      "posterior": 0.8088,
+      "near_threshold": false,
+      "verdict": "YES"
+    },
+    {
+      "a": "Wired flow modem",
+      "b": "Wireless flow modem",
+      "posterior": 0.8649,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "OptiChamber Diamond, 10 pk",
+      "b": "OptiChamber Diamond, 10 pk, Canada",
+      "posterior": 0.8706,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "920 oximeter",
+      "b": "930 Oximeter",
+      "posterior": 0.9274,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Double-sided tape for 934 sensor",
+      "b": "Double sided tape for 935 and 953",
+      "posterior": 0.6608,
+      "near_threshold": true,
+      "verdict": "NO"
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (International English)",
+      "posterior": 0.7171,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (French)",
+      "posterior": 0.8336,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Host software manual v2.0 (Domestic)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "posterior": 0.83,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Host software manual v2.0 (International English)",
+      "b": "Host software manual v2.0 (French)",
+      "posterior": 0.7745,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Host software manual v2.0 (International English)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "posterior": 0.7891,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Host software manual v2.0 (French)",
+      "b": "Host software manual v2.0 (Spanish)",
+      "posterior": 0.8625,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "AirFit F20 for Her",
+      "b": "AirFit F10 for Her",
+      "posterior": 0.8163,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "Level 2 Sleep Study",
+      "b": "Level 3/4 Sleep Study",
+      "posterior": 0.771,
+      "near_threshold": false,
+      "verdict": "NO"
+    },
+    {
+      "a": "bCPAP prongs",
+      "b": "CPAP prongs",
+      "posterior": 0.7593,
+      "near_threshold": false,
+      "verdict": "NO"
+    }
+  ]
+}

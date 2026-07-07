@@ -1256,8 +1256,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - proposition density and relationship diversity dominate the profile (consistent with the 0.58 calibration correlate and H34's channel census)
 - **Acceptance bar** - AUC > 0.7; refuted if no profile correlates - extraction fidelity dominates structure entirely (H51's claim gains indirect support)
 - **Experiment** - metric computation per probe-touched subgraph + logistic fit with leave-one-out; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structural_profiles_h100.ipynb`](../../notebooks/structural_profiles_h100.ipynb)) per-probe touched-subgraph profiles vs direct-render gold fate (mean hit 0.667, real variance): leave-one-out AUC 0.496 - chance - vs the 0.70 bar; rel_type_diversity alone carries mild signal (Spearman +0.37), proposition density is null (+0.075)
+- **Verdict** - REFUTED - structural health does not explain retrieval fate; channel PLACEMENT does (the zero-hit probes are exactly H109's prop_node/prop_text single-channel golds). The registered refuter clause lands as written: extraction fidelity dominates structure, indirect support for H51. ROMEO-style profiling closes for this system
 
 ## R11 - the weak-flank round: identity layer, render gap, the SOTA comparison, and the persistent failures (pre-registered 2026-07-06)
 
@@ -1323,8 +1323,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - instability concentrates in cross-type and sibling merges; stable merges are near-100% clean
 - **Acceptance bar** - enrichment >=3x; refuted if instability is uniform noise uncorrelated with defects
 - **Experiment** - split-remerge replay on a graph copy; deterministic, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`split_remerge_h104.ipynb`](../../notebooks/split_remerge_h104.ipynb)) the rule replay is exactly reproducible (3492/3492 logged merges - the posterior is deterministic in its components), so instability was operationalized as threshold proximity per the registered intent. Against H101 labels (32 matched): near-threshold merges are 0.667 adjudicated-NO vs comfortable merges 0.962 - enrichment 0.69x vs the 3x bar, INVERTED: the high-confidence merges are the wrong ones ('AirFit F10 for Her == F20 for Her' at 0.71, '920 == 930 oximeter' at 0.93)
+- **Verdict** - REFUTED with the inversion as the finding: reproducibility is not trustworthiness - the resolver is deterministically, confidently wrong on siblings, corroborating H102's anti-correlated posterior from a fourth angle. Near-threshold caution would audit exactly the wrong pairs; the H106 arbitration stack (which demotes the posterior) is further vindicated
 
 ### R11-H105 The sibling stress set - measure the hardest negatives directly
 
@@ -1373,8 +1373,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - the prop_text channel carries the most exclusive golds (per H34's rescue census); knockout fragility concentrates on the same probes that paraphrase-flip in H110
 - **Acceptance bar** - matrix shipped + the halving demonstrated post-H108; refuted if golds are near-uniformly multi-channel (redundancy is genuine depth - the fragility narrative retires)
 - **Experiment** - ablation replay on the H34 harness; deterministic, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`knockout_matrix_h109.ipynb`](../../notebooks/knockout_matrix_h109.ipynb)) H34 assembly replicated with the H108 matcher correction: all 33 golds surface; single-channel share 0.61 (20/33) vs the 0.25 bar; knockout losses vec 8 / prop_node 8 / alias 2 / prop_text 2 - vec and prop_node co-dominate (the prop_text-dominance prediction refuted); H108's halving sub-clause is n/a (no render fix shipped)
+- **Verdict** - CONFIRMED - ceiling recall is genuinely fragile: 61% of golds ride exactly one channel, so any single-channel regression (an embedding change, a proposition pipeline bug) silently breaks probes. The matrix ships as a standing regression artifact: channel-knockout runs join the probe cycle so fragility is watched, not assumed
 
 ### R11-H110 Paraphrase stress - is the entry point question-surface-sensitive?
 
@@ -1769,8 +1769,8 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Prediction** - name splits are rare (overlap catches most) but header severance is common in the table-heavy catalogue genre - the same genre H51 flagged
 - **Acceptance bar** - >= 10% combined incidence confirms; refuted if boundary effects are < 2% (the chunker is vindicated and the remaining loss is extraction behavior)
 - **Experiment** - re-run the chunker over the 27 parsed documents; per boundary, test name-string spans and table-header/row adjacency; deterministic, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`boundary_audit_h144.ipynb`](../../notebooks/boundary_audit_h144.ipynb)) chunker instrumented at char offsets (parity 28/28 with the shipped implementation): entity-name hard splits = ZERO (the 200-token overlap catches all; 204 overlap-only cases across 16 docs), but 64 table rows are severed from their headers across 7 documents (30/114 rows in the worst manual) - strict table-severance incidence 0.25, combined 0.607, vs the 0.10 bar. Side-finding: one PDF yields 0 chars through the MuPDF layer entirely
+- **Verdict** - CONFIRMED on the severance clause exactly as predicted: the chunker never loses strings, it loses ASSOCIATIONS - table rows arriving without their headers in the catalogue/manual genre. This sizes H145's target precisely (64 severed rows, 7 documents) and specifies the fix: table-atomic chunking with header carryover, not semantic sentence boundaries per se. The zero-char PDF joins the parse-layer defect record
 
 ### R14-H145 Segment, then compose - SaT progressive semantic chunking
 

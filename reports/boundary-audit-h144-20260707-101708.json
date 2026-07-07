@@ -1,0 +1,817 @@
+{
+  "hypothesis": "R14-H144",
+  "chunker": "2000/200 sentence-snap",
+  "n_documents": 28,
+  "multi_chunk_docs": 17,
+  "total_severed_name_occurrences": 0,
+  "total_overlap_only_names": 204,
+  "total_severed_table_rows": 64,
+  "docs_name_flagged": 16,
+  "docs_table_flagged": 7,
+  "combined_flagged_docs": [
+    "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+    "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+    "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+    "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+    "CPAP-Machines-Brochure.pdf",
+    "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024.pdf",
+    "DSDC-CPAP-Therapy-Catalogue.pdf",
+    "DT_guide_to_select_cpap.pdf",
+    "DreamStation_CPAP_User_Manual.pdf",
+    "PDF RESmart Service Manual CPAP.pdf",
+    "ResMed-Airsense-11-Manual.pdf",
+    "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+    "Seattle-PAP-V5-en-in.pdf",
+    "Sleep And Respiratory Medical Devices Brochure.pdf",
+    "SleepStyle_200_Operating_Manual.pdf",
+    "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+    "product_and_solutions_catalog.pdf"
+  ],
+  "incidence": 0.6071428571428571,
+  "bar_confirm": 0.1,
+  "bar_refute": 0.02,
+  "verdict": "CONFIRMED",
+  "name_audit": [
+    {
+      "name": "0-20190113114505.pdf",
+      "docid": "d_41d2a8ee115d3013",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "docid": "d_c544d2031f25c004",
+      "n_names": 37,
+      "severed": 0,
+      "overlap_only": 4,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Quattro Air for Her",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Quattro Air",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "AirFit F10",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "AirFit F20 for Her",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "docid": "d_5f143c3ea8f09fb6",
+      "n_names": 87,
+      "severed": 0,
+      "overlap_only": 4,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Max APAP",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Full face mask",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "LCD Light",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Standby mode",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+      "docid": "d_ba514306e9aae4ad",
+      "n_names": 124,
+      "severed": 0,
+      "overlap_only": 6,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Adjustable Delay/Ramp",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Unintentional Leak Compensation",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "User Mode",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Prescriber/Clinician Mode",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Cleaning/Infection Control",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "Airsense-Brochure.pdf",
+      "docid": "d_6e1b3db905ff4630",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "BC-Dreamstation-Standard-CPAP.pdf",
+      "docid": "d_2a8aa3e645f7058e",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "docid": "d_c6922d7e11556760",
+      "n_names": 73,
+      "severed": 0,
+      "overlap_only": 1,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Patient Disconnect Alert",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "docid": "d_3b56521b1135d777",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "CPAP-Machines-Brochure.pdf",
+      "docid": "d_7b0610c49546c0a8",
+      "n_names": 64,
+      "severed": 0,
+      "overlap_only": 9,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Pressure Gauge",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "CPAP Control Valve",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Three Levels Alarm System",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Humidifier",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Advanced Power Management",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "docid": "d_566e9d2cdd0b4fdb",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "CPAP_Eng.pdf",
+      "docid": "d_ac97d0fb85b1b133",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024.pdf",
+      "docid": "d_4755151a9a6ce39c",
+      "n_names": 32,
+      "severed": 0,
+      "overlap_only": 4,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Fine particle filter",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Low oxygen level alarm",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Total flowmeter",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Internal filter",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "docid": "d_b722793e977f7b5a",
+      "n_names": 57,
+      "severed": 0,
+      "overlap_only": 7,
+      "flag": true,
+      "examples": [
+        {
+          "name": "hair management options",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Mirage FX for Her",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Mirage Liberty",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "SleepWeaver Advance",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Mirage Swift II",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "DT_guide_to_select_cpap.pdf",
+      "docid": "d_7b09b3d82477e109",
+      "n_names": 47,
+      "severed": 0,
+      "overlap_only": 4,
+      "flag": true,
+      "examples": [
+        {
+          "name": "MTTS CPAP",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Sanitizer system",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Philips Healthcare",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "MTTS",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "docid": "d_b9ace390ab007615",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "DreamStation_CPAP_User_Manual.pdf",
+      "docid": "d_2537242ed3c635ae",
+      "n_names": 34,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "Evox Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "docid": "d_f841033ef5e20a97",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "PDF RESmart Service Manual CPAP.pdf",
+      "docid": "d_492aa44f3ad42e28",
+      "n_names": 75,
+      "severed": 0,
+      "overlap_only": 3,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Hole #1",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Silicon Rubber Canal",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Sensor YL",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "docid": "d_f7ee7a37a2e00e96",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "docid": "d_7fcf279c58ec70a1",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "ResMed-Airsense-11-Manual.pdf",
+      "docid": "d_0edea6b832817079",
+      "n_names": 233,
+      "severed": 0,
+      "overlap_only": 11,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Full face mask",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "EN ISO 5356-1:2015",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Chin strap",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Uncontrolled Environment",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Authorized ResMed Service Agent",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "docid": "d_eaaf9dd2a47fb88b",
+      "n_names": 298,
+      "severed": 0,
+      "overlap_only": 16,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Class II Device",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Alarm Clock",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Time Setting",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Patient Standby Screen",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Type BF Applied Part",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "Seattle-PAP-V5-en-in.pdf",
+      "docid": "d_228bca4a7486b26e",
+      "n_names": 54,
+      "severed": 0,
+      "overlap_only": 2,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Germany",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "L\u00fcbeck",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "docid": "d_673da5cd542a0f03",
+      "n_names": 418,
+      "severed": 0,
+      "overlap_only": 38,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Allergies and hayfever",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Transcend P10 battery",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Spare Reusable Canister",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Rechargeable batteries",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "ACO564P",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "SleepStyle_200_Operating_Manual.pdf",
+      "docid": "d_a2b1f7a495a9deda",
+      "n_names": 102,
+      "severed": 0,
+      "overlap_only": 6,
+      "flag": true,
+      "examples": [
+        {
+          "name": "HC230-Series",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Continuous Positive Airway Pressure",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Sleep Lab",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Adult Patient",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Heated Respiratory Humidification",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "docid": "d_d740a9f6a83926cb",
+      "n_names": 0,
+      "severed": 0,
+      "overlap_only": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "docid": "d_160ebdb9b2e36f50",
+      "n_names": 52,
+      "severed": 0,
+      "overlap_only": 1,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Drive Medical",
+          "kind": "overlap_only"
+        }
+      ]
+    },
+    {
+      "name": "product_and_solutions_catalog.pdf",
+      "docid": "d_2b3d647422cbe53e",
+      "n_names": 1036,
+      "severed": 0,
+      "overlap_only": 88,
+      "flag": true,
+      "examples": [
+        {
+          "name": "Actiwatch 2 docking station",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "P1652",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "MPV circuit support system",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Three-Zone Management System",
+          "kind": "overlap_only"
+        },
+        {
+          "name": "Comfortable oval mouthpiece",
+          "kind": "overlap_only"
+        }
+      ]
+    }
+  ],
+  "table_audit": [
+    {
+      "name": "0-20190113114505.pdf",
+      "n_tables": 2,
+      "n_rows": 23,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "n_tables": 5,
+      "n_rows": 24,
+      "severed_rows": 3,
+      "flag": true,
+      "examples": [
+        "|Voltage dips,<br>short<br>interruptions<br>and voltage<br>variations ",
+        "|Power<br>frequency<br>(50/60 Hz)<br>magnetic<br>field<br>IEC 61000-4-",
+        "|NOTE:_UT _is the|AC mains voltagep|rior to application of|the test le"
+      ]
+    },
+    {
+      "name": "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+      "n_tables": 6,
+      "n_rows": 55,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "Airsense-Brochure.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "BC-Dreamstation-Standard-CPAP.pdf",
+      "n_tables": 4,
+      "n_rows": 47,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "n_tables": 10,
+      "n_rows": 61,
+      "severed_rows": 3,
+      "flag": true,
+      "examples": [
+        "|**Adjusting the Circuit**|2. Adjust the circuit. Lie down on your bed",
+        "|**Using the Ramp Button  **|Pressing the ramp button will reduce the ",
+        "||3. Press the Ramp button on the top of the RESmart<sup>\u00ae</sup>Auto. "
+      ]
+    },
+    {
+      "name": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "CPAP-Machines-Brochure.pdf",
+      "n_tables": 12,
+      "n_rows": 86,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "CPAP_Eng.pdf",
+      "n_tables": 1,
+      "n_rows": 6,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "DT_guide_to_select_cpap.pdf",
+      "n_tables": 9,
+      "n_rows": 99,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "n_tables": 2,
+      "n_rows": 27,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "DreamStation_CPAP_User_Manual.pdf",
+      "n_tables": 22,
+      "n_rows": 138,
+      "severed_rows": 13,
+      "flag": true,
+      "examples": [
+        "||Serial number<br>Identify the manufacturer\u2019s serial number for the m",
+        "|**Periodic**<br>**Breathing**|Periodic<br>Breathing|Displays the perc",
+        "||Time|Allows you to adjust the time. The default setting is Greenwich",
+        "|SD Card Error:<br>Remove and<br>Reinsert||Notifcation|SD card error d",
+        "|SD Card Full.||Notifcation|SD card is full.|SD card is full.|Remove S"
+      ]
+    },
+    {
+      "name": "Evox Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "PDF RESmart Service Manual CPAP.pdf",
+      "n_tables": 16,
+      "n_rows": 114,
+      "severed_rows": 30,
+      "flag": true,
+      "examples": [
+        "|Foam (cover)|40191-0201|1|PC|Foam|Main Device|",
+        "|Shied Cover|4011110101|1|PC|Plastic|Main Device|",
+        "|Handle|4011130201|1|PC|Plastic|Main Device|",
+        "|Handle Fixing|40111-0301|2|PC|Plastic|Main Device|",
+        "|Shield Bottom|4011110401|1|PC|Plastic|Main Device|"
+      ]
+    },
+    {
+      "name": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "n_tables": 2,
+      "n_rows": 41,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "n_tables": 1,
+      "n_rows": 16,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "ResMed-Airsense-11-Manual.pdf",
+      "n_tables": 20,
+      "n_rows": 138,
+      "severed_rows": 8,
+      "flag": true,
+      "examples": [
+        "||The wireless signal strength icon<br>indicates good coverage when al",
+        "|Device may be in Airplane Mode.|Turn offAirplane Mode.|",
+        "|Data transfer is not enabled for your device.|Talk to your care provi",
+        "|SmartStart is enabled, but the device does not aut|omatically start w",
+        "|Breath is not deep enough to trigger SmartStart|To start therapy, tak"
+      ]
+    },
+    {
+      "name": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "n_tables": 21,
+      "n_rows": 146,
+      "severed_rows": 4,
+      "flag": true,
+      "examples": [
+        "|High Respiratory<br>Rate (RR).|Alert 0|Respiratory Rate<br>exceed the",
+        "|Low Respiratory<br>Rate (RR).|Alert 0|None.|Check the respiration<br>",
+        "|Apnea.|Alert 1|An apnea is detected<br>and exceeds the<br>settingdura",
+        "|High Leakage<br>Volume.|Alert 1|1. Inappropriate<br>connection of mas"
+      ]
+    },
+    {
+      "name": "Seattle-PAP-V5-en-in.pdf",
+      "n_tables": 0,
+      "n_rows": 0,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "n_tables": 44,
+      "n_rows": 302,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "SleepStyle_200_Operating_Manual.pdf",
+      "n_tables": 6,
+      "n_rows": 40,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "n_tables": 2,
+      "n_rows": 16,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    },
+    {
+      "name": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "n_tables": 9,
+      "n_rows": 50,
+      "severed_rows": 3,
+      "flag": true,
+      "examples": [
+        "||Medela<br>Healthcare|Clario Home Care<br>Pump, AC/DC|SD0000648|1|$74",
+        "|||Clario Toni Home<br>Care Pump, AC/DC|SD0001833|1|$745.00|",
+        "|||Clario Toni Home<br>Care Pump, AC/DC<br>Deluxe|SD0001832|1|$845.00|"
+      ]
+    },
+    {
+      "name": "product_and_solutions_catalog.pdf",
+      "n_tables": 62,
+      "n_rows": 873,
+      "severed_rows": 0,
+      "flag": false,
+      "examples": []
+    }
+  ]
+}
