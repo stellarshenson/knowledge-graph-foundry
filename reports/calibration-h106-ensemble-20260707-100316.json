@@ -1,0 +1,70 @@
+{
+ "hypothesis": "R11-H106",
+ "stamp": "20260707-100316",
+ "n": 297,
+ "individual": {
+  "det_same_as": {
+   "f1": 0.2979942693409742,
+   "fp": 245,
+   "tp": 52,
+   "thr": 0.163
+  },
+  "det_name_id": {
+   "f1": 0.34285714285714286,
+   "fp": 6,
+   "tp": 12,
+   "thr": 0.152
+  },
+  "det_model_code": {
+   "f1": 0.2979942693409742,
+   "fp": 245,
+   "tp": 52,
+   "thr": 0.127
+  },
+  "det_alias_chain": {
+   "f1": 0.32601880877742945,
+   "fp": 215,
+   "tp": 52,
+   "thr": 0.185
+  },
+  "titan": {
+   "f1": 0.5389221556886228,
+   "fp": 70,
+   "tp": 45,
+   "thr": 0.193
+  },
+  "nli_contra": {
+   "f1": 0.6106870229007634,
+   "fp": 39,
+   "tp": 40,
+   "thr": 0.351
+  },
+  "posterior_imp": {
+   "f1": 0.3128834355828221,
+   "fp": 223,
+   "tp": 51,
+   "thr": 0.147
+  }
+ },
+ "best_individual": "nli_contra",
+ "best_individual_f1": 0.6106870229007634,
+ "best_individual_fp": 39,
+ "ensemble_f1": 0.8113207547169812,
+ "ensemble_fp": 11,
+ "ensemble_tp": 43,
+ "ensemble_thr": 0.365,
+ "clause_f1": true,
+ "clause_fp": true,
+ "fitted_weights": {
+  "det_same_as": -0.10241609797929359,
+  "det_name_id": 1.4435215552591856,
+  "det_model_code": -0.40593556986296075,
+  "det_alias_chain": -0.5618250303276383,
+  "titan": 3.480293101655866,
+  "nli_contra": -3.2836516440528687,
+  "posterior_imp": -0.864270926771335,
+  "posterior_obs": -0.577952720406937
+ },
+ "verdict": "CONFIRMED",
+ "note": "individual sources thresholded at their own F1-optimum for a fair baseline; ensemble raises F1 far above best individual but does not halve its absolute false-merge count (higher recall point), so the strict second clause fails"
+}

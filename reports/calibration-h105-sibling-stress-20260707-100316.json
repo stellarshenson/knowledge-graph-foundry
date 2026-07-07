@@ -1,0 +1,57 @@
+{
+ "hypothesis": "R11-H105",
+ "stamp": "20260707-100316",
+ "headline_cos_threshold": 0.9,
+ "precision_by_threshold": {
+  "0.85": {
+   "overall": 0.36470588235294116,
+   "sibling": 0.08333333333333333,
+   "inv": 0.42105263157894735,
+   "cliff": 0.28137254901960784,
+   "n_merge_overall": 85,
+   "n_merge_sib": 12
+  },
+  "0.9": {
+   "overall": 0.358974358974359,
+   "sibling": 0.0,
+   "inv": 0.42105263157894735,
+   "cliff": 0.358974358974359,
+   "n_merge_overall": 78,
+   "n_merge_sib": 8
+  },
+  "0.93": {
+   "overall": 0.3617021276595745,
+   "sibling": 0.0,
+   "inv": 0.43333333333333335,
+   "cliff": 0.3617021276595745,
+   "n_merge_overall": 47,
+   "n_merge_sib": 7
+  },
+  "0.95": {
+   "overall": 0.22857142857142856,
+   "sibling": 0.0,
+   "inv": 0.3,
+   "cliff": 0.22857142857142856,
+   "n_merge_overall": 35,
+   "n_merge_sib": 7
+  }
+ },
+ "precision_overall": 0.358974358974359,
+ "precision_inventory_variance": 0.42105263157894735,
+ "precision_sibling": 0.0,
+ "cliff": 0.358974358974359,
+ "bar_cliff": 0.2,
+ "clause_cliff": true,
+ "benchmark_overall_proxy_precision": 0.14193548387096774,
+ "desc_coverage_sibling": 0.5128205128205128,
+ "desc_sim_sibling_mean": 0.7676684200763703,
+ "desc_sim_same_mean": 0.8403785165987516,
+ "desc_contrast_separability_auc": 0.7328947368421052,
+ "desc_contrast_threshold": 0.84,
+ "precision_sibling_after_contrast": 0.0,
+ "gap_closure": 0.0,
+ "bar_close": 0.5,
+ "clause_close": false,
+ "verdict": "REFUTED",
+ "note": "cliff measured against overall proxy precision which is itself at floor on this saturated corpus; description-contrast weakly separates YES from sibling-NO (AUC reported) but cannot raise sibling precision because siblings carry ~zero true-merge positives"
+}

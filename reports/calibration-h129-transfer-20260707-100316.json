@@ -1,0 +1,48 @@
+{
+ "hypothesis": "R12-H129",
+ "stamp": "20260707-100316",
+ "n": 297,
+ "holdout_accuracy": 0.8552188552188552,
+ "balanced_accuracy": 0.6395604395604395,
+ "f1_same": 0.4266666666666667,
+ "ece": 0.05028763559555136,
+ "baseline_accuracy": 0.451,
+ "base_rate_accuracy": 0.8249158249158249,
+ "bar_acc": 0.7,
+ "bar_ece": 0.15,
+ "clause_acc": true,
+ "clause_ece": true,
+ "posterior_feature_note": "cosine-only 0.800 vs cosine+posterior 0.800 on 35 matched rows",
+ "calibration_support_points": [
+  [
+   0.0054,
+   0.0
+  ],
+  [
+   0.483,
+   0.0851
+  ],
+  [
+   0.6465,
+   0.1111
+  ],
+  [
+   0.7131,
+   0.2933
+  ],
+  [
+   0.9174,
+   0.3529
+  ],
+  [
+   0.931,
+   0.6667
+  ],
+  [
+   0.9698,
+   1.0
+  ]
+ ],
+ "verdict": "CONFIRMED",
+ "note": "isotonic transfers cosine into probabilities; imbalance makes the accuracy bar easy (base-rate classifier alone exceeds it) - ECE is the honest calibration test"
+}

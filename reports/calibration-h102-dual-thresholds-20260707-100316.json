@@ -1,0 +1,49 @@
+{
+ "hypothesis": "R11-H102",
+ "stamp": "20260707-100316",
+ "match_rate": 0.11784511784511785,
+ "n_matched": 35,
+ "posterior_auc_same_vs_distinct": 0.11734693877551022,
+ "yes_posteriors": [
+  0.1867,
+  0.2943,
+  0.3638,
+  0.4072,
+  0.5552,
+  0.6242,
+  0.8088
+ ],
+ "fold_picks": [
+  [
+   0.52,
+   0.53
+  ],
+  [
+   0.52,
+   0.53
+  ],
+  [
+   0.52,
+   0.53
+  ],
+  [
+   0.52,
+   0.53
+  ],
+  [
+   0.79,
+   0.8
+  ]
+ ],
+ "holdout_single_fp": 23,
+ "holdout_dual_fp": 20,
+ "holdout_single_tp": 2,
+ "holdout_dual_tp": 2,
+ "false_merge_cut": 0.13043478260869565,
+ "recall_parity": true,
+ "defer_frac": 0.0,
+ "bar_fmerge_cut": 0.5,
+ "bar_defer": 0.1,
+ "verdict": "REFUTED",
+ "note": "matched population is a small subset of the benchmark (report match_rate); posterior AUC < 0.5 means the logged posterior ranks distinct above same - no threshold pair can beat the single cut, confirming H54 from a second direction"
+}

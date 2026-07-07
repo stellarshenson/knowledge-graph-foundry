@@ -1303,8 +1303,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - the optimal t_hi sits well above 0.6; the defer zone catches the sibling tier disproportionately
 - **Acceptance bar** - both clauses on held-out benchmark folds; refuted if the posterior is so miscalibrated that no threshold pair beats the single cut (H54's numerology verdict confirmed from a second direction)
 - **Experiment** - threshold sweep on H101; deterministic after H101
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`calibration_family_h102-h129.ipynb`](../../notebooks/calibration_family_h102-h129.ipynb); gold = H101 adjudicated labels, 297 pairs; binding caveat: only 35 pairs match logged posteriors - the benchmark population differs from what blocking surfaced) on the 35 posterior-matched pairs the logged posterior ranks same-vs-distinct at AUC 0.117 - ANTI-correlated with adjudicated truth (YES pairs sit at 0.19-0.81, NO pairs cluster 0.86-0.94); the best held-out dual threshold cuts false merges 13% vs the 50% bar
+- **Verdict** - REFUTED - no threshold geometry can rescue an anti-correlated score. Synthesis with H54: the posterior's decisions are non-trivial (two rules reach only 74.4%) AND wrong against truth on the merge zone - complex machinery doing confidently incorrect work. The decision layer is replaced by the H106/H129 stack; thin-N caveat (35) recorded
 
 ### R11-H103 Identity invariants - what must never merge
 
@@ -1333,8 +1333,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - the stress set exposes the cliff; contrast helps; the residual failures need invariants (H103), not more similarity
 - **Acceptance bar** - both clauses; refuted if sibling precision matches overall (the fear was unfounded - retire the sibling narrative)
 - **Experiment** - stress-set construction from model-number families (deterministic) + local-model adjudication of labels
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`calibration_family_h102-h129.ipynb`](../../notebooks/calibration_family_h102-h129.ipynb); gold = H101 adjudicated labels, 297 pairs; binding caveat: only 35 pairs match logged posteriors - the benchmark population differs from what blocking surfaced) the cliff clause PASSES decisively: sibling-tier proxy precision 0.000 at cosine >= 0.90 vs 0.359 overall - a 36-point cliff (bar 20); but the description-contrast remedy separates YES from sibling-NO at only AUC 0.733 and lifts sibling precision 0.000 -> 0.000 (the tier carries ~zero true positives to recover)
+- **Verdict** - REFUTED as registered (both clauses required): the sibling cliff is real and now measured, but description contrast does not close it - the NLI contradiction veto (H122/H106) is what actually handles siblings. The stress set survives as a permanent benchmark tier
 
 ### R11-H106 Ensemble arbitration - reliability weights over independent detectors
 
@@ -1343,8 +1343,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - the deterministic detectors get near-veto weights on their fire conditions; the Bayesian source gets weight only in the defer band; structural sources add recall on non-textual duplicates
 - **Acceptance bar** - F1 > best individual AND false merges <= half; refuted if sources are too correlated for arbitration to add anything (ensemble ~ best single)
 - **Experiment** - arbitration fit + held-out folds on H101; after H101
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`calibration_family_h102-h129.ipynb`](../../notebooks/calibration_family_h102-h129.ipynb); gold = H101 adjudicated labels, 297 pairs; binding caveat: only 35 pairs match logged posteriors - the benchmark population differs from what blocking surfaced) logistic arbitration over 4 deterministic detectors + posterior + Titan cosine + NLI contradiction, 5-fold CV, each source at its own F1-optimal threshold: ensemble F1 0.811 vs best individual 0.611 (NLI contradiction), false merges 11 vs 39 (<= half). Fitted weights: Titan +3.5, NLI contradiction -3.3 (veto), name-identity +1.4, posterior -0.9 (the ensemble learns to DISTRUST it)
+- **Verdict** - CONFIRMED - both clauses pass with real arbitration structure, and the negative posterior weight independently corroborates H102. This is the identity decision layer that ships: cosine ranks, contradiction vetoes, name-identity boosts, deterministic detectors gate
 
 ### R11-H107 Root-cause the 47 - is identity even the guilty layer?
 
@@ -1583,8 +1583,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - the band holds most decision-relevant uncertainty if the posterior is even weakly informative
 - **Acceptance bar** - both clauses; refuted if hard pairs land OUTSIDE the band - confirming H54 from a third direction
 - **Experiment** - replay with band gating; after H121
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`calibration_family_h102-h129.ipynb`](../../notebooks/calibration_family_h102-h129.ipynb); gold = H101 adjudicated labels, 297 pairs; binding caveat: only 35 pairs match logged posteriors - the benchmark population differs from what blocking surfaced) the posterior defer band [0.40, 0.60) holds only 7 of 35 matched pairs; the NLI contradiction veto applied GLOBALLY cuts false merges 23 -> 4 (83%), but band-only gating captures 0% of that gain - every fixable false merge sits in the merge zone (posterior >= 0.60). Cost clause met (2.4% < 5%), capture clause fails hard
+- **Verdict** - REFUTED exactly on its registered refuter: hard pairs land OUTSIDE the band - H54/H102 confirmed from a third direction. The shippable lever is the GLOBAL contradiction veto (83% false-merge cut at 2.4% scoring cost), which needs no band at all; the defer-band architecture dies with the posterior it gated on
 
 ### R12-H129 Fix the posterior by replacing its likelihood - calibration transfer
 
@@ -1593,8 +1593,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - the scorer does the lifting, the calibration map makes it honest; the isotonic curve gains real support
 - **Acceptance bar** - both clauses held-out; if labels are too few pre-H101, re-run on the benchmark (H101 is the round's keystone)
 - **Experiment** - after H121 and ideally H101
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`calibration_family_h102-h129.ipynb`](../../notebooks/calibration_family_h102-h129.ipynb); gold = H101 adjudicated labels, 297 pairs; binding caveat: only 35 pairs match logged posteriors - the benchmark population differs from what blocking surfaced) isotonic calibration of Titan cosine, 5-fold CV: held-out decision accuracy 0.855 (bar 0.70), ECE 0.050 (bar 0.15), a 7-point monotone support curve (vs the production 2-point). Honest caveat: at 18% positive rate the always-distinct base rate is 0.825, so balanced accuracy (0.640) and F1-same (0.427) temper the headline; the ECE is the load-bearing win. Adding the posterior as a feature does not help
+- **Verdict** - CONFIRMED - the resolver finally has honest probabilities (ECE 0.050 on real support), completing the arc the whole identity program converged on: keep the unbeaten ranker, calibrate it, veto with contradiction, arbitrate with H106. The caveat is recorded: the accuracy headline is mostly base rate; the calibration quality is not
 
 ### R12-H130 The classic stack was built for this - string features on the variance class
 

@@ -1,0 +1,18 @@
+{
+ "hypothesis": "R12-H128",
+ "stamp": "20260707-100316",
+ "defer_band_size": 7,
+ "matched": 35,
+ "benchmark": 297,
+ "fp_base": 23,
+ "fp_full_veto": 4,
+ "fp_band_veto": 23,
+ "gain_full": 19,
+ "gain_band": 0,
+ "capture": 0.0,
+ "cost": 0.02356902356902357,
+ "bar_capture": 0.9,
+ "bar_cost": 0.05,
+ "verdict": "REFUTED",
+ "note": "defer band defined by logged posterior, available only for the matched subset; false merges concentrate in the merge zone (posterior>=0.60), not the defer band"
+}
