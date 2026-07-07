@@ -1,0 +1,12 @@
+# R15-H158 scratch config - identity_stack v1 (baseline). Bedrock engine, scratch instance.
+neo4j:
+  uri: bolt://user-konrad.jelen-kgf-neo4j:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: frontier
+  model: bedrock/eu.anthropic.claude-sonnet-4-5-20250929-v1:0
+  region: eu-central-1
+resolution:
+  identity_stack: v2
+event_log: logs/h158-v2-events.jsonl

@@ -1,0 +1,150 @@
+{
+  "hypothesis": "R15-H158",
+  "stamp": "20260707T185323Z",
+  "verdict": "DEGRADED",
+  "offline_reference": {
+    "precision_baseline": 0.142,
+    "precision_bar": 0.5,
+    "replay_false_merges": 11,
+    "false_merge_tol": 0.2
+  },
+  "artifact_provenance": {
+    "hypothesis": "R15-H158",
+    "built_utc": "2026-07-07T14:38:13.575337+00:00",
+    "source_graph": "bolt://user-konrad.jelen-kgf-neo4j2:7687",
+    "benchmark": "reports/identity-benchmark-h101-20260707-094448.json",
+    "n_pairs": 297,
+    "n_yes": 52,
+    "n_no": 245,
+    "titan_auc": 0.8406,
+    "isotonic_ece": 0.0,
+    "oof_f1": 0.8073,
+    "oof_precision": 0.7719,
+    "oof_false_merges": 13,
+    "oof_true_merges": 44
+  },
+  "v1": {
+    "precision_proxy": {
+      "event_log": "../logs/h158-v1-events.jsonl",
+      "merges_total": 2376,
+      "defers_total": 895,
+      "blocks_total": 8374,
+      "nli_vetoes": 0,
+      "proxy_tp": 4,
+      "proxy_fp": 30,
+      "proxy_fn": 48,
+      "proxy_tn": 215,
+      "same_as_precision": 0.1176,
+      "false_merges": 30,
+      "proxy_recall": 0.0769,
+      "resolution_ts_first": "2026-07-07T15:01:28.383568+00:00",
+      "resolution_ts_last": "2026-07-07T15:45:36.676973+00:00"
+    },
+    "recall": {
+      "label": "v1",
+      "uri": "bolt://user-konrad.jelen-kgf-neo4j:7687",
+      "top_k": 16,
+      "entities": 2937,
+      "relationships": 8548,
+      "documents": 0,
+      "mean_recall": 0.875,
+      "fully_covered": 20,
+      "n_probes": 24,
+      "per_probe": {
+        "P01": 1.0,
+        "P02": 1.0,
+        "P03": 1.0,
+        "P04": 1.0,
+        "P05": 1.0,
+        "P06": 1.0,
+        "P07": 1.0,
+        "P08": 0.0,
+        "P09": 0.0,
+        "P10": 1.0,
+        "P11": 1.0,
+        "P12": 1.0,
+        "P13": 1.0,
+        "P14": 1.0,
+        "P15": 0.5,
+        "P16": 0.5,
+        "P17": 1.0,
+        "P18": 1.0,
+        "P19": 1.0,
+        "P20": 1.0,
+        "P21": 1.0,
+        "P22": 1.0,
+        "P23": 1.0,
+        "P24": 1.0
+      }
+    }
+  },
+  "v2": {
+    "precision_proxy": {
+      "event_log": "../logs/h158-v2-events.jsonl",
+      "merges_total": 732,
+      "defers_total": 2154,
+      "blocks_total": 5618,
+      "nli_vetoes": 340,
+      "proxy_tp": 12,
+      "proxy_fp": 11,
+      "proxy_fn": 40,
+      "proxy_tn": 234,
+      "same_as_precision": 0.5217,
+      "false_merges": 11,
+      "proxy_recall": 0.2308,
+      "resolution_ts_first": "2026-07-07T15:57:05.215420+00:00",
+      "resolution_ts_last": "2026-07-07T16:34:44.474144+00:00"
+    },
+    "recall": {
+      "label": "v2",
+      "uri": "bolt://user-konrad.jelen-kgf-neo4j:7687",
+      "top_k": 16,
+      "entities": 2201,
+      "relationships": 6808,
+      "documents": 1,
+      "mean_recall": 0.8333,
+      "fully_covered": 19,
+      "n_probes": 24,
+      "per_probe": {
+        "P01": 1.0,
+        "P02": 1.0,
+        "P03": 1.0,
+        "P04": 1.0,
+        "P05": 1.0,
+        "P06": 1.0,
+        "P07": 1.0,
+        "P08": 0.0,
+        "P09": 0.0,
+        "P10": 1.0,
+        "P11": 1.0,
+        "P12": 0.5,
+        "P13": 1.0,
+        "P14": 1.0,
+        "P15": 0.0,
+        "P16": 0.5,
+        "P17": 1.0,
+        "P18": 1.0,
+        "P19": 1.0,
+        "P20": 1.0,
+        "P21": 1.0,
+        "P22": 1.0,
+        "P23": 1.0,
+        "P24": 1.0
+      }
+    }
+  },
+  "clauses": {
+    "precision_ge_50pct": true,
+    "false_merges_within_tol": true,
+    "recall_non_regression": false
+  },
+  "wall_clock_s": {
+    "v1": 2648.293405,
+    "v2": 2259.258724,
+    "overhead": -389.0346810000001
+  },
+  "deviations": [
+    "60/63 deterministic benchmark (archived v1 multidoc harness) substituted by 24-probe recall@16 non-regression",
+    "recall confound: v2 run suffered 119 extraction warnings vs v1 76 (Bedrock timeouts, concurrent wave-2 ingest sharing quota); the two dropped probes (P12, P15) miss gold spec strings (28 dB, 1.98, 2.4 kg) that are absent from the v2 graph entirely - extraction loss upstream of resolution, not an identity-stack effect"
+  ]
+}

@@ -1918,8 +1918,8 @@ Trigger: the maturity assessment (2026-07-07) - the campaign targets the identit
 - **Prediction** - the stack ships cleanly but arrival-order effects (calibrated scores computed before both descriptions exist) cost some of the offline gain; the defer band absorbs most of it
 - **Acceptance bar** - all three clauses; DEGRADED if precision improves but the deterministic benchmark drops; refuted if in-engine false merges exceed the current baseline (the offline result was then an artifact of replay conditions)
 - **Experiment** - implement behind `identity_stack: v2` config flag; scratch-instance re-ingest; H101 benchmark re-run; blocked on the SOTA chain releasing the scratch instance
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`identity_stack_h158.ipynb`](../../notebooks/identity_stack_h158.ipynb) / [`identity-stack-h158-20260707T185323Z.json`](../../reports/identity-stack-h158-20260707T185323Z.json)) SHIPPED: `resolution.identity_stack: v1|v2` flag (default v1, 303 tests green unchanged); v2 = isotonic-calibrated cosine from the versioned artifact `identity-calibration-v2.json` (fit on the H101 298-pair benchmark, OOF 5-fold F1 0.807 reproducing the offline H106 0.811) + logistic arbitration with runtime-frozen coefficients (cal_cos +3.04, nli_contra -2.99, posterior +1.96 as feature per H54; name_id fit to 0.0 - inert in-engine) + global NLI veto (lazy GPU-2/CPU-fallback), wired into BOTH decision surfaces (batch resolve + post-cure stable-load). E2E A/B on the wiped scratch instance (27 docs each arm, Bedrock engine): SAME_AS precision proxy 11.8% -> 52.2% (bar >= 50%, PASS); false merges 30 -> 11 = the replay's 11 EXACTLY (PASS - the offline result was not a replay artifact); merges 2376 -> 732, defer band 895 -> 2154, NLI vetoes 340, wall-clock cost zero (v2 resolution 2259s < v1 2648s). Recall@16 substituted benchmark (archived 60/63 harness unavailable, cross-validated 0.8542 on neo4j2): 0.875 -> 0.833, a 2-probe drop whose gold strings (28 dB, 1.98, 2.4 kg) are ABSENT from the v2 graph entirely while their entities exist - extraction loss under concurrent Bedrock quota contention (119 vs 76 failed-chunk warnings), upstream of resolution
+- **Verdict** - DEGRADED per the registered condition (precision improves, benchmark drops) - but both identity clauses PASS with the false-merge count landing on the replay number exactly, and the recall drop is strongly attributed to extraction variance, not the stack. Ships behind the flag; default stays v1 until R15-H212 (clean-conditions recall re-run) closes the confound - CONFIRMED if recall recovers to >= 0.875. Defer-band growth (2.4x) spawns R15-H213 (is the LLM defer judge now worth its cost); the inert name_id feature folds into H198's artifact-schema cleanup. The v2-fewer-entities census (2201 vs 2937 at fewer merges) independently re-confirms H119 as the primary identity lever
 
 ### R15-H159 Idempotent re-ingestion - the same document twice is a no-op
 
@@ -2475,3 +2475,19 @@ The campaign has run ~113 adjudications ordered by judgment; the potentials fami
 - **Prediction** - the catalogue-code five need the linkage edge (their carriers are orphan accessory entities); the spec cells need the render cap; nothing needs a new retrieval mechanism
 - **Acceptance bar** - >= 5/8 recovered at zero regression within budget; refuted if recovery requires exceeding the knee budget - the residue then goes to the gap ledger as priced-out abstention territory (H161's doctrine)
 - **Experiment** - per-gold forensics + policy replay on neo4j2 (read-only simulation of the linkage edges at render time); CPU; runs now
+
+### R15-H212 Closing the H158 confound - the clean-conditions recall re-run
+
+- **Grounding** - H158's DEGRADED verdict hinges on one confound: the v2 arm ingested under concurrent wave-2 Bedrock quota contention (119 vs 76 failed-chunk warnings) and the 2 dropped probes' gold strings are absent from the graph entirely (extraction loss) while their entities exist - the identity stack itself met both its clauses (52.2% precision, 11 false merges exactly)
+- **Hypothesis** - re-running the v2 arm under quiet Bedrock (no concurrent heavy consumer) yields failed-chunk warnings at or below the v1 arm's 76 and recall@16 >= 0.875 (non-regression) - lifting H158 to CONFIRMED and green-lighting the default flip to v2 in H198's wiring
+- **Prediction** - the confound closes; if it does not, the missing golds' chunks get per-chunk forensics before any blame lands on the stack
+- **Acceptance bar** - recall >= 0.875 with clean extraction telemetry -> H158 post-verdict CONFIRMED note + default flip approved; DEGRADED stands if recall stays low WITH clean telemetry (the stack then owes an explanation)
+- **Experiment** - one v2 scratch re-ingest + recall measurement on the H158 harness; BLOCKED on quiet Bedrock (after wave 2 completes)
+
+### R15-H213 The defer judge, priced again - 2.4x band under the v2 stack
+
+- **Grounding** - v2's higher precision moved mass from merge into defer (895 -> 2154 pairs); the defer-band LLM judge exists behind `llm_defer_judge` (R4) but was priced out under v1's band; a 2.4x band with cleaner boundaries may change the economics - each correctly adjudicated defer is a duplicate resolved or a false merge avoided at one LLM call
+- **Hypothesis** - sampling 100 v2 defer-band pairs, an LLM judge (Bedrock Sonnet, temperature 0) adjudicates >= 80% in agreement with H101-protocol blind labels, and the projected full-band cost stays under 5% of the ingest LLM budget - making the judge worth enabling for v2
+- **Prediction** - the band's top half (posterior near threshold) adjudicates well; the bottom half is genuinely ambiguous and stays deferred
+- **Acceptance bar** - both clauses; refuted if agreement < 70% (the band is then correctly deferred and the judge stays off)
+- **Experiment** - defer-band sample export from the H158 v2 event log + blind adjudication + judge run; cheap; runs after H212 (same scratch graph)

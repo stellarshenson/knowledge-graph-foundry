@@ -26,6 +26,7 @@ from knowledge_graph_foundry.models import (
 from knowledge_graph_foundry.resolution.bayesian import evidence
 from knowledge_graph_foundry.resolution.blocking import ann_candidates
 from knowledge_graph_foundry.resolution.calibration import PosteriorCalibrator
+from knowledge_graph_foundry.resolution.identity_stack import V2IdentityStack
 from knowledge_graph_foundry.resolution.judge import judge_pair
 from knowledge_graph_foundry.resolution.similarity import (
     cosine_similarity,
@@ -34,6 +35,18 @@ from knowledge_graph_foundry.resolution.similarity import (
 from knowledge_graph_foundry.settings import ResolutionSettings
 
 _NEIGHBOURHOOD = 4  # sorted-neighbourhood window for fuzzy-name candidates
+
+_V2_STACK_CACHE: dict[tuple[str, float], V2IdentityStack] = {}
+
+
+def _v2_stack(cfg: ResolutionSettings) -> V2IdentityStack:
+    """Load (and cache) the baked v2 identity stack so the NLI model loads once."""
+    key = (cfg.identity_stack_artifact, cfg.nli_veto_threshold)
+    stack = _V2_STACK_CACHE.get(key)
+    if stack is None:
+        stack = V2IdentityStack.load(cfg.identity_stack_artifact, cfg.nli_veto_threshold)
+        _V2_STACK_CACHE[key] = stack
+    return stack
 
 
 class ResolutionResult(NamedTuple):
@@ -175,11 +188,24 @@ def resolve_entities(
         collapsed, cfg.ann_top_k, cfg.ann_min_entities, cfg.synonym_cluster_threshold
     )
 
+    ordered = sorted(candidates)
+    stack = _v2_stack(cfg) if cfg.identity_stack == "v2" else None
+    nli_scores: dict[tuple[int, int], float] = {}
+    if stack is not None:
+        pairs = [(collapsed[i], collapsed[j]) for i, j in ordered]
+        nli_scores = dict(zip(ordered, stack.nli_contra_batch(pairs)))
+
     decisions: list[ResolutionDecision] = []
     uf = _UnionFind(len(collapsed))
-    for i, j in sorted(candidates):
+    for i, j in ordered:
         decision = evidence(collapsed[i], collapsed[j], cfg)
-        if calibrator is not None:
+        if stack is not None:
+            contra = nli_scores.get((i, j), 0.0)
+            verdict, score, vetoed = stack.decide(collapsed[i], collapsed[j], decision.posterior, contra)
+            decision = decision.model_copy(update={"posterior": score, "decision": verdict})
+            if vetoed:
+                emit("resolution.veto", left_id=collapsed[i].id, right_id=collapsed[j].id, nli_contra=contra)
+        elif calibrator is not None:
             calibrated = calibrator.calibrate(decision.posterior)
             if calibrated >= cfg.merge_threshold:
                 verdict = "merge"

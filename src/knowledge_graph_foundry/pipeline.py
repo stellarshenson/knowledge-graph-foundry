@@ -608,6 +608,27 @@ class Foundry:
                     description=candidate.get("description", "") or "",
                 )
                 decision = evidence(entity, graph_entity, self.settings.resolution)
+                if self.settings.resolution.identity_stack == "v2":
+                    from knowledge_graph_foundry.resolution.resolver import _v2_stack
+
+                    stack = _v2_stack(self.settings.resolution)
+                    contra = stack.nli_contra_batch([(entity, graph_entity)])[0]
+                    # Neo4j cosine index score is (1 + cos) / 2 - invert it
+                    cosine = 2.0 * candidate["score"] - 1.0
+                    verdict, score, vetoed = stack.decide(
+                        entity, graph_entity, decision.posterior, contra, cosine=cosine
+                    )
+                    decision = decision.model_copy(
+                        update={"posterior": score, "decision": verdict}
+                    )
+                    if vetoed:
+                        emit(
+                            "resolution.veto",
+                            left_id=entity.id,
+                            right_id=graph_entity.id,
+                            nli_contra=contra,
+                        )
+                emit(f"resolution.{decision.decision}", **decision.model_dump())
                 if decision.decision == "merge":
                     id_map[entity.id] = graph_entity.id
                     entity = entity.model_copy(update={"id": graph_entity.id})

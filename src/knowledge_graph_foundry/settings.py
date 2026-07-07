@@ -62,6 +62,9 @@ class ResolutionSettings(BaseModel):
     calibration_min_labels: int = 100  # R7: below this, use a fixed threshold not a curve
     split_guard: bool = True  # R8: correlation-clustering split after union-find
     split_guard_min_avg_similarity: float = 0.5  # R8: cut components below this cohesion
+    identity_stack: Literal["v1", "v2"] = "v1"  # R15-H158: v2 = calibrated cosine + NLI veto + logistic
+    identity_stack_artifact: str = "data/processed/identity-calibration-v2.json"  # v2 baked coefficients
+    nli_veto_threshold: float = 0.5  # R15-H158: contradiction prob that vetoes a merge (H122/H128)
 
 
 class CuringSettings(BaseModel):

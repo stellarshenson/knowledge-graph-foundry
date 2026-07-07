@@ -281,6 +281,95 @@ class TestSplitGuard:
         assert len(result.entities) == 1
 
 
+class TestIdentityStackV2:
+    """R15-H158 v2 identity stack: flag wiring, veto direction, artifact loading."""
+
+    _ARTIFACT = {
+        "isotonic": {"x": [0.0, 0.5, 0.9, 1.0], "y": [0.0, 0.1, 0.7, 1.0]},
+        "logistic": {
+            "feature_order": ["name_id", "calibrated_cosine", "nli_contra", "posterior"],
+            "weights": [0.0, 3.0, -3.0, 2.0],
+            "intercept": -1.0,
+            "threshold": 0.3,
+            "defer_lower": 0.15,
+        },
+        "nli": {"model": "test-model", "veto_threshold": 0.5},
+    }
+
+    def _stack(self):
+        from knowledge_graph_foundry.resolution import V2IdentityStack
+
+        return V2IdentityStack(self._ARTIFACT, veto_threshold=0.5)
+
+    def test_calibrated_cosine_interpolates_and_clamps(self):
+        s = self._stack()
+        assert s.calibrated_cosine(0.0) == 0.0
+        assert s.calibrated_cosine(1.0) == 1.0
+        assert s.calibrated_cosine(0.7) == pytest_approx(0.4)  # midpoint of 0.5->0.9 leg
+
+    def test_high_cosine_low_contra_merges(self):
+        s = self._stack()
+        a = _entity("AirFit F20", embedding=[1.0, 0.0, 0.0])
+        b = _entity("AirFit F20 plus", embedding=[0.99, 0.01, 0.0])
+        verdict, _, vetoed = s.decide(a, b, posterior=0.6, nli_contra=0.05)
+        assert verdict == "merge"
+        assert vetoed is False
+
+    def test_contradiction_vetoes_a_would_be_merge(self):
+        s = self._stack()
+        a = _entity("AirFit F20", embedding=[1.0, 0.0, 0.0])
+        b = _entity("AirFit F30", embedding=[0.99, 0.01, 0.0])
+        verdict, _, vetoed = s.decide(a, b, posterior=0.6, nli_contra=0.9)
+        assert verdict == "block"
+        assert vetoed is True
+
+    def test_load_real_artifact(self):
+        from pathlib import Path
+
+        from knowledge_graph_foundry.resolution import V2IdentityStack
+
+        path = Path("data/processed/identity-calibration-v2.json")
+        if not path.exists():
+            import pytest
+
+            pytest.skip("v2 artifact not built")
+        s = V2IdentityStack.load(path, veto_threshold=0.5)
+        assert 0.0 <= s.calibrated_cosine(0.85) <= 1.0
+
+    def test_v1_default_leaves_resolution_unchanged(self):
+        # default settings use v1; a fuzzy merge pair still merges without any stack
+        cfg = ResolutionSettings()
+        assert cfg.identity_stack == "v1"
+        a = _entity("DreamStation 2", description="cpap", source_chunks=["c1"])
+        b = _entity("DreamStation2", description="cpap", source_chunks=["c1"])
+        assert len(resolve_entities([a, b], cfg).entities) == 1
+
+    def test_v2_flag_routes_through_stack(self, monkeypatch):
+        import knowledge_graph_foundry.resolution.resolver as rr
+
+        class _FakeStack:
+            def nli_contra_batch(self, pairs):
+                return [0.9] * len(pairs)  # every pair contradicts -> veto merges
+
+            def decide(self, a, b, posterior, nli_contra):
+                if nli_contra >= 0.5:
+                    return "block", 0.6, True
+                return "merge", 0.6, False
+
+        monkeypatch.setattr(rr, "_v2_stack", lambda cfg: _FakeStack())
+        cfg = ResolutionSettings(identity_stack="v2")
+        a = _entity("DreamStation 2", description="cpap", source_chunks=["c1"])
+        b = _entity("DreamStation2", description="cpap", source_chunks=["c1"])
+        result = resolve_entities([a, b], cfg)
+        assert len(result.entities) == 2  # veto blocked the merge
+
+
+def pytest_approx(v):
+    import pytest
+
+    return pytest.approx(v)
+
+
 class TestCalibration:
     def test_roundtrip_json(self):
         cal = PosteriorCalibrator([0.0, 0.5, 1.0], [0.1, 0.4, 0.9])

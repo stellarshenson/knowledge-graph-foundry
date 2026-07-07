@@ -17,3 +17,10 @@ Background job logs for Knowledge Graph Foundry.
 - `r05-wave-*.log` - R05 longevity campaign wave ingestions on the local engine
 - `potentials-r10-exec.log` - R10 potentials-family notebook execution (H81/H82/H83/H85/H86 edit-replay)
 - `entailment-r18-exec.log` - R18 entailment-instrument notebook execution (H172 NLI sufficiency scorer + H176 graded gradient)
+- `instrument-bench-h194-exec.log` - R18-H194 instrument adjudication notebook (value comparator vs NLI vs fuzzy on the 60-pair blind bench)
+- `instrument_v2_h195.log` - R19-H195 notebook (retrieval-convention audit + difficulty-engineered wide benchmark v2 construction)
+- `instrument_router_h196.log` - R18-H196 + R18-H197 notebook (dropping NLI on the widened prose stratum + graph snapshot fingerprint replay)
+- `h158-identity-stack.log` - R15-H158 E2E orchestration: scratch census, wipes, v1/v2 ingest markers, proxy numbers
+- `h158-v1-ingest.log` / `h158-v2-ingest.log` - full ingest output of the 26-doc corpus under identity_stack v1 / v2
+- `h158-v1-events.jsonl` / `h158-v2-events.jsonl` - JSONL event logs (resolution.merge/defer/block/veto) driving the H158 precision proxy
+- `h158-artifact-build.log` - offline fit of data/processed/identity-calibration-v2.json from the H101 benchmark
