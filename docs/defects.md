@@ -8,6 +8,7 @@
 - [DEF-2: JSONL with text-heavy rows routed to tabular mapping, LLM never reads the text](#def-2-jsonl-with-text-heavy-rows-routed-to-tabular-mapping-llm-never-reads-the-text) - open
 - [DEF-3: Curing floors not scale-aware - 481-doc wave cured at document 4](#def-3-curing-floors-not-scale-aware---481-doc-wave-cured-at-document-4) - fixed
 - [DEF-4: .env NEO4J_URI silently overrides --config target, wave 2 ingested into the wrong instance](#def-4-env-neo4j_uri-silently-overrides---config-target-wave-2-ingested-into-the-wrong-instance) - fixed
+- [DEF-5: benchmark harness seeded from the .env default instance while rendering from neo4j2](#def-5-benchmark-harness-seeded-from-the-env-default-instance-while-rendering-from-neo4j2) - fixed
 
 ### DEF-1: Per-mention re-embedding on every document
 
@@ -33,3 +34,9 @@
 - [x] HIGH the SOTA-chain wave-2 step (`kgf ingest ... --config config-apnea.yml`, uri neo4j3) wrote 77 documents into the default instance, contaminating the freshly rebuilt 26-doc SOTA graph (26 -> 103 docs); cause: `load_settings` applied `NEO4J_URI`/`NEO4J_USER`/`NEO4J_PASSWORD` env overrides unconditionally AFTER the config file, so the ambient .env always won over an explicit `--config` target; fix: env fills gaps only - a key present in the config file's neo4j block is never overridden; stale test asserting the inverted precedence replaced by two contract tests (explicit-config-beats-env, env-fills-gap); `src/knowledge_graph_foundry/settings.py`
   - 2026-07-07 reported: three-arm benchmark executor noticed the "finished" SOTA graph fingerprint drifting between reads (3661 -> 3693 entities, docs 75 -> 76) while measuring Arm 3; instance audit showed neo4j3 frozen at 481 docs and the default instance growing ~1 doc/min
   - 2026-07-07 fixed: precedence corrected, verified live (config-apnea resolves to neo4j3 with .env present), test_settings 5 green; wave 2 killed at 103 docs and relaunched against neo4j3; contaminated SOTA instance retained for the post-chain scratch queue (three-arm Arm-3 measurements were taken before heavy contamination and reported stable)
+
+### DEF-5: benchmark harness seeded from the .env default instance while rendering from neo4j2
+
+- [x] HIGH the H199 wide census recorded recall@64 0.406 (vs the true 0.762) and an unranked-dominated miss classification that suspended the H193 coverage-ceiling promotion; cause: `wide_census_h199.ipynb` constructed `Foundry(settings)` without pinning `NEO4J_URI`, so vector-query SEEDS came from the .env default instance (concurrently wiped/re-ingested by the H158 run) while RENDERS read neo4j2 - a cross-instance seed/render mismatch; the run-to-run variance (0.376 -> 0.406 -> 0.0) tracked the default instance's live state, not harness non-determinism; fix: H207 canonical harness pins the retrieval driver explicitly and stamps render_fingerprint + graph_fingerprint as a mandatory census preamble; pinned 3-run census reproduces [77, 77, 77] with zero variance; `notebooks/wide_census_h199.ipynb`, `notebooks/render_parity_h207.ipynb`
+  - 2026-07-07 reported: H199 executor flagged impossible run variance on a supposedly frozen graph; main-session forensics proved neo4j2 unchanged since 2026-07-06 14:48, leaving the harness as the suspect
+  - 2026-07-07 fixed: H207 render-parity forensics attributed the entire divergence (+0.327 instance, +0.030 scorer arm, +0.010 propositions); the DEF-4 lesson generalizes - EVERY graph consumer (engine or notebook) must pin its instance explicitly, never inherit .env
