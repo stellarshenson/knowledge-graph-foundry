@@ -1,0 +1,62 @@
+{
+  "h62": {
+    "map_jaccard": 0.18007761071191827,
+    "map_embedding": 1.0,
+    "map_combined": 0.5277060688194225,
+    "n_queries": 111,
+    "sibling_share": 0.30855018587360594,
+    "verdict": "REFUTED"
+  },
+  "h64": {
+    "top_btw_n": 28,
+    "paths_all": 33,
+    "paths_nontrivial": 2,
+    "through_btw": 0,
+    "path_share_all": 0.0,
+    "path_share_nontrivial": 0.0,
+    "base_recall": 33,
+    "btw_drop": 0,
+    "rand_drop": 0.03333333333333333,
+    "damage_ratio": 0.0,
+    "verdict": "REFUTED"
+  },
+  "h65": {
+    "r_base": -0.1750139042196252,
+    "rates": [
+      0.0,
+      0.05,
+      0.1,
+      0.2,
+      0.3
+    ],
+    "r_curve": [
+      -0.1750139042196252,
+      -0.22706612440599364,
+      -0.19956362905404765,
+      -0.18101644887429957,
+      -0.1733461884429607
+    ],
+    "monotonic": false,
+    "delta10": -0.024549724834422443,
+    "verdict": "REFUTED"
+  },
+  "h66": {
+    "shell_dist": {
+      "0": 267,
+      "1": 1494,
+      "2": 617,
+      "3": 290,
+      "4": 95,
+      "5": 35
+    },
+    "gold_shell_dist": {
+      "2": 4,
+      "3": 2,
+      "5": 27
+    },
+    "k_max": 5,
+    "mid_share": 0.18181818181818182,
+    "merged_kmax": 5,
+    "verdict": "REFUTED"
+  }
+}

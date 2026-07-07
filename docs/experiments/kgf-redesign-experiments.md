@@ -849,8 +849,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - on the labeled duplicate inventory (47 cross-type duplicates, v29 record + campaign additions), Jaccard MAP > embedding MAP; combined rank raises MAP further; the false-positive head of the Jaccard ranking is dominated by siblings (same-family models), which the description-contrast feature already used in cross-type resolution filters
 - **Acceptance bar** - MAP improvement with sibling filtering; refuted if structural ranking is uninformative (graph topology knows less about identity than text does)
 - **Experiment** - deterministic ranking comparison on labeled pairs; runs now; on confirmation the signal feeds H58's fifth detector as a sixth evidence term
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) neighbor-Jaccard MAP 0.180 vs embedding MAP 1.000 on the labeled duplicates; combined 0.528 - WORSE than embedding alone. Caveat recorded: the inventory was cosine-mined, biasing embedding MAP upward - but the registered claim fails regardless since combining degrades. Jaccard false-positive head is 31% siblings
+- **Verdict** - REFUTED - at median degree 1 candidate pairs share almost no neighbors; the structural twin signal does not exist on this graph shape. Fourth member of the sparsity-starvation family (H87/H88/H97)
 
 ### R09-H63 Dark matter - the census of the unreachable
 
@@ -869,8 +869,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - top-1% betweenness nodes lie on >=50% of seed-to-gold shortest paths; simulated corruption at bottlenecks degrades recall >=3x random-node corruption; the campaign graph's bottleneck set is small enough (<=30 nodes) for per-wave manual-grade auditing
 - **Acceptance bar** - concentration + differential damage; refuted if paths spread uniformly (then audit priority by degree or evidence count instead)
 - **Experiment** - GDS betweenness (approximate) + path census + corruption replay on a copy; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) top-1% betweenness = 28 nodes (auditably small), but only 2 of 33 seed-to-gold paths are non-trivial and ZERO pass through the top set; bottleneck corruption costs 0.000 recall vs random 0.033
+- **Verdict** - REFUTED - there is no path concentration to protect because there are almost no paths: H67's on-seed regime empties the premise. Merge-audit priority routes to provenance purity (H91) and evidence counts instead
 
 ### R09-H65 Assortativity trend - the topological companion to Heaps
 
@@ -879,8 +879,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - wave-1b series holds r < -0.05 throughout with band width < 0.1; merge-undo injection replay (un-merging known true aliases at increasing rate) moves r upward monotonically and detectably at >=10% injection
 - **Acceptance bar** - stability + injection sensitivity; refuted if r is noisy or flat under injection (not a marker - record as decoration per the panel doctrine)
 - **Experiment** - snapshot series reconstruction (approximate, from first-seen positions and edge provenance) + injection replay; partial now, exact series from wave 2 onward if promoted
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) baseline degree assortativity r = -0.175 (stable disassortative band holds), but merge-undo injection moves r NON-monotonically (-0.175 -> -0.227 -> -0.200 -> -0.181 -> -0.173); delta at 10% injection has the wrong sign
+- **Verdict** - REFUTED on the sensitivity clause - r is noise under identity-leak injection on a star-forest graph; not a marker, recorded as dashboard decoration per the panel doctrine
 
 ### R09-H66 The k-core fingerprint - shells as structural identity
 
@@ -889,8 +889,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - >=70% of gold-evidence entities sit in shells 2..k_max-1; profile JS-divergence between healthy wave snapshots < 0.05; the premature-cure failure mode (over-merge) would have shown as max-core inflation
 - **Acceptance bar** - concentration + stability; refuted if gold spreads uniformly across shells (core number carries no evidence signal)
 - **Experiment** - core decomposition (networkx/scipy on the projected entity graph) + gold mapping via the H34 harness; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) k_max = 5; gold concentrates in the MAX core (27 of 33 golds in shell 5), only 18% in the middle shells vs the 70% bar
+- **Verdict** - REFUTED with the finding inverted: the densest core carries the gold. The shell profile survives as a descriptive fingerprint but the middle-shell evidence hypothesis is dead; gold-carrying entities are the best-connected ones, consistent with seeds being popular nodes
 
 ### R09-H67 The hop-distance law - no traversal depth rescues a missing gold
 
@@ -909,8 +909,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - NMI >= 0.6 on the campaign graph at wave-1b end; the correspondence WEAKENS as waves accumulate (cross-doc merges braid documents together) - NMI trend down across waves is itself a resolution-quality signal
 - **Acceptance bar** - high NMI confirms (and demotes naive community features); refuted if NMI < 0.3 - communities genuinely cross-document, semantically real, and H69-H71 gain a stronger footing
 - **Experiment** - re-run Leiden on the campaign graph + NMI census; deterministic GDS + sklearn, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) NMI(Leiden stream, dominant source document) = 0.614 vs the 0.60 bar; homogeneity 0.711; mean dominant-document purity per community 0.904. The across-waves weakening clause is untestable on a single snapshot (partial)
+- **Verdict** - CONFIRMED - communities are substantially documents rediscovered; any community feature is provenance in disguise until cross-document resolution braids the corpus. Gates H69/H70 as registered (both indeed failed downstream)
 
 ### R09-H69 Community-diversified seeding - beat vector@16 with structure
 
@@ -919,8 +919,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - probes whose 16 seeds span <=2 communities have measurably lower evidence recall; diversified@16 >= 0.90 vs the 0.854 bar
 - **Acceptance bar** - matched-budget win; refuted if concentration does not correlate with misses (communities carry no retrieval signal - expected under an H68 artifact verdict, which is why H68 runs first)
 - **Experiment** - deterministic re-seeding replay on the H34/H53 harness; runs now, sequenced after H68
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) vector@16 evidence recall 0.879 on this replay; community-diversified@16 = 0.818 - the swap LOST P15/P17 evidence. The concentration premise never materializes: every probe's 16 seeds already span 3-9 communities
+- **Verdict** - REFUTED - there is no community concentration to fix, and forcing diversity discards better seeds. Consistent with H68: provenance-shaped communities carry no retrieval signal worth allocating budget by
 
 ### R09-H70 The conductance merge gate - cross-community merges are suspect
 
@@ -929,8 +929,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - the labeled false set shows >=2x cross-community rate; applying the veto retroactively drops the false closure members while P09 (legitimate multi-doc identity) survives
 - **Acceptance bar** - differential + P09 regression-free; refuted if community membership is independent of merge correctness
 - **Experiment** - deterministic replay over the labeled decision inventory; runs now, sequenced after H68 (an artifact verdict there weakens but does not kill this - provenance mismatch is itself evidence)
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) labeled false merges 0/6 cross-community; presumed-true SAME_AS 22/121 (18.2%) cross-community - ratio 0.0 vs the >=2x bar, the OPPOSITE direction
+- **Verdict** - REFUTED decisively - false merges live INSIDE communities (they share model codes within a product family), while legitimate cross-document aliases are the ones that cross communities. A community-mismatch veto would miss every false merge and flag 22 true aliases; the feature is anti-informative for this defect class
 
 ### R09-H71 Context cores retested - numbers where R6 used argument
 
@@ -949,8 +949,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - >=1 P09/P22-class probe flips; inferred edges never displace gold in renders (they enter below extracted edges in render ranking); closure inflation stays bounded (<=15% edge growth)
 - **Acceptance bar** - flip without displacement; refuted if inferred edges bloat contexts or displace gold (the H22 lesson: context is a fixed budget)
 - **Experiment** - deterministic closure computation on a graph copy + H34 probe replay; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) 23 tight communities yield 31 inferred hierarchy-closure edges (+0.83% growth, far under the 15% cap) but ZERO multi-hop golds flip to direct-seed and recall is unchanged (33 -> 33)
+- **Verdict** - REFUTED - as H67 predicted, there is no multi-hop gold left to rescue; densification has no work to do on this corpus. The H72/H80 tension pair resolves toward pruning (see H80/H84)
 
 ### R09-H73 Rebuild equals maintenance - is the debt retrieval-visible?
 
@@ -999,8 +999,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - on healthy wave-1b snapshots both marker families are flat; under injection, connectivity responds at <=half the injection rate JSD needs; the two-family panel (spectral + distributional) dominates either alone
 - **Acceptance bar** - differential sensitivity; refuted if JSD responds first or simultaneously (distribution is sufficient, spectral is decoration)
 - **Experiment** - scipy Laplacian eigensolve on the projected giant component + sampled BFS diameter + injection replay; deterministic, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) under merge-undo injection the Fiedler value falls (0.01165 -> 0.00877 at 30%) and effective diameter rises (8 -> 9) while type-frequency JSD stays 0.000 throughout - the differential-sensitivity clause holds, weakly: connectivity responds only at a high 30% rate, and JSD's blindness is partly structural (hub splits preserve the label mix)
+- **Verdict** - CONFIRMED (weak) - the spectral channel sees what the distributional channel cannot, but the sparse graph's tiny baseline Fiedler (~0.012) makes it a low-power instrument. Panel status: retained as a secondary marker, not a trigger; re-evaluate on denser future corpora
 
 ### R09-H78 Degree-aware render budgets - Pareto over uniform caps
 
@@ -1029,8 +1029,8 @@ The graph has almost no structural self-knowledge. What exists today: GDS Leiden
 - **Prediction** - zero-loss plateau extends to >=25-30% removal; the knee sits before 50%; removed edges are dominated by SIMILAR_TO leftovers, stale-interval versions, and provenance-thin extractions - the same population three independent hygiene signals (H60, H63, this) keep converging on
 - **Acceptance bar** - plateau + knee located; refuted if ANY removal level below 20% loses gold - the graph is already at optimal density, pruning doctrine caps out, and H72's densification direction wins the tension pair
 - **Experiment** - staged edge removal on a graph copy + probe replay per stage; deterministic, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) staged removal by the (betweenness x evidence x validity) composite: zero-loss plateau to 20%, first loss at 25% (recall 33 -> 31), knee well before 50%. One stage short of the >=25-30% plateau bar; the strong refuter (loss below 20%) did NOT fire
+- **Verdict** - REFUTED (marginal) - the measured dead weight is ~20%, just under the registered prediction. Constructive residue: a 20% zero-loss pruning capacity exists with a located knee; H60's operating point should re-register against 20%, and H84's task-MI ordering (uncorrelated with this composite, Kendall tau -0.03) is the better removal order
 
 ## R10 - research-grounded round: the improvement gradient, curvature detectors, learned quality, ontology optima (pre-registered 2026-07-06)
 
@@ -1096,8 +1096,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - knee exists before 30% retention; the retained core is dominated by seed-incident and alias edges
 - **Acceptance bar** - knee found; refuted if recall degrades smoothly under any removal order (no compressible bottleneck - the IB framing fails on this graph)
 - **Experiment** - staged ablation replay (shares H80's harness); runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_markers_r09.ipynb`](../../notebooks/structure_markers_r09.ipynb) / [`communities_r09.ipynb`](../../notebooks/communities_r09.ipynb) / [`density_r09.ipynb`](../../notebooks/density_r09.ipynb)) 3903 of ~3905 edges have zero gold-path participation; ablating in ascending task-MI order preserves 100% recall even at 90% edge removal - minimum retention for >=95% recall is 10%, far under the 30% bar. The retained core is seed-incident edges plus ~2 gold-path edges. Kendall tau vs H80's structural composite: -0.03 (orderings uncorrelated)
+- **Verdict** - CONFIRMED strongly - the task-sufficient subgraph is extremely thin, the IB knee is at ~10% retention, and workload-conditioned ordering dominates structural ordering for pruning decisions. Core evidence for the H81 potential's edit-gain framing: almost all edges are retrieval-inert, so the gradient concentrates on a tiny set
 
 ### R10-H85 Saturated is not optimal - the two axes are independent
 
