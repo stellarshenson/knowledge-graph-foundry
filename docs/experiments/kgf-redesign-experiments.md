@@ -1832,3 +1832,13 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Result** - pending
 - **Verdict** - pending
 
+### R14-H151 Table extraction is the decisive parser axis - necessity, not proxy
+
+- **Grounding** - (user-directed, 2026-07-07) the loss evidence keeps pointing at tables: H51's losses concentrate in table-heavy catalogues, H144's severance is table-header specific, and Docling's whole reason for rejecting pymupdf was merged table cells. The sharpened claim: a parser's TABLE-STRUCTURE stage is the necessary capability for this corpus - distinct from H150, which tests whether global benchmark RANK is a sufficient proxy (table capability can be necessary while leaderboard rank stays a poor predictor)
+- **Hypothesis** - (a) >= 70% of the H51 loss-set names lie inside table regions of their source pages; (b) parsers WITH a dedicated table-structure stage (Docling/TableFormer, MinerU, dots.ocr) recover >= 2x the table-region losses of parsers without one (pymupdf4llm, pypdf, plain text extraction); a parser lacking table extraction cannot clear H146's bar regardless of its other qualities
+- **Prediction** - the loss set partitions cleanly; the with-table-stage group dominates on exactly the table-region subset while both groups tie on non-table losses
+- **Acceptance bar** - both clauses; refuted if recovery is uncorrelated with table capability (the differentiator would then be reading order or glyph handling, and parser selection re-opens)
+- **Experiment** - partition the H51 loss set by table-region membership (layout detection or table-markdown span test) + per-parser recovery split from the H146-H150 harness; assembles from the parser round's outputs
+- **Result** - pending
+- **Verdict** - pending
+
