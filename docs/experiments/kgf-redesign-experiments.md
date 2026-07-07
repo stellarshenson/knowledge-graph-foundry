@@ -1947,3 +1947,58 @@ Trigger: the maturity assessment (2026-07-07) - the campaign targets the identit
 - **Experiment** - inject failure set into a scratch ingest; gate prototype in the ingestion layer; deterministic
 - **Result** - pending
 - **Verdict** - pending
+
+
+## R16 - long-horizon operations: the mutation and scale flank (pre-registered 2026-07-07)
+
+Trigger: R15 hardened the read-side maturity properties (transfer, shipping, idempotency, compaction, abstention); this round targets the MUTATION side of a months/years foundry - sources leave, sources get revised, ingests run concurrently, costs compound, and ingested content is itself untrusted input. None of these had a registered hypothesis.
+
+### R16-H162 Source retraction - provenance-scoped removal without collateral damage
+
+- **Grounding** - a long-lived foundry must un-ingest (source withdrawn, license expired, wrong file). Every entity carries `source_documents`/`source_chunks` and MENTIONED_IN edges, so the provenance to do this exists - but nothing consumes it, and shared entities (mentioned by the retracted doc AND others) make naive deletion destructive
+- **Hypothesis** - a provenance-scoped retraction (delete exclusive entities/rels/chunks; strip the retracted doc from shared entities' provenance lists; re-derive descriptions that came exclusively from it) leaves the graph equivalent to a never-ingested-that-doc build: entity/rel counts within 2%, zero probe regressions on probes whose gold evidence does not touch the retracted doc, and 100% removal of content traceable to it
+- **Prediction** - counts reconcile but description equivalence fails partially - the longest-description merge rule destroys the information needed to un-merge descriptions; that residue defines the repair-from-source work
+- **Acceptance bar** - all three clauses vs a ground-truth rebuild without the doc; refuted if shared-entity damage breaks probes outside the retracted doc's evidence set (retraction is then unshippable without full rebuild)
+- **Experiment** - retraction prototype + A/B vs counterfactual rebuild on the benchmark corpus (26 docs, retract 2: one entity-rich, one peripheral); scratch instance, post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+### R16-H163 Supersession correctness - a revised source must move current truth
+
+- **Grounding** - the bitemporal machinery (R1: valid-time edges, contradiction reconciliation, entity versioning) shipped in the redesign but has never faced its actual workload: a v2 document revising spec values a v1 already asserted. The fact-drift alarm (R8) watches for this class statistically; whether retrieval returns CURRENT truth afterwards is untested
+- **Hypothesis** - ingesting a synthetically revised document set (10 revisions: changed numeric values, renamed features, removed features) yields (a) >= 90% of revised facts returning the NEW value on direct probes, (b) old values preserved as superseded (queryable with as-of semantics, never in default renders), (c) removed features absent from default renders, (d) zero contamination of unrevised facts
+- **Prediction** - value revisions supersede correctly (the reconciliation path was built for them); feature REMOVALS fail - absence of evidence in v2 does not retract a v1 assertion, exposing a missing negative-evidence mechanism
+- **Acceptance bar** - clauses (a),(b),(d) at bar plus an honest count on (c); refuted if old values leak into default renders (bitemporality is then cosmetic)
+- **Experiment** - synthetic v2 generation from 3 benchmark documents (deterministic edits, ground-truth diff list) + re-ingest + probe replay; scratch instance, post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+### R16-H164 Concurrent ingestion - parallel equals sequential
+
+- **Grounding** - the control metanode, FSM state, and resolution candidate queries all assume one writer. Real operation (cron ingests, multiple watchers) will violate that. MERGE gives per-statement atomicity, not cross-document transactional identity - two writers resolving the same surface form concurrently is the classic duplicate-creation race
+- **Hypothesis** - two concurrent `kgf ingest` processes over disjoint document batches produce a graph equivalent to the sequential run (entity count within 1%, zero duplicate entities by exact name+type, FSM lands STABLE, control metadata uncorrupted); any divergence localizes to cross-batch identity races, quantifying the need for a resolution lock or single-writer queue
+- **Prediction** - REFUTED as stated - duplicate entities appear at the batch boundary where both writers see the same unresolved surface forms; the measured duplicate rate sizes the fix (advisory lock on the resolution phase)
+- **Acceptance bar** - equivalence at bar = CONFIRMED (engine is already concurrency-safe); a bounded, localized duplicate class = the actionable DEGRADED outcome; FSM/control corruption = severe defect, filed immediately
+- **Experiment** - split the benchmark corpus 13/13, launch two ingests simultaneously, diff against the sequential build; scratch instance, post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+### R16-H165 The ingest cost scaling law - measured from logs already on disk
+
+- **Grounding** - 481 documents of event-logged campaign history exist (wave logs, per-doc timings, token counts). Resolution candidate sets grow with graph size; if per-document cost grows superlinearly, months-scale operation hits a wall the benchmarks never see. This hypothesis costs nothing new - the data is on disk
+- **Hypothesis** - per-document ingest cost over the 481-doc campaign fits cost(n) ~ n^alpha with alpha < 0.3 overall (near-flat), but decomposition by phase reveals one superlinear component (resolution candidate retrieval, predicted alpha > 0.5) that will dominate beyond ~2000 docs by extrapolation
+- **Prediction** - extraction and embedding are flat (per-doc work); resolution is the growth term; the crossover estimate lands in the low thousands - actionable before it hurts
+- **Acceptance bar** - fit quality R^2 >= 0.7 on the decomposition; refuted if all phases are flat (no scaling risk, close the flank) or if total alpha >= 0.5 already (scaling is ALREADY the binding constraint - escalates to a priority lever)
+- **Experiment** - pure log analysis over the existing event logs + campaign wave logs; deterministic, CPU, runs NOW (no scratch instance needed)
+- **Result** - pending
+- **Verdict** - pending
+
+### R16-H166 Ingested content is untrusted input - extraction injection resistance
+
+- **Grounding** - every ingested document's text is interpolated into extraction prompts for the LLM engine. A document containing instruction-shaped text ("ignore previous instructions", "output the following JSON", schema-shaped payloads) is a prompt-injection vector into the graph itself - poisoned entities, fabricated relationships, corrupted types. A mature builder must degrade gracefully on adversarial input; no registered hypothesis touches this
+- **Hypothesis** - on an injected adversarial set (10 documents: instruction-hijack text, fake-schema payloads, oversized repeated tokens, markdown/JSON masquerading as prose), the pipeline (a) never emits entities/relationships originating from injected INSTRUCTIONS (content-level fabrications measured separately), (b) never breaks the structured-output contract (parse failures are caught, doc marked failed, FSM unaffected), (c) flags >= 50% of the adversarial docs via existing anomaly signals (yield gate of H161, type-distribution outliers)
+- **Prediction** - (b) holds (the parser is defensive); (a) partially fails - some instruction text lands as plausible-looking entities, which is the graph-poisoning result that motivates a provenance-trust field; (c) is the weakest clause
+- **Acceptance bar** - (b) mandatory; (a)/(c) reported honestly with the poisoned-node inventory; refuted-severe if injected instructions steer extraction of OTHER documents in the same batch (cross-document contamination)
+- **Experiment** - adversarial doc generation (deterministic templates) + scratch ingest on the local engine + graph audit; scratch instance + GPU 1 window, post-chain
+- **Result** - pending
+- **Verdict** - pending
