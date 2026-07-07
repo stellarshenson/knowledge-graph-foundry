@@ -1,0 +1,417 @@
+{
+  "round": "R19-H203",
+  "utc": "20260707T205333Z",
+  "graph": "neo4j3",
+  "uri": "bolt://user-konrad.jelen-kgf-neo4j3:7687",
+  "fingerprint": {
+    "node_count": 4649,
+    "edge_count": 26703,
+    "document_count": 952,
+    "embedding_count": 4649,
+    "embedding_dim": 1024,
+    "embedding_digest": "8c4267c771d383bd"
+  },
+  "generous_ceiling": 128,
+  "eval_ks": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "n_queries": 60,
+  "query_derivation": "wave-2 article leads (first 300 chars) -> longest graph-entity-name match -> stored entity embedding as probe vector; no embedder call (no Bedrock)",
+  "queries": [
+    {
+      "article": "c77_d10040.txt",
+      "lead": "dreamstation heated hose vs hose cover vs plain hose title: heated hose use in c",
+      "entity_id": "e_a094a4000a305c40",
+      "entity_name": "Continuous Positive Airway Pressure"
+    },
+    {
+      "article": "c77_d10101.txt",
+      "lead": "dreamstation heated tube/humidifier initial settings. title: cpap humidification",
+      "entity_id": "e_a4627ee0da7b782d",
+      "entity_name": "Continuous Positive Airway Pressure"
+    },
+    {
+      "article": "c77_d10139.txt",
+      "lead": "the water thing and the hose **title: cpap humidifier water consumption** cpap m",
+      "entity_id": "e_40a37d9e083eef67",
+      "entity_name": "Humidifier water consumption"
+    },
+    {
+      "article": "c77_d10159.txt",
+      "lead": "climateline hose **title: airsense 10 climateline heated hose: automatic and man",
+      "entity_id": "e_260867a72e4c8d79",
+      "entity_name": "AirSense 10 AutoSet CPAP machine"
+    },
+    {
+      "article": "c77_d10202.txt",
+      "lead": "heated hose check **title: heated cpap hose functionality testing** heated cpap ",
+      "entity_id": "e_9cfc7592fc905fc5",
+      "entity_name": "Heated CPAP Hose Functionality Testing"
+    },
+    {
+      "article": "c77_d10292.txt",
+      "lead": "change humidity level seasonally **title: cpap humidifier adjustment for seasona",
+      "entity_id": "e_c164b75788efcc68",
+      "entity_name": "CPAP Humidifier Adjustment"
+    },
+    {
+      "article": "c77_d10399.txt",
+      "lead": "help! resmed tubing won't heat up! title: resmed airsense 10 heated tubing issue",
+      "entity_id": "e_f6e0c9089f8a9c4f",
+      "entity_name": "Continuous Positive Airway Pressure (CPAP) device"
+    },
+    {
+      "article": "c77_d10428.txt",
+      "lead": "need humidifier education **title: cpap humidifier functionality** cpap (continu",
+      "entity_id": "e_1e61d0ea2e848724",
+      "entity_name": "Air delivered to the user"
+    },
+    {
+      "article": "c77_d10457.txt",
+      "lead": "hose temperature/humidity logic question title: cpap therapy and air temperature",
+      "entity_id": "e_050c74a876da8faf",
+      "entity_name": "Positive Airway Pressure"
+    },
+    {
+      "article": "c77_d10654.txt",
+      "lead": "cpap useage in hot weather title: sleep apnea and cpap therapy in hot weather ex",
+      "entity_id": "e_e9fba5854015aca1",
+      "entity_name": "Continuous Positive Airway Pressure (CPAP) therapy"
+    },
+    {
+      "article": "c77_d10655.txt",
+      "lead": "warmer air title: heated cpap hoses heated cpap hoses are accessories designed t",
+      "entity_id": "e_15b25a6348fb1b26",
+      "entity_name": "Sleep Apnea Therapy"
+    },
+    {
+      "article": "c77_d10736.txt",
+      "lead": "help with respironics system one **title: cpap therapy: humidity settings and dr",
+      "entity_id": "e_eff2e09ea2ac5b25",
+      "entity_name": "Humidity settings"
+    },
+    {
+      "article": "c77_d10750.txt",
+      "lead": "resmed h5i humidifier heating query **title: resmed h5i humidifier operation** t",
+      "entity_id": "e_78e0ecac2d1ab0bc",
+      "entity_name": "ResMed H5i Humidifier"
+    },
+    {
+      "article": "c77_d1079.txt",
+      "lead": "newby question re rainout title: cpap rainout: causes and mitigation cpap rainou",
+      "entity_id": "e_d1c7efe172f1028c",
+      "entity_name": "Condensation of Water"
+    },
+    {
+      "article": "c77_d10793.txt",
+      "lead": "do you use a humidifier? **title: cpap humidifier usage in sleep apnea therapy**",
+      "entity_id": "e_e7dd1acbaf48721f",
+      "entity_name": "Treatment of sleep apnea"
+    },
+    {
+      "article": "c77_d10845.txt",
+      "lead": "climateline hose cover title: cpap hose covers: usage and compatibility cpap hos",
+      "entity_id": "e_ce86c6a47b865006",
+      "entity_name": "CPAP Hose Covers"
+    },
+    {
+      "article": "c77_d10956.txt",
+      "lead": "question about heated hoses **title: heated cpap hose: usage and benefits** heat",
+      "entity_id": "e_9f959a5c79eae1b7",
+      "entity_name": "ResMed ClimateLine"
+    },
+    {
+      "article": "c77_d1117.txt",
+      "lead": "resmed h5i humidifier resmed s9 and h5i humidifier system\\n\\nthe resmed s9 is a ",
+      "entity_id": "e_96bd08045ca97998",
+      "entity_name": "Continuous Positive Airway Pressure (CPAP) machine"
+    },
+    {
+      "article": "c77_d11183.txt",
+      "lead": "heated hose --yes or no **title: cpap heated hose functionality** a cpap heated ",
+      "entity_id": "e_809d0979f1445b2f",
+      "entity_name": "Condensation Buildup"
+    },
+    {
+      "article": "c77_d1120.txt",
+      "lead": "h5i, climate line not warm **title: cpap therapy and air temperature concerns** ",
+      "entity_id": "e_6b666f5869db0321",
+      "entity_name": "Air temperature"
+    },
+    {
+      "article": "c77_d11397.txt",
+      "lead": "heated hose damaged? title: cpap heated hose damage and rainout a common issue i",
+      "entity_id": "e_67b111850cb0d995",
+      "entity_name": "Condensation Issues"
+    },
+    {
+      "article": "c77_d11429.txt",
+      "lead": "heating not working on climatecontrol **title: cpap humidifier heater malfunctio",
+      "entity_id": "e_9158971b2a6eb57a",
+      "entity_name": "Heater Malfunction"
+    },
+    {
+      "article": "c77_d11471.txt",
+      "lead": "to humdify or not to humidify!!! **title: cpap humidification: purpose and neces",
+      "entity_id": "e_852b009eaadbc022",
+      "entity_name": "CPAP humidification"
+    },
+    {
+      "article": "c77_d11593.txt",
+      "lead": "humidifier/heated hose usage during summer **title: cpap humidifier and heated h",
+      "entity_id": "e_e375be4a811c2412",
+      "entity_name": "Seasonal adjustment"
+    },
+    {
+      "article": "c77_d1162.txt",
+      "lead": "my sinus probs part 2 humidifier help needed title: cpap therapy and sinus probl",
+      "entity_id": "e_49bb7d8d267976fa",
+      "entity_name": "Sinus Problems"
+    },
+    {
+      "article": "c77_d11666.txt",
+      "lead": "resumed s 10 auto set, water chamber not heating title: resmed s10 autoset humid",
+      "entity_id": "e_93e9264b3fce8950",
+      "entity_name": "Humidifier Troubleshooting"
+    },
+    {
+      "article": "c77_d11820.txt",
+      "lead": "airsense 10 autoset with climateline heated hose - water in hose **title: cpap m",
+      "entity_id": "e_2b0469e1295e787c",
+      "entity_name": "ClimateLine heated hose"
+    },
+    {
+      "article": "c77_d1183.txt",
+      "lead": "heated hose **title: heated hose functionality in vpap therapy** heated hoses, s",
+      "entity_id": "e_817dd0ec60b75e17",
+      "entity_name": "Functionality"
+    },
+    {
+      "article": "c77_d11957.txt",
+      "lead": "nasal mask filling with some water and causing popping noise title: cpap therapy",
+      "entity_id": "e_4f1dfe5bed42afcd",
+      "entity_name": "Warm, humidified air"
+    },
+    {
+      "article": "c77_d12021.txt",
+      "lead": "auto or manual temp humidity control? title: cpap humidification and temperature",
+      "entity_id": "e_c9076fd51f52bf85",
+      "entity_name": "Temperature control"
+    },
+    {
+      "article": "c77_d12131.txt",
+      "lead": "new to forum have a question title: obstructive sleep apnea (osa) and cpap thera",
+      "entity_id": "e_8965c0bf0f2cbcb1",
+      "entity_name": "Obstructive Sleep Apnea (OSA)"
+    },
+    {
+      "article": "c77_d12143.txt",
+      "lead": "airfit f20 condensation title: cpap mask condensation cpap (continuous positive ",
+      "entity_id": "e_b6786b806d4a9ae0",
+      "entity_name": "CPAP mask condensation"
+    },
+    {
+      "article": "c77_d1218.txt",
+      "lead": "what temperature is the water in your humidifer? title: cpap humidifier water te",
+      "entity_id": "e_838f926027fe4d4e",
+      "entity_name": "Humidifier Water Temperature"
+    },
+    {
+      "article": "c77_d12192.txt",
+      "lead": "help needed [resmed s9 settings] **title: resmed s9 cpap machine operation and s",
+      "entity_id": "e_67f9ce42260e581a",
+      "entity_name": "ResMed S9 series"
+    },
+    {
+      "article": "c77_d1224.txt",
+      "lead": "climateline vs. climateline max heated hose title: climateline and climateline m",
+      "entity_id": "e_1056d3aa3649202d",
+      "entity_name": "Heated CPAP hose"
+    },
+    {
+      "article": "c77_d12397.txt",
+      "lead": "anyone pre heat ttheir humidifier water before use? **title: cpap humidifier pre",
+      "entity_id": "e_689d1366958037b2",
+      "entity_name": "Preheat Function"
+    },
+    {
+      "article": "c77_d12508.txt",
+      "lead": "resmed autosense 10 autoset + climateline humidification settings title: resmed ",
+      "entity_id": "e_8a635b192f5549a4",
+      "entity_name": "Humidification Adjustment"
+    },
+    {
+      "article": "c77_d12562.txt",
+      "lead": "help me understand how humidifier levels are managed by the xpap title: cpap hum",
+      "entity_id": "e_365da6294540347c",
+      "entity_name": "CPAP humidifier rainout"
+    },
+    {
+      "article": "c77_d12586.txt",
+      "lead": "condensation & clicking in airtouch f20 mask **title: cpap mask condensation (ra",
+      "entity_id": "e_5f9629c84c2f384e",
+      "entity_name": "Condensation (rainout)"
+    },
+    {
+      "article": "c77_d12737.txt",
+      "lead": "humidifier **title: cpap humidifier issues: dryness and automatic settings** cpa",
+      "entity_id": "e_da6193c5588e0f2f",
+      "entity_name": "Pressurized air"
+    },
+    {
+      "article": "c77_d12756.txt",
+      "lead": "my humidifier gets empty **title: cpap humidifier water depletion** cpap (contin",
+      "entity_id": "e_cd52fb7e8b385c44",
+      "entity_name": "Humidifier water depletion"
+    },
+    {
+      "article": "c77_d1276.txt",
+      "lead": "s9 humidifier title: cpap humidifier operation and troubleshooting the s9 cpap m",
+      "entity_id": "e_1a484d298ca783f6",
+      "entity_name": "Humidifier functionality"
+    },
+    {
+      "article": "c77_d12785.txt",
+      "lead": "heated hose and stuffy nose **title: cpap therapy and nasal congestion** nasal c",
+      "entity_id": "e_1ef946a053df68dd",
+      "entity_name": "Nasal Congestion"
+    },
+    {
+      "article": "c77_d1281.txt",
+      "lead": "h5i humidifier issues **title: resmed h5i humidifier issues** the resmed h5i hum",
+      "entity_id": "e_bba4949e60e62055",
+      "entity_name": "H5i humidifier"
+    },
+    {
+      "article": "c77_d1282.txt",
+      "lead": "someone school me about the resmed climateline **title: cpap therapy: heated hos",
+      "entity_id": "e_d0f61f308319915c",
+      "entity_name": "Excessive Humidity"
+    },
+    {
+      "article": "c77_d12903.txt",
+      "lead": "resistance checking heated air hose? **title: heated cpap hose resistance testin",
+      "entity_id": "e_9eea7df4c7317a8a",
+      "entity_name": "Heated CPAP Hose Resistance Testing"
+    },
+    {
+      "article": "c77_d1292.txt",
+      "lead": "too hot to handle? **title: cpap machine operating temperatures** cpap (continuo",
+      "entity_id": "e_d5740be64a336ed8",
+      "entity_name": "Operating Temperature Range"
+    },
+    {
+      "article": "c77_d12929.txt",
+      "lead": "dreamstation auto humidification problem title: cpap humidifier malfunction: pot",
+      "entity_id": "e_c82c5010cddecf0f",
+      "entity_name": "High-Temperature Cutoff"
+    },
+    {
+      "article": "c77_d12939.txt",
+      "lead": "water in hose **title: cpap machine condensation issues** condensation, also kno",
+      "entity_id": "e_836f1d3e6e93a7c3",
+      "entity_name": "Ambient room temperature"
+    },
+    {
+      "article": "c77_d12946.txt",
+      "lead": "dream station humidfier question title: cpap humidifier settings: an overview cp",
+      "entity_id": "e_03e8283bbc85a410",
+      "entity_name": "Dryness and Irritation"
+    },
+    {
+      "article": "c77_d12955.txt",
+      "lead": "humidity on philips respironics a40 title: philips respironics a40 bipap/cpap de",
+      "entity_id": "e_1887f1fd6fc51e2c",
+      "entity_name": "Bilevel Positive Airway Pressure"
+    },
+    {
+      "article": "c77_d12991.txt",
+      "lead": "is my humidifier working or not? title: cpap humidifier operation and troublesho",
+      "entity_id": "e_3d17b932c44430e3",
+      "entity_name": "Humidifier Operation"
+    },
+    {
+      "article": "c77_d13024.txt",
+      "lead": "humidity level will not stay as selected **title: cpap humidifier settings and a",
+      "entity_id": "e_cb0c927a2638fc84",
+      "entity_name": "Different humidity levels"
+    },
+    {
+      "article": "c77_d13189.txt",
+      "lead": "changing the temperature **title: airsense 10 elite climate control adjustment**",
+      "entity_id": "e_181285559fab77ce",
+      "entity_name": "ResMed AirSense 10 Elite CPAP machine"
+    },
+    {
+      "article": "c77_d1323.txt",
+      "lead": "heated hose decision \\ntitle: philips respironics cpap device compatibility and ",
+      "entity_id": "e_4719a98827f33f0a",
+      "entity_name": "Philips Respironics System One series"
+    },
+    {
+      "article": "c77_d13273.txt",
+      "lead": "are there downsides to generally not using humidification? **title: cpap humidif",
+      "entity_id": "e_4443dbecea21f4b0",
+      "entity_name": "Humidification"
+    },
+    {
+      "article": "c77_d13355.txt",
+      "lead": "dream station heated tube fault **title: dreamstation heated tube malfunction an",
+      "entity_id": "e_a787fffc39779044",
+      "entity_name": "Philips Respironics DreamStation"
+    },
+    {
+      "article": "c77_d13360.txt",
+      "lead": "heated tube question **title: cpap heated tube functionality and user experience",
+      "entity_id": "e_25e1cba9097856b4",
+      "entity_name": "Reduce Condensation"
+    },
+    {
+      "article": "c77_d13363.txt",
+      "lead": "cpap tube temp... **title: cpap heated tubing: purpose and function** heated cpa",
+      "entity_id": "e_5e0e801320ccbc4f",
+      "entity_name": "Tube temperature setting"
+    },
+    {
+      "article": "c77_d13391.txt",
+      "lead": "is my dreamstation humidifier working? title: cpap humidifier function and setti",
+      "entity_id": "e_83f74f2790efe66a",
+      "entity_name": "DreamStation Humidifier"
+    }
+  ],
+  "recall_matrix": {
+    "8": {
+      "recall_exact_k": 0.9771,
+      "recall_generous_trunc": 0.9875,
+      "gap_pt": 1.042
+    },
+    "16": {
+      "recall_exact_k": 0.9875,
+      "recall_generous_trunc": 0.9958,
+      "gap_pt": 0.833
+    },
+    "32": {
+      "recall_exact_k": 0.9917,
+      "recall_generous_trunc": 0.9948,
+      "gap_pt": 0.312
+    },
+    "64": {
+      "recall_exact_k": 0.9951,
+      "recall_generous_trunc": 0.9956,
+      "gap_pt": 0.052
+    }
+  },
+  "k16_gap_pt": 0.833,
+  "approx_loss_present": true,
+  "truncation_costless": true,
+  "bar_gap_ge3pt": false,
+  "scale_precondition_met": false,
+  "verdict": "INCONCLUSIVE-FOR-SCALE-PREDICTION: the wave-2 graph carries 4649 embeddings (< the ~5k threshold and far below the ~50k / >=10x scale the hypothesis requires); the >= 3 pt at-scale prediction cannot be tested here. Measured k=16 gap = +0.83 pt",
+  "deviations": [
+    "graph is 4649 embeddings vs setup message's ~8000 / hypothesis's ~50k; scale precondition for the >=3pt prediction NOT met",
+    "probe vectors are stored entity embeddings anchored to article leads (no Bedrock), not freshly embedded title strings"
+  ]
+}

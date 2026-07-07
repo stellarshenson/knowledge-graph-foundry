@@ -1,0 +1,99 @@
+{
+  "round": "R19-H210",
+  "utc": "20260707T205552Z",
+  "graph": "neo4j3",
+  "uri": "bolt://user-konrad.jelen-kgf-neo4j3:7687",
+  "fingerprint": {
+    "node_count": 4649,
+    "edge_count": 9410,
+    "document_count": 952,
+    "embedding_count": 4649,
+    "embedding_digest": "8c4267c771d383bd"
+  },
+  "derivation": "home-doc-restricted (Device products, title-region match) attribute-proximity; disjoint normalized-float value sets across >=2 graph-indexed articles",
+  "source_texts": 952,
+  "n_products_multidoc": 124,
+  "n_raw_golds": 6,
+  "n_distinct_physical": 4,
+  "n_reconciled_by_conversion": 0,
+  "n_genuine_conflicts": 4,
+  "clause_a_ge40": false,
+  "clause_b_silent_drop_ge60": true,
+  "silent_drop_rate_genuine": 0.75,
+  "silent_drop_rate_distinct": 0.75,
+  "census_genuine": {
+    "both": 1,
+    "one": 0,
+    "neither": 3
+  },
+  "census_distinct": {
+    "both": 1,
+    "one": 0,
+    "neither": 3
+  },
+  "conflicts": [
+    {
+      "id": "C0001",
+      "product": "AirSense 10",
+      "attribute": "operating pressure range",
+      "values": [
+        "10-20 cm H2O",
+        "4-15 cm H2O"
+      ],
+      "source_articles": [
+        "c34_d22090.txt",
+        "c34_d5983.txt"
+      ],
+      "census": "neither"
+    },
+    {
+      "id": "C0004",
+      "product": "CPAP Therapy",
+      "attribute": "operating pressure range",
+      "values": [
+        "4-14 cmH2O",
+        "6-7 cmH2O"
+      ],
+      "source_articles": [
+        "c34_d12607.txt",
+        "c34_d15079.txt"
+      ],
+      "census": "both"
+    },
+    {
+      "id": "C0005",
+      "product": "Continuous Positive Airway Pressure",
+      "attribute": "operating pressure range",
+      "values": [
+        "9.4-15 cm H2O",
+        "6-7 cmH2O"
+      ],
+      "source_articles": [
+        "c34_d15027.txt",
+        "c34_d15079.txt"
+      ],
+      "census": "neither"
+    },
+    {
+      "id": "C0006",
+      "product": "Pressurized air",
+      "attribute": "operating pressure range",
+      "values": [
+        "7-15 cmH2O",
+        "4-20 cm H2O"
+      ],
+      "source_articles": [
+        "c34_d27227.txt",
+        "c34_d8203.txt"
+      ],
+      "census": "neither"
+    }
+  ],
+  "verdict": "REFUTED: only 4 genuine physical conflicts (< 40) even at 952-doc scale; single-sourcing is a corpus-class property, R17 conflict-reconciliation priority drops. (silent-drop among the 4 found = 75.0%)",
+  "deviations": [
+    "graph is 952 docs / 4649 entities / 26703 rels vs setup message's 471 / 7903 / 6542",
+    "no Proposition nodes and only 2 SAME_AS edges on this graph (props channel empty; alias-collapse is the doc-pair/attr/value dedup, not SAME_AS-driven)",
+    "recall@8 retrieval arm of H204 dropped (needs Bedrock query embeddings, banned); clauses (a)/(b) are text-derivation + graph-render census, retrieval-free",
+    "both wave dirs used (graph spans c34+c77); restricted to graph-indexed docs"
+  ]
+}
