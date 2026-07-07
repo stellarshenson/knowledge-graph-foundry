@@ -2060,8 +2060,8 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Prediction** - the knee sits right around the observed +10-11% and the 2 PROP-ATTACHED golds are the post-knee expensive tail
 - **Acceptance bar** - knee located with CI; H81 clause (a) re-adjudicated at the knee budget; refuted if the curve is kneeless (linear) - then budget choice is pure preference and the certificate must carry the budget as a parameter
 - **Experiment** - extend potentials_r10.ipynb's greedy sweep over budgets 0-20% with probe bootstrap; deterministic, CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`potentials_ext_r18.ipynb`](../../notebooks/potentials_ext_r18.ipynb) / [`potentials-ext-r18-20260707T130627Z.json`](../../reports/potentials-ext-r18-20260707T130627Z.json)) sharp Kneedle knee at +5.60% tokens / recall 0.879 (clean-12: 0.933); post-knee marginal cost 3392 tok/gold vs 316 pre-knee (10.7x, bar >3x PASS); recall@knee 0.879 >= 0.87 PASS. But the knee sits BELOW the predicted +8-15% band and the 1000-draw bootstrap knee-location CI is [+2.4%, +16.8%] = 14.4 pts (predicted <5). H81(a) re-adjudicated: 0.9 crosses at +10.9%, one gold past the knee - the within-10% miss was a knee-adjacent budget artifact, not lever exhaustion; the expensive tail is big-carrier hop-1/2 golds, not the PROP-ATTACHED pair. CI width is a 33-gold sample limitation - tightening deferred to H186's wide probe set
+- **Verdict** - PARTIALLY CONFIRMED - the knee exists with the predicted recall and cost blow-up, but at +5.6% with a 14.4-pt CI and a wrong tail-composition prediction; the certificate should carry a data-driven knee budget, not a fixed +10% (promoted)
 
 ### R18-H172 The entailment sufficiency scorer - retiring the degenerate matcher
 
@@ -2080,8 +2080,8 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Prediction** - both golds become affordable; the render layer needs no change
 - **Acceptance bar** - cost drop + zero regressions on the full probe set; refuted if splitting breaks proposition-channel retrieval for multi-fact questions that needed the joint context (measured on the passing probes)
 - **Experiment** - splitter prototype + replay on the benchmark graph copy; deterministic, CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`potentials_ext_r18.ipynb`](../../notebooks/potentials_ext_r18.ipynb) / [`potentials-ext-r18-20260707T130627Z.json`](../../reports/potentials-ext-r18-20260707T130627Z.json)) 13 propositions exceed 300 tokens (max 1303); deterministic verbatim segmentation drops the 2 PROP-ATTACHED golds' materialize cost 290->81 tok (P03) and 278->108 tok (P19), both far under the knee budget, with 0 straddle-regressions across 137 fat-proposition gold occurrences and zero probe regressions. Honest note: the greedy already routed both golds via small spec entities, so the registered +20-32% premise overstated their cost - the splitter still cuts each to one atomic segment
+- **Verdict** - CONFIRMED - both golds under budget, zero regression, verbatim fidelity preserved; ships as an ingest-time operator (promoted)
 
 ### R18-H174 Structural or decorative - the ontology against the MDL
 
@@ -2090,8 +2090,8 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Prediction** - both hold; the ontology's value lives upstream (extraction guidance), not in the adjacency structure
 - **Acceptance bar** - both clauses; refuted if MDL-improving type edits also lift probes (then ontology optimization IS a structural lever and gets its own round)
 - **Experiment** - extend the H82 encoder with chains/bipartite cores + type-edit replay; deterministic, CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`potentials_ext_r18.ipynb`](../../notebooks/potentials_ext_r18.ipynb) / [`potentials-ext-r18-20260707T130627Z.json`](../../reports/potentials-ext-r18-20260707T130627Z.json)) richer VoG vocabulary: +21 chains, 0 bipartite cores over 284 stars (32198 vs 31774 bits), reclassifying only 7.1% of dark-edge mass (clause b PASS, <10%). 79 type edits (60 sibling merges, 19 property-signature splits; dMDL in [-1051,+1124], 52 MDL-improving): delta-probe-recall EXACTLY 0 for every edit, r=0.0 (clause a PASS), 0/52 MDL-improving edits lift recall. The independence is structural - type labels live in node headers and are never gold evidence. Caveat: zero-variance makes the bar trivially met; re-check under a graded scorer folds into H172/H176
+- **Verdict** - CONFIRMED - the ontology is task-decorative for adjacency/retrieval (stars dominate the code, type edits move bits but never recall); its value is upstream at extraction/typing time
 
 ### R18-H175 Views that generalize - recall lift on held-out probes
 
@@ -2100,8 +2100,8 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Prediction** - modest but real transfer for one or two templates (the mode-family and spec-table patterns); most templates are corpus idioms that do not generalize
 - **Acceptance bar** - held-out lift >= 0.05 for at least one template class with bootstrap CI excluding 0; refuted if no template transfers - views are then closed under BOTH framings and H86's verdict extends to final
 - **Experiment** - 2-fold probe split, template induction from gold paths, replay; deterministic, CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`potentials_ext_r18.ipynb`](../../notebooks/potentials_ext_r18.ipynb) / [`potentials-ext-r18-20260707T130627Z.json`](../../reports/potentials-ext-r18-20260707T130627Z.json)) stratified 2-fold split: NO typed path-template lifts held-out recall within +10% tokens (best in-budget lift 0.000 both directions); the two transferring templates (comfort-feature +0.059, accessory-chain +0.125) blow the budget 6.5x and 23x with bootstrap CIs including 0, and the answer-specific control matches the typed template (+0.125 = +0.125) - no generalization advantage exists. Fold-level caveat: shared evidence entities muddy the template-vs-specific distinction at 24 probes; re-openable only under a workload where off-seed evidence is material (see H187)
+- **Verdict** - REFUTED - no template class meets the bar; views are now closed under BOTH the cost-cut (H86) and recall-lift framings; H86's saturation verdict extends to final
 
 ### R18-H176 The graded gradient - statistical power for the independence claim
 
@@ -2217,5 +2217,16 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - all three hold; clause (c) is the risk clause - if a v28 conclusion flips on the wide set, that specific flip outranks everything else in this round
 - **Acceptance bar** - the wide set built + all three clauses measured; refuted on (c) means targeted re-adjudication of the flipped conclusions, registered immediately
 - **Experiment** - probe derivation script + double-run of the render harness (33-gold vs wide set); CPU, neo4j2 read-only, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+
+### R19-H187 Views at workload scale - a conditional reopening trigger (deferred)
+
+- **Grounding** - H86 and H175 closed view materialization under both framings on THIS graph, where 91% of evidence is on-seed and 24 probes share carriers across folds; the closure is regime-conditional, not universal - a corpus whose evidence is materially off-seed (the H157 transfer corpus, or a wide H186-class workload with disjoint carrier sets) could reopen it
+- **Hypothesis** - CONDITIONAL, deferred by design: on the first corpus/workload where measured on-seed evidence share drops below 75%, typed path-template views deliver >= 0.05 held-out recall lift within +10% tokens (the H175 bar re-tested in the regime it was designed for)
+- **Prediction** - the trigger condition itself may never fire on datasheet-class corpora; registering the trigger prevents both premature re-litigation and silent permanent closure
+- **Acceptance bar** - adjudicated only after the trigger fires (on-seed share < 75% measured on >= 50 golds); until then the entry stands as the recorded reopening condition
+- **Experiment** - the H175 harness re-run verbatim on the qualifying corpus; blocked on H157/H186 producing one
 - **Result** - pending
 - **Verdict** - pending

@@ -1,0 +1,116 @@
+{
+  "batch": "R18-H171/H173/H174/H175",
+  "graph": {
+    "entities": 2798,
+    "edges": 3905,
+    "sameas": 127,
+    "propositions": 19654,
+    "types": 25
+  },
+  "baseline": {
+    "recall": 0.696969696969697,
+    "T0": 33819,
+    "lambda": 0.00010201366095981549,
+    "n_short_numeric": 17,
+    "missing": 10
+  },
+  "H171": {
+    "knee_pct": 0.05600402140808421,
+    "knee_recall": 0.8787878787878788,
+    "boot_ci_lo": 0.02415062538809546,
+    "boot_ci_hi": 0.16771637245335463,
+    "ci_width_pts": 14.356574706525919,
+    "recall_bar_met": true,
+    "knee_in_band": false,
+    "pre_cost_per_gold": 315.6666666666667,
+    "post_cost_per_gold": 3392.0,
+    "marginal_ratio": 10.745512143611403,
+    "recall90_crosses_at": 0.10925810934681687,
+    "clean_knee_recall": 0.9333333333333333,
+    "verdict": "PARTIALLY CONFIRMED"
+  },
+  "H173": {
+    "n_fat": 13,
+    "hop0_golds": 2,
+    "golds": [
+      {
+        "probe": "P03",
+        "gold": "28 dB(A)",
+        "carrier": "Sound pressure level",
+        "old": 290,
+        "old_pct": 0.008575061356042461,
+        "new": 81,
+        "new_pct": 0.002395103344273929,
+        "n_seg": 6,
+        "carrying": 1,
+        "under_knee": true
+      },
+      {
+        "probe": "P19",
+        "gold": "constant lower pressure",
+        "carrier": "SmartRamp",
+        "old": 278,
+        "old_pct": 0.008220231230964842,
+        "new": 108,
+        "new_pct": 0.003193471125698572,
+        "n_seg": 11,
+        "carrying": 1,
+        "under_knee": true
+      }
+    ],
+    "fat_gold_occurrences": 137,
+    "straddle_regressions": 0,
+    "knee_pct": 0.05600402140808421,
+    "verdict": "CONFIRMED"
+  },
+  "H174": {
+    "star_bits": 31774.10326142601,
+    "rich_bits": 32197.749104558534,
+    "chains": 21,
+    "bicores": 0,
+    "dark_reclass_frac": 0.07142857142857142,
+    "n_type_edits": 79,
+    "n_mdl_improving": 52,
+    "corr_dmdl_drecall": 0.0,
+    "d_recall_values": [
+      0
+    ],
+    "mdl_improving_that_lift_recall": 0,
+    "clause_a": true,
+    "clause_b": true,
+    "verdict": "CONFIRMED"
+  },
+  "H175": {
+    "foldA": [
+      12,
+      16,
+      8
+    ],
+    "foldB": [
+      12,
+      17,
+      9
+    ],
+    "A_to_B": {
+      "best_in_budget_lift": 0.0,
+      "best_lift": 0.05882352941176472,
+      "best_lift_cost": 0.646346689522177,
+      "best_lift_ctrl": 0.0,
+      "boot_lo": 0.0,
+      "boot_hi": 0.17647058823529405,
+      "passed": false,
+      "best_lift_key": "('R1', 'CPAPDevice', 'HAS_COMFORT_FEATURE', 'ComfortFeature')"
+    },
+    "B_to_A": {
+      "best_in_budget_lift": 0.0,
+      "best_lift": 0.125,
+      "best_lift_cost": 2.312982641409808,
+      "best_lift_ctrl": 0.125,
+      "boot_lo": 0.0,
+      "boot_hi": 0.375,
+      "passed": false,
+      "best_lift_key": "('R2', 'CPAPDevice', 'INCLUDES_COMPONENT', 'Accessory', 'INCLUDES_COMPONENT', 'CPAPDevice')"
+    },
+    "verdict": "REFUTED"
+  }
+}
