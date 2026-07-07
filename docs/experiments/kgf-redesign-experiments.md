@@ -1842,3 +1842,53 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Result** - pending
 - **Verdict** - pending
 
+### R14-H152 The row record - linearize tables verbatim, one row one unit
+
+- **Grounding** - (user-directed co-processor fanout, 2026-07-07) H144 measured the failure exactly: 64 rows severed from headers; a row without its header is data without keys. The deterministic fix: table detection -> per-row records with header keys re-attached ("<subject> | <header_i>: <cell_i> | ...") emitted as extraction units alongside prose chunks - verbatim linearization, zero paraphrase
+- **Hypothesis** - row-record linearization recovers >= 90% of the 64 severed associations and, on a re-extraction sample of the table-heavy documents, lifts table-borne entity/property extraction measurably at matched token budget vs the current chunker
+- **Prediction** - spec values gain the most (they live in cells whose meaning IS the header key)
+- **Acceptance bar** - both clauses; refuted if markdown table detection is too unreliable on the winning parser's output to anchor the transform (mis-detection > 10% of tables)
+- **Experiment** - deterministic transform on the H146-winner parser output + local-model re-extraction sample; after the parser round lands
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H153 Header carryover - the minimal co-processor
+
+- **Grounding** - the smallest possible fix for H144: keep a table atomic when it fits the chunk budget; when it must split, re-print the header row (and separator) at the top of every continuation chunk - no SaT, no LLM, a few lines in the chunker
+- **Hypothesis** - header carryover eliminates 100% of the measured severance at <= 2% token overhead, and is strictly dominated by H152's row records only on extraction quality, not on severance repair
+- **Prediction** - the cheap fix closes the association loss entirely; the question that remains is whether row records add extraction lift beyond it
+- **Acceptance bar** - zero severed rows post-transform at <= 2% overhead; refuted if table-boundary detection in parser markdown misfires enough to inject false headers into prose (measured injection rate > 1%)
+- **Experiment** - chunker variant + re-run of the H144 audit; deterministic, runs when the parser round fixes the input format
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H154 Table summaries route, never answer - the fidelity boundary
+
+- **Grounding** - a summary unit per table ("this table lists pressure specifications for the X series across 6 models") gives probes a semantic handle raw rows lack - but P19 proved paraphrased values transfer wrongly, and the H22 reader-attribution rule exists precisely because generated restatements of numbers are the fidelity failure class
+- **Hypothesis** - LLM table summaries as ADDITIONAL retrieval units improve table-topic seeding (the right table enters context for >= 2 more spec probes) while the fidelity guard holds: with summaries constrained to structural description (no cell values) plus verbatim row citation for answers, zero paraphrase-class answer errors are introduced
+- **Prediction** - summaries help routing on multi-table catalogues; any version that includes cell values in summaries fails the guard
+- **Acceptance bar** - routing gain >= 2 probes AND zero fidelity regressions on the answer side; refuted if summaries leak values into answers despite the constraint (the class is then banned from the pipeline outright)
+- **Experiment** - local-model summary generation for the catalogue tables + probe replay with the attribution rule armed; post parser round
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H155 Splitting the giants - row groups with replicated headers beat summaries
+
+- **Grounding** - some catalogue tables exceed any chunk budget (114 rows in the worst H144 case); the split policy question: row-groups with replicated headers (verbatim) vs LLM row-group summaries (compressed) - the co-processor's core tension between fidelity and token economy
+- **Hypothesis** - for tables larger than the chunk budget, row-group splitting with header replication preserves >= 95% of value-associations, and on spec-value QA over the same rows, verbatim row-groups beat LLM summaries of those rows by >= 10 points answer accuracy at comparable retrieval rates
+- **Prediction** - verbatim wins on values decisively; summaries only compete on which-products-exist questions
+- **Acceptance bar** - both clauses; refuted if summaries match verbatim on value QA (compression is then free and the token economy argument wins)
+- **Experiment** - split-policy A/B on the largest tables + targeted QA; local model; post parser round
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H156 The table as a graph citizen - structure into the schema
+
+- **Grounding** - the co-processor's architectural end-state: tables promoted to first-class nodes (Table node carrying header schema + source anchor, ROW provenance edges to the entities/values extracted from each row) - giving extraction row-scoped context, the render citable rows, and the completeness audit a per-table closed-world unit ("this table has 114 rows; 109 became entities; 5 are unaccounted")
+- **Hypothesis** - table nodes with row provenance (a) lift spec-probe evidence precision (answers cite the exact row), and (b) give the completeness audit its sharpest instrument yet: per-table extraction-coverage accounting that flags the H51-class losses at ingest time without any probe
+- **Prediction** - the audit clause is the bigger win - table row-counting is the first completeness signal that needs no statistical estimator at all
+- **Acceptance bar** - both clauses on the table-heavy documents; refuted if row-provenance bookkeeping costs more ingest complexity than the audit saves (measured: the accounting itself must be deterministic and add < 5% ingest time)
+- **Experiment** - schema extension prototype on a graph copy + re-ingest of the catalogue subset; the largest build of the fanout, sequenced last, after H152/H153 prove the linearization layer
+- **Result** - pending
+- **Verdict** - pending
+
