@@ -1908,6 +1908,7 @@ Trigger: the maturity assessment (2026-07-07) - the campaign targets the identit
 - **Prediction** - lifecycle transfers, calibration breaks; the deterministic detectors (name identity, model-code) carry different false-merge surfaces per domain
 - **Acceptance bar** - both clauses measured on >= 20 documents of a second corpus; refuted (pleasantly) if calibration holds within 2x ECE - then shipped constants suffice for the corpus classes tested
 - **Experiment** - PRECONDITION: second corpus selection needs the project owner's decision (external sourcing is out of autonomous bounds); everything else is the standard ingest + probe + identity-benchmark pipeline on a scratch instance
+- **Precondition resolved (2026-07-07)** - corpus selected by the project owner: the scientific-paper reference library (references/papers/, 64 PDFs) - different domain (ML/IR research) and genre (academic papers: sections, citations, result tables); entity classes flip to methods/datasets/metrics/authors. Caveat noted honestly: the papers are ABOUT knowledge-graph methods, so topical vocabulary overlaps the engine's own jargon - harmless to the calibration question, which turns on entity name morphology, not topic. Runs on the default scratch instance (wiped; the H158 v2-arm graph is measurement-complete, its event logs preserved on disk for H213) with an explicit pinned config per the DEF-4/DEF-5 discipline
 - **Result** - pending
 - **Verdict** - pending
 
@@ -2509,3 +2510,87 @@ The campaign has run ~113 adjudications ordered by judgment; the potentials fami
 - **Prediction** - W065 (weight proposition, dense small carrier) clears; W046 (Air Filter carrier, 1513 tokens) stays out - fan-in that large is abstention territory
 - **Acceptance bar** - >= 1/2 within the token bound at zero regression; refuted if neither clears - hub fan-in then goes to the gap ledger and the linkage promotion stands cap-based
 - **Experiment** - salience scorer + sibling-pool replay on the pinned harness, neo4j2 read-only; CPU; cheap, can run any time; sequenced after H214 (the hub victims may dissolve under H119 first)
+
+## R21 - images in documents: extraction, description, and embedding of visual content (user-directed, pre-registered 2026-07-07)
+
+The engine today ingests only the text layer; images in PDFs and other document formats (product photos, diagrams, rendered tables, charts) are invisible to it. The user directs a round to find out how visual content should enter the graph: which tool EXTRACTS images from documents (Docling, pymupdf, page rendering - decided by experiment, not preselected), how images are DESCRIBED (VLM engine contest), and how they are EMBEDDED (into the single Titan text index via descriptions, or a parallel multimodal index). The round is disciplined by prior verdicts: H147 proved the corpus's "vision-necessary" text was mostly recoverable text (glyph bug), H149 proved anchor-off image reading dominates on born-digital pages, H148/H191 left a 16-pair numeric residue awaiting a working vision engine, and H207's FINAL census puts two-thirds of wide-set misses ingest-side - if any of that absence lives in pixels, this round finds it. A working VLM environment stood up here also fires H191's deferred trigger. Retrieval-first principle governs: image content must land as normal graph carriers reachable in 1-2 hops, not as a second retrieval system.
+
+### R21-H216 The image census and the extraction-tool contest
+
+- **Grounding** - nothing is known about the corpus's visual content: not the image count, not the information-bearing share, not which extraction surface (embedded image objects via pymupdf, layout-detected figures via Docling, or full-page renders) even captures them; every downstream hypothesis needs this census, and the tool decision must be measured, not assumed
+- **Hypothesis** - (a) a three-arm extraction contest (pymupdf embedded-object extraction, Docling figure/layout detection, page-render diffing for vector-drawn content) over the 27-document benchmark corpus produces materially different image inventories (>= 20% count disagreement), with one arm dominating on information-bearing coverage; (b) classifying every captured image (product photo / diagram / rendered table / chart / logo-decorative) shows >= 30% of documents carry at least one information-bearing image whose text content is NOT in the text layer
+- **Prediction** - pymupdf misses vector-drawn figures (they are draw commands, not image objects), Docling captures layout figures but crops tightly, page-render catches everything at the cost of segmentation; the corpus being catalogue-heavy, rendered tables and product photos dominate
+- **Acceptance bar** - census complete with per-document inventory + classification labels frozen as the round's reference artifact; clause (b) decides whether the round continues at full breadth (>= 30%) or narrows to the classes actually present; refuted-narrow if information-bearing images are rare (< 10% of documents) - the round then shrinks to H217/H221 only
+- **Experiment** - three extraction arms + image classification (multimodal inspection of every captured image); CPU + local VLM; runs first, gates the round
+
+### R21-H217 Do the absent golds live in pixels?
+
+- **Grounding** - H207's FINAL classification: 16 of 24 wide-set misses are absent-from-graph, 8 of them catalogue codes; H191's separate 16-pair numeric residue failed every text parser; both absences are currently blamed on text extraction - but if the strings were never in the text layer because they are rendered content (chart labels, stylized table cells, figure annotations), the fix class changes from prompt/parser work to image ingestion
+- **Hypothesis** - locating every absent gold's source region in its document and checking the pixels: >= 25% of the absent golds' strings are visually present in image/rendered content that the text layer does not carry - establishing image ingestion as a measurable slice of the coverage ceiling
+- **Prediction** - the catalogue-code absents are text-layer table cells (extraction drops, H119 territory), NOT pixels; the H191 numeric residue IS pixels (chart-embedded values per the H51 forensics); the two absence families have different fix classes
+- **Acceptance bar** - every absent gold adjudicated to text-layer-present / pixel-only / absent-entirely with evidence; the >= 25% clause decides whether image ingestion claims a coverage stake; refuted if pixel-only golds are < 10% - image work then stands on new-capability value only, not on the existing benchmark
+- **Experiment** - per-gold source forensics (text layer vs page pixels at the gold's location); CPU + multimodal inspection; runs with H216
+
+### R21-H218 Describe-then-extract - image facts through the standard pipeline
+
+- **Grounding** - the engine's whole extraction stack (chunking, LLM extraction, resolution, curing) operates on text; the cheapest integration is describe-then-extract: a VLM turns each information-bearing image into a factual description that enters the normal chunk path as if it were document text - no new pipeline, no schema change; whether VLM descriptions are factually faithful enough to feed a graph is the open question, and the VLM engine itself is a contest (candidates present in this environment: Qwen2.5-VL class served locally, olmOCR anchor-off, Docling's picture-description stage; MinerU excluded until its crash is fixed)
+- **Hypothesis** - on a blind-labeled sample of >= 30 information-bearing images (gold facts frozen from pixels BEFORE any VLM runs), the best VLM engine's descriptions carry >= 80% of the gold facts (fact recall) at >= 90% precision (no hallucinated entities/values), and feeding them through the standard extraction prompt yields graph entities/relations preserving >= 90% of what the description carried
+- **Prediction** - product photos describe well; dense rendered tables lose cells in prose descriptions (H221's structured path exists for exactly that class); the extraction stage is not the bottleneck - description fidelity is
+- **Acceptance bar** - both fidelity numbers on the blind sample, per engine, per image class; refuted if no engine clears 80/90 - describe-then-extract is then unsafe for graph ingestion and only the structured table path (H221) survives the round
+- **Experiment** - VLM engine contest on GPU 2 (RTX 5000 Ada, free) or GPU 0; blind gold protocol per H101/H194 discipline; after H216's census
+
+### R21-H219 One index or two - the embedding route for image content
+
+- **Grounding** - retrieval runs on a single Titan text-embedding index (H207 pinned harness); image content can enter it as embedded DESCRIPTIONS (one index, no fusion logic) or live in a parallel multimodal index (CLIP/SigLIP-class image embeddings) fused at query time; the retrieval-first principle and the campaign's fusion-averse findings (PPR theater H37, view materialization closures) predict the single index wins, but that is a prior, not a measurement
+- **Hypothesis** - on image-derived probes (golds only answerable from image content, built from H216/H218 artifacts), describe-then-embed into the existing text index achieves recall@16 within 5 points of (or better than) a dual-index fusion arm, at zero added query-time infrastructure - the second index does not pay
+- **Prediction** - text descriptions embed into the same semantic space as the queries (both are language); raw image embeddings sit in a different geometry and fusion tuning eats the gain; single index wins or ties
+- **Acceptance bar** - the delta on >= 20 image-derived probes; refuted if the multimodal index beats by > 5 points - the engine then needs a second retrieval surface and the cost question goes to H225
+- **Experiment** - describe-embed arm vs SigLIP/CLIP dual-index arm on a scratch surface; GPU for the multimodal encoder; after H218
+
+### R21-H220 Anchoring - image carriers become retrievable through their document context
+
+- **Grounding** - an image's description floating as an unattached carrier repeats the H211 lesson (carriers unreachable from seeds are priced-out); documents anchor images with captions, figure references, and surrounding prose that name the entities the image belongs to - deterministic anchor rules (caption entity match, nearest-heading product, page-context entities) can attach image-derived carriers to existing graph entities at load time
+- **Hypothesis** - anchored image carriers (attached to their caption/context entities) achieve >= 2x the recall@16 of unanchored ones on the image-derived probe set, and anchoring introduces zero regression on the pinned text census (the 77 hits stand, monotone-scorer lemma applies to appended carriers)
+- **Prediction** - anchoring is the difference between reachable and priced-out; caption entity match alone carries most of the lift
+- **Acceptance bar** - both clauses; refuted if unanchored carriers already rank (image descriptions are then self-sufficient retrieval surfaces and anchor complexity is slop)
+- **Experiment** - anchored vs unanchored load of the H218 descriptions on a scratch instance, pinned-harness measurement; after H218
+
+### R21-H221 Rendered tables - the structured path for pixel-borne cells
+
+- **Grounding** - H152/H153 built the table fidelity machinery for TEXT-layer tables; tables rendered as images bypass it entirely (0% recovery today); H148's honest-digits concern binds: a transcribed cell with a wrong digit is worse than an absent cell for a spec-heavy graph
+- **Hypothesis** - a VLM table-transcription stage (image -> structured rows) routed into the existing structured-mapping path recovers >= 90% of blind-transcribed gold cells (>= 40 cells frozen from pixels first) with ZERO digit errors on numeric cells - digit fidelity verified character-exact against source pixels
+- **Prediction** - transcription recall clears 90% on clean renders; the risk concentrates in dense multi-column tables; the zero-digit-error clause is the hard one and decides shippability
+- **Acceptance bar** - both clauses; any hallucinated digit on the blind sample REFUTES shippability for numeric content (the class then requires human-in-the-loop or abstention per H161)
+- **Experiment** - VLM transcription over H216's rendered-table inventory + character-exact scoring; after H216
+
+### R21-H222 Diagrams as relation sources - or decoration
+
+- **Grounding** - diagrams (connection schematics, exploded part views, mode-flow figures) visually encode RELATIONS (connects-to, part-of, mode-transition) that prose may never state; whether the corpus's diagrams actually carry graph-worthy relations absent from text is unmeasured - and the SleepStyle-modes linkage failure (det 9/10 residue) is a candidate beneficiary if mode diagrams encode what prose does not
+- **Hypothesis** - on the census's diagram inventory, VLM diagram reading yields >= 2 true relations per diagram absent from the text-derived graph, at >= 80% precision under blind adjudication (relation gold frozen from pixels first)
+- **Prediction** - schematics yield connects-to/part-of relations reliably; abstract marketing figures yield nothing; the corpus skews catalogue so diagram density is low but per-diagram yield is real
+- **Acceptance bar** - both numbers on >= 10 diagrams; refuted if precision < 60% or yield < 1/diagram - diagrams are then decorative for graph purposes and enter the decorative filter (H224)
+- **Experiment** - blind relation-gold protocol + VLM reading + graph diff; after H216
+
+### R21-H223 Cross-modal identity - does the v2 stack survive image-derived mentions?
+
+- **Grounding** - image-derived entities (from descriptions) create a new duplicate pressure class: the same product mentioned by a text chunk and depicted in a photo arrives as two mentions with systematically different surface forms (visual descriptions favor appearance terms, text favors model codes); the v2 identity stack's calibration (H158) was fit on text-text pairs only - cross-modal pairs are out-of-distribution for the isotonic curve by construction
+- **Hypothesis** - on a blind-labeled set of >= 40 image-text candidate pairs, the shipped v2 stack resolves cross-modal duplicates at precision within 10 points of its text-text performance (52.2% E2E proxy), and its calibrated posteriors remain usable (ECE degrades < 2x on the cross-modal stratum, the H157 criterion applied to modality instead of corpus)
+- **Prediction** - name-identity fires when descriptions carry model names; pairs where the description is purely visual fall to the defer band (correct behavior - abstention over false merge)
+- **Acceptance bar** - both clauses; refuted if cross-modal pairs break calibration (> 2x ECE) - image-derived entities then need modality-aware resolution features before they may enter the graph unsupervised
+- **Experiment** - candidate-pair export from the H220 scratch graph + blind labels + stack replay; after H220
+
+### R21-H224 The decorative filter - paying VLM only for information
+
+- **Grounding** - VLM description is the round's dominant cost; logos, decorative banners, and duplicate header images carry nothing; a cheap deterministic pre-filter (image size, aspect, color entropy, position on page, per-document recurrence) that discards decoration before the VLM sees it is what makes the pipeline affordable at corpus scale
+- **Hypothesis** - the deterministic filter discards >= 60% of the census's raw image stream as decorative at <= 5% false-discard rate (information-bearing images wrongly dropped, measured against H216's frozen classification labels)
+- **Prediction** - recurrence (the same logo on every page) and size/entropy carry most of the discrimination; the false-discard risk concentrates in small-but-dense spec stamps
+- **Acceptance bar** - both numbers against the frozen census labels; refuted if false-discard > 10% (the filter then costs coverage and VLM-everything economics go to H225 honestly)
+- **Experiment** - filter implementation + replay against the census; CPU only; after H216
+
+### R21-H225 The image knee - end-to-end economics of visual ingestion
+
+- **Grounding** - H171's knee doctrine prices every capability: image ingestion adds VLM wall-clock, extraction tokens, new carriers (index growth), and render surface (query tokens); the round's survivors (whichever of H218-H222 pass) must together clear an economic bar or ship selectively (e.g. rendered-tables only), and the H161 gap-ledger absorbs what is priced out
+- **Hypothesis** - the surviving image pipeline, run end-to-end on the benchmark corpus, (a) adds <= 25% ingest wall-clock and <= 15% total tokens (filter active per H224), (b) its retrieval gain on the combined probe set (text census + image-derived probes) beats the H171 marginal-cost knee - image ingestion ships as a default stage, not an option
+- **Prediction** - with the decorative filter active the cost lands well under the caps; the gain concentrates in the rendered-table and photo-anchor classes
+- **Acceptance bar** - both clauses measured; PARTIAL if only a class subset clears (ship that subset); refuted if nothing clears the knee - visual content then enters the gap ledger as priced-out, with the census as the standing record of what was left behind
+- **Experiment** - full-pipeline scratch ingest + pinned-harness measurement + knee arithmetic; LAST in the round, consumes all prior artifacts
