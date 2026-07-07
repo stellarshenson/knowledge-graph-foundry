@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "n": 219,
+    "date": "20260707T152107Z",
+    "graph": "neo4j2",
+    "scorer": "H194 router (comparator + word-overlap)",
+    "convention": "HNSW top_k=64 truncated to k",
+    "tiers": {
+      "difficulty": 117,
+      "coverage": 102
+    },
+    "source": "H188-harness union (catalogue+spec, verbatim-verified) + cross-doc-corroborated consolidation golds",
+    "difficulty_headline": {
+      "core_r8": 0.6181818181818182,
+      "core_lever": 0.08181818181818179,
+      "with_consolidation_r8": 0.6410256410256411,
+      "with_consolidation_lever": 0.07692307692307687
+    }
+  },
+  "tier_summary": {
+    "difficulty(cat+spec+consol)": {
+      "n": 117,
+      "r8": 0.6410256410256411,
+      "r16": 0.717948717948718,
+      "lever": 0.07692307692307687
+    },
+    "core(catalogue+spec)": {
+      "n": 110,
+      "r8": 0.6181818181818182,
+      "r16": 0.7,
+      "lever": 0.08181818181818179
+    },
+    "consolidation": {
+      "n": 7,
+      "r8": 1.0,
+      "r16": 1.0,
+      "lever": 0.0
+    },
+    "coverage(features)": {
+      "n": 102,
+      "r8": 0.9607843137254902,
+      "r16": 1.0,
+      "lever": 0.039215686274509776
+    }
+  },
+  "by_rule": {
+    "catalogue_code": {
+      "n": 62,
+      "r8": 0.5967741935483871,
+      "r16": 0.6451612903225806
+    },
+    "doc_consolidation_spec": {
+      "n": 7,
+      "r8": 1.0,
+      "r16": 1.0
+    },
+    "doc_spec_proximity": {
+      "n": 16,
+      "r8": 0.75,
+      "r16": 0.875
+    },
+    "spec_sentence": {
+      "n": 12,
+      "r8": 0.6666666666666666,
+      "r16": 0.75
+    },
+    "spec_table_cell": {
+      "n": 20,
+      "r8": 0.55,
+      "r16": 0.7
+    }
+  }
+}

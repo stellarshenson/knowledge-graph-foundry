@@ -1,0 +1,29 @@
+{
+  "round": "R18-H197",
+  "utc": "20260707T152431Z",
+  "graph": "neo4j2",
+  "fingerprint_ms": 2.4,
+  "fingerprint_under_5s": true,
+  "fp0": {
+    "node_count": 2798,
+    "edge_count": 3905,
+    "embedding_count": 2798,
+    "n_carriers": 153,
+    "content_hash": "5d5632aeaa92f48d",
+    "embedding_digest": "c03a17c57c5fe1ee"
+  },
+  "matched_reproduction": "60/60",
+  "matched_ok": true,
+  "mutation": {
+    "excluded_doc": "ResMed-Airsense-11-Manual.pdf",
+    "excluded_carriers": 40,
+    "fingerprint_mismatch": true,
+    "content_hash_before": "5d5632aeaa92f48d",
+    "content_hash_after": "111fd0bf905c0a62",
+    "adjudication_drift_pairs": 6
+  },
+  "bars": {
+    "reproduces_60_of_60": true,
+    "mutation_mismatch_fires": true
+  }
+}

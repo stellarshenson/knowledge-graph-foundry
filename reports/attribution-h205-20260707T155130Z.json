@@ -1,0 +1,154 @@
+{
+  "round": "R19-H205",
+  "utc": "20260707T155130Z",
+  "graph": "neo4j2",
+  "fingerprint": {
+    "node_count": 2798,
+    "edge_count": 3905,
+    "embedding_count": 2798,
+    "n_carriers": 153,
+    "content_hash": "4e4317a8ca4b4998",
+    "embedding_digest": "c03a17c57c5fe1ee"
+  },
+  "primary_variant": "scoped_no_foreign_dev",
+  "variants": {
+    "baseline_full": {
+      "agreement": {
+        "prose": 0.917,
+        "ALL": 0.812,
+        "feature": 0.778
+      },
+      "combined": 0.907
+    },
+    "scoped_strict": {
+      "agreement": {
+        "prose": 0.75,
+        "ALL": 0.688,
+        "feature": 0.667
+      },
+      "combined": 0.846
+    },
+    "scoped_no_foreign_dev": {
+      "agreement": {
+        "prose": 0.917,
+        "ALL": 0.854,
+        "feature": 0.833
+      },
+      "combined": 0.928
+    }
+  },
+  "h194_numeric_dimension_unchanged": {
+    "numeric": 1.0,
+    "dimension": 1.0
+  },
+  "adjudication_notes": [
+    {
+      "product": "DreamStation",
+      "kind": "pos_own",
+      "stratum": "prose",
+      "label": 0,
+      "pred": 1,
+      "gold": "constant lower pressure",
+      "note": "prose describing SmartRamp behaviour; queried-product attribution arguable"
+    },
+    {
+      "product": "ResMed AirSense 10 AutoSet for Her",
+      "kind": "neg_foreign",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "EPR",
+      "note": "queried product legitimately carries this shared feature; 'absent' label semantically arguable"
+    },
+    {
+      "product": "DreamStation CPAP",
+      "kind": "pos_own",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "Wi-Fi connectivity",
+      "note": "connectivity near-miss (Bluetooth vs Wi-Fi) - lexical overlap on 'connectivity', not attribution"
+    },
+    {
+      "product": "AirSense 10 Elite",
+      "kind": "neg_foreign",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "heated humidifier",
+      "note": "queried product legitimately carries this shared feature; 'absent' label semantically arguable"
+    },
+    {
+      "product": "DreamStation CPAP",
+      "kind": "pos_own",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "Bluetooth connectivity",
+      "note": "connectivity near-miss (Bluetooth vs Wi-Fi) - lexical overlap on 'connectivity', not attribution"
+    }
+  ],
+  "residual_errors": [
+    {
+      "product": "DreamStation",
+      "kind": "pos_own",
+      "stratum": "prose",
+      "label": 0,
+      "pred": 1,
+      "gold": "constant lower pressure"
+    },
+    {
+      "product": "ResMed AirSense 10 AutoSet for Her",
+      "kind": "neg_foreign",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "EPR"
+    },
+    {
+      "product": "DreamStation CPAP Pro",
+      "kind": "neg_foreign",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "adjustable humidification"
+    },
+    {
+      "product": "DreamStation CPAP",
+      "kind": "pos_own",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "Wi-Fi connectivity"
+    },
+    {
+      "product": "AirSense 10 Elite",
+      "kind": "neg_foreign",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "heated humidifier"
+    },
+    {
+      "product": "DreamStation",
+      "kind": "pos_own",
+      "stratum": "feature",
+      "label": 1,
+      "pred": 0,
+      "gold": "adjustable humidification"
+    },
+    {
+      "product": "DreamStation CPAP",
+      "kind": "pos_own",
+      "stratum": "feature",
+      "label": 0,
+      "pred": 1,
+      "gold": "Bluetooth connectivity"
+    }
+  ],
+  "bars": {
+    "prose_feature_ge_090": false,
+    "combined_ge_097": false,
+    "numeric_dimension_zero_regression": true
+  }
+}

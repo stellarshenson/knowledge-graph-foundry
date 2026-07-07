@@ -1,0 +1,3040 @@
+{
+  "hypothesis": "R19-H199",
+  "utc": "20260707T153133Z",
+  "graph": "neo4j2",
+  "read_only": true,
+  "instrument": "H194 GPU-free router (comparator numeric/dim + word-overlap prose/feature)",
+  "retrieval": {
+    "index": "kgf_entity_embeddings",
+    "hnsw_top_k": 128,
+    "eval_k": 64,
+    "convention": "query-generous-truncate (H195)"
+  },
+  "n_golds": 101,
+  "n_miss": 60,
+  "recall_at_64": 0.40594059405940597,
+  "classification": {
+    "present-but-unranked": 37,
+    "absent-from-graph": 23
+  },
+  "frac_absent": 0.38333333333333336,
+  "n_absent": 23,
+  "never_entailing_residual": 3,
+  "clause_a": {
+    "absent_ge_70": false,
+    "overlap_ge_60": false,
+    "frac_absent": 0.38333333333333336,
+    "frac_mapped": 0.13043478260869565,
+    "loss_class_hits": {
+      "H190-glyph": 2,
+      "H144-table": 1
+    },
+    "vs_h193": {
+      "absent_delta": 0,
+      "unranked_delta": 33,
+      "within_3": false
+    },
+    "pass_": false
+  },
+  "clause_b": {
+    "forensics": [
+      {
+        "pid": "W002",
+        "token": "4 L/min",
+        "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+        "product": "AirStart 10 CPAP",
+        "parsers": {
+          "docling": true,
+          "pymupdf4llm": true,
+          "pdfplumber": true,
+          "pypdf": true
+        },
+        "n_parsers": 4,
+        "graph": {
+          "entity_name_desc": 0,
+          "proposition": 0,
+          "entity_prop": 0
+        },
+        "product_anchor": {
+          "entity_name_desc": 4,
+          "proposition": 53,
+          "entity_prop": 4
+        },
+        "mechanism": "survives-all-parsers, absent-from-graph -> EXTRACTION drop (spec/table cell not emitted)",
+        "doc_in_h144_flagset": false
+      },
+      {
+        "pid": "W066",
+        "token": "WM31660",
+        "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+        "product": "DC Adapter 12/24 V",
+        "parsers": {
+          "docling": true,
+          "pymupdf4llm": false,
+          "pdfplumber": false,
+          "pypdf": false
+        },
+        "n_parsers": 1,
+        "graph": {
+          "entity_name_desc": 0,
+          "proposition": 0,
+          "entity_prop": 0
+        },
+        "product_anchor": {
+          "entity_name_desc": 32,
+          "proposition": 275,
+          "entity_prop": 411
+        },
+        "mechanism": "survives-some-parsers, absent-from-graph -> EXTRACTION drop",
+        "doc_in_h144_flagset": false
+      },
+      {
+        "pid": "W071",
+        "token": "WM93335",
+        "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+        "product": "prismaBAG premium",
+        "parsers": {
+          "docling": true,
+          "pymupdf4llm": false,
+          "pdfplumber": false,
+          "pypdf": false
+        },
+        "n_parsers": 1,
+        "graph": {
+          "entity_name_desc": 0,
+          "proposition": 0,
+          "entity_prop": 0
+        },
+        "product_anchor": {
+          "entity_name_desc": 1,
+          "proposition": 5,
+          "entity_prop": 1
+        },
+        "mechanism": "survives-some-parsers, absent-from-graph -> EXTRACTION drop",
+        "doc_in_h144_flagset": false
+      }
+    ],
+    "all_extraction_drop": true,
+    "recommendation": "extend H144 flag set to include the AirStart-10 fact sheet and PrismaSmart brochure"
+  },
+  "clause_c": {
+    "n_unranked": 37,
+    "carriers_below_k64": 3,
+    "median_carrier_full_rank": 2.0,
+    "median_carrier_desc_chars": 0.0,
+    "corpus_median_desc_chars": 48.0,
+    "detail": [
+      {
+        "pid": "W001",
+        "gold": "E0471",
+        "product": "BiPAP autoSV Advanced with HeatedTube humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_aff62f4cc875f929",
+            "name": "BiPAP autoSV Advanced (base)",
+            "full_rank": 18,
+            "cosine": 0.3944005072116852,
+            "emb_text_chars": 29,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_af7a6b9f9eaef404",
+            "name": "BiPAP autoSV Advanced with humidifier",
+            "full_rank": 4,
+            "cosine": 0.5111970901489258,
+            "emb_text_chars": 38,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_44661af8142ff221",
+            "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+            "full_rank": 1,
+            "cosine": 0.5722205638885498,
+            "emb_text_chars": 50,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 16,
+            "cosine": 0.4043618440628052,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_519b1f11f3ac8945",
+            "name": "BiPAP S/T, C Series",
+            "full_rank": 26,
+            "cosine": 0.35456955432891846,
+            "emb_text_chars": 20,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_889eccfc46c8515a",
+            "name": "BiPAP S/T, C Series, Heated Tube core package",
+            "full_rank": 19,
+            "cosine": 0.39414381980895996,
+            "emb_text_chars": 46,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 20,
+            "cosine": 0.3829491138458252,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_d9aba454512e9fd7",
+            "name": "BiPAP S/T",
+            "full_rank": 14,
+            "cosine": 0.4280363917350769,
+            "emb_text_chars": 105,
+            "desc_chars": 95,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_44661af8142ff221",
+          "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+          "full_rank": 1,
+          "cosine": 0.5722205638885498,
+          "emb_text_chars": 50,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W004",
+        "gold": "PS0001464",
+        "product": "Continuous Positive Airway Pressure",
+        "doc": "moh-adp-product-manual-respiratory-devic",
+        "carriers": [
+          {
+            "cid": "e_c5c138d2ab602dd8",
+            "name": "F&P Sleepstyle Auto CPAP",
+            "full_rank": 93,
+            "cosine": 0.35465890169143677,
+            "emb_text_chars": 25,
+            "desc_chars": 0,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_c5c138d2ab602dd8",
+          "name": "F&P Sleepstyle Auto CPAP",
+          "full_rank": 93,
+          "cosine": 0.35465890169143677,
+          "emb_text_chars": 25,
+          "desc_chars": 0,
+          "below_k64": true
+        }
+      },
+      {
+        "pid": "W014",
+        "gold": "P1263",
+        "product": "Nasal cannula, pediatric",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_0b740246d0598533",
+            "name": "Nasal cannulas (pediatric)",
+            "full_rank": 0,
+            "cosine": 0.6977659463882446,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1c22567b3e856632",
+            "name": "Nasal air pressure transducer",
+            "full_rank": 252,
+            "cosine": 0.2242317497730255,
+            "emb_text_chars": 90,
+            "desc_chars": 60,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_0b740246d0598533",
+          "name": "Nasal cannulas (pediatric)",
+          "full_rank": 0,
+          "cosine": 0.6977659463882446,
+          "emb_text_chars": 27,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W016",
+        "gold": "E0471",
+        "product": "BiPAP autoSV Advanced with humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_aff62f4cc875f929",
+            "name": "BiPAP autoSV Advanced (base)",
+            "full_rank": 9,
+            "cosine": 0.4606439173221588,
+            "emb_text_chars": 29,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_af7a6b9f9eaef404",
+            "name": "BiPAP autoSV Advanced with humidifier",
+            "full_rank": 1,
+            "cosine": 0.5988218188285828,
+            "emb_text_chars": 38,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_44661af8142ff221",
+            "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+            "full_rank": 2,
+            "cosine": 0.5565445423126221,
+            "emb_text_chars": 50,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 13,
+            "cosine": 0.45269572734832764,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_519b1f11f3ac8945",
+            "name": "BiPAP S/T, C Series",
+            "full_rank": 26,
+            "cosine": 0.36952048540115356,
+            "emb_text_chars": 20,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_889eccfc46c8515a",
+            "name": "BiPAP S/T, C Series, Heated Tube core package",
+            "full_rank": 39,
+            "cosine": 0.31664374470710754,
+            "emb_text_chars": 46,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 19,
+            "cosine": 0.4159715473651886,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_d9aba454512e9fd7",
+            "name": "BiPAP S/T",
+            "full_rank": 12,
+            "cosine": 0.45558154582977295,
+            "emb_text_chars": 105,
+            "desc_chars": 95,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_af7a6b9f9eaef404",
+          "name": "BiPAP autoSV Advanced with humidifier",
+          "full_rank": 1,
+          "cosine": 0.5988218188285828,
+          "emb_text_chars": 38,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W017",
+        "gold": "P1368",
+        "product": "Pro-Flow multi-purpose cannula, adult, 5 pk",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_099ed42abd463dfb",
+            "name": "Pro-Flow multi-purpose cannula, adult",
+            "full_rank": 1,
+            "cosine": 0.6437152028083801,
+            "emb_text_chars": 83,
+            "desc_chars": 45,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_099ed42abd463dfb",
+          "name": "Pro-Flow multi-purpose cannula, adult",
+          "full_rank": 1,
+          "cosine": 0.6437152028083801,
+          "emb_text_chars": 83,
+          "desc_chars": 45,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W020",
+        "gold": "E0464",
+        "product": "CA1054096 Trilogy100 ventilator, Canada",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_dd0bcafe916a7589",
+            "name": "Trilogy100",
+            "full_rank": 5,
+            "cosine": 0.45182257890701294,
+            "emb_text_chars": 129,
+            "desc_chars": 118,
+            "below_k64": false
+          },
+          {
+            "cid": "e_479e8a79625fee11",
+            "name": "Trilogy100 Exhalation Port Block Active",
+            "full_rank": 26,
+            "cosine": 0.292381227016449,
+            "emb_text_chars": 84,
+            "desc_chars": 44,
+            "below_k64": false
+          },
+          {
+            "cid": "e_70d0c5b24a78a7cc",
+            "name": "Trilogy100 ventilator",
+            "full_rank": 2,
+            "cosine": 0.5045351982116699,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_70d0c5b24a78a7cc",
+          "name": "Trilogy100 ventilator",
+          "full_rank": 2,
+          "cosine": 0.5045351982116699,
+          "emb_text_chars": 22,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W021",
+        "gold": "P1259",
+        "product": "Nasal cannula, adult",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_5f2af8278883ddef",
+            "name": "Pro-Flow sample pack",
+            "full_rank": 1596,
+            "cosine": 0.09784332662820816,
+            "emb_text_chars": 21,
+            "desc_chars": 0,
+            "below_k64": true
+          },
+          {
+            "cid": "e_608b7bdf74a05d58",
+            "name": "Nasal Cannulas Adult",
+            "full_rank": 2,
+            "cosine": 0.6251047849655151,
+            "emb_text_chars": 76,
+            "desc_chars": 55,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f509b767a46a130e",
+            "name": "Nasal cannulas (adult)",
+            "full_rank": 0,
+            "cosine": 0.6577731370925903,
+            "emb_text_chars": 23,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1c22567b3e856632",
+            "name": "Nasal air pressure transducer",
+            "full_rank": 297,
+            "cosine": 0.22098244726657867,
+            "emb_text_chars": 90,
+            "desc_chars": 60,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_f509b767a46a130e",
+          "name": "Nasal cannulas (adult)",
+          "full_rank": 0,
+          "cosine": 0.6577731370925903,
+          "emb_text_chars": 23,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W024",
+        "gold": "E0601",
+        "product": "REMstar SE with humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 10,
+            "cosine": 0.36517366766929626,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2597,
+            "cosine": 0.022210873663425446,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 305,
+            "cosine": 0.1690317690372467,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 1,
+            "cosine": 0.5544319748878479,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 3,
+            "cosine": 0.5032088756561279,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 394,
+            "cosine": 0.15706786513328552,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_f5b5967b40a8439a",
+          "name": "REMstar SE with humidifier",
+          "full_rank": 1,
+          "cosine": 0.5544319748878479,
+          "emb_text_chars": 27,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W025",
+        "gold": "E0471",
+        "product": "BiPAP S/T,C Series",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_aff62f4cc875f929",
+            "name": "BiPAP autoSV Advanced (base)",
+            "full_rank": 15,
+            "cosine": 0.38741493225097656,
+            "emb_text_chars": 29,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_af7a6b9f9eaef404",
+            "name": "BiPAP autoSV Advanced with humidifier",
+            "full_rank": 24,
+            "cosine": 0.3479107618331909,
+            "emb_text_chars": 38,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_44661af8142ff221",
+            "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+            "full_rank": 25,
+            "cosine": 0.3457513749599457,
+            "emb_text_chars": 50,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 8,
+            "cosine": 0.4338327944278717,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_519b1f11f3ac8945",
+            "name": "BiPAP S/T, C Series",
+            "full_rank": 0,
+            "cosine": 0.6659389138221741,
+            "emb_text_chars": 20,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_889eccfc46c8515a",
+            "name": "BiPAP S/T, C Series, Heated Tube core package",
+            "full_rank": 3,
+            "cosine": 0.5344308018684387,
+            "emb_text_chars": 46,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 2,
+            "cosine": 0.5514571070671082,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_d9aba454512e9fd7",
+            "name": "BiPAP S/T",
+            "full_rank": 6,
+            "cosine": 0.44110530614852905,
+            "emb_text_chars": 105,
+            "desc_chars": 95,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_519b1f11f3ac8945",
+          "name": "BiPAP S/T, C Series",
+          "full_rank": 0,
+          "cosine": 0.6659389138221741,
+          "emb_text_chars": 20,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W026",
+        "gold": "E0601",
+        "product": "REMstar Pro C-Flex+",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 8,
+            "cosine": 0.41849735379219055,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2711,
+            "cosine": 0.004281423054635525,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 632,
+            "cosine": 0.13665957748889923,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 13,
+            "cosine": 0.3425713777542114,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 15,
+            "cosine": 0.33294427394866943,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 2688,
+            "cosine": 0.009715251624584198,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_72ce4deadbf7dced",
+          "name": "REMstar Auto",
+          "full_rank": 8,
+          "cosine": 0.41849735379219055,
+          "emb_text_chars": 88,
+          "desc_chars": 75,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W030",
+        "gold": "A7039",
+        "product": "Pollen  filter , reusable",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_cfda7e44f493993b",
+            "name": "Pollen (foam) filter, reusable (1 per pack)",
+            "full_rank": 6,
+            "cosine": 0.42955824732780457,
+            "emb_text_chars": 44,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1b389d752da3858c",
+            "name": "Pollen Foam Filter Reusable 1 Pack",
+            "full_rank": 8,
+            "cosine": 0.4200844168663025,
+            "emb_text_chars": 63,
+            "desc_chars": 28,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_cfda7e44f493993b",
+          "name": "Pollen (foam) filter, reusable (1 per pack)",
+          "full_rank": 6,
+          "cosine": 0.42955824732780457,
+          "emb_text_chars": 44,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W032",
+        "gold": "E0470",
+        "product": "BiPAP Pro Bi-Flex with HeatedTube humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_4e497a448cf92237",
+            "name": "BiPAP Auto Bi-Flex",
+            "full_rank": 13,
+            "cosine": 0.4247928261756897,
+            "emb_text_chars": 19,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_0c091172d836a226",
+            "name": "BiPAP Auto Bi-Flex with humidifier",
+            "full_rank": 5,
+            "cosine": 0.494045615196228,
+            "emb_text_chars": 35,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1899429ab3041119",
+            "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+            "full_rank": 1,
+            "cosine": 0.5449205636978149,
+            "emb_text_chars": 47,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_2f2bf82e7f7e48ff",
+            "name": "BiPAP Pro Bi-Flex",
+            "full_rank": 11,
+            "cosine": 0.4475034475326538,
+            "emb_text_chars": 18,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_1899429ab3041119",
+          "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+          "full_rank": 1,
+          "cosine": 0.5449205636978149,
+          "emb_text_chars": 47,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W035",
+        "gold": "E0601",
+        "product": "REMstar Auto A-Flex",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 7,
+            "cosine": 0.4454231858253479,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2358,
+            "cosine": 0.029849251732230186,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 430,
+            "cosine": 0.1277311146259308,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 15,
+            "cosine": 0.31987056136131287,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 17,
+            "cosine": 0.3044130802154541,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 2645,
+            "cosine": 0.005832362920045853,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_72ce4deadbf7dced",
+          "name": "REMstar Auto",
+          "full_rank": 7,
+          "cosine": 0.4454231858253479,
+          "emb_text_chars": 88,
+          "desc_chars": 75,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W038",
+        "gold": "E0470",
+        "product": "BiPAP Auto Bi-Flex with HeatedTube humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_4e497a448cf92237",
+            "name": "BiPAP Auto Bi-Flex",
+            "full_rank": 12,
+            "cosine": 0.4376963973045349,
+            "emb_text_chars": 19,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_0c091172d836a226",
+            "name": "BiPAP Auto Bi-Flex with humidifier",
+            "full_rank": 3,
+            "cosine": 0.5057125091552734,
+            "emb_text_chars": 35,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1899429ab3041119",
+            "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+            "full_rank": 1,
+            "cosine": 0.5551093816757202,
+            "emb_text_chars": 47,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_2f2bf82e7f7e48ff",
+            "name": "BiPAP Pro Bi-Flex",
+            "full_rank": 16,
+            "cosine": 0.4083881974220276,
+            "emb_text_chars": 18,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_1899429ab3041119",
+          "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+          "full_rank": 1,
+          "cosine": 0.5551093816757202,
+          "emb_text_chars": 47,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W039",
+        "gold": "275mm x 170mm x 140mm",
+        "product": "SleepStyle 200 Series",
+        "doc": "SleepStyle_200_Operating_Manual.pdf",
+        "carriers": [
+          {
+            "cid": "e_27c8180283f53e64",
+            "name": "SleepStyle 200 Series",
+            "full_rank": 2,
+            "cosine": 0.4602149426937103,
+            "emb_text_chars": 128,
+            "desc_chars": 106,
+            "below_k64": false
+          },
+          {
+            "cid": "e_b23e9ca8b0913d4b",
+            "name": "HC230-Series",
+            "full_rank": 74,
+            "cosine": 0.18190982937812805,
+            "emb_text_chars": 75,
+            "desc_chars": 62,
+            "below_k64": true
+          },
+          {
+            "cid": "e_b50d35105be2ca73",
+            "name": "HC230 Standard Range",
+            "full_rank": 403,
+            "cosine": 0.12531086802482605,
+            "emb_text_chars": 84,
+            "desc_chars": 63,
+            "below_k64": true
+          },
+          {
+            "cid": "e_d69d444b9b004f48",
+            "name": "HC230 Product Range",
+            "full_rank": 449,
+            "cosine": 0.12082058191299438,
+            "emb_text_chars": 101,
+            "desc_chars": 81,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_27c8180283f53e64",
+          "name": "SleepStyle 200 Series",
+          "full_rank": 2,
+          "cosine": 0.4602149426937103,
+          "emb_text_chars": 128,
+          "desc_chars": 106,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W041",
+        "gold": "E0601",
+        "product": "REMstar Plus C-Flex with humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 10,
+            "cosine": 0.3831082582473755,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2740,
+            "cosine": 0.005456768907606602,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 537,
+            "cosine": 0.15621328353881836,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 5,
+            "cosine": 0.4647928774356842,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 9,
+            "cosine": 0.428562194108963,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 993,
+            "cosine": 0.12307596206665039,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_f5b5967b40a8439a",
+          "name": "REMstar SE with humidifier",
+          "full_rank": 5,
+          "cosine": 0.4647928774356842,
+          "emb_text_chars": 27,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W042",
+        "gold": "E0601",
+        "product": "REMstar SE",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 12,
+            "cosine": 0.4012560546398163,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2325,
+            "cosine": 0.030738376080989838,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 303,
+            "cosine": 0.14007800817489624,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 3,
+            "cosine": 0.4595116078853607,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 6,
+            "cosine": 0.4326457977294922,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 2441,
+            "cosine": 0.021769501268863678,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_f5b5967b40a8439a",
+          "name": "REMstar SE with humidifier",
+          "full_rank": 3,
+          "cosine": 0.4595116078853607,
+          "emb_text_chars": 27,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W043",
+        "gold": "E0601",
+        "product": "REMstar Plus C-Flex with HeatedTube humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 12,
+            "cosine": 0.34822267293930054,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2736,
+            "cosine": 0.002252547536045313,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 715,
+            "cosine": 0.13664361834526062,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 7,
+            "cosine": 0.4174883961677551,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 6,
+            "cosine": 0.47734835743904114,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 1184,
+            "cosine": 0.10677312314510345,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_bda0df2fef9c577a",
+          "name": "REMstar SE with Heated Tube humidifier",
+          "full_rank": 6,
+          "cosine": 0.47734835743904114,
+          "emb_text_chars": 39,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W044",
+        "gold": "4 cm H2O",
+        "product": "DreamStation CPAP",
+        "doc": "BC-Dreamstation-Standard-CPAP.pdf",
+        "carriers": [
+          {
+            "cid": "e_2a969c56418fe587",
+            "name": "4\u201320cm H2O pressure range",
+            "full_rank": 226,
+            "cosine": 0.26402512192726135,
+            "emb_text_chars": 79,
+            "desc_chars": 53,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_2a969c56418fe587",
+          "name": "4\u201320cm H2O pressure range",
+          "full_rank": 226,
+          "cosine": 0.26402512192726135,
+          "emb_text_chars": 79,
+          "desc_chars": 53,
+          "below_k64": true
+        }
+      },
+      {
+        "pid": "W045",
+        "gold": "E0470",
+        "product": "BiPAP Pro Bi-Flex",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_4e497a448cf92237",
+            "name": "BiPAP Auto Bi-Flex",
+            "full_rank": 2,
+            "cosine": 0.581013560295105,
+            "emb_text_chars": 19,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_0c091172d836a226",
+            "name": "BiPAP Auto Bi-Flex with humidifier",
+            "full_rank": 7,
+            "cosine": 0.45500463247299194,
+            "emb_text_chars": 35,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1899429ab3041119",
+            "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+            "full_rank": 8,
+            "cosine": 0.44961732625961304,
+            "emb_text_chars": 47,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_2f2bf82e7f7e48ff",
+            "name": "BiPAP Pro Bi-Flex",
+            "full_rank": 1,
+            "cosine": 0.6211918592453003,
+            "emb_text_chars": 18,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_2f2bf82e7f7e48ff",
+          "name": "BiPAP Pro Bi-Flex",
+          "full_rank": 1,
+          "cosine": 0.6211918592453003,
+          "emb_text_chars": 18,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W047",
+        "gold": "CA1161X",
+        "product": "BiPAP AVAPS, CSeries",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 2,
+            "cosine": 0.6284759044647217,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 0,
+            "cosine": 0.8344374299049377,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_f58c295a5bc198f7",
+          "name": "BiPAP AVAPS, C Series",
+          "full_rank": 0,
+          "cosine": 0.8344374299049377,
+          "emb_text_chars": 22,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W048",
+        "gold": "E0471",
+        "product": "BiPAP S/T,C Series, HeatedTube core package",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_aff62f4cc875f929",
+            "name": "BiPAP autoSV Advanced (base)",
+            "full_rank": 26,
+            "cosine": 0.3269476890563965,
+            "emb_text_chars": 29,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_af7a6b9f9eaef404",
+            "name": "BiPAP autoSV Advanced with humidifier",
+            "full_rank": 35,
+            "cosine": 0.29798561334609985,
+            "emb_text_chars": 38,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_44661af8142ff221",
+            "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+            "full_rank": 10,
+            "cosine": 0.3962521255016327,
+            "emb_text_chars": 50,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 17,
+            "cosine": 0.3626714050769806,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_519b1f11f3ac8945",
+            "name": "BiPAP S/T, C Series",
+            "full_rank": 2,
+            "cosine": 0.5166035890579224,
+            "emb_text_chars": 20,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_889eccfc46c8515a",
+            "name": "BiPAP S/T, C Series, Heated Tube core package",
+            "full_rank": 0,
+            "cosine": 0.6730465292930603,
+            "emb_text_chars": 46,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 7,
+            "cosine": 0.4392942190170288,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_d9aba454512e9fd7",
+            "name": "BiPAP S/T",
+            "full_rank": 11,
+            "cosine": 0.3959333300590515,
+            "emb_text_chars": 105,
+            "desc_chars": 95,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_889eccfc46c8515a",
+          "name": "BiPAP S/T, C Series, Heated Tube core package",
+          "full_rank": 0,
+          "cosine": 0.6730465292930603,
+          "emb_text_chars": 46,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W051",
+        "gold": "E0470",
+        "product": "BiPAP Pro Bi-Flex with humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_4e497a448cf92237",
+            "name": "BiPAP Auto Bi-Flex",
+            "full_rank": 9,
+            "cosine": 0.47324368357658386,
+            "emb_text_chars": 19,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_0c091172d836a226",
+            "name": "BiPAP Auto Bi-Flex with humidifier",
+            "full_rank": 1,
+            "cosine": 0.5581476092338562,
+            "emb_text_chars": 35,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1899429ab3041119",
+            "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+            "full_rank": 2,
+            "cosine": 0.5250471830368042,
+            "emb_text_chars": 47,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_2f2bf82e7f7e48ff",
+            "name": "BiPAP Pro Bi-Flex",
+            "full_rank": 4,
+            "cosine": 0.5007578134536743,
+            "emb_text_chars": 18,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_0c091172d836a226",
+          "name": "BiPAP Auto Bi-Flex with humidifier",
+          "full_rank": 1,
+          "cosine": 0.5581476092338562,
+          "emb_text_chars": 35,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W057",
+        "gold": "CA1161XTS",
+        "product": "BiPAPAVAPS,C Series, HeatedTube core package",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 13,
+            "cosine": 0.401419997215271,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_39b4f5990efddea6",
+          "name": "BiPAP AVAPS",
+          "full_rank": 13,
+          "cosine": 0.401419997215271,
+          "emb_text_chars": 117,
+          "desc_chars": 105,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W063",
+        "gold": "P1295",
+        "product": "Nasal/oral cannula, adult",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_5f2af8278883ddef",
+            "name": "Pro-Flow sample pack",
+            "full_rank": 1564,
+            "cosine": 0.09757491946220398,
+            "emb_text_chars": 21,
+            "desc_chars": 0,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_5f2af8278883ddef",
+          "name": "Pro-Flow sample pack",
+          "full_rank": 1564,
+          "cosine": 0.09757491946220398,
+          "emb_text_chars": 21,
+          "desc_chars": 0,
+          "below_k64": true
+        }
+      },
+      {
+        "pid": "W067",
+        "gold": "E0601",
+        "product": "REMstar SE with HeatedTube humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 13,
+            "cosine": 0.33407336473464966,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2640,
+            "cosine": 0.014151429757475853,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 518,
+            "cosine": 0.1401435136795044,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 5,
+            "cosine": 0.4804731011390686,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 1,
+            "cosine": 0.5468122959136963,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 612,
+            "cosine": 0.13255339860916138,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_bda0df2fef9c577a",
+          "name": "REMstar SE with Heated Tube humidifier",
+          "full_rank": 1,
+          "cosine": 0.5468122959136963,
+          "emb_text_chars": 39,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W069",
+        "gold": "E0464",
+        "product": "CA1032800 Trilogy200 ventilator, Canada",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_dd0bcafe916a7589",
+            "name": "Trilogy100",
+            "full_rank": 5,
+            "cosine": 0.41609519720077515,
+            "emb_text_chars": 129,
+            "desc_chars": 118,
+            "below_k64": false
+          },
+          {
+            "cid": "e_479e8a79625fee11",
+            "name": "Trilogy100 Exhalation Port Block Active",
+            "full_rank": 27,
+            "cosine": 0.27982836961746216,
+            "emb_text_chars": 84,
+            "desc_chars": 44,
+            "below_k64": false
+          },
+          {
+            "cid": "e_70d0c5b24a78a7cc",
+            "name": "Trilogy100 ventilator",
+            "full_rank": 3,
+            "cosine": 0.47288060188293457,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_70d0c5b24a78a7cc",
+          "name": "Trilogy100 ventilator",
+          "full_rank": 3,
+          "cosine": 0.47288060188293457,
+          "emb_text_chars": 22,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W070",
+        "gold": "E0470",
+        "product": "BiPAP Auto Bi-Flex",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_4e497a448cf92237",
+            "name": "BiPAP Auto Bi-Flex",
+            "full_rank": 0,
+            "cosine": 0.6271809339523315,
+            "emb_text_chars": 19,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_0c091172d836a226",
+            "name": "BiPAP Auto Bi-Flex with humidifier",
+            "full_rank": 3,
+            "cosine": 0.4913678467273712,
+            "emb_text_chars": 35,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1899429ab3041119",
+            "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+            "full_rank": 5,
+            "cosine": 0.47913533449172974,
+            "emb_text_chars": 47,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_2f2bf82e7f7e48ff",
+            "name": "BiPAP Pro Bi-Flex",
+            "full_rank": 2,
+            "cosine": 0.5787360668182373,
+            "emb_text_chars": 18,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_4e497a448cf92237",
+          "name": "BiPAP Auto Bi-Flex",
+          "full_rank": 0,
+          "cosine": 0.6271809339523315,
+          "emb_text_chars": 19,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W078",
+        "gold": "E0601",
+        "product": "REMstar Pro C-Flex+ with humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 10,
+            "cosine": 0.38211894035339355,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2753,
+            "cosine": 0.0014171851798892021,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 487,
+            "cosine": 0.16086305677890778,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 6,
+            "cosine": 0.4538290202617645,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 9,
+            "cosine": 0.4199472665786743,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 925,
+            "cosine": 0.12729692459106445,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_f5b5967b40a8439a",
+          "name": "REMstar SE with humidifier",
+          "full_rank": 6,
+          "cosine": 0.4538290202617645,
+          "emb_text_chars": 27,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W083",
+        "gold": "E0471",
+        "product": "BiPAPAVAPS,C Series, HeatedTube core package",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_aff62f4cc875f929",
+            "name": "BiPAP autoSV Advanced (base)",
+            "full_rank": 34,
+            "cosine": 0.2956676185131073,
+            "emb_text_chars": 29,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_af7a6b9f9eaef404",
+            "name": "BiPAP autoSV Advanced with humidifier",
+            "full_rank": 52,
+            "cosine": 0.26953378319740295,
+            "emb_text_chars": 38,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_44661af8142ff221",
+            "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+            "full_rank": 14,
+            "cosine": 0.36313366889953613,
+            "emb_text_chars": 50,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 12,
+            "cosine": 0.37164705991744995,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_519b1f11f3ac8945",
+            "name": "BiPAP S/T, C Series",
+            "full_rank": 6,
+            "cosine": 0.4631422162055969,
+            "emb_text_chars": 20,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_889eccfc46c8515a",
+            "name": "BiPAP S/T, C Series, Heated Tube core package",
+            "full_rank": 0,
+            "cosine": 0.6339561343193054,
+            "emb_text_chars": 46,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 4,
+            "cosine": 0.4684903025627136,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_d9aba454512e9fd7",
+            "name": "BiPAP S/T",
+            "full_rank": 18,
+            "cosine": 0.35197699069976807,
+            "emb_text_chars": 105,
+            "desc_chars": 95,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_889eccfc46c8515a",
+          "name": "BiPAP S/T, C Series, Heated Tube core package",
+          "full_rank": 0,
+          "cosine": 0.6339561343193054,
+          "emb_text_chars": 46,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W084",
+        "gold": "E0601",
+        "product": "REMstar Plus C-Flex",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 7,
+            "cosine": 0.42239928245544434,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2669,
+            "cosine": 0.009221026673913002,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 679,
+            "cosine": 0.13261011242866516,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 13,
+            "cosine": 0.3622068166732788,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 14,
+            "cosine": 0.34802842140197754,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 2723,
+            "cosine": -0.0007040901109576225,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_72ce4deadbf7dced",
+          "name": "REMstar Auto",
+          "full_rank": 7,
+          "cosine": 0.42239928245544434,
+          "emb_text_chars": 88,
+          "desc_chars": 75,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W086",
+        "gold": "E0471",
+        "product": "BiPAP autoSV Advanced",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_aff62f4cc875f929",
+            "name": "BiPAP autoSV Advanced (base)",
+            "full_rank": 2,
+            "cosine": 0.5846855640411377,
+            "emb_text_chars": 29,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_af7a6b9f9eaef404",
+            "name": "BiPAP autoSV Advanced with humidifier",
+            "full_rank": 3,
+            "cosine": 0.49080562591552734,
+            "emb_text_chars": 38,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_44661af8142ff221",
+            "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+            "full_rank": 6,
+            "cosine": 0.4576384425163269,
+            "emb_text_chars": 50,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 7,
+            "cosine": 0.45530545711517334,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_519b1f11f3ac8945",
+            "name": "BiPAP S/T, C Series",
+            "full_rank": 13,
+            "cosine": 0.39145538210868835,
+            "emb_text_chars": 20,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_889eccfc46c8515a",
+            "name": "BiPAP S/T, C Series, Heated Tube core package",
+            "full_rank": 28,
+            "cosine": 0.31221872568130493,
+            "emb_text_chars": 46,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 8,
+            "cosine": 0.4318360984325409,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_d9aba454512e9fd7",
+            "name": "BiPAP S/T",
+            "full_rank": 16,
+            "cosine": 0.3816453218460083,
+            "emb_text_chars": 105,
+            "desc_chars": 95,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_aff62f4cc875f929",
+          "name": "BiPAP autoSV Advanced (base)",
+          "full_rank": 2,
+          "cosine": 0.5846855640411377,
+          "emb_text_chars": 29,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W093",
+        "gold": "40 oz",
+        "product": "AirSense 11 AutoSet",
+        "doc": "ResMed-Airsense-11-Manual.pdf",
+        "carriers": [
+          {
+            "cid": "e_8ef93aba45ec1ead",
+            "name": "Device weight",
+            "full_rank": 14,
+            "cosine": 0.3622340261936188,
+            "emb_text_chars": 50,
+            "desc_chars": 36,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_8ef93aba45ec1ead",
+          "name": "Device weight",
+          "full_rank": 14,
+          "cosine": 0.3622340261936188,
+          "emb_text_chars": 50,
+          "desc_chars": 36,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W094",
+        "gold": "E0471",
+        "product": "BiPAP AVAPS, CSeries",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_aff62f4cc875f929",
+            "name": "BiPAP autoSV Advanced (base)",
+            "full_rank": 14,
+            "cosine": 0.40916961431503296,
+            "emb_text_chars": 29,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_af7a6b9f9eaef404",
+            "name": "BiPAP autoSV Advanced with humidifier",
+            "full_rank": 21,
+            "cosine": 0.3591099977493286,
+            "emb_text_chars": 38,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_44661af8142ff221",
+            "name": "BiPAP autoSV Advanced with Heated Tube humidifier",
+            "full_rank": 26,
+            "cosine": 0.34033405780792236,
+            "emb_text_chars": 50,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_39b4f5990efddea6",
+            "name": "BiPAP AVAPS",
+            "full_rank": 2,
+            "cosine": 0.5722560882568359,
+            "emb_text_chars": 117,
+            "desc_chars": 105,
+            "below_k64": false
+          },
+          {
+            "cid": "e_519b1f11f3ac8945",
+            "name": "BiPAP S/T, C Series",
+            "full_rank": 3,
+            "cosine": 0.5558062791824341,
+            "emb_text_chars": 20,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_889eccfc46c8515a",
+            "name": "BiPAP S/T, C Series, Heated Tube core package",
+            "full_rank": 7,
+            "cosine": 0.44305726885795593,
+            "emb_text_chars": 46,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_f58c295a5bc198f7",
+            "name": "BiPAP AVAPS, C Series",
+            "full_rank": 0,
+            "cosine": 0.6767884492874146,
+            "emb_text_chars": 22,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_d9aba454512e9fd7",
+            "name": "BiPAP S/T",
+            "full_rank": 19,
+            "cosine": 0.3838545083999634,
+            "emb_text_chars": 105,
+            "desc_chars": 95,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_f58c295a5bc198f7",
+          "name": "BiPAP AVAPS, C Series",
+          "full_rank": 0,
+          "cosine": 0.6767884492874146,
+          "emb_text_chars": 22,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W097",
+        "gold": "E0470",
+        "product": "BiPAP Auto Bi-Flex with humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_4e497a448cf92237",
+            "name": "BiPAP Auto Bi-Flex",
+            "full_rank": 6,
+            "cosine": 0.49329519271850586,
+            "emb_text_chars": 19,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_0c091172d836a226",
+            "name": "BiPAP Auto Bi-Flex with humidifier",
+            "full_rank": 1,
+            "cosine": 0.5793190598487854,
+            "emb_text_chars": 35,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1899429ab3041119",
+            "name": "BiPAP Auto Bi-Flex with Heated Tube humidifier",
+            "full_rank": 2,
+            "cosine": 0.5419808626174927,
+            "emb_text_chars": 47,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_2f2bf82e7f7e48ff",
+            "name": "BiPAP Pro Bi-Flex",
+            "full_rank": 12,
+            "cosine": 0.4553607106208801,
+            "emb_text_chars": 18,
+            "desc_chars": 0,
+            "below_k64": false
+          }
+        ],
+        "best": {
+          "cid": "e_0c091172d836a226",
+          "name": "BiPAP Auto Bi-Flex with humidifier",
+          "full_rank": 1,
+          "cosine": 0.5793190598487854,
+          "emb_text_chars": 35,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W098",
+        "gold": "E0601",
+        "product": "REMstar Auto A-Flex with HeatedTube humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 10,
+            "cosine": 0.37803295254707336,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2633,
+            "cosine": 0.01940096914768219,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 611,
+            "cosine": 0.13898369669914246,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 8,
+            "cosine": 0.4007054567337036,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 7,
+            "cosine": 0.45893561840057373,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 971,
+            "cosine": 0.11538493633270264,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_bda0df2fef9c577a",
+          "name": "REMstar SE with Heated Tube humidifier",
+          "full_rank": 7,
+          "cosine": 0.45893561840057373,
+          "emb_text_chars": 39,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      },
+      {
+        "pid": "W101",
+        "gold": "E0601",
+        "product": "REMstar Pro C-Flex+ with HeatedTube humidifier",
+        "doc": "product_and_solutions_catalog.pdf",
+        "carriers": [
+          {
+            "cid": "e_72ce4deadbf7dced",
+            "name": "REMstar Auto",
+            "full_rank": 12,
+            "cosine": 0.349514901638031,
+            "emb_text_chars": 88,
+            "desc_chars": 75,
+            "below_k64": false
+          },
+          {
+            "cid": "e_75691282e84d8c26",
+            "name": "On-board memory",
+            "full_rank": 2749,
+            "cosine": -0.001201818697154522,
+            "emb_text_chars": 61,
+            "desc_chars": 45,
+            "below_k64": true
+          },
+          {
+            "cid": "e_9b4360a5851e1d55",
+            "name": "Enhanced VIC reporting",
+            "full_rank": 695,
+            "cosine": 0.13705164194107056,
+            "emb_text_chars": 77,
+            "desc_chars": 54,
+            "below_k64": true
+          },
+          {
+            "cid": "e_f5b5967b40a8439a",
+            "name": "REMstar SE with humidifier",
+            "full_rank": 7,
+            "cosine": 0.41033583879470825,
+            "emb_text_chars": 27,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_bda0df2fef9c577a",
+            "name": "REMstar SE with Heated Tube humidifier",
+            "full_rank": 6,
+            "cosine": 0.4746837913990021,
+            "emb_text_chars": 39,
+            "desc_chars": 0,
+            "below_k64": false
+          },
+          {
+            "cid": "e_1e05940c6b7d9bd3",
+            "name": "Two-year warranty",
+            "full_rank": 1087,
+            "cosine": 0.11235842853784561,
+            "emb_text_chars": 82,
+            "desc_chars": 64,
+            "below_k64": true
+          }
+        ],
+        "best": {
+          "cid": "e_bda0df2fef9c577a",
+          "name": "REMstar SE with Heated Tube humidifier",
+          "full_rank": 6,
+          "cosine": 0.4746837913990021,
+          "emb_text_chars": 39,
+          "desc_chars": 0,
+          "below_k64": false
+        }
+      }
+    ],
+    "dilution_signature": false
+  },
+  "absent_detail": [
+    {
+      "pid": "W002",
+      "gold": "4 L/min",
+      "rule": "spec_table_cell",
+      "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W006",
+      "gold": "1098078",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W009",
+      "gold": "1097940",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W010",
+      "gold": "1097348",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W013",
+      "gold": "8192",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W023",
+      "gold": "1069194",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W027",
+      "gold": "1,33 kg",
+      "rule": "spec_table_cell",
+      "doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "loss": [
+        "H190-glyph"
+      ]
+    },
+    {
+      "pid": "W028",
+      "gold": "P1267",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W033",
+      "gold": "900 VA",
+      "rule": "spec_table_cell",
+      "doc": "CPAP-Machines-Brochure.pdf",
+      "loss": [
+        "H144-table"
+      ]
+    },
+    {
+      "pid": "W052",
+      "gold": "1111124",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W056",
+      "gold": "1067148",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W058",
+      "gold": "1097349",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W066",
+      "gold": "WM31660",
+      "rule": "catalogue_code",
+      "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W071",
+      "gold": "WM93335",
+      "rule": "catalogue_code",
+      "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W073",
+      "gold": "1097939",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W076",
+      "gold": "1082653",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W081",
+      "gold": "1024582",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W087",
+      "gold": "265 mm \u00d7 145 mm \u00d7 114 mm",
+      "rule": "spec_sentence",
+      "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "loss": [
+        "H190-glyph"
+      ]
+    },
+    {
+      "pid": "W089",
+      "gold": "1063785",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W090",
+      "gold": "P1369",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W091",
+      "gold": "1111551",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W092",
+      "gold": "1097345",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    },
+    {
+      "pid": "W095",
+      "gold": "1069193",
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf",
+      "loss": [
+        "unmapped"
+      ]
+    }
+  ],
+  "miss_detail": [
+    {
+      "pid": "W001",
+      "gold": "E0471",
+      "cls": "present-but-unranked",
+      "n_carriers": 11,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W002",
+      "gold": "4 L/min",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "spec_table_cell",
+      "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf"
+    },
+    {
+      "pid": "W004",
+      "gold": "PS0001464",
+      "cls": "present-but-unranked",
+      "n_carriers": 1,
+      "rule": "catalogue_code",
+      "doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf"
+    },
+    {
+      "pid": "W006",
+      "gold": "1098078",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W009",
+      "gold": "1097940",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W010",
+      "gold": "1097348",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W013",
+      "gold": "8192",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W014",
+      "gold": "P1263",
+      "cls": "present-but-unranked",
+      "n_carriers": 2,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W016",
+      "gold": "E0471",
+      "cls": "present-but-unranked",
+      "n_carriers": 11,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W017",
+      "gold": "P1368",
+      "cls": "present-but-unranked",
+      "n_carriers": 1,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W020",
+      "gold": "E0464",
+      "cls": "present-but-unranked",
+      "n_carriers": 3,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W021",
+      "gold": "P1259",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W023",
+      "gold": "1069194",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W024",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W025",
+      "gold": "E0471",
+      "cls": "present-but-unranked",
+      "n_carriers": 11,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W026",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W027",
+      "gold": "1,33 kg",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "spec_table_cell",
+      "doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf"
+    },
+    {
+      "pid": "W028",
+      "gold": "P1267",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W030",
+      "gold": "A7039",
+      "cls": "present-but-unranked",
+      "n_carriers": 2,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W032",
+      "gold": "E0470",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W033",
+      "gold": "900 VA",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "spec_table_cell",
+      "doc": "CPAP-Machines-Brochure.pdf"
+    },
+    {
+      "pid": "W035",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W038",
+      "gold": "E0470",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W039",
+      "gold": "275mm x 170mm x 140mm",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "spec_sentence",
+      "doc": "SleepStyle_200_Operating_Manual.pdf"
+    },
+    {
+      "pid": "W041",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W042",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W043",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W044",
+      "gold": "4 cm H2O",
+      "cls": "present-but-unranked",
+      "n_carriers": 1,
+      "rule": "spec_table_cell",
+      "doc": "BC-Dreamstation-Standard-CPAP.pdf"
+    },
+    {
+      "pid": "W045",
+      "gold": "E0470",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W047",
+      "gold": "CA1161X",
+      "cls": "present-but-unranked",
+      "n_carriers": 2,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W048",
+      "gold": "E0471",
+      "cls": "present-but-unranked",
+      "n_carriers": 11,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W051",
+      "gold": "E0470",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W052",
+      "gold": "1111124",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W056",
+      "gold": "1067148",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W057",
+      "gold": "CA1161XTS",
+      "cls": "present-but-unranked",
+      "n_carriers": 1,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W058",
+      "gold": "1097349",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W063",
+      "gold": "P1295",
+      "cls": "present-but-unranked",
+      "n_carriers": 1,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W066",
+      "gold": "WM31660",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf"
+    },
+    {
+      "pid": "W067",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W069",
+      "gold": "E0464",
+      "cls": "present-but-unranked",
+      "n_carriers": 3,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W070",
+      "gold": "E0470",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W071",
+      "gold": "WM93335",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf"
+    },
+    {
+      "pid": "W073",
+      "gold": "1097939",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W076",
+      "gold": "1082653",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W078",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W081",
+      "gold": "1024582",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W083",
+      "gold": "E0471",
+      "cls": "present-but-unranked",
+      "n_carriers": 11,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W084",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W086",
+      "gold": "E0471",
+      "cls": "present-but-unranked",
+      "n_carriers": 11,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W087",
+      "gold": "265 mm \u00d7 145 mm \u00d7 114 mm",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "spec_sentence",
+      "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf"
+    },
+    {
+      "pid": "W089",
+      "gold": "1063785",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W090",
+      "gold": "P1369",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W091",
+      "gold": "1111551",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W092",
+      "gold": "1097345",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W093",
+      "gold": "40 oz",
+      "cls": "present-but-unranked",
+      "n_carriers": 1,
+      "rule": "spec_table_cell",
+      "doc": "ResMed-Airsense-11-Manual.pdf"
+    },
+    {
+      "pid": "W094",
+      "gold": "E0471",
+      "cls": "present-but-unranked",
+      "n_carriers": 11,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W095",
+      "gold": "1069193",
+      "cls": "absent-from-graph",
+      "n_carriers": 0,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W097",
+      "gold": "E0470",
+      "cls": "present-but-unranked",
+      "n_carriers": 4,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W098",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    },
+    {
+      "pid": "W101",
+      "gold": "E0601",
+      "cls": "present-but-unranked",
+      "n_carriers": 6,
+      "rule": "catalogue_code",
+      "doc": "product_and_solutions_catalog.pdf"
+    }
+  ],
+  "reproduction_vs_saved_h193": {
+    "h193_recall64": 0.7623762376237624,
+    "h199_recall64": 0.40594059405940597,
+    "h193_classification": {
+      "present-but-unranked": 8,
+      "absent-from-graph": 9,
+      "present-but-never-entailing": 7
+    },
+    "h193_verdict": "REFUTED",
+    "snapshot_drift": true
+  },
+  "router_port_divergence": {
+    "wide_rule_mix": {
+      "catalogue_code": 62,
+      "spec_table_cell": 21,
+      "spec_sentence": 12,
+      "feature_statement": 6
+    },
+    "misses_by_rule": {
+      "catalogue_code": 53,
+      "spec_table_cell": 5,
+      "spec_sentence": 2
+    },
+    "absent_by_rule": {
+      "spec_table_cell": 3,
+      "catalogue_code": 19,
+      "spec_sentence": 1
+    },
+    "unranked_by_rule": {
+      "catalogue_code": 34,
+      "spec_sentence": 1,
+      "spec_table_cell": 2
+    },
+    "misses_flip_hit_under_exact_digit": 4,
+    "catalogue_flips": 2,
+    "word_overlap_blind_leading_digit": 16,
+    "router_proper_recall64": 0.40594059405940597,
+    "h193_router_port_recall64": 0.733
+  },
+  "verdict": "REFUTED",
+  "seals_h193": false,
+  "refutation_branch": true
+}

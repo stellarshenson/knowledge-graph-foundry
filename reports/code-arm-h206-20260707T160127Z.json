@@ -1,0 +1,372 @@
+{
+  "hypothesis": "R19-H206",
+  "utc": "20260707T160127Z",
+  "graph": "neo4j2",
+  "read_only": true,
+  "cpu_only": true,
+  "uses_h207_canonical_spec": true,
+  "clause_a": {
+    "name": "exact-identifier router arm on blind code stratum",
+    "n_pairs": 30,
+    "n_decisions": 60,
+    "agreement": 1.0,
+    "false_credit_on_lookalikes": 0,
+    "bar": "agreement>=0.95 & false_credit==0",
+    "pass_": true,
+    "bench_file": "data/processed/instrument-code-bench-h206.json",
+    "per_case": [
+      {
+        "code": "1024582",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1024585",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "1063785",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1063780",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "1067148",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1067145",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "1069193",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1069195",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "1082653",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1082655",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "1097345",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1097340",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "1097348",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1097340",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "1098078",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "1098075",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "8192",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "8195",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "A4604",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "A4605",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "A7037",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "A7036",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "A7038",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "A7036",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "A7039",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "A7036",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "A7046",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "A7040",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "CA1161X",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "CA1165X",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "CA1161XTS",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "CA1165XTS",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "E0464",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "E0465",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "E0470",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "E0475",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "E0471",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "E0475",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "E0562",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "E0565",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "E0601",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "E0605",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "P1259",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "P1255",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "P1263",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "P1265",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "P1295",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "P1290",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "P1368",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "P1365",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "PS0001231",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "PS0001235",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "PS0001464",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "PS0001465",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "000",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "005",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "0000-10000",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "0000-10005",
+        "label": "absent",
+        "pred": false
+      },
+      {
+        "code": "0000ft",
+        "label": "present",
+        "pred": true
+      },
+      {
+        "code": "0005ft",
+        "label": "absent",
+        "pred": false
+      }
+    ]
+  },
+  "clause_b": {
+    "name": "device-seeded query rewrite on unranked code golds",
+    "n_unranked": 5,
+    "recovered": 1,
+    "recovery_rate": 0.2,
+    "bar": "recover>=50%",
+    "pass_": false,
+    "detail": [
+      {
+        "pid": "W004",
+        "code": "PS0001464",
+        "product": "Continuous Positive Airway Pressure",
+        "device": "Continuous Positive Airway Pressure",
+        "match": 1.0,
+        "recovered": false
+      },
+      {
+        "pid": "W010",
+        "code": "1097348",
+        "product": "Cannula, Pro-Flow, nasal, pediatric 10 p",
+        "device": "Pro-Flow nasal cannula",
+        "match": 0.8,
+        "recovered": false
+      },
+      {
+        "pid": "W012",
+        "code": "PS0001231",
+        "product": "Bi-level Positive Airway Pressure",
+        "device": "Automatic Positive Airway Pressure",
+        "match": 0.6,
+        "recovered": false
+      },
+      {
+        "pid": "W063",
+        "code": "P1295",
+        "product": "Nasal/oral cannula, adult",
+        "device": "Nasal cannula",
+        "match": 0.5,
+        "recovered": false
+      },
+      {
+        "pid": "W066",
+        "code": "WM31660",
+        "product": "DC Adapter 12/24 V",
+        "device": "DC Adapter 12/24 V",
+        "match": 1.0,
+        "recovered": true
+      }
+    ],
+    "refuter": "if <50%, codes are render-budget victims -> lever moves to render policy"
+  },
+  "verdict": "PARTIAL"
+}

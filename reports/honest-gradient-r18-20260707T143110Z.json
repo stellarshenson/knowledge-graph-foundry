@@ -1,0 +1,246 @@
+{
+  "round": "R18/R19",
+  "batch": "H192+H193",
+  "utc": "20260707T143110Z",
+  "graph": "neo4j2",
+  "nli_model": "MoritzLaurer/mDeBERTa-v3-base-mnli-xnli",
+  "gpu": "RTX5000Ada/sm89",
+  "dtype": "fp16",
+  "attn": "eager",
+  "tau": 0.5,
+  "tau_hi": 0.8,
+  "n_entities": 2798,
+  "n_edges": 3905,
+  "n_propositions": 19654,
+  "n_units": 36244,
+  "instrument_caveat": "H172 NLI contested (H194); deterministic exact-value carried as robustness column",
+  "H192": {
+    "gold_set": "original-33",
+    "n_golds": 33,
+    "baseline": {
+      "nli_recall": 22,
+      "exact_recall": 10,
+      "n_missing_nli": 11
+    },
+    "lambda_": 9.758694109297373e-05,
+    "T0": 33816,
+    "n_edits": 11,
+    "greedy": {
+      "nli": {
+        "edits": 9,
+        "r_knee": 0.8181818181818182,
+        "tk_knee": 0.0010645848119233499,
+        "r_final": 0.9696969696969697,
+        "tk_final": 0.0028093210314643954
+      },
+      "exact": {
+        "edits": 0,
+        "r_knee": 0.30303030303030304,
+        "tk_knee": 0.0,
+        "r_final": 0.30303030303030304,
+        "tk_final": 0.0
+      }
+    },
+    "clause_a": {
+      "nli_pass": false,
+      "exact_pass": false,
+      "r_knee_nli": 0.8181818181818182,
+      "r_knee_exact": 0.30303030303030304
+    },
+    "clause_b": {
+      "monotone": true,
+      "swap_stable": true,
+      "gains": [
+        2.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "pass_": true
+    },
+    "clause_c": {
+      "alignment": 0.9803921568627451,
+      "by_class": {
+        "MISSING-MATERIALIZATION": [
+          5,
+          6
+        ],
+        "PROP-ATTACHED": [
+          5,
+          5
+        ],
+        "DARK-BLOAT": [
+          40,
+          40
+        ]
+      },
+      "pass_": true
+    },
+    "nli_unreachable": {
+      "n": 0,
+      "by_class": {},
+      "golds": []
+    },
+    "instrument_ambiguous": [
+      {
+        "pid": "P07",
+        "gold": "2,591 m",
+        "nli": true,
+        "exact": false
+      },
+      {
+        "pid": "P12",
+        "gold": "28 dB(A)",
+        "nli": true,
+        "exact": false
+      },
+      {
+        "pid": "P12",
+        "gold": "26 dB(A)",
+        "nli": true,
+        "exact": false
+      },
+      {
+        "pid": "P13",
+        "gold": "2,591 m",
+        "nli": true,
+        "exact": false
+      },
+      {
+        "pid": "P14",
+        "gold": "290 ml",
+        "nli": true,
+        "exact": false
+      },
+      {
+        "pid": "P16",
+        "gold": "238*178*128 mm",
+        "nli": true,
+        "exact": false
+      },
+      {
+        "pid": "P18",
+        "gold": "26.6 dBA",
+        "nli": true,
+        "exact": false
+      }
+    ],
+    "verdict": "REFUTED",
+    "clause_a_robust": true
+  },
+  "H193": {
+    "gold_set": "wide-101",
+    "n_golds": 101,
+    "k": 64,
+    "n_miss": 24,
+    "recall_at_64": 0.7623762376237624,
+    "classification": {
+      "present-but-unranked": 8,
+      "absent-from-graph": 9,
+      "present-but-never-entailing": 7
+    },
+    "frac_absent": 0.375,
+    "clause_a": false,
+    "frac_absent_mapped": 1.0,
+    "loss_class_hits": {
+      "H144-table": 9,
+      "H51-name": 1
+    },
+    "clause_b": true,
+    "refuted_branch": false,
+    "absent_detail": [
+      {
+        "pid": "W009",
+        "gold": "1097940",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      },
+      {
+        "pid": "W023",
+        "gold": "1069194",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      },
+      {
+        "pid": "W028",
+        "gold": "P1267",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      },
+      {
+        "pid": "W039",
+        "gold": "275mm x 170mm x 140mm",
+        "rule": "spec_sentence",
+        "doc": "SleepStyle_200_Operating_Manual.pdf",
+        "loss": [
+          "H144-table",
+          "H51-name"
+        ]
+      },
+      {
+        "pid": "W052",
+        "gold": "1111124",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      },
+      {
+        "pid": "W058",
+        "gold": "1097349",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      },
+      {
+        "pid": "W073",
+        "gold": "1097939",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      },
+      {
+        "pid": "W090",
+        "gold": "P1369",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      },
+      {
+        "pid": "W091",
+        "gold": "1111551",
+        "rule": "catalogue_code",
+        "doc": "product_and_solutions_catalog.pdf",
+        "loss": [
+          "H144-table"
+        ]
+      }
+    ],
+    "instrument_sensitivity": {
+      "prose_nli_classified": 0,
+      "numeric_exact_classified": 24
+    },
+    "verdict": "REFUTED"
+  }
+}

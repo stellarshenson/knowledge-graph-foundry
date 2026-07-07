@@ -24,3 +24,9 @@ Background job logs for Knowledge Graph Foundry.
 - `h158-v1-ingest.log` / `h158-v2-ingest.log` - full ingest output of the 26-doc corpus under identity_stack v1 / v2
 - `h158-v1-events.jsonl` / `h158-v2-events.jsonl` - JSONL event logs (resolution.merge/defer/block/veto) driving the H158 precision proxy
 - `h158-artifact-build.log` - offline fit of data/processed/identity-calibration-v2.json from the H101 benchmark
+- `h119-extraction-determinism.log` - R11-H119 per-run extraction progress (3 arms x 5 runs x 10 docs) and verdict line
+- `h119-nbconvert.log` - R11-H119 notebook execution output (extraction_determinism_h119.ipynb)
+- `h216-h217-image-census.log` - R21-H216/H217 image census + pixel forensics progress (3 extraction arms, montage classification, per-gold adjudication)
+- `h216-arm2-docling.log` - R21-H216 Arm 2 (Docling) figure/layout extraction over the 27-doc corpus
+- `h226-h227-forensics.log` - R19-H227 probe-pair cross-pairing audit + R19-H226 feature-ownership attachment census (both CPU-only, neo4j2 read-only)
+- `h203-h210-scale.log` - R19-H203 exact-k vs HNSW convention A/B + R19-H210 conflict-density census on the wave-2 neo4j3 graph (both CPU-only, read-only)

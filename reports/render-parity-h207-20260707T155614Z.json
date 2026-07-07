@@ -1,0 +1,321 @@
+{
+  "hypothesis": "R19-H207",
+  "utc": "20260707T155614Z",
+  "graph": "neo4j2",
+  "read_only": true,
+  "cpu_only": true,
+  "graph_fingerprint": {
+    "node_count": 2798,
+    "edge_count": 3905,
+    "embedding_count": 2798,
+    "content_hash": "6fdc41bde495d1a3",
+    "embedding_digest": "2a3908456d2e2d8c"
+  },
+  "render_fingerprint": "96ab16d299fbbc71",
+  "canonical_spec": {
+    "source": "pipeline._retrieve_local entity_blocks (production query path)",
+    "per_seed": [
+      "## name (types)",
+      "Also known as (SAME_AS*1..2, <=5)",
+      "description",
+      "Properties: json(prop_* keys, alias-merged)",
+      "Relations: type -> name (<=15, non-SIMILAR_TO)"
+    ],
+    "proposition_channel": "per-seed attached propositions (Proposition-[:ABOUT]->seed)",
+    "eval_k": 64,
+    "retrieve_top_k": 128,
+    "rel_limit": 15,
+    "seed_order": "score desc, id asc (deterministic tie-break)",
+    "scorer": "deterministic: exact_present(numeric/code) OR word_overlap>=0.6(prose); CPU-only, no NLI"
+  },
+  "instance_census": {
+    "default_neo4j": 0,
+    "neo4j2": 2798
+  },
+  "root_cause": "H199 retrieved seeds from the .env DEFAULT neo4j instance (drifting/empty) while rendering from neo4j2; H193 pinned NEO4J_URI=neo4j2 before Foundry. Cross-instance seed/render mismatch, not a render-surface delta.",
+  "divergence_attribution": [
+    {
+      "step": "H199 as-published (seeds<-default, router)",
+      "recall": 0.406,
+      "delta": null
+    },
+    {
+      "step": "fix retrieval instance -> neo4j2 (router)",
+      "recall": 0.7326732673267327,
+      "delta": 0.32667326732673263
+    },
+    {
+      "step": "scorer router -> deterministic (= H193)",
+      "recall": 0.7623762376237624,
+      "delta": 0.02970297029702973
+    }
+  ],
+  "render_sensitivity": {
+    "entity_blocks_only": 0.7524752475247525,
+    "plus_propositions": 0.7623762376237624,
+    "delta": 0.00990099009900991
+  },
+  "catalogue_scorer_subdelta": {
+    "router_miss_catalogue": 22,
+    "recovered_by_exact_digit": 9
+  },
+  "non_determinism": {
+    "cause": "drifting default retrieval instance (NOT set/dict/Cypher ordering)",
+    "fix": "pin retrieval to neo4j2 + score-then-id seed sort",
+    "pinned_3run_hits": [
+      77,
+      77,
+      77
+    ],
+    "pinned_3run_spread": 0
+  },
+  "canonical_census": {
+    "hit_counts_3run": [
+      77,
+      77,
+      77
+    ],
+    "recall_at_64": 0.7623762376237624,
+    "variance_gold": 0,
+    "passes_bar": true
+  },
+  "final_classification": {
+    "n_miss": 24,
+    "counts": {
+      "present-but-unranked": 8,
+      "absent-from-graph": 16
+    },
+    "absent_share": 0.6666666666666666,
+    "unranked_share": 0.3333333333333333,
+    "absent_by_rule": {
+      "catalogue_code": 8,
+      "spec_table_cell": 4,
+      "spec_sentence": 4
+    },
+    "unranked_by_rule": {
+      "catalogue_code": 5,
+      "spec_table_cell": 2,
+      "spec_sentence": 1
+    },
+    "h193_branch": "absent-dominated (coverage ceiling)"
+  },
+  "miss_detail": [
+    {
+      "pid": "W004",
+      "gold": "PS0001464",
+      "cls": "present-but-unranked",
+      "rule": "catalogue_code",
+      "product": "Continuous Positive Airway Pressure",
+      "doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "n_carriers": 1
+    },
+    {
+      "pid": "W009",
+      "gold": "1097940",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric, small 60 pk",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W010",
+      "gold": "1097348",
+      "cls": "present-but-unranked",
+      "rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric 10 pk",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 2
+    },
+    {
+      "pid": "W012",
+      "gold": "PS0001231",
+      "cls": "present-but-unranked",
+      "rule": "catalogue_code",
+      "product": "Bi-level Positive Airway Pressure",
+      "doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "n_carriers": 1
+    },
+    {
+      "pid": "W023",
+      "gold": "1069194",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "HL7 outbound only interface",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W027",
+      "gold": "1,33 kg",
+      "cls": "absent-from-graph",
+      "rule": "spec_table_cell",
+      "product": "DreamStation CPAP Pro",
+      "doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W028",
+      "gold": "P1267",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "Nasal cannula, pediatric, small",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W039",
+      "gold": "275mm x 170mm x 140mm",
+      "cls": "absent-from-graph",
+      "rule": "spec_sentence",
+      "product": "SleepStyle 200 Series",
+      "doc": "SleepStyle_200_Operating_Manual.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W044",
+      "gold": "4 cm H2O",
+      "cls": "present-but-unranked",
+      "rule": "spec_table_cell",
+      "product": "DreamStation CPAP",
+      "doc": "BC-Dreamstation-Standard-CPAP.pdf",
+      "n_carriers": 5
+    },
+    {
+      "pid": "W046",
+      "gold": "50-60Hz",
+      "cls": "present-but-unranked",
+      "rule": "spec_table_cell",
+      "product": "AirSense 11 AutoSet",
+      "doc": "ResMed-Airsense-11-Manual.pdf",
+      "n_carriers": 17
+    },
+    {
+      "pid": "W049",
+      "gold": "1.7 kg",
+      "cls": "absent-from-graph",
+      "rule": "spec_sentence",
+      "product": "G3 A20",
+      "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W052",
+      "gold": "1111124",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "OmniLab Advanced + with HeatedTube humidifier",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W053",
+      "gold": "170 x 135 x 180 mm",
+      "cls": "absent-from-graph",
+      "rule": "spec_table_cell",
+      "product": "prisma SOFT plus",
+      "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W058",
+      "gold": "1097349",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric, small 10 pk",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W061",
+      "gold": "116 mm x 205 mm x 150 mm",
+      "cls": "absent-from-graph",
+      "rule": "spec_table_cell",
+      "product": "AirStart 10 CPAP",
+      "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W062",
+      "gold": "30 db",
+      "cls": "absent-from-graph",
+      "rule": "spec_sentence",
+      "product": "RESmart CPAP",
+      "doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W063",
+      "gold": "P1295",
+      "cls": "present-but-unranked",
+      "rule": "catalogue_code",
+      "product": "Nasal/oral cannula, adult",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 1
+    },
+    {
+      "pid": "W065",
+      "gold": "3.5 lbs",
+      "cls": "present-but-unranked",
+      "rule": "spec_sentence",
+      "product": "RESmart CPAP",
+      "doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "n_carriers": 1
+    },
+    {
+      "pid": "W066",
+      "gold": "WM31660",
+      "cls": "present-but-unranked",
+      "rule": "catalogue_code",
+      "product": "DC Adapter 12/24 V",
+      "doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "n_carriers": 1
+    },
+    {
+      "pid": "W073",
+      "gold": "1097939",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric 60 pk",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W087",
+      "gold": "265 mm \u00d7 145 mm \u00d7 114 mm",
+      "cls": "absent-from-graph",
+      "rule": "spec_sentence",
+      "product": "G3 A20",
+      "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W090",
+      "gold": "P1369",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "Pro-Flow multi-purpose cannula, ped, 5 pk",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W091",
+      "gold": "1111551",
+      "cls": "absent-from-graph",
+      "rule": "catalogue_code",
+      "product": "A Series System One humidifier",
+      "doc": "product_and_solutions_catalog.pdf",
+      "n_carriers": 0
+    },
+    {
+      "pid": "W096",
+      "gold": "1106 g",
+      "cls": "absent-from-graph",
+      "rule": "spec_table_cell",
+      "product": "AirStart 10 CPAP",
+      "doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "n_carriers": 0
+    }
+  ],
+  "verdict": "CONFIRMED - divergence fully attributed to the retrieval-instance bug; canonical census stable (0-gold variance, bar <=1); classification FINAL: absent 66.7%, unranked 33.3%"
+}

@@ -1,0 +1,33 @@
+{
+  "round": "R19-H204",
+  "utc": "20260707T155130Z",
+  "graph": "neo4j2",
+  "fingerprint": {
+    "node_count": 2798,
+    "edge_count": 3905,
+    "embedding_count": 2798,
+    "n_carriers": 153,
+    "content_hash": "4e4317a8ca4b4998",
+    "embedding_digest": "c03a17c57c5fe1ee"
+  },
+  "derivation": "home-doc-restricted attribute-proximity; disjoint normalized-float value sets across >=2 home docs",
+  "normalization": "decimal comma -> point (1,33==1.33); near-miss numerics distinct (26 vs 26.6 conflict)",
+  "n_raw_golds": 15,
+  "n_distinct_physical": 3,
+  "n_genuine_value": 1,
+  "n_unit_variant": 2,
+  "corroboration_baseline": 1.0,
+  "recall8_both": 0.3333333333333333,
+  "recall8_any": 1.0,
+  "gap_both_pt": 66.66666666666667,
+  "gap_any_pt": 0.0,
+  "census": {
+    "both": 2,
+    "one_only": 6,
+    "neither": 7
+  },
+  "bars": {
+    "yield_ge15": true,
+    "difficulty_gap_ge20pt_both": true
+  }
+}

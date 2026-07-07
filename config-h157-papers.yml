@@ -1,0 +1,26 @@
+# R15-H157 corpus-class transfer: scientific-paper library through the engine.
+# DEF-4/DEF-5: neo4j pinned from .env values (no consumer relies on ambient env).
+# Target = default scratch instance (was H158 v2 graph, wipeable). Never neo4j2/neo4j3.
+# LLM = local vLLM (gpt-oss-120b) shared with wave 2; concurrency kept modest so
+# wave 2 is not starved. Embeddings = Bedrock Titan (default, UNCHANGED) - the
+# shipped isotonic curve is calibrated on Titan cosine, so the provider must match.
+# resolution.identity_stack v2 = the shipped constants under transfer test.
+neo4j:
+  uri: bolt://user-konrad.jelen-kgf-neo4j:7687
+  user: neo4j
+  password: kgfoundry
+
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 180
+
+resolution:
+  identity_stack: v2
+
+extraction:
+  concurrency: 2
+
+event_log: logs/h157-events.jsonl

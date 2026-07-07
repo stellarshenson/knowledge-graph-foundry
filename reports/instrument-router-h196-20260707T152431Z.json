@@ -1,0 +1,44 @@
+{
+  "round": "R18-H196",
+  "utc": "20260707T152431Z",
+  "graph": "neo4j2",
+  "n": 48,
+  "agreement": {
+    "comparator": {
+      "overall": 0.5625,
+      "prose": 0.6666666666666666,
+      "feature": 0.5277777777777778
+    },
+    "raw_overlap": {
+      "overall": 0.7916666666666666,
+      "prose": 0.8333333333333334,
+      "feature": 0.7777777777777778
+    },
+    "filtered_overlap": {
+      "overall": 0.8125,
+      "prose": 0.9166666666666666,
+      "feature": 0.7777777777777778
+    },
+    "nli@0.5": {
+      "overall": 0.6041666666666666,
+      "prose": 0.6666666666666666,
+      "feature": 0.5833333333333334
+    },
+    "router_gpufree": {
+      "overall": 0.8125,
+      "prose": 0.9166666666666666,
+      "feature": 0.7777777777777778
+    }
+  },
+  "nli_minus_filtered_pts": {
+    "prose": -25.0,
+    "feature": -19.444444444444443,
+    "ALL": -20.833333333333336
+  },
+  "combined_instrument_router_gpufree": 0.9072164948453608,
+  "bars": {
+    "filtered_ge_nli_prose": true,
+    "nli_holds_5pt_edge": false,
+    "router_gpufree_ge_097": false
+  }
+}

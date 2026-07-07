@@ -1,0 +1,81 @@
+{
+  "round": "R19-H195a",
+  "utc": "20260707T152107Z",
+  "graph": "neo4j2",
+  "probe_set": "cpap-probe-set (24 probes, 33 golds)",
+  "cached_old": {
+    "arm1_k8": 0.6667,
+    "arm2_k16": 0.8542,
+    "lever": 0.1875,
+    "relative": "+28.1%",
+    "convention": "exact-k",
+    "scorer": "fuzzy/lean"
+  },
+  "rescore_rows": [
+    {
+      "convention": "exact",
+      "scorer": "fuzzy",
+      "render": "lean",
+      "k8": 0.6666666666666666,
+      "k16": 0.8541666666666666,
+      "lever": 0.1875
+    },
+    {
+      "convention": "exact",
+      "scorer": "fuzzy",
+      "render": "rich",
+      "k8": 0.8125,
+      "k16": 0.9583333333333334,
+      "lever": 0.14583333333333337
+    },
+    {
+      "convention": "exact",
+      "scorer": "router",
+      "render": "rich",
+      "k8": 0.7916666666666666,
+      "k16": 0.9375,
+      "lever": 0.14583333333333337
+    },
+    {
+      "convention": "generous",
+      "scorer": "fuzzy",
+      "render": "lean",
+      "k8": 0.6666666666666666,
+      "k16": 0.8541666666666666,
+      "lever": 0.1875
+    },
+    {
+      "convention": "generous",
+      "scorer": "fuzzy",
+      "render": "rich",
+      "k8": 0.8125,
+      "k16": 0.9583333333333334,
+      "lever": 0.14583333333333337
+    },
+    {
+      "convention": "generous",
+      "scorer": "router",
+      "render": "rich",
+      "k8": 0.7916666666666666,
+      "k16": 0.9375,
+      "lever": 0.14583333333333337
+    }
+  ],
+  "convention_shift": {
+    "fuzzy/lean": {
+      "k8_shift": 0.0,
+      "k16_shift": 0.0
+    },
+    "fuzzy/rich": {
+      "k8_shift": 0.0,
+      "k16_shift": 0.0
+    },
+    "router/rich": {
+      "k8_shift": 0.0,
+      "k16_shift": 0.0
+    }
+  },
+  "verdict_flip": false,
+  "max_convention_shift_pts": 0.0,
+  "arm3_status": "NOT RE-SCORABLE (graph wiped for H158; cache lacks seed lists)"
+}
