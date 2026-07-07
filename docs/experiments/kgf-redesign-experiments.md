@@ -2197,8 +2197,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - dilution dominates: the local extractor writes longer, noisier descriptions (consistent with H107's 71% surface-form variance), pushing carriers out of the top-16
 - **Acceptance bar** - one mechanism >= 70% attribution; refuted if the deficit is spread evenly (both fixes needed) or traces to a third mechanism (e.g. proposition-channel differences) - which is itself the finding
 - **Experiment** - per-gold carrier forensics across the two graphs (both read-only); the contaminated SOTA instance is usable (Arm-3 probes were stable under contamination) but rank comparisons exclude wave-2-only entities; CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`forensics_r19b.ipynb`](../../notebooks/forensics_r19b.ipynb) / [`forensics-r19b-20260707T131124Z.json`](../../reports/forensics-r19b-20260707T131124Z.json)) per-gold carrier forensics, wave-2 entities excluded (3331/3713 kept): recall@16 baseline 29/33 vs SOTA 24/33; the 5-gold deficit attributes to DILUTION 4/5 = 80% (single equivalent carriers exist on the SOTA graph but rank lower: '1130 g' 9->32 and 14->21, '290 ml' 8->83, '27 dBA' 13->22), fragmentation 1/5 ('1.98kg' splits 1->2 carriers), absent 0; one proposition-channel case (P08) reported separately. Attribution is directionally decisive but statistically thin at n=5 - robust re-measurement blocked on a document-grounded wide probe set (H188)
+- **Verdict** - CONFIRMED - dilution clears the >=70% single-mechanism bar exactly as predicted: local-extractor descriptions embed less discriminatively; promotes H119 (extraction canonicalization) over any resolver-side fix as the lever for the SOTA-graph deficit
 
 ### R19-H185 The near-domain miss - hardening the abstention detector
 
@@ -2207,8 +2207,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - seed similarity is blind to near-domain misses (the seeds are RIGHT, the fact is absent); the render-level attribute-coverage check closes most of the gap and becomes the second stage of a two-stage abstention cascade
 - **Acceptance bar** - both clauses; refuted if seed similarity alone still detects >= 70% (near-domain misses would then also perturb seed scores - a pleasant surprise worth understanding)
 - **Experiment** - near-domain probe synthesis (deterministic templates, absence verified by text search over the corpus) + detector comparison on the render harness; CPU, neo4j2 read-only, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`forensics_r19b.ipynb`](../../notebooks/forensics_r19b.ipynb) / [`forensics-r19b-20260707T131124Z.json`](../../reports/forensics-r19b-20260707T131124Z.json)) 15 near-domain unanswerable probes (in-corpus products x attributes verified absent from every source doc) seed into the RIGHT dense product entities at top-seed similarity 0.730-0.821 (mean 0.768) - the shipped H181 detector (thr 0.668) flags 0.0% of them (clause a confirmed, worse than the predicted <40%). The registered evidence-level fix FAILS: any-unit attribute coverage reaches only 26.7% detection at 4.2% false-abstention (co-rendered sibling products supply the keyword); a product-scoped variant hits 86.7% detection but at 50% false-abstention
+- **Verdict** - PARTIALLY CONFIRMED - seed-blindness decisively confirmed, but the keyword-coverage second stage is refuted at the registered bars; near-domain abstention needs a calibrated presence signal (registered H189), and the H181 promotion stands for far-domain misses only
 
 ### R19-H186 Probe-set statistical power - bars finer than one gold need more golds
 
@@ -2217,8 +2217,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - all three hold; clause (c) is the risk clause - if a v28 conclusion flips on the wide set, that specific flip outranks everything else in this round
 - **Acceptance bar** - the wide set built + all three clauses measured; refuted on (c) means targeted re-adjudication of the flipped conclusions, registered immediately
 - **Experiment** - probe derivation script + double-run of the render harness (33-gold vs wide set); CPU, neo4j2 read-only, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`forensics_r19b.ipynb`](../../notebooks/forensics_r19b.ipynb) / [`forensics-r19b-20260707T131124Z.json`](../../reports/forensics-r19b-20260707T131124Z.json)) 130-gold wide set derived deterministically ([`probes-wide-h186.json`](../../data/processed/probes-wide-h186.json): spec-table 28, catalogue 45, mode-feature 55, cross-doc 2), every gold verbatim-verified; clean fraction 82.3% (clause a PASS) and bootstrap CI half-width 1.15 pts vs 10.6 on the 33-gold set (clause b PASS). Clause (c) FAILS hard: wide-set recall is 99.2% at BOTH k=8 and k=16 vs 63.6%/87.9% small-set - graph-derived golds echo the very props/relations the render surfaces, so the set is self-fulfilling and erases the k-lever entirely
+- **Verdict** - REFUTED on the registered risk clause - a wide clean tight-CI set is buildable but graph-derived expansion saturates the harness and cannot reproduce real difficulty; DISCIPLINE PROMOTION: probe expansion must be document-grounded, never graph-derived (successor registered as H188)
 
 
 ### R19-H187 Views at workload scale - a conditional reopening trigger (deferred)
@@ -2228,5 +2228,26 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - the trigger condition itself may never fire on datasheet-class corpora; registering the trigger prevents both premature re-litigation and silent permanent closure
 - **Acceptance bar** - adjudicated only after the trigger fires (on-seed share < 75% measured on >= 50 golds); until then the entry stands as the recorded reopening condition
 - **Experiment** - the H175 harness re-run verbatim on the qualifying corpus; blocked on H157/H186 producing one
+- **Result** - pending
+- **Verdict** - pending
+
+
+### R19-H188 The document-grounded wide probe set - the valid instrument H186 was not
+
+- **Grounding** - H186 proved the mechanics (130 golds, 82.3% clean, CI 1.15 pts) but refuted its own validity: graph-derived golds score 99.2% because they echo the render surface. The valid instrument derives golds from SOURCE DOCUMENT text spans whose phrasing is independent of what extraction happened to write into the graph - restoring real difficulty while keeping the width
+- **Hypothesis** - a >= 100-gold set derived from document text (table cells with their header context, spec sentences, feature statements - extracted from the parsed source texts, NOT from graph props; question phrasing templated from the DOCUMENT wording) yields (a) baseline recall@8 in the 55-75% band (v28-era difficulty restored, k-lever visible: @16 minus @8 >= 10 pts), (b) CI half-width < 2.5 pts, (c) a value-type filter (units, numerics, enumerable feature names - no bare adjectives) keeps the clean fraction >= 85%
+- **Prediction** - document-grounded phrasing diverges enough from graph props to restore difficulty; the k-elasticity reappears; this becomes the standing benchmark instrument and unblocks H184's robust re-attribution and H171's knee-CI tightening
+- **Acceptance bar** - all three clauses; refuted if document-derived golds ALSO saturate (the render would then genuinely cover the corpus at 99% and v28-era difficulty was a small-set artifact - a finding that would upgrade the engine's assessment)
+- **Experiment** - derivation from the parsed corpus texts (docling+trio extractions already cached) + double-run of the render harness; CPU, neo4j2 read-only, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H189 Calibrated presence - the near-domain abstention second stage
+
+- **Grounding** - H185: near-domain misses defeat seed-similarity (0% detection) and keyword coverage (26.7%, or 86.7% at an unshippable 50% false-abstention); the noisy parts are the crude product-scoping and class-noun matching; the engine already owns calibration machinery (isotonic curves, H101-style adjudicated labels) that can turn a noisy presence score into a thresholded decision at a chosen operating point
+- **Hypothesis** - a calibrated per-attribute presence score (features: product-scoped attribute-class similarity over rendered units, unit-count for the attribute class, max unit similarity to the query; calibrated on a 60-pair labeled set of answerable/unanswerable renders) achieves >= 70% near-domain miss detection at <= 5% false-abstention, completing the two-stage cascade (stage 1: H181 seed threshold for far-domain, stage 2: calibrated presence for near-domain)
+- **Prediction** - the product-scoping noise, not the signal class, was H185's failure; calibration finds an operating point the raw threshold could not
+- **Acceptance bar** - both rates on held-out probes (label set split); refuted if no operating point on the calibrated curve satisfies both - near-domain abstention would then require the NLI/entailment instrument (H172) as its scorer, which gets registered as the follow-up
+- **Experiment** - labeled render pairs from H185's probes + the answerable set; isotonic calibration; CPU, neo4j2 read-only, runs after H188 (shares the harness; H188's set supplies answerable diversity)
 - **Result** - pending
 - **Verdict** - pending

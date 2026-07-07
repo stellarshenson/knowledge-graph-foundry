@@ -1,0 +1,236 @@
+{
+  "meta": {
+    "date": "2026-07-07",
+    "tokenizer": "tiktoken-cl100k_base",
+    "graphs": {
+      "baseline": "bolt://user-konrad.jelen-kgf-neo4j2:7687",
+      "sota": "bolt://user-konrad.jelen-kgf-neo4j:7687"
+    },
+    "sota_wave2_excluded": 382
+  },
+  "H184": {
+    "base_render_recall16": 29,
+    "sota_render_recall16": 24,
+    "base_carrier_recall16": 30,
+    "sota_carrier_recall16": 25,
+    "n_golds": 33,
+    "forensic_deficit": 5,
+    "mechanism": {
+      "dilution": 4,
+      "fragmentation": 1
+    },
+    "dominant": "dilution",
+    "dominant_frac": 0.8,
+    "clause_one_mechanism_70": true,
+    "render_deficit": 6,
+    "proposition_channel": 1,
+    "deficit_detail": [
+      {
+        "pid": "P01",
+        "gold": "1130 g",
+        "base_rank": 9,
+        "base_ncar": 6,
+        "sota_rank": 32,
+        "sota_ncar": 5,
+        "mechanism": "dilution"
+      },
+      {
+        "pid": "P11",
+        "gold": "1130 g",
+        "base_rank": 14,
+        "base_ncar": 6,
+        "sota_rank": 21,
+        "sota_ncar": 5,
+        "mechanism": "dilution"
+      },
+      {
+        "pid": "P14",
+        "gold": "290 ml",
+        "base_rank": 8,
+        "base_ncar": 13,
+        "sota_rank": 83,
+        "sota_ncar": 5,
+        "mechanism": "dilution"
+      },
+      {
+        "pid": "P15",
+        "gold": "1.98kg",
+        "base_rank": 16,
+        "base_ncar": 1,
+        "sota_rank": 25,
+        "sota_ncar": 2,
+        "mechanism": "fragmentation"
+      },
+      {
+        "pid": "P18",
+        "gold": "27 dBA",
+        "base_rank": 13,
+        "base_ncar": 50,
+        "sota_rank": 22,
+        "sota_ncar": 44,
+        "mechanism": "dilution"
+      }
+    ]
+  },
+  "H185": {
+    "n_near": 15,
+    "n_verified_absent": 15,
+    "thr": 0.668,
+    "near_top_mean": 0.7677735328674317,
+    "stage1_detection": 0.0,
+    "stage2_detection": 0.26666666666666666,
+    "cascade_detection": 0.26666666666666666,
+    "fa_stage1": 0.0,
+    "fa_cascade": 0.041666666666666664,
+    "stage2_scoped_detection": 0.8666666666666667,
+    "cascade_scoped_detection": 0.8666666666666667,
+    "fa_cascade_scoped": 0.5,
+    "clause_a_seed_blind": true,
+    "clause_b_evidence_recovers": false,
+    "near_detail": [
+      {
+        "product": "DreamStation CPAP",
+        "attr": "battery life",
+        "top": 0.799,
+        "stage1": false,
+        "stage2": true,
+        "stage2_scoped": true
+      },
+      {
+        "product": "DreamStation CPAP",
+        "attr": "display screen size",
+        "top": 0.821,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": false
+      },
+      {
+        "product": "RESmart CPAP",
+        "attr": "Bluetooth version",
+        "top": 0.81,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "RESmart CPAP",
+        "attr": "battery life",
+        "top": 0.757,
+        "stage1": false,
+        "stage2": true,
+        "stage2_scoped": true
+      },
+      {
+        "product": "SleepStyle 200 Series",
+        "attr": "Bluetooth pairing",
+        "top": 0.745,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "SleepStyle 200 Series",
+        "attr": "display screen size",
+        "top": 0.742,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": false
+      },
+      {
+        "product": "AirStart 10 CPAP",
+        "attr": "warranty period",
+        "top": 0.818,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "AirStart 10 CPAP",
+        "attr": "Bluetooth version",
+        "top": 0.797,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "Seattle PAP Plus",
+        "attr": "warranty period",
+        "top": 0.762,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "Seattle PAP Plus",
+        "attr": "battery life",
+        "top": 0.772,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "G3 A20",
+        "attr": "Bluetooth version",
+        "top": 0.73,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "G3 A20",
+        "attr": "warranty period",
+        "top": 0.733,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "CPAP V3",
+        "attr": "battery life",
+        "top": 0.748,
+        "stage1": false,
+        "stage2": false,
+        "stage2_scoped": true
+      },
+      {
+        "product": "Transcend 365 miniCPAP Auto",
+        "attr": "GPS location tracking",
+        "top": 0.749,
+        "stage1": false,
+        "stage2": true,
+        "stage2_scoped": true
+      },
+      {
+        "product": "prisma SOFT plus",
+        "attr": "warranty period",
+        "top": 0.733,
+        "stage1": false,
+        "stage2": true,
+        "stage2_scoped": true
+      }
+    ],
+    "verdict": "PARTIALLY CONFIRMED"
+  },
+  "H186": {
+    "n_wide": 130,
+    "by_rule": {
+      "spec_table_row": 28,
+      "catalogue_spec_row": 45,
+      "mode_feature_pair": 55,
+      "cross_doc_comparison": 2
+    },
+    "clean_fraction": 0.823076923076923,
+    "wide_recall_k8": 0.9923076923076923,
+    "wide_recall_k16": 0.9923076923076923,
+    "small_recall_k8": 0.6363636363636364,
+    "small_recall_k16": 0.8787878787878788,
+    "boot_halfwidth_wide_pts": 1.1538461538461553,
+    "boot_halfwidth_small_pts": 10.606060606060607,
+    "drift_recall16_pts": 11.351981351981355,
+    "drift_lever_pts": 24.242424242424242,
+    "clause_a_clean80": true,
+    "clause_b_ci2pts": true,
+    "clause_c_drift5pts": false,
+    "verdict": "REFUTED"
+  }
+}

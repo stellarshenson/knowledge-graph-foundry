@@ -1,0 +1,1571 @@
+{
+  "meta": {
+    "n": 130,
+    "clean_fraction": 0.823076923076923,
+    "date": "2026-07-07",
+    "source": "baseline neo4j2 props + docling/trio corpus text",
+    "verification": "each gold verbatim-present in source_document via the H34 present() matcher"
+  },
+  "probes": [
+    {
+      "id": "W001",
+      "question": "What is the warranty period of the REMstar Auto A-Flex?",
+      "gold_evidence": [
+        "Two years"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "warranty period",
+      "short_numeric": false
+    },
+    {
+      "id": "W002",
+      "question": "What is the weight of the REMstar Auto?",
+      "gold_evidence": [
+        "3 lbs; 1.36 kg (without humidifier)"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "REMstar Auto",
+      "attribute": "weight",
+      "short_numeric": false
+    },
+    {
+      "id": "W003",
+      "question": "What is the warranty period of the REMstar Auto?",
+      "gold_evidence": [
+        "Two years"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "REMstar Auto",
+      "attribute": "warranty period",
+      "short_numeric": false
+    },
+    {
+      "id": "W004",
+      "question": "What is the weight of the Swift FX Bella Gray?",
+      "gold_evidence": [
+        "lightweight"
+      ],
+      "source_document": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Swift FX Bella Gray",
+      "attribute": "weight",
+      "short_numeric": false
+    },
+    {
+      "id": "W005",
+      "question": "What is the weight of the Mirage Swift II?",
+      "gold_evidence": [
+        "light"
+      ],
+      "source_document": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Mirage Swift II",
+      "attribute": "weight",
+      "short_numeric": false
+    },
+    {
+      "id": "W006",
+      "question": "What is the weight of the DreamPort Sleep Solution?",
+      "gold_evidence": [
+        "lightweight"
+      ],
+      "source_document": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "DreamPort Sleep Solution",
+      "attribute": "weight",
+      "short_numeric": false
+    },
+    {
+      "id": "W007",
+      "question": "What is the weight of the Mirage Liberty?",
+      "gold_evidence": [
+        "feels light on face"
+      ],
+      "source_document": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Mirage Liberty",
+      "attribute": "weight",
+      "short_numeric": false
+    },
+    {
+      "id": "W008",
+      "question": "What is the weight of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "1106 g"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "AirStart 10 CPAP",
+      "attribute": "weight",
+      "short_numeric": false
+    },
+    {
+      "id": "W009",
+      "question": "What is the length of the ezRIP adult kit 249 16\"/20\"?",
+      "gold_evidence": [
+        "16\"/20\""
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "ezRIP adult kit 249 16\"/20\"",
+      "attribute": "length",
+      "short_numeric": false
+    },
+    {
+      "id": "W010",
+      "question": "What is the warranty period of the zRIP respiratory effort sensors?",
+      "gold_evidence": [
+        "one-year"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "zRIP respiratory effort sensors",
+      "attribute": "warranty period",
+      "short_numeric": false
+    },
+    {
+      "id": "W011",
+      "question": "What is the minimum pressure of the Seattle-PAP?",
+      "gold_evidence": [
+        "4.5"
+      ],
+      "source_document": "Seattle-PAP-V5-en-in.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Seattle-PAP",
+      "attribute": "minimum pressure",
+      "short_numeric": true
+    },
+    {
+      "id": "W012",
+      "question": "What is the minimum pressure of the DreamStation CPAP Pro?",
+      "gold_evidence": [
+        "4 cmH2O"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "minimum pressure",
+      "short_numeric": true
+    },
+    {
+      "id": "W013",
+      "question": "What is the length of the Belt Strap P1423?",
+      "gold_evidence": [
+        "77"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Belt Strap P1423",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W014",
+      "question": "What is the length of the High flow oxygen tubing?",
+      "gold_evidence": [
+        "25"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "High flow oxygen tubing",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W015",
+      "question": "What is the weight of the Smarty portable nebuliser?",
+      "gold_evidence": [
+        "130 g"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Smarty portable nebuliser",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W016",
+      "question": "What is the height of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "116"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "AirStart 10 CPAP",
+      "attribute": "height",
+      "short_numeric": true
+    },
+    {
+      "id": "W017",
+      "question": "What is the length of the ezRIP adult kit Alice 5/LE 84\"?",
+      "gold_evidence": [
+        "84\""
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "ezRIP adult kit Alice 5/LE 84\"",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W018",
+      "question": "What is the length of the EMG, 72 inches, snap?",
+      "gold_evidence": [
+        "72 inches"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "EMG, 72 inches, snap",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W019",
+      "question": "What is the length of the CoughAssist T70 Circuit - Infant 6ft?",
+      "gold_evidence": [
+        "6 ft"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "CoughAssist T70 Circuit - Infant 6ft",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W020",
+      "question": "What is the weight of the G3 A20?",
+      "gold_evidence": [
+        "1.7 kg"
+      ],
+      "source_document": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "G3 A20",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W021",
+      "question": "What is the weight of the SimplyFlo?",
+      "gold_evidence": [
+        "8.5 pounds"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "SimplyFlo",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W022",
+      "question": "What is the height of the DreamStation CPAP Pro?",
+      "gold_evidence": [
+        "8.4"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "height",
+      "short_numeric": true
+    },
+    {
+      "id": "W023",
+      "question": "What is the length of the EEG/EMG/EOG, 48 inches, gold cup?",
+      "gold_evidence": [
+        "48 inches"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "EEG/EMG/EOG, 48 inches, gold cup",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W024",
+      "question": "What is the length of the ECG lead set 5-wire?",
+      "gold_evidence": [
+        "30 inches"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "ECG lead set 5-wire",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W025",
+      "question": "What is the length of the SpO2 extension cable?",
+      "gold_evidence": [
+        "3 feet"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "SpO2 extension cable",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W026",
+      "question": "What is the length of the Reference electrode jumper cable?",
+      "gold_evidence": [
+        "10 feet"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Reference electrode jumper cable",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W027",
+      "question": "What is the length of the Connecting cable CAT-5 cross-over 50 feet?",
+      "gold_evidence": [
+        "50"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Connecting cable CAT-5 cross-over 50 feet",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W028",
+      "question": "What is the length of the Pro-Flow adult nasal cannula?",
+      "gold_evidence": [
+        "16"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "spec_table_row",
+      "product": "Pro-Flow adult nasal cannula",
+      "attribute": "length",
+      "short_numeric": true
+    },
+    {
+      "id": "W029",
+      "question": "What is the part number of the Battery door?",
+      "gold_evidence": [
+        "100-0433-00"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Battery door",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W030",
+      "question": "What is the part number of the WristOx ambulatory digital pulse oximeter carrying case?",
+      "gold_evidence": [
+        "1019439"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "WristOx ambulatory digital pulse oximeter carrying case",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W031",
+      "question": "What is the part number of the Medium soft sensor 8 pin?",
+      "gold_evidence": [
+        "1078747"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Medium soft sensor 8 pin",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W032",
+      "question": "What is the part number of the InnoSpire Elegance with SideStream Plus?",
+      "gold_evidence": [
+        "1102828"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "InnoSpire Elegance with SideStream Plus",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W033",
+      "question": "What is the part number of the Locking flow meter kit?",
+      "gold_evidence": [
+        "528"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Locking flow meter kit",
+      "attribute": "part number",
+      "short_numeric": true
+    },
+    {
+      "id": "W034",
+      "question": "What is the HCPCS code of the Deluxe headgear?",
+      "gold_evidence": [
+        "A7035"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Deluxe headgear",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W035",
+      "question": "What is the part number of the SleepStyle CPAP?",
+      "gold_evidence": [
+        "SPSCAA"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "SleepStyle CPAP",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W036",
+      "question": "What is the HCPCS code of the Headgear?",
+      "gold_evidence": [
+        "A7035"
+      ],
+      "source_document": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Headgear",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W037",
+      "question": "What is the part number of the ComfortClassic gel forehead pad replacement kits?",
+      "gold_evidence": [
+        "1002464"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "ComfortClassic gel forehead pad replacement kits",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W038",
+      "question": "What is the part number of the Snore microphone, 249?",
+      "gold_evidence": [
+        "1078753"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Snore microphone, 249",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W039",
+      "question": "What is the part number of the Flow meter locking kit?",
+      "gold_evidence": [
+        "528"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Flow meter locking kit",
+      "attribute": "part number",
+      "short_numeric": true
+    },
+    {
+      "id": "W040",
+      "question": "What is the part number of the Ultra-fine Filter Disposable 1-pack?",
+      "gold_evidence": [
+        "1122447"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Ultra-fine Filter Disposable 1-pack",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W041",
+      "question": "What is the part number of the P1460?",
+      "gold_evidence": [
+        "P1460"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "P1460",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W042",
+      "question": "What is the HCPCS code of the Wisp headgear?",
+      "gold_evidence": [
+        "A7035"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Wisp headgear",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W043",
+      "question": "What is the part number of the Trilogy small products roll stand?",
+      "gold_evidence": [
+        "1047410"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Trilogy small products roll stand",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W044",
+      "question": "What is the part number of the BiPAP AVAPS with humidifier?",
+      "gold_evidence": [
+        "DS1160HS"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "BiPAP AVAPS with humidifier",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W045",
+      "question": "What is the part number of the OptiChamber Diamond?",
+      "gold_evidence": [
+        "A4627"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "OptiChamber Diamond",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W046",
+      "question": "What is the part number of the Caire NewLife Intensity 10?",
+      "gold_evidence": [
+        "AS099-211"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Caire NewLife Intensity 10",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W047",
+      "question": "What is the HCPCS code of the High flow oxygen tubing?",
+      "gold_evidence": [
+        "A4616"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "High flow oxygen tubing",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W048",
+      "question": "What is the part number of the GO2 oximeter?",
+      "gold_evidence": [
+        "GO2"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "GO2 oximeter",
+      "attribute": "part number",
+      "short_numeric": true
+    },
+    {
+      "id": "W049",
+      "question": "What is the HCPCS code of the Tucker the Turtle pediatric mask?",
+      "gold_evidence": [
+        "A7015"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Tucker the Turtle pediatric mask",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W050",
+      "question": "What is the part number of the PTAF Lite for Alice 5?",
+      "gold_evidence": [
+        "P1304R"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "PTAF Lite for Alice 5",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W051",
+      "question": "What is the part number of the Sensor case?",
+      "gold_evidence": [
+        "1016309"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Sensor case",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W052",
+      "question": "What is the part number of the One-way valve safety mouthpieces for Personal Best, AsthmaMentor, and AsthmaCheck?",
+      "gold_evidence": [
+        "HS714-200"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "One-way valve safety mouthpieces for Personal Best, AsthmaMentor, and AsthmaCheck",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W053",
+      "question": "What is the approved price of the DreamStation Auto APAP?",
+      "gold_evidence": [
+        "$554.00"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "DreamStation Auto APAP",
+      "attribute": "approved price",
+      "short_numeric": false
+    },
+    {
+      "id": "W054",
+      "question": "What is the part number of the Mobile cart?",
+      "gold_evidence": [
+        "900-100"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Mobile cart",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W055",
+      "question": "What is the part number of the MicroElite compressor nebulizer system?",
+      "gold_evidence": [
+        "RDD490"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "MicroElite compressor nebulizer system",
+      "attribute": "part number",
+      "short_numeric": true
+    },
+    {
+      "id": "W056",
+      "question": "What is the HCPCS code of the OptiLife CradleCushion?",
+      "gold_evidence": [
+        "A7032"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "OptiLife CradleCushion",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W057",
+      "question": "What is the part number of the Power Cord C7-end RA FemEnd 8ft USA/Can?",
+      "gold_evidence": [
+        "1044760"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Power Cord C7-end RA FemEnd 8ft USA/Can",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W058",
+      "question": "What is the part number of the Reusable wireset?",
+      "gold_evidence": [
+        "P1238"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Reusable wireset",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W059",
+      "question": "What is the part number of the Trilogy RS232 Communication Cable?",
+      "gold_evidence": [
+        "1046972"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Trilogy RS232 Communication Cable",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W060",
+      "question": "What is the part number of the IR projector?",
+      "gold_evidence": [
+        "1016349"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "IR projector",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W061",
+      "question": "What is the HCPCS code of the MiniElite compressor nebulizer with battery?",
+      "gold_evidence": [
+        "E0570"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "MiniElite compressor nebulizer with battery",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W062",
+      "question": "What is the approved price of the Percussor?",
+      "gold_evidence": [
+        "$1,442.00"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Percussor",
+      "attribute": "approved price",
+      "short_numeric": false
+    },
+    {
+      "id": "W063",
+      "question": "What is the part number of the MPV circuit support system?",
+      "gold_evidence": [
+        "1102862"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "MPV circuit support system",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W064",
+      "question": "What is the HCPCS code of the SideStream disposable nebulizer, 50 pk?",
+      "gold_evidence": [
+        "A7003"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "SideStream disposable nebulizer, 50 pk",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W065",
+      "question": "What is the part number of the Belt Strap P1423?",
+      "gold_evidence": [
+        "P1423"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Belt Strap P1423",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W066",
+      "question": "What is the part number of the Main Board PCBA?",
+      "gold_evidence": [
+        "20211151"
+      ],
+      "source_document": "PDF RESmart Service Manual CPAP.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Main Board PCBA",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W067",
+      "question": "What is the part number of the Profile Lite youth mask with deluxe headgear?",
+      "gold_evidence": [
+        "1047339"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Profile Lite youth mask with deluxe headgear",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W068",
+      "question": "What is the part number of the Pollen Filter?",
+      "gold_evidence": [
+        "1032584"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Pollen Filter",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W069",
+      "question": "What is the part number of the Pressure Valve?",
+      "gold_evidence": [
+        "302418"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Pressure Valve",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W070",
+      "question": "What is the part number of the Pro-Flow sample pack?",
+      "gold_evidence": [
+        "P1258"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Pro-Flow sample pack",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W071",
+      "question": "What is the part number of the Snore Microphone Binder?",
+      "gold_evidence": [
+        "P1900"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Snore Microphone Binder",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W072",
+      "question": "What is the part number of the Rechargeable li ion battery?",
+      "gold_evidence": [
+        "900-102"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "Rechargeable li ion battery",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W073",
+      "question": "What is the part number of the RespirAir nebuliser compressor system?",
+      "gold_evidence": [
+        "FU06P00"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "catalogue_spec_row",
+      "product": "RespirAir nebuliser compressor system",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W074",
+      "question": "Does the ResMed AirFit N30 support InfnitySeal\u2122 silicone cushion?",
+      "gold_evidence": [
+        "InfnitySeal\u2122 silicone cushion"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ResMed AirFit N30",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W075",
+      "question": "Does the Philips Wisp Youth support 360 degrees rotating elbow?",
+      "gold_evidence": [
+        "360 degrees rotating elbow"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Philips Wisp Youth",
+      "attribute": "supported feature/mode",
+      "short_numeric": true
+    },
+    {
+      "id": "W076",
+      "question": "Does the Trilogy100 support Auto-Trak?",
+      "gold_evidence": [
+        "Auto-Trak"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Trilogy100",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W077",
+      "question": "Does the Aspira go 30 support Patented Regulator?",
+      "gold_evidence": [
+        "Patented Regulator"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Aspira go 30",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W078",
+      "question": "Does the RESmart Auto CPAP System support CPAP?",
+      "gold_evidence": [
+        "CPAP"
+      ],
+      "source_document": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "RESmart Auto CPAP System",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W079",
+      "question": "Does the ComfortGel Blue support reduced noise?",
+      "gold_evidence": [
+        "reduced noise"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ComfortGel Blue",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W080",
+      "question": "Does the Fisher & Paykel Eson 2 support Improved strap fastener clips?",
+      "gold_evidence": [
+        "Improved strap fastener clips"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Fisher & Paykel Eson 2",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W081",
+      "question": "Does the RESmart CPAP support Auto Off?",
+      "gold_evidence": [
+        "Auto Off"
+      ],
+      "source_document": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "RESmart CPAP",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W082",
+      "question": "Does the Eson\u2122 mask support Advanced diffuser?",
+      "gold_evidence": [
+        "Advanced diffuser"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Eson\u2122 mask",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W083",
+      "question": "Does the Wisp support Self-adjusting top strap with tube holder loop?",
+      "gold_evidence": [
+        "Self-adjusting top strap with tube holder loop"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Wisp",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W084",
+      "question": "Does the RESmart Auto CPAP System support Ramp?",
+      "gold_evidence": [
+        "Ramp"
+      ],
+      "source_document": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "RESmart Auto CPAP System",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W085",
+      "question": "Does the CoughAssist T70 support Cough-Trak?",
+      "gold_evidence": [
+        "Cough-Trak"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "CoughAssist T70",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W086",
+      "question": "Does the ResMed AirFit N30 support QuickFit elastic headgear?",
+      "gold_evidence": [
+        "QuickFit elastic headgear"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ResMed AirFit N30",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W087",
+      "question": "Does the prisma SOFT plus support CPAP therapy?",
+      "gold_evidence": [
+        "CPAP therapy"
+      ],
+      "source_document": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "prisma SOFT plus",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W088",
+      "question": "Does the ComfortClassic nasal mask support Silent exhalation port?",
+      "gold_evidence": [
+        "Silent exhalation port"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ComfortClassic nasal mask",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W089",
+      "question": "Does the AirSense 11 support Extreme Ambient Temperature Safety?",
+      "gold_evidence": [
+        "Extreme Ambient Temperature Safety"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "AirSense 11",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W090",
+      "question": "Does the AirSense 10 Elite support Cheyne-Stokes respiration detection?",
+      "gold_evidence": [
+        "Cheyne-Stokes respiration detection"
+      ],
+      "source_document": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W091",
+      "question": "Does the REMstar Auto support Auto?",
+      "gold_evidence": [
+        "Auto"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "REMstar Auto",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W092",
+      "question": "Does the REMstar Auto support C-Flex?",
+      "gold_evidence": [
+        "C-Flex"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "REMstar Auto",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W093",
+      "question": "Does the Caire FreeStyle Comfort support AutoSAT Technology?",
+      "gold_evidence": [
+        "AutoSAT Technology"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Caire FreeStyle Comfort",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W094",
+      "question": "Does the ComfortGel Blue Full support StabilitySelector?",
+      "gold_evidence": [
+        "StabilitySelector"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ComfortGel Blue Full",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W095",
+      "question": "Does the ELK-200C CPAP System support Low Oxygen Concentration Alarm?",
+      "gold_evidence": [
+        "Low Oxygen Concentration Alarm"
+      ],
+      "source_document": "CPAP-Machines-Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ELK-200C CPAP System",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W096",
+      "question": "Does the iBreeze CPAP System support Mask Fit Function?",
+      "gold_evidence": [
+        "Mask Fit Function"
+      ],
+      "source_document": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "iBreeze CPAP System",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W097",
+      "question": "Does the Transcend 365 miniCPAP Auto support Auto altitude adjustment?",
+      "gold_evidence": [
+        "Auto altitude adjustment"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Transcend 365 miniCPAP Auto",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W098",
+      "question": "Does the SimplyGo support Pulse-dose?",
+      "gold_evidence": [
+        "Pulse-dose"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "SimplyGo",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W099",
+      "question": "Does the ELK-200C CPAP System support AC Power Failure Alarm?",
+      "gold_evidence": [
+        "AC Power Failure Alarm"
+      ],
+      "source_document": "CPAP-Machines-Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ELK-200C CPAP System",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W100",
+      "question": "Does the REMstar Auto support C-Flex+?",
+      "gold_evidence": [
+        "C-Flex+"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "REMstar Auto",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W101",
+      "question": "Does the DreamStation CPAP Pro support A-Flex?",
+      "gold_evidence": [
+        "A-Flex"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W102",
+      "question": "Does the Aspira go 30 support High Flow Rates?",
+      "gold_evidence": [
+        "High Flow Rates"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Aspira go 30",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W103",
+      "question": "Does the Linde Noctivance support Easy therapy data access?",
+      "gold_evidence": [
+        "Easy therapy data access"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Linde Noctivance",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W104",
+      "question": "Does the ResMed AirSense 10 AutoSet support Climate control?",
+      "gold_evidence": [
+        "Climate control"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ResMed AirSense 10 AutoSet",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W105",
+      "question": "Does the DreamStation CPAP Pro support Opti-Start?",
+      "gold_evidence": [
+        "Opti-Start"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W106",
+      "question": "Does the CPAP V3 support Bubble CPAP?",
+      "gold_evidence": [
+        "Bubble CPAP"
+      ],
+      "source_document": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "CPAP V3",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W107",
+      "question": "Does the ResMed AirFit N30 support Fast and easy to clean cushions?",
+      "gold_evidence": [
+        "Fast and easy to clean cushions"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ResMed AirFit N30",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W108",
+      "question": "Does the BiPAP autoSV Advanced support Auto EPAP?",
+      "gold_evidence": [
+        "Auto EPAP"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "BiPAP autoSV Advanced",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W109",
+      "question": "Does the REMstar Auto A-Flex support Mask fit check?",
+      "gold_evidence": [
+        "Mask fit check"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W110",
+      "question": "Does the Fisher & Paykel Vitera support RollFit seal?",
+      "gold_evidence": [
+        "RollFit seal"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Fisher & Paykel Vitera",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W111",
+      "question": "Does the Aspira go 30 support Tracheotomy Suitable?",
+      "gold_evidence": [
+        "Tracheotomy Suitable"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Aspira go 30",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W112",
+      "question": "Does the DreamStation CPAP support Mask fit check?",
+      "gold_evidence": [
+        "Mask fit check"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W113",
+      "question": "Does the HC231 support Altitude Setting?",
+      "gold_evidence": [
+        "Altitude Setting"
+      ],
+      "source_document": "SleepStyle_200_Operating_Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "HC231",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W114",
+      "question": "Does the DreamStation CPAP Pro support Bluetooth Wireless Technology?",
+      "gold_evidence": [
+        "Bluetooth Wireless Technology"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W115",
+      "question": "Does the ComfortGel Blue support minimized pressure points?",
+      "gold_evidence": [
+        "minimized pressure points"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ComfortGel Blue",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W116",
+      "question": "Does the ResMed AirSense 10 AutoSet support Expiratory pressure relief?",
+      "gold_evidence": [
+        "Expiratory pressure relief"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "ResMed AirSense 10 AutoSet",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W117",
+      "question": "Does the Linde Noctivance support Power safety alerts?",
+      "gold_evidence": [
+        "Power safety alerts"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Linde Noctivance",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W118",
+      "question": "Does the RESmart CPAP support Ramp Button?",
+      "gold_evidence": [
+        "Ramp Button"
+      ],
+      "source_document": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "RESmart CPAP",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W119",
+      "question": "Does the Linde Noctivance support Reslex exhalation pressure relief?",
+      "gold_evidence": [
+        "Reslex exhalation pressure relief"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Linde Noctivance",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W120",
+      "question": "Does the Transcend 365 miniCPAP Auto support EZEX pressure relief?",
+      "gold_evidence": [
+        "EZEX pressure relief"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Transcend 365 miniCPAP Auto",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W121",
+      "question": "Does the Fisher & Paykel Brevida\u2122 support AirPillow\u2122?",
+      "gold_evidence": [
+        "AirPillow\u2122"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "Fisher & Paykel Brevida\u2122",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W122",
+      "question": "Does the DreamStation CPAP support Ramp Feature?",
+      "gold_evidence": [
+        "Ramp Feature"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W123",
+      "question": "Does the RESmart CPAP support Alert?",
+      "gold_evidence": [
+        "Alert"
+      ],
+      "source_document": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "RESmart CPAP",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W124",
+      "question": "Does the RESmart Auto support Titrate?",
+      "gold_evidence": [
+        "Titrate"
+      ],
+      "source_document": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "RESmart Auto",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W125",
+      "question": "Does the CPAP V3 support PEEP/CPAP Adjustment?",
+      "gold_evidence": [
+        "PEEP/CPAP Adjustment"
+      ],
+      "source_document": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "CPAP V3",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W126",
+      "question": "Does the RESmart Auto support Altitude Compensation?",
+      "gold_evidence": [
+        "Altitude Compensation"
+      ],
+      "source_document": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "RESmart Auto",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W127",
+      "question": "Does the BiPAP AVAPS support Bi-Flex?",
+      "gold_evidence": [
+        "Bi-Flex"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "BiPAP AVAPS",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W128",
+      "question": "Does the iBreeze CPAP System support Alarm Clock?",
+      "gold_evidence": [
+        "Alarm Clock"
+      ],
+      "source_document": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "derivation_rule": "mode_feature_pair",
+      "product": "iBreeze CPAP System",
+      "attribute": "supported feature/mode",
+      "short_numeric": false
+    },
+    {
+      "id": "W129",
+      "question": "Which is lighter: the REMstar Auto A-Flex or the iBreeze CPAP System?",
+      "gold_evidence": [
+        "REMstar Auto A-Flex"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "cross_doc_comparison",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "cross-doc weight comparison",
+      "short_numeric": false
+    },
+    {
+      "id": "W130",
+      "question": "Which is lighter: the RESmart CPAP or the prisma SOFT plus?",
+      "gold_evidence": [
+        "prisma SOFT plus"
+      ],
+      "source_document": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "derivation_rule": "cross_doc_comparison",
+      "product": "prisma SOFT plus",
+      "attribute": "cross-doc weight comparison",
+      "short_numeric": false
+    }
+  ]
+}
