@@ -1753,3 +1753,32 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Result** - pending
 - **Verdict** - pending
 
+## R14 - ingest fidelity: chunking and segmentation (user-directed addendum, pre-registered 2026-07-07)
+
+H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-name strings BEFORE chunking - text-extraction failures on tables and stylized rendering, not truncation). This addendum, user-directed, covers the layer H51 did not measure: what the chunker does to text the parser DID preserve. Current implementation (`ingest/chunking.py`): fixed token windows (2000, overlap 200) with sentence-boundary snapping - no semantic segmentation, no table atomicity; SaT is not employed anywhere in the pipeline. Two registered questions: does the window boundary sever names or their context (H144, deterministic), and does SaT-based progressive semantic chunking with table-atomic units recover what fixed windows lose (H145, needs re-extraction on the local model).
+
+| id | claim | runnable now |
+|----|-------|--------------|
+| H144 | chunk boundaries sever entity names or their table-header context in measurable volume - a loss surface downstream of parsing and upstream of extraction | yes |
+| H145 | SaT progressive semantic chunking (sentence units composed to token budgets, tables kept atomic with headers) recovers >= half of the boundary-severed volume and reduces extraction variance | needs local model |
+
+### R14-H144 The boundary audit - what the window severs
+
+- **Grounding** - (user-directed) H51 measured parser-level loss only; the chunker cuts token windows with sentence snapping, and its 200-token overlap mitigates plain string splits but NOT context severance - a table row landing in a different chunk than its header loses the association even though every string survives
+- **Hypothesis** - a deterministic boundary audit over the parsed corpus finds (a) entity-name strings split or isolated at window boundaries, and (b) table rows severed from their headers, in combined volume >= 10% of documents; severed items are enriched among the H51 numeric-preservation losses (numeric tokens were parser-invariant at 67.3% - the remaining numeric loss must live downstream)
+- **Prediction** - name splits are rare (overlap catches most) but header severance is common in the table-heavy catalogue genre - the same genre H51 flagged
+- **Acceptance bar** - >= 10% combined incidence confirms; refuted if boundary effects are < 2% (the chunker is vindicated and the remaining loss is extraction behavior)
+- **Experiment** - re-run the chunker over the 27 parsed documents; per boundary, test name-string spans and table-header/row adjacency; deterministic, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H145 Segment, then compose - SaT progressive semantic chunking
+
+- **Grounding** - (user-directed) SaT (sat-3l-sm class) segments text into sentence units robustly across noisy formatting - proven in the in-house document-distance track; progressive composition (semantic units packed to a token budget, tables atomic with their headers) replaces arbitrary windows with meaning-shaped ones; extraction quality is known to depend on chunk coherence
+- **Hypothesis** - re-chunking with SaT units + table atomicity and re-extracting a 10-document sample on the local model recovers >= 50% of H144's boundary-severed items and reduces extraction variance (same-doc entity-set Jaccard across 3 runs) versus the fixed-window chunker at matched token budgets
+- **Prediction** - the win concentrates in catalogues; prose manuals show parity (sentence snapping was already adequate there)
+- **Acceptance bar** - both clauses at matched budget; refuted if recovery < 25% or variance worsens (semantic boundaries buy nothing once the parser is the binding constraint - H51's union lever would then dominate the ingest-fidelity roadmap alone)
+- **Experiment** - SaT via sentence-transformers-adjacent tooling (wtpsplit) on GPU 2; re-extraction on the local endpoint; sequenced after H144 sizes the target
+- **Result** - pending
+- **Verdict** - pending
+
