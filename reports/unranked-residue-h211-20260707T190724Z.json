@@ -1,0 +1,454 @@
+{
+  "hypothesis": "R19-H211",
+  "utc": "20260707T190724Z",
+  "graph": "neo4j2",
+  "read_only": true,
+  "cpu_only": true,
+  "graph_fingerprint": {
+    "node_count": 2798,
+    "edge_count": 3905,
+    "embedding_count": 2798,
+    "content_hash": "6fdc41bde495d1a3",
+    "embedding_digest": "2a3908456d2e2d8c"
+  },
+  "render_fingerprint": "96ab16d299fbbc71",
+  "pinned_baseline": {
+    "hits": 77,
+    "total": 101,
+    "recall": 0.762,
+    "census_tokens": 2140060,
+    "knee_pct": 5.6,
+    "knee_budget_tokens": 119843
+  },
+  "forensics": [
+    {
+      "pid": "W004",
+      "gold": "PS0001464",
+      "rule": "catalogue_code",
+      "question": "What is the part number of the Continuous Positive Airway Pressure?",
+      "n_carriers": 1,
+      "best_rank": 98,
+      "carriers": [
+        {
+          "id": "e_c5c138d2ab602dd8",
+          "name": "F&P Sleepstyle Auto CPAP",
+          "rank": 98,
+          "score": 0.677,
+          "types": [
+            "CPAPDevice"
+          ],
+          "nrels": 2,
+          "embedding_surface": "F&P Sleepstyle Auto CPAP | (no description)",
+          "props": "{\"max_allowed_qty\": \"1\", \"approved_price\": \"$554.00\", \"device_code\": \"PS0001464\", \"operating_mode\": \"Auto CPAP\"}"
+        }
+      ],
+      "cause": "rank-position + embedding-surface mismatch: single carrier 'F&P Sleepstyle Auto CPAP' (ADP catalogue-row device, empty description - the index sees only the brand name) ranks 98 against a category-phrased query ('Continuous Positive Airway Pressure'); no linkage rule reaches it (its only neighbours - MoH ADP, Fisher & Paykel - never rank; prop-val target 'Auto CPAP' absent from top-64). UNRECOVERABLE by the registered policy family"
+    },
+    {
+      "pid": "W010",
+      "gold": "1097348",
+      "rule": "catalogue_code",
+      "question": "What is the part number of the Cannula, Pro-Flow, nasal, pediatric 10 pk?",
+      "n_carriers": 2,
+      "best_rank": ">512",
+      "carriers": [
+        {
+          "id": "e_47af984050fc17a6",
+          "name": "Alice LoFlo adapter cable",
+          "rank": ">512",
+          "score": null,
+          "types": [
+            "Accessory"
+          ],
+          "nrels": 1,
+          "embedding_surface": "Alice LoFlo adapter cable | (no description)",
+          "props": "{\"part_number\": \"1098078\"}"
+        },
+        {
+          "id": "e_70b9e3c1bce66f2d",
+          "name": "Sampling line",
+          "rank": ">512",
+          "score": null,
+          "types": [
+            "Accessory"
+          ],
+          "nrels": 3,
+          "embedding_surface": "Sampling line | Sampling line for LoFlo capnography",
+          "props": "{\"quantity\": \"10\", \"part_number\": \"3474-00\"}"
+        }
+      ],
+      "cause": "misattributed table proposition (extraction-side): gold 1097348 lives ONLY in a shared markdown part-number table attached to the wrong entities (Alice LoFlo capnography accessories, both >512); their text references no top-64 seed. UNRECOVERABLE - H119 canonicalization territory"
+    },
+    {
+      "pid": "W012",
+      "gold": "PS0001231",
+      "rule": "catalogue_code",
+      "question": "What is the part number of the Bi-level Positive Airway Pressure?",
+      "n_carriers": 1,
+      "best_rank": 100,
+      "carriers": [
+        {
+          "id": "e_41a13339165f0359",
+          "name": "AirCurve 10 S",
+          "rank": 100,
+          "score": 0.649,
+          "types": [
+            "CPAPDevice"
+          ],
+          "nrels": 2,
+          "embedding_surface": "AirCurve 10 S | (no description)",
+          "props": "{\"max_allowed_qty\": \"1\", \"approved_price\": \"$950.00\", \"device_code\": \"PS0001231\", \"operating_mode\": \"Bi-level\"}"
+        }
+      ],
+      "cause": "rank-position, linkable: carrier 'AirCurve 10 S' (ADP row, device_code=gold) ranks 100; prop-val linkage (operating_mode 'Bi-level' == top-64 seed#2 'Bi-level') recovers it cheaply"
+    },
+    {
+      "pid": "W044",
+      "gold": "4 cm H2O",
+      "rule": "spec_table_cell",
+      "question": "What is the starting ramp pressure of the DreamStation CPAP?",
+      "n_carriers": 5,
+      "best_rank": 225,
+      "carriers": [
+        {
+          "id": "e_2a969c56418fe587",
+          "name": "4\u201320cm H2O pressure range",
+          "rank": 225,
+          "score": 0.632,
+          "types": [
+            "Specification"
+          ],
+          "nrels": 1,
+          "embedding_surface": "4\u201320cm H2O pressure range | Operating pressure range for Linde Noctivance devices",
+          "props": "{\"max_pressure\": \"20 cm H2O\", \"min_pressure\": \"4 cm H2O\"}"
+        },
+        {
+          "id": "e_34f69f04867a7377",
+          "name": "ClimateLineAir 11",
+          "rank": ">512",
+          "score": null,
+          "types": [
+            "Accessory"
+          ],
+          "nrels": 10,
+          "embedding_surface": "ClimateLineAir 11 | Climate-controlled tubing accessory for AirSense 11 with specified pressure accuracy performance",
+          "props": "{\"maximum_recommended_pressure\": \"25\", \"pressure_accuracy_15_bpm_unit\": \"cmH2O\", \"max_flow_at_12_cmh2o_unit\": \"L/min\", \"temperature_range_fahrenheit\": \"60-86\", \"type\": \"tubing\", \"compliance_at_60_cmh2"
+        },
+        {
+          "id": "e_fe0fb3a0fac4c06f",
+          "name": "SlimLine",
+          "rank": ">512",
+          "score": null,
+          "types": [
+            "Accessory"
+          ],
+          "nrels": 7,
+          "embedding_surface": "SlimLine | Tubing accessory for AirSense 11 with specified pressure accuracy performance",
+          "props": "{\"pressure_accuracy_20_bpm\": \"1.0\", \"length_meters\": \"1.8\", \"maximum_recommended_pressure\": \"25\", \"pressure_accuracy_15_bpm_unit\": \"cmH2O\", \"max_flow_at_12_cmh2o_unit\": \"L/min\", \"max_flow_at_16_cmh2o_"
+        }
+      ],
+      "cause": "cross-product spec attachment: best carrier '4-20cm H2O pressure range' (rank 225) belongs to Linde Noctivance, not DreamStation; DreamStation's own 4 cmH2O never extracted onto a DreamStation entity. Recoverable via digit-name linkage at seed#11 '20 cmH2O' - but only above the knee (+6.1%)"
+    },
+    {
+      "pid": "W046",
+      "gold": "50-60Hz",
+      "rule": "spec_table_cell",
+      "question": "What is the ac input range of the AirSense 11 AutoSet?",
+      "n_carriers": 17,
+      "best_rank": 127,
+      "carriers": [
+        {
+          "id": "e_95fc8261be135e98",
+          "name": "Universal Power Supply",
+          "rank": 127,
+          "score": 0.597,
+          "types": [
+            "Feature"
+          ],
+          "nrels": 1,
+          "embedding_surface": "Universal Power Supply | Automatic universal power supply allowing operation across voltage and frequency ranges",
+          "props": "{\"voltage_min\": \"100\", \"dc_option_encouraged\": \"12V or 24V\", \"frequency\": \"50-60\", \"frequency_unit\": \"Hz\", \"voltage_max\": \"240\", \"automatic\": \"yes\", \"voltage_unit\": \"V AC\"}"
+        },
+        {
+          "id": "e_e980ea41ff3c980a",
+          "name": "REMstar Auto A-Flex",
+          "rank": 168,
+          "score": 0.59,
+          "types": [
+            "CPAPDevice"
+          ],
+          "nrels": 21,
+          "embedding_surface": "REMstar Auto A-Flex | Auto-adjusting CPAP device with A-Flex comfort feature, part of System One sleep therapy systems",
+          "props": "{\"display_compliance_metrics\": \"VIC, 1-day, 7-day, 30-day averages\", \"manufacturer\": \"Philips Respironics\", \"modem_capable\": \"true\", \"compliance_meter_type\": \"Breathing detection\", \"altitude_compensat"
+        },
+        {
+          "id": "e_d204720a589fe30b",
+          "name": "AirStart 10 CPAP",
+          "rank": 205,
+          "score": 0.587,
+          "types": [
+            "CPAPDevice"
+          ],
+          "nrels": 15,
+          "embedding_surface": "AirStart 10 CPAP | ResMed's continuous positive airway pressure therapy device designed for simplicity and ease of use",
+          "props": "{\"operating_altitude_max\": \"2591\", \"storage_temperature_max\": \"60\", \"storage_humidity_type\": \"non-condensing\", \"air_outlet_standard\": \"ISO 5356-1:2004\", \"maximum_power_consumption\": \"108\", \"aircraft_u"
+        }
+      ],
+      "cause": "hub fan-in dilution: 17 carriers, best rank 126 ('Universal Power Supply'); the only linked scoring carrier ('Air Filter', 1513 tok) hangs off seed#19 'AirSense 11' behind 83 sibling candidates - reachable only in the blanket tier (+206%)"
+    },
+    {
+      "pid": "W063",
+      "gold": "P1295",
+      "rule": "catalogue_code",
+      "question": "What is the part number of the Nasal/oral cannula, adult?",
+      "n_carriers": 1,
+      "best_rank": ">512",
+      "carriers": [
+        {
+          "id": "e_5f2af8278883ddef",
+          "name": "Pro-Flow sample pack",
+          "rank": ">512",
+          "score": null,
+          "types": [
+            "Accessory"
+          ],
+          "nrels": 3,
+          "embedding_surface": "Pro-Flow sample pack | (no description)",
+          "props": "{\"part_number\": \"P1258\", \"contents\": \"P1259 (qty: 2) and P1295 (qty: 2)\"}"
+        }
+      ],
+      "cause": "orphan accessory, linkable: single carrier 'Pro-Flow sample pack' (>512; code only in props.contents, embedding surface says nothing about adult cannulas); edge linkage to seed#3 'Pro-Flow nasal cannula adult' recovers it cheaply"
+    },
+    {
+      "pid": "W065",
+      "gold": "3.5 lbs",
+      "rule": "spec_sentence",
+      "question": "What is the weight of the RESmart CPAP?",
+      "n_carriers": 1,
+      "best_rank": ">512",
+      "carriers": [
+        {
+          "id": "e_76cfab635dc3aa81",
+          "name": "Integrated Heated Humidifier",
+          "rank": ">512",
+          "score": null,
+          "types": [
+            "ComfortFeature",
+            "Accessory"
+          ],
+          "nrels": 2,
+          "embedding_surface": "Integrated Heated Humidifier | Humidifier accessory for RESmart CPAP and Auto-CPAP that adds moisture and heat to airflow to reduce nasal dryness and irritation",
+          "props": "{\"integration\": \"integrated\", \"purpose\": \"reduce nasal dryness and irritation\", \"type\": \"heated\", \"optional\": \"yes\", \"function\": \"humidification and warming of air\", \"benefit\": \"reduces nasal dryness "
+        }
+      ],
+      "cause": "misattached spec proposition + fan-in dilution: the '3.5 lbs' weight proposition hangs on 'Integrated Heated Humidifier' (>512), not on RESmart CPAP; edge to seed#2 exists but the carrier sits deep among 51 siblings and needs its propositions rendered - blanket tier only"
+    },
+    {
+      "pid": "W066",
+      "gold": "WM31660",
+      "rule": "catalogue_code",
+      "question": "What is the part number of the DC Adapter 12/24 V?",
+      "n_carriers": 1,
+      "best_rank": ">512",
+      "carriers": [
+        {
+          "id": "e_2036eaf4d5e2082c",
+          "name": "prisma HUB",
+          "rank": ">512",
+          "score": null,
+          "types": [
+            "Accessory"
+          ],
+          "nrels": 1,
+          "embedding_surface": "prisma HUB | Modem for prisma CLOUD telemedical connection for plus variants",
+          "props": "{\"order_number\": \"WM 31660\"}"
+        }
+      ],
+      "cause": "misattributed code (extraction variance): 'WM 31660' is stored as prisma HUB's order number (>512, references nothing in top-64) while the probe targets 'DC Adapter 12/24 V' (top-1 seed, which lacks the code). UNRECOVERABLE - H119 territory"
+    }
+  ],
+  "firing_geometry": {
+    "W004": [],
+    "W010": [],
+    "W012": [
+      {
+        "seed_rank": 2,
+        "seed": "Bi-level",
+        "rule": "P",
+        "carrier": "AirCurve 10 S",
+        "nrels": 2,
+        "ctx_tok": 192
+      }
+    ],
+    "W044": [
+      {
+        "seed_rank": 11,
+        "seed": "20 cmH2O",
+        "rule": "N",
+        "carrier": "ClimateLineAir 11",
+        "nrels": 10,
+        "ctx_tok": 1280
+      },
+      {
+        "seed_rank": 11,
+        "seed": "20 cmH2O",
+        "rule": "N",
+        "carrier": "Standard air tubing",
+        "nrels": 2,
+        "ctx_tok": 283
+      },
+      {
+        "seed_rank": 11,
+        "seed": "20 cmH2O",
+        "rule": "N",
+        "carrier": "SlimLine",
+        "nrels": 7,
+        "ctx_tok": 977
+      }
+    ],
+    "W046": [
+      {
+        "seed_rank": 19,
+        "seed": "AirSense 11",
+        "rule": "E/N",
+        "carrier": "Air Filter",
+        "nrels": 11,
+        "ctx_tok": 1513
+      }
+    ],
+    "W063": [
+      {
+        "seed_rank": 3,
+        "seed": "Pro-Flow nasal cannula adult",
+        "rule": "E",
+        "carrier": "Pro-Flow sample pack",
+        "nrels": 3,
+        "ctx_tok": 152
+      },
+      {
+        "seed_rank": 6,
+        "seed": "Pro-Flow nasal cannula",
+        "rule": "E",
+        "carrier": "Pro-Flow sample pack",
+        "nrels": 3,
+        "ctx_tok": 152
+      }
+    ],
+    "W065": [
+      {
+        "seed_rank": 2,
+        "seed": "RESmart CPAP",
+        "rule": "E",
+        "carrier": "Integrated Heated Humidifier",
+        "nrels": 2,
+        "ctx_tok": 507
+      }
+    ],
+    "W066": []
+  },
+  "policy_A": {
+    "recovered": [],
+    "added_tokens": 80095,
+    "add_pct": 3.74,
+    "verdict": "INERT - 0/8"
+  },
+  "policy_B_sweep": [
+    {
+      "label": "B-blanket (E+P+N, all 64 seeds, uncapped)",
+      "hits": 82,
+      "rec8": [
+        "W012",
+        "W044",
+        "W046",
+        "W063",
+        "W065"
+      ],
+      "add_tokens": 6178267,
+      "add_pct": 288.7,
+      "knee_multiple": 51.55,
+      "regressions": 0
+    },
+    {
+      "label": "B n=12 cap=2 size<=300",
+      "hits": 80,
+      "rec8": [
+        "W012",
+        "W044",
+        "W063"
+      ],
+      "add_tokens": 141333,
+      "add_pct": 6.6,
+      "knee_multiple": 1.18,
+      "regressions": 0
+    },
+    {
+      "label": "B n=11 cap=2 size<=300",
+      "hits": 80,
+      "rec8": [
+        "W012",
+        "W044",
+        "W063"
+      ],
+      "add_tokens": 130459,
+      "add_pct": 6.1,
+      "knee_multiple": 1.09,
+      "regressions": 0
+    },
+    {
+      "label": "B n=4 cap=2 size<=600 (in-budget candidate)",
+      "hits": 79,
+      "rec8": [
+        "W012",
+        "W063"
+      ],
+      "add_tokens": 64089,
+      "add_pct": 2.99,
+      "knee_multiple": 0.53,
+      "regressions": 0
+    },
+    {
+      "label": "B n=12 cap=2 size<=250 (knee-edge candidate)",
+      "hits": 79,
+      "rec8": [
+        "W012",
+        "W063"
+      ],
+      "add_tokens": 119065,
+      "add_pct": 5.56,
+      "knee_multiple": 0.99,
+      "regressions": 0
+    }
+  ],
+  "frontier": {
+    "in_budget_best": {
+      "label": "B n=4 cap=2 size<=600 (in-budget candidate)",
+      "rec8": [
+        "W012",
+        "W063"
+      ],
+      "add_pct": 2.99
+    },
+    "ceiling": {
+      "label": "B-blanket (E+P+N, all 64 seeds, uncapped)",
+      "rec8": [
+        "W012",
+        "W044",
+        "W046",
+        "W063",
+        "W065"
+      ],
+      "add_pct": 288.7,
+      "knee_multiple": 51.55
+    }
+  },
+  "zero_regression": {
+    "baseline_hits": 77,
+    "survived": true,
+    "note": "scorer monotone under appended render text; verified for every sweep entry"
+  },
+  "acceptance": {
+    "bar": ">=5/8 within +5.6% at zero regression",
+    "met": false
+  },
+  "verdict": "REFUTED on clause (b) - recovery ceiling 5/8 exists but only at 51.55x the knee budget; within budget the mix recovers 2/8. The registered refuter fires: the residue is priced-out abstention territory (gap ledger). Clause (a) CONFIRMED - all 8 causes enumerated"
+}
