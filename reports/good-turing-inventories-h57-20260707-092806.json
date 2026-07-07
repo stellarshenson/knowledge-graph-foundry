@@ -1,0 +1,294 @@
+{
+  "hypothesis": "R08-H57",
+  "relationship_inventory_all": {
+    "N": 31593,
+    "n1": 17,
+    "n_categories": 71,
+    "missing_mass": 0.0005380938815560409,
+    "ucb": 0.0008013033186703951,
+    "coverage_lb": 0.9991986966813297
+  },
+  "relationship_inventory_semantic": {
+    "N": 4106,
+    "n1": 17,
+    "n_categories": 67,
+    "missing_mass": 0.004140282513395032,
+    "ucb": 0.0061655079753418895,
+    "coverage_lb": 0.9938344920246581
+  },
+  "semantic_singleton_types": [
+    "ILLUMINATES",
+    "REQUIRED_BEFORE",
+    "LOCATED_IN",
+    "USES_SOFTWARE",
+    "CONNECTS_TO",
+    "FACILITATES",
+    "DETERMINES",
+    "AFFECTS",
+    "RECOMMENDED_FOR",
+    "MAXIMIZES_LIFESPAN_OF",
+    "CAUSES_DAMAGE_TO",
+    "OCCURS_IN",
+    "COMPONENT_OF",
+    "TREATED_BY",
+    "USES_FEATURE",
+    "MEASURES",
+    "BENEFIT_OF"
+  ],
+  "property_key_inventories": {
+    "Entity": {
+      "N": 5982,
+      "n1": 1451,
+      "n_categories": 2050,
+      "missing_mass": 0.2425610163824808,
+      "ucb": 0.25504614356776495,
+      "coverage_lb": 0.7449538564322351,
+      "n_entities": 2798
+    },
+    "CPAPDevice": {
+      "N": 1970,
+      "n1": 790,
+      "n_categories": 1055,
+      "missing_mass": 0.4010152284263959,
+      "ucb": 0.4289971855598309,
+      "coverage_lb": 0.5710028144401691,
+      "n_entities": 238
+    },
+    "OperatingMode": {
+      "N": 93,
+      "n1": 52,
+      "n_categories": 69,
+      "missing_mass": 0.5591397849462365,
+      "ucb": 0.7125700578816109,
+      "coverage_lb": 0.2874299421183891,
+      "n_entities": 70
+    },
+    "ComfortFeature": {
+      "N": 232,
+      "n1": 124,
+      "n_categories": 159,
+      "missing_mass": 0.5344827586206896,
+      "ucb": 0.6289373542219738,
+      "coverage_lb": 0.37106264577802617,
+      "n_entities": 198
+    },
+    "Feature": {
+      "N": 241,
+      "n1": 130,
+      "n_categories": 164,
+      "missing_mass": 0.5394190871369294,
+      "ucb": 0.6325030097876714,
+      "coverage_lb": 0.3674969902123286,
+      "n_entities": 384
+    },
+    "ClinicalFeature": {
+      "N": 152,
+      "n1": 97,
+      "n_categories": 114,
+      "missing_mass": 0.6381578947368421,
+      "ucb": 0.7658092768142031,
+      "coverage_lb": 0.23419072318579692,
+      "n_entities": 182
+    },
+    "Accessory": {
+      "N": 2548,
+      "n1": 315,
+      "n_categories": 519,
+      "missing_mass": 0.12362637362637363,
+      "ucb": 0.13730051888378222,
+      "coverage_lb": 0.8626994811162177,
+      "n_entities": 999
+    },
+    "Software": {
+      "N": 113,
+      "n1": 37,
+      "n_categories": 55,
+      "missing_mass": 0.3274336283185841,
+      "ucb": 0.4343562074851256,
+      "coverage_lb": 0.5656437925148744,
+      "n_entities": 90
+    },
+    "Manufacturer": {
+      "N": 84,
+      "n1": 27,
+      "n_categories": 41,
+      "missing_mass": 0.32142857142857145,
+      "ucb": 0.444896965944919,
+      "coverage_lb": 0.555103034055081,
+      "n_entities": 47
+    },
+    "DataStorageDevice": {
+      "N": 18,
+      "n1": 8,
+      "n_categories": 12,
+      "missing_mass": 0.4444444444444444,
+      "ucb": 0.7711111111111111,
+      "coverage_lb": 0.22888888888888892,
+      "n_entities": 10
+    },
+    "ConnectivityDevice": {
+      "N": 60,
+      "n1": 13,
+      "n_categories": 28,
+      "missing_mass": 0.21666666666666667,
+      "ucb": 0.3388941413012821,
+      "coverage_lb": 0.661105858698718,
+      "n_entities": 60
+    },
+    "EventType": {
+      "N": 165,
+      "n1": 32,
+      "n_categories": 60,
+      "missing_mass": 0.19393939393939394,
+      "ucb": 0.2621778350740275,
+      "coverage_lb": 0.7378221649259725,
+      "n_entities": 139
+    },
+    "ProductModel": {
+      "N": 569,
+      "n1": 294,
+      "n_categories": 354,
+      "missing_mass": 0.5166959578207382,
+      "ucb": 0.57585958789656,
+      "coverage_lb": 0.42414041210344,
+      "n_entities": 97
+    },
+    "Specification": {
+      "N": 298,
+      "n1": 102,
+      "n_categories": 138,
+      "missing_mass": 0.3422818791946309,
+      "ucb": 0.40903297807913,
+      "coverage_lb": 0.59096702192087,
+      "n_entities": 199
+    },
+    "Organization": {
+      "N": 48,
+      "n1": 18,
+      "n_categories": 28,
+      "missing_mass": 0.375,
+      "ucb": 0.5529883735279109,
+      "coverage_lb": 0.44701162647208914,
+      "n_entities": 61
+    },
+    "MedicalCondition": {
+      "N": 17,
+      "n1": 8,
+      "n_categories": 11,
+      "missing_mass": 0.47058823529411764,
+      "ucb": 0.8164705882352941,
+      "coverage_lb": 0.18352941176470594,
+      "n_entities": 64
+    },
+    "Condition": {
+      "N": 1,
+      "n1": 1,
+      "n_categories": 1,
+      "missing_mass": 1.0,
+      "ucb": 1.0,
+      "coverage_lb": 0.0,
+      "n_entities": 39
+    },
+    "Standard": {
+      "N": 54,
+      "n1": 44,
+      "n_categories": 48,
+      "missing_mass": 0.8148148148148148,
+      "ucb": 1.0,
+      "coverage_lb": 0.0,
+      "n_entities": 58
+    },
+    "TestProtocol": {
+      "N": 42,
+      "n1": 31,
+      "n_categories": 35,
+      "missing_mass": 0.7380952380952381,
+      "ucb": 1.0,
+      "coverage_lb": 0.0,
+      "n_entities": 31
+    },
+    "Person": {
+      "N": 8,
+      "n1": 4,
+      "n_categories": 6,
+      "missing_mass": 0.5,
+      "ucb": 1.0,
+      "coverage_lb": 0.0,
+      "n_entities": 13
+    },
+    "Equipment": {
+      "N": 0,
+      "n1": 0,
+      "missing_mass": null,
+      "ucb": null,
+      "coverage_lb": null,
+      "n_categories": 0,
+      "n_entities": 1
+    },
+    "Component": {
+      "N": 1,
+      "n1": 1,
+      "n_categories": 1,
+      "missing_mass": 1.0,
+      "ucb": 1.0,
+      "coverage_lb": 0.0,
+      "n_entities": 3
+    },
+    "Location": {
+      "N": 0,
+      "n1": 0,
+      "missing_mass": null,
+      "ucb": null,
+      "coverage_lb": null,
+      "n_categories": 0,
+      "n_entities": 10
+    },
+    "DeviceType": {
+      "N": 0,
+      "n1": 0,
+      "missing_mass": null,
+      "ucb": null,
+      "coverage_lb": null,
+      "n_categories": 0,
+      "n_entities": 2
+    },
+    "Sensor": {
+      "N": 0,
+      "n1": 0,
+      "missing_mass": null,
+      "ucb": null,
+      "coverage_lb": null,
+      "n_categories": 0,
+      "n_entities": 2
+    }
+  },
+  "high_ucb_cohorts": [
+    "Entity",
+    "CPAPDevice",
+    "OperatingMode",
+    "ComfortFeature",
+    "Feature",
+    "ClinicalFeature",
+    "Software",
+    "Manufacturer",
+    "DataStorageDevice",
+    "ConnectivityDevice",
+    "EventType",
+    "ProductModel",
+    "Specification",
+    "Organization",
+    "MedicalCondition",
+    "Condition",
+    "Standard",
+    "TestProtocol",
+    "Person",
+    "Component"
+  ],
+  "coverage_lb_spread": 0.8626994811162177,
+  "rel_missing_mass": 0.004140282513395032,
+  "rel_missing_mass_bar": "<=0.05 predicted",
+  "refusal_correlation": "PENDING - requires per-wave probe cycles (registration: report bounds now, correlation later)",
+  "bar": "coverage bounds rank-correlate with refusals; refuted if flat across cohorts",
+  "verdict": "BOUNDS REPORTED - correlation clause PENDING probe cycles",
+  "note": "rel-type missing mass 0.004 (bar <=0.05: holds); property coverage_lb spread 0.86 across 21 cohorts (widely-varying: prediction holds)"
+}

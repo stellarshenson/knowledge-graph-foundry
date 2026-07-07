@@ -1,0 +1,36 @@
+{
+  "hypothesis": "R08-H56",
+  "scope": "deterministic-half-only",
+  "provenance_note": "propositions lack chunk links; chunk gap via ABOUT->entity->source_chunks bridge (over-attributes -> lower bound on gap)",
+  "n_gold_strings": 27,
+  "n_chunks": 132,
+  "n_evidence_bearing_chunks": 27,
+  "chunk_bridge_zero_prop": 1,
+  "chunk_bridge_gap_frac": 0.037037037037037035,
+  "gap_chunk_ids": [
+    "c_3c13151ff1387c51"
+  ],
+  "gold_strings_absent_from_all_props": 12,
+  "gold_miss_frac": 0.4444444444444444,
+  "missing_golds": [
+    "4 to 20 cm H2O",
+    "28 dB(A)",
+    "2,591 m",
+    "Typical power consumption: 9.0W",
+    "275mm x 170mm x 140mm",
+    "1106 g",
+    "26 dB(A)",
+    "290 ml",
+    "238*178*128 mm",
+    "0-60 mins",
+    "26.6 dBA",
+    "gradually acclimate"
+  ],
+  "evidence_bearing_entities": 757,
+  "ev_entities_zero_prop": 6,
+  "entities_with_prop_overall": 2759,
+  "entity_prop_coverage": 0.9860614724803431,
+  "bar": ">=20% chunk gaps confirms; <5% refutes",
+  "verdict": "REFUTED",
+  "reason": "chunk-bridge coverage saturated (3.7% gap, <5%)"
+}

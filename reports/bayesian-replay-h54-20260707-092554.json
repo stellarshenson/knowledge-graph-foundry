@@ -1,0 +1,34 @@
+{
+  "hypothesis": "R08-H54",
+  "variant": "logged-decisions",
+  "n_decisions": 4625,
+  "decision_counts": {
+    "defer": 843,
+    "block": 468,
+    "merge": 3314
+  },
+  "lr_cooccurrence_values": {
+    "1.5": 3989,
+    "0.9": 636
+  },
+  "lr_description_uniq": 110,
+  "lr_description_neutral_frac": 0.06183783783783784,
+  "two_rule_agreement": 0.7435675675675676,
+  "drop_description_only_agreement": 0.7816216216216216,
+  "drop_cooccurrence_only_agreement": 0.8335135135135135,
+  "best_case_recalibrated_agreement": 0.7664864864864865,
+  "best_thresholds": [
+    0.31,
+    0.42
+  ],
+  "labeled_decisions": 33,
+  "defer_zone_unique_false_merge_saves": 0,
+  "defer_saves": [],
+  "posterior_committed_false_merges": 0,
+  "y_labeled_disagreements": 5,
+  "posterior_correct": 1,
+  "two_rule_correct": 4,
+  "bar": ">=90% agreement + audit parity; refuted if defer zone uniquely prevents a labeled false merge",
+  "verdict": "REFUTED",
+  "reason": "two-rule reproduces only 74.4% (<90%); description LR is load-bearing"
+}

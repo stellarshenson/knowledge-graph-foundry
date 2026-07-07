@@ -712,8 +712,8 @@ Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack a
 - **Prediction** - a deterministic multi-parser fidelity audit (named-string preservation, numeric-token preservation, table-cell recovery across pdftotext/pdfplumber-class parsers) finds >=20% of documents losing at least one entity-name string present in the source; at least one persistent failure (OSA consolidation or SleepStyle modes) roots upstream in parse loss, not extraction
 - **Acceptance bar** - material loss found AND one persistent-failure root cause moves upstream; refuted if named-string preservation >=99% across parsers (parsing vindicated, chunk text is trustworthy ground)
 - **Experiment** - deterministic parser diff over the CPAP + campaign corpora; zero LLM calls, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`parse_fidelity_h51.ipynb`](../../notebooks/parse_fidelity_h51.ipynb)) multi-parser audit (pymupdf4llm vs pdfplumber vs pypdf) over 27 PDFs x 2798 entities: 18/27 documents (66.7%) lose at least one entity-name string an alternative parser preserves (bar >=20%; the >=99% refuter is nowhere near - union preservation is 75.8%). 95 entities are true project-parser losses, concentrated in table-heavy catalogues (22/21/19 in the top three). Persistent-failure clause nuanced: the mode-family names are absent from ALL three parsers of their source documents (stylized rendering defeats every parser or extraction synthesized the canonical names), while 'F&P Sleepstyle Auto CPAP' is a genuine pymupdf4llm-only loss recovered by pypdf. Caveats recorded: 676 all-parser absences are extraction canonicalization, not parse loss; numeric-token preservation is parser-invariant at 67.3%
+- **Verdict** - CONFIRMED - the parse layer is a real upstream loss surface, and part of the persistent-failure family roots there. Routing per the registered clause: a multi-parser union pass (+9.1 points of name preservation measured) is the candidate lever, queued for post-freeze registration; table-heavy catalogues are the priority genre. The all-parser-absent mode-family names redirect that specific failure to extraction synthesis, not parsing alone
 
 ### R08-H52 Merge nothing - federate reads instead of merging writes
 
@@ -742,8 +742,8 @@ Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack a
 - **Prediction** - decision replay over the logged cross-type decisions (77 in the v28 record; more on the campaign graph) shows >=90% agreement with a two-rule system; among disagreements, the identity audit sides with the deterministic rule at least as often as with the posterior
 - **Acceptance bar** - agreement + parity on audit adjudication; refuted if the posterior's defer zone uniquely prevents measured false merges the rules would commit
 - **Experiment** - deterministic decision replay + audit adjudication of disagreements; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`bayesian_replay_h54.ipynb`](../../notebooks/bayesian_replay_h54.ipynb)) the registered primary path ran - logged decisions EXIST (4625 resolution events in kgf-events.jsonl with full posterior components; merge 3314 / defer 843 / block 468; formula verified to 1e-6). The two-rule system reproduces only 74.4% of decisions vs the 90% bar (best recalibrated 76.6%); the description LR is load-bearing (neutral in only 6.2% of decisions; dropping cooc alone still leaves 83.4%). The defer-zone refuter did not fire (0 unique false-merge saves), and on the 5 label-adjudicable disagreements the two-rule was right 4/1 - but the agreement clause fails decisively
+- **Verdict** - REFUTED - the posterior machinery is NOT numerology: it does real work two deterministic rules cannot reproduce, and the description-likelihood term is where that work lives. This reverses the working narrative built on the 44% calibration figure - the machinery's DECISIONS are non-trivial even while its PROBABILITIES are uncalibrated, which is precisely H129's split (keep the scorer, fix the calibration). The resolver survives its own demolition case
 
 ### R08-H55 The purpose is a placebo - audit the project's own doctrine
 
@@ -762,8 +762,8 @@ Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack a
 - **Prediction** - >=20% of evidence-bearing chunks carry zero propositions; closing the gaps lifts proposition-channel evidence recall >=15 points on the H34 harness, with the trigram diversity filter keeping the context clean
 - **Acceptance bar** - the recall lift lands without displacing currently-retrieved evidence; refuted if coverage is already saturated (audit finds <5% gaps)
 - **Experiment** - deterministic coverage audit + generation extension + H34 re-measure; embeddings only, runs now. Scope note (2026-07-06, revised after H108): the attached-but-unrendered count was 2, not 6 (H61 overcount, corrected); H108 refuted per-seed surfacing as a render fix - the global proposition channel is the correct mechanism, so this audit's coverage half stands but the render half is retired
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`proposition_coverage_h56.ipynb`](../../notebooks/proposition_coverage_h56.ipynb)) propositions carry no chunk provenance, so the chunk audit ran through the ABOUT-entity-source_chunks bridge (over-attributes; lower-bounds the gap): only 1 of 27 evidence-bearing chunks (3.7%) has zero bridged propositions - under the 5% refute bar. Entity coverage saturated (98.6% >=1 proposition). The sharper direct measure flips the unit: 12/27 distinct gold strings (44.4%) appear in NO proposition text ('4 to 20 cm H2O', '275mm x 170mm x 140mm', '1106 g') - the gaps are WITHIN-entity content misses, not zero-proposition chunks. Generation half not run
+- **Verdict** - REFUTED on the registered chunk-coverage clause - and the refutation retargets the whole entry: the registered generation half would have aimed at the wrong unit (chunks), when the real gap is which FACTS of a covered entity get propositionalized (44% of gold strings uncovered). The successor design (post-freeze) targets per-fact coverage against the spec table, not per-chunk existence
 
 ### R08-H57 One estimator family, three inventories - Good-Turing for completeness
 
@@ -772,8 +772,8 @@ Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack a
 - **Prediction** - at wave-1b end the relationship-type missing mass sits <=5% while per-type property coverage varies widely; cohorts with UCB > 0.2 contain the majority of refusal-control failures in the campaign probe cycle
 - **Acceptance bar** - coverage bounds rank-correlate with refusals; refuted if the bounds are flat across cohorts (uninformative)
 - **Experiment** - pure graph counting now; correlation against the per-wave probe cycles as they land
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`good_turing_inventories_h57.ipynb`](../../notebooks/good_turing_inventories_h57.ipynb)) relationship-type inventory (semantic types only): N=4106 observations, 67 types, 17 singletons - missing mass 0.41% (UCB 0.62%), the registered <=5% prediction holds. Per-entity-type property-KEY coverage spans 0.00 (Condition/Standard/TestProtocol/Person - UCB saturated) to 0.86 (Accessory), spread 0.86, with 20 cohorts above the UCB > 0.2 refusal-prediction threshold - emphatically not flat, so the flatness refuter's precondition fails
+- **Verdict** - PARTIAL (interim) - the bounds clause holds and the inventories are informative as predicted; the refusal rank-correlation clause is honestly pending the campaign probe cycles and adjudicates with them. The one-estimator-family doctrine (H32) extends to relationships and properties as registered
 
 ### R08-H58 Collective-evidence alias detector - the fifth detector
 
@@ -1293,8 +1293,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - calibration accuracy moves off 44% by >=10 points in either direction; the benchmark stratifies into named difficulty tiers (siblings, cross-type, alias-chains, distractors)
 - **Acceptance bar** - benchmark shipped + metric shift demonstrated; refuted if 200-pair metrics reproduce the 25-pair figures within 5 points (the small sample was honest after all)
 - **Experiment** - candidate generation deterministic now; adjudication on the local model post-wave; every R11 identity entry conditions on this artifact
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`identity_benchmark_h101.ipynb`](../../notebooks/identity_benchmark_h101.ipynb)) benchmark SHIPPED: 298 pairs across all detector tiers (alias_edge 119, inventory_variance 64, sibling 40, distractor 40, alias_chain 29, known_false 6), every pair adjudicated by the local model at temperature 0 with per-pair evidence strings (reports/identity-benchmark-h101-20260707-094448.json). Labels: YES 52 / NO 245 / UNCERTAIN 1. Adjudication trust: 6/6 known false merges NO, 3/3 P10 mask-battery pairs NO - sanity 100%, no noise flag. The registered headline-shift clause: resolver-proxy accuracy 45.1% on 297 labels vs 44% on 25 - a 1.1-point shift, inside the refute zone
+- **Verdict** - REFUTED on the registered clause - the 25-pair figure was honest, not noise-dominated; the calibration problem is real at any sample size. The benchmark itself is the durable artifact, and it carries a finding bigger than the clause: the adjudicator rates MOST standing SAME_AS edges as distinct items (resolver precision proxy 14.2% on the new labels) - the false-merge surface extends far beyond the 6 labeled cases, dominated by the model_code tier. H102/H105/H106/H129 are now unlocked with trustworthy labels, and the SAME_AS repair queue is ordered
 
 ### R11-H102 Merge, defer, or reject - decision theory replaces the single threshold
 

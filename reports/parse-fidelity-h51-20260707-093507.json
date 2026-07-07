@@ -1,0 +1,228 @@
+{
+  "hypothesis": "R08-H51",
+  "parsers": [
+    "pymupdf4llm",
+    "pdfplumber",
+    "pypdf"
+  ],
+  "n_documents": 27,
+  "n_entities_checked": 2798,
+  "named_string_preservation": {
+    "pymupdf4llm": 0.724446032880629,
+    "pdfplumber": 0.7208720514653324,
+    "pypdf": 0.7512508934953538
+  },
+  "union_preservation": 0.7583988563259471,
+  "absent_from_all_parsers": 676,
+  "entities_parse_lost_by_project": 95,
+  "parse_lost_names": [
+    "Central sleep apnea detection",
+    "Anti-asphyxia Valve",
+    "Automatic Positive Airway Pressure",
+    "AutoSet algorithm",
+    "Enhanced Climate Control",
+    "DreamStation humidifier",
+    "RESmart Auto CPAP System",
+    "European CE Declaration of Conformity",
+    "RESmart Auto",
+    "Multilevel Filtration-Purification System",
+    "Oxygen Gas Flow Column",
+    "Diamedica Bubble CPAP",
+    "improved forehead support",
+    "East Meets West Breath of Life program",
+    "Leak compensation technology",
+    "PATH Bubble CPAP Kit",
+    "Bluetooth Wireless Technology",
+    "Communications Connector",
+    "Medical Product Note",
+    "Ultra-fine filter",
+    "DreamStation SpO2 module",
+    "Dynamic Airway Pressure Accuracy",
+    "Oximeter Adapter",
+    "Power Board",
+    "Factory Default Settings",
+    "Pressure Sensor Failure",
+    "Flow Sensor Failure",
+    "Power Board Short-Circuit",
+    "Humidifier Heating Circuit Short-Circuit",
+    "High Respiratory Rate",
+    "Low Respiratory Rate",
+    "High Leakage Volume",
+    "High Inspiration Pressure",
+    "Low Expiratory Pressure",
+    "Mask Vent Holes Blocked",
+    "Low Battery Charge",
+    "Leakage Volume",
+    "Inspiration Pressure",
+    "Expiratory Pressure",
+    "Cooling Down",
+    "Voltage fluctuations/flicker emissions",
+    "Electrical fast transient/burst",
+    "Voltage dips, short interruptions and voltage variations on power supply",
+    "Electromagnetic Site Survey",
+    "Top-of-the-head tube connection",
+    "In-frame airflow",
+    "Magnetic clips for easy assembly",
+    "Click fit headgear clips",
+    "Improved strap fastener clips",
+    "One-piece washable diffuser",
+    "Advanced diffuser",
+    "QuietAir\u2122 diffused venting",
+    "Durable, washable diffuser",
+    "UltraSoft\u2122 memory foam",
+    "Flexible silicon frame",
+    "Adaptive seal",
+    "Built-in air diffuser",
+    "Ultrapure sterile water refill",
+    "Dishwasher safe",
+    "Philips OptiChamber Diamond",
+    "Salter Disposable Humidifier",
+    "Hydrophobic Antibacterial Filter Pack",
+    "Hydrophobic antibacterial filter",
+    "Actual Pressure Display",
+    "Fully Integrated CPAP with Heated Humidification",
+    "AirSense 10 AutoSet",
+    "DreamStation Auto APAP",
+    "AirCurve 10 V Auto",
+    "DreamStation BIPAP Auto",
+    "Remstar Bipap Auto",
+    "F&P Sleepstyle Auto CPAP",
+    "F&P Sleepstyle Auto CPAP - no modem model - SPSABN",
+    "Icon Nt Novo Cpap System",
+    "Icon Pt Premo Cpap System",
+    "DreamStation 2 Auto CPAP Advanced",
+    "DreamStation CPAP Expert with heated humidifier",
+    "Apnea/Cardiorespiratory Monitor",
+    "Devilbiss Vacuaide Compact Suction Unit With Carrying Bag",
+    "Drive Medical Heavy Duty Suction Pump - Model 18600",
+    "CPAP Expert plus Heated Humidifier",
+    "Precision Medical Easy Go Vac Portable Suction",
+    "Schuco-Vac Portable 115 Volts A.C.",
+    "Laerdal Suction",
+    "Medela Healthcare Clario AC/DC Suction Pump",
+    "Medela Healthcare",
+    "Precision Medical",
+    "AC, DC and optional battery power options",
+    "OptiChamber Diamond with LiteTouch small mask, 10 pk",
+    "2500A hand-held oximeter with memory and alarms",
+    "WristOx ambulatory digital pulse oximeter carrying case",
+    "EasyLife DuoPack with headgear, petite",
+    "ComfortClassic gel forehead pad replacement kits",
+    "Dual-cushion construction",
+    "Amara Silicone",
+    "Secretion management"
+  ],
+  "documents_losing_entity_name": 18,
+  "frac_documents_losing": 0.6666666666666666,
+  "docs_losing_detail": {
+    "Airsense-Brochure.pdf": 3,
+    "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 1,
+    "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 1,
+    "BC-Dreamstation-Standard-CPAP.pdf": 1,
+    "BMC_RESmart_AutoCPAP_User_Manual.pdf": 3,
+    "CPAP-Machines-Brochure.pdf": 2,
+    "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024.pdf": 1,
+    "DSDC-CPAP-Therapy-Catalogue.pdf": 1,
+    "DT_guide_to_select_cpap.pdf": 3,
+    "DreamStation_CPAP_User_Manual.pdf": 1,
+    "PDF RESmart Service Manual CPAP.pdf": 2,
+    "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf": 2,
+    "ResMed-Airsense-11-Manual.pdf": 1,
+    "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf": 22,
+    "Sleep And Respiratory Medical Devices Brochure.pdf": 19,
+    "SleepStyle_200_Operating_Manual.pdf": 2,
+    "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf": 21,
+    "product_and_solutions_catalog.pdf": 9
+  },
+  "gold_string_preservation": {
+    "pymupdf4llm": 0.673469387755102,
+    "pdfplumber": 0.673469387755102,
+    "pypdf": 0.673469387755102
+  },
+  "gold_lost_by_project": [],
+  "sleepstyle_entities": [
+    {
+      "name": "Fisher & Paykel SleepStyle",
+      "found": {
+        "pymupdf4llm": true,
+        "pdfplumber": true,
+        "pypdf": true
+      }
+    },
+    {
+      "name": "SleepStyle Auto",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": false
+      }
+    },
+    {
+      "name": "SleepStyle CPAP",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": false
+      }
+    },
+    {
+      "name": "SleepStyle extended care CPAP warranty card",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": false
+      }
+    },
+    {
+      "name": "SleepStyle filter pack of two",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": false
+      }
+    },
+    {
+      "name": "SleepStyle ThermoSmart AirSpiral heated breathing tube",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": false
+      }
+    },
+    {
+      "name": "SleepStyle humidifier chamber",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": false
+      }
+    },
+    {
+      "name": "SleepStyle 200 Series",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": false
+      }
+    },
+    {
+      "name": "F&P Sleepstyle Auto CPAP",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": true
+      }
+    },
+    {
+      "name": "F&P Sleepstyle Auto CPAP - no modem model - SPSABN",
+      "found": {
+        "pymupdf4llm": false,
+        "pdfplumber": false,
+        "pypdf": true
+      }
+    }
+  ],
+  "bar": ">=20% docs lose >=1 entity name confirms; >=99% union preservation refutes",
+  "verdict": "CONFIRMED",
+  "reason": "66.7% of documents lose >=1 entity-name string to parsing (>=20% bar)"
+}
