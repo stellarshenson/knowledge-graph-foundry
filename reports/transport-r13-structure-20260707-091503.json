@@ -1,0 +1,52 @@
+{
+  "pair_file": "matching-r12-foundation-20260706-211008.json",
+  "semantic_degree": {
+    "median": 1.0,
+    "deg0": 278,
+    "deg1": 1426,
+    "deg_ge2": 1093
+  },
+  "h134": {
+    "n_task": 126,
+    "n_scored": 106,
+    "coverage": 0.8412698412698413,
+    "auc_jaccard": 0.34865196078431365,
+    "auc_nbhd_wass": 0.45853758169934644,
+    "gain": 0.10988562091503279,
+    "n_zero_overlap": 50,
+    "auc_zero_overlap": 0.655,
+    "zero_signal": true,
+    "bar": 0.05,
+    "verdict": "CONFIRMED"
+  },
+  "h135": {
+    "n_closures": 46,
+    "n_edges": 127,
+    "n_survivors": 78,
+    "false_survive": 1,
+    "n_false": 6,
+    "legit_survive": 21,
+    "n_legit": 29,
+    "legit_rate": 0.7241379310344828,
+    "p10_false_survives": false,
+    "p10_legit_survive": [
+      false,
+      true
+    ],
+    "bar_legit": 0.9,
+    "verdict": "REFUTED"
+  },
+  "h136": {
+    "n_candidates": 246,
+    "non_degenerate": 203,
+    "degenerate": 43,
+    "n_missed_target": 0,
+    "K": 10,
+    "n_recoveries": 0,
+    "head_precision": 0.7,
+    "bar_recov": 3,
+    "bar_prec": 0.5,
+    "verdict": "REFUTED",
+    "recoveries": []
+  }
+}

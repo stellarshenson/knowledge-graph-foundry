@@ -1640,8 +1640,8 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - siblings pay visibly for their differing model tokens; variance pairs transport nearly free (containment = cheap partial transport)
 - **Acceptance bar** - AUC gap >= 0.10; refuted if token-level transport inherits the same saturation (token embeddings equally anisotropic - couple with H131's whitening, which is a registered interaction)
 - **Experiment** - scipy exact EMD on small bags; CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`transport_r13_records.ipynb`](../../notebooks/transport_r13_records.ipynb); bge-m3 token embedder on GPU 2) on 126 dup-vs-sibling pairs: raw cosine 0.877, WMD 0.431 - ANTI-separating (below chance), gap -0.447 vs the +0.10 bar; H131-whitened token WMD 0.429 (no rescue)
+- **Verdict** - REFUTED with a clean mechanism: mass dilution, not anisotropy - the uniform token bag is dominated by shared family/category vocabulary, so the single differing model token carries only 1/N of the mass and siblings transport CHEAPER than surface variants. Bag-of-tokens transport is structurally wrong for identity on templated product names
 
 ### R13-H133 Unmatched mass is the contradiction - Sinkhorn over the spec sets
 
@@ -1650,8 +1650,8 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - the residual isolates the differing value; sparse-spec pairs abstain (honest coverage limit)
 - **Acceptance bar** - precision clause on the sibling set; refuted if spec value embeddings are too coarse to localize the disagreement
 - **Experiment** - Sinkhorn (POT) over key-value embedding bags; CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`transport_r13_records.ipynb`](../../notebooks/transport_r13_records.ipynb); bge-m3 token embedder on GPU 2) on the 61 pairs with >=3 spec items each: residual AUC 0.746, best precision at recall 0.5 = 0.741 vs the 0.80 bar; the combined feature (0.701) overfit the small sample
+- **Verdict** - REFUTED as a near-miss over genuine signal - the unmatched-mass residual does partially localize the differing spec value but cannot clear the precision bar at this spec density. Parked until spec coverage rises (H119's canonicalization would raise it); not a current lever
 
 ### R13-H134 Neighborhood transport - relational identity, continuously
 
@@ -1660,8 +1660,8 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - the continuous version wins exactly on cross-document pairs whose contexts were extracted with different surface forms
 - **Acceptance bar** - both clauses; refuted if median degree 1 starves the signal (most entities have too few neighbors to form a distribution - the honest scale risk)
 - **Experiment** - per-pair EMD over 1-hop neighbor embedding bags; CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`transport_r13_structure.ipynb`](../../notebooks/transport_r13_structure.ipynb)) 106/126 pairs scorable (84% - the registered degree-1 starvation refuter did NOT materialize); neighborhood Wasserstein AUC 0.459 vs Jaccard 0.349 (gain +0.110, bar +0.05); on the 50 zero-literal-overlap pairs where Jaccard is blind, W-AUC 0.655
+- **Verdict** - CONFIRMED per both registered clauses, with the honest caveat attached: absolute AUC sits below 0.5 on the full hard-negative task (siblings share device-family neighborhoods), so the win is RELATIVE and concentrated exactly where predicted - cross-document pairs with zero literal overlap. Usable as a tie-breaker feature in that regime only, never as a standalone scorer
 
 ### R13-H135 The transport polytope forbids the chain - assignment-constrained resolution
 
@@ -1670,8 +1670,8 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - the model_code false merges (mask-battery over 'P10') never survive assignment because the mask has a better match or no match; P09's legitimate multi-doc identity survives
 - **Acceptance bar** - zero false closures + P09 regression-free; refuted if legitimate multi-facet entities NEED many-to-one (the assignment constraint would then be too strong - measured, not assumed)
 - **Experiment** - replay over the SAME_AS-bearing document pairs; CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`transport_r13_structure.ipynb`](../../notebooks/transport_r13_structure.ipynb)) per-cluster low-temperature Sinkhorn with mutual-argmax assignment over the 127 SAME_AS edges: 78 survive; 5 of 6 labeled false merges KILLED (including the mask-battery P10 merge), but one false edge survives (mutually-nearest accessories) and legitimate-method survival is 0.72 vs the 0.90 bar - one-to-one binding orphaned a true multi-variant identity (the AirMini variant kept, the starter-kit variant dropped)
+- **Verdict** - REFUTED exactly on the pre-registered refuter: legitimate multi-facet entities NEED many-to-one, so the strict assignment constraint is too strong - yet it demonstrably fragments the mega-chain and breaks 5/6 false merges. Routing: a capacitated/many-to-one relaxation is the natural follow-up, queued for post-freeze registration; until then the finding strengthens H101's adjudication queue ordering
 
 ### R13-H136 Gromov-Wasserstein - matching structure to structure
 
@@ -1680,8 +1680,8 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - the wins are the code-vs-name pairs
 - **Acceptance bar** - >= 3 unique recoveries at precision >= 0.5 in the flagged head; refuted if degree-1 neighborhoods make GW degenerate (same scale risk as H134, registered separately because GW fails differently)
 - **Experiment** - POT entropic GW on small neighborhood graphs; CPU, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`transport_r13_structure.ipynb`](../../notebooks/transport_r13_structure.ipynb)) 203 of 246 candidate subgraphs non-degenerate (82% - the degeneracy refuter did not fire), but ZERO duplicates in the labeled set are missed by BOTH text signals (15 below cosine 0.85, 9 below JW 0.70, none below both) - no recovery opportunity exists; GW's own top-10 head is 70% true duplicates
+- **Verdict** - REFUTED by premise absence: the code-vs-name duplicate class GW was registered to recover does not exist in the current labeled inventory. GW carries real signal (its head is duplicate-rich) but has no unique job; re-examine only if H101's benchmark surfaces text-invisible duplicates
 
 ### R13-H137 The barycenter chain guard - membership by distance to the center of mass
 
@@ -1690,8 +1690,8 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - the model_code chains show the widest member spread (consistent with their false-merge surface)
 - **Acceptance bar** - both clauses; refuted if barycenters of small clusters (2-4 members) are too unstable to threshold
 - **Experiment** - barycenters over the 127-edge closure clusters; CPU, runs now; on confirmation joins H58/H88 as the third chain-guard prong
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`transport_r13_structure.ipynb`](../../notebooks/transport_r13_structure.ipynb)) across the 3 closure clusters containing labeled intruders (sizes 3/7/36, 46 members, 7 intruders): member-to-barycenter distance AUC 0.322 - WORSE than chance; no zero-true-loss threshold exists. The 36-member closure is semantically incoherent (it chains unrelated entities), so its barycenter is a meaningless centroid and TRUE members sit as far out as intruders
+- **Verdict** - REFUTED on the registered instability refuter, amplified: a poisoned chain has no coherent core to take a center of mass of - barycenter guards presuppose the very cluster health they are meant to verify. Chain repair must come from edge-level evidence (H101 adjudication of the model_code surface), not from cluster geometry
 
 ### R13-H138 Types as distributions - the granularity proposal engine
 

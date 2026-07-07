@@ -1,0 +1,406 @@
+{
+  "pair_file": "matching-r12-foundation-20260706-211008.json",
+  "embedder": "BAAI/bge-m3",
+  "h132": {
+    "n_task": 126,
+    "auc_cosine": 0.8773255813953489,
+    "auc_wmd": 0.43081395348837215,
+    "auc_wmd_whiten": 0.4293604651162791,
+    "gap": -0.44651162790697674,
+    "bar": 0.1,
+    "verdict": "REFUTED"
+  },
+  "h133": {
+    "n_pairs": 61,
+    "n_sibling": 33,
+    "auc_residual": 0.7456709956709957,
+    "auc_combined": 0.7007575757575757,
+    "best_precision_at_rec50": 0.7407407407407407,
+    "recall_at_best": 0.6060606060606061,
+    "bar": 0.8,
+    "verdict": "REFUTED"
+  },
+  "h137": {
+    "affected_sizes": [
+      3,
+      7,
+      36
+    ],
+    "n_members": 46,
+    "n_intruders": 7,
+    "auc": 0.32234432234432236,
+    "clean_threshold": false,
+    "bar": 0.85,
+    "verdict": "REFUTED",
+    "members": [
+      {
+        "cluster_size": 3,
+        "hub": "Body Position Sensor Sandman SD20",
+        "member": "Body Position Sensor Sandman SD20",
+        "dist": 0.24109230292610767,
+        "is_intruder": 0,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 3,
+        "hub": "Body Position Sensor Sandman SD20",
+        "member": "Sandman SD20",
+        "dist": 0.34157049415332447,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 3,
+        "hub": "Body Position Sensor Sandman SD20",
+        "member": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+        "dist": 0.32370934021626635,
+        "is_intruder": 1,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "bCPAP prongs",
+        "dist": 0.4365981550248569,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Handle",
+        "dist": 0.36295208566289916,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "HC230 Standard Range",
+        "dist": 0.48839751500423323,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Device",
+        "dist": 0.3370302203732223,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "HC230-Series",
+        "dist": 0.6198828831100089,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Patient",
+        "dist": 0.46001063996491787,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "CPAP",
+        "dist": 0.4744811449599394,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "User Manual",
+        "dist": 0.34853225256327336,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Air Filter",
+        "dist": 0.4266451790755655,
+        "is_intruder": 1,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "DreamStation CPAP",
+        "dist": 0.4758360222379265,
+        "is_intruder": 1,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Outlet",
+        "dist": 0.36314081172217766,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Filter",
+        "dist": 0.40151043859055624,
+        "is_intruder": 1,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Apnea",
+        "dist": 0.4979264123289276,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Auto",
+        "dist": 0.4608553590175809,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Low oxygen level alarm",
+        "dist": 0.44955422807232337,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "CPAP mask",
+        "dist": 0.39640873357273393,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Sleep apnea",
+        "dist": 0.5559612535648911,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Therapy",
+        "dist": 0.4027966809717411,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Mask",
+        "dist": 0.3905280845062474,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Internal filter",
+        "dist": 0.34340460946287776,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Total flowmeter",
+        "dist": 0.4365371185198728,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "CPAP prongs",
+        "dist": 0.45221456062068394,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "HC230 Product Range",
+        "dist": 0.5182110064416174,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Oxygen concentrator",
+        "dist": 0.39939583086706404,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "SleepStyle 200 Series",
+        "dist": 0.4878123375230334,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "APAP",
+        "dist": 0.4508595824760969,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Nasal mask",
+        "dist": 0.3776019902725039,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Gross particle filter",
+        "dist": 0.36410694737552807,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Cable",
+        "dist": 0.35421495457665203,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Water trap",
+        "dist": 0.35627904953410006,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Tubing",
+        "dist": 0.36031170127023393,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Fine particle filter",
+        "dist": 0.3469102853495369,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Humidifier",
+        "dist": 0.4311510058560265,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Flowmeter",
+        "dist": 0.4600909893959111,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "Flow Meter",
+        "dist": 0.3738616985156065,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 36,
+        "hub": "bCPAP prongs",
+        "member": "MANU",
+        "dist": 0.5388444273222757,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 7,
+        "hub": "Sensor adapter WristOx2 3150",
+        "member": "WristOx2 wrist band 10 inch",
+        "dist": 0.3138686562556905,
+        "is_intruder": 1,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 7,
+        "hub": "Sensor adapter WristOx2 3150",
+        "member": "WristOx2 3150 pulse oximeter",
+        "dist": 0.27005093050273665,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 7,
+        "hub": "Sensor adapter WristOx2 3150",
+        "member": "WristOx2 3150",
+        "dist": 0.1998618015819443,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 7,
+        "hub": "Sensor adapter WristOx2 3150",
+        "member": "WristOx2",
+        "dist": 0.30025985481927603,
+        "is_intruder": 0,
+        "labeled": 0
+      },
+      {
+        "cluster_size": 7,
+        "hub": "Sensor adapter WristOx2 3150",
+        "member": "USB PC download cable for WristOx2",
+        "dist": 0.2259643350655139,
+        "is_intruder": 1,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 7,
+        "hub": "Sensor adapter WristOx2 3150",
+        "member": "USB PC download cable WristOx2",
+        "dist": 0.2123461233155826,
+        "is_intruder": 1,
+        "labeled": 1
+      },
+      {
+        "cluster_size": 7,
+        "hub": "Sensor adapter WristOx2 3150",
+        "member": "Sensor adapter WristOx2 3150",
+        "dist": 0.22158004680083812,
+        "is_intruder": 0,
+        "labeled": 1
+      }
+    ]
+  }
+}
