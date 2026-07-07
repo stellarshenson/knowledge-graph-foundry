@@ -151,11 +151,15 @@ def load_settings(config_path: Optional[Path] = None) -> Settings:
 
     settings = Settings(**data)
 
-    if os.environ.get("NEO4J_URI"):
+    # env fills gaps only - an explicit config-file value wins over ambient env
+    # (a .env NEO4J_URI silently redirecting writes away from --config's target
+    # contaminated a live graph on 2026-07-07; see docs/defects.md)
+    yaml_neo4j = data.get("neo4j") or {}
+    if os.environ.get("NEO4J_URI") and "uri" not in yaml_neo4j:
         settings.neo4j.uri = os.environ["NEO4J_URI"]
-    if os.environ.get("NEO4J_USER"):
+    if os.environ.get("NEO4J_USER") and "user" not in yaml_neo4j:
         settings.neo4j.user = os.environ["NEO4J_USER"]
-    if os.environ.get("NEO4J_PASSWORD"):
+    if os.environ.get("NEO4J_PASSWORD") and "password" not in yaml_neo4j:
         settings.neo4j.password = os.environ["NEO4J_PASSWORD"]
 
     return settings

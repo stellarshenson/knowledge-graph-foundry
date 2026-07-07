@@ -7,6 +7,7 @@
 - [DEF-1: Per-mention re-embedding on every document](#def-1-per-mention-re-embedding-on-every-document) - fixed
 - [DEF-2: JSONL with text-heavy rows routed to tabular mapping, LLM never reads the text](#def-2-jsonl-with-text-heavy-rows-routed-to-tabular-mapping-llm-never-reads-the-text) - open
 - [DEF-3: Curing floors not scale-aware - 481-doc wave cured at document 4](#def-3-curing-floors-not-scale-aware---481-doc-wave-cured-at-document-4) - fixed
+- [DEF-4: .env NEO4J_URI silently overrides --config target, wave 2 ingested into the wrong instance](#def-4-env-neo4j_uri-silently-overrides---config-target-wave-2-ingested-into-the-wrong-instance) - fixed
 
 ### DEF-1: Per-mention re-embedding on every document
 
@@ -26,3 +27,9 @@
   - 2026-07-06 fix direction corrected: backlog-proportional floors rejected (user) - the foundry ingests an unbounded stream, corpus size is unknowable at cure time; gate must be evidence-statistical: at doc 4 the singleton fraction was 6/8, Good-Turing missing mass ~0.75 - would have blocked the cure with zero corpus-size knowledge
   - 2026-07-06 second correction (user): the first patch's `min_type_observations=200` count floor was itself a smuggled scale constant - replaced by the UCB confidence term, which widens automatically at small N
   - 2026-07-06 fixed: adjudicated by hypothesis R06-H32 - stream replay over 208 live wave-1 documents compared four gates; UCB cures at doc 20 AFTER the material doc-13 type block (98.55% forward mass coverage), v1 cured at doc 5 BEFORE it (85.14%); truncation-invariant at 100/200/full; 28 lifecycle+resume tests green; see [experiments R06-H32](experiments/kgf-redesign-experiments.md)
+
+### DEF-4: .env NEO4J_URI silently overrides --config target, wave 2 ingested into the wrong instance
+
+- [x] HIGH the SOTA-chain wave-2 step (`kgf ingest ... --config config-apnea.yml`, uri neo4j3) wrote 77 documents into the default instance, contaminating the freshly rebuilt 26-doc SOTA graph (26 -> 103 docs); cause: `load_settings` applied `NEO4J_URI`/`NEO4J_USER`/`NEO4J_PASSWORD` env overrides unconditionally AFTER the config file, so the ambient .env always won over an explicit `--config` target; fix: env fills gaps only - a key present in the config file's neo4j block is never overridden; stale test asserting the inverted precedence replaced by two contract tests (explicit-config-beats-env, env-fills-gap); `src/knowledge_graph_foundry/settings.py`
+  - 2026-07-07 reported: three-arm benchmark executor noticed the "finished" SOTA graph fingerprint drifting between reads (3661 -> 3693 entities, docs 75 -> 76) while measuring Arm 3; instance audit showed neo4j3 frozen at 481 docs and the default instance growing ~1 doc/min
+  - 2026-07-07 fixed: precedence corrected, verified live (config-apnea resolves to neo4j3 with .env present), test_settings 5 green; wave 2 killed at 103 docs and relaunched against neo4j3; contaminated SOTA instance retained for the post-chain scratch queue (three-arm Arm-3 measurements were taken before heavy contamination and reported stable)
