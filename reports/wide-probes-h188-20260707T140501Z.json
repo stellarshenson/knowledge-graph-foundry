@@ -1,0 +1,47 @@
+{
+  "hypothesis": "R19-H188",
+  "n_wide": 101,
+  "clean_fraction": 0.8514851485148515,
+  "n_source_docs": 17,
+  "by_rule": {
+    "catalogue_code": 62,
+    "spec_table_cell": 21,
+    "spec_sentence": 12,
+    "feature_statement": 6
+  },
+  "wide_recall_k8": 0.7722772277227723,
+  "wide_recall_k16": 0.8118811881188119,
+  "k_lever_pts": 3.960396039603964,
+  "small_recall_k8": 0.6363636363636364,
+  "small_recall_k16": 0.8787878787878788,
+  "boot_halfwidth_recall16_pts": 7.425742574257427,
+  "determinism_double_run": true,
+  "recall_by_rule": {
+    "spec_table_cell": {
+      "k8": 18,
+      "k16": 18,
+      "n": 21
+    },
+    "spec_sentence": {
+      "k8": 9,
+      "k16": 10,
+      "n": 12
+    },
+    "feature_statement": {
+      "k8": 6,
+      "k16": 6,
+      "n": 6
+    },
+    "catalogue_code": {
+      "k8": 45,
+      "k16": 48,
+      "n": 62
+    }
+  },
+  "clause_a_band_and_lever": false,
+  "clause_b_ci_under_2p5": false,
+  "clause_c_clean_85": true,
+  "refutation_branch_saturates": false,
+  "verdict": "REFUTED",
+  "artifact": "data/processed/probes-wide-h188.json"
+}

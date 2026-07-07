@@ -1068,6 +1068,7 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Experiment** - deterministic edit-replay on the H34 harness; candidate edits from the measured gap decomposition (H61) and detector outputs; runs now
 - **Result** - ([`potentials_r10.ipynb`](../../notebooks/potentials_r10.ipynb) / [`potentials-r10-20260707-120032.json`](../../reports/potentials-r10-20260707-120032.json)) baseline recall reproduced exactly (23/33 = 0.6970 vs registered 0.697). All 10 missing golds are reachable (0 absent, recall ceiling 1.0): 2 on-seed-unrendered (the real PROP-ATTACHED, corrected from 6), 6 one-hop, 2 two-hop. lambda = 1.02e-4 sets the token term at 15% of the sufficiency term. Cost-benefit greedy (benefit-per-token, per Krause-Golovin) lifts recall to 0.879 within +10% tokens and crosses 0.9 only at +10.9% - clause (a) FAILS the +10% bar by 0.9% of tokens. Clause (b): realized single-edit gains decay monotonically (0.988 -> 0.501, non-increasing). Clause (c): at the swap-stable fixed point 0% of sampled pair and triple edits improve Phi, and 0% of same-probe pairs beat their singles' sum - no supermodularity, the designated refutation trigger does not fire
 - **Verdict** - PARTIALLY CONFIRMED - the submodular gradient (b) and the swap-stable stopping certificate (c), the theoretical core the owner asked for, hold cleanly; only the recall-within-budget target (a) is missed, and by a hair (0.9 at +10.9% not +10%). The ceiling is 1.0 - every gap is a rendering gap, not an extraction gap - so the potential is a valid improvement gradient; the +10% bound is granularity-sensitive and confounded by matcher degeneracy on 17/33 short-numeric golds (sub-node fragment selection would spuriously clear it and is rejected)
+- **Post-verdict note (2026-07-07)** - instrument caveat from H172 (2026-07-07): the +18pp greedy lift at the knee is largely fuzzy-matcher artifact - under the entailment scorer the same edit menu yields +3pp (0.727 -> 0.758) and stalls after 1 edit; the submodularity and swap-stability findings stand, the magnitude does not; re-adjudication with entailment-derived candidates registered as R18-H192
 
 ### R10-H82 The MDL residual - "no structure left to explain"
 
@@ -1088,6 +1089,7 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Experiment** - joint replay over H81/H82's edit set; runs now
 - **Result** - (same notebook / report) the sign pair aligns with the labeled failure inventory on 50/50 = 100% of cases (bar >=80%): the 2 real PROP-ATTACHED golds land at (+,0), the 8 one/two-hop missing-materialization golds also at (+,0), and 40 sampled dark-matter edges at (0,+). The registration's "6 PROP-ATTACHED golds" premise is corrected in the result to 2 real (the other 4 were render artifacts already present in another seed) - the alignment is rated over the full labeled inventory so the 2-case class does not make the bar unratable
 - **Verdict** - CONFIRMED - the two-potential sign pair is a working defect classifier: (+,0) flags retrieval-deficient regions needing materialization, (0,+) flags removable dark-matter bloat, exactly as registered
+- **Post-verdict note (2026-07-07)** - instrument caveat from H172 (2026-07-07): the sign-pair labels inherit the fuzzy matcher through H81's edit menu; classifier re-validation folds into R18-H192
 
 ### R10-H84 The thin sufficient subgraph - an IB knee certificate
 
@@ -1108,6 +1110,7 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Experiment** - correlation over H81's per-type gains; runs now
 - **Result** - (same notebook / report) per-type Good-Turing missing mass (the H57 property-key inventory n1/N) vs per-type residual max Delta-Phi_task correlates at r = -0.184 over all types and +0.036 over the 6 types carrying a positive task gradient - both well under the |r| < 0.3 bar - and the residual gradient is positive (six types, max 0.996, concentrated on the render/materialization edit class). Drift note: the aggregate property-key missing mass is 0.243, not the registered ~1.5%; the ~1.5% figure corresponds to the relationship inventory (H57 semantic missing mass 0.4%), and the independence result holds under either estimator
 - **Verdict** - CONFIRMED - vocabulary saturation and retrieval utility are independent axes; a fully cured graph still carries a large task gradient, so an ingest-saturation estimator cannot stand in for the task potential
+- **Post-verdict note (2026-07-07)** - superseded in part by H176 (2026-07-07): under the graded entailment instrument the independence claim fails (r = -0.406, CI vacuous at n=6 types) - the CONFIRMED verdict rested on saturation-collapsed variance; the two-axes doctrine stands, the statistical independence claim does not
 
 ### R10-H86 Evidence-path views - the RPQ materialization transfer
 
@@ -2070,8 +2073,8 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Prediction** - the scorer passes and re-running H81's measurement under it moves clause (a) - direction unknown, which is the point
 - **Acceptance bar** - both clauses, then H81(a) re-adjudicated under the new instrument; refuted if NLI agreement < 80% (entailment over long rendered contexts is then the wrong tool and a value-extraction comparator gets registered instead)
 - **Experiment** - scorer notebook + 50-pair manual audit + H81 re-run; needs a GPU window (post parser round)
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`entailment_instrument_r18.ipynb`](../../notebooks/entailment_instrument_r18.ipynb) / [`entailment-r18-20260707T140402Z.json`](../../reports/entailment-r18-20260707T140402Z.json)) mDeBERTa-v3 NLI (fp16 eager on GPU 2 - DeBERTa-v2 has no sdpa path in transformers 5.13; eager still hits 1.77 ms/pair over 11,403 pairs, clause c PASS) scoring golds against ATOMIC rendered units with max-entailment. Clause (a) PASS: all 17 short-numeric problem golds get distinct sane scores [0.104, 0.997] where fuzzy collapsed 15 to one token. Clause (b) PASS: 94% agreement with 50-pair in-notebook manual adjudication (3 disagreements catalogued: 2 topic-affinity false-positives at 0.66-0.76, 1 multi-property-scatter false-negative). The H81 re-run is the payload: fuzzy shows 0.697 -> 0.879 at the knee, NLI shows 0.727 -> 0.758 - the +18pp greedy lift was largely instrument artifact; the honest recall-at-knee gradient is +3pp, and the greedy stalls after 1 edit because the fuzzy-built candidate MENU (nearest carriers) mostly does not entail its golds
+- **Verdict** - CONFIRMED - all three clauses pass and the re-adjudication moved exactly as the registration intended; the scorer ships as THE harness instrument (thr ~0.5 balanced / ~0.8 high-precision), retiring the fuzzy matcher; every conclusion whose CANDIDATE GENERATION used the fuzzy matcher (H81 menu, H83 labels) is flagged for re-adjudication (H192)
 
 ### R18-H173 Fat-proposition splitting - the PROP-ATTACHED cost is a granularity artifact
 
@@ -2110,8 +2113,8 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Prediction** - independence holds with real power; if anything the graded version sharpens the render/materialization concentration
 - **Acceptance bar** - variance restored + CI-backed independence; refuted if the graded gradient correlates (the binary saturation was hiding a real dependence - H85's verdict gets downgraded with a back-reference)
 - **Experiment** - graded scorer over the H85 per-type table (pairs naturally with H172's instrument); deterministic once H172's scorer exists, else token-overlap graded variant runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`entailment_instrument_r18.ipynb`](../../notebooks/entailment_instrument_r18.ipynb) / [`entailment-r18-20260707T140402Z.json`](../../reports/entailment-r18-20260707T140402Z.json)) graded per-type gradient (max-entailment sufficiency) vs per-type Good-Turing missing mass over the 6 edit-carrying types: variance clause PASS (CoV 0.723 vs binary 0.242 - saturation confirmed as H85's weakness), independence clause FAILS both parts: r = -0.406 (bar |r| < 0.3), 2000-draw bootstrap |r| CI [0.306, 0.999] cannot exclude 0.5 (n=6 types - nearly vacuous). The dependence is NEGATIVE: high-missing-mass types carry LOW gradient; the gradient concentrates on well-inventoried types - the inverse of the failure H85 guarded against
+- **Verdict** - REFUTED at the registered bars - triggers the registered downgrade branch: H85 carries a back-reference (independence rested on saturation-collapsed variance and is unmeasurable at n=6 types); the doctrine's practical conclusion (saturation estimator cannot REPLACE the task potential) survives - if anything the negative dependence strengthens it; adjudicable power needs the H188-class wide set
 
 
 ### R18-H177 The richness cost law - entities emitted, not graph size, drive ingest cost
@@ -2239,8 +2242,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - document-grounded phrasing diverges enough from graph props to restore difficulty; the k-elasticity reappears; this becomes the standing benchmark instrument and unblocks H184's robust re-attribution and H171's knee-CI tightening
 - **Acceptance bar** - all three clauses; refuted if document-derived golds ALSO saturate (the render would then genuinely cover the corpus at 99% and v28-era difficulty was a small-set artifact - a finding that would upgrade the engine's assessment)
 - **Experiment** - derivation from the parsed corpus texts (docling+trio extractions already cached) + double-run of the render harness; CPU, neo4j2 read-only, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`wide_probes_h188.ipynb`](../../notebooks/wide_probes_h188.ipynb) / [`wide-probes-h188-20260707T140501Z.json`](../../reports/wide-probes-h188-20260707T140501Z.json)) 101-gold document-grounded set built ([`probes-wide-h188.json`](../../data/processed/probes-wide-h188.json): catalogue_code 62, spec_table_cell 21, spec_sentence 12, feature_statement 6; 17 docs; every gold verbatim-verified; graph used only for doc-product links, never values). Harness double-run: recall@8 = 0.772 (2.2 pts ABOVE the 55-75% band), k-lever +4.0 pts (bar >=10 - misses are golds absent from the graph at ANY k, not ranking depth), CI half-width 7.43 pts (bar <2.5 - structurally unmeetable: binomial width at p~0.81, n=101 is ~7.6 pts; H186 met it only by saturating), clean fraction 85.1% PASS. The saturation refutation branch did NOT fire (77%, not 99%) - difficulty is real
+- **Verdict** - REFUTED at the registered numeric bars, but the primary objective is WON: the set is a valid non-self-fulfilling instrument and is ADOPTED as the standing wide benchmark; the bars themselves were mis-registered (CI clause self-contradictory with a valid instrument at n=101 - discipline: absolute-recall CI bars need n~500-1000 or paired-delta CIs); the +4pt k-lever exposes a ~81% corpus-coverage ceiling whose 19% residue is completeness-gap territory (registered H193)
 
 ### R19-H189 Calibrated presence - the near-domain abstention second stage
 
@@ -2270,5 +2273,26 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - the residue is genuinely rasterized/vector-graphic content (the H51 forensics suggested chart-embedded values) and a real vision pass recovers about half; if it recovers none, the residue is unextractable by any parser and belongs in the gap ledger (H161) as permanent abstention territory
 - **Acceptance bar** - adjudicated when the trigger fires (a vision engine completes >= 90% page coverage on the residue's 18 pages)
 - **Experiment** - blocked on a working vision environment; the residue set and pages are versioned in the parser-round reports
+- **Result** - pending
+- **Verdict** - pending
+
+
+### R18-H192 The honest gradient - re-deriving the edit menu by entailment search
+
+- **Grounding** - H172's payload finding: H81's greedy lift was +18pp under the fuzzy instrument but +3pp under entailment, and it stalls after one edit because the candidate carriers were CHOSEN by the degenerate matcher (nearest_carrier) - the menu, not just the counter, is contaminated; whether a real gradient to high recall exists is therefore OPEN again, and H83's sign-pair labels inherit the same taint
+- **Hypothesis** - re-deriving candidate edits by entailment search (for each NLI-missing gold, scan ALL graph units for max-entailment carriers; materialize/link the top entailing unit into the render) yields a greedy that (a) reaches >= 0.85 NLI-recall within a re-located knee budget, (b) preserves monotone gain decay and swap-stability (the structural findings), and (c) re-validates the H83 sign-pair on relabeled edits at >= 80% alignment
+- **Prediction** - the honest ceiling is lower than fuzzy's 1.0 (some golds have NO entailing unit anywhere in the graph - true extraction gaps, the H51/H190 classes); the greedy reaches the ceiling minus a small render residue, and the certificate machinery survives re-instrumentation
+- **Acceptance bar** - all three clauses, with the NLI-unreachable golds explicitly inventoried as extraction gaps (they route to the ingest-fidelity queue, not edit selection); refuted if no edit class lifts NLI-recall (the graph would then lack entailing evidence for a third of golds - a much bigger ingest indictment)
+- **Experiment** - entailment-search edit derivation + greedy re-run on the H172 scorer; GPU 2 + neo4j2 read-only; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H193 The coverage ceiling - classifying the wide set's unreachable fifth
+
+- **Grounding** - H188's k-lever collapse (+4 pts vs +24 on the small set): the wide set's misses are not ranked-too-deep, they are ABSENT - never recalled at any k; the corpus-coverage ceiling sits near 81%, and the residual 19% (mostly catalogue codes and uncaptured specs) is exactly what the self-auditing-foundry doctrine says should live in the gap ledger rather than pass silently
+- **Hypothesis** - classifying every wide-set miss (at k=64, generous) into {absent-from-graph, present-but-never-entailing, present-but-unranked} shows >= 70% absent-from-graph; the absent class maps onto the known ingest-fidelity losses (H51 name classes, H190 glyph class, table-cell losses) at >= 60% overlap - closing the loop: the retrieval ceiling IS the ingest-fidelity gap, measured end-to-end on a valid instrument
+- **Prediction** - the overlap confirms the ingest-fidelity fix queue (parser swap + glyph operator + header carryover) as the coverage lever; re-running H188's harness AFTER those fixes ship becomes the end-to-end acceptance test for the whole fidelity program
+- **Acceptance bar** - both clauses; refuted if the misses are mostly present-but-unranked (then the lever is retrieval-side after all and H184's dilution mechanism extends to the wide set)
+- **Experiment** - miss classification census on the wide set (k=64 sweep + entailment scan over all graph units per miss); GPU 2 + neo4j2 read-only; runs with/after H192 (shares the entailment machinery)
 - **Result** - pending
 - **Verdict** - pending

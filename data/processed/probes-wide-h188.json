@@ -1,0 +1,1224 @@
+{
+  "meta": {
+    "n": 101,
+    "clean_fraction": 0.8514851485148515,
+    "date": "2026-07-07",
+    "source": "document text spans (docling markdown + docling table markdown + pdfplumber/pymupdf4llm/pypdf union); graph used only for doc->product identity link, never for gold values",
+    "derivation": "table cells with header context, spec sentences, feature statements, catalogue codes - phrasing templated from document wording, no LLM authorship",
+    "verification": "each gold verbatim-present in source_document via the H34 present() matcher"
+  },
+  "probes": [
+    {
+      "id": "W001",
+      "question": "What is the HCPCS code of the BiPAP autoSV Advanced with HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0471"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP autoSV Advanced with HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W002",
+      "question": "What is the supplemental oxygen of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "4 L/min"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirStart 10 CPAP",
+      "attribute": "Supplemental oxygen",
+      "short_numeric": true
+    },
+    {
+      "id": "W003",
+      "question": "What is the pressure range of the AirFit P10?",
+      "gold_evidence": [
+        "4-20cm h 2 o"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "AirFit P10",
+      "attribute": "pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W004",
+      "question": "What is the part number of the Continuous Positive Airway Pressure?",
+      "gold_evidence": [
+        "PS0001464"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Continuous Positive Airway Pressure",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W005",
+      "question": "What is the HCPCS code of the PerformanceTubing?",
+      "gold_evidence": [
+        "A7037"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "PerformanceTubing",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W006",
+      "question": "What is the part number of the Alice LoFlo adapter cable?",
+      "gold_evidence": [
+        "1098078"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Alice LoFlo adapter cable",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W007",
+      "question": "What is the operating pressure range of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "4-20 cm H 2 O"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirStart 10 CPAP",
+      "attribute": "Operating pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W008",
+      "question": "What is the adjusting pressure limit of the ELK-200B?",
+      "gold_evidence": [
+        "1cmH 2 O"
+      ],
+      "source_document": "CPAP-Machines-Brochure.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "ELK-200B",
+      "attribute": "Adjusting Pressure Limit",
+      "short_numeric": true
+    },
+    {
+      "id": "W009",
+      "question": "What is the part number of the Cannula, Pro-Flow, nasal, pediatric, small 60 pk?",
+      "gold_evidence": [
+        "1097940"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric, small 60 pk",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W010",
+      "question": "What is the part number of the Cannula, Pro-Flow, nasal, pediatric 10 pk?",
+      "gold_evidence": [
+        "1097348"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric 10 pk",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W011",
+      "question": "What is the HCPCS code of the HeatedTube humidifier upgrade kit?",
+      "gold_evidence": [
+        "A4604"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "HeatedTube humidifier upgrade kit",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W012",
+      "question": "What is the part number of the Bi-level Positive Airway Pressure?",
+      "gold_evidence": [
+        "PS0001231"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Bi-level Positive Airway Pressure",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W013",
+      "question": "What is the part number of the Parallel interface cable, 6'?",
+      "gold_evidence": [
+        "8192"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Parallel interface cable, 6'",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W014",
+      "question": "What is the part number of the Nasal cannula, pediatric?",
+      "gold_evidence": [
+        "P1263"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Nasal cannula, pediatric",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W015",
+      "question": "What is the operating altitude of the AirSense 11 AutoSet?",
+      "gold_evidence": [
+        "700 hPa"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirSense 11 AutoSet",
+      "attribute": "Operating altitude",
+      "short_numeric": true
+    },
+    {
+      "id": "W016",
+      "question": "What is the HCPCS code of the BiPAP autoSV Advanced with humidifier?",
+      "gold_evidence": [
+        "E0471"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP autoSV Advanced with humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W017",
+      "question": "What is the part number of the Pro-Flow multi-purpose cannula, adult, 5 pk?",
+      "gold_evidence": [
+        "P1368"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Pro-Flow multi-purpose cannula, adult, 5 pk",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W018",
+      "question": "What is the pressure range of the SleepStyle 200 Series?",
+      "gold_evidence": [
+        "4 to 20 cmh2 o"
+      ],
+      "source_document": "SleepStyle_200_Operating_Manual.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "SleepStyle 200 Series",
+      "attribute": "pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W019",
+      "question": "Does the REMstar Auto A-Flex support Flex comfort?",
+      "gold_evidence": [
+        "Flex comfort"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "feature_statement",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "supported modes",
+      "short_numeric": false
+    },
+    {
+      "id": "W020",
+      "question": "What is the HCPCS code of the CA1054096 Trilogy100 ventilator, Canada?",
+      "gold_evidence": [
+        "E0464"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "CA1054096 Trilogy100 ventilator, Canada",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W021",
+      "question": "What is the part number of the Nasal cannula, adult?",
+      "gold_evidence": [
+        "P1259"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Nasal cannula, adult",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W022",
+      "question": "What is the pressure range of the DreamStation CPAP Pro?",
+      "gold_evidence": [
+        "4-20 cm H 2 O"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "Pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W023",
+      "question": "What is the part number of the HL7 outbound only interface?",
+      "gold_evidence": [
+        "1069194"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "HL7 outbound only interface",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W024",
+      "question": "What is the HCPCS code of the REMstar SE with humidifier?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar SE with humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W025",
+      "question": "What is the HCPCS code of the BiPAP S/T,C Series?",
+      "gold_evidence": [
+        "E0471"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP S/T,C Series",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W026",
+      "question": "What is the HCPCS code of the REMstar Pro C-Flex+?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Pro C-Flex+",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W027",
+      "question": "What is the weight of the DreamStation CPAP Pro?",
+      "gold_evidence": [
+        "1,33 kg"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "Weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W028",
+      "question": "What is the part number of the Nasal cannula, pediatric, small?",
+      "gold_evidence": [
+        "P1267"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Nasal cannula, pediatric, small",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W029",
+      "question": "What is the pressure range of the DreamStation CPAP?",
+      "gold_evidence": [
+        "4 to 20 cm h2o"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "DreamStation CPAP",
+      "attribute": "pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W030",
+      "question": "What is the HCPCS code of the Pollen  filter , reusable?",
+      "gold_evidence": [
+        "A7039"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Pollen  filter , reusable",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W031",
+      "question": "Does the DreamStation CPAP Pro support EZ-Start?",
+      "gold_evidence": [
+        "EZ-Start"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "feature_statement",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported therapy features",
+      "short_numeric": false
+    },
+    {
+      "id": "W032",
+      "question": "What is the HCPCS code of the BiPAP Pro Bi-Flex with HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0470"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP Pro Bi-Flex with HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W033",
+      "question": "What is the input power of the ELK-200B?",
+      "gold_evidence": [
+        "900 VA"
+      ],
+      "source_document": "CPAP-Machines-Brochure.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "ELK-200B",
+      "attribute": "Input power",
+      "short_numeric": true
+    },
+    {
+      "id": "W034",
+      "question": "What is the dimensions of the DreamStation CPAP?",
+      "gold_evidence": [
+        "15.7 x 19.3 x 8.4 cm"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "DreamStation CPAP",
+      "attribute": "dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W035",
+      "question": "What is the HCPCS code of the REMstar Auto A-Flex?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W036",
+      "question": "What is the HCPCS code of the System One PerformanceTube?",
+      "gold_evidence": [
+        "A7037"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "System One PerformanceTube",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W037",
+      "question": "What is the HCPCS code of the System One 60 Series HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0562"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "System One 60 Series HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W038",
+      "question": "What is the HCPCS code of the BiPAP Auto Bi-Flex with HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0470"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP Auto Bi-Flex with HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W039",
+      "question": "What is the dimensions of the SleepStyle 200 Series?",
+      "gold_evidence": [
+        "275mm x 170mm x 140mm"
+      ],
+      "source_document": "SleepStyle_200_Operating_Manual.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "SleepStyle 200 Series",
+      "attribute": "dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W040",
+      "question": "What is the pressure range of the RESmart CPAP?",
+      "gold_evidence": [
+        "4 to 20 cmh2o"
+      ],
+      "source_document": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "RESmart CPAP",
+      "attribute": "pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W041",
+      "question": "What is the HCPCS code of the REMstar Plus C-Flex with humidifier?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Plus C-Flex with humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W042",
+      "question": "What is the HCPCS code of the REMstar SE?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar SE",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W043",
+      "question": "What is the HCPCS code of the REMstar Plus C-Flex with HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Plus C-Flex with HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W044",
+      "question": "What is the starting ramp pressure of the DreamStation CPAP?",
+      "gold_evidence": [
+        "4 cm H2O"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "DreamStation CPAP",
+      "attribute": "Starting ramp pressure",
+      "short_numeric": true
+    },
+    {
+      "id": "W045",
+      "question": "What is the HCPCS code of the BiPAP Pro Bi-Flex?",
+      "gold_evidence": [
+        "E0470"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP Pro Bi-Flex",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W046",
+      "question": "What is the ac input range of the AirSense 11 AutoSet?",
+      "gold_evidence": [
+        "50-60Hz"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirSense 11 AutoSet",
+      "attribute": "AC input range",
+      "short_numeric": false
+    },
+    {
+      "id": "W047",
+      "question": "What is the part number of the BiPAP AVAPS, CSeries?",
+      "gold_evidence": [
+        "CA1161X"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP AVAPS, CSeries",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W048",
+      "question": "What is the HCPCS code of the BiPAP S/T,C Series, HeatedTube core package?",
+      "gold_evidence": [
+        "E0471"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP S/T,C Series, HeatedTube core package",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W049",
+      "question": "What is the weight of the G3 A20?",
+      "gold_evidence": [
+        "1.7 kg"
+      ],
+      "source_document": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "G3 A20",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W050",
+      "question": "What is the dimensions of the AirSense 11 AutoSet?",
+      "gold_evidence": [
+        "138.5 mm x 259.4 mmx 94.5 mm"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirSense 11 AutoSet",
+      "attribute": "Dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W051",
+      "question": "What is the HCPCS code of the BiPAP Pro Bi-Flex with humidifier?",
+      "gold_evidence": [
+        "E0470"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP Pro Bi-Flex with humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W052",
+      "question": "What is the part number of the OmniLab Advanced + with HeatedTube humidifier?",
+      "gold_evidence": [
+        "1111124"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "OmniLab Advanced + with HeatedTube humidifier",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W053",
+      "question": "What is the dimensions of the prisma SOFT plus?",
+      "gold_evidence": [
+        "170 x 135 x 180 mm"
+      ],
+      "source_document": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "prisma SOFT plus",
+      "attribute": "Dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W054",
+      "question": "What is the pressure range of the CPAP V3?",
+      "gold_evidence": [
+        "0 to 10cm h2o"
+      ],
+      "source_document": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "CPAP V3",
+      "attribute": "pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W055",
+      "question": "What is the ramp time of the REMstar Auto A-Flex?",
+      "gold_evidence": [
+        "45 min"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "Ramp time",
+      "short_numeric": true
+    },
+    {
+      "id": "W056",
+      "question": "What is the part number of the HL7 bi-directional interface?",
+      "gold_evidence": [
+        "1067148"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "HL7 bi-directional interface",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W057",
+      "question": "What is the part number of the BiPAPAVAPS,C Series, HeatedTube core package?",
+      "gold_evidence": [
+        "CA1161XTS"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAPAVAPS,C Series, HeatedTube core package",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W058",
+      "question": "What is the part number of the Cannula, Pro-Flow, nasal, pediatric, small 10 pk?",
+      "gold_evidence": [
+        "1097349"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric, small 10 pk",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W059",
+      "question": "Does the DreamStation CPAP Pro support Opti-Start?",
+      "gold_evidence": [
+        "Opti-Start"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "feature_statement",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported therapy features",
+      "short_numeric": false
+    },
+    {
+      "id": "W060",
+      "question": "What is the pressure range of the prisma SOFT plus?",
+      "gold_evidence": [
+        "700 hPa"
+      ],
+      "source_document": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "prisma SOFT plus",
+      "attribute": "Pressure range",
+      "short_numeric": true
+    },
+    {
+      "id": "W061",
+      "question": "What is the dimensions of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "116 mm x 205 mm x 150 mm"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirStart 10 CPAP",
+      "attribute": "Dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W062",
+      "question": "What is the sound pressure level of the RESmart CPAP?",
+      "gold_evidence": [
+        "30 db"
+      ],
+      "source_document": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "RESmart CPAP",
+      "attribute": "sound pressure level",
+      "short_numeric": true
+    },
+    {
+      "id": "W063",
+      "question": "What is the part number of the Nasal/oral cannula, adult?",
+      "gold_evidence": [
+        "P1295"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Nasal/oral cannula, adult",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W064",
+      "question": "What is the HCPCS code of the Water chamber?",
+      "gold_evidence": [
+        "A7046"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Water chamber",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W065",
+      "question": "What is the weight of the RESmart CPAP?",
+      "gold_evidence": [
+        "3.5 lbs"
+      ],
+      "source_document": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "RESmart CPAP",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W066",
+      "question": "What is the part number of the DC Adapter 12/24 V?",
+      "gold_evidence": [
+        "WM31660"
+      ],
+      "source_document": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "DC Adapter 12/24 V",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W067",
+      "question": "What is the HCPCS code of the REMstar SE with HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar SE with HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W068",
+      "question": "Does the AirFit P10 support Philips SimplyGo\u2122?",
+      "gold_evidence": [
+        "Philips SimplyGo\u2122"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "feature_statement",
+      "product": "AirFit P10",
+      "attribute": "supported model",
+      "short_numeric": false
+    },
+    {
+      "id": "W069",
+      "question": "What is the HCPCS code of the CA1032800 Trilogy200 ventilator, Canada?",
+      "gold_evidence": [
+        "E0464"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "CA1032800 Trilogy200 ventilator, Canada",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W070",
+      "question": "What is the HCPCS code of the BiPAP Auto Bi-Flex?",
+      "gold_evidence": [
+        "E0470"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP Auto Bi-Flex",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W071",
+      "question": "What is the part number of the prismaBAG premium?",
+      "gold_evidence": [
+        "WM93335"
+      ],
+      "source_document": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "prismaBAG premium",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W072",
+      "question": "What is the dimensions of the RESmart Auto CPAP System?",
+      "gold_evidence": [
+        "220 \u00d7 194 \u00d7 112 mm"
+      ],
+      "source_document": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "RESmart Auto CPAP System",
+      "attribute": "dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W073",
+      "question": "What is the part number of the Cannula, Pro-Flow, nasal, pediatric 60 pk?",
+      "gold_evidence": [
+        "1097939"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, pediatric 60 pk",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W074",
+      "question": "Does the DreamStation CPAP Pro support Auto-Trial?",
+      "gold_evidence": [
+        "Auto-Trial"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "feature_statement",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported therapy features",
+      "short_numeric": false
+    },
+    {
+      "id": "W075",
+      "question": "What is the HCPCS code of the System One 60 Series humidifier?",
+      "gold_evidence": [
+        "E0562"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "System One 60 Series humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W076",
+      "question": "What is the part number of the CPAP therapy circuit interface kit,Alice 6?",
+      "gold_evidence": [
+        "1082653"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "CPAP therapy circuit interface kit,Alice 6",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W077",
+      "question": "What is the pressure range of the REMstar Auto A-Flex?",
+      "gold_evidence": [
+        "4-20 cm H2O"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "Pressure range",
+      "short_numeric": false
+    },
+    {
+      "id": "W078",
+      "question": "What is the HCPCS code of the REMstar Pro C-Flex+ with humidifier?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Pro C-Flex+ with humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W079",
+      "question": "What is the pressure of the DreamStation CPAP?",
+      "gold_evidence": [
+        "10 BPM"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "DreamStation CPAP",
+      "attribute": "Pressure",
+      "short_numeric": true
+    },
+    {
+      "id": "W080",
+      "question": "What is the HCPCS code of the System One HeatedTube?",
+      "gold_evidence": [
+        "A4604"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "System One HeatedTube",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W081",
+      "question": "What is the part number of the Hard shell carrying case includes: sensor case?",
+      "gold_evidence": [
+        "1024582"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Hard shell carrying case includes: sensor case",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W082",
+      "question": "What is the weight of the REMstar Auto A-Flex?",
+      "gold_evidence": [
+        "1.36 kg"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "Weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W083",
+      "question": "What is the HCPCS code of the BiPAPAVAPS,C Series, HeatedTube core package?",
+      "gold_evidence": [
+        "E0471"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAPAVAPS,C Series, HeatedTube core package",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W084",
+      "question": "What is the HCPCS code of the REMstar Plus C-Flex?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Plus C-Flex",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W085",
+      "question": "What is the HCPCS code of the Ultra-fine filter , disposable?",
+      "gold_evidence": [
+        "A7038"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Ultra-fine filter , disposable",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W086",
+      "question": "What is the HCPCS code of the BiPAP autoSV Advanced?",
+      "gold_evidence": [
+        "E0471"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP autoSV Advanced",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W087",
+      "question": "What is the dimensions of the G3 A20?",
+      "gold_evidence": [
+        "265 mm \u00d7 145 mm \u00d7 114 mm"
+      ],
+      "source_document": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "derivation_rule": "spec_sentence",
+      "product": "G3 A20",
+      "attribute": "dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W088",
+      "question": "What is the dimensions of the DreamStation CPAP?",
+      "gold_evidence": [
+        "15.7x19.3x8.4cm"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "DreamStation CPAP",
+      "attribute": "Dimensions",
+      "short_numeric": false
+    },
+    {
+      "id": "W089",
+      "question": "What is the part number of the Water chamber?",
+      "gold_evidence": [
+        "1063785"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Water chamber",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W090",
+      "question": "What is the part number of the Pro-Flow multi-purpose cannula, ped, 5 pk?",
+      "gold_evidence": [
+        "P1369"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Pro-Flow multi-purpose cannula, ped, 5 pk",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W091",
+      "question": "What is the part number of the A Series System One humidifier?",
+      "gold_evidence": [
+        "1111551"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "A Series System One humidifier",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W092",
+      "question": "What is the part number of the Cannula, Pro-Flow, nasal, adult 10 pk?",
+      "gold_evidence": [
+        "1097345"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "Cannula, Pro-Flow, nasal, adult 10 pk",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W093",
+      "question": "What is the weight of the AirSense 11 AutoSet?",
+      "gold_evidence": [
+        "40 oz"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirSense 11 AutoSet",
+      "attribute": "Weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W094",
+      "question": "What is the HCPCS code of the BiPAP AVAPS, CSeries?",
+      "gold_evidence": [
+        "E0471"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP AVAPS, CSeries",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W095",
+      "question": "What is the part number of the HL7 inbound only interface?",
+      "gold_evidence": [
+        "1069193"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "HL7 inbound only interface",
+      "attribute": "part number",
+      "short_numeric": false
+    },
+    {
+      "id": "W096",
+      "question": "What is the weight of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "1106 g"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "AirStart 10 CPAP",
+      "attribute": "Weight",
+      "short_numeric": false
+    },
+    {
+      "id": "W097",
+      "question": "What is the HCPCS code of the BiPAP Auto Bi-Flex with humidifier?",
+      "gold_evidence": [
+        "E0470"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "BiPAP Auto Bi-Flex with humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W098",
+      "question": "What is the HCPCS code of the REMstar Auto A-Flex with HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Auto A-Flex with HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    },
+    {
+      "id": "W099",
+      "question": "What is the pressure of the ELK-200B?",
+      "gold_evidence": [
+        "280kPa"
+      ],
+      "source_document": "CPAP-Machines-Brochure.pdf",
+      "derivation_rule": "spec_table_cell",
+      "product": "ELK-200B",
+      "attribute": "Pressure",
+      "short_numeric": true
+    },
+    {
+      "id": "W100",
+      "question": "Does the DreamStation CPAP Pro support CPAP-Check?",
+      "gold_evidence": [
+        "CPAP-Check"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "feature_statement",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported therapy modes",
+      "short_numeric": false
+    },
+    {
+      "id": "W101",
+      "question": "What is the HCPCS code of the REMstar Pro C-Flex+ with HeatedTube humidifier?",
+      "gold_evidence": [
+        "E0601"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "catalogue_code",
+      "product": "REMstar Pro C-Flex+ with HeatedTube humidifier",
+      "attribute": "HCPCS code",
+      "short_numeric": false
+    }
+  ]
+}
