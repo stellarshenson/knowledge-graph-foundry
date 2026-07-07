@@ -1,0 +1,181 @@
+{
+  "hypothesis": "R16-H165",
+  "generated_utc": "20260707T120719Z",
+  "cost_proxy": "wall_clock_seconds (no token counts in event records)",
+  "source_files": [
+    "logs/kgf-events.jsonl",
+    "logs/r05-wave-01b.log",
+    "logs/vllm-server.log",
+    "logs/sota-chain.log"
+  ],
+  "n_documents_total": 818,
+  "n_documents_completed": 813,
+  "segments": {
+    "0": {
+      "n_docs": 28,
+      "engine": "bedrock",
+      "fits": {
+        "total": {
+          "alpha": 0.1758440251999538,
+          "intercept": 4.426166876094831,
+          "r2": 0.045404749089042795,
+          "n": 26,
+          "ci_lo": -0.1201626436274817,
+          "ci_hi": 0.5192764799466959
+        },
+        "extraction": {
+          "alpha": 0.1532081795319386,
+          "intercept": 4.33394343479421,
+          "r2": 0.04060488865320577,
+          "n": 26,
+          "ci_lo": -0.11202014339767076,
+          "ci_hi": 0.4786051530458144
+        },
+        "embed_resolve_gap": {
+          "alpha": 1.0064015557263175,
+          "intercept": -0.04893487017537976,
+          "r2": 0.0562238473373019,
+          "n": 17,
+          "ci_lo": -1.0922683021508899,
+          "ci_hi": 3.1412854879832963
+        },
+        "load": {
+          "alpha": -0.8933268327468072,
+          "intercept": 0.7626916506287056,
+          "r2": 0.026576755516991568,
+          "n": 17,
+          "ci_lo": -3.6046520790614025,
+          "ci_hi": 2.1096814796152032
+        },
+        "livegraph_gap": {
+          "alpha": 0.7002163132396356,
+          "intercept": -2.458081741827413,
+          "r2": 0.037341573280497475,
+          "n": 17,
+          "ci_lo": -0.9928495865205399,
+          "ci_hi": 2.445883208209086
+        }
+      }
+    },
+    "1": {
+      "n_docs": 733,
+      "engine": "bedrock->local_gpt-oss-120b (extraction; embeddings bedrock)",
+      "fits": {
+        "total": {
+          "alpha": 0.22514080917855422,
+          "intercept": 2.299981495079512,
+          "r2": 0.36535347521515693,
+          "n": 732,
+          "ci_lo": 0.18126356914836633,
+          "ci_hi": 0.26185293970853313
+        },
+        "extraction": {
+          "alpha": 0.24686465861793283,
+          "intercept": 2.142152587306737,
+          "r2": 0.4208302799724152,
+          "n": 731,
+          "ci_lo": 0.2220740459078659,
+          "ci_hi": 0.27130388700615693
+        },
+        "embed_resolve_gap": {
+          "alpha": 0.2263175079792179,
+          "intercept": -1.208619172351623,
+          "r2": 0.19531237019712255,
+          "n": 722,
+          "ci_lo": 0.18870668683167413,
+          "ci_hi": 0.2653928156551882
+        },
+        "load": {
+          "alpha": -0.1439745156407319,
+          "intercept": -3.1762637973341468,
+          "r2": 0.053068077599078056,
+          "n": 722,
+          "ci_lo": -0.20325211770090507,
+          "ci_hi": -0.08178748252011357
+        },
+        "livegraph_gap": {
+          "alpha": 0.00939198635612387,
+          "intercept": -2.752156823781021,
+          "r2": 0.0002906843072584264,
+          "n": 170,
+          "ci_lo": -0.16059422952176694,
+          "ci_hi": 0.1818438995827713
+        }
+      }
+    },
+    "2": {
+      "n_docs": 57,
+      "engine": "local_gpt-oss-120b",
+      "fits": {
+        "total": {
+          "alpha": -0.6671123358470483,
+          "intercept": 6.52071590217194,
+          "r2": 0.26752006543720064,
+          "n": 55,
+          "ci_lo": -1.1871648597378273,
+          "ci_hi": -0.3993562627660158
+        },
+        "extraction": {
+          "alpha": -0.6411476350342419,
+          "intercept": 6.387096915205975,
+          "r2": 0.25059675298966133,
+          "n": 55,
+          "ci_lo": -1.1737870540485171,
+          "ci_hi": -0.36237158560274596
+        },
+        "embed_resolve_gap": {
+          "alpha": -2.019491848285489,
+          "intercept": 7.969397804429912,
+          "r2": 0.4916970325007495,
+          "n": 46,
+          "ci_lo": -2.7523092951885353,
+          "ci_hi": -1.4790060132907585
+        },
+        "load": {
+          "alpha": -0.5162491702363874,
+          "intercept": -0.3266816642584433,
+          "r2": 0.17957399179725997,
+          "n": 46,
+          "ci_lo": -0.9705160982982208,
+          "ci_hi": -0.12714612809190395
+        },
+        "livegraph_gap": {
+          "alpha": -1.681109054435022,
+          "intercept": 4.194979257232631,
+          "r2": 0.4809313006668625,
+          "n": 27,
+          "ci_lo": -2.242849404479551,
+          "ci_hi": -1.1347066297431703
+        }
+      }
+    }
+  },
+  "primary_segment": "1",
+  "overall_alpha": {
+    "alpha": 0.22514080917855422,
+    "intercept": 2.299981495079512,
+    "r2": 0.36535347521515693,
+    "n": 732,
+    "ci_lo": 0.18126356914836633,
+    "ci_hi": 0.26185293970853313
+  },
+  "resolution_growth_term": {
+    "alpha": 0.00939198635612387,
+    "intercept": -2.752156823781021,
+    "r2": 0.0002906843072584264,
+    "n": 170,
+    "ci_lo": -0.16059422952176694,
+    "ci_hi": 0.1818438995827713
+  },
+  "extraction_vs_entity_count": {
+    "alpha": 0.6145980081414684,
+    "intercept": 2.1066510902923374,
+    "r2": 0.8054054932063517,
+    "n": 731,
+    "ci_lo": 0.586962604149839,
+    "ci_hi": 0.6451104785376574
+  },
+  "crossover": "none - live-graph resolution alpha~0.01, flat; no term overtakes extraction; ~2000-doc wall not observed",
+  "embedding_phase": "NOT SEPARATELY MEASURABLE - _embed emits no event; folded into embed_resolve_gap",
+  "verdict": "REFUTED (close-the-flank): predicted superlinear resolution component (alpha>0.5) absent - vector-index candidate retrieval flat (alpha=0.009, R2=0.000); total alpha=0.225<0.3; no phase decomposition reaches R2>=0.7"
+}

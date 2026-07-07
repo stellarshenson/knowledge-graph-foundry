@@ -1990,8 +1990,8 @@ Trigger: R15 hardened the read-side maturity properties (transfer, shipping, ide
 - **Prediction** - extraction and embedding are flat (per-doc work); resolution is the growth term; the crossover estimate lands in the low thousands - actionable before it hurts
 - **Acceptance bar** - fit quality R^2 >= 0.7 on the decomposition; refuted if all phases are flat (no scaling risk, close the flank) or if total alpha >= 0.5 already (scaling is ALREADY the binding constraint - escalates to a priority lever)
 - **Experiment** - pure log analysis over the existing event logs + campaign wave logs; deterministic, CPU, runs NOW (no scratch instance needed)
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`cost_scaling_h165.ipynb`](../../notebooks/cost_scaling_h165.ipynb) / [`cost-scaling-h165-20260707T120719Z.json`](../../reports/cost-scaling-h165-20260707T120719Z.json)) 813 completed ingests reconstructed from `logs/kgf-events.jsonl` (wall-clock proxy - no token counts in events), split into three non-pooled engine segments, per-phase log-log fits with 1000-draw bootstrap CIs. On the 733-doc campaign segment: total per-doc alpha=+0.225 (CI [+0.181,+0.262]) - near-flat as claimed - but the predicted superlinear resolution term is FLAT (alpha=+0.009, CI [-0.161,+0.182], R^2~=0; the ANN vector index makes candidate retrieval sub-linear), loading flat/declining (alpha=-0.14); the only growing phase is extraction (alpha=+0.25), and a confound check attributes it to document richness (extraction vs per-doc entity count: alpha=+0.615, R^2=0.81), not graph size. Methodology notes: mid-wave engine switch handled by segmentation; seg2 cold-start (2085s first doc) excluded from steady-state; embedding phase only gap-inferable (no dedicated event)
+- **Verdict** - REFUTED (close-the-flank) - no graph-size-dependent phase meets the R^2>=0.7 superlinear bar (resolution growth R^2~=0), total alpha 0.225 < 0.5, no crossover to extrapolate: there is no ingest scaling wall at the scales reachable on this corpus; instrumentation follow-ups (embedding.completed event, engine field on document.started) queued via H177
 
 ### R16-H166 Ingested content is untrusted input - extraction injection resistance
 
@@ -2110,5 +2110,26 @@ Trigger: the R10 potentials batch closed five hypotheses and raised seven questi
 - **Prediction** - independence holds with real power; if anything the graded version sharpens the render/materialization concentration
 - **Acceptance bar** - variance restored + CI-backed independence; refuted if the graded gradient correlates (the binary saturation was hiding a real dependence - H85's verdict gets downgraded with a back-reference)
 - **Experiment** - graded scorer over the H85 per-type table (pairs naturally with H172's instrument); deterministic once H172's scorer exists, else token-overlap graded variant runs now
+- **Result** - pending
+- **Verdict** - pending
+
+
+### R18-H177 The richness cost law - entities emitted, not graph size, drive ingest cost
+
+- **Grounding** - H165's confound check: extraction cost scales with per-document entity count at alpha=+0.615 (R^2=0.81) while every graph-size term is flat - the cost driver is document richness, and the event log cannot currently separate embedding from extraction (no `embedding.completed` event) or attribute engines (no `engine` field)
+- **Hypothesis** - (a) with the two instrumentation events added (embedding.completed, engine on document.started - trivial emitter changes), a clean re-decomposition on a fresh ingest confirms extraction-cost ~ entities^beta with beta in [0.5, 0.8] and R^2 >= 0.7, engine-exact; (b) per-doc entity count is predictable from cheap pre-parse features (page count, table-cell count, char count) at R^2 >= 0.5 - giving an ingest-cost forecaster before any LLM call
+- **Prediction** - richness is the law, the forecaster works well enough for batch scheduling (fat catalogues first or last, by policy)
+- **Acceptance bar** - both clauses; refuted if beta is unstable across engines (cost law is then engine-idiosyncratic and the forecaster needs per-engine fits)
+- **Experiment** - two-line event emitter addition + benchmark-corpus re-ingest + regression; scratch instance, post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+### R18-H178 Is the flatness durable - the ANN index at 100x scale
+
+- **Grounding** - H165 found resolution candidate retrieval flat (alpha~=0) because the vector index answers in sub-linear time - but the largest observed graph is ~1400-2800 entities; HNSW-class indexes degrade in build cost and recall at scales no segment reached, so the "no scaling wall" verdict is certified only for the measured range
+- **Hypothesis** - loading synthetic entity populations at 10^4, 10^5 and 10^6 nodes (embedding-realistic: sampled from the real embedding distribution with matched intra-type clustering) into the same index configuration keeps (a) per-query candidate retrieval under 50ms at 10^6, (b) recall@20 vs exact brute force >= 0.95 at every scale, (c) index build/insert amortized cost sub-linear per node
+- **Prediction** - (a) and (c) hold (HNSW's design case); (b) dips below 0.95 at 10^6 under the default ef settings - the actionable finding is the ef/recall schedule per scale tier
+- **Acceptance bar** - all three measured across the three scales; refuted-severe if retrieval or recall collapses at 10^5 (the flatness verdict of H165 is then a small-graph artifact and scaling returns to the risk register)
+- **Experiment** - synthetic load harness on a scratch instance (index-only, no pipeline); CPU + the embedding sampler; post-chain
 - **Result** - pending
 - **Verdict** - pending
