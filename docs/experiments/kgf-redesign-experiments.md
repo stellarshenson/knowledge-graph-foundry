@@ -1066,8 +1066,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - greedy edit selection on the CPAP graph lifts direct-render recall 0.697 -> >=0.9 within +10% tokens; realized single-edit gains decay monotonically (empirical submodularity); at the fixed point, sampled multi-edit combinations (pairs/triples) improve Phi in <5% of draws
 - **Acceptance bar** - all three clauses; refuted if supermodular interactions are frequent (pairs beating their singles' sum) - then single-edit gradients cannot certify optimality and the certificate needs local search over bounded neighborhoods
 - **Experiment** - deterministic edit-replay on the H34 harness; candidate edits from the measured gap decomposition (H61) and detector outputs; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - ([`potentials_r10.ipynb`](../../notebooks/potentials_r10.ipynb) / [`potentials-r10-20260707-120032.json`](../../reports/potentials-r10-20260707-120032.json)) baseline recall reproduced exactly (23/33 = 0.6970 vs registered 0.697). All 10 missing golds are reachable (0 absent, recall ceiling 1.0): 2 on-seed-unrendered (the real PROP-ATTACHED, corrected from 6), 6 one-hop, 2 two-hop. lambda = 1.02e-4 sets the token term at 15% of the sufficiency term. Cost-benefit greedy (benefit-per-token, per Krause-Golovin) lifts recall to 0.879 within +10% tokens and crosses 0.9 only at +10.9% - clause (a) FAILS the +10% bar by 0.9% of tokens. Clause (b): realized single-edit gains decay monotonically (0.988 -> 0.501, non-increasing). Clause (c): at the swap-stable fixed point 0% of sampled pair and triple edits improve Phi, and 0% of same-probe pairs beat their singles' sum - no supermodularity, the designated refutation trigger does not fire
+- **Verdict** - PARTIALLY CONFIRMED - the submodular gradient (b) and the swap-stable stopping certificate (c), the theoretical core the owner asked for, hold cleanly; only the recall-within-budget target (a) is missed, and by a hair (0.9 at +10.9% not +10%). The ceiling is 1.0 - every gap is a rendering gap, not an extraction gap - so the potential is a valid improvement gradient; the +10% bound is granularity-sensitive and confounded by matcher degeneracy on 17/33 short-numeric golds (sub-node fragment selection would spuriously clear it and is rejected)
 
 ### R10-H82 The MDL residual - "no structure left to explain"
 
@@ -1076,8 +1076,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - on the CPAP graph the MDL gradient flattens while the task gradient is still positive (or vice versa on bloat regions); the divergence set is non-empty and interpretable
 - **Acceptance bar** - divergence demonstrated and classified; refuted (interestingly) if the two fixed points coincide - one potential would suffice for both hygiene and retrieval
 - **Experiment** - numpy MDL encoder over the projected graph + shared edit set with H81; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (same notebook / report) a VoG-style two-part code over a star-forest vocabulary (greedy star cover plus residual/error edges at 2 log2 N bits) saves 31751 bits (284 stars, 397 residual of 3738 edges). Per-edit deltas on the shared edit set separate cleanly: materialize-view dMDL = 0 exactly (render-only, no adjacency change) while its task gradient is positive; dark-edge removal dMDL = +16.0 bits (100% positive) with zero task effect; SAME_AS merge dMDL = +19.8 bits. The divergence set is non-empty and interpretable - 10 materializations at (task+, MDL 0) union 40 dark removals at (task 0, MDL+) - and the fixed points differ (the task optimum still admits dark removals; the MDL optimum still admits materializations). Note: an entity-type SBM does NOT beat the ER null on this sparse graph, so the compressing vocabulary here is stars, not type-blocks
+- **Verdict** - CONFIRMED - the MDL gradient and the task gradient measurably diverge; the compression optimum is not the retrieval optimum, so the two potentials are genuinely distinct axes and both are needed
 
 ### R10-H83 The gradient sign-pair - a defect taxonomy from two potentials
 
@@ -1086,8 +1086,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - the classification aligns with the measured failure inventory (PROP-ATTACHED golds -> (+,0); the H63 dark 25% -> (0,+) dominated)
 - **Acceptance bar** - alignment on >=80% of the labeled cases; refuted if the sign pair is uncorrelated with failure class
 - **Experiment** - joint replay over H81/H82's edit set; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (same notebook / report) the sign pair aligns with the labeled failure inventory on 50/50 = 100% of cases (bar >=80%): the 2 real PROP-ATTACHED golds land at (+,0), the 8 one/two-hop missing-materialization golds also at (+,0), and 40 sampled dark-matter edges at (0,+). The registration's "6 PROP-ATTACHED golds" premise is corrected in the result to 2 real (the other 4 were render artifacts already present in another seed) - the alignment is rated over the full labeled inventory so the 2-case class does not make the bar unratable
+- **Verdict** - CONFIRMED - the two-potential sign pair is a working defect classifier: (+,0) flags retrieval-deficient regions needing materialization, (0,+) flags removable dark-matter bloat, exactly as registered
 
 ### R10-H84 The thin sufficient subgraph - an IB knee certificate
 
@@ -1106,8 +1106,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - the CPAP graph (fully cured, missing mass ~1.5%) still shows positive task gradient concentrated on the render/materialization edit class
 - **Acceptance bar** - weak correlation + positive residual gradient; refuted if missing mass predicts the task gradient (r -> 1) - one estimator would suffice
 - **Experiment** - correlation over H81's per-type gains; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (same notebook / report) per-type Good-Turing missing mass (the H57 property-key inventory n1/N) vs per-type residual max Delta-Phi_task correlates at r = -0.184 over all types and +0.036 over the 6 types carrying a positive task gradient - both well under the |r| < 0.3 bar - and the residual gradient is positive (six types, max 0.996, concentrated on the render/materialization edit class). Drift note: the aggregate property-key missing mass is 0.243, not the registered ~1.5%; the ~1.5% figure corresponds to the relationship inventory (H57 semantic missing mass 0.4%), and the independence result holds under either estimator
+- **Verdict** - CONFIRMED - vocabulary saturation and retrieval utility are independent axes; a fully cured graph still carries a large task gradient, so an ingest-saturation estimator cannot stand in for the task potential
 
 ### R10-H86 Evidence-path views - the RPQ materialization transfer
 
@@ -1116,8 +1116,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - the honest risk is registered as a clause: with 91% of evidence already on-seed, the traversal left to precompute may be too small - the win, if any, concentrates in the PROP-ATTACHED and alias-merge render work
 - **Acceptance bar** - cost cut at equal recall + stable knee; refuted if no view set reduces cost at equal recall (materialization is already saturated)
 - **Experiment** - deterministic view-replay on the H34 harness; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (same notebook / report) 91% of RECALLED evidence sits on a seed at hop 0 (70% of all golds by the vec-8-nearest-carrier count; the registered 91% includes the proposition channel), so query-time traversal to precompute is ~0 hops. No legitimate query-time-valid materialization cuts (tokens + hops) at equal recall: shortcut edges save hops only where evidence is off-seed (and recalled evidence is on-seed), while surfaced propositions and cached renders only add tokens - legitimate view cut = 0% against the >=30% bar. An answer-specific render-pruning ceiling of 70% exists (drop the seeds not carrying a probe's answer) but it requires knowing the answer, is not a query-time view, and is answer-specific rather than a generalizing path template
+- **Verdict** - REFUTED - the registered honest-risk outcome: with essentially all recalled evidence already on-seed there is no traversal to precompute, and materialization only grows the token cost, so no view set reduces query cost at equal recall. Materialization is already saturated on this graph; any real win is the tiny localized PROP-ATTACHED surfacing, far below the 30% bar
 
 ### R10-H87 Curvature flags the false closure - AFRC on SAME_AS edges
 
@@ -2000,5 +2000,50 @@ Trigger: R15 hardened the read-side maturity properties (transfer, shipping, ide
 - **Prediction** - (b) holds (the parser is defensive); (a) partially fails - some instruction text lands as plausible-looking entities, which is the graph-poisoning result that motivates a provenance-trust field; (c) is the weakest clause
 - **Acceptance bar** - (b) mandatory; (a)/(c) reported honestly with the poisoned-node inventory; refuted-severe if injected instructions steer extraction of OTHER documents in the same batch (cross-document contamination)
 - **Experiment** - adversarial doc generation (deterministic templates) + scratch ingest on the local engine + graph audit; scratch instance + GPU 1 window, post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+
+## R17 - change provenance: revisions as first-class graph citizens (user-directed, pre-registered 2026-07-07)
+
+Trigger: the project owner asked whether changes to nodes carry provenance - revision numbers, versioned facts. Code audit of `graph/loader.py` (lines 27-79) shows the shipped machinery is narrower than the doctrine: `KGFEntityVersion` snapshots fire only on description-growth or label-add, ordering is timestamp-only (and Cypher `timestamp()` is per-transaction - a whole batch shares one value), there is NO revision counter, `e.name` is overwritten unconditionally without versioning, `SET e += row.props` mutates properties silently, and relationships have no versioning path at all. These four hypotheses turn that audit into measured claims.
+
+### R17-H167 Version capture completeness - most mutation classes escape the snapshot
+
+- **Grounding** - the versionize predicate (`loader.py:31-34`) triggers on exactly two conditions: longer description, new label. The mutation surface is larger: name overwrite (`SET e.name = row.name`, unconditional), property upsert (`SET e += row.props`), embedding refresh, provenance-list growth, and every relationship mutation (description overwrite by length, `loader.py:66-68`)
+- **Hypothesis** - under an instrumented replay (snapshot entity/rel state after every batch, diff consecutive states, compare against the HAD_VERSION chain), fewer than 50% of material mutation events (name/description/type/property/relationship-description changes) have a corresponding version record; name overwrites and property updates are captured at exactly 0%
+- **Prediction** - description and label changes are fully captured (the predicate was built for them); everything else is dark - the audit trail is real but partial, and the missing classes include the one a spec-revision workload hits hardest (property values)
+- **Acceptance bar** - capture-rate matrix per mutation class, measured on the benchmark corpus re-ingest with revision-bearing input (share H163's synthetic v2 set); refuted (pleasantly) if capture >= 90% across classes - the audit-trail gap is then a non-issue
+- **Experiment** - deterministic instrumented replay; scratch instance, post-chain; shares the H163 synthetic revision corpus
+- **Result** - pending
+- **Verdict** - pending
+
+### R17-H168 Revision ordering and reconstructability - timestamps are not a chain
+
+- **Grounding** - version nodes carry only `versioned_at = timestamp()` (`loader.py:77`); Cypher fixes `timestamp()` per transaction, so all versions created in one batch share the same millisecond - within-batch order is unrecoverable; there is no per-entity revision counter and no NEXT_VERSION chain, only a star of HAD_VERSION edges
+- **Hypothesis** - (a) on a multi-revision workload, >= 10% of entities with 2+ versions have at least one timestamp collision making their history order ambiguous; (b) as-of-time reconstruction (rebuild entity state at time T from versions + current state) succeeds for description/labels but is IMPOSSIBLE for uncaptured classes (H167's dark mutations); (c) adding a per-entity monotonic `revision` counter (MERGE-time increment) costs < 2% load throughput and makes order total
+- **Prediction** - collisions are the norm, not the edge case, because batch loading is the only loading; the revision-counter fix is cheap and total
+- **Acceptance bar** - all three clauses measured; refuted if timestamp order is already total in practice (batches never produce 2 versions of one entity - possible if per-doc dedup upstream holds) - then the counter is hygiene, not a fix
+- **Experiment** - collision census on the replay graph + reconstruction harness + counter prototype behind the versioning flag; scratch instance, post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+### R17-H169 Change attribution - every revision must name its cause
+
+- **Grounding** - the version snapshot copies the OLD state including its provenance lists, but nothing records WHICH incoming document caused the supersession; the cause is at best recoverable by set-differencing `source_documents` between the version and the next state - and that diff is ambiguous whenever a batch adds more than one document to the same entity
+- **Hypothesis** - (a) diff-based cause recovery attributes < 80% of version events unambiguously on the campaign-style workload (multi-doc batches); (b) recording `caused_by_document` / `caused_by_chunk` on the version node at create time (the row is in scope in the version action - one line) achieves 100% attribution at zero measurable cost; (c) attribution enables the repair-from-source doctrine's key query - "show every change this document caused" - which is unanswerable today
+- **Prediction** - the diff heuristic fails exactly where it matters (busy shared entities); the one-line fix closes it completely
+- **Acceptance bar** - (a) and (b) measured, (c) demonstrated as a working query; refuted if diff recovery already exceeds 95% (single-doc-per-batch dominance) - then the fix is optional bookkeeping
+- **Experiment** - attribution census on the replay + one-line `_VERSION_ACTION` extension behind the flag; scratch instance, post-chain
+- **Result** - pending
+- **Verdict** - pending
+
+### R17-H170 Change history as a retrieval surface - "what changed" is a probe class
+
+- **Grounding** - H163 tests whether CURRENT truth wins after a revision; the complementary maturity property is HISTORY truth: "when did the pressure range for model X change, and from what to what?" - the class of probe a months-old graph gets asked and a fresh rebuild cannot answer. The version chain plus bitemporal relationship fields (`valid_from`/`valid_to`, `loader.py:64`) are the substrate; no render path consumes them
+- **Hypothesis** - with H167/H168/H169's fixes in place (capture, order, cause), a version-aware render extension answers >= 80% of a 15-probe synthetic change-history set (value before/after, change date, causing document) - while TODAY's machinery answers < 20% of the same probes (partial capture + ambiguous order + no cause)
+- **Prediction** - the before/after and causing-document clauses hinge entirely on R17's fixes; the baseline fails mostly on order ambiguity and missing property capture
+- **Acceptance bar** - both measurements (today vs fixed) on the same probe set; refuted if the fixed pipeline still scores < 50% - the version-node design itself is then inadequate (snapshot granularity wrong) and a rethink (delta records, not snapshots) gets registered
+- **Experiment** - change-history probe set derived from H163's ground-truth diff list + render extension prototype; scratch instance, post-chain, sequenced last in R17
 - **Result** - pending
 - **Verdict** - pending
