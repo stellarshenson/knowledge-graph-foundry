@@ -1,0 +1,951 @@
+{
+ "hypothesis": "R19-H226",
+ "stamp": "20260707T204912Z",
+ "driver": "bolt://172.19.0.9:7687",
+ "mode": "READ-ONLY",
+ "n_products": 13,
+ "n_stated_ownerships": 92,
+ "n_missing": 38,
+ "miss_rate": 0.41304347826086957,
+ "attachment_complete": 0.5869565217391304,
+ "single": {
+  "tot": 67,
+  "miss": 32,
+  "rate": 0.47761194029850745
+ },
+ "multi": {
+  "tot": 25,
+  "miss": 6,
+  "rate": 0.24
+ },
+ "clause_a": {
+  "threshold": 0.2,
+  "value": 0.41304347826086957,
+  "result": "PASS"
+ },
+ "clause_b": {
+  "hypothesis": "misses concentrate in multi-product docs",
+  "single_rate": 0.47761194029850745,
+  "multi_rate": 0.24,
+  "result": "FAIL"
+ },
+ "refuted_if_over_90pct_complete": false,
+ "mechanism_partition": {
+  "never_extracted": 12,
+  "attached_elsewhere_sibling": 17,
+  "attached_elsewhere_other": 3,
+  "extracted_unattached": 6
+ },
+ "verdict": "CONFIRMED-PARTIAL (clause a CONFIRMED; clause b REFUTED)",
+ "frozen_reference": {
+  "AirSense 11 AutoSet": [
+   "auto_adjust",
+   "auto_onoff",
+   "bluetooth",
+   "cellular_modem",
+   "heated_tube",
+   "humidification",
+   "mask_fit",
+   "oximetry",
+   "pressure_relief",
+   "ramp",
+   "sd_card",
+   "wifi"
+  ],
+  "AirStart 10 CPAP": [
+   "humidification"
+  ],
+  "DreamStation CPAP": [
+   "altitude_comp",
+   "app_monitoring",
+   "auto_adjust",
+   "bluetooth",
+   "cellular_modem",
+   "ez_start",
+   "heated_tube",
+   "humidification",
+   "mask_fit",
+   "oximetry",
+   "pressure_relief",
+   "ramp",
+   "sd_card",
+   "wifi"
+  ],
+  "DreamStation CPAP Pro": [
+   "app_monitoring",
+   "bluetooth",
+   "cellular_modem",
+   "ez_start",
+   "heated_tube",
+   "humidification",
+   "oximetry",
+   "pressure_relief",
+   "ramp",
+   "sd_card",
+   "wifi"
+  ],
+  "RESmart Auto CPAP System": [
+   "altitude_comp",
+   "app_monitoring",
+   "auto_adjust",
+   "auto_onoff",
+   "cellular_modem",
+   "humidification",
+   "pressure_relief",
+   "ramp"
+  ],
+  "SleepStyle 200 Series": [
+   "altitude_comp",
+   "humidification",
+   "ramp"
+  ],
+  "iBreeze CPAP System": [
+   "auto_adjust",
+   "cellular_modem",
+   "heated_tube",
+   "humidification",
+   "mask_fit",
+   "oximetry",
+   "ramp",
+   "sd_card",
+   "wifi"
+  ],
+  "RESmart CPAP": [
+   "altitude_comp",
+   "app_monitoring",
+   "auto_adjust",
+   "auto_onoff",
+   "cellular_modem",
+   "humidification",
+   "pressure_relief",
+   "ramp",
+   "sd_card"
+  ],
+  "prisma SOFT plus": [
+   "altitude_comp",
+   "app_monitoring",
+   "auto_adjust",
+   "bluetooth"
+  ],
+  "AirSense 10 Elite": [
+   "app_monitoring",
+   "auto_adjust",
+   "heated_tube",
+   "humidification",
+   "pressure_relief",
+   "ramp",
+   "wifi"
+  ],
+  "ResMed AirSense 10 AutoSet": [
+   "auto_adjust",
+   "bluetooth",
+   "heated_tube",
+   "humidification",
+   "pressure_relief",
+   "ramp",
+   "wifi"
+  ],
+  "REMstar Auto": [
+   "heated_tube",
+   "humidification",
+   "oximetry",
+   "pressure_relief",
+   "ramp",
+   "sd_card"
+  ],
+  "ELK-200C CPAP System": [
+   "humidification"
+  ]
+ },
+ "per_product": [
+  {
+   "product": "AirSense 11 AutoSet",
+   "home_doc": "ResMed-Airsense-11-Manual.pdf",
+   "doc_class": "single",
+   "n_stated": 12,
+   "n_missing": 11,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "AirSense 11",
+     "evidence": "options: view and adjust therapy settings (eg, adjust ramp time) \u2022 my sleep view: track sleep health (check th"
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "AirSense 11",
+     "evidence": "parameter setting to update. for other parameters (eg pressure relief, airplane mode), tap the parameter to tu"
+    },
+    {
+     "feature": "auto_onoff",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "AirSense 11",
+     "evidence": "he out. this setting can help you get used to therapy. smartstart* when smartstart is enabled, therapy starts "
+    },
+    {
+     "feature": "humidification",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "AirSense 11",
+     "evidence": "airsense 11 system includes the following: \u2022 device \u2022 humidairtm 11 standard tub \u2022 climatelineairtm 11 heated "
+    },
+    {
+     "feature": "heated_tube",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "the following: \u2022 device \u2022 humidairtm 11 standard tub \u2022 climatelineairtm 11 heated tubing or slimlinetm tubing "
+    },
+    {
+     "feature": "bluetooth",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_other",
+     "other_owner": "DreamStation",
+     "evidence": "selected by resmed, including but not limited to using bluetooth\u00ae wireless technology, wifi and/or cellular ne"
+    },
+    {
+     "feature": "wifi",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "AirSense 11",
+     "evidence": "t not limited to using bluetooth\u00ae wireless technology, wifi and/or cellular networks and combinations of vario"
+    },
+    {
+     "feature": "cellular_modem",
+     "status": "missing",
+     "mechanism": "extracted_unattached",
+     "other_owner": null,
+     "evidence": "d to using bluetooth\u00ae wireless technology, wifi and/or cellular networks and combinations of various wireless "
+    },
+    {
+     "feature": "sd_card",
+     "status": "missing",
+     "mechanism": "extracted_unattached",
+     "other_owner": null,
+     "evidence": "g or slimlinetm tubing \u2022 65w ac adaptor \u2022 travel bag \u2022 sd card (not available in all devices). contact your ca"
+    },
+    {
+     "feature": "oximetry",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "pulse sensors \u2022 cpap and bilevel device data modules \u2022 oximeters and cpap and bilevel device oximeter adapters"
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "............... 26 english 1 welcome the airsensetm 11 autosettm (including autoset for her) device is resmed'"
+    },
+    {
+     "feature": "mask_fit",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "AirSense 11",
+     "evidence": "tandby mode, and white during therapy, test drive, and mask fit functions. 2 display touch screen navigates be"
+    }
+   ]
+  },
+  {
+   "product": "AirStart 10 CPAP",
+   "home_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "doc_class": "single",
+   "n_stated": 1,
+   "n_missing": 0,
+   "rows": [
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "tion ip22 product codes airstart 10 cpap co-pack 37364 humidair (cleanable) 37300 slimlinetm tubing 36810 buil"
+    }
+   ]
+  },
+  {
+   "product": "DreamStation CPAP",
+   "home_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "doc_class": "single",
+   "n_stated": 14,
+   "n_missing": 7,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "gs..................................................10 ramp feature..........................................."
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "until your prescription pressure is reached. also, the flex comfort feature provides you with pressure relief "
+    },
+    {
+     "feature": "ez_start",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "DreamStation CPAP Pro",
+     "evidence": "iption change or device upgrade. n/a no action needed. ez-start pressure incremented to xx.x status displays w"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "...........9 menu navigation (therapy on) and optional humidification settings................................"
+    },
+    {
+     "feature": "heated_tube",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "py device. line up the connector (1) at the top of the heated tube to the top of the air outlet port on the ba"
+    },
+    {
+     "feature": "bluetooth",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "....................................................11 bluetooth\u00ae wireless technology........................."
+    },
+    {
+     "feature": "wifi",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "itiate a modem call when an optional cellular modem or wi-fi accessory is installed. signal strength is indica"
+    },
+    {
+     "feature": "cellular_modem",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "allows user to initiate a modem call when an optional cellular modem or wi-fi accessory is installed. signal s"
+    },
+    {
+     "feature": "sd_card",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "aining. \u2022 before operating the device, ensure that the sd card/filter access door and the modem access door ar"
+    },
+    {
+     "feature": "oximetry",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "ent includes rf transmitters. iec 60878 iec 60417-5140 oximeter connection - serial connection identifies a co"
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "user manual dreamstation cpap cpap pro auto cpap \u00a9 koninklijke philips n.v., 2018. all rights reserved."
+    },
+    {
+     "feature": "altitude_comp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "....................................................16 altitude compensation.................................."
+    },
+    {
+     "feature": "mask_fit",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "....................................................15 check mask fit........................................."
+    },
+    {
+     "feature": "app_monitoring",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "DreamStation CPAP Pro",
+     "evidence": "y which you can transfer your therapy device\u2019s data to dreammapper. dreammapper is a mobile and web-based syst"
+    }
+   ]
+  },
+  {
+   "product": "DreamStation CPAP Pro",
+   "home_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "doc_class": "single",
+   "n_stated": 11,
+   "n_missing": 4,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "erapy modes: cpap, cpap-check \u2022 new - ez-start \u2022 new - smart ramp (0-45 min) \u2022 c-flex \u2022 new - performance chec"
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "check \u2022 new - ez-start \u2022 new - smart ramp (0-45 min) \u2022 c-flex \u2022 new - performance check \u2022 encore patient manag"
+    },
+    {
+     "feature": "ez_start",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "t detection* \u2022 therapy modes: cpap, cpap-check \u2022 new - ez-start \u2022 new - smart ramp (0-45 min) \u2022 c-flex \u2022 new -"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "modems \u2022 on-board memory \u2022 oximetry module (optional) humidification \u2022 active humidification controlled by the"
+    },
+    {
+     "feature": "heated_tube",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "DreamStation Auto CPAP with humidifier",
+     "evidence": "y the room environment \u2022 pre-heat humidifier capable \u2022 heated tube optional dreamstation cpap pro benefits \u2022 e"
+    },
+    {
+     "feature": "bluetooth",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "ltiple remote monitoring solutions including cellular, bluetooth\u00ae and wifi modems \u2022 on-board memory \u2022 oximetry"
+    },
+    {
+     "feature": "wifi",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "ResMed AirSense 10 AutoSet",
+     "evidence": "onitoring solutions including cellular, bluetooth\u00ae and wifi modems \u2022 on-board memory \u2022 oximetry module (option"
+    },
+    {
+     "feature": "cellular_modem",
+     "status": "missing",
+     "mechanism": "extracted_unattached",
+     "other_owner": null,
+     "evidence": "\u2022 new - multiple remote monitoring solutions including cellular, bluetooth\u00ae and wifi modems \u2022 on-board memory "
+    },
+    {
+     "feature": "sd_card",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "iance capacity (mininum) 1 day, 7-day, 30-day averages sd card > 1 year on-board: up to 6 months altitude auto"
+    },
+    {
+     "feature": "oximetry",
+     "status": "missing",
+     "mechanism": "extracted_unattached",
+     "other_owner": null,
+     "evidence": "llular, bluetooth\u00ae and wifi modems \u2022 on-board memory \u2022 oximetry module (optional) humidification \u2022 active humi"
+    },
+    {
+     "feature": "app_monitoring",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "e and data reports, waveforms reports \u2022 new - multiple remote monitoring solutions including cellular, bluetoo"
+    }
+   ]
+  },
+  {
+   "product": "RESmart Auto CPAP System",
+   "home_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "doc_class": "single",
+   "n_stated": 8,
+   "n_missing": 5,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "........................................17 \u274d using the ramp button ..........................................."
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "RESmart Auto",
+     "evidence": "ption setting so you can fall asleep more comfortably. reslex a therapy feature that provides pressure relief "
+    },
+    {
+     "feature": "auto_onoff",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "RESmart Auto",
+     "evidence": "button turns the blower on/off. 3. place the resmart\u00ae auto on a firm, flat surface. caution! make sure the res"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": ".........................................16 \u274d adding a humidifier ............................................"
+    },
+    {
+     "feature": "cellular_modem",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "m fixed transmitters, such as base stations for radio (cellular/cordless) telephones and land mobile radios, a"
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "RESmart Auto",
+     "evidence": "resmart\u00ae auto cpap system user manual 0123 resmart \u00ae auto user manual v2."
+    },
+    {
+     "feature": "altitude_comp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "pa increments) pressure stability 4 to 20 hpa (\u00b11 hpa) altitude compensation manually setting, level 0, 1, 2 a"
+    },
+    {
+     "feature": "app_monitoring",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "RESmart Auto",
+     "evidence": "ways enabled. cpap continuous positive airway pressure icode a feature that is intended to give access to comp"
+    }
+   ]
+  },
+  {
+   "product": "SleepStyle 200 Series",
+   "home_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "doc_class": "single",
+   "n_stated": 3,
+   "n_missing": 2,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "HC230-Series",
+     "evidence": "own button decrease setting up button increase setting ramp button on/off button key function & description op"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "he order of a physician. a - 1 sleepstyletm 200 series humidified cpap systems the sleepstyletm 200 series are"
+    },
+    {
+     "feature": "altitude_comp",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "HC230-Series",
+     "evidence": "medical practitioner or dealer use to check compliance altitude setting displays altitude setting pressure set"
+    }
+   ]
+  },
+  {
+   "product": "iBreeze CPAP System",
+   "home_doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "doc_class": "single",
+   "n_stated": 9,
+   "n_missing": 1,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "off button starts and stops the airflow for therapy. 2 ramp key activate the ramp feature during therapy. 3 lc"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "r cord is connected. \uf06c for safe operation when using a humidifier, the humidifier must always be positioned be"
+    },
+    {
+     "feature": "heated_tube",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_other",
+     "other_owner": "REMstar Auto",
+     "evidence": "you are using a standard tube (not shown) instead of a heated tube, simply slide the tubing over the air outle"
+    },
+    {
+     "feature": "wifi",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "tion function on or off. option: on / off default: off wifi (optional) set the wifi function on or off. option"
+    },
+    {
+     "feature": "cellular_modem",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "wifi function on or off. option: on / off default: on gprs (optional) set the gprs function on or off. option:"
+    },
+    {
+     "feature": "sd_card",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "ng items: \uf06c cpap device \uf06c power adapter \uf06c power cord \uf06c sd card \uf06c flexible tube: 19 mm or 15 mm tube \uf06c travel b"
+    },
+    {
+     "feature": "oximetry",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "er, or touching the tank pan. \uf06c when using wrist pulse oximeter: \uf0d8 prolonged continuous spo2 monitoring may in"
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "1 1 welcome the ibreeze cpap systems contains cpap and apap modes. they are both continuous positive airway pr"
+    },
+    {
+     "feature": "mask_fit",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "the option auto is not available in the ibreeze 20c. 6 mask fit mask fit feature allows you to check the fit o"
+    }
+   ]
+  },
+  {
+   "product": "RESmart CPAP",
+   "home_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "doc_class": "single",
+   "n_stated": 9,
+   "n_missing": 2,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "......................................... 21 using the ramp button ..........................................."
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": ", (3) auto on, (4) auto off, (5) light, (6) alert, (7) reslex, (8) ramptime, (9) delay, (10) date, (11) time, "
+    },
+    {
+     "feature": "auto_onoff",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "the following settings: (1) heater, (2) altitude, (3) auto on, (4) auto off, (5) light, (6) alert, (7) reslex,"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": ".......................................... 18 adding a humidifier ............................................"
+    },
+    {
+     "feature": "cellular_modem",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "m fixed transmitters, such as base stations for radio (cellular/cordless) telephones and land mobile radios, a"
+    },
+    {
+     "feature": "sd_card",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "by or on the order of a physician. 2. ensure that the sd card is inserted into the device before you turn on r"
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "ting is 4 cmh2o. treatment pressure: this setting (min apap) is the minimum pressure of the therapy pressure r"
+    },
+    {
+     "feature": "altitude_comp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "ncrements) pressure stability 4 to 20 cmh2o (\u00b11 cmh2o) altitude setting auto-cpap: manual setting: level 0 - 2"
+    },
+    {
+     "feature": "app_monitoring",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "................................................... 33 icode\u00ae is a trademark of bmc medical co., ltd. 3btm and"
+    }
+   ]
+  },
+  {
+   "product": "prisma SOFT plus",
+   "home_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "doc_class": "multi",
+   "n_stated": 4,
+   "n_missing": 3,
+   "rows": [
+    {
+     "feature": "bluetooth",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_other",
+     "other_owner": "DreamStation",
+     "evidence": "vel of patient comfort. the plus stands for integrated bluetooth for data trans- mission to the prisma app and"
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "smart plus prisma soft max / prisma smart max cpap and apap therapy with prisma smart and prisma soft in the p"
+    },
+    {
+     "feature": "altitude_comp",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "hpa, corresponds to altitude of 3000 m above sea level automatic altitude adjustment electric rating: max. 40 "
+    },
+    {
+     "feature": "app_monitoring",
+     "status": "missing",
+     "mechanism": "never_extracted",
+     "other_owner": null,
+     "evidence": "or integrated bluetooth for data trans- mission to the prisma app and thus for modern patient self-management."
+    }
+   ]
+  },
+  {
+   "product": "AirSense 10 Elite",
+   "home_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "doc_class": "multi",
+   "n_stated": 7,
+   "n_missing": 1,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "and climate control auto \u2022 intuitive user interface \u2022 autoramp with sleep onset detection airsense 10 elite th"
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "tection \u2022 packed with a climatelineairtm heated tube \u2022 expiratory pressure relief \u2022 climate control and climat"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "wireless connectivity* \u2022 easy-breathe motor \u2022 built-in humidairtm heated humidifier \u2022 csa and csr detection \u2022 "
+    },
+    {
+     "feature": "heated_tube",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "ted humidifier \u2022 csa and csr detection \u2022 packed with a climatelineairtm heated tube \u2022 expiratory pressure reli"
+    },
+    {
+     "feature": "wifi",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "ncludes the following features as standard: \u2022 built-in wireless connectivity* \u2022 easy-breathe motor \u2022 built-in "
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "e is resmed\u2019s premium cpap therapy device. airsense 10 autoset the airsense 10 autoset is resmed\u2019s premium aut"
+    },
+    {
+     "feature": "app_monitoring",
+     "status": "missing",
+     "mechanism": "extracted_unattached",
+     "other_owner": null,
+     "evidence": "ed as you work towards a healthier, happier life. join myairtm, an online support program that will help you g"
+    }
+   ]
+  },
+  {
+   "product": "ResMed AirSense 10 AutoSet",
+   "home_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "doc_class": "multi",
+   "n_stated": 7,
+   "n_missing": 2,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "and climate control auto \u2192 intuitive user interface \u2192 autoramptm with sleep onset detection two-year warranty "
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "tection \u2192 packed with a climatelineairtm heated tube \u2192 expiratory pressure relief \u2192 climate control and climat"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "built-in wireless connectivity1 \u2192 easy-breathe motor \u2192 humidairtm heated humidifier \u2192 csa and csr detection \u2192 "
+    },
+    {
+     "feature": "heated_tube",
+     "status": "attached_to_wrong_product",
+     "mechanism": "attached_elsewhere_sibling",
+     "other_owner": "Fisher & Paykel SleepStyle",
+     "evidence": "ted humidifier \u2192 csa and csr detection \u2192 packed with a climatelineairtm heated tube \u2192 expiratory pressure reli"
+    },
+    {
+     "feature": "bluetooth",
+     "status": "missing",
+     "mechanism": "extracted_unattached",
+     "other_owner": null,
+     "evidence": "ed smart devices. simply download the app, connect via bluetooth and enjoy access to a range of comfort s  a n"
+    },
+    {
+     "feature": "wifi",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "nsetm 10 device series ordering information \u2192 built-in wireless connectivity1 \u2192 easy-breathe motor \u2192 humidairt"
+    },
+    {
+     "feature": "auto_adjust",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "nicpaptm auto machine 8 linde noctivance\u00ae 9 apap (automatic positive airway pressure) device: delivers"
+    }
+   ]
+  },
+  {
+   "product": "REMstar Auto",
+   "home_doc": "product_and_solutions_catalog.pdf",
+   "doc_class": "multi",
+   "n_stated": 6,
+   "n_missing": 0,
+   "rows": [
+    {
+     "feature": "ramp",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": ", auto, cpap-check, auto-trial) \u2022 a-flex for comfort \u2022 opti-start technology \u2022 advanced event detection \u2022 heat"
+    },
+    {
+     "feature": "pressure_relief",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "auto\u2020 \u2022 4 modes (cpap, auto, cpap-check, auto-trial) \u2022 a-flex for comfort \u2022 opti-start technology \u2022 advanced e"
+    },
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "to a-flex ds560s ca561s e0601 remstar auto a-flex with humidifier ds560hs ca561hs e0601, e0562 remstar auto a-"
+    },
+    {
+     "feature": "heated_tube",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "t \u2022 opti-start technology \u2022 advanced event detection \u2022 heated tube option remstar pro\u2020 \u2022 3 modes (cpap, cpap-c"
+    },
+    {
+     "feature": "sd_card",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "ting \u2022 on-board memory \u2022 heated tube option \u2020modem and sd card capable; optional integrated oximetry available"
+    },
+    {
+     "feature": "oximetry",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "option \u2020modem and sd card capable; optional integrated oximetry available. ordering information us part canadi"
+    }
+   ]
+  },
+  {
+   "product": "ELK-200C CPAP System",
+   "home_doc": "CPAP-Machines-Brochure.pdf",
+   "doc_class": "multi",
+   "n_stated": 1,
+   "n_missing": 0,
+   "rows": [
+    {
+     "feature": "humidification",
+     "status": "attached",
+     "mechanism": null,
+     "other_owner": null,
+     "evidence": "imizes airway drying and inflammation with intelligent humidification:adjustable temperature and humidity sett"
+    }
+   ]
+  }
+ ],
+ "canon_features": [
+  "ramp",
+  "pressure_relief",
+  "ez_start",
+  "auto_onoff",
+  "humidification",
+  "heated_tube",
+  "bluetooth",
+  "wifi",
+  "cellular_modem",
+  "sd_card",
+  "oximetry",
+  "auto_adjust",
+  "altitude_comp",
+  "mask_fit",
+  "app_monitoring"
+ ],
+ "fingerprint": {
+  "render_fingerprint": "96ab16d299fbbc71",
+  "render_match": true,
+  "graph_fingerprint": {
+   "node_count": 2798,
+   "edge_count": 3905,
+   "embedding_count": 2798,
+   "content_hash": "6fdc41bde495d1a3",
+   "embedding_digest": "2a3908456d2e2d8c"
+  }
+ }
+}

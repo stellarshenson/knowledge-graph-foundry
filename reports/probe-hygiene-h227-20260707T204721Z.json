@@ -1,0 +1,2877 @@
+{
+ "hypothesis": "R19-H227",
+ "stamp": "20260707T204721Z",
+ "driver": "bolt://172.19.0.9:7687",
+ "mode": "READ-ONLY (census skipped)",
+ "bar": {
+  "threshold": 0.05,
+  "metric": "canonical cross-paired share"
+ },
+ "per_set": {
+  "probes-wide-h188": {
+   "n": 101,
+   "in_cited": 101,
+   "cross_paired": 0,
+   "absent_everywhere": 0,
+   "cross_rate": 0.0
+  },
+  "probes-wide-v2-h195": {
+   "n": 219,
+   "in_cited": 218,
+   "cross_paired": 1,
+   "absent_everywhere": 0,
+   "cross_rate": 0.0045662100456621
+  },
+  "probes-conflict-h204": {
+   "n": 30,
+   "in_cited": 30,
+   "cross_paired": 0,
+   "absent_everywhere": 0,
+   "cross_rate": 0.0
+  }
+ },
+ "genuine_cross_paired": {
+  "probes-wide-h188": 0,
+  "probes-wide-v2-h195": 0,
+  "probes-conflict-h204": 0
+ },
+ "canonical": {
+  "golds": 320,
+  "cross_flagged": 1,
+  "cross_genuine": 0,
+  "rate_flagged": 0.003125,
+  "rate_genuine": 0.0
+ },
+ "verdict": "CONFIRMED",
+ "flagged_adjudication": {
+  "V191": {
+   "cited_bluetooth_mentions": 3,
+   "note": "cited doc states 'integrated bluetooth connects with dreammapper' / 'built-in bluetooth' in the DreamStation ordering block (product named 7x); the FEATURE is present for the product in the cited doc - the flag is a verbatim-paraphrase gap ('connectivity' not literal), NOT a cross-pairing/ownership reassignment",
+   "genuine_cross_pairing": false
+  }
+ },
+ "repairs": [],
+ "repaired_files": [],
+ "census_rerun": false,
+ "census_note": "skipped - zero canonical golds cross-paired",
+ "fingerprint": {
+  "render_fingerprint": "96ab16d299fbbc71",
+  "render_match": true,
+  "graph_fingerprint": {
+   "node_count": 2798,
+   "edge_count": 3905,
+   "embedding_count": 2798,
+   "content_hash": "6fdc41bde495d1a3",
+   "embedding_digest": "2a3908456d2e2d8c"
+  }
+ },
+ "full_audit_table": [
+  {
+   "set": "probes-wide-h188",
+   "id": "W001",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W002",
+   "gold": "4 L/min",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W003",
+   "gold": "4-20cm h 2 o",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W004",
+   "gold": "PS0001464",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W005",
+   "gold": "A7037",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W006",
+   "gold": "1098078",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W007",
+   "gold": "4-20 cm H 2 O",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W008",
+   "gold": "1cmH 2 O",
+   "cited_doc": "CPAP-Machines-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W009",
+   "gold": "1097940",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W010",
+   "gold": "1097348",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W011",
+   "gold": "A4604",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W012",
+   "gold": "PS0001231",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W013",
+   "gold": "8192",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W014",
+   "gold": "P1263",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W015",
+   "gold": "700 hPa",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W016",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W017",
+   "gold": "P1368",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W018",
+   "gold": "4 to 20 cmh2 o",
+   "cited_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W019",
+   "gold": "Flex comfort",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W020",
+   "gold": "E0464",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W021",
+   "gold": "P1259",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W022",
+   "gold": "4-20 cm H 2 O",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W023",
+   "gold": "1069194",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W024",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W025",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W026",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W027",
+   "gold": "1,33 kg",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W028",
+   "gold": "P1267",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W029",
+   "gold": "4 to 20 cm h2o",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W030",
+   "gold": "A7039",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W031",
+   "gold": "EZ-Start",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W032",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W033",
+   "gold": "900 VA",
+   "cited_doc": "CPAP-Machines-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W034",
+   "gold": "15.7 x 19.3 x 8.4 cm",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W035",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W036",
+   "gold": "A7037",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W037",
+   "gold": "E0562",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W038",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W039",
+   "gold": "275mm x 170mm x 140mm",
+   "cited_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W040",
+   "gold": "4 to 20 cmh2o",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W041",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W042",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W043",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W044",
+   "gold": "4 cm H2O",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W045",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W046",
+   "gold": "50-60Hz",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W047",
+   "gold": "CA1161X",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W048",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W049",
+   "gold": "1.7 kg",
+   "cited_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W050",
+   "gold": "138.5 mm x 259.4 mmx 94.5 mm",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W051",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W052",
+   "gold": "1111124",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W053",
+   "gold": "170 x 135 x 180 mm",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W054",
+   "gold": "0 to 10cm h2o",
+   "cited_doc": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W055",
+   "gold": "45 min",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W056",
+   "gold": "1067148",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W057",
+   "gold": "CA1161XTS",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W058",
+   "gold": "1097349",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W059",
+   "gold": "Opti-Start",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W060",
+   "gold": "700 hPa",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W061",
+   "gold": "116 mm x 205 mm x 150 mm",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W062",
+   "gold": "30 db",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W063",
+   "gold": "P1295",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W064",
+   "gold": "A7046",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W065",
+   "gold": "3.5 lbs",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W066",
+   "gold": "WM31660",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W067",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W068",
+   "gold": "Philips SimplyGo\u2122",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W069",
+   "gold": "E0464",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W070",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W071",
+   "gold": "WM93335",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W072",
+   "gold": "220 \u00d7 194 \u00d7 112 mm",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W073",
+   "gold": "1097939",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W074",
+   "gold": "Auto-Trial",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W075",
+   "gold": "E0562",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W076",
+   "gold": "1082653",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W077",
+   "gold": "4-20 cm H2O",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W078",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W079",
+   "gold": "10 BPM",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W080",
+   "gold": "A4604",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W081",
+   "gold": "1024582",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W082",
+   "gold": "1.36 kg",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W083",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W084",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W085",
+   "gold": "A7038",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W086",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W087",
+   "gold": "265 mm \u00d7 145 mm \u00d7 114 mm",
+   "cited_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W088",
+   "gold": "15.7x19.3x8.4cm",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W089",
+   "gold": "1063785",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W090",
+   "gold": "P1369",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W091",
+   "gold": "1111551",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W092",
+   "gold": "1097345",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W093",
+   "gold": "40 oz",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W094",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W095",
+   "gold": "1069193",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W096",
+   "gold": "1106 g",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W097",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W098",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W099",
+   "gold": "280kPa",
+   "cited_doc": "CPAP-Machines-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W100",
+   "gold": "CPAP-Check",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-h188",
+   "id": "W101",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V001",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V002",
+   "gold": "4 L/min",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V003",
+   "gold": "4-20cm h 2 o",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V004",
+   "gold": "PS0001464",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V005",
+   "gold": "A7037",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V006",
+   "gold": "1098078",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V007",
+   "gold": "4-20 cm H 2 O",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V008",
+   "gold": "1cmH 2 O",
+   "cited_doc": "CPAP-Machines-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V009",
+   "gold": "1097940",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V010",
+   "gold": "1097348",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V011",
+   "gold": "A4604",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V012",
+   "gold": "PS0001231",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V013",
+   "gold": "8192",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V014",
+   "gold": "P1263",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V015",
+   "gold": "700 hPa",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V016",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V017",
+   "gold": "P1368",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V018",
+   "gold": "4 to 20 cmh2 o",
+   "cited_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V019",
+   "gold": "Flex comfort",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V020",
+   "gold": "E0464",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V021",
+   "gold": "P1259",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V022",
+   "gold": "4-20 cm H 2 O",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V023",
+   "gold": "1069194",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V024",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V025",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V026",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V027",
+   "gold": "1,33 kg",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V028",
+   "gold": "P1267",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V029",
+   "gold": "4 to 20 cm h2o",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V030",
+   "gold": "A7039",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V031",
+   "gold": "EZ-Start",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V032",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V033",
+   "gold": "900 VA",
+   "cited_doc": "CPAP-Machines-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V034",
+   "gold": "15.7 x 19.3 x 8.4 cm",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V035",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V036",
+   "gold": "A7037",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V037",
+   "gold": "E0562",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V038",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V039",
+   "gold": "275mm x 170mm x 140mm",
+   "cited_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V040",
+   "gold": "4 to 20 cmh2o",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V041",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V042",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V043",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V044",
+   "gold": "4 cm H2O",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V045",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V046",
+   "gold": "50-60Hz",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V047",
+   "gold": "CA1161X",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V048",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V049",
+   "gold": "1.7 kg",
+   "cited_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V050",
+   "gold": "138.5 mm x 259.4 mmx 94.5 mm",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V051",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V052",
+   "gold": "1111124",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V053",
+   "gold": "170 x 135 x 180 mm",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V054",
+   "gold": "0 to 10cm h2o",
+   "cited_doc": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V055",
+   "gold": "45 min",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V056",
+   "gold": "1067148",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V057",
+   "gold": "CA1161XTS",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V058",
+   "gold": "1097349",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V059",
+   "gold": "Opti-Start",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V060",
+   "gold": "700 hPa",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V061",
+   "gold": "116 mm x 205 mm x 150 mm",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V062",
+   "gold": "30 db",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V063",
+   "gold": "P1295",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V064",
+   "gold": "A7046",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V065",
+   "gold": "3.5 lbs",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V066",
+   "gold": "WM31660",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V067",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V068",
+   "gold": "Philips SimplyGo\u2122",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V069",
+   "gold": "E0464",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V070",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V071",
+   "gold": "WM93335",
+   "cited_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V072",
+   "gold": "220 \u00d7 194 \u00d7 112 mm",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V073",
+   "gold": "1097939",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V074",
+   "gold": "Auto-Trial",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V075",
+   "gold": "E0562",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V076",
+   "gold": "1082653",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V077",
+   "gold": "4-20 cm H2O",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V078",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V079",
+   "gold": "10 BPM",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V080",
+   "gold": "A4604",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V081",
+   "gold": "1024582",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V082",
+   "gold": "1.36 kg",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V083",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V084",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V085",
+   "gold": "A7038",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V086",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V087",
+   "gold": "265 mm \u00d7 145 mm \u00d7 114 mm",
+   "cited_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V088",
+   "gold": "1063785",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V089",
+   "gold": "P1369",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V090",
+   "gold": "1111551",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V091",
+   "gold": "1097345",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V092",
+   "gold": "40 oz",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V093",
+   "gold": "E0471",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V094",
+   "gold": "1069193",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V095",
+   "gold": "1106 g",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V096",
+   "gold": "E0470",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V097",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V098",
+   "gold": "280kPa",
+   "cited_doc": "CPAP-Machines-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V099",
+   "gold": "CPAP-Check",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V100",
+   "gold": "E0601",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V101",
+   "gold": "EZ-Start",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V102",
+   "gold": "SD card data storage",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V103",
+   "gold": "80 watt",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V104",
+   "gold": "A-Flex",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V105",
+   "gold": "System One resistance control",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V106",
+   "gold": "60W",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V107",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V108",
+   "gold": "heated tube",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V109",
+   "gold": "4-20hPa",
+   "cited_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V110",
+   "gold": "heated humidifier",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V111",
+   "gold": "Climate Control",
+   "cited_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V112",
+   "gold": "CPAP-Check",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V113",
+   "gold": "adjustable humidification",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V114",
+   "gold": "wireless data transfer",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V115",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V116",
+   "gold": "adjustable humidification",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V117",
+   "gold": "heated tube",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V118",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V119",
+   "gold": "26 dB",
+   "cited_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V120",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V121",
+   "gold": "System One resistance control",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V122",
+   "gold": "Bi-Flex",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V123",
+   "gold": "4.5 kg",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V124",
+   "gold": "Bluetooth connectivity",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V125",
+   "gold": "CPAP-Check",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V126",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V127",
+   "gold": "AutoSet",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V128",
+   "gold": "20W",
+   "cited_doc": "DSDC-CPAP-Therapy-Catalogue.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V129",
+   "gold": "AutoSet",
+   "cited_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V130",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V131",
+   "gold": "CPAP-Check",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V132",
+   "gold": "AutoRamp",
+   "cited_doc": "Airsense-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V133",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V134",
+   "gold": "adjustable humidification",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V135",
+   "gold": "adjustable ramp time",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V136",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V137",
+   "gold": "mask fit check",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V138",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V139",
+   "gold": "Auto-CPAP mode",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V140",
+   "gold": "4\u201320cm HO",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V141",
+   "gold": "Auto-Trial",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V142",
+   "gold": "adjustable humidification",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V143",
+   "gold": "SD card data storage",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V144",
+   "gold": "EPR",
+   "cited_doc": "Airsense-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V145",
+   "gold": "SmartStart",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V146",
+   "gold": "ramp feature",
+   "cited_doc": "Airsense-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V147",
+   "gold": "AutoRamp",
+   "cited_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V148",
+   "gold": "CPAP-Check",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V149",
+   "gold": "SmartStart",
+   "cited_doc": "Airsense-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V150",
+   "gold": "45 min",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V151",
+   "gold": "adjustable humidification",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V152",
+   "gold": "26.6 dBA",
+   "cited_doc": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V153",
+   "gold": "SD card data storage",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V154",
+   "gold": "heated tube",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V155",
+   "gold": "integrated cellular modem",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V156",
+   "gold": "45 min",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V157",
+   "gold": "1.33 kg",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V158",
+   "gold": "SD card data storage",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V159",
+   "gold": "heated tube",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V160",
+   "gold": "Bluetooth connectivity",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V161",
+   "gold": "integrated cellular modem",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V162",
+   "gold": "EZ-Start",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V163",
+   "gold": "wireless data transfer",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V164",
+   "gold": "Climate Control",
+   "cited_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V165",
+   "gold": "integrated cellular modem",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V166",
+   "gold": "Auto-CPAP mode",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V167",
+   "gold": "ramp feature",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V168",
+   "gold": "50dB",
+   "cited_doc": "CPAP-Machines-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V169",
+   "gold": "Opti-Start",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V170",
+   "gold": "ramp feature",
+   "cited_doc": "Airsense-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V171",
+   "gold": "360 mL",
+   "cited_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V172",
+   "gold": "100705W",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V173",
+   "gold": "System One resistance control",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V174",
+   "gold": "Auto-CPAP mode",
+   "cited_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V175",
+   "gold": "Opti-Start",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V176",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V177",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V178",
+   "gold": "Bluetooth connectivity",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V179",
+   "gold": "CPAP-Check",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V180",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V181",
+   "gold": "C-Flex",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V182",
+   "gold": "EPR",
+   "cited_doc": "Airsense-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V183",
+   "gold": "SD card data storage",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V184",
+   "gold": "AutoSet",
+   "cited_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V185",
+   "gold": "Wi-Fi connectivity",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V186",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V187",
+   "gold": "Auto-Trial",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V188",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V189",
+   "gold": "C-Flex",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V190",
+   "gold": "Bluetooth connectivity",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V191",
+   "gold": "Bluetooth connectivity",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": false,
+   "found_elsewhere": [
+    "BC-Dreamstation-Standard-CPAP.pdf",
+    "DSDC-CPAP-Therapy-Catalogue.pdf",
+    "DreamStation_CPAP_Pro_DataSheet.pdf",
+    "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+    "PrismaSmart-and-Soft-Max-Brochure.pdf",
+    "ResMed-Airsense-11-Manual.pdf"
+   ]
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V192",
+   "gold": "adjustable humidification",
+   "cited_doc": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V193",
+   "gold": "heated tube",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V194",
+   "gold": "heated tube",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V195",
+   "gold": "AutoSet",
+   "cited_doc": "DSDC-CPAP-Therapy-Catalogue.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V196",
+   "gold": "1.60 kg",
+   "cited_doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V197",
+   "gold": "Bi-Flex",
+   "cited_doc": "product_and_solutions_catalog.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V198",
+   "gold": "mask fit check",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V199",
+   "gold": "AutoSet",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V200",
+   "gold": "Bluetooth connectivity",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V201",
+   "gold": "SD card data storage",
+   "cited_doc": "ResMed-Airsense-11-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V202",
+   "gold": "CPAP-Check",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V203",
+   "gold": "AutoRamp",
+   "cited_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V204",
+   "gold": "Opti-Start",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V205",
+   "gold": "SmartStart",
+   "cited_doc": "Airsense-Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V206",
+   "gold": "290 ml",
+   "cited_doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V207",
+   "gold": "System One resistance control",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V208",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V209",
+   "gold": "integrated cellular modem",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V210",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V211",
+   "gold": "heated humidifier",
+   "cited_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V212",
+   "gold": "mask fit check",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V213",
+   "gold": "4\u201320cm HO",
+   "cited_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V214",
+   "gold": "4-20 cm HO",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V215",
+   "gold": "45 min",
+   "cited_doc": "BC-Dreamstation-Standard-CPAP.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V216",
+   "gold": "2 years",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V217",
+   "gold": "80W",
+   "cited_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V218",
+   "gold": "4-20 cm H2O",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-wide-v2-h195",
+   "id": "V219",
+   "gold": "45 min",
+   "cited_doc": "0-20190113114505.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C001.0",
+   "gold": "3.5 lbs",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C001.1",
+   "gold": "1.6kg",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C002.0",
+   "gold": "60mins",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C002.1",
+   "gold": "10 minutes",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C003.0",
+   "gold": "8.66 \u00d7 7.6 \u00d7 4.4",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C003.1",
+   "gold": "220 \u00d7 194 \u00d7 112 mm",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C004.0",
+   "gold": "3.5 lbs",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C004.1",
+   "gold": "1.6kg",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C005.0",
+   "gold": "60mins",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C005.1",
+   "gold": "10 minutes",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C006.0",
+   "gold": "8.66 \u00d7 7.6 \u00d7 4.4",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C006.1",
+   "gold": "220 \u00d7 194 \u00d7 112 mm",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C007.0",
+   "gold": "3.5 lbs",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C007.1",
+   "gold": "1.6kg",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C008.0",
+   "gold": "60mins",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C008.1",
+   "gold": "10 minutes",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C009.0",
+   "gold": "8.66 \u00d7 7.6 \u00d7 4.4",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C009.1",
+   "gold": "220 \u00d7 194 \u00d7 112 mm",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C010.0",
+   "gold": "3.5 lbs",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C010.1",
+   "gold": "1.6kg",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C011.0",
+   "gold": "60mins",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C011.1",
+   "gold": "10 minutes",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C012.0",
+   "gold": "8.66 \u00d7 7.6 \u00d7 4.4",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C012.1",
+   "gold": "220 \u00d7 194 \u00d7 112 mm",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C013.0",
+   "gold": "3.5 lbs",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C013.1",
+   "gold": "1.6kg",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C014.0",
+   "gold": "60mins",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C014.1",
+   "gold": "10 minutes",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C015.0",
+   "gold": "8.66 \u00d7 7.6 \u00d7 4.4",
+   "cited_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  },
+  {
+   "set": "probes-conflict-h204",
+   "id": "C015.1",
+   "gold": "220 \u00d7 194 \u00d7 112 mm",
+   "cited_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "found_in_cited": true,
+   "found_elsewhere": []
+  }
+ ]
+}
