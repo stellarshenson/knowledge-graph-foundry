@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "graph": "neo4j2-10doc",
+    "tokenizer": "tiktoken-cl100k_base",
+    "date": "2026-07-07",
+    "baseline_recall": 0.696969696969697,
+    "baseline_T0_char": 33816,
+    "baseline_T0_tiktoken": 36439,
+    "n_golds": 33,
+    "n_clean": 16,
+    "n_shortnum": 17
+  },
+  "H179_interim": {
+    "n_q": 24,
+    "p50": 4400.5,
+    "p95": 11413.549999999997,
+    "mean": 5524.041666666667,
+    "max": 17384.0,
+    "share_seed": 0.2057445861650211,
+    "share_hop": 0.1758525234392089,
+    "share_prop": 0.61840289039577,
+    "hub_med": 5319.0,
+    "nonhub_med": 3036.0,
+    "tail_pids": [
+      "P14",
+      "P16"
+    ],
+    "tail_hop_share": 0.21389876125737553
+  },
+  "H180": {
+    "ref_recall": 25,
+    "ref_recall_clean": 13,
+    "frontier": 5,
+    "sweep": {
+      "5": {
+        "recall": 25,
+        "recall_clean": 13,
+        "p95_all": 9326.699999999999,
+        "p95_hub": 10288.599999999997,
+        "med_all": 3914.0
+      },
+      "10": {
+        "recall": 25,
+        "recall_clean": 13,
+        "p95_all": 9456.0,
+        "p95_hub": 10401.599999999997,
+        "med_all": 3991.0
+      },
+      "20": {
+        "recall": 25,
+        "recall_clean": 13,
+        "p95_all": 9656.449999999999,
+        "p95_hub": 10603.599999999997,
+        "med_all": 4061.5
+      },
+      "30": {
+        "recall": 25,
+        "recall_clean": 13,
+        "p95_all": 9756.6,
+        "p95_hub": 10735.599999999997,
+        "med_all": 4112.0
+      },
+      "50": {
+        "recall": 25,
+        "recall_clean": 13,
+        "p95_all": 10030.449999999999,
+        "p95_hub": 11030.199999999997,
+        "med_all": 4194.0
+      },
+      "None": {
+        "recall": 25,
+        "recall_clean": 13,
+        "p95_all": 11413.549999999997,
+        "p95_hub": 12754.199999999995,
+        "med_all": 4401.0
+      }
+    },
+    "cut_all_k20": 0.15394859618611204,
+    "cut_hub_k20": 0.16861896473318588,
+    "golds_needing_rel": [],
+    "clause_recall_k20": true,
+    "clause_cut_all": true,
+    "clause_cut_hub": false,
+    "clause_frontier": true,
+    "refuted": false,
+    "verdict": "PARTIALLY CONFIRMED"
+  },
+  "H181": {
+    "ans_tok_mean": 5524.041666666667,
+    "ooc_tok_mean": 1131.5333333333333,
+    "mwu_p": 5.485200444994354e-07,
+    "blind_indistinguishable": false,
+    "ans_top_mean": 0.7916296521822611,
+    "ooc_top_mean": 0.6486404259999593,
+    "thr": 0.6684780156702027,
+    "detection": 0.8666666666666667,
+    "false_abstain": 0.0,
+    "ooc_abstain_mean": 57.0,
+    "token_saving": 0.9496258763919165,
+    "clause_a_blind": false,
+    "clause_b_detector": true,
+    "clause_c_saving": true,
+    "verdict": "PARTIALLY CONFIRMED"
+  },
+  "H182": {
+    "mean_full": 5431.666666666667,
+    "full_recall": 25,
+    "curve": [
+      [
+        0.1,
+        13
+      ],
+      [
+        0.2,
+        18
+      ],
+      [
+        0.3,
+        23
+      ],
+      [
+        0.4,
+        24
+      ],
+      [
+        0.5,
+        24
+      ],
+      [
+        0.6,
+        25
+      ],
+      [
+        0.7,
+        25
+      ],
+      [
+        0.8,
+        25
+      ],
+      [
+        0.9,
+        25
+      ],
+      [
+        1.0,
+        25
+      ]
+    ],
+    "loss_at_50": 0.030303030303030304,
+    "loss_at_50_clean": 0.0625,
+    "knee": 0.3,
+    "boot_loss_p50": 0.02857142857142857,
+    "boot_loss_p95": 0.09375,
+    "retained": {
+      "seed": 26390,
+      "hop": 3481,
+      "prop": 35277
+    },
+    "discarded": {
+      "prop": 46891,
+      "hop": 17434,
+      "seed": 887
+    },
+    "clause_loss": false,
+    "clause_knee": true,
+    "verdict": "PARTIALLY CONFIRMED"
+  },
+  "H183_interim": {
+    "hop_dist": {
+      "1": 6,
+      "0": 23,
+      "2": 4
+    },
+    "beyond_2hop_frac": 0.0,
+    "n_mapped": 33,
+    "alarm": false,
+    "null_docs": 481,
+    "null_remap_events": 1,
+    "null_max_rate": 1.0
+  },
+  "bars": {
+    "H180_recall": 1.0,
+    "H180_cut_hub": 0.4,
+    "H180_cut_all": 0.15,
+    "H180_frontier": 30,
+    "H181_detect": 0.8,
+    "H181_fa": 0.05,
+    "H181_save": 0.6,
+    "H182_loss": 0.02,
+    "H182_knee": [
+      0.3,
+      0.5
+    ],
+    "H183_alarm": 0.05
+  }
+}

@@ -2146,7 +2146,7 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - the tail is hubs: queries whose seeds include a hub entity render 3-10x the median token cost for zero marginal recall (H84's edge-inertness has a token-side analog)
 - **Acceptance bar** - the decomposition (seed/1-hop/proposition token shares) with per-scale distributions; refuted if p95 is also flat - the design already bounds the tail and R19's guard hypotheses shrink to hygiene
 - **Experiment** - render-cost instrumentation on the existing H34 harness; 10-doc graph (neo4j2) now, 26-doc scratch and a campaign-graph read copy post-chain
-- **Result** - pending
+- **Result** - (executor 2026-07-07, [`token_economy_r19.ipynb`](../../notebooks/token_economy_r19.ipynb) / [`token-economy-r19-20260707-123621.json`](../../reports/token-economy-r19-20260707-123621.json)) INTERIM (10-doc leg): tokens/query p50=4400, p95=11414, mean=5524, max=17384 over 24 probes (tiktoken cl100k); component shares seed 20.6% / 1-hop 17.6% / propositions 61.8%; hub-touching queries (seed degree>15) run 1.75x median cost (2.50x at degree>30) - a real but milder premium than the predicted 3-10x. Registered prediction already challenged: the p95 tail is proposition-driven, not >=70% 1-hop-driven. Remaining: multi-scale contrast (26-doc scratch + campaign copy) - does p95 grow with scale and does the proposition share, not fanout, drive it
 - **Verdict** - pending
 
 ### R19-H180 The fanout guard - degree-capped rendering loses nothing
@@ -2156,8 +2156,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - zero recall loss at k=20 on this corpus class; the guard is a config default, not a tradeoff
 - **Acceptance bar** - both clauses on the full probe set; refuted if any gold requires a neighbor ranked below k=30 (fanout is then load-bearing for the tail and the cap needs an evidence-aware exemption)
 - **Experiment** - cap sweep k in {5,10,20,30,50,unbounded} on the render harness; deterministic, CPU, neo4j2 read-only, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`token_economy_r19.ipynb`](../../notebooks/token_economy_r19.ipynb) / [`token-economy-r19-20260707-123621.json`](../../reports/token-economy-r19-20260707-123621.json)) capping query-similarity-ranked 1-hop expansion at every k in {5,10,20,30,50} holds evidence recall dead flat at 25/33 (clean 13/16) - the recall-safe frontier is k=5, far tighter than the predicted k<=30, and no gold lives in any 1-hop rel line. The token clause underdelivers: k=20 cuts overall p95 15.4% (bar >=15%, marginal) but hub-touching p95 only 16.9% (bar >=40%, fail) because 1-hop is just 17.6% of render mass - propositions (61.8%) dominate
+- **Verdict** - PARTIALLY CONFIRMED - the guard is free (zero recall loss at k=5) and ships as a safety default, but fanout is not the render cost center, so the promised hub-p95 saving does not exist; the cost lever moves to the proposition block (H182/H179 scale leg)
 
 ### R19-H181 The miss must be cheap - abstention beats expansion
 
@@ -2166,8 +2166,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - blind spending confirmed; top-seed similarity alone is nearly sufficient (the on-seed regime makes hits look confident)
 - **Acceptance bar** - all three clauses (probe set + a 15-probe out-of-corpus set, synthesized deterministically from adjacent-domain questions); refuted if the detector cannot separate miss from hit at the bar - abstention then needs the calibrated identity-stack machinery instead of retrieval signals
 - **Experiment** - render harness + out-of-corpus probe synthesis; deterministic, CPU, neo4j2 read-only, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`token_economy_r19.ipynb`](../../notebooks/token_economy_r19.ipynb) / [`token-economy-r19-20260707-123621.json`](../../reports/token-economy-r19-20260707-123621.json)) clause (a) REFUTED in the safe direction: misses are NOT blind-spent - unanswerable probes render ~5x cheaper (1132 vs 5524 tokens, Mann-Whitney p=5.5e-7) because they land on sparse peripheral entities. Clauses (b)/(c) pass decisively: a top-seed-similarity threshold of 0.668 detects 86.7% of misses (13/15) at 0.0% false-abstention (bars >=80% / <=5%), and short-circuit abstention cuts miss-class tokens 95.0% (1132 -> 57). 15 deterministic out-of-corpus probes, far-domain templates
+- **Verdict** - PARTIALLY CONFIRMED - the detector + short-circuit ship (top-seed similarity ~0.67 is nearly sufficient alone, as predicted); the blind-spending premise was wrong in the direction that makes the fix cheaper; near-domain hardening registered as H185
 
 ### R19-H182 The render budget frontier - most rendered tokens are inert
 
@@ -2176,8 +2176,8 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - the knee sits at 30-50% of current cost; propositions dominate the retained mass, neighbor lines dominate the discarded mass
 - **Acceptance bar** - both clauses with probe bootstrap; refuted if recall degrades linearly with budget (evidence is token-diffuse and render compression needs summarization, which P19 fidelity rules constrain)
 - **Experiment** - budget sweep on the render harness; deterministic, CPU, neo4j2 read-only, runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor 2026-07-07, [`token_economy_r19.ipynb`](../../notebooks/token_economy_r19.ipynb) / [`token-economy-r19-20260707-123621.json`](../../reports/token-economy-r19-20260707-123621.json)) ranking rendered units by query similarity and truncating at budget B: knee at B=30% (recall 0.697, inside the predicted 30-50% band), recall plateaus at 25/33 for B>=60% (non-linear, not refuted). The <=2%-loss-at-B=50% bar fails by ONE gold: 3.0% overall / 6.2% on the trustworthy 16 (P09 dimensions string); the bar is met at B=60%. Composition at B=50%: seed blocks 97% retained, neighbor lines 83% discarded, propositions dominate both retained (35277 tok) and discarded (46891 tok) mass
+- **Verdict** - PARTIALLY CONFIRMED - evidence concentrates and the knee is where predicted; B=60% is the zero-loss shippable budget (~40% token cut), and the 2%-bar miss hinges on a single gold - resolvability of such bars on a 33-gold set is registered as H186
 
 ### R19-H183 Hop discipline as a runtime certificate - 2-hop containment monitored, not assumed
 
@@ -2186,5 +2186,36 @@ Trigger: the project owner's clarification - the cost worry was never ingest (H1
 - **Prediction** - the auditor is nearly free (piggybacks on existing probe replays) and the synthetic break is caught immediately; the alarm becomes the guard that keeps hop-expansion OUT of the query path permanently - traversal depth becomes a monitored invariant, not a tuning knob
 - **Acceptance bar** - detection within one cycle + zero false alarms on the benign history; refuted if long-chain synthesis cannot break containment at all on this engine (extraction always shortcuts chains into direct edges - itself a finding worth recording)
 - **Experiment** - auditor prototype + synthetic chain corpus + replay over the wave-1 event history; deterministic, CPU, runs now (scratch ingest for the synthetic docs post-chain)
+- **Result** - (executor 2026-07-07, [`token_economy_r19.ipynb`](../../notebooks/token_economy_r19.ipynb) / [`token-economy-r19-20260707-123621.json`](../../reports/token-economy-r19-20260707-123621.json)) INTERIM: containment auditor built (evidence hop-distance from probe replays, alarm at >5% beyond 2 hops); current audit {hop0: 23, hop1: 6, hop2: 4} = 0.0% beyond 2 hops, no alarm; zero false alarms over the wave1b null stream (481 docs, 1 benign remap). Remaining: synthetic long-chain break ingest (post-chain) to confirm within-one-cycle detection or the extraction-shortcuts-chains refutation branch
+- **Verdict** - pending
+
+
+### R19-H184 Fragmentation or dilution - why the richer graph retrieves worse
+
+- **Grounding** - the three-arm benchmark: at matched k=16 the SOTA rebuild (3.6k entities, ~49 cured types, local extractor) scores 0.729 while the leaner baseline graph scores 0.854 - the SAME lever gains +0.1875 on baseline but only +0.0417 on the rebuild; two candidate mechanisms with different fixes: type-surface fragmentation (49 types split entities into more, smaller, worse-ranked vector targets) vs embedding-text dilution (local-extractor descriptions embed less discriminatively)
+- **Hypothesis** - decomposing the lost probes (P08, P14 and the k-elasticity gap) attributes >= 70% of the deficit to ONE mechanism: for each gold, locate its carrier(s) in both graphs, compare carrier vector rank for the probe query, and test (fragmentation) whether the carrier's evidence is split across more nodes vs (dilution) whether the equivalent single carrier simply ranks lower on embedding similarity
+- **Prediction** - dilution dominates: the local extractor writes longer, noisier descriptions (consistent with H107's 71% surface-form variance), pushing carriers out of the top-16
+- **Acceptance bar** - one mechanism >= 70% attribution; refuted if the deficit is spread evenly (both fixes needed) or traces to a third mechanism (e.g. proposition-channel differences) - which is itself the finding
+- **Experiment** - per-gold carrier forensics across the two graphs (both read-only); the contaminated SOTA instance is usable (Arm-3 probes were stable under contamination) but rank comparisons exclude wave-2-only entities; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H185 The near-domain miss - hardening the abstention detector
+
+- **Grounding** - H181's miss detector separated far-domain misses at 0% false-abstention, but its own open question: far-domain probes land on sparse peripheral entities and render 5x cheaper - near-domain unanswerable questions (right products, absent facts: warranty terms, absent feature support) will seed into DENSE product entities at full render cost and high top-seed similarity, exactly where the threshold detector should fail
+- **Hypothesis** - on 15 near-domain unanswerable probes (templated from in-corpus entities x absent attributes, verified absent against the source documents), the top-seed-similarity detector's miss recall drops below 40%, and recovering >= 70% detection at <= 5% false-abstention requires an evidence-level signal (does any rendered unit mention the queried attribute class) rather than seed-level similarity
+- **Prediction** - seed similarity is blind to near-domain misses (the seeds are RIGHT, the fact is absent); the render-level attribute-coverage check closes most of the gap and becomes the second stage of a two-stage abstention cascade
+- **Acceptance bar** - both clauses; refuted if seed similarity alone still detects >= 70% (near-domain misses would then also perturb seed scores - a pleasant surprise worth understanding)
+- **Experiment** - near-domain probe synthesis (deterministic templates, absence verified by text search over the corpus) + detector comparison on the render harness; CPU, neo4j2 read-only, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R19-H186 Probe-set statistical power - bars finer than one gold need more golds
+
+- **Grounding** - H182's <=2%-at-B=50% bar failed on exactly ONE gold (one gold IS 3% of 33), and 17/33 golds sit on the degenerate fuzzy-matcher class; multiple registered bars (2%, 5%) are unresolvable at this set size - the benchmark instrument bounds the science
+- **Hypothesis** - expanding the probe set to >= 100 golds (deterministic derivation from the corpus: spec-table rows, mode-feature pairs, cross-doc comparisons - no LLM authorship; gold evidence strings verified verbatim-present in source documents) yields a set where (a) the clean (non-degenerate) fraction rises above 80% (pairs with H172's entailment scorer), (b) bootstrap CI half-width on recall shrinks below 2 points, making the 2%-class bars adjudicable, and (c) v28-era conclusions re-verified on the wide set move by < 5 points (the small set was biased-but-honest, not misleading)
+- **Prediction** - all three hold; clause (c) is the risk clause - if a v28 conclusion flips on the wide set, that specific flip outranks everything else in this round
+- **Acceptance bar** - the wide set built + all three clauses measured; refuted on (c) means targeted re-adjudication of the flipped conclusions, registered immediately
+- **Experiment** - probe derivation script + double-run of the render harness (33-gold vs wide set); CPU, neo4j2 read-only, runs now
 - **Result** - pending
 - **Verdict** - pending
