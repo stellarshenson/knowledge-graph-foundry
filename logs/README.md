@@ -15,3 +15,4 @@ Background job logs for Knowledge Graph Foundry.
 - `repair-p09.log`, `repair-p19.log` - R04 targeted repair runs against the rebuilt graph
 - `vllm-server.log` - local gpt-oss-120b vLLM server (port 8010, 96GB card)
 - `r05-wave-*.log` - R05 longevity campaign wave ingestions on the local engine
+- `potentials-r10-exec.log` - R10 potentials-family notebook execution (H81/H82/H83/H85/H86 edit-replay)

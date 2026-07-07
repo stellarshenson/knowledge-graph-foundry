@@ -1,0 +1,13 @@
+{
+  "hypothesis": "R14-H146",
+  "parser": "docling(docling-parse,CPU,OCR-off)",
+  "loss_set_recovery": 0.8631578947368421,
+  "loss_set_hits": 82,
+  "loss_set_n": 95,
+  "bar": 0.6,
+  "union_baseline_preservation": 0.7583988563259471,
+  "docling_preservation": 0.7323087919942817,
+  "pymupdf4llm_recovery": 0.0,
+  "verdict": "CONFIRMED",
+  "runtime_s_per_page": 25.3
+}

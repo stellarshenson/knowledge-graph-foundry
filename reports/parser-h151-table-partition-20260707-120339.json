@@ -1,0 +1,42 @@
+{
+  "hypothesis": "R14-H151",
+  "table_region_frac": 0.7578947368421053,
+  "bar_a": 0.7,
+  "with_table_stage": [
+    "docling"
+  ],
+  "without_table_stage": [
+    "pymupdf4llm",
+    "pypdf",
+    "pdfplumber"
+  ],
+  "with_group": {
+    "table_union": [
+      72,
+      72
+    ],
+    "nontab_union": [
+      10,
+      23
+    ],
+    "table_mean": 1.0,
+    "nontab_mean": 0.43478260869565216
+  },
+  "without_group": {
+    "table_union": [
+      72,
+      72
+    ],
+    "nontab_union": [
+      23,
+      23
+    ],
+    "table_mean": 0.4351851851851852,
+    "nontab_mean": 0.49275362318840576
+  },
+  "clause_a": true,
+  "ratio_union": 1.0,
+  "ratio_mean": 2.297872340425532,
+  "caveat": "loss set is DEFINED as names pypdf/pdfplumber recover but pymupdf4llm drops; the without-table-stage group thus recovers it near-fully by construction (pypdf alone 93.7%)",
+  "verdict": "see report"
+}

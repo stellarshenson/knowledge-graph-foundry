@@ -1,0 +1,99 @@
+{
+  "graph": {
+    "entities": 2798,
+    "edges": 3905,
+    "sameas": 127,
+    "propositions": 19654
+  },
+  "baseline": {
+    "recall": 0.696969696969697,
+    "registered": 0.697,
+    "T0_tokens": 33819,
+    "lambda": 0.00010201366095981549,
+    "token_term_pct_of_suff": 0.15,
+    "n_short_numeric": 17,
+    "missing": 10,
+    "reachability": {
+      "hop1": 6,
+      "hop0": 2,
+      "hop2": 2
+    },
+    "prop_attached_real": 2
+  },
+  "H81": {
+    "clause_a_recall_within_10pct": 0.8787878787878788,
+    "tokens_to_0.9": 0.10925810934681687,
+    "clause_a": false,
+    "clause_b_monotone": true,
+    "realized_gains": [
+      0.9876563470238615,
+      0.9862281557704264,
+      0.9716402022531696,
+      0.9704160383216553,
+      0.9534817706023233,
+      0.9373636121706745,
+      0.816273396611372,
+      0.798318992282443,
+      0.500643129601702,
+      0.5006431296017055
+    ],
+    "multi_gold_edits": 0,
+    "clause_c_pair_improve": 0.0,
+    "clause_c_triple_improve": 0.0,
+    "same_probe_supermodular_rate": 0.0,
+    "clause_c": true,
+    "n_edits_applied": 10,
+    "verdict": "PARTIALLY CONFIRMED"
+  },
+  "H82": {
+    "phi_mdl_bits_saved": 31762.65308117884,
+    "n_stars": 285,
+    "n_residual": 394,
+    "dmdl_dark_mean": 16.03035545091352,
+    "dmdl_dark_frac_pos": 1.0,
+    "dmdl_merge_mean": 19.84701346337994,
+    "dmdl_materialize": 0.0,
+    "divergence_task_only": 10,
+    "divergence_mdl_only": 40,
+    "verdict": "CONFIRMED"
+  },
+  "H83": {
+    "alignment": 1.0,
+    "by_class": {
+      "MISSING-MATERIALIZATION": [
+        8,
+        8
+      ],
+      "PROP-ATTACHED": [
+        2,
+        2
+      ],
+      "DARK-BLOAT": [
+        40,
+        40
+      ]
+    },
+    "prop_attached_real": 2,
+    "verdict": "CONFIRMED"
+  },
+  "H85": {
+    "aggregate_missing_mass": 0.2425610163824808,
+    "r_all_types": -0.1835174187762767,
+    "r_active_types": 0.036103834704913566,
+    "positive_residual_gradient": true,
+    "n_active_types": 6,
+    "verdict": "CONFIRMED"
+  },
+  "H86": {
+    "on_seed_all": 0.696969696969697,
+    "on_seed_recalled": 0.9130434782608695,
+    "recalled_hops": {
+      "0": 21,
+      "2": 2
+    },
+    "legit_view_cut": 0.0,
+    "answer_pruning_ceiling": 0.6982738165855973,
+    "bootstrap_cov": 0.10349417212317838,
+    "verdict": "REFUTED"
+  }
+}

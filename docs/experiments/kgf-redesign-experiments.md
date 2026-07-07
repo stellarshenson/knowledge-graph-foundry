@@ -2047,3 +2047,68 @@ Trigger: the project owner asked whether changes to nodes carry provenance - rev
 - **Experiment** - change-history probe set derived from H163's ground-truth diff list + render extension prototype; scratch instance, post-chain, sequenced last in R17
 - **Result** - pending
 - **Verdict** - pending
+
+
+## R18 - potentials follow-through: instrument and lever refinement (pre-registered 2026-07-07)
+
+Trigger: the R10 potentials batch closed five hypotheses and raised seven questions (recorded in its OPEN QUESTIONS return); per the standing directive, each becomes a registered hypothesis. Two are instrument fixes that upgrade every future measurement; four refine the levers the batch surfaced.
+
+### R18-H171 The budget frontier - where does the recall knee actually sit
+
+- **Grounding** - H81 clause (a) failed by 0.9% of tokens (0.9 recall at +10.9% vs the registered +10% bar); a single-point bar cannot distinguish "lever exhausted" from "bar mis-set"
+- **Hypothesis** - the recall-vs-token-budget curve of the Phi_task greedy has a knee (max curvature) between +8% and +15% with bootstrap CI width < 5 points; recall at the knee >= 0.87; beyond the knee the marginal gold costs > 3x the pre-knee average
+- **Prediction** - the knee sits right around the observed +10-11% and the 2 PROP-ATTACHED golds are the post-knee expensive tail
+- **Acceptance bar** - knee located with CI; H81 clause (a) re-adjudicated at the knee budget; refuted if the curve is kneeless (linear) - then budget choice is pure preference and the certificate must carry the budget as a parameter
+- **Experiment** - extend potentials_r10.ipynb's greedy sweep over budgets 0-20% with probe bootstrap; deterministic, CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R18-H172 The entailment sufficiency scorer - retiring the degenerate matcher
+
+- **Grounding** - the fuzzy evidence matcher is degenerate on 17/33 short-numeric golds (value_tokens collapses "SD card: > 1 year" to ["1"]) - flagged across H61/H63/H108 and it nearly corrupted H81 (a fragment edit spuriously cleared +10%); every probe-level measurement inherits this noise
+- **Hypothesis** - an NLI entailment scorer (mDeBERTa class, GPU, bf16+sdpa+compile per the encoder recipe) over (rendered context, gold statement) pairs is non-degenerate on the 17 problem golds and agrees with manual adjudication on >= 90% of a 50-pair audit sample, at < 100ms/pair
+- **Prediction** - the scorer passes and re-running H81's measurement under it moves clause (a) - direction unknown, which is the point
+- **Acceptance bar** - both clauses, then H81(a) re-adjudicated under the new instrument; refuted if NLI agreement < 80% (entailment over long rendered contexts is then the wrong tool and a value-extraction comparator gets registered instead)
+- **Experiment** - scorer notebook + 50-pair manual audit + H81 re-run; needs a GPU window (post parser round)
+- **Result** - pending
+- **Verdict** - pending
+
+### R18-H173 Fat-proposition splitting - the PROP-ATTACHED cost is a granularity artifact
+
+- **Grounding** - the 2 real PROP-ATTACHED golds cost +20-32% tokens each to materialize because their values live inside a ~1303-token proposition; the edit is expensive because the UNIT is fat, not because the information is far
+- **Hypothesis** - splitting propositions > 300 tokens into atomic statements at ingest (deterministic segmentation, no LLM) drops those golds' materialization cost under the H171 knee budget while preserving verbatim fidelity (zero paraphrase - pure segmentation) and not degrading any currently-passing probe
+- **Prediction** - both golds become affordable; the render layer needs no change
+- **Acceptance bar** - cost drop + zero regressions on the full probe set; refuted if splitting breaks proposition-channel retrieval for multi-fact questions that needed the joint context (measured on the passing probes)
+- **Experiment** - splitter prototype + replay on the benchmark graph copy; deterministic, CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R18-H174 Structural or decorative - the ontology against the MDL
+
+- **Grounding** - H82's honest note: an entity-type SBM does NOT beat the ER null while a star vocabulary saves 31751 bits - the type system may be task-decorative rather than structural; H98's granularity operators (type merge/split) are the natural probe
+- **Hypothesis** - (a) type merge/split edits that improve MDL bits do NOT systematically improve probe recall (correlation |r| < 0.3 over a sampled edit set) - types serve extraction and typing-stage narrowing, not graph structure; (b) a richer VoG vocabulary (chains, bipartite cores added to stars) reclassifies < 10% of the dark-edge (0,+) mass, confirming stars dominate this graph class
+- **Prediction** - both hold; the ontology's value lives upstream (extraction guidance), not in the adjacency structure
+- **Acceptance bar** - both clauses; refuted if MDL-improving type edits also lift probes (then ontology optimization IS a structural lever and gets its own round)
+- **Experiment** - extend the H82 encoder with chains/bipartite cores + type-edit replay; deterministic, CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R18-H175 Views that generalize - recall lift on held-out probes
+
+- **Grounding** - H86 refuted views as an equal-recall cost cut, but the 6 one-hop + 2 two-hop missing golds genuinely need traversal; the untested reframing is recall LIFT, and the untested property is GENERALIZATION - a view is only real if it helps probes it was not derived from
+- **Hypothesis** - path-template views derived from HALF the probe set (template = typed path pattern, not answer-specific render) lift recall on the HELD-OUT half by >= 0.05 at <= +10% tokens; answer-specific views (H86's rejected class) show near-zero held-out transfer, confirming the distinction
+- **Prediction** - modest but real transfer for one or two templates (the mode-family and spec-table patterns); most templates are corpus idioms that do not generalize
+- **Acceptance bar** - held-out lift >= 0.05 for at least one template class with bootstrap CI excluding 0; refuted if no template transfers - views are then closed under BOTH framings and H86's verdict extends to final
+- **Experiment** - 2-fold probe split, template induction from gold paths, replay; deterministic, CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R18-H176 The graded gradient - statistical power for the independence claim
+
+- **Grounding** - H85's per-type task gradient is near-saturated (~0.99 uniformly), so its low correlation with missing mass is partly variance collapse - the claim is right but the instrument is weak
+- **Hypothesis** - a continuous task gradient (token-level evidence coverage per type instead of binary sufficiency) restores variance (coefficient of variation >= 0.2 across types) and the independence result survives: |r| < 0.3 with a bootstrap CI excluding |r| > 0.5
+- **Prediction** - independence holds with real power; if anything the graded version sharpens the render/materialization concentration
+- **Acceptance bar** - variance restored + CI-backed independence; refuted if the graded gradient correlates (the binary saturation was hiding a real dependence - H85's verdict gets downgraded with a back-reference)
+- **Experiment** - graded scorer over the H85 per-type table (pairs naturally with H172's instrument); deterministic once H172's scorer exists, else token-overlap graded variant runs now
+- **Result** - pending
+- **Verdict** - pending
