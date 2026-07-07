@@ -2553,6 +2553,89 @@ The campaign has run ~113 adjudications ordered by judgment; the potentials fami
 - **Acceptance bar** - the 0.5x clause decides the attribution; refuted if the serial value is >= 0.8x concurrent (the variance is then model-inherent and the H119 refutation's magnitude stands as measured); either way the QUIET number becomes the citable extraction-variance figure
 - **Experiment** - 15 serial extractions on the idle vLLM after H119 and H157 complete; cheap; the H119 checkpoints provide the concurrent-arm comparison for the same documents
 
+## R22 - the failure mechanism: extraction variance anatomy and its cures (user-directed, pre-registered 2026-07-08)
+
+The H119 preview refuted the in-prompt canonicalization cure and exposed the disease's true size: mean pairwise Jaccard distance 0.749 across temp-0 runs of the production prompt. Pre-registration forensics on the 50 arm-A checkpoints sharpen the picture: **62.4% of extracted names are singletons** (1 of 5 runs) and only **6.4% are stable** (>= 4 of 5) - the output is a small stable core in a large froth; singletons skew SHORT (median 1 word vs stable 2), suggesting generic-concept froth rather than product-name paraphrase; **3-of-5 majority voting computed on the same checkpoints already cuts variance 35% (0.749 -> 0.489) at 100% stable-reference retention**; and the event logs carry **901 dangling-relationship warnings** (relationships referencing entities that were never extracted) as an unexamined loss class. The user directs ten hypotheses at this mechanism - several contrarian - each with a SYNTHETIC GATE: a cheap pre-test on existing forensic artifacts (checkpoints, event logs, the reference graph) that must clear its bar before the hypothesis earns a true (LLM-cost) test. Gates are pre-registered with their own bars; a failed gate closes its hypothesis as NOT-WORTH-TESTING with the gate numbers recorded.
+
+### R22-H230 Churn anatomy - the froth has a class structure
+
+- **Grounding** - the 62.4% singleton share is an aggregate; if churn concentrates in an identifiable class (short generic concepts, section-header echoes, spec-value fragments) while product/code/manufacturer entities are stable, then variance is not uniform noise but a classifiable emission layer - and every downstream cure (voting, filtering, normalization) can be class-targeted instead of blanket
+- **Hypothesis** - classifying all ~1042 singleton names from the arm-A checkpoints (by type-shape: code-bearing, product-form, generic-concept, fragment) shows >= 60% of froth falls in the generic-concept + fragment classes, while code-bearing and product-form names are >= 3x more stable than the base rate
+- **Prediction** - the froth is mostly the model free-associating abstractions ("compliance", "therapy", "pressure") differently per run; the entities the GRAPH actually needs (products, codes, specs) sit in the stable core - which would mean the 0.749 overstates the harm
+- **Acceptance bar** - the class table with per-class stability rates; the >= 60% and >= 3x clauses; refuted if churn is class-uniform (the noise is then structural and only decoding/ensemble cures apply)
+- **Synthetic gate** - none needed: the entire test runs on existing checkpoints, CPU-only - it IS its own gate; runs first, its class table feeds every other gate in the round
+
+### R22-H231 CONTRARIAN - the variance is harmless downstream
+
+- **Grounding** - six findings converged on extraction as the root cause, but all six measured GAPS (absent golds, unattached features, duplicate pairs), not variance per se; the resolver unions mentions across chunks and documents, so run-to-run froth may wash out in the graph while the stable core carries retrieval - if true, the campaign's "extraction determinism" framing conflates variance (harmless) with loss (harmful), and the fix priority shifts from variance reduction to recall
+- **Hypothesis** - scoring each arm-A run's entity set (and their union) against what the benchmark actually needs - the wide-set gold carriers' entity names (probes-wide-v2 catalogue core) - shows single-run coverage within 5 points of union-of-5 coverage: the froth neither adds nor subtracts benchmark-relevant entities, and run choice does not matter
+- **Prediction** - contrarian split: coverage of gold-relevant names is run-stable (they live in the stable core) BUT the H226 attachment gaps correlate with run choice - variance is harmless for presence, harmful for attachment
+- **Acceptance bar** - the coverage-delta clause; confirmed -> the variance framing is demoted and H101-class identity benchmarks stay the lever; refuted (run choice swings coverage > 5 pts) -> variance directly costs recall and the ensemble/decoding cures gain priority
+- **Synthetic gate** - none needed: pure CPU on existing checkpoints + the frozen probe sets; runs with H230
+
+### R22-H232 The decoding lever - determinism lives in the serving stack, not the prompt
+
+- **Grounding** - H119 tested the PROMPT lever and it failed; the untested lever family is decoding/serving: vLLM at temp 0 is still nondeterministic under batching (composition-dependent numerics), and vLLM supports per-request `seed`; H229 measures the idle-serial floor - this hypothesis tests whether pinning seed + serial submission reaches NEAR-determinism (the H119 refutation said "not a prompt property"; the contrarian reading of its own grounding is "a serving property")
+- **Hypothesis** - 5 runs x 3 documents with per-request seed pinned, serial submission on an idle server, yields mean pairwise Jaccard distance <= 0.15 - near-deterministic extraction with zero prompt or model change
+- **Prediction** - seed + serial gets close to exact reproduction (residual variance only from any nondeterministic kernel paths); if so, production ingest can offer a `deterministic: true` mode at a throughput cost, and the re-extraction variance class dissolves for single-worker ingests
+- **Acceptance bar** - the <= 0.15 clause; refuted if seeded-serial variance stays > 0.3 (nondeterminism is then in the engine's kernel paths and only ensemble cures remain)
+- **Synthetic gate** - GATE (cheap, 1 doc x 3 seeded-serial runs on the idle vLLM post-H119): if one document does not drop below JD 0.3 seeded, the full test is pointless - closes for ~6 LLM calls
+
+### R22-H233 Constrained decoding - the format is part of the noise
+
+- **Grounding** - extraction free-generates JSON-ish text that instructor coerces; generation-order and format freedom give the sampler room to wander (which entity to emit first, how to phrase a description) and every token of freedom compounds; vLLM supports guided/structured decoding (grammar-constrained output) which removes format freedom entirely and orders the emission
+- **Hypothesis** - guided-JSON extraction (same prompt, schema-constrained decoding, alphabetically-ordered emission) reduces run-to-run Jaccard distance >= 30% vs free generation at equal entity recall on the stable reference
+- **Prediction** - constraint helps but does not cure (the model still CHOOSES different entities; constraint only stops format drift); combines with voting
+- **Acceptance bar** - the >= 30% at equal recall; refuted if constrained variance matches free (choice, not format, is the noise source - a mechanistically valuable null)
+- **Synthetic gate** - GATE (1 doc x 3 guided runs vs the doc's existing free-run checkpoints): >= 15% JD reduction on the single doc to earn the full grid
+### R22-H234 Post-pass canonicalization - normalize the output, not the prompt
+
+- **Grounding** - H119's addendum tried to make the model emit canonical names and made things worse; the inversion: let extraction emit freely, then canonicalize DETERMINISTICALLY after - the H190 glyph operator + rule family (case/hyphen/plural fold, marketing-suffix strip, subset-name merge within a document) applied to the emitted sets; deterministic rules cannot add variance and their effect is exactly measurable on the existing checkpoints
+- **Hypothesis** - the deterministic rule stack closes >= 25% of the arm-A variance (0.749 -> <= 0.56) at zero entity loss (rules only merge/rename, never drop), and composed with 3-of-5 voting (already 35%) reaches the >= 50% reduction H119's prompt failed to deliver - variance is substantially a SURFACE-FORM property fixable in post
+- **Prediction** - rules alone get 15-25% (the H107 forensics found 71% of duplicate pairs are surface-form variance); rules + voting clears 50%; the composed operator becomes the shipping candidate
+- **Acceptance bar** - both clauses (rules >= 25% alone is desirable but the COMPOSED >= 50% is the bar that matters); refuted if composition stalls under 40% - the residue is then genuine content churn, ensemble-only territory
+- **Synthetic gate** - none needed: entirely CPU on existing checkpoints; runs with H230
+
+### R22-H235 Chunk-boundary churn - the window is part of the mechanism
+
+- **Grounding** - chunking (2000/200 overlap) is deterministic, but an entity's EVIDENCE may straddle a boundary: mentioned weakly in chunk k, strongly in k+1's overlap - per-chunk extraction then sees different evidence framings, and merge order across chunks may amplify run differences; the h119_chunks.pkl cache carries exact chunk text, so every churned entity can be located relative to boundaries
+- **Hypothesis** - singleton (churn) entities are >= 2x more likely to have their best mention within 200 tokens of a chunk boundary than stable entities - chunk geometry is a measurable co-driver of variance, and boundary-aware extraction (or the H153-style carryover) is a mechanical fix lever
+- **Prediction** - a real but minority effect (boundary share of churn ~20-30%); the majority of froth is content-free abstraction churn (H230's class)
+- **Acceptance bar** - the >= 2x odds ratio; refuted if boundary proximity does not discriminate (chunking exonerated - one suspect eliminated cheaply)
+- **Synthetic gate** - none needed: CPU on checkpoints + chunk cache; runs with H230
+
+### R22-H236 CONTRARIAN - the attachment gap is a resolution artifact, not an extraction failure
+
+- **Grounding** - H226 blamed ingest attachment (41.3% missing) and routed 45% of misses to sibling-fragment cases; but every sibling case is by definition TWO nodes the identity stack should have merged - if the v2 stack (shipped, gated on H212) merges the fragments, ownership transfers and the "attachment gap" closes without touching extraction; H226's clause (b) inversion (single-product docs miss MORE) supports this: single-product manuals produce the most name-form fragments
+- **Hypothesis** - simulating the merges on the reference graph (union the H226 report's 17 sibling-fragment pairs, re-run the attachment diff) closes >= 60% of the sibling-class misses - i.e. >= 27% of the TOTAL gap is resolver-side, and the extraction-recall slice (32%) is the only part needing new extraction work
+- **Prediction** - confirmed; the H226 fix routing amends from "ingest attachment" to "identity default flip (H212) + H228 gleaning" with no new mechanism required
+- **Acceptance bar** - the >= 60% sibling-close clause; refuted if merged fragments still lack the features (the features were never extracted anywhere - the gap is then genuinely extraction recall and H226's original routing stands)
+- **Synthetic gate** - none needed: read-only simulation on neo4j2 + the H226 report's frozen miss table; CPU only
+
+### R22-H237 Ensemble voting - stability by majority
+
+- **Grounding** - pre-registration forensics already show 3-of-5 voting cuts variance 35% (0.749 -> 0.489) at 100% stable-reference retention and trims mean set size 54.5 -> 34 (froth removal); the open questions are the cost-optimal K (3 runs = 3x extraction cost - the knee question), whether voting harms RECALL of benchmark-relevant entities (H231's measure), and whether voting composes with post-canonicalization (H234) to beat 50%
+- **Hypothesis** - 2-of-3 voting (the cheapest ensemble) achieves >= 30% variance reduction at >= 95% retention of benchmark-relevant entities, and composed with the H234 rule stack reaches >= 55% total reduction - an ingest-time operator whose 3x extraction cost is priced against the H171 knee on ingest (not query) economics
+- **Prediction** - 2-of-3 lands near 3-of-5's number; composition clears the bar; the cost question becomes the ship decision and may motivate voting only on identity-critical document classes
+- **Acceptance bar** - both clauses + the knee arithmetic; refuted if retention of benchmark-relevant entities drops under voting (the froth was load-bearing - unlikely but the contrarian check is mandatory)
+- **Synthetic gate** - none needed: 2-of-3 subsets computable from existing 5-run checkpoints; CPU only; runs with H230
+
+### R22-H238 Dangling relationships - the reference-without-referent loss class
+
+- **Grounding** - 901 dangling-relationship warnings in the campaign event log (62 already in the small H157 run): the extractor emits a relationship whose endpoint entity is missing from its own entity list - the relationship is then dropped silently, losing both the edge AND the implicit entity mention; nobody has censused what class of entities die this way (candidates: exactly the features/codes H226 and H207 found missing)
+- **Hypothesis** - (a) >= 30% of dangling-relationship endpoints name entities in the H226 miss classes or the H207 absent-gold families (the dangling class IS a visible slice of the known losses), and (b) a deterministic retention rule (auto-materialize the referenced endpoint as an entity with the relationship's evidence) recovers them at zero hallucination risk (the model DID emit the name - the rule only refuses to discard it)
+- **Prediction** - the dangling class is feature/spec-heavy (relationships like HAS_FEATURE pointing at never-listed features); the retention rule is a one-line load-stage fix with measurable recall gain
+- **Acceptance bar** - clause (a) census + clause (b) simulated on the logged warnings (what WOULD have been added); refuted if the endpoints are froth-class (retaining them would add noise, and the drop is correct behavior)
+- **Synthetic gate** - none needed: the warnings are already logged with their triplets; CPU census first, the retention rule simulation follows on the same log
+
+### R22-H239 CONTRARIAN - the model is the lever, not the pipeline
+
+- **Grounding** - every cure in this round tweaks the pipeline around a fixed extractor (gpt-oss-120b); the contrarian position: extraction variance is a MODEL property - a different model class at identical settings has a materially different variance floor, and if so, extractor selection should be benchmarked on variance (a new selection criterion) before any pipeline machinery ships; GPU 0 (24 GB) and GPU 2 (32 GB) are idle and can host a second model without touching the busy server
+- **Hypothesis** - a second local extractor (7-8B instruct class, llama.cpp or a second vLLM on GPU 2) at temp 0 on the same 3 documents shows a variance floor differing from gpt-oss-120b's by >= 2x in either direction - variance is model-dependent enough to be a selection criterion
+- **Prediction** - the smaller model is MORE variable (less confident entity choices) - but a >= 2x-lower surprise would redirect the whole round toward model selection
+- **Acceptance bar** - the >= 2x either-direction clause on matched documents/settings; refuted if floors are within 2x (variance is then endemic to the extraction task and pipeline cures are correctly prioritized)
+- **Synthetic gate** - GATE (1 doc x 3 runs on the second model): if the single-doc floor is within 1.5x of gpt-oss-120b's on the same doc, close as not-worth-testing before standing up the full grid
+
 ## R21 - images in documents: extraction, description, and embedding of visual content (user-directed, pre-registered 2026-07-07)
 
 The engine today ingests only the text layer; images in PDFs and other document formats (product photos, diagrams, rendered tables, charts) are invisible to it. The user directs a round to find out how visual content should enter the graph: which tool EXTRACTS images from documents (Docling, pymupdf, page rendering - decided by experiment, not preselected), how images are DESCRIBED (VLM engine contest), and how they are EMBEDDED (into the single Titan text index via descriptions, or a parallel multimodal index). The round is disciplined by prior verdicts: H147 proved the corpus's "vision-necessary" text was mostly recoverable text (glyph bug), H149 proved anchor-off image reading dominates on born-digital pages, H148/H191 left a 16-pair numeric residue awaiting a working vision engine, and H207's FINAL census puts two-thirds of wide-set misses ingest-side - if any of that absence lives in pixels, this round finds it. A working VLM environment stood up here also fires H191's deferred trigger. Retrieval-first principle governs: image content must land as normal graph carriers reachable in 1-2 hops, not as a second retrieval system.
