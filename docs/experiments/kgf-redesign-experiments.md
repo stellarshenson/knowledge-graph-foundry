@@ -1951,6 +1951,16 @@ Trigger: the maturity assessment (2026-07-07) - the campaign targets the identit
 - **Result** - pending
 - **Verdict** - pending
 
+### R15-H198 Promotion debt - every promoted lever lands in the shipped default config
+
+- **Grounding** - the production-grade assessment (2026-07-07) named the gap: the promotion ledger holds 35 entries but the shipped defaults lag them - `settings.py` still carries `top_k: 8` against the H53/three-arm promotion of 16, and the R19 trio (fanout cap k=5, miss-detector threshold 0.668, render budget B=60%), H173 splitter, H190 glyph operator, H153 header carryover and the H146-151 parser union all live in experiment notebooks, not in the engine's default path. "Decided is not shipped" (H158's premise) generalizes to every promotion
+- **Hypothesis** - (a) a promotion-vs-config audit produces a complete wiring inventory (each promoted lever mapped to shipped-default / config-only / notebook-only status) with zero promotions unaccounted for; (b) after wiring the config-only and notebook-only levers into the engine defaults, a fresh benchmark-corpus ingest + probe run on the standing acceptance harness (H150 name recall + the H194-router probe recall) reproduces each lever's promoted effect within its measured CI - no lever silently degrades when composed with the others
+- **Prediction** - most retrieval-side levers are one-line config changes; the ingest-side operators (glyph, carryover, splitter, parser union) need real wiring; composition surprises, if any, appear between the render-budget and fanout-cap levers (both shrink context)
+- **Acceptance bar** - clause (a) complete inventory + clause (b) composed E2E reproduction within CIs; refuted if composing the levers loses any promoted effect (that interaction then gets its own hypothesis before anything ships)
+- **Experiment** - audit script over docs/sota-promotions.md vs settings.py/engine defaults, then the wiring PR, then a scratch-instance E2E; queued behind H158's scratch-instance cycle
+- **Result** - pending
+- **Verdict** - pending
+
 
 ## R16 - long-horizon operations: the mutation and scale flank (pre-registered 2026-07-07)
 
