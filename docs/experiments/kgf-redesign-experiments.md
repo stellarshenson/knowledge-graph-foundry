@@ -1782,3 +1782,53 @@ H51 confirmed the parse layer as a loss surface (66.7% of documents lose entity-
 - **Result** - pending
 - **Verdict** - pending
 
+### R14-H146 The backend swap - Docling reads the cells pymupdf merges
+
+- **Grounding** - IBM rejected pymupdf as Docling's backend citing merged text cells and built docling-parse instead ([paper digest] Docling); our H51 losses concentrate exactly in table cells; Docling is CPU-only - the cheapest possible test of whether the 95 lost names are a fixable backend artifact
+- **Hypothesis** - Docling recovers >= 60% of the 95 names pymupdf4llm drops but pdfplumber/pypdf preserve, beating the union-of-three baseline (75.8%) on the table-heavy documents at zero GPU cost
+- **Prediction** - the merge-loss class is a reading-order/cell-merge bug, not an information limit; catalogue-genre recovery dominates
+- **Acceptance bar** - >= 60% recovery of the loss set; refuted if Docling matches pymupdf4llm - the loss is inherent to text-layer extraction and only vision (H147) remains
+- **Experiment** - docling over the 27 documents + the H51 name-recall harness; CPU, runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H147 Only pixels can say the absent names - pure-vision recovery
+
+- **Grounding** - the mode-family names are absent from ALL text parsers (H51) - stylized or graphic-embedded text has no byte-stream representation; MinerU2.5 (1.2B, OmniDocBench 90.67, pure-vision, 1.7 pages/s on a 4090-class card) re-derives glyphs from the rendering ([paper digest] MinerU2.5); text-layer tools cannot by construction
+- **Hypothesis** - MinerU2.5 recovers >= 50% of the all-parser-absent name family while Docling and anchored-olmOCR recover ~0% - vision is necessary and sufficient for this loss class
+- **Prediction** - the family is rendered-but-unencoded text, not raster logos
+- **Acceptance bar** - >= 50% recovery at name-level precision >= 0.9 (hallucinated names are worse than missing ones); refuted if recovery ~0% (raster/unrecoverable) OR precision collapses (a different failure, routed to crop-resolution work)
+- **Experiment** - MinerU2.5 on GPU 0 (24GB) over the affected documents; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H148 The numeric floor - vision lifts recall only if digits stay honest
+
+- **Grounding** - numeric-token preservation is parser-invariant at 67.3% (H51) - whatever holds the rest defeats every text extractor; VLMs can read rasterized spec plates but also SUBSTITUTE digits (3-8, 0-O confusions), and for specification values a wrong digit is worse than an omission
+- **Hypothesis** - on exactly the pages where the three text parsers tie at the floor, MinerU2.5 or dots.ocr lifts numeric-token recall >= 10 points WITH digit-level precision >= the text-parser baseline
+- **Prediction** - part of the residual is rasterized spec graphics (recoverable), part is chart-embedded (not); precision holds on tables, wobbles on plates
+- **Acceptance bar** - both clauses together; refuted if the VLM stalls at the floor (content is chart-only) OR recall rises while digit precision drops (net-negative fidelity - the floor stands as the honest limit)
+- **Experiment** - page-scoped vision pass + digit-exact scoring vs source-verified values; GPU 0/2; runs now
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H149 Anchoring inherits the loss - olmOCR must fly blind here
+
+- **Grounding** - olmOCR's document-anchoring injects ~1800 tokens of the PDF's OWN pypdf text layer into the prompt alongside the page image ([paper digest] olmOCR) - on born-digital pages that anchor is the very output that drops our names; the mechanism built for scanned documents may actively suppress the image branch on ours
+- **Hypothesis** - anchored olmOCR reproduces >= half of pymupdf4llm's lost names on the table-heavy documents while anchor-disabled (image-only) recovers strictly more - the anchor is a liability on born-digital corpora
+- **Prediction** - the A/B shows anchoring pulling answers toward the broken text layer
+- **Acceptance bar** - both clauses; refuted if anchored olmOCR already recovers the names (the image branch overrides bad anchors - anchoring vindicated and the cheap bulk path stays open)
+- **Experiment** - olmOCR anchored vs anchor-off over the loss-set documents; GPU 0/2; runs after H147 (shares the harness)
+- **Result** - pending
+- **Verdict** - pending
+
+### R14-H150 The benchmark is a prior, not a proxy - TEDS vs our names
+
+- **Grounding** - OmniDocBench grades page fidelity (edit distance, table TEDS, reading order) over ~981 pages ([paper digest] OmniDocBench); a parser can post 90 TEDS and still drop one product string per dense row - and tool selection for the foundry should follow OUR metric, not the leaderboard
+- **Hypothesis** - across the parser set run in this round ({pymupdf4llm, Docling, MinerU classic or 2.5, dots.ocr, olmOCR, plus the H51 trio}), Spearman correlation between OmniDocBench table-TEDS rank and per-parser entity-name recall on our 27 documents is < 0.5 - leaderboard rank does not predict name recall on a specific corpus
+- **Prediction** - the correlation is positive but weak; per-corpus measurement stays mandatory
+- **Acceptance bar** - < 0.5 confirms (the H51 harness becomes the standing acceptance test for any parser change); refuted at >= 0.8 (TEDS is a valid proxy - adopt the leaderboard winner and stop re-measuring)
+- **Experiment** - assembles from H146/H147/H149 outputs; no extra runs
+- **Result** - pending
+- **Verdict** - pending
+
