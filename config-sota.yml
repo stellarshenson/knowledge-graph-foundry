@@ -1,0 +1,18 @@
+# SOTA configuration - goal clause 3: promoted levers only (executed + promoted).
+# Delta vs baseline (neo4j2 build): graphrag.top_k 8 -> 16 (H53: +28% pure-seed recall).
+# Everything else identical to the baseline engine. Target: the repurposed scratch
+# instance; LLM local (gpt-oss-120b via vLLM); embeddings Bedrock Titan.
+neo4j:
+  uri: bolt://user-konrad.jelen-kgf-neo4j:7687
+  user: neo4j
+  password: kgfoundry
+
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 180
+
+graphrag:
+  top_k: 16

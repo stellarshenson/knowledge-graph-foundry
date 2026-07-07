@@ -792,8 +792,8 @@ Two camps in one round, by design. Five contrarian hypotheses (H51-H55) attack a
 - **Prediction** - on the H50 harness: zero alarms on the realized clean series including the spike document; a threshold calibrated at p0=0.05 lands in the ARL0 band at 0.01 and 0.10 without recalibration; detection miss/delay matches or beats plain CUSUM at matched budget
 - **Acceptance bar** - all three clauses; refuted if the LLR form loses detection power at matched budget
 - **Experiment** - extends the [`drift_cfar_h50.ipynb`](../../notebooks/drift_cfar_h50.ipynb) harness; numpy only, runs now; on confirmation this becomes H33's fallback criterion candidate
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - harness in [`drift_llr_h59.ipynb`](../../notebooks/drift_llr_h59.ipynb), H50 protocol (bisection to ARL0 band 420-600 on 2500-doc streams, races at 200 trials, wave-1b realized series with per-doc entity counts). Clause 3 held (LLR detection >= plain quiescent CUSUM at every floor/shape, miss 0.00 everywhere). Clause 1 FAILED: the LLR CUSUM alarmed on the real series at doc 75 - forensics show the spike was never a small-denominator artifact (n ~ 13 entities, ALL remapped), so a full-remap document carries ~13 x log(p1/p0) of genuine evidence and any single-observation evidence-weighted detector rightly fires; the registered premise ('a rate of 1.0 on a 2-entity document carries little evidence') mischaracterized the real event. Clause 2 FAILED: h fixed from p0=0.05 gives ARL0 1908 at p0=0.01 (over-conservative, out of band; in-band 525 at 0.10 - it transfers in the dangerous direction but not the quiet one)
+- **Verdict** - REFUTED on two of three clauses, and the failure teaches more than a confirmation would: spike immunity CANNOT come from evidence weighting - a genuine one-document full-remap event is strong evidence by construction, and only a PERSISTENCE requirement (the production all-3-consecutive rule) distinguishes a transient from a shift. Combined with H50 (production matched CUSUM at delta=0.30), the production criterion is now doubly rehabilitated: two formal challenges by the textbook-superior class, both lost on the deployment's actual requirements. The SOTA configuration keeps the production detector unchanged
 
 ### R08-H60 The graph should hold less - evidence-based pruning
 
@@ -1483,8 +1483,8 @@ The standing gap assessment names three weak flanks: (1) the IDENTITY LAYER - 47
 - **Prediction** - clean replay; the flag flips
 - **Acceptance bar** - zero false alarms on realized stream AND matched-or-better detection on injections; refuted if implementation-vs-harness divergence appears (the harness idealized something production breaks)
 - **Experiment** - extends drift.py behind `drift.detector_variant`; deterministic replay; runs after H59's harness verdict lands
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - adjudicated by H59's harness data without a separate run: the replay clause ('zero false alarms on the full wave-1b stream, spike included') fails immediately - the LLR detector alarms at doc 75 at matched ARL0
+- **Verdict** - REFUTED by premise collapse (H59): there is no better-instrument to ship. The flag stays unbuilt; the production all-3-consecutive criterion is the shipped detector, now with two formal validations behind it (H50, H59). Process value preserved: the harness + wave-replay pattern is the standing acceptance test for ANY future detector candidate
 
 ## R12 - the matching-model round: giving the resolver a signal with the right shape (pre-registered 2026-07-06)
 
