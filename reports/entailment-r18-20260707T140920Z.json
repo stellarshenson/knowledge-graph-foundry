@@ -1,0 +1,70 @@
+{
+  "round": "R18",
+  "batch": "H172+H176",
+  "utc": "20260707T140920Z",
+  "graph": "neo4j2",
+  "gold_set": "original-33",
+  "nli_model": "MoritzLaurer/mDeBERTa-v3-base-mnli-xnli",
+  "gpu": "RTX5000Ada/sm89",
+  "dtype": "fp16",
+  "attn": "eager",
+  "tau": 0.5,
+  "H172": {
+    "clause_a_nondegenerate": true,
+    "short_golds": 17,
+    "nli_score_range": [
+      0.10389741510152817,
+      0.9893038272857666
+    ],
+    "distinct_scores": 17,
+    "clause_b_audit": {
+      "n": 50,
+      "manual_present": 25,
+      "agreement_at_tau": 0.62,
+      "best_agreement": 0.78,
+      "best_tau": 0.7100000000000004,
+      "auc": 0.8032,
+      "pass_bar_90": false,
+      "refuted_bar_80": true
+    },
+    "clause_c_ms_per_pair": 66.53918743133545,
+    "clause_c_pass": true,
+    "h81_rerun": {
+      "baseline": {
+        "fuzzy_seed_render": 23,
+        "fuzzy_render_prop": 25,
+        "nli_render_prop": 21,
+        "n_golds": 33
+      },
+      "greedy": {
+        "fuzzy": {
+          "r10": 0.8787878787878788,
+          "cross": 0.10926780222379938,
+          "final": 1.0
+        },
+        "nli": {
+          "r10": 0.6363636363636364,
+          "cross": null,
+          "final": 0.6363636363636364
+        }
+      }
+    },
+    "verdict": "REFUTED"
+  },
+  "H176": {
+    "scorer": "token-coverage-fallback",
+    "types": 20,
+    "types_positive": 6,
+    "cov_all": 1.5721156825173481,
+    "cov_positive": 0.20362788552920752,
+    "var_restored": true,
+    "r_missmass_grad": -0.2596003851440427,
+    "indep_ok": true,
+    "bootstrap_ci": [
+      -0.5746475298773548,
+      0.16027756561253997
+    ],
+    "ci_excludes_strong": false,
+    "verdict": "PARTIALLY CONFIRMED"
+  }
+}

@@ -1,0 +1,1379 @@
+{
+  "meta": {
+    "n": 114,
+    "clean_fraction": 0.8508771929824561,
+    "date": "2026-07-07",
+    "source": "parsed source-document texts (docling/pymupdf4llm/pdfplumber); product identity from graph, evidence strings from document wording",
+    "verification": "each gold verbatim-present in source_document via the H34 present() matcher"
+  },
+  "probes": [
+    {
+      "id": "W001",
+      "question": "Does the DreamStation Auto CPAP with humidifier offer EZ-Start?",
+      "gold_evidence": [
+        "EZ-Start"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation Auto CPAP with humidifier",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W002",
+      "question": "Does the DreamStation Auto CPAP with humidifier offer SD card data storage?",
+      "gold_evidence": [
+        "SD card data storage"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation Auto CPAP with humidifier",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W003",
+      "question": "What is the power supply of the System One?",
+      "gold_evidence": [
+        "80 watt"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "System One",
+      "attribute": "power supply",
+      "short_numeric": true
+    },
+    {
+      "id": "W004",
+      "question": "Does the REMstar Auto offer A-Flex?",
+      "gold_evidence": [
+        "A-Flex"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W005",
+      "question": "Does the BiPAP AVAPS offer System One resistance control?",
+      "gold_evidence": [
+        "System One resistance control"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "BiPAP AVAPS",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W006",
+      "question": "What is the power supply of the Alice 5?",
+      "gold_evidence": [
+        "60W"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "Alice 5",
+      "attribute": "power supply",
+      "short_numeric": true
+    },
+    {
+      "id": "W007",
+      "question": "Does the BiPAP Pro offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W008",
+      "question": "Does the DreamStation offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W009",
+      "question": "What is the operating pressure range of the G3 A20?",
+      "gold_evidence": [
+        "4-20hPa"
+      ],
+      "source_document": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "G3 A20",
+      "attribute": "operating pressure range",
+      "short_numeric": true
+    },
+    {
+      "id": "W010",
+      "question": "Does the BiPAP S/T offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP S/T",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W011",
+      "question": "Does the AirSense 10 Elite offer Climate Control?",
+      "gold_evidence": [
+        "Climate Control"
+      ],
+      "source_document": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W012",
+      "question": "Does the DreamStation CPAP offer CPAP-Check?",
+      "gold_evidence": [
+        "CPAP-Check"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W013",
+      "question": "Does the DreamStation offer adjustable humidification?",
+      "gold_evidence": [
+        "adjustable humidification"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W014",
+      "question": "Does the DreamStation offer wireless data transfer?",
+      "gold_evidence": [
+        "wireless data transfer"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W015",
+      "question": "What is the weight of the G3 A20?",
+      "gold_evidence": [
+        "1.7 kg"
+      ],
+      "source_document": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "G3 A20",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W016",
+      "question": "Does the AirSense 10 AutoSet offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 10 AutoSet",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W017",
+      "question": "Does the BiPAP S/T offer adjustable humidification?",
+      "gold_evidence": [
+        "adjustable humidification"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP S/T",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W018",
+      "question": "Does the DreamStation CPAP Pro offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W019",
+      "question": "Does the BiPAP AVAPS offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP AVAPS",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W020",
+      "question": "What is the noise level of the G3 A20?",
+      "gold_evidence": [
+        "26 dB"
+      ],
+      "source_document": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "G3 A20",
+      "attribute": "noise level",
+      "short_numeric": true
+    },
+    {
+      "id": "W021",
+      "question": "Does the AirSense 10 Elite offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W022",
+      "question": "Does the REMstar Auto A-Flex offer System One resistance control?",
+      "gold_evidence": [
+        "System One resistance control"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W023",
+      "question": "Does the BiPAP Pro offer Bi-Flex?",
+      "gold_evidence": [
+        "Bi-Flex"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "BiPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W024",
+      "question": "What is the weight of the SimplyGo?",
+      "gold_evidence": [
+        "4.5 kg"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "SimplyGo",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W025",
+      "question": "Does the DreamStation CPAP offer Bluetooth connectivity?",
+      "gold_evidence": [
+        "Bluetooth connectivity"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W026",
+      "question": "Does the REMstar Auto offer CPAP-Check?",
+      "gold_evidence": [
+        "CPAP-Check"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W027",
+      "question": "Does the Remstar BiPAP Pro offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "Remstar BiPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W028",
+      "question": "Does the AirSense 11 offer AutoSet?",
+      "gold_evidence": [
+        "AutoSet"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 11",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W029",
+      "question": "What is the power supply of the AirMini?",
+      "gold_evidence": [
+        "20W"
+      ],
+      "source_document": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "AirMini",
+      "attribute": "power supply",
+      "short_numeric": true
+    },
+    {
+      "id": "W030",
+      "question": "Does the AirSense 10 Elite offer AutoSet?",
+      "gold_evidence": [
+        "AutoSet"
+      ],
+      "source_document": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W031",
+      "question": "Does the AirSense 10 AutoSet for Her offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 10 AutoSet for Her",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W032",
+      "question": "Does the REMstar Auto A-Flex offer CPAP-Check?",
+      "gold_evidence": [
+        "CPAP-Check"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W033",
+      "question": "Does the AirSense 10 AutoSet for Her offer AutoRamp?",
+      "gold_evidence": [
+        "AutoRamp"
+      ],
+      "source_document": "Airsense-Brochure.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 AutoSet for Her",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W034",
+      "question": "Does the BiPAP Auto offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W035",
+      "question": "Does the REMstar Auto A-Flex offer adjustable humidification?",
+      "gold_evidence": [
+        "adjustable humidification"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W036",
+      "question": "Does the DreamStation CPAP offer adjustable ramp time?",
+      "gold_evidence": [
+        "adjustable ramp time"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W037",
+      "question": "Does the DreamStation offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W038",
+      "question": "Does the AirSense offer mask fit check?",
+      "gold_evidence": [
+        "mask fit check"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W039",
+      "question": "Does the AirSense 10 CPAP offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 10 CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W040",
+      "question": "Does the DreamStation CPAP Pro offer Auto-CPAP mode?",
+      "gold_evidence": [
+        "Auto-CPAP mode"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W041",
+      "question": "What is the operating pressure range of the Linde Noctivance?",
+      "gold_evidence": [
+        "4\u201320cm HO"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "Linde Noctivance",
+      "attribute": "operating pressure range",
+      "short_numeric": true
+    },
+    {
+      "id": "W042",
+      "question": "Does the DreamStation Auto CPAP with humidifier offer Auto-Trial?",
+      "gold_evidence": [
+        "Auto-Trial"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation Auto CPAP with humidifier",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W043",
+      "question": "Does the REMstar Auto offer adjustable humidification?",
+      "gold_evidence": [
+        "adjustable humidification"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W044",
+      "question": "Does the DreamStation offer SD card data storage?",
+      "gold_evidence": [
+        "SD card data storage"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W045",
+      "question": "Does the AirSense 10 Elite offer EPR?",
+      "gold_evidence": [
+        "EPR"
+      ],
+      "source_document": "Airsense-Brochure.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W046",
+      "question": "Does the AirSense offer SmartStart?",
+      "gold_evidence": [
+        "SmartStart"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W047",
+      "question": "Does the AirSense 10 Elite offer ramp feature?",
+      "gold_evidence": [
+        "ramp feature"
+      ],
+      "source_document": "Airsense-Brochure.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W048",
+      "question": "Does the AirSense 10 Elite offer AutoRamp?",
+      "gold_evidence": [
+        "AutoRamp"
+      ],
+      "source_document": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W049",
+      "question": "Does the DreamStation offer CPAP-Check?",
+      "gold_evidence": [
+        "CPAP-Check"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W050",
+      "question": "Does the AirSense 10 AutoSet for Her offer SmartStart?",
+      "gold_evidence": [
+        "SmartStart"
+      ],
+      "source_document": "Airsense-Brochure.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 AutoSet for Her",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W051",
+      "question": "What is the ramp time of the DreamStation CPAP?",
+      "gold_evidence": [
+        "45 min"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "DreamStation CPAP",
+      "attribute": "ramp time",
+      "short_numeric": true
+    },
+    {
+      "id": "W052",
+      "question": "Does the DreamStation CPAP Pro offer adjustable humidification?",
+      "gold_evidence": [
+        "adjustable humidification"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W053",
+      "question": "What is the sound level of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "26.6 dBA"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "AirStart 10 CPAP",
+      "attribute": "sound level",
+      "short_numeric": true
+    },
+    {
+      "id": "W054",
+      "question": "Does the AirSense 11 offer SD card data storage?",
+      "gold_evidence": [
+        "SD card data storage"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 11",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W055",
+      "question": "Does the REMstar Auto A-Flex offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W056",
+      "question": "Does the DreamStation offer integrated cellular modem?",
+      "gold_evidence": [
+        "integrated cellular modem"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W057",
+      "question": "What is the ramp time of the DreamStation CPAP Pro?",
+      "gold_evidence": [
+        "45 min"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "ramp time",
+      "short_numeric": true
+    },
+    {
+      "id": "W058",
+      "question": "What is the weight of the DreamStation?",
+      "gold_evidence": [
+        "1.33 kg"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "DreamStation",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W059",
+      "question": "Does the DreamStation CPAP Pro offer SD card data storage?",
+      "gold_evidence": [
+        "SD card data storage"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W060",
+      "question": "Does the REMstar Auto offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W061",
+      "question": "Does the ResMed Airsense10 offer Bluetooth connectivity?",
+      "gold_evidence": [
+        "Bluetooth connectivity"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "ResMed Airsense10",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W062",
+      "question": "Does the DreamStation CPAP offer integrated cellular modem?",
+      "gold_evidence": [
+        "integrated cellular modem"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W063",
+      "question": "Does the DreamStation CPAP Pro offer EZ-Start?",
+      "gold_evidence": [
+        "EZ-Start"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W064",
+      "question": "Does the REMstar Auto offer wireless data transfer?",
+      "gold_evidence": [
+        "wireless data transfer"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W065",
+      "question": "Does the AirCurve 10 CS PaceWave offer Climate Control?",
+      "gold_evidence": [
+        "Climate Control"
+      ],
+      "source_document": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirCurve 10 CS PaceWave",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W066",
+      "question": "Does the DreamStation CPAP Pro offer integrated cellular modem?",
+      "gold_evidence": [
+        "integrated cellular modem"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W067",
+      "question": "Does the DreamStation offer Auto-CPAP mode?",
+      "gold_evidence": [
+        "Auto-CPAP mode"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W068",
+      "question": "Does the REMstar Auto offer ramp feature?",
+      "gold_evidence": [
+        "ramp feature"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W069",
+      "question": "What is the noise level of the ELK-200B?",
+      "gold_evidence": [
+        "50dB"
+      ],
+      "source_document": "CPAP-Machines-Brochure.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "ELK-200B",
+      "attribute": "noise level",
+      "short_numeric": true
+    },
+    {
+      "id": "W070",
+      "question": "Does the DreamStation Auto CPAP with humidifier offer Opti-Start?",
+      "gold_evidence": [
+        "Opti-Start"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation Auto CPAP with humidifier",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W071",
+      "question": "Does the AirSense 10 AutoSet for Her offer ramp feature?",
+      "gold_evidence": [
+        "ramp feature"
+      ],
+      "source_document": "Airsense-Brochure.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 10 AutoSet for Her",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W072",
+      "question": "What is the water chamber capacity of the G3 A20?",
+      "gold_evidence": [
+        "360 mL"
+      ],
+      "source_document": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "G3 A20",
+      "attribute": "water chamber capacity",
+      "short_numeric": true
+    },
+    {
+      "id": "W073",
+      "question": "What is the power supply of the DreamStation CPAP?",
+      "gold_evidence": [
+        "100705W"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "DreamStation CPAP",
+      "attribute": "power supply",
+      "short_numeric": false
+    },
+    {
+      "id": "W074",
+      "question": "Does the BiPAP S/T offer System One resistance control?",
+      "gold_evidence": [
+        "System One resistance control"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "BiPAP S/T",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W075",
+      "question": "Does the DreamStation CPAP offer Auto-CPAP mode?",
+      "gold_evidence": [
+        "Auto-CPAP mode"
+      ],
+      "source_document": "DreamStation_CPAP_User_Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W076",
+      "question": "Does the REMstar Auto A-Flex offer Opti-Start?",
+      "gold_evidence": [
+        "Opti-Start"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto A-Flex",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W077",
+      "question": "Does the BiPAP S/T, C Series offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP S/T, C Series",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W078",
+      "question": "Does the BiPAP Auto Bi-Flex offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP Auto Bi-Flex",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W079",
+      "question": "What is the operating pressure range of the AirStart 10 CPAP?",
+      "gold_evidence": [
+        "4\u201320 cm HO"
+      ],
+      "source_document": "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "AirStart 10 CPAP",
+      "attribute": "operating pressure range",
+      "short_numeric": true
+    },
+    {
+      "id": "W080",
+      "question": "Does the DreamStation CPAP Pro offer Bluetooth connectivity?",
+      "gold_evidence": [
+        "Bluetooth connectivity"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W081",
+      "question": "Does the DreamStation Auto CPAP with humidifier offer CPAP-Check?",
+      "gold_evidence": [
+        "CPAP-Check"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation Auto CPAP with humidifier",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W082",
+      "question": "Does the BiPAP Pro Bi-Flex offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP Pro Bi-Flex",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W083",
+      "question": "Does the DreamStation CPAP offer C-Flex?",
+      "gold_evidence": [
+        "C-Flex"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W084",
+      "question": "Does the AirSense 10 AutoSet for Her offer EPR?",
+      "gold_evidence": [
+        "EPR"
+      ],
+      "source_document": "Airsense-Brochure.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 AutoSet for Her",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W085",
+      "question": "Does the REMstar Auto offer SD card data storage?",
+      "gold_evidence": [
+        "SD card data storage"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W086",
+      "question": "Does the AirCurve 10 CS PaceWave offer AutoSet?",
+      "gold_evidence": [
+        "AutoSet"
+      ],
+      "source_document": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirCurve 10 CS PaceWave",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W087",
+      "question": "Does the DreamStation CPAP offer Wi-Fi connectivity?",
+      "gold_evidence": [
+        "Wi-Fi connectivity"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W088",
+      "question": "Does the BiPAP S/T offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP S/T",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W089",
+      "question": "Does the REMstar Auto offer Auto-Trial?",
+      "gold_evidence": [
+        "Auto-Trial"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W090",
+      "question": "Does the BiPAP AVAPS, C Series offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP AVAPS, C Series",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W091",
+      "question": "Does the DreamStation CPAP Pro offer C-Flex?",
+      "gold_evidence": [
+        "C-Flex"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W092",
+      "question": "Does the AirSense 11 offer Bluetooth connectivity?",
+      "gold_evidence": [
+        "Bluetooth connectivity"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 11",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W093",
+      "question": "Does the Philips DreamStation offer Bluetooth connectivity?",
+      "gold_evidence": [
+        "Bluetooth connectivity"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "Philips DreamStation",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W094",
+      "question": "Does the DreamStation Auto CPAP with humidifier offer adjustable humidification?",
+      "gold_evidence": [
+        "adjustable humidification"
+      ],
+      "source_document": "Philips Respironics Dreamstation Auto CPAP Machine- Brochure - Oxygen Times.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation Auto CPAP with humidifier",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W095",
+      "question": "Does the BiPAP autoSV Advanced offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "BiPAP autoSV Advanced",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W096",
+      "question": "Does the DreamStation CPAP offer heated tube?",
+      "gold_evidence": [
+        "heated tube"
+      ],
+      "source_document": "BC-Dreamstation-Standard-CPAP.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation CPAP",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W097",
+      "question": "Does the AirMini offer AutoSet?",
+      "gold_evidence": [
+        "AutoSet"
+      ],
+      "source_document": "DSDC-CPAP-Therapy-Catalogue.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirMini",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W098",
+      "question": "What is the weight of the iBreeze CPAP System?",
+      "gold_evidence": [
+        "1.60 kg"
+      ],
+      "source_document": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "iBreeze CPAP System",
+      "attribute": "weight",
+      "short_numeric": true
+    },
+    {
+      "id": "W099",
+      "question": "Does the BiPAP Auto offer Bi-Flex?",
+      "gold_evidence": [
+        "Bi-Flex"
+      ],
+      "source_document": "product_and_solutions_catalog.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "BiPAP Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W100",
+      "question": "Does the AirSense 11 offer mask fit check?",
+      "gold_evidence": [
+        "mask fit check"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense 11",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W101",
+      "question": "Does the AirSense offer AutoSet?",
+      "gold_evidence": [
+        "AutoSet"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W102",
+      "question": "Does the AirSense offer Bluetooth connectivity?",
+      "gold_evidence": [
+        "Bluetooth connectivity"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W103",
+      "question": "Does the AirSense offer SD card data storage?",
+      "gold_evidence": [
+        "SD card data storage"
+      ],
+      "source_document": "ResMed-Airsense-11-Manual.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "AirSense",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W104",
+      "question": "Does the DreamStation CPAP Pro offer CPAP-Check?",
+      "gold_evidence": [
+        "CPAP-Check"
+      ],
+      "source_document": "DreamStation_CPAP_Pro_DataSheet.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "DreamStation CPAP Pro",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W105",
+      "question": "Does the AirCurve 10 CS PaceWave offer AutoRamp?",
+      "gold_evidence": [
+        "AutoRamp"
+      ],
+      "source_document": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirCurve 10 CS PaceWave",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W106",
+      "question": "Does the REMstar Auto offer Opti-Start?",
+      "gold_evidence": [
+        "Opti-Start"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W107",
+      "question": "Does the AirSense 10 Elite offer SmartStart?",
+      "gold_evidence": [
+        "SmartStart"
+      ],
+      "source_document": "Airsense-Brochure.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "AirSense 10 Elite",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W108",
+      "question": "What is the humidifier water capacity of the MD300W314B4?",
+      "gold_evidence": [
+        "290 ml"
+      ],
+      "source_document": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+      "derivation_rule": "doc_spec_proximity",
+      "product": "MD300W314B4",
+      "attribute": "humidifier water capacity",
+      "short_numeric": true
+    },
+    {
+      "id": "W109",
+      "question": "Does the REMstar Auto offer System One resistance control?",
+      "gold_evidence": [
+        "System One resistance control"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_branded",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W110",
+      "question": "Does the Remstar Bipap Auto offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "Remstar Bipap Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W111",
+      "question": "Does the REMstar Auto offer integrated cellular modem?",
+      "gold_evidence": [
+        "integrated cellular modem"
+      ],
+      "source_document": "0-20190113114505.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "REMstar Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W112",
+      "question": "Does the DreamStation BIPAP Auto offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation BIPAP Auto",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W113",
+      "question": "Does the DreamStation 2 Auto CPAP Advanced offer heated humidifier?",
+      "gold_evidence": [
+        "heated humidifier"
+      ],
+      "source_document": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "DreamStation 2 Auto CPAP Advanced",
+      "attribute": "supported feature",
+      "short_numeric": false
+    },
+    {
+      "id": "W114",
+      "question": "Does the Philips DreamWear under the nose offer mask fit check?",
+      "gold_evidence": [
+        "mask fit check"
+      ],
+      "source_document": "Sleep And Respiratory Medical Devices Brochure.pdf",
+      "derivation_rule": "doc_feature_generic",
+      "product": "Philips DreamWear under the nose",
+      "attribute": "supported feature",
+      "short_numeric": false
+    }
+  ]
+}

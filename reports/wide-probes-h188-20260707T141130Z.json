@@ -1,0 +1,37 @@
+{
+  "hypothesis": "R19-H188",
+  "date": "2026-07-07T14:11:30.182209+00:00",
+  "n_wide": 114,
+  "n_small": 33,
+  "clean_fraction": 0.8508771929824561,
+  "by_rule": {
+    "doc_feature_branded": {
+      "n": 37,
+      "recall8": 1.0,
+      "recall16": 1.0
+    },
+    "doc_feature_generic": {
+      "n": 59,
+      "recall8": 0.9322033898305084,
+      "recall16": 0.9491525423728814
+    },
+    "doc_spec_proximity": {
+      "n": 18,
+      "recall8": 0.7222222222222222,
+      "recall16": 0.7222222222222222
+    }
+  },
+  "wide_recall8": 0.9210526315789473,
+  "wide_recall16": 0.9298245614035088,
+  "wide_lever_pts": 0.8771929824561431,
+  "small_recall8": 0.5454545454545454,
+  "small_recall16": 0.7272727272727273,
+  "small_lever_pts": 18.181818181818187,
+  "ci_halfwidth8_pts": 4.8245614035087705,
+  "ci_halfwidth16_pts": 4.824561403508776,
+  "clause_a_band_and_lever": false,
+  "clause_b_ci_under_2p5": false,
+  "clause_c_clean_over_85": true,
+  "saturated_over_90": true,
+  "verdict": "REFUTED"
+}
