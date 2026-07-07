@@ -1,0 +1,38 @@
+{
+ "pair_set": "../reports/matching-r12-foundation-20260706-211008.json",
+ "n_pairs": 252,
+ "valid_graph": {
+  "nodes": 2520,
+  "edges": 3634,
+  "excluded": [
+   "SIMILAR_TO",
+   "SAME_AS"
+  ]
+ },
+ "node2vec": {
+  "dim": 128,
+  "walk_len": 30,
+  "num_walks": 200,
+  "coverage": 208
+ },
+ "titan": {
+  "overall": 0.8930738119312437,
+  "varsib": 0.9712765957446808
+ },
+ "structure": {
+  "overall": 0.36450960566228513,
+  "varsib": 0.4531914893617021
+ },
+ "concat_cosine": {
+  "overall": 0.576592517694641,
+  "varsib": 0.7882978723404255
+ },
+ "logistic_fusion": {
+  "text_only": 0.8895348837209303,
+  "text_plus_structure": 0.8501011122345804,
+  "gain": -0.039433771486349856
+ },
+ "null_holds": true,
+ "refuter_fires": false,
+ "verdict": "CONFIRMED-null(text wins)"
+}

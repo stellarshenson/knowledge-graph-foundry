@@ -1,0 +1,128 @@
+{
+ "pair_set": "../reports/matching-r12-foundation-20260706-211008.json",
+ "n_pairs": 252,
+ "metrics": {
+  "titan_cosine": {
+   "overall": 0.8930738119312437,
+   "varsib": 0.9712765957446808
+  },
+  "bge-base-en-v1.5": {
+   "overall": 0.7060161779575328,
+   "varsib": 0.748936170212766
+  },
+  "e5-base-v2": {
+   "overall": 0.6926188068756319,
+   "varsib": 0.7712765957446808
+  },
+  "bge-reranker-base": {
+   "overall": 0.8511122345803842,
+   "varsib": 0.8127659574468086
+  },
+  "ms-marco-MiniLM-L6": {
+   "overall": 0.7019716885743175,
+   "varsib": 0.775
+  },
+  "nli_mean_entail": {
+   "overall": 0.6363751263902934,
+   "varsib": 0.5816489361702127
+  },
+  "nli_max_entail": {
+   "overall": 0.6265166835187057,
+   "varsib": 0.5648936170212766
+  },
+  "nli_mutual_entail": {
+   "overall": 0.6367542972699697,
+   "varsib": 0.6308510638297872
+  },
+  "instruct_e5-mistral-7b-instruct": {
+   "overall": 0.5492922143579373,
+   "varsib": 0.5925531914893617
+  }
+ },
+ "H121": {
+  "cosine": 0.8930738119312437,
+  "bar": 0.9930738119312437,
+  "table": [
+   [
+    "bge-reranker-base",
+    0.8511122345803842,
+    -0.04196157735085948,
+    0.8127659574468086
+   ],
+   [
+    "ms-marco-MiniLM-L6",
+    0.7019716885743175,
+    -0.19110212335692622,
+    0.775
+   ]
+  ],
+  "best_ce": "bge-reranker-base",
+  "best_ce_auc": 0.8511122345803842,
+  "verdict": "REFUTED"
+ },
+ "H122": {
+  "var_recovered": 0.2553191489361702,
+  "var_asym": 0.1276595744680851,
+  "sib_contra": 0.9,
+  "sib_contra_argmax": 0.925,
+  "verdict": "REFUTED"
+ },
+ "H123": {
+  "titan": 0.8930738119312437,
+  "table": [
+   [
+    "bge-base-en-v1.5",
+    0.7060161779575328,
+    -0.1870576339737109
+   ],
+   [
+    "e5-base-v2",
+    0.6926188068756319,
+    -0.20045500505561176
+   ]
+  ],
+  "best_bi": "titan_cosine",
+  "best_bi_auc": 0.8930738119312437,
+  "verdict": "REFUTED"
+ },
+ "H125": {
+  "model": "intfloat/e5-mistral-7b-instruct",
+  "overall": 0.5492922143579373,
+  "best_bi": 0.8930738119312437,
+  "best_ce": 0.8511122345803842,
+  "gap": -0.04196157735085948,
+  "moved": -0.3437815975733064,
+  "closed": null,
+  "verdict": "REFUTED",
+  "note": "gap non-positive (cross-encoder did not beat bi-encoder) - closure undefined; judged on whether instruction moved AUC"
+ },
+ "H126": {
+  "auc_single": 0.6953993933265925,
+  "auc_3field": 0.6951466127401417,
+  "gain": -0.00025278058645084034,
+  "channel_varsib": {
+   "name": 0.6382978723404256,
+   "spec": 0.5542553191489362,
+   "desc": 0.6930851063829787
+  },
+  "verdict": "REFUTED"
+ },
+ "H143": {
+  "auc_ens": 0.8546511627906976,
+  "individual": {
+   "bge-reranker-base": 0.8511122345803842,
+   "nli_mean_entail": 0.6363751263902934,
+   "nli_mutual_entail": 0.6367542972699697,
+   "contra_max(neg)": 0.7421638018200203
+  },
+  "best_ind": "bge-reranker-base",
+  "best_ind_auc": 0.8511122345803842,
+  "gain": 0.00353892821031343,
+  "max_corr": 0.7647423304504561,
+  "err_ce": 26,
+  "err_nli": 64,
+  "err_shared": 18,
+  "err_jaccard": 0.25,
+  "verdict": "REFUTED"
+ }
+}

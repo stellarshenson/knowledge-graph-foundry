@@ -1206,8 +1206,8 @@ Four parallel literature scouts (curvature/spectral mathematics, GNNs for KG qua
 - **Prediction** - text wins; the constructive refuter is the interesting outcome: text+structure concatenation beating text alone by >0.05 AUC would prove structure carries complementary identity signal worth engineering
 - **Acceptance bar** - either the null holds (stop investing in trained structural embeddings) or the concat refuter fires (invest in fusion) - a decision either way
 - **Experiment** - node2vec (CPU minutes at 2.8k nodes) + ranking AUC; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`structure_embed_r10_h95.ipynb`](../../notebooks/structure_embed_r10_h95.ipynb)) node2vec 0.365 - BELOW chance - vs Titan text 0.893 (gap 0.529, null bar was 0.05); fusion HURTS (text+structure logistic 0.850 vs text-only 0.890; concat cosine 0.577); only 208/252 pairs had both nodes in the valid graph
+- **Verdict** - CONFIRMED (the null) with a mechanism discovery: structural adjacency is ANTI-correlated with identity - a duplicate is the same entity extracted twice into different neighborhoods, so structure actively misleads. The constructive refuter (concat wins) does not fire; trained structural embeddings for identity are closed permanently on this graph class
 
 ### R10-H96 The relaxed gradient proposes edits - differentiable structure as ranker
 
@@ -1513,8 +1513,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - cosine AUC lands 0.6-0.75 (saturated); cross-encoder >= 0.85; the win concentrates on the sibling hard negatives
 - **Acceptance bar** - AUC gap >= 0.10; refuted if the cross-encoder inherits the saturation (identity is not in its pretraining signal either)
 - **Experiment** - interim pair set + two checkpoints on GPU 0/2; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`matching_scorers_r12.ipynb`](../../notebooks/matching_scorers_r12.ipynb); frozen 252-pair set, baseline Titan cosine re-measured 0.893 overall / 0.971 variance-vs-sibling) best cross-encoder bge-reranker-base 0.851 overall - 0.042 BELOW the cosine baseline against a bar of +0.10; ms-marco-MiniLM 0.702; the sibling class did not improve either (0.813 vs Titan's 0.971)
+- **Verdict** - REFUTED - the registered refuter fires: joint attention does not carry identity signal this corpus needs beyond what the incumbent embedding already ranks. Converges with H131: the ranking was never broken
 
 ### R12-H122 Identity as mutual entailment - direction matters
 
@@ -1523,8 +1523,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - the asymmetry signal alone recovers >= 70% of the 47 variance pairs; contradiction fires on >= 60% of siblings
 - **Acceptance bar** - both clauses; refuted if NLI treats all high-overlap product records as mutually entailing
 - **Experiment** - NLI checkpoint on GPU 0/2; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`matching_scorers_r12.ipynb`](../../notebooks/matching_scorers_r12.ipynb); frozen 252-pair set, baseline Titan cosine re-measured 0.893 overall / 0.971 variance-vs-sibling) mutual entailment recovered only 25.5% of variance pairs (bar 70%) - mDeBERTa reads variance pairs as NEUTRAL, exactly the registered refuter; but contradiction fired on 90% of siblings (bar 60%, argmax 92.5%)
+- **Verdict** - REFUTED on the identity clause, with the round's one genuinely new usable signal: the NLI CONTRADICTION channel is a cheap, strong sibling veto (90% recall) - routed into H128's defer-band architecture as the pre-filter, not into the ranker
 
 ### R12-H123 The identity embedder is not the retrieval embedder - split the jobs
 
@@ -1533,8 +1533,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - a 3-4 model bake-off finds a winner
 - **Acceptance bar** - >= 0.05 AUC over Titan; refuted if all bi-encoders saturate identically - the failure is the CLASS, not the checkpoint, and H121 becomes the only route
 - **Experiment** - embed the interim pair set per model on GPU 0/2; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`matching_scorers_r12.ipynb`](../../notebooks/matching_scorers_r12.ipynb); frozen 252-pair set, baseline Titan cosine re-measured 0.893 overall / 0.971 variance-vs-sibling) bge-base 0.706 (-0.187 vs Titan), e5-base 0.693 (-0.200) - both far under the +0.05 bar
+- **Verdict** - REFUTED strongly, in an unregistered direction: local bi-encoders do not merely fail to beat Titan, they saturate WORSE on structured spec-style records. The retrieval/identity job split dies; Titan keeps both jobs
 
 ### R12-H124 Train the invariance we measured - contrastive fine-tune on synthesized variance
 
@@ -1553,8 +1553,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - helps on variance pairs, not siblings (instructions cannot inject spec-contradiction detection)
 - **Acceptance bar** - >= 50% gap closure; refuted if the instruction moves AUC < 0.02
 - **Experiment** - one instruction model in the H123 harness; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`matching_scorers_r12.ipynb`](../../notebooks/matching_scorers_r12.ipynb); frozen 252-pair set, baseline Titan cosine re-measured 0.893 overall / 0.971 variance-vs-sibling) e5-mistral-7b-instruct scored 0.549 - near-random, below the 100M bi-encoders; the instruction moved cosine by ~0.003 (bar 0.02); sanity checks rule out a loading bug (variance pairs mean cos 0.504 vs random 0.445)
+- **Verdict** - REFUTED - instruction conditioning is decoration here, and the model class itself mismatches spec-style text. Also moot on the premise: the bi-to-cross gap it was meant to close is negative (H121)
 
 ### R12-H126 Three channels, not one vector - field-decomposed likelihoods
 
@@ -1563,8 +1563,8 @@ H107 partitioned the duplicate problem (71% extraction variance, 29% resolver-vi
 - **Prediction** - the spec channel does the sibling separation; the name channel does the variance work
 - **Acceptance bar** - >= 0.07 + the diagnostic pattern; refuted if fields are too sparse to embed reliably
 - **Experiment** - field extraction + per-field similarity; runs now
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`matching_scorers_r12.ipynb`](../../notebooks/matching_scorers_r12.ipynb); frozen 252-pair set, baseline Titan cosine re-measured 0.893 overall / 0.971 variance-vs-sibling) 3-channel (name/spec/description) logistic 0.695 vs single-vector 0.695 (gain -0.0003, bar +0.07); the diagnostic pattern INVERTED: description separates variance-vs-sibling best (0.893/0.768) while spec - the predicted sibling separator - is near chance (0.554)
+- **Verdict** - REFUTED - field splitting adds nothing over the pooled vector, and the spec channel is too sparse/coarse to carry the sibling distinction it was supposed to own. The sibling signal lives in descriptions
 
 ### R12-H127 The 120B as cross-encoder - accuracy vs the exchange rate
 
@@ -1740,8 +1740,8 @@ Fanned out from the project owner's direction: optimal transport for resolution 
 - **Prediction** - error sets barely overlap: cross-encoder misses structured contradictions (one spec value differs in otherwise-identical records), NLI misses fuzzy paraphrase identity; the ensemble's defer-band deployment (H128) uses NLI contradiction as a cheap veto BEFORE the cross-encoder runs
 - **Acceptance bar** - >= 0.04 ensemble gain + the error-set analysis; refuted if the signals correlate > 0.9 (one suffices - keep the cheaper)
 - **Experiment** - extends the H121/H122 GPU harness with the ensemble arm; runs with that batch
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (executor batch 2026-07-07, [`matching_scorers_r12.ipynb`](../../notebooks/matching_scorers_r12.ipynb); frozen 252-pair set, baseline Titan cosine re-measured 0.893 overall / 0.971 variance-vs-sibling) ensemble (cross-encoder + both NLI directions + contradiction) 5-fold CV AUC 0.855 vs best individual 0.851 - gain +0.0035 vs the +0.04 bar. The mechanism clause HELD: max |Spearman| 0.765 (< 0.9), error-set Jaccard 0.25 - the signals are genuinely complementary, NLI is just too weak a base to lift the sum
+- **Verdict** - REFUTED on the bar, mechanism confirmed - complementarity without lift. The surviving deployment is H122's contradiction veto standalone, not an ensemble ranker
 
 ### R13-H141 Transport in the posterior - the integration test
 
