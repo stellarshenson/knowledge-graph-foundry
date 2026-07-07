@@ -3,7 +3,7 @@ import json, collections, datetime, re
 from pathlib import Path
 
 ROOT = Path("/home/lab/workspace/learning/projects/knowledge-graph-foundry")
-CACHE = ROOT / "reports/image-census-cache"
+CACHE = ROOT / "tmp/image-census-cache"
 a13 = json.loads((CACHE / "arms13.json").read_text())
 a2 = json.loads((CACHE / "arm2.json").read_text())
 asm = json.loads((CACHE / "assembled.json").read_text())

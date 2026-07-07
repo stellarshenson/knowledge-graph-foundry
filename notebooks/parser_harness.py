@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PDFDIR = ROOT / 'data/external/cpap-datasheets-and-manuals'
-CACHE = ROOT / 'reports/parser-round-cache'
+CACHE = ROOT / 'tmp/parser-round-cache'
 CACHE.mkdir(parents=True, exist_ok=True)
 
 # ---- H51 conventions (verbatim) ----

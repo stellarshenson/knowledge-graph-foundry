@@ -212,3 +212,4 @@ logs/*.jsonl
 data/external/cpap-datasheets-and-manuals/
 data/external/cpap-datasheets-and-manuals.zip
 data/external/apnea-articles/apnea_slice.jsonl
+tmp/
