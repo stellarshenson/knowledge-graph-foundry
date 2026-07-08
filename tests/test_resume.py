@@ -331,3 +331,58 @@ class TestTextHeavyRouting:
         # empty/None rows chunk to nothing and are skipped as documents
         assert summary["documents"] == 1
         assert len(store["processed_documents"]) == 1
+
+
+class TestCorpusExhaustedConsolidation:
+    """DEF-7: a corpus that ends while the FSM is still CURING consolidates on
+    whatever evidence it has - the graph is usable after ingest, and the next
+    ingestion session simply continues in STABLE (incremental load, no re-cure)."""
+
+    def test_corpus_end_consolidates_and_graph_is_usable(self, tmp_path, lease_patches):
+        paths = _files(tmp_path, ["a.txt", "b.txt"])
+        store: dict = {}
+        _seed_state(store)
+
+        f = _foundry(store)  # never-cure gate: corpus will end fluid
+        f._extract_file = lambda p, pu, o: (_entity_for(p), [])
+        f._embed = lambda e: e
+        consolidations = []
+        real_consolidate = f._consolidate
+
+        def spy(buffer, purpose, calibrator, reason):
+            consolidations.append(reason)
+            return real_consolidate(buffer, purpose, calibrator, reason)
+
+        f._consolidate = spy
+        summary = f.ingest(tmp_path)
+
+        assert consolidations == ["corpus_exhausted"]
+        assert summary["cured"] is True
+        assert store["fsm_state"] == "STABLE"
+        assert store["buffer_cache"] is None  # nothing left unconsolidated
+
+    def test_next_session_simply_continues_stable(self, tmp_path, lease_patches):
+        _files(tmp_path, ["a.txt", "b.txt"])
+        store: dict = {}
+        _seed_state(store)
+
+        f = _foundry(store)
+        f._extract_file = lambda p, pu, o: (_entity_for(p), [])
+        f._embed = lambda e: e
+        f.ingest(tmp_path)
+        assert store["fsm_state"] == "STABLE"
+
+        # session 2: a new document arrives - stable incremental load, no re-cure
+        _files(tmp_path, ["c.txt"])
+        f2 = _foundry(store)
+        f2._extract_file = lambda p, pu, o: (_entity_for(p), [])
+        f2._embed = lambda e: e
+        stable_loads = []
+        f2._stable_load = lambda e, r, o, c: (stable_loads.append(len(e)) or (0.0, 0))
+        f2._consolidate = MagicMock()
+        summary2 = f2.ingest(tmp_path)
+
+        assert stable_loads == [1]  # only c.txt, loaded incrementally
+        assert summary2["documents"] == 1
+        f2._consolidate.assert_not_called()
+        assert store["fsm_state"] == "STABLE"

@@ -10,6 +10,7 @@
 - [DEF-4: .env NEO4J_URI silently overrides --config target, wave 2 ingested into the wrong instance](#def-4-env-neo4j_uri-silently-overrides---config-target-wave-2-ingested-into-the-wrong-instance) - fixed
 - [DEF-5: benchmark harness seeded from the .env default instance while rendering from neo4j2](#def-5-benchmark-harness-seeded-from-the-env-default-instance-while-rendering-from-neo4j2) - fixed
 - [DEF-6: engine LLM client construction depends on instructor's import-order-sensitive mode registry](#def-6-engine-llm-client-construction-depends-on-instructors-import-order-sensitive-mode-registry) - fixed
+- [DEF-7: corpus exhausted while fluid leaves the graph entity-less](#def-7-corpus-exhausted-while-fluid-leaves-the-graph-entity-less) - fixed
 
 ### DEF-1: Per-mention re-embedding on every document
 
@@ -48,3 +49,9 @@
 - [x] MEDIUM `LocalGpuEngine.__init__` calls `instructor.from_litellm(litellm.completion, mode=instructor.Mode.JSON)`, which in instructor 1.15.4 dispatches to the v2 path whose mode registry is populated by IMPORT SIDE EFFECTS - `(OPENAI, Mode.JSON)` is registered only when `instructor.v2.providers.openai.handlers` happens to be imported, so the same construction succeeds or raises `RegistryError` depending on what was imported first in the process; cause: registry population via decorator side effects with no explicit dependency from `from_litellm` to the handler module; fix: engine imports `instructor.v2.providers.openai.handlers` explicitly before client construction (H198 tranche 1); workaround: notebooks add the explicit import before engine construction; `src/knowledge_graph_foundry/engines/local_gpu.py`
   - 2026-07-07 reported: H119 harness - the sequential notebook run extracted fine, the parallelized relaunch of the SAME notebook crashed twice with `RegistryError: Mode Mode.JSON is not registered for provider Provider.OPENAI`; standalone scripts with identical imports succeed in main thread and 10 threads - the differing kernel import order is the trigger, not threading; verified fix: explicit handler import flips `mode_registry.is_registered(OPENAI, JSON)` to True
   - 2026-07-08 fixed: H198 tranche 1 - explicit `instructor.v2.providers.openai.handlers` import in `engines/local_gpu.py` plus a fresh-interpreter regression test; commit b4b9096
+
+### DEF-7: corpus exhausted while fluid leaves the graph entity-less
+
+- [x] HIGH a corpus whose ingestion ends before the curing gate fires left the graph chunks-only (zero entities) with the extractions parked in `buffer_cache` state - the graph claimed successful ingest but answered no queries, and the force-cure backstop (`max_fluid_documents=100`) is unreachable for small corpora; cause: consolidation existed only inside the per-document loop, no end-of-corpus path; fix: corpus-exhausted consolidation - loop end with a non-empty buffer consolidates with reason `corpus_exhausted`, cures the FSM to STABLE, persists cleared buffer state; the next ingestion session simply continues in STABLE with incremental loads; `src/knowledge_graph_foundry/pipeline.py`
+  - 2026-07-08 reported: user question during the H240(b) enum arm ("will the graph be searchable before curing finishes / what if ingestion ends first") - live check on neo4j4 mid-cure confirmed 0 entities / 45 chunks; code read confirmed no post-loop flush
+  - 2026-07-08 fixed: end-of-corpus consolidation + two-session continuation tests (`TestCorpusExhaustedConsolidation` in `tests/test_resume.py`)

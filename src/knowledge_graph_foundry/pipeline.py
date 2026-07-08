@@ -380,6 +380,29 @@ class Foundry:
                 )
                 emit("document.completed", path=str(file_path), entities=len(entities))
 
+        # DEF-7: corpus exhausted while still fluid - the gate never fired, so the
+        # buffer would outlive the ingest and the graph would stay entity-less;
+        # consolidate on whatever evidence the corpus provided
+        if buffer is not None and buffer.documents_processed > 0:
+            ontology, drift = self._consolidate(buffer, purpose, calibrator, "corpus_exhausted")
+            lifecycle.cure()
+            summary["cured"] = True
+            buffer = None
+            self._save_state(
+                {
+                    "fsm_state": lifecycle.state,
+                    "purpose": purpose,
+                    "ontology": ontology.model_dump(),
+                    "buffer_cache": None,
+                    "metrics_history": None,
+                    "calibration": calibrator.to_json() if calibrator else None,
+                    "drift": drift.to_dict() if drift else None,
+                    "documents_processed": documents_processed,
+                    "processed_documents": sorted(processed_documents),
+                    "drift_verdict": None,
+                }
+            )
+
         emit("load.completed", **summary)
         return summary
 
