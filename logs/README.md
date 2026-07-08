@@ -50,3 +50,10 @@ Background job logs for Knowledge Graph Foundry.
 - `h241-v1-driver.log` / `h241-chain.log` - detached driver of the v1 arm and the orchestration chain (wait v1 -> measure -> run v2 -> measure)
 - `h241-v1-events.jsonl` / `h241-v2-events.jsonl` - JSONL event logs (resolution.merge/defer/block/veto) driving the H241 precision proxy per arm
 - `r27-precision-arms.log` - R27 precision arms (H282-H285/H289) false-merge removal execution
+
+- `r23r24-llm-gates.log` - R23/R24 undersampling LLM-tier gate progress: per-hypothesis compute/verdict markers (H246 enumerate, H248 GLiNER-primed, H243 complement, H258 mention-emission, H251 n-sampling, H245/H257 logprob, H260 adjudication, H261 distillation) against the frozen H119 harness on local gpt-oss-120b
+- `r23r24-runbatch.log` - stdout of the resumable batch driver (scratchpad run_batch.py, notebook code as a plain process) populating results/r23r24_llm/ caches and the report JSON
+- `r23r24-nbconvert.log`, `r23r24-autorender.log` - nbconvert executions of notebooks/undersampling_llm_gates_r23r24.ipynb (autorender renders the source-of-record notebook from the caches once the batch completes)
+
+- `r24c-llm-gates.log` - R23/R24 LLM-GATE BATCH (R24c) per-gate compute/verdict markers (H243 complement, H246 enumerate, H245/H257 logprob, H251 n-sampling, H248 primed, H258 mention-emission, H260 adjudication, H261 few-shot) on local gpt-oss-120b; source-of-record notebook notebooks/llm_gates_r24c.ipynb, report reports/llm-gates-r24c-*.json
+- `r24c-nbconvert.log` - nbconvert execution output of notebooks/llm_gates_r24c.ipynb

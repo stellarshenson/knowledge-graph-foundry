@@ -9,7 +9,7 @@ Composed every promoted lever into the shipped engine and rebuilt the graph on i
 ## Decision slots (pending verdicts - filled before Phase 2 begins)
 
 - **SLOT-1 (H241)**: v2 identity stack becomes default? GO -> `resolution.identity_stack: v2` in shipped config; NO-GO -> v1 stays, v2 remains flagged, gap-ledger entry
-- **SLOT-2 (H250)**: the extraction recipe - which remedy composition (union-K / enumerate / GLiNER-primed / n-sampling / complement) ships as the default extraction path, at what K and cost point; fed by the running R23/R24 batch
+- **SLOT-2 (H250)**: RESOLVED 2026-07-08 - **H246 enumerate-then-extract ships as the default extraction recipe** (0.971 of union-of-5 at 1.05x cost, only fully-passed operator; frontier table in the H250 ledger entry). Staged upgrade: H258 mention-emission strictly dominates (1.000 at 0.76x, 1.53x mention inflation) but its resolver-precision clause is untestable offline - H240(b)'s scratch arm runs BOTH recipes and the precision clause decides whether mention-emission displaces enumerate as default. Dead: GLiNER-primed extraction, n-sampling (build cannot execute n>1), complement pass, union demos, GLiNER+adjudication; GLiNER stays as audit lexicon stage only
 - **SLOT-3 (H292)**: RESOLVED - type-blind confirmed at the bars but NOT shipped: under demote-don't-delete, over-splits are costless while missed false merges persist as SAME_AS poison; the court ships as H282 baseline judge + demotion (98.0% detection), type labels stay in the judge context
 - **SLOT-4 (H240b)**: union-ingest E2E validation on scratch - confirms SLOT-2's recipe survives the full pipeline before the production rebuild
 

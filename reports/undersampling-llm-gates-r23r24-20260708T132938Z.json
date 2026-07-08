@@ -1,0 +1,125 @@
+{
+ "round": "R23/R24",
+ "tier": "LLM gates (offline, local vLLM gpt-oss-120b)",
+ "generated_utc": "20260708T132938Z",
+ "endpoint": "http://localhost:8010/v1",
+ "model": "gpt-oss-120b",
+ "gold_carrier_definition": "token_set_ratio(name.lower(), product.lower()) >= 85; union-of-5 = 63",
+ "extraction_atom": "entity pass + 1 gleaning round (reproduces frozen H119 pipeline)",
+ "docsets": {
+  "GATE_DOC": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+  "TESTDOCS": [
+   "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "CPAP-Machines-Brochure.pdf",
+   "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf"
+  ],
+  "DEMO_DOCS": [
+   "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+   "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+   "CPAP-Machines-Brochure.pdf"
+  ]
+ },
+ "anchors": {
+  "union5": 63,
+  "single_pooled": 0.7682539682539682,
+  "union2_ref": 0.89
+ },
+ "serving_caveats": [
+  "vLLM n>1 -> HTTP 500 (harmony 200005/200006); n-sampling emulated as K separate calls",
+  "guided_json -> HTTP 500 (same harmony bug); H257 FSM clauses fall back / UNTESTABLE",
+  "gpt-oss over-reasons; max_tokens grown adaptively to avoid empty-truncation"
+ ],
+ "base_testdocs_tokens": 97371,
+ "base_gatedoc_tokens": 65565,
+ "results": {
+  "H246": {
+   "gate": {
+    "enum_union_cov": 1.0,
+    "baseline": 0.4470588235294118,
+    "delta": 0.5529411764705883,
+    "bar": 0.15,
+    "pass": true
+   },
+   "full": {
+    "cov": 0.9714285714285714,
+    "cov_bar": 0.8,
+    "cost_mult": 1.0512781012827228,
+    "cost_bar": 1.5,
+    "pass": true,
+    "tokens": 102364
+   }
+  },
+  "H248": {
+   "primed_cov": 0.9428571428571428,
+   "unprimed_cov_control": 0.8571428571428571,
+   "unprimed_cov_ckpt": 0.8342857142857143,
+   "lift_vs_control": 0.08571428571428574,
+   "lift_vs_ckpt": 0.10857142857142854,
+   "bar": 0.2,
+   "pass": false,
+   "cost_mult": 1.2579515461482371
+  },
+  "H243": {
+   "gate": {
+    "comp_new_carriers": 0,
+    "bar": 1,
+    "pass": false
+   }
+  },
+  "H258": {
+   "cov": 1.0,
+   "cov_bar": 0.8,
+   "cov_pass": true,
+   "mentions": 1121,
+   "unique": 732,
+   "inflation": 1.5314207650273224,
+   "base_unique": 275,
+   "inflation_vs_base": 4.076363636363636,
+   "resolver_precision_clause": "UNTESTABLE-offline (needs v2 resolver + graph write)",
+   "cost_mult": 0.7590453009622988
+  },
+  "H251": {
+   "gate": {
+    "nsample_cov": 0.9117647058823529,
+    "indep_union_cov": 1.0,
+    "cov_gap": -0.08823529411764708,
+    "cost_mult": 3.0495843819110804,
+    "pass": false
+   }
+  },
+  "H245": {
+   "stable_n": 183,
+   "churn_n": 134,
+   "stable_mean_lp": -0.001974538417106894,
+   "churn_mean_lp": -0.008601616283134805,
+   "separation_nats": 0.006627077866027911,
+   "bar": 0.5,
+   "pass": false
+  },
+  "H257": {
+   "clause_a": {
+    "missing_carriers": 29,
+    "alt_token_carrier_hits": 10,
+    "note": "best-effort plain-call harvest; registered FSM name-slot path 500s (guided_json harmony bug)"
+   },
+   "clause_b": "UNTESTABLE (min-p value-slot logit processor requires guided decoding, which 500s on this build)"
+  },
+  "H260": {
+   "adjudicated_cov": 0.873015873015873,
+   "bar": 0.89,
+   "pass": false,
+   "union2_ref": 0.89,
+   "gliner_recall_ref": 0.952,
+   "tokens": 87209
+  },
+  "H261": {
+   "distilled_cov": 0.5166666666666667,
+   "baseline": 0.67,
+   "lift": -0.15333333333333332,
+   "abs_bar": 0.78,
+   "lift_bar": 0.2,
+   "demo_tokens_est": 2322,
+   "pass": false
+  }
+ }
+}

@@ -9,6 +9,7 @@ cd /home/lab/workspace/learning/projects/knowledge-graph-foundry
 setsid nohup env \
   CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 HF_HUB_OFFLINE=1 \
   VLLM_USE_DEEP_GEMM=0 VLLM_MOE_USE_DEEP_GEMM=0 VLLM_WSL2_ENABLE_PIN_MEMORY=1 \
+  VLLM_USE_FLASHINFER_SAMPLER=0 \
   CUDA_HOME=/home/lab/venvs/vllm/lib/python3.12/site-packages/nvidia/cu13 \
   PATH=/home/lab/venvs/vllm/bin:/home/lab/venvs/vllm/lib/python3.12/site-packages/nvidia/cu13/bin:/opt/conda/envs/cudabuild/bin:/usr/bin:/bin \
   CC=/opt/conda/envs/cudabuild/bin/gcc CXX=/opt/conda/envs/cudabuild/bin/g++ \
