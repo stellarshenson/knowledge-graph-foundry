@@ -131,6 +131,88 @@ def vector_query(
         ).data()
 
 
+def overfetch_seeds(query_fn, top_k: int, factor: int) -> list[dict[str, Any]]:
+    """R15-H195a generous-fetch: query the index at ``top_k * factor`` then
+    truncate to ``top_k`` after ranking. The index returns rows already ordered
+    by score, so the wider fetch only changes which rows can enter the top_k;
+    ``factor <= 1`` is the plain top_k fetch. ``query_fn`` takes the fetch size."""
+    fetch = top_k * factor if factor > 1 else top_k
+    return query_fn(fetch)[:top_k]
+
+
+def _query_similarity(query_embedding: list[float], emb: Optional[list[float]]) -> float:
+    """Dot product against the query embedding (Titan embeddings are unit-norm,
+    so dot == cosine); a missing embedding sorts last."""
+    if not emb:
+        return -1.0
+    return float(sum(a * b for a, b in zip(query_embedding, emb)))
+
+
+def cap_fanout(
+    rows: list[dict[str, Any]], query_embedding: list[float], k: int
+) -> list[dict[str, Any]]:
+    """R19-H180: rank 1-hop neighbor rows by similarity of the neighbor embedding
+    (``row['emb']``) to the query, keep the top ``k``. Zero recall loss at k=5 on
+    the R19 census; ``k <= 0`` leaves the rows unbounded."""
+    if k <= 0:
+        return rows
+    ranked = sorted(
+        rows, key=lambda r: _query_similarity(query_embedding, r.get("emb")), reverse=True
+    )
+    return ranked[:k]
+
+
+def detect_miss(seeds: list[dict[str, Any]], threshold: float) -> bool:
+    """R19-H181: True when the best seed similarity is below ``threshold`` - the
+    miss class, rendered as a cheap abstention form instead of full context.
+    Threshold 0.668 detects 86.7% of misses at 0% false-abstention (R19 census)."""
+    return max((s.get("score", 0.0) for s in seeds), default=0.0) < threshold
+
+
+def truncate_to_budget(units: list[tuple[Any, float, float]], budget: float) -> list[Any]:
+    """R19-H182: keep the top-similarity ``budget`` fraction of render mass.
+    ``units`` is ``(item, similarity, size)``; ranks by similarity descending and
+    greedily accumulates items until ``budget * total_size`` is exhausted. Returns
+    the kept items in similarity order. ``budget >= 1`` keeps everything in the
+    original order (the disabled path preserves prior render behavior)."""
+    if budget >= 1.0:
+        return [u[0] for u in units]
+    cap = budget * sum(u[2] for u in units)
+    acc, kept = 0.0, []
+    for item, _sim, size in sorted(units, key=lambda u: u[1], reverse=True):
+        if acc + size <= cap:
+            kept.append(item)
+            acc += size
+    return kept
+
+
+# R19-H205: device-type labels whose foreign render sections the optional
+# exclusion layer drops (the queried product and non-device nodes are kept)
+_DEVICE_TYPES = {"CPAPDevice", "ProductModel", "Device", "Product"}
+
+
+def exclude_foreign_devices(
+    nodes: list[dict[str, Any]], keep_ids: set[str]
+) -> list[dict[str, Any]]:
+    """R19-H205: drop render sections for foreign devices - device-typed nodes
+    whose id is not in ``keep_ids`` (the queried product and its aliases).
+    Non-device nodes are always kept (+5.5pt feature attribution, directional)."""
+    return [
+        n for n in nodes if not (_DEVICE_TYPES & set(n.get("types", []))) or n["id"] in keep_ids
+    ]
+
+
+def link_prop_values(name: str, value_index: dict[str, list[str]]) -> list[str]:
+    """R19-H211: return the carrier names whose property value equals ``name``
+    (the prop-val linkage rule, 224-target map). ``value_index`` maps a normalized
+    property value to the entities holding it; names shorter than 4 chars do not
+    link (embedding-surface noise floor)."""
+    key = re.sub(r"\s+", " ", (name or "").casefold()).strip()
+    if len(key) < 4:
+        return []
+    return value_index.get(key, [])
+
+
 _PPR_STREAM = """
 CALL gds.pageRank.stream($name, {
     sourceNodes: $seed_ids,

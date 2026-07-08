@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import re
 from typing import Optional
 
 from loguru import logger
@@ -854,16 +855,42 @@ class Foundry:
         Returns (context_lines, supporting_names, coverage) - coverage carries
         the structural signals the abstention gate reads (R03-H17)."""
         from knowledge_graph_foundry.extraction import generate_embeddings
-        from knowledge_graph_foundry.graph.graphrag import ppr_query, vector_query
+        from knowledge_graph_foundry.graph.graphrag import (
+            cap_fanout,
+            detect_miss,
+            exclude_foreign_devices,
+            link_prop_values,
+            overfetch_seeds,
+            ppr_query,
+            truncate_to_budget,
+            vector_query,
+        )
 
         probe = Entity.create(question[:80], types=["Query"], description=question)
         embedded = generate_embeddings([probe], self.settings.embeddings)
-        seeds = vector_query(
-            self.driver,
-            embedded[0].embedding,
-            self.settings.graphrag.vector_index_name,
-            top_k=self.settings.graphrag.top_k,
+        qv = embedded[0].embedding
+        # R15-H195a: over-fetch top_k*factor then truncate to top_k after ranking
+        seeds = overfetch_seeds(
+            lambda k: vector_query(
+                self.driver, qv, self.settings.graphrag.vector_index_name, top_k=k
+            ),
+            self.settings.graphrag.top_k,
+            self.settings.graphrag.overfetch_factor,
         )
+
+        # R19-H181: on the miss class (best seed similarity below threshold) skip
+        # the full render and return the cheap abstention form
+        if self.settings.graphrag.miss_detector and detect_miss(
+            seeds, self.settings.graphrag.miss_threshold
+        ):
+            top = max((s.get("score", 0.0) for s in seeds), default=0.0)
+            nearest = ", ".join(s["name"] for s in seeds[:8])
+            emit("query.miss", question=question, top_score=top)
+            return (
+                [f"No confident match. Nearest entities: {nearest}"],
+                [s["name"] for s in seeds[:8]],
+                {"top_score": top},
+            )
 
         # R02-H11: proposition hits are primary evidence AND extra PPR seeds
         fact_lines: list[str] = []
@@ -906,6 +933,11 @@ class Foundry:
                         seen.add(n["id"])
                         nodes.append(n)
 
+        # R19-H205 (optional, default off): drop foreign-device render sections,
+        # keeping the queried product (top seed) and every non-device node
+        if self.settings.graphrag.foreign_device_exclusion and seeds:
+            nodes = exclude_foreign_devices(nodes, {seeds[0]["id"]})
+
         # R03-H17 coverage signals: best vector/proposition hit score
         coverage = {
             "top_score": max(
@@ -915,16 +947,64 @@ class Foundry:
             )
         }
 
-        entity_blocks: list[str] = []
+        cap = self.settings.graphrag.fanout_cap
+        # R19-H211: index property values equal to a rendered node's name so the
+        # carrier entity gets surfaced under that node (the prop-val linkage rule)
+        prop_links: dict[str, list[str]] = {}
+
+        scored_blocks: list[tuple[str, float]] = []
         supporting: list[str] = []
         with self.driver.session() as session:
+            if self.settings.graphrag.prop_val_linkage and nodes:
+                wanted = {
+                    re.sub(r"\s+", " ", n["name"].casefold()).strip()
+                    for n in nodes
+                    if n.get("name")
+                }
+                wanted = {w for w in wanted if len(w) >= 4}
+                if wanted:
+                    val_rows = session.run(
+                        "MATCH (c:Entity) "
+                        "UNWIND [k IN keys(c) WHERE k STARTS WITH 'prop_'] AS k "
+                        "WITH c, toLower(trim(toString(c[k]))) AS val "
+                        "WHERE val IN $wanted "
+                        "RETURN val, collect(DISTINCT c.name)[..3] AS carriers",
+                        wanted=list(wanted),
+                    ).data()
+                    value_index: dict[str, list[str]] = {}
+                    for r in val_rows:
+                        key = re.sub(r"\s+", " ", (r["val"] or "").casefold()).strip()
+                        value_index.setdefault(key, []).extend(r["carriers"])
+                    for node in nodes:
+                        carriers = [
+                            c
+                            for c in link_prop_values(node["name"], value_index)
+                            if c != node["name"]
+                        ]
+                        if carriers:
+                            prop_links[node["id"]] = carriers
             for node in nodes:
-                rows = session.run(
-                    "MATCH (e:Entity {id: $id})-[r]-(n:Entity) "
-                    "WHERE r.valid_to IS NULL AND type(r) <> 'SIMILAR_TO' "
-                    "RETURN type(r) AS rel, n.name AS name LIMIT 15",
-                    id=node["id"],
-                ).data()
+                if cap > 0:
+                    # R19-H180: fetch the neighborhood then keep the top-`cap`
+                    # neighbors ranked by embedding similarity to the query
+                    rows = cap_fanout(
+                        session.run(
+                            "MATCH (e:Entity {id: $id})-[r]-(n:Entity) "
+                            "WHERE r.valid_to IS NULL AND type(r) <> 'SIMILAR_TO' "
+                            "RETURN type(r) AS rel, n.name AS name, n.embedding AS emb "
+                            "LIMIT 100",
+                            id=node["id"],
+                        ).data(),
+                        qv,
+                        cap,
+                    )
+                else:
+                    rows = session.run(
+                        "MATCH (e:Entity {id: $id})-[r]-(n:Entity) "
+                        "WHERE r.valid_to IS NULL AND type(r) <> 'SIMILAR_TO' "
+                        "RETURN type(r) AS rel, n.name AS name LIMIT 15",
+                        id=node["id"],
+                    ).data()
                 props = session.run(
                     "MATCH (e:Entity {id: $id}) RETURN properties(e) AS props",
                     id=node["id"],
@@ -946,13 +1026,23 @@ class Foundry:
                         if k.startswith("prop_"):
                             spec.setdefault(k.removeprefix("prop_"), v)
                 supporting.append(node["name"])
-                entity_blocks.append(
+                links = prop_links.get(node["id"], [])
+                block = (
                     f"## {node['name']} ({', '.join(node.get('types', []))})\n"
                     + (f"Also known as: {', '.join(alias_names)}\n" if alias_names else "")
+                    + (f"Referenced by: {', '.join(links)}\n" if links else "")
                     + f"{node.get('description', '')}\n"
                     f"Properties: {json.dumps(spec, default=str)}\n"
                     "Relations: " + "; ".join(f"{r['rel']} -> {r['name']}" for r in rows)
                 )
+                scored_blocks.append((block, node.get("score", 0.0)))
+
+        # R19-H182: keep the top-similarity fraction of render mass (query-
+        # similarity ranked, ~40% token cut at zero recall loss on the census)
+        entity_blocks = truncate_to_budget(
+            [(b, sc, float(len(b))) for b, sc in scored_blocks],
+            self.settings.graphrag.render_budget,
+        )
 
         # R03-H16: lost-in-the-middle mitigation - blocks arrive relevance-
         # ordered; interleave so the strongest sit at the head AND the tail
