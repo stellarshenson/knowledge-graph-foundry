@@ -1,0 +1,171 @@
+{
+  "round": "R24",
+  "tier": "FANOUT free-gate (b) - CPU/disk only, zero LLM/GPU/Neo4j",
+  "generated_utc": "20260708T065520Z",
+  "gold_carrier_definition": "token_set_ratio(name.lower(), product.lower()) >= 85; union-of-5 = probed products matched by any of 5 arm-A runs pooled over 10 docs = 63",
+  "anchors": {
+    "union5": 63,
+    "single_run_coverage": 0.7683,
+    "n_products": 101,
+    "runs": 5,
+    "docs": 10
+  },
+  "gates": {
+    "H255": {
+      "clause_a_chao2_mae": {
+        "median_abs_err": 2.9056,
+        "median_signed_bias": 2.9056,
+        "bar": 0.15,
+        "pass": false
+      },
+      "clause_b_greedy": {
+        "winning_controller": "scanner",
+        "greedy_recovered": 62,
+        "uniform2_recovered": 60,
+        "random_recovered": 57.9,
+        "gap_pts": 3.17,
+        "bar_pts": 5,
+        "pass": false,
+        "all_controllers": {
+          "chao2": 55,
+          "good_turing": 55,
+          "scanner": 62
+        }
+      },
+      "clause_c_adaptive_stop": {
+        "docs_meeting": 0,
+        "bar_docs": 5,
+        "pass": false
+      },
+      "winning_controller": "scanner",
+      "verdict_recommendation": "REFUTED",
+      "caveat": "failed extractions (0-name runs) kept as zero-yield passes; incidence counts reflect real pipeline flakiness, which depresses Chao2 richness and inflates single-pass residue"
+    },
+    "H256": {
+      "clause_a_chapman": {
+        "mean_rel_bias": 0.4777,
+        "std_rel_bias": 0.5525,
+        "within_25pct": false,
+        "stable_bias": false,
+        "co_miss_rate": 0.2673,
+        "pass": false
+      },
+      "clause_b_gt_coverage": {
+        "spearman_rho": 0.0952,
+        "p": 0.37753992117687635,
+        "n_cells": 88,
+        "bar": 0.6,
+        "pass": false
+      },
+      "verdict_recommendation": "REFUTED",
+      "caveat": "scanner over-generates surface forms so n2 is large and Chapman biases positive (not the co-miss negative bias the grounding anticipated); co-miss rate reported as the honest lower-bound signal"
+    },
+    "H258": {
+      "granularity_caveat": "checkpoints are doc-level entity sets; the registered within-document dedup signal is untestable here - no chunk/positional provenance. Cross-document proxy substituted per the registered fallback.",
+      "cross_doc_proxy_rate": 0.8136,
+      "n_missed_slots": 531,
+      "n_found_elsewhere": 432,
+      "bar": 0.3,
+      "pass": true,
+      "verdict_recommendation": "CONFIRMED (cross-doc proxy)"
+    },
+    "H259": {
+      "missed_mean_density": 10.102,
+      "captured_mean_density": 13.067,
+      "ratio": 0.773,
+      "bar": 1.5,
+      "n_missed": 138,
+      "n_captured": 255,
+      "single_chunk_docs": 5,
+      "pass": false,
+      "verdict_recommendation": "REFUTED (shadowing signal absent)",
+      "caveat": "mention located by substring/token match; single-chunk docs (4/10) give an identical density to missed and captured carriers, muting the within-doc contrast"
+    },
+    "H261": {
+      "no_bar": true,
+      "mean_jaccard_per_doc": {
+        "0-20190113114505.pdf": 0.1442,
+        "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.1489,
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.2,
+        "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 0.118,
+        "Airsense-Brochure.pdf": 0.128,
+        "BC-Dreamstation-Standard-CPAP.pdf": 0.1268,
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf": 0.1942,
+        "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": 0.1265,
+        "CPAP-Machines-Brochure.pdf": 0.1204,
+        "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": 0.0871
+      },
+      "cleanest_demo_docs": [
+        "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+        "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+        "CPAP-Machines-Brochure.pdf"
+      ],
+      "cleanest_pairs": [
+        {
+          "a": "Airsense-Brochure.pdf",
+          "b": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+          "jaccard": 0.0747,
+          "shared_carriers": 0
+        },
+        {
+          "a": "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+          "b": "Airsense-Brochure.pdf",
+          "jaccard": 0.0914,
+          "shared_carriers": 0
+        },
+        {
+          "a": "Airsense-Brochure.pdf",
+          "b": "BC-Dreamstation-Standard-CPAP.pdf",
+          "jaccard": 0.1019,
+          "shared_carriers": 0
+        },
+        {
+          "a": "Airsense-Brochure.pdf",
+          "b": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+          "jaccard": 0.1068,
+          "shared_carriers": 0
+        },
+        {
+          "a": "Airsense-Brochure.pdf",
+          "b": "CPAP-Machines-Brochure.pdf",
+          "jaccard": 0.1081,
+          "shared_carriers": 0
+        }
+      ],
+      "verdict_recommendation": "SELECTION: use the 3 low-leakage docs as held-out demos for the H261 LLM distillation probe"
+    },
+    "H263": {
+      "classification_used": "H230 name-shape (code-bearing/product-form/generic-concept/fragment); probe attribute/derivation_rule classify probes not carriers",
+      "carriers_101": {
+        "composition": {
+          "product-form": 85,
+          "code-bearing": 11,
+          "generic-concept": 3,
+          "fragment": 2
+        },
+        "classes_covering_90pct": 2,
+        "class_fraction": 0.5
+      },
+      "carriers_63": {
+        "composition": {
+          "product-form": 56,
+          "code-bearing": 5,
+          "fragment": 2
+        },
+        "classes_covering_90pct": 2,
+        "class_fraction": 0.5
+      },
+      "bar_class_fraction": 0.4,
+      "pass": false,
+      "verdict_recommendation": "REFUTED (carriers spread across classes - no scoping leverage)"
+    }
+  },
+  "verdict_recommendation": {
+    "H255": "REFUTED",
+    "H256": "REFUTED",
+    "H258": "CONFIRMED (cross-doc proxy)",
+    "H259": "REFUTED (shadowing signal absent)",
+    "H261": "SELECTION: use the 3 low-leakage docs as held-out demos for the H261 LLM distillation probe",
+    "H263": "REFUTED (carriers spread across classes - no scoping leverage)"
+  }
+}

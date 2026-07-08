@@ -2891,6 +2891,8 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - all three clauses on checkpoint resampling; the winning controller (accuracy x simplicity) feeds H250's frontier; refuted if residue estimates do not rank documents (allocation has no signal and fixed-K stands)
 - **Synthetic gate** - none needed: pure resampling on the 25 checkpoints; CPU only
 - **Cost** - gate free; production NEGATIVE vs fixed-K (fewer passes on easy docs)
+- **Result** - (executor 2026-07-08, [`fanout_gates_r24b.ipynb`](../../notebooks/fanout_gates_r24b.ipynb) / [`fanout-gates-r24b-20260708T065520Z.json`](../../reports/fanout-gates-r24b-20260708T065520Z.json); anchors reproduced) all three clauses fail: Chao2 median error ~290% (bar 15%) - richness estimates are wrecked by real pipeline flakiness (0-name failed runs kept as zero-yield passes violate closure); greedy allocation's best controller (scanner-residue) recovers +3.17 pts over uniform-2 (bar 5); adaptive stop reaches the bar on 0/10 docs
+- **Verdict** - REFUTED on this corpus - the estimators cannot rank documents reliably at K<=3 with flaky passes in the mix; the honest residue signal that DOES work is the deterministic scanner (now superseded by GLiNER per H260), not incidence statistics; fixed-K (or GLiNER-residue-triggered) allocation stands
 
 ### R24-H256 Completeness instrumentation - missing mass from one pass
 
@@ -2899,6 +2901,8 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - both clauses; even the biased-lower-bound branch ships (an honest floor beats no signal); refuted if the estimator is unstable doc-to-doc
 - **Synthetic gate** - none needed: checkpoints + scanner, CPU only
 - **Cost** - gate free; production = free byproduct of any pass
+- **Result** - (same executor/report) Chapman biased POSITIVE and unstable (mean relative bias +47.8%, std 55.3% - the scanner over-generates surface forms so n2 inflates the estimate; the anticipated co-miss negative bias is the smaller effect, co-miss rate 26.7%); Good-Turing 2-pass coverage vs actual recall: Spearman rho 0.095 (bar 0.6), no ranking signal
+- **Verdict** - REFUTED - neither estimator survives contact with real extraction noise; completeness instrumentation falls back to the direct route: GLiNER-lexicon residue counting (H260, deterministic, 95.2% visibility) as the per-document gap-ledger scalar
 
 ### R24-H257 Logit-level candidate harvesting - the near-tie losers ARE the missing entities
 
@@ -2915,6 +2919,8 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - gate clause first; refuted if misses are genuinely unseen (not internal dedup) - the signal then belongs to H257's near-tie account
 - **Synthetic gate** - checkpoint set-diff per run per doc, CPU only, runs immediately
 - **Cost** - gate free; full test = prompt rewrite + 1 pass, resolver already deployed
+- **Result (gate)** - (same executor/report; granularity caveat recorded - checkpoints are doc-level, so the registered within-document signal was untestable and the pre-registered cross-document proxy substituted) **81.4%** of missed gold-carrier slots (432/531) were extracted by the SAME run in ANOTHER document (bar 30%)
+- **Verdict (interim)** - gate CONFIRMED by 51 points - the model demonstrably KNOWS the overwhelming majority of what it drops; the omission is local selection over known entities, not ignorance. This is the strongest mechanism datum in the round: it simultaneously licenses the mention-emission LLM clause (queued behind H229), independently corroborates H254's graph-lexicon healing ceiling (cross-document redundancy is huge), and predicts H243's complement pass should work (the knowledge is retrievable under instruction)
 
 ### R24-H259 Extract-then-mask peeling - remove the salience anchors
 
@@ -2923,6 +2929,8 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - gate clause first; the LLM clause competes with H243 head-to-head in H250's frontier (same cost class, different residue-targeting mechanism); refuted if shadowing signal absent
 - **Synthetic gate** - checkpoint + chunk-cache arithmetic, CPU only, runs immediately
 - **Cost** - gate free; full test 2 passes/doc
+- **Result (gate)** - (same executor/report) shadowing signal ABSENT and inverted: missed carriers sit in chunks with LOWER extracted-entity density than captured carriers (10.1 vs 13.1 per 1000 tokens, ratio 0.77 vs the 1.5x bar); power caveat: 4/10 single-chunk docs mute within-doc contrast
+- **Verdict** - REFUTED - salience anchoring is not the omission mechanism (consistent with H242's density-flat finding); mask-peeling closes without its LLM clause and H243's complement (which the H258 gate now independently supports) carries the directed-residue niche alone
 
 ### R24-H260 Learned span proposer - GLiNER on the idle card
 
@@ -2939,6 +2947,8 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - the +20 pt clause with leakage controlled (demo/target docs selected for low lexical overlap - the free gate computes the overlap matrix and picks clean splits); refuted if gains vanish under clean splits
 - **Synthetic gate** - overlap matrix on chunk texts, CPU, runs immediately; the LLM probe (1 doc) queues behind H229
 - **Cost** - gate free; full test 1 pass/doc with longer prompts
+- **Result (gate)** - (same executor/report) leakage matrix computed: corpus-wide lexical overlap is low (mean pairwise Jaccard 0.087-0.20); cleanest demo docs selected (the two general brochures + the standards document), with the cleanest demo/target pairs sharing ZERO gold carriers
+- **Verdict (interim)** - SELECTION MADE - the LLM distillation probe runs on the frozen low-leakage splits when the queue reaches it; no leakage excuse will survive the design
 
 ### R24-H262 Chunk-fallback render - recover at query time what ingest dropped
 
@@ -2955,6 +2965,8 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - both clauses on the frozen probe-class mapping; refuted if carriers spread class-uniformly (no scoping leverage - blanket K stands)
 - **Synthetic gate** - none needed: probe catalogue x checkpoint types x class concentration, CPU only
 - **Cost** - gate free; production = policy knob on whatever operator H250 ships
+- **Result** - (same executor/report; honest classification caveat - checkpoints carry no entity types (discovery mode), so the H230 name-shape classes substituted for entity classes) carriers are 84% product-form; 90% coverage needs 2 of the 4 available classes = 50% class fraction (bar <= 40%)
+- **Verdict** - REFUTED on the available classification, with low confidence flagged: four coarse name-shape classes cannot resolve the registered question (real entity-class scoping needs typed extraction under the cured ontology); the policy lever is not dead but its test is deferred to post-fix typed graphs (H214 territory) rather than force-fit here
 
 ### R24-H264 Heterogeneous union member - cross-family decorrelation
 
