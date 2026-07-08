@@ -22,8 +22,9 @@
 ### 2. R23/R24 LLM gates batch - undersampling remedies
 - Order: H246 enumerate, H248 GLiNER-primed pass, H243 complement, H258 mention-emission, H251 n-sampling, H245+H257 logprobs, H260 adjudication, H261 distillation. Checkpoints results/r23r24_llm/. Expected: notebooks/undersampling_llm_gates_r23r24.ipynb, reports/undersampling-llm-gates-r23r24-*.json, logs/r23r24-llm-gates.log. On report: record + launch H250 cost frontier (names the H198 extraction recipe).
 
-### 3. R27 free gates - H288 oracle ceiling (kill switch) + H281 defer-band census
-- Expected: notebooks/agentic_escalation_gates_r27.ipynb, reports/agentic-escalation-gates-r27-*.json, logs/r27-gates.log. On report: record; H288 >= 2 pts over soft-links launches the R27 LLM arms (H282-H285, H289 - NO H286); < 2 pts closes the round.
+### 3. R27 precision arms - H282/H283/H284/H285/H289 re-scoped executor
+- H288 RECORDED (REFUTED - merge-over-soft delta 0.0 pts; recall agentics dead) + H281 RECORDED (CONFIRMED - 85.6% cheap-decidable, web class 1.1%). Round re-scoped to identity PRECISION: false-merge removal at zero true-merge loss on the SAME_AS surface (57 type-conflict + 64 code-shared + 3 P10 pairs, enumerated in reports/agentic-escalation-gates-r27-20260708T082438Z.json).
+- Executor running: labels frozen blind first, then single-shot control / tool-agent K=4 / no-tools + fetch-then-judge / effort sweep / Strands tax. Expected: notebooks/agentic_precision_arms_r27.ipynb, reports/agentic-precision-arms-r27-*.json, logs/r27-precision-arms.log, results/r27_precision/. On report: record, then compose H287+H290 (free replay arithmetic).
 
 ### 4. R21 image tier - H218 VLM contest + H224 decorative filter
 - Running (logs/r21-qwenvl-infer2.log, smolvlm download seen). Expected: notebooks/image_vlm_gates_r21.ipynb, reports/image-vlm-gates-r21-*.json, logs/r21-vlm-gates.log. H218 extraction clause queued behind LLM tier.

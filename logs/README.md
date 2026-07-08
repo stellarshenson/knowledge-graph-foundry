@@ -40,3 +40,8 @@ Background job logs for Knowledge Graph Foundry.
 - `r24-free-gates.log` - R24 free-gate tier adjudication (H252 scanner-audited residue, H253 severed-association linkage, H254 graph-as-lexicon ceiling)
 
 - `r26-gates.log` - R26 usage-coupling free-gate adjudication (H271 demand ledger, H273/H274 derived layer vs external cache, H275 recurrence gate, H276 render views, H277 alias harvest, H278 demand decay); nbconvert execution of notebooks/usage_coupling_gates_r26.ipynb
+
+- `r21-vlm-gates.log` - R21 image-tier progress log: H218 describe-then-extract VLM fidelity contest and H224 decorative pre-filter verdicts
+- `r21-qwenvl-download.log`, `r21-smolvlm-download.log` - HF snapshot downloads of Qwen2.5-VL-7B-Instruct and SmolVLM-256M-Instruct for the H218 engine contest
+- `r21-qwenvl-infer.log`, `r21-qwenvl-infer2.log` - Qwen2.5-VL-7B describe-then-extract inference on the 36 selected images (GPU 0); infer2 is the resumable rerun
+- `r21-smolvlm-infer.log` - SmolVLM-256M (Docling picture-description model) inference on the same 36 images

@@ -1,0 +1,166 @@
+{
+  "round": "R27",
+  "tier": "free",
+  "utc": "20260708T082438Z",
+  "author": "Claude (Opus executor)",
+  "adjudications": {
+    "R27-H288": {
+      "clause": "oracle merge of defer band lifts pinned wide-set recall >= 2 pts over H268 soft-link baseline",
+      "bar_pts": 2.0,
+      "anchored_probes": 213,
+      "defer_band_size": 908,
+      "true_duplicate_pairs": 7,
+      "recall_no_resolution": 0.2019,
+      "recall_softlink_pinned": 0.3474,
+      "recall_merge_pinned": 0.3474,
+      "recall_softlink_depth2": 0.493,
+      "recall_merge_depth2": 0.493,
+      "delta_pinned_pts": 0.0,
+      "delta_depth2_pts": 0.0,
+      "softlink_lift_over_noresolution_pts": 14.55,
+      "sensitivity_band_pts": [
+        -1.88,
+        0.0
+      ],
+      "precision_residue": {
+        "n_sameas": 127,
+        "type_conflicting": 57,
+        "model_code_shared": 64,
+        "h101_known_false": 6,
+        "h101_known_false_model_correct": 6,
+        "h101_p10_class": 3
+      },
+      "verdict_recommendation": "REFUTED (contrarian confirmed)",
+      "note": "On the same defer band, oracle merge and H268 soft links surface identical render text under the pinned convention: recall delta = +0.0 pts (generous depth-2 upper bound +0.0 pts). Sensitivity band -1.9..+0.0 pts, entirely below the 2-pt bar. Merge's only structural edge over a soft hop - promoting a counterpart's 1-hop neighbors to the anchor - is nullified because the shipped render renders neighbors by name at both depths, and H268 already found the recoverable sibling content sits exactly 1 hop from the counterpart. Soft links carry +15 pts of recall for free; resolving on top adds ~0. The contrarian holds on recall. A precision residue survives that soft links cannot touch: 57 type-conflicting and 64 model-code-shared SAME_AS false merges (127 SAME_AS total), plus H101's 6 known_false + 3 p10 cases. The round narrows to the precision surface, exactly the registered prediction."
+    },
+    "R27-H281": {
+      "clause": "(a)+(b) >= 30%; (d) <= 10%; double-adjudication agreement >= 85%; refuted if (e) > 50%",
+      "n_sample": 90,
+      "class_counts": {
+        "a": 20,
+        "b": 57,
+        "c": 12,
+        "d": 1,
+        "e": 0
+      },
+      "class_fracs": {
+        "a": 0.2222,
+        "b": 0.6333,
+        "c": 0.1333,
+        "d": 0.0111,
+        "e": 0.0
+      },
+      "ab_share": 0.8556,
+      "ab_pass": true,
+      "d_share": 0.0111,
+      "d_pass": true,
+      "e_share": 0.0,
+      "e_refuted_as_framing": false,
+      "double_adjudication_n": 22,
+      "agreement": 1.0,
+      "agree_pass": true,
+      "posterior_range": [
+        0.1385,
+        0.5824
+      ],
+      "examples": {
+        "a": [
+          {
+            "pair": "AirSense 10 AutoSet <> AirSense 10 CPAP",
+            "types": "[CPAPDevice] vs [CPAPDevice]",
+            "name_sim": 81.48148148148148,
+            "rung": "value-comparator (code)",
+            "desc_a": "",
+            "desc_b": ""
+          },
+          {
+            "pair": "AirFit P10 bedside starter kit <> AirFit F30 bedside starter kit Small",
+            "types": "[ProductModel] vs [ProductModel]",
+            "name_sim": 92.85714285714286,
+            "rung": "name-token identity",
+            "desc_a": "Bedside starter kit for AirMini device with mask, tubing, an",
+            "desc_b": "Medium size bedside starter kit for AirFit F20 for Her mask"
+          },
+          {
+            "pair": "Host software manual v2.0 (Domestic) <> Host software manual v2.0 (International English)",
+            "types": "[Software] vs [Software]",
+            "name_sim": 81.9672131147541,
+            "rung": "value-comparator (code)",
+            "desc_a": "",
+            "desc_b": ""
+          }
+        ],
+        "b": [
+          {
+            "pair": "Obstructive Sleep Apnea <> DreamMapper",
+            "types": "[-] vs [Software]",
+            "name_sim": 23.529411764705884,
+            "rung": "both descriptions decide (in-graph one call)",
+            "desc_a": "Sleep disorder characterized by obstruction of the airway, t",
+            "desc_b": "Patient self-management system compatible with DreamStation"
+          },
+          {
+            "pair": "Mobile RF Communications Equipment <> ResMed Power Station II",
+            "types": "[ConnectivityDevice] vs [Accessory]",
+            "name_sim": 31.578947368421055,
+            "rung": "both descriptions decide (in-graph one call)",
+            "desc_a": "Wireless communication devices that can affect medical elect",
+            "desc_b": "All-in-one external battery enabling operation of compatible"
+          },
+          {
+            "pair": "Gross particle filter <> Ultra-Fine Filter Disposable",
+            "types": "[Accessory] vs [-]",
+            "name_sim": 53.06122448979592,
+            "rung": "both descriptions decide (in-graph one call)",
+            "desc_a": "Filter component cleaned in soap and water and left to dry",
+            "desc_b": "Disposable ultra-fine filter"
+          }
+        ],
+        "c": [
+          {
+            "pair": "open field of vision <> EPR",
+            "types": "[ComfortFeature] vs [-]",
+            "name_sim": 17.391304347826093,
+            "rung": "thin/one-sided description; deciding detail in source spans",
+            "desc_a": "Open field of vision for greater independence allowing patie",
+            "desc_b": ""
+          },
+          {
+            "pair": "ThermoSmart <> Enhanced Climate Control",
+            "types": "[ClinicalFeature] vs [ComfortFeature]",
+            "name_sim": 28.57142857142857,
+            "rung": "thin/one-sided description; deciding detail in source spans",
+            "desc_a": "Delivers optimal humidity",
+            "desc_b": ""
+          },
+          {
+            "pair": "F&P Sleepstyle Auto CPAP <> Fisher & Paykel Healthcare",
+            "types": "[CPAPDevice] vs [Manufacturer]",
+            "name_sim": 32.0,
+            "rung": "thin/one-sided description; deciding detail in source spans",
+            "desc_a": "",
+            "desc_b": "Manufacturer of CPAP devices including the HC230 product ran"
+          }
+        ],
+        "d": [
+          {
+            "pair": "EMC <> IEC601-1:2003",
+            "types": "[Standard] vs [Standard]",
+            "name_sim": 25.0,
+            "rung": "world-knowledge (distinct proper nouns, same type)",
+            "desc_a": "Electromagnetic Compatibility standard for medical electrica",
+            "desc_b": "Safety standard for medical electrical equipment"
+          }
+        ],
+        "e": []
+      },
+      "verdict_recommendation": "PASS",
+      "note": "Census of 90 stratified defer pairs. Cheap rungs absorb the bulk: (a)+(b) = 85.6% (bar >= 30%, PASS). World knowledge is structurally rare: (d) = 1.1% (bar <= 10%, PASS). Class (c) source-span demand = 13.3% - the compressed graph starves the judge of detail that sits verbatim in source chunks, consistent with H252. Genuinely undecidable (e) = 0.0%, far from the 50% framing-refutation threshold - the defer band is starved evidence, not noise. Blind double-adjudication agreement = 100.0% (bar >= 85%, PASS)."
+    }
+  },
+  "summary": {
+    "R27-H288": "REFUTED (contrarian confirmed)",
+    "R27-H281": "PASS",
+    "recommendation": "H288 recall delta below the 2-pt bar -> the round records the ceiling; the RECALL-motivated LLM arms (H282-H286, H289) do NOT earn launch on the attachment/recall thesis, since H268 soft links already capture that value for free. A precision residue survives that soft links cannot touch (SAME_AS false merges, the model-code class). If any LLM arm launches it must target identity PRECISION (false-merge adjudication), not recall. H281's census stands as instrumentation and confirms the demand side: cheap rungs absorb the bulk, world knowledge is rare, the defer band is starved evidence rather than noise."
+  }
+}
