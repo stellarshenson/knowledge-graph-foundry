@@ -1,0 +1,78 @@
+{
+  "round": "R23",
+  "tier": "CPU (disk-only, zero LLM)",
+  "generated_utc": "20260708T063047Z",
+  "gold_carrier_definition": "token_set_ratio(name.lower(), product.lower()) >= 85; union-of-5 = probed products matched by any of 5 arm-A runs pooled over 10 docs",
+  "anchors": {
+    "union5": 63,
+    "singleton_share": 0.6236,
+    "stable_share": 0.064,
+    "single_run_coverage": 0.7683,
+    "union2_coverage": 0.8905
+  },
+  "hypotheses": {
+    "H242": {
+      "clause_a": {
+        "granularity": "document",
+        "bottom_tertile_coverage": 0.294,
+        "top_tertile_coverage": 0.3383,
+        "bottom_minus_top_pts": -4.43,
+        "bar_pts": 15,
+        "pass": false
+      },
+      "clause_b": {
+        "singleton_median_pos": 0.3285,
+        "stable_median_pos": 0.2622,
+        "singleton_minus_stable": 0.0663,
+        "bar": 0.15,
+        "pass": false,
+        "singleton_match_rate": 0.318,
+        "stable_match_rate": 0.804
+      },
+      "verdict_recommendation": "REFUTED"
+    },
+    "H244": {
+      "same_prompt_AA": 0.8905,
+      "cross_prompt_AB": 0.8679,
+      "control_AC": 0.8565,
+      "cross_minus_same_pts": -2.25,
+      "control_minus_same_pts": -3.4,
+      "bar_pts": 3,
+      "pass": false,
+      "verdict_recommendation": "REFUTED",
+      "note": "A x C (config-identical control) tracks A x A, so run-to-run stochasticity - not prompt variation - is the diversity source"
+    },
+    "H247": {
+      "rendered_type_slot": "(none yet - discover types that serve the purpose)",
+      "ordered_type_list_present": false,
+      "per_entity_types_in_checkpoints": false,
+      "spearman_rho": null,
+      "bar": 0.5,
+      "pass": false,
+      "verdict_recommendation": "REFUTED",
+      "caveat": "H119 used an empty ontology; the prompt type slot rendered '(none yet - discover types...)'. No ordered type list existed to bias selection, and checkpoints carry no per-entity type. The registered test cannot run; a valid test needs runs with a cured, ordered type list."
+    },
+    "H248": {
+      "clause": "1 (scanner gate)",
+      "n_candidates": 1160,
+      "carriers_matched": 55,
+      "carriers_total": 63,
+      "scanner_fraction": 0.873,
+      "bar": 0.7,
+      "pass": true,
+      "misses": [
+        "Nasal cannula, adult",
+        "REMstar Pro C-Flex+",
+        "Pollen  filter , reusable",
+        "Nasal/oral cannula, adult",
+        "Water chamber",
+        "REMstar Plus C-Flex",
+        "Ultra-fine filter , disposable",
+        "Cannula, Pro-Flow, nasal, adult 10 pk"
+      ],
+      "verdict_recommendation": "CONFIRMED",
+      "note": "clause-1 (free scanner) gate only; clause-2 (primed LLM pass) queues behind H229 - overall H248 PARTIAL pending that"
+    }
+  },
+  "verdict_recommendation": "H242 REFUTED; H244 REFUTED; H247 REFUTED (premise void - empty ontology); H248 clause-1 CONFIRMED (scanner gate), overall PARTIAL pending LLM clause"
+}
