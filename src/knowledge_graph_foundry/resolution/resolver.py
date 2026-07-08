@@ -21,6 +21,7 @@ from knowledge_graph_foundry.models import (
     Entity,
     Relationship,
     ResolutionDecision,
+    glyph_norm,
     normalize_name,
 )
 from knowledge_graph_foundry.resolution.bayesian import evidence
@@ -117,6 +118,28 @@ def _exact_collapse(entities: list[Entity]) -> tuple[list[Entity], dict[str, str
     return [by_id[i] for i in order], {}
 
 
+def _glyph_collapse(entities: list[Entity]) -> tuple[list[Entity], dict[str, str]]:
+    """R15-H190 resolver name-identity detector: merge entities whose names are
+    equal under glyph normalization (trademark/unicode variants of one name).
+    Runs at comparison time only - `entity_id` (and thus `normalize_name`) is
+    untouched, so ids stay backward-compatible; the first-seen entity's id is the
+    canonical. Promoted at 0 false conflations on the 2797-name vocabulary."""
+    by_key: dict[str, Entity] = {}
+    order: list[str] = []
+    id_map: dict[str, str] = {}
+    for entity in entities:
+        key = glyph_norm(entity.name)
+        canonical = by_key.get(key)
+        if canonical is None:
+            by_key[key] = entity
+            order.append(key)
+        else:
+            by_key[key] = merge_entities(canonical, entity)
+            if entity.id != by_key[key].id:
+                id_map[entity.id] = by_key[key].id
+    return [by_key[k] for k in order], id_map
+
+
 def _fuzzy_candidates(entities: list[Entity], threshold: float) -> set[tuple[int, int]]:
     """Sorted-neighbourhood over normalized names - O(n * window)."""
     indexed = sorted(range(len(entities)), key=lambda i: normalize_name(entities[i].name))
@@ -176,12 +199,16 @@ def resolve_entities(
     calibrator: Optional[PosteriorCalibrator] = None,
     name_candidate_threshold: float = 0.82,
     engine: Optional[Engine] = None,
+    glyph_normalization: bool = True,
 ) -> ResolutionResult:
     """Resolve a batch of entities; returns merged entities, an id remap for
     relationship rewriting, and every pairwise decision for forensics."""
     collapsed, _ = _exact_collapse(entities)
+    glyph_map: dict[str, str] = {}
+    if glyph_normalization:
+        collapsed, glyph_map = _glyph_collapse(collapsed)
     if len(collapsed) < 2:
-        return ResolutionResult(collapsed, {}, [])
+        return ResolutionResult(collapsed, dict(glyph_map), [])
 
     candidates = _fuzzy_candidates(collapsed, name_candidate_threshold)
     candidates |= ann_candidates(
@@ -240,6 +267,11 @@ def resolve_entities(
         for idx in members:
             if collapsed[idx].id != merged.id:
                 id_map[collapsed[idx].id] = merged.id
+
+    # Chain the glyph-collapse remap through phase-2 merges so relationships on a
+    # glyph-variant endpoint rewrite all the way to the final canonical id.
+    for original, canonical in glyph_map.items():
+        id_map[original] = id_map.get(canonical, canonical)
 
     return ResolutionResult(resolved, id_map, decisions)
 

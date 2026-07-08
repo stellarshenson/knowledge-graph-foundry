@@ -234,6 +234,37 @@ class TestDeferJudge:
         assert MatchVerdict(same=True, reason="x").same is True
 
 
+class TestGlyphIdentity:
+    """R15-H190 resolver name-identity detector: glyph variants are one entity."""
+
+    def test_trademark_variants_merge(self):
+        a = Entity.create("SleepStyle Auto", types=["Product"], source_chunks=["c1"])
+        b = Entity.create("SleepStyle™ Auto", types=["Accessory"], source_chunks=["c2"])
+        result = resolve_entities([a, b], CFG)
+        assert len(result.entities) == 1
+        # types union across the glyph-variant surface forms
+        assert set(result.entities[0].types) == {"Product", "Accessory"}
+
+    def test_relationships_remap_to_canonical(self):
+        a = Entity.create("DreamStation", types=["Product"], source_chunks=["c1"])
+        b = Entity.create("DreamStation™", types=["Product"], source_chunks=["c2"])
+        result = resolve_entities([a, b], CFG)
+        rel = Relationship(source_id=b.id, target_id="e_other", type="HAS_PART")
+        remapped = remap_relationships([rel], result.id_map)
+        assert remapped[0].source_id == a.id
+
+    def test_distinct_names_not_conflated(self):
+        a = Entity.create("AirSense 11", types=["Product"], source_chunks=["c1"])
+        b = Entity.create("DreamStation", types=["Product"], source_chunks=["c2"])
+        assert len(resolve_entities([a, b], CFG).entities) == 2
+
+    def test_disabled_keeps_glyph_variants_separate(self):
+        a = Entity.create("SleepStyle Auto", types=["Product"], source_chunks=["c1"])
+        b = Entity.create("SleepStyle™ Auto", types=["Product"], source_chunks=["c2"])
+        result = resolve_entities([a, b], CFG, glyph_normalization=False)
+        assert len(result.entities) == 2
+
+
 class TestSplitGuard:
     def _snowball(self, c_embedding):
         # A~B strong, B~C / A~C weak: names snowball all three together;

@@ -385,11 +385,16 @@ class Foundry:
             mapping = structured_mapping(rows[:5], purpose, self.engine)
             result = apply_mapping(rows, mapping, document_id=f"d_{file_path.stem}")
         else:
-            document = read_document(file_path)
+            document = read_document(
+                file_path,
+                parser_union=self.settings.extraction.parser_union,
+                glyph_normalization=self.settings.extraction.glyph_normalization,
+            )
             chunks = chunk_document(
                 document,
                 chunk_size=self.settings.extraction.chunk_size,
                 chunk_overlap=self.settings.extraction.chunk_overlap,
+                header_carryover=self.settings.extraction.header_carryover,
             )
             if not chunks:
                 return [], []
@@ -450,6 +455,7 @@ class Foundry:
                     self._embed_texts,
                     self.settings.graphrag.proposition_index_name,
                     self.settings.graphrag.vector_dimensions,
+                    split_max_tokens=self.settings.graphrag.proposition_split_max_tokens,
                 )
         finally:
             release_lease(self.driver, run_id)
@@ -537,7 +543,11 @@ class Foundry:
             for e in buffer.entities
         ]
         result = resolve_entities(
-            entities, self.settings.resolution, calibrator, engine=self.engine
+            entities,
+            self.settings.resolution,
+            calibrator,
+            engine=self.engine,
+            glyph_normalization=self.settings.extraction.glyph_normalization,
         )
         relationships = remap_relationships(buffer.relationships, result.id_map)
 
@@ -581,7 +591,11 @@ class Foundry:
         from knowledge_graph_foundry.graph.loader import load_entities, load_relationships
 
         result = resolve_entities(
-            entities, self.settings.resolution, calibrator, engine=self.engine
+            entities,
+            self.settings.resolution,
+            calibrator,
+            engine=self.engine,
+            glyph_normalization=self.settings.extraction.glyph_normalization,
         )
         id_map = dict(result.id_map)
 
@@ -697,6 +711,7 @@ class Foundry:
                 self._embed_texts,
                 self.settings.graphrag.proposition_index_name,
                 self.settings.graphrag.vector_dimensions,
+                split_max_tokens=self.settings.graphrag.proposition_split_max_tokens,
             )
         similarity_edges = 0
         if self.settings.graphrag.similarity_edges_enabled:

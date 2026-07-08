@@ -1,6 +1,8 @@
 """Tests for LLM engines - claude CLI subprocess mocked, factory dispatch."""
 
 import json
+import subprocess
+import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -77,6 +79,21 @@ class TestFactory:
     def test_local_gpu_requires_base_url(self):
         with pytest.raises(EngineError, match="base_url"):
             create_engine(LLMSettings(engine="local-gpu"))
+
+    def test_local_gpu_constructs_in_fresh_interpreter(self):
+        """DEF-6: client construction must not depend on import order. A fresh
+        interpreter with no pre-imports must build the engine without the
+        instructor RegistryError the notebooks used to work around."""
+        code = (
+            "from knowledge_graph_foundry.settings import LLMSettings;"
+            "from knowledge_graph_foundry.engines.local_gpu import LocalGpuEngine;"
+            "LocalGpuEngine(LLMSettings(engine='local-gpu', "
+            "base_url='http://localhost:1/v1'));"
+            "print('OK')"
+        )
+        proc = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+        assert proc.returncode == 0, proc.stderr
+        assert "OK" in proc.stdout
 
     def test_frontier_selected(self):
         engine = create_engine(LLMSettings(engine="frontier"))

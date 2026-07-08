@@ -46,6 +46,9 @@ class ExtractionSettings(BaseModel):
     concurrency: int = 4
     gleaning_rounds: int = 1  # R3: extra "what did we miss" passes (0 disables)
     split_entity_relation: bool = True  # R3: separate entity and relation passes
+    parser_union: bool = True  # R15-H146-151: pypdf text-layer union partner to pymupdf4llm
+    glyph_normalization: bool = True  # R15-H190: strip trademark/unicode glyphs (parser+resolver)
+    header_carryover: bool = True  # R15-H153: re-print table header on severed continuation chunks
 
 
 class ResolutionSettings(BaseModel):
@@ -94,7 +97,8 @@ class GraphRAGSettings(BaseModel):
     community_min_size: int = 3
     vector_index_name: str = "kgf_entity_embeddings"
     vector_dimensions: int = 1024
-    top_k: int = 8
+    top_k: int = 16  # R15-H53: vector seed budget (+28% relative pure-seed recall over 8)
+    proposition_split_max_tokens: int = 300  # R15-H173: split fat propositions (0 disables)
     ppr_enabled: bool = True  # R2: PPR traversal seeded from vector top-k
     ppr_top_n: int = 15  # R2: PPR nodes taken into the answer context
     ppr_damping: float = 0.85  # R2: PageRank damping
