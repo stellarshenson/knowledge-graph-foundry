@@ -47,6 +47,17 @@ src/knowledge_graph_foundry/
 
 Design details in `docs/DESIGN.md`; acceptance criteria in `docs/acc-crit-kgf.md`; defects in `docs/defects.md`. Lessons distilled from the archived v1 (28 benchmark iterations) in `references/kgf-v1-lessons.md`.
 
+## Method
+
+KGF was not designed once and defended - it was measured into shape across a pre-registered hypothesis campaign (280+ hypotheses, 27 rounds, `docs/experiments/kgf-redesign-experiments.md`). The wins came from method, not cleverness, and the method is reusable:
+
+- **Observation over invention** - the extraction breakthrough was a free set-diff over run checkpoints showing the model extracts 81.4% of what it "misses" elsewhere in the corpus; the loss is silent internal deduplication, not ignorance, and the cure is a prompt-boundary change at ~1x cost
+- **Cross-domain adoption** - the engine's best parts are other fields' solved problems: Chao1 species-richness estimation (ecology) runs the curing gate, Heaps' law (linguistics) flags vocabulary saturation, the resolver is record-linkage theory (census statistics), calibration is isotonic regression (ML metrology)
+- **Attack your own load-bearing assumptions** - dedicated contrarian rounds falsified several shipped mechanisms (PPR traversal contributed nothing to answer containment; community summaries demoted to a global-only path) and a free oracle-ceiling measurement killed an entire agentic-resolution program before a single token was spent on it
+- **Discipline makes the work compound** - acceptance bars registered before results exist, evaluation labels frozen blind before any LLM call, kill criteria written so a pet idea can die, refutations promoted to the SOTA record as knowledge rather than buried
+
+Peer builders ship the plausible mechanisms (gleaning passes, ontology validation); measurement refuted both here. The evidence trail lives in the experiments ledger and `docs/sota-promotions.md`.
+
 ## Development
 
 - `make install` - create environment and install package
