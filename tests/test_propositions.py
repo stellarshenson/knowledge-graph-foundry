@@ -93,3 +93,45 @@ class TestDiversify:
             self._hit("SleepStyle 200 dimensions are 275 x 170 x 140 mm.", 0.8),
         ]
         assert [h["score"] for h in diversify_hits(hits, top_k=8)] == [0.9, 0.8]
+
+
+class TestFatPropositionSplitting:
+    """R15-H173: verbatim segmentation of propositions above the token bar."""
+
+    def test_splits_on_sentence_and_newline_boundaries(self):
+        from knowledge_graph_foundry.graph.propositions import split_proposition
+
+        text = "First fact. Second fact.\n| a | b | c |"
+        assert split_proposition(text) == ["First fact.", "Second fact.", "| a | b | c |"]
+
+    def test_splits_adjacent_table_cell_pipes(self):
+        from knowledge_graph_foundry.graph.propositions import split_proposition
+
+        # the pipe rule severs adjacent-pipe (empty-cell) row boundaries
+        assert split_proposition("|x||y|") == ["|x|", "|y|"]
+
+    def test_segments_are_verbatim_substrings(self):
+        from knowledge_graph_foundry.graph.propositions import split_proposition
+
+        text = "Alpha device runs quiet. Beta device runs loud."
+        for seg in split_proposition(text):
+            assert seg in text
+
+    def test_split_helper_only_touches_fat_propositions(self):
+        from knowledge_graph_foundry.graph.propositions import (
+            _split_fat_propositions,
+            proposition_id,
+        )
+
+        short = "AirSense 11 weighs 1130 g."
+        fat = "sentence. " * 200  # well over 300 tokens
+        out = _split_fat_propositions({short: {"e1"}, fat: {"e2"}}, max_tokens=300)
+        assert short in out  # short proposition untouched
+        assert fat not in out  # fat proposition replaced by its segments
+        assert all(proposition_id(s) for s in out)
+
+    def test_disabled_is_identity(self):
+        from knowledge_graph_foundry.graph.propositions import _split_fat_propositions
+
+        sentences = {"sentence. " * 200: {"e1"}}
+        assert _split_fat_propositions(sentences, max_tokens=0) == sentences

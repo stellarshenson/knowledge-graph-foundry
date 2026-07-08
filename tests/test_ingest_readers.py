@@ -70,9 +70,38 @@ def test_read_pdf_mocked(tmp_path, monkeypatch):
     path = tmp_path / "manual.pdf"
     path.write_bytes(b"%PDF-fake")
     monkeypatch.setattr("pymupdf4llm.to_markdown", lambda p: "# PDF markdown")
+    # union partner (pypdf) fails on the fake bytes and is tolerated
     doc = read_document(path)
     assert doc.text == "# PDF markdown"
     assert doc.format == "pdf"
+
+
+def test_pdf_parser_union_appends_pypdf_layer(tmp_path, monkeypatch):
+    # H146-151: names only pypdf recovers survive via the union text layer.
+    path = tmp_path / "catalogue.pdf"
+    path.write_bytes(b"%PDF-fake")
+    monkeypatch.setattr("pymupdf4llm.to_markdown", lambda p: "AirSense 11 overview")
+
+    class _Page:
+        def extract_text(self):
+            return "Ultra Fine Filter FX2"
+
+    monkeypatch.setattr("pypdf.PdfReader", lambda p: type("R", (), {"pages": [_Page()]})())
+    doc = read_document(path, parser_union=True)
+    assert "AirSense 11 overview" in doc.text
+    assert "Ultra Fine Filter FX2" in doc.text
+    # union off keeps only the primary parser
+    off = read_document(path, parser_union=False)
+    assert "Ultra Fine Filter FX2" not in off.text
+
+
+def test_pdf_glyph_normalization_strips_trademark(tmp_path, monkeypatch):
+    # H190: parser post-process cleans trademark glyphs so names are recoverable.
+    path = tmp_path / "spec.pdf"
+    path.write_bytes(b"%PDF-fake")
+    monkeypatch.setattr("pymupdf4llm.to_markdown", lambda p: "SleepStyle™ Auto")
+    doc = read_document(path, parser_union=False, glyph_normalization=True)
+    assert doc.text == "SleepStyle Auto"
 
 
 def test_document_id_deterministic(tmp_path):

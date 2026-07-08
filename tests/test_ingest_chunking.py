@@ -79,3 +79,36 @@ def test_ids_change_with_document_id():
     a = chunk_document(Document(id="d_a", path="a.md", format="md", text=text))
     b = chunk_document(Document(id="d_b", path="b.md", format="md", text=text))
     assert a[0].id != b[0].id
+
+
+# -- H153 header carryover ---------------------------------------------------
+
+
+def _table_doc() -> Document:
+    # Header + separator, then enough rows to force a split at small chunk sizes.
+    header = "| Model | Pressure |\n| --- | --- |\n"
+    rows = "".join(f"| Device{i} | {i}0 cmH2O |\n" for i in range(60))
+    return Document(id="d_tbl", path="t.md", format="md", text=header + rows)
+
+
+def test_header_carried_into_continuation_chunks():
+    doc = _table_doc()
+    chunks = chunk_document(doc, chunk_size=60, chunk_overlap=10, header_carryover=True)
+    assert len(chunks) > 1
+    header_line = "| Model | Pressure |"
+    data_chunks = [c for c in chunks if "cmH2O" in c.text]
+    assert all(header_line in c.text for c in data_chunks)
+
+
+def test_header_carryover_off_leaves_severed_rows():
+    doc = _table_doc()
+    chunks = chunk_document(doc, chunk_size=60, chunk_overlap=10, header_carryover=False)
+    header_line = "| Model | Pressure |"
+    assert any(header_line not in c.text and "cmH2O" in c.text for c in chunks)
+
+
+def test_header_carryover_no_false_injection_into_prose():
+    text = "This is ordinary prose. " * 200
+    on = chunk_document(_doc(text), chunk_size=50, chunk_overlap=10, header_carryover=True)
+    off = chunk_document(_doc(text), chunk_size=50, chunk_overlap=10, header_carryover=False)
+    assert [c.text for c in on] == [c.text for c in off]

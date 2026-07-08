@@ -14,7 +14,7 @@ import zipfile
 
 from loguru import logger
 
-from knowledge_graph_foundry.models import Document
+from knowledge_graph_foundry.models import Document, glyph_clean_text
 
 STRUCTURED_EXTENSIONS = frozenset({".parquet", ".csv", ".tsv", ".xlsx", ".json", ".jsonl"})
 UNSTRUCTURED_EXTENSIONS = frozenset({".pdf", ".docx", ".html", ".htm", ".md", ".txt"})
@@ -45,13 +45,22 @@ def _document_id(path: Path) -> str:
     return "d_" + hashlib.sha1(path.name.encode()).hexdigest()[:16]
 
 
-def read_document(path: Path) -> Document:
-    """Read an unstructured file into a Document with markdown-ish text."""
+def read_document(
+    path: Path, parser_union: bool = True, glyph_normalization: bool = True
+) -> Document:
+    """Read an unstructured file into a Document with markdown-ish text.
+
+    R15-H146-151: `parser_union` adds pypdf's text layer to pymupdf4llm's for
+    PDFs (union recovers 93.7% of names the project parser loses). R15-H190:
+    `glyph_normalization` cleans trademark/unicode glyphs from the parsed text.
+    """
     ext = path.suffix.lower()
     if ext == ".pdf":
         import pymupdf4llm
 
         text = pymupdf4llm.to_markdown(str(path))
+        if parser_union:
+            text = _union_pypdf(path, text)
     elif ext == ".docx":
         text = _read_docx(path)
     elif ext in (".html", ".htm"):
@@ -65,6 +74,9 @@ def read_document(path: Path) -> Document:
     else:
         raise UnsupportedFormatError(path)
 
+    if glyph_normalization:
+        text = glyph_clean_text(text)
+
     logger.debug("read {} ({} chars)", path.name, len(text))
     return Document(
         id=_document_id(path),
@@ -73,6 +85,25 @@ def read_document(path: Path) -> Document:
         text=text,
         metadata={"file_name": path.name, "file_size": path.stat().st_size},
     )
+
+
+def _union_pypdf(path: Path, base_text: str) -> str:
+    """Append pypdf's extracted text layer to the primary parse (H146-151 union).
+
+    pypdf recovers entity-name strings pymupdf4llm drops in table-heavy PDFs;
+    concatenation is enough for name-presence recovery. A failing partner (e.g. a
+    malformed PDF) is tolerated - the primary parse still stands."""
+    from pypdf import PdfReader
+
+    try:
+        pages = PdfReader(str(path)).pages
+        extra = "\n".join((page.extract_text() or "") for page in pages)
+    except Exception as exc:  # noqa: BLE001 - union partner is best-effort
+        logger.debug("pypdf union partner failed for {}: {}", path.name, exc)
+        return base_text
+    if not extra.strip():
+        return base_text
+    return base_text + "\n" + extra
 
 
 def _read_docx(path: Path) -> str:

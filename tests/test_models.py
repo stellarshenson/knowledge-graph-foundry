@@ -4,8 +4,38 @@ from knowledge_graph_foundry.models import (
     Entity,
     chunk_id,
     entity_id,
+    glyph_clean_text,
+    glyph_norm,
+    glyph_nospace,
     normalize_name,
 )
+
+
+class TestGlyphNormalization:
+    """R15-H190 glyph operator: recover trademark/unicode name variants."""
+
+    def test_strips_trademark_glyphs(self):
+        assert glyph_norm("SleepStyle™ Auto") == "sleepstyle auto"
+
+    def test_nfkc_before_tm_expansion(self):
+        # NFKC maps U+2122 to "TM"; the operator strips it FIRST so no "tm" leaks.
+        assert "tm" not in glyph_norm("Brand™")
+
+    def test_dash_family_folds_to_hyphen(self):
+        assert glyph_norm("Ultra‑Fine") == glyph_norm("Ultra-Fine") == "ultra-fine"
+
+    def test_nospace_variant(self):
+        assert glyph_nospace("Air Filter™") == "airfilter"
+
+    def test_clean_text_preserves_case_and_newlines(self):
+        cleaned = glyph_clean_text("Row A™\n| x | y |\n")
+        assert cleaned == "Row A\n| x | y |\n"
+
+    def test_identity_of_glyph_variants(self):
+        assert glyph_norm("DreamStation™") == glyph_norm("dreamstation")
+
+    def test_distinct_names_stay_distinct(self):
+        assert glyph_norm("AirSense 10") != glyph_norm("AirSense 11")
 
 
 class TestNormalizeName:

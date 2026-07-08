@@ -17,6 +17,13 @@ class LocalGpuEngine:
 
     def __init__(self, cfg: LLMSettings):
         import instructor
+
+        # DEF-6: instructor 1.15.4 registers the (OPENAI, Mode.JSON) handler only
+        # as an import side effect of this module. Without the explicit import,
+        # from_litellm below raises RegistryError depending on interpreter import
+        # order (notebooks carried the workaround). Importing it here makes client
+        # construction order-independent.
+        import instructor.v2.providers.openai.handlers  # noqa: F401
         import litellm
 
         if not cfg.base_url:
