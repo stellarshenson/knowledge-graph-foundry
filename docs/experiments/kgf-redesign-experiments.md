@@ -1909,8 +1909,8 @@ Trigger: the maturity assessment (2026-07-07) - the campaign targets the identit
 - **Acceptance bar** - both clauses measured on >= 20 documents of a second corpus; refuted (pleasantly) if calibration holds within 2x ECE - then shipped constants suffice for the corpus classes tested
 - **Experiment** - PRECONDITION: second corpus selection needs the project owner's decision (external sourcing is out of autonomous bounds); everything else is the standard ingest + probe + identity-benchmark pipeline on a scratch instance
 - **Precondition resolved (2026-07-07)** - corpus selected by the project owner: the scientific-paper reference library (references/papers/, 64 PDFs) - different domain (ML/IR research) and genre (academic papers: sections, citations, result tables); entity classes flip to methods/datasets/metrics/authors. Caveat noted honestly: the papers are ABOUT knowledge-graph methods, so topical vocabulary overlaps the engine's own jargon - harmless to the calibration question, which turns on entity name morphology, not topic. Runs on the default scratch instance (wiped; the H158 v2-arm graph is measurement-complete, its event logs preserved on disk for H213) with an explicit pinned config per the DEF-4/DEF-5 discipline
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - (ingest complete 2026-07-08 after a multi-outage retry-wrapped run: 30 papers / 26 loaded, 16547 entities, 12203 relationships; analysis executor same day, [`corpus_transfer_h157.ipynb`](../../notebooks/corpus_transfer_h157.ipynb) / [`corpus-transfer-h157-20260708T081013Z.json`](../../reports/corpus-transfer-h157-20260708T081013Z.json), all clauses read-only on the pinned instance) LIFECYCLE clause PASS: FSM EMPTY -> INITIALIZING -> CURING -> STABLE, cured (converged) at doc 13 into 51 types / 5863 entities, held with zero spurious recures (vs benchmark: cured ~doc 4 at 12 types - later and wider on the denser genre, as the scale-free gate should). ECE clause: the BREAK branch fires - transfer ECE 0.2606 vs the honest H129 held-out reference 0.0503 = **5.18x** (threshold 2x); reliability bins show systematic UNDER-confidence (posterior 0.26 pairs are SAME 70% of the time; 0.34-0.70 pairs 100%). Blind labeling (H101 protocol, 60 pairs stratified 20/20/20): merge precision 0.95, block correctness 1.00, defer ambiguity 0.55 (abstentions well-placed); one false merge - author-name morphology ("Yu Zhang"/"Yue Zhang", the predicted per-domain deterministic false-merge surface); recoverability limitation recorded (17% of merges fully reconstructable). Key transfer nuance: DECISIONS transfer even though PROBABILITIES miscalibrate - fixed thresholds still rank correctly. Resolution mix 2050 merge / 14270 block / 1689 defer, 24 NLI vetoes; 1085 extraction warnings (1043 dangling)
+- **Verdict** - CONFIRMED exactly as predicted - lifecycle machinery is corpus-robust, identity calibration is NOT (5.18x past the 2x bar): shipped isotonic constants must not cross corpus classes, and the engine owes a per-corpus SELF-CALIBRATION path (H142 lineage) - routed to the H198 wiring sweep as a shipping requirement; the decisions-transfer-probabilities-don't finding is itself the argument that self-calibration (not threshold re-tuning) is the right fix
 
 ### R15-H158 Decided is not shipped - in-engine verification of the identity stack
 
@@ -3057,6 +3057,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - replaying the benchmark query history as a demand ledger and allocating a fixed repair budget (union passes, healing scans) demand-weighted recovers >= 1.5x the probe-recall gain of corpus-uniform allocation at equal budget
 - **Acceptance bar** - the 1.5x clause on frozen-artifact simulation (checkpoints + probe outcomes); refuted if demand and gaps are uncorrelated (queried neighborhoods are already the well-extracted ones - a plausible null worth knowing)
 - **Experiment** - free simulation: probe outcomes x per-doc residue from the R24 audits
+- **Result** - (executor 2026-07-08, [`usage_coupling_gates_r26.ipynb`](../../notebooks/usage_coupling_gates_r26.ipynb) / [`usage-coupling-gates-r26-20260708T075940Z.json`](../../reports/usage-coupling-gates-r26-20260708T075940Z.json); union-of-5 recall reproduced exactly 63/101, harness valid) demand-weighted repair recovers **1.7x-16.4x** the uniform gain at EVERY budget K=1..10 (bar 1.5x). Honest anatomy: doc-level Spearman(demand, gap) is null (-0.07); the win is concentration, not correlation - one high-demand catalogue document holds 78% of the missed-probe mass, so the first demand-directed scan returns 39 probe-flips vs ~2.4 uniform
+- **Verdict** - CONFIRMED - the allocator pays at every budget, with the mechanism named honestly: demand finds the one big under-served neighborhood rather than tracking gaps document-by-document; ships to H198 as the repair-budget allocator (paired with the H287 escalation gate downstream)
 
 ### R26-H272 Abstention-triggered repair - the gap ledger closes its own entries
 
@@ -3071,6 +3073,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - a derived layer with dependency invalidation keeps answer reuse SAFE across graph evolution: on the recorded mutation history, >= 95% of derived answers whose evidence changed are correctly invalidated, and reused (still-valid) answers show zero divergence from fresh recomputation
 - **Acceptance bar** - both clauses on replay; refuted if dependency tracking misses indirect staleness (answer depends on ABSENCE of contradicting facts - the frame problem; if material, only the H274 cache form survives)
 - **Experiment** - free replay over the wave-2 mutation events + benchmark answers; the frame-problem clause is the honest killer to watch
+- **Result** - (same executor/report; substrate = the live bitemporal history, 588 KGFEntityVersion events on an 11133-node graph under concurrent ingest - counts drift ~1-2% between runs, report JSON carries exact values) subgraph content fingerprinting invalidates **100%** of evidence-changed answers (bar 95%) with zero false invalidation and zero divergence on reused answers (exact hash). One mutation wave evidence-changes 34% of 1-hop answers (blast radius mean 9.5, max 185). Frame problem measured honestly: absence-dependent answers are uncovered by BOTH mechanisms - immaterial on this probe set (0/219 negation probes) but bites existence/negation use cases; 553 events unfalsify rather than stress the clause
+- **Verdict** - CONFIRMED on its clauses - but DOMINATED by H274 (below) on the head-to-head the round pre-registered: identical safety at zero graph coupling; the in-graph derived layer does not ship
 
 ### R26-H274 CONTRARIAN - keep it out of the graph entirely
 
@@ -3078,6 +3082,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - the fingerprint-keyed cache achieves >= 90% of H273's safe-reuse rate at <= 20% of its implementation surface (no schema changes, no drift-detector coupling), making it the dominating design unless H273's in-graph queryability is itself load-bearing
 - **Acceptance bar** - head-to-head with H273 on the same replay; the round ships exactly one of the two (or neither)
 - **Experiment** - same free replay; the comparison IS the experiment
+- **Result** - (same executor/report) the external fingerprint-keyed cache achieves **100% of H273's safe-reuse rate** (bar 90%) via the identical subgraph-content-fingerprint mechanism, at implementation surface fraction **0.00 vs H273's 4 coupling points** (label schema + relationship type + property stamps + mutation-time invalidation traversal; the cache is a read-only external lookup) - far under the 0.20 bar
+- **Verdict** - CONFIRMED and PREFERRED - the dominating design as the contrarian predicted: equal safety, zero graph contamination surface, no frame-problem machinery in the graph; the round ships H274 and the answer-persistence question closes with the user's mess concern answered structurally (content lives OUTSIDE the source-of-truth layer, keyed to graph state)
 
 ### R26-H275 The recurrence gate - only repeated demand earns materialization
 
@@ -3085,6 +3091,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - on the benchmark's paraphrase pairs + distractor one-offs, embedding clustering separates recurring from one-off demand at >= 0.9 precision/recall, and gating repair on recurrence retains >= 90% of H271's gain while cutting actions >= 50%
 - **Acceptance bar** - both clauses; refuted if paraphrase clustering is unreliable at this scale (the gate then falls back to exact-repeat counting)
 - **Experiment** - free: probe catalogue has paraphrase structure by construction
+- **Result** - (same executor/report) lexical clustering separates recurring from one-off demand at only P=0.71 / R=0.77 (bar 0.9/0.9), and the decisive clause fails harder: recurrence-gating retains just **44%** of H271's gain (bar 90%) while cutting 74% of actions - the recoverable probe mass sits on one-off products, so doc-level demand concentration does NOT translate into query-level recurrence
+- **Verdict** - REFUTED - the recurrence gate starves exactly the repairs H271 pays for on this corpus class; gating falls back to H271's own budget cap + the demand-concentration mechanism, and paraphrase-cluster gating is recorded dead here (re-openable only on production telemetry with real repeat traffic)
 
 ### R26-H276 Materialized render views - pay the render once, maintain incrementally
 
@@ -3092,6 +3100,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - materialized views cut query-time render latency >= 5x at <= 15% storage growth, with incremental maintenance cost <= 10% of ingest wall-clock on the recorded mutation history, and byte-identical output to fresh renders
 - **Acceptance bar** - all three clauses; refuted if mutation fan-out makes maintenance rival recomputation (high-degree hubs invalidate constantly)
 - **Experiment** - free simulation on the frozen graph + mutation replay; ships via H198 if it clears
+- **Result** - (same executor/report) latency clause passes spectacularly (328x cut, byte-identical renders confirmed) but both cost clauses fail: storage growth **494%** (bar 15% - neighbor-content duplication across views) and incremental maintenance **65%** of a full rebuild (bar 10%) - the registered hub-fan-out refutation condition fires directly (max blast radius 185 entities per mutation)
+- **Verdict** - REFUTED - materialized render views join H86's view machinery in the closed-avenue file: high-degree hubs make maintenance rival recomputation, exactly as the bar anticipated; query-time rendering stays, with H274's external cache covering the repeat-query case at none of this cost
 
 ### R26-H277 Query-alias harvesting - usage teaches the resolver
 
@@ -3099,6 +3109,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - harvesting query-term/entity pairs from the benchmark run logs yields >= 20 alias candidates of which >= 80% survive blind adjudication, and adding them to the resolver's alias table flips >= 1 of the persistent identity failures (the model-code SAME_AS class)
 - **Acceptance bar** - all clauses; refuted if query vocabulary already matches graph names (nothing to harvest on this corpus class)
 - **Experiment** - free census on benchmark logs + blind adjudication; resolver replay offline
+- **Result** - (same executor/report) only 15 alias candidates harvested (bar 20) and just **3/15 survive blind adjudication** (bar 80%) - most candidates are spurious matches from never-extracted products; the registered refutation condition fires: the 63 recalled products already match graph names at >= 85 token_set_ratio. The SAME_AS flip clause was untestable (the model_code class lives on the off-limits benchmark instance; caveat recorded)
+- **Verdict** - REFUTED on this corpus class - probe vocabulary already speaks the graph's names, so usage has nothing to teach the resolver here; the mechanism stays registered as production-telemetry territory (real users, unlike benchmark probes, do not quote catalogue names)
 
 ### R26-H278 Demand decay - the ledger forgets gracefully
 
@@ -3106,6 +3118,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - on a time-sliced replay of the query history, decayed demand (half-life swept) predicts NEXT-slice demand better than cumulative demand (>= 10% lift in rank correlation), and the optimal half-life is stable across slices
 - **Acceptance bar** - both clauses; refuted if demand is stationary at this corpus scale (decay then defers to production telemetry, parked in the gap ledger)
 - **Experiment** - free replay; requires only the benchmark run timestamps
+- **Result** - (same executor/report) no timestamped QUERY stream exists as an artifact - probe ids are catalogue-ordered, and the logs are ingestion streams, not usage streams; a static catalogue is stationary by construction
+- **Verdict** - UNTESTABLE, PARKED on the pre-registered park condition - demand decay defers to production telemetry (gap ledger holds the entry); no half-life constant ships in H280's composition
 
 ### R26-H279 CONTRARIAN - the staleness law measured
 
@@ -3122,3 +3136,87 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - a coherent composition exists in which every surviving mechanism strictly improves the benchmark (recall, latency, or identity) with zero cross-interference, and signal write-back mechanisms dominate content persistence on this corpus class
 - **Acceptance bar** - the composition table with per-mechanism deltas; the decision procedure of the round - resolved, not refuted; its output is the H198 usage-coupling input
 - **Experiment** - composes the round's surviving artifacts; runs LAST
+
+## R27 - agentic escalation for identity: the resolver's court of appeal (user-directed, pre-registered 2026-07-08)
+
+The user directs a fan-out on AGENTIC LLM resolution for the defer band: when the calibrated stack abstains, an agent - bounded rounds (an EFFORT budget), optionally tools (graph queries, source-span fetch, deterministic instruments), and above an uncertainty threshold web search - argues the pair to a verdict. The organizing law is the user's own cost warning, stated verbatim as a design constraint: "this must really be exceptional, not ordinary - otherwise we will game ourselves into expensive and super expensive ingestion". The design shape is an ESCALATION LADDER: deterministic instruments (free) -> calibrated stack (cheap) -> single-shot judge (one call) -> tool-agent (bounded rounds) -> web-augmented (rarest); each rung must beat the rung below on marginal decision-flips per token, the population reaching each rung must decay steeply, and the honest baseline is no longer "unresolved" - H268 made abstention traversable, so escalation competes against CHEAP soft links, not against nothing. Discipline: every accuracy arm runs OFFLINE on frozen labeled pairs (the H101 298-pair adjudicated benchmark + the H157 blind set + the H128 defer-band calibration artifacts) - the agentic tier is never tested by ingesting; the LLM arms use the freed local endpoint and queue behind the standing LLM tier. Web access is user-authorized for this round, gated to its registered hypothesis only.
+
+### R27-H288 CONTRARIAN - the oracle ceiling: is there anything to escalate FOR? (RUNS FIRST, free)
+
+- **Grounding** - the campaign's pricing doctrine (H171 knee, H211 priced-out residue) demands the ceiling before the machinery; H268 just showed soft links harvest 64.7% of sibling-fragment attachment value WITHOUT resolving anything; if perfect resolution of every deferred pair barely moves the benchmark beyond what soft links already capture, the entire agentic tier is dead before the first agent runs
+- **Hypothesis** - simulating ORACLE resolution of the full defer band (correct merge/block per available labels; sensitivity band for unlabeled pairs) on the frozen graph lifts pinned wide-set recall < 2 pts over the H268 soft-link baseline - the agentic tier's addressable value is small and the round closes cheaply
+- **Prediction** - the contrarian holds partially: attachment-mediated value is mostly soft-link-capturable, but a residual identity-precision value (false-merge cleanup, model_code class) survives that soft links cannot touch - the round then narrows to the precision surface
+- **Acceptance bar** - the delta measured under the pinned H207 harness conventions (simulation may be in-memory render arithmetic, read-only, per the H254/H268 gate machinery); >= 2 pts = the tier earns its arms; < 2 pts = the round records the ceiling and only H281's census (as instrumentation) survives
+- **Experiment** - free: frozen graph read-only + defer/judge event logs + H101 labels; runs FIRST and gates the round's LLM spend
+
+### R27-H281 Defer-band anatomy - what evidence would decide the undecided?
+
+- **Grounding** - escalation design needs the demand side measured: pairs abstain for DIFFERENT reasons, and each reason maps to a different (and differently priced) rung; the census classes: (a) decidable by deterministic instruments already in the stack (value comparator H194/H208, GLiNER spans H260, provenance overlap) at zero LLM, (b) decidable from in-graph context a single LLM call can read, (c) decidable only from source-document spans (tool-agent territory), (d) decidable only from world knowledge outside the corpus (web territory), (e) genuinely undecidable
+- **Hypothesis** - >= 30% of the defer band is class (a)+(b) (the cheap rungs absorb the bulk), class (d) is <= 10% (web is structurally rare), and class assignments are reproducible under blind double-adjudication (>= 85% agreement)
+- **Prediction** - class (c) dominates the remainder: the graph's compressed descriptions starve the judge of evidence that sits verbatim in source chunks - consistent with H252's finding that missed content is span-locatable at 5% cost
+- **Acceptance bar** - the stratified census with per-class counts and evidence notes is the deliverable; every downstream arm reports per-class numbers against it; refuted-as-framing if class (e) dominates (> 50% - the defer band is then noise, not starved evidence, and escalation has no target)
+- **Experiment** - free: stratified sample (>= 80 pairs) from defer/judge events + H101/H128 artifacts, blind manual adjudication protocol
+
+### R27-H282 The single-shot control - how good is one honest call?
+
+- **Grounding** - every agentic claim is relative to the one-call judge; the defer-zone judge exists in-engine but its accuracy was never measured on adjudicated labels as a standalone instrument; without this control the round cannot attribute gains to AGENCY vs simply to asking an LLM at all
+- **Hypothesis** - a single-call judgment with standard context (names, descriptions, 1-hop neighborhoods, shared provenance) on the frozen labeled pairs lands 70-85% F1 overall but degrades sharply on H281's class (c)/(d) strata - the evidence-starved classes are exactly where one call cannot help itself
+- **Prediction** - the stratification IS the result: class (b) near ceiling, class (c) near coin-flip; the aggregate number alone would mislead
+- **Acceptance bar** - F1/precision/recall + tokens per pair, per H281 stratum, on the local endpoint; this is the round's control arm - resolved by measurement, not pass/fail; flags if even class (b) underperforms the calibrated stack (the judge would then be NET NEGATIVE where it is currently trusted)
+- **Experiment** - LLM tier (local endpoint), frozen pairs, temperature 0, three repeats for variance honesty
+
+### R27-H283 The tool-agent - evidence fetch under a bounded loop
+
+- **Grounding** - the agent's only structural advantage over the single shot is FETCHING what the context lacks: source spans by chunk provenance (the H252 machinery), graph neighborhood expansion, deterministic comparator verdicts, GLiNER span scans; the Strands SDK (already the project's agent substrate) hosts the loop; the H285 contrarian strips the tools to isolate whether agency-without-evidence is theater
+- **Hypothesis** - the tool-agent beats the single-shot control by >= 10 F1 pts on H281 class (c) at <= 3x single-shot token cost, with gains CONCENTRATED in class (c) (tools fetch evidence; they should not help where evidence was already present)
+- **Prediction** - source-span fetch carries most of the lift (same lesson as H252/H258: the knowledge exists, selection/starvation loses it); neighborhood expansion is decoration
+- **Acceptance bar** - both clauses per-stratum; refuted if gains spread uniformly across strata (the lift is then prompt-shape, not evidence, and the cheap fix is a better single-shot context per H282)
+- **Experiment** - LLM tier: bounded agent (K=4 rounds cap pending H284) on the frozen class-stratified pairs; per-tool ablation logged
+
+### R27-H284 The effort law - where does deliberation saturate?
+
+- **Grounding** - the user names effort as the dial: limited rounds per escalation; if accuracy saturates early the cap is cheap insurance, if it climbs monotonically effort is a real price-performance dial the knee must price
+- **Hypothesis** - sweeping the round budget K in {1, 2, 4, 8}: >= 80% of the K=8 accuracy lift is captured by K <= 3, and marginal flips per round decay monotonically - the effort cap sets at the measured knee, not by taste
+- **Prediction** - saturation by K=3; late rounds re-argue rather than re-discover (the agent stops fetching new evidence and starts rationalizing)
+- **Acceptance bar** - the accuracy-vs-K curve with per-round evidence-fetch counts (did round N fetch NEW evidence or re-reason?); refuted if the curve climbs past K=4 - effort then enters H290's frontier as a priced dial
+- **Experiment** - LLM tier, rides H283's harness on the same frozen pairs
+
+### R27-H285 CONTRARIAN - deliberation is theater: strip the tools
+
+- **Grounding** - the round-table already rejected chain-of-verification for extraction; the identity analogue: multi-round reasoning WITHOUT new evidence may be pure theater - if so, every agentic gain is evidence-fetch wearing an agent costume, and the design simplifies to fetch-then-single-shot (no loop at all)
+- **Hypothesis** - the no-tools multi-round agent lands within 3 F1 pts of the single-shot control on every stratum (deliberation adds nothing without evidence), while the tool-agent's lift survives - locating ALL agentic value in the fetch, none in the loop
+- **Prediction** - confirmed; and the sharpest corollary follows: a NON-agentic pipeline (deterministically fetch class-(c) evidence per H281's map, then one call) matches the tool-agent at a fraction of its cost
+- **Acceptance bar** - the three-way comparison (single-shot / no-tools agent / tool-agent) per stratum; if the corollary pipeline matches the tool-agent within 3 pts, the SHIPPED form is fetch-then-judge and the agent loop is recorded as an unnecessary abstraction
+- **Experiment** - LLM tier, same harness, tools disabled; plus the fetch-then-judge pipeline arm
+
+### R27-H286 Web escalation - the identifier class goes outside the corpus
+
+- **Grounding** - the model_code SAME_AS surface (73 of 127 SAME_AS edges; the mask<->battery collision over a shared 'P10') is the one measured failure class whose deciding evidence may not EXIST in the corpus: manufacturer part-number semantics are world knowledge; the user authorizes web search above an uncertainty threshold - this hypothesis is that threshold's only registered tenant
+- **Hypothesis** - for identifier-collision pairs in the deep-defer band, <= 2 web queries per pair flip >= 50% of the known false-merge class to correct verdicts with ZERO new false merges on the frozen set - external lookup resolves what no in-corpus rung can
+- **Prediction** - part-number lookups for this vocabulary return usable disambiguation (manufacturer catalogues are indexed); failures concentrate where the identifier is genuinely shared across product families
+- **Acceptance bar** - both clauses on the frozen identifier-collision pairs; refuted if web results are ambiguous or wrong for >= 30% of lookups (web then stays OUT of the ladder entirely and the class routes to abstention + soft links); the gate is structural: web is reachable ONLY from the identifier-collision + deep-defer intersection, never as a general rung
+- **Experiment** - LLM tier + web tool, frozen pairs only, full query/response provenance logged for audit
+
+### R27-H287 The escalation gate - who earns the expensive court
+
+- **Grounding** - the anti-explosion clause made mechanism: escalation must be aimed, not ambient; the campaign owns three aiming signals - defer-band posterior depth, gold-carrier/hub adjacency (value), and the H271 demand ledger (usage) - and the null (random escalation at equal budget) is cheap to run
+- **Hypothesis** - a gate composing (deep-defer posterior x value adjacency x demand weight) captures >= 2x the decision-flips per escalated pair vs random escalation at equal budget, and a hard cap (<= 5% of the defer band, <= 0.5% of all candidate pairs, per-document token ceiling) retains >= 80% of the unconstrained policy's total flips
+- **Prediction** - the cap is nearly free (value concentrates, per H279's 2.05x demand-concentration law); the gate is what makes the tier "exceptional, not ordinary" by construction rather than by hope
+- **Acceptance bar** - both clauses on the frozen pairs with H282/H283 verdicts as the flip source; the cap numbers ship into H290's frontier as binding constants
+- **Experiment** - free once H282/H283 verdicts exist (pure replay arithmetic over their outputs)
+
+### R27-H289 The harness tax - does the framework earn its abstraction?
+
+- **Grounding** - the user allows a framework for the agentic part; the project already carries Strands Agents SDK; a framework that taxes every escalation with schema/scaffold tokens multiplies exactly the cost the round is policing - the same lesson as the subagent least-privilege doctrine
+- **Hypothesis** - the Strands-hosted loop costs <= 20% more tokens than a bare completion loop at equal policy and accuracy on a matched pair sample; above that the bare loop ships and the framework is recorded as ergonomics, not architecture
+- **Prediction** - the tax lands under 20% (tool-call plumbing amortizes over rounds) but is nonzero and worth measuring once, not assuming forever
+- **Acceptance bar** - matched-sample token accounting, both harnesses, same model/policy; resolved by measurement - the cheaper harness ships in H290's frontier
+- **Experiment** - LLM tier, small matched sample (20 pairs), rides H283's arms
+
+### R27-H290 The ladder frontier - what ships, at what price, behind what cap
+
+- **Grounding** - the round's decision procedure: compose surviving rungs into the escalation ladder, price end-to-end at ingestion scale (defer pairs/doc x gated escalation fraction x cost/escalation, H289's harness constant applied) against the H171 knee; refuted-by-cost is a first-class outcome and the user's warning is the binding constraint - a ladder that only pays under generous accounting does NOT ship
+- **Hypothesis** - a gated ladder exists that clears the knee: deterministic rungs absorb H281 class (a), an improved single-shot (H285's fetch-then-judge if the corollary holds) absorbs (b)+(c), web handles the identifier sliver (d), and the whole tier touches <= 5% of the defer band - identity precision improves measurably (fewer false merges on the frozen benchmark) at ingest-cost growth <= 5%
+- **Prediction** - the shipped form is LESS agentic than the round's name: fetch-then-judge + a web sliver behind the H287 gate, with the full agent loop priced out - the exceptional-not-ordinary law enforced by arithmetic
+- **Acceptance bar** - the composition table with per-rung accuracy/cost/population numbers and the knee verdict; ships into H198 (or records that the calibrated stack + soft links IS the frontier and the court of appeal stays closed)
+- **Experiment** - composes the round's artifacts; runs LAST

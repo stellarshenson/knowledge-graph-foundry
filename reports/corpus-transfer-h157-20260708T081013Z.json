@@ -1,0 +1,144 @@
+{
+  "hypothesis": "R15-H157",
+  "phase": "ANALYSIS",
+  "generated_utc": "20260708T081013Z",
+  "author": "Claude (opus executor)",
+  "graph_uri": "bolt://user-konrad.jelen-kgf-neo4j:7687",
+  "read_only": true,
+  "headline": {
+    "documents_ingested": 30,
+    "documents_loaded": 26,
+    "entities_extracted": 16547,
+    "relationships": 12203,
+    "cured_types": 51,
+    "benchmark_types": 12,
+    "resolution_mix": {
+      "merge": 2050,
+      "block": 14270,
+      "defer": 1689
+    },
+    "resolution_veto": 24,
+    "extraction_warnings": 1085,
+    "warning_breakdown": {
+      "chunk_extract_mode_error": 20,
+      "dangling_relationship": 1043,
+      "self_referencing": 17,
+      "chunk_extract_litellm": 5
+    },
+    "type_emerged": 66,
+    "type_confirmed": 55
+  },
+  "clause1_blind_labeling": {
+    "n_pairs": 60,
+    "strata": {
+      "merge": {
+        "S": 19,
+        "D": 1
+      },
+      "block": {
+        "D": 19,
+        "U": 1
+      },
+      "defer": {
+        "S": 8,
+        "D": 9,
+        "U": 3
+      }
+    },
+    "merge_precision_proxy": 0.95,
+    "block_correctness": 1.0,
+    "recall_same_proxy": 1.0,
+    "defer_ambiguity": 0.55,
+    "false_merges": [
+      [
+        "Yu Zhang",
+        "Yue Zhang",
+        0.2768
+      ]
+    ],
+    "false_blocks": [],
+    "merge_stratum_recoverable_only": true,
+    "recoverable_merge_fraction": 0.1717,
+    "pass": true
+  },
+  "clause2_ece_transfer": {
+    "transfer_ece": 0.2606,
+    "reference_ece": 0.05028763559555136,
+    "ratio": 5.183,
+    "threshold": 2.0,
+    "n_labeled": 56,
+    "bins": [
+      [
+        0.0,
+        17,
+        0.031,
+        0.0
+      ],
+      [
+        0.1,
+        12,
+        0.155,
+        0.25
+      ],
+      [
+        0.2,
+        10,
+        0.258,
+        0.7
+      ],
+      [
+        0.3,
+        4,
+        0.338,
+        1.0
+      ],
+      [
+        0.4,
+        5,
+        0.448,
+        1.0
+      ],
+      [
+        0.5,
+        4,
+        0.568,
+        1.0
+      ],
+      [
+        0.6,
+        3,
+        0.645,
+        1.0
+      ],
+      [
+        0.7,
+        1,
+        0.702,
+        1.0
+      ]
+    ],
+    "branch": "break",
+    "calibration_breaks": true
+  },
+  "clause3_lifecycle": {
+    "fsm_path": [
+      "EMPTY",
+      "INITIALIZING",
+      "CURING",
+      "CURING",
+      "STABLE"
+    ],
+    "reached_stable": true,
+    "spurious_recure": false,
+    "cure_point_doc": 13,
+    "cured_types": 51,
+    "cured_entities": 5863,
+    "final_types": 51,
+    "n_curing_metrics": 14
+  },
+  "clause3_pass": true,
+  "verdict_recommendation": {
+    "verdict": "CONFIRMED",
+    "recommendation": "Lifecycle machinery transfers to the paper corpus (FSM reached STABLE, curing gate held at doc 13, no recure) but the shipped isotonic calibration does NOT transfer (ECE 0.261 = 5.2x the 0.050 benchmark reference, well past 2x). Ship a per-corpus self-calibration path (H142 lineage); do not reuse the device-corpus isotonic constants across corpus classes. Resolver DECISIONS still transfer well (merge precision 0.95, block 1.00); the failure is in the posterior probability semantics, and the residual false-merge surface is author-name morphology."
+  }
+}
