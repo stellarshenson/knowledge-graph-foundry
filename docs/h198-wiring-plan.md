@@ -23,6 +23,8 @@ H198 clause (a) met: 66 promotion entries classified, zero unaccounted - 15 LEVE
 
 ## Phase 2 - wiring (the sweep)
 
+**Tranche 1 READY (2026-07-08, worktree `agent-aea0ebaec7aac3122`, uncommitted, base `0735aac`)**: DEF-6 import fix (+regression test in fresh interpreter), top_k 16 default, H190 glyph normalization (`extraction.glyph_normalization`, comparison-time resolver key - entity IDs untouched), H153 header carryover (`extraction.header_carryover`), H146-151 pypdf parser union (`extraction.parser_union`), H173 proposition splitter (`graphrag.proposition_split_max_tokens: 300`). 325 tests pass (+16 new), zero new lint failures. **Merge blocked until H241 chain + R23/R24 batch release the main tree.** Merge watch-items: (1) H195a over-fetch NOT wired into engine `vector_query` - the generous-fetch factor lives in the harness notebooks; decide at merge whether the engine needs it; (2) pre-existing repo-wide ruff format drift (8 files, `uvx` unpinned ruff) - separate `make format` housekeeping, not part of this tranche; (3) chunk ids change under glyph+carryover (content-hashed) - expected on fresh rebuild, both config-reversible for ablation.
+
 Wire by subsystem, cheapest-risk first; every lever behind a config key so the capstone can ablate it. Known members (inventory completes this list):
 
 **Config-only flips** (implemented, wrong default - one-line changes)
