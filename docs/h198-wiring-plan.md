@@ -77,6 +77,10 @@ Head-to-head under the pinned H207 harness (frozen render spec, graph + render f
 - docs/ledger/defects/promotions reconciled; defects closed or re-registered; journal current
 - Release candidate presented to the user (no tag, no version change without explicit approval)
 
+## Post-RC follow-on (user-directed 2026-07-08)
+
+Public-benchmark campaign: take the released engine to the published GraphRAG evaluation surfaces (HotpotQA / MuSiQue / 2WikiMultiHopQA-class multi-hop QA slices with published peer numbers, extending H114's external-validity design). Campaign design delegated to the AI; requires the web/external gate the user opens post-RC (benchmark downloads, peer-framework installs, published-number verification). Success = KGF's numbers on public slices beside GraphRAG/LightRAG/HippoRAG-2 published results under matched conditions, reproducible from a pinned harness.
+
 ## Acceptance criteria
 
 - [ ] Inventory complete: zero promotions unaccounted (H198 clause a)
