@@ -1,6 +1,8 @@
 # Recovery State - live board snapshot
 
-**Purpose**: if the session dies (limits, crash), a restored session reads THIS FILE FIRST (after JOURNAL.md) and picks up every stream. The compute layer runs as detached OS processes with disk checkpoints - it survives session death; only the *recording and relaunch* duties need the restored session. Updated 2026-07-08 ~00:15 UTC.
+**Purpose**: if the session dies (limits, crash), a restored session reads THIS FILE FIRST (after JOURNAL.md) and picks up every stream. The compute layer runs as detached OS processes with disk checkpoints - it survives session death; only the *recording and relaunch* duties need the restored session. Updated 2026-07-08 ~05:05 UTC (post-outage recovery pass).
+
+**Board delta at last update**: H119 COMPLETE and RECORDED (REFUTED, commit 4001772) - stream 1 below is CLOSED. H212 ingest DONE (rc=0, quiet Bedrock); finisher agent measuring against neo4j4. R22 CPU tier respawned (first executor died at limits pre-notebook). R22 LLM gates + H229 executor launched (vLLM free post-H119). H157 at 21/30 papers, accelerating. Pending recording: H212, R22 CPU tier (7 verdicts), H229 + 3 gates, H157.
 
 ## Standing rules (binding)
 
