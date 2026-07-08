@@ -22,7 +22,7 @@
 - If dead without report: relaunch resumes from checkpoints: .venv/bin/jupyter nbconvert --to notebook --execute --inplace notebooks/serving_determinism_h229.ipynb --ExecutePreprocessor.timeout=36000 >> logs/h229-nbconvert.log 2>&1
 
 ### 2. H157 corpus transfer - detached launcher + ingest
-- 27/30 papers done (grep -c '"document.completed"' logs/h157-events.jsonl). INGEST_OK in logs/h157-corpus-transfer.log marks completion; launcher scratchpad h157_launch.sh resumes on death.
+- COMPLETE and RECORDED (CONFIRMED: lifecycle transfers, ECE breaks 5.18x, self-calibration -> H198) - stream CLOSED.
 - After INGEST_OK: spawn analysis agent (R15-H157 registration + notebooks/corpus_transfer_h157.ipynb plan: blind-label ~60 pairs H101 protocol, ECE vs identity-calibration-v2.json, lifecycle clause from events log) -> report -> record.
 
 ### 3. R24 graph gates - Opus executor (NOT outage-proof)
