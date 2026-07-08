@@ -51,3 +51,26 @@ class LocalGpuEngine:
             )
         except Exception as exc:
             raise EngineError(f"local-gpu engine failed: {exc}") from exc
+
+    def complete_text(self, system: str, user: str) -> str:
+        """Raw text completion via litellm (bypasses instructor) for names-only enumeration."""
+        import litellm
+
+        model = self.cfg.model
+        if not model.startswith("openai/"):
+            model = f"openai/{model}"
+        try:
+            resp = litellm.completion(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user},
+                ],
+                temperature=self.cfg.temperature,
+                timeout=self.cfg.timeout,
+                api_base=self.cfg.base_url,
+                api_key="local",
+            )
+            return resp.choices[0].message.content or ""
+        except Exception as exc:
+            raise EngineError(f"local-gpu engine failed: {exc}") from exc

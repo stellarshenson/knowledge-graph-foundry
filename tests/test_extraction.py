@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from pydantic import BaseModel
 import pytest
 
@@ -13,6 +15,7 @@ from knowledge_graph_foundry.extraction.extractor import (
     WireEntity,
     WireExtraction,
     WireRelationship,
+    _parse_enumeration,
     apply_mapping,
     extract_chunk,
     extract_document,
@@ -427,3 +430,103 @@ class TestSplitAndGleaningPrompts:
         assert "DreamStation" in gleaning_msgs[0]["content"]
         # user turn carries the chunk text
         assert entity_msgs[1] == {"role": "user", "content": "chunk text"}
+
+
+class EnumerateEngine:
+    """Records the stage-1 text call and stage-2 structured call for the enumerate recipe."""
+
+    name = "enumerate"
+
+    def __init__(self, enum_raw: str, extraction_response: BaseModel):
+        self.enum_raw = enum_raw
+        self.extraction_response = extraction_response
+        self.text_calls: list[tuple[str, str]] = []
+        self.calls: list[list[dict[str, str]]] = []
+
+    def complete_text(self, system: str, user: str) -> str:
+        self.text_calls.append((system, user))
+        return self.enum_raw
+
+    def complete(self, messages: list[dict[str, str]], response_model: type) -> BaseModel:
+        self.calls.append(messages)
+        return self.extraction_response
+
+
+class TestEnumerationParser:
+    def test_clean_json(self):
+        raw = '{"entities": [{"name": "DreamStation"}, {"name": "Philips"}], "relationships": []}'
+        assert _parse_enumeration(raw) == ["DreamStation", "Philips"]
+
+    def test_fenced_json(self):
+        raw = '```json\n{"entities": [{"name": "AirSense"}], "relationships": []}\n```'
+        assert _parse_enumeration(raw) == ["AirSense"]
+
+    def test_garbage_with_name_fields_falls_back_to_regex(self):
+        raw = 'sure! here you go: "name": "ResMed", junk "name": "AirMini" trailing'
+        assert _parse_enumeration(raw) == ["ResMed", "AirMini"]
+
+    def test_order_preserving_dedup_and_cap(self):
+        entries = [{"name": "Dup"}, {"name": "Dup"}] + [{"name": f"E{i}"} for i in range(200)]
+        raw = json.dumps({"entities": entries, "relationships": []})
+        names = _parse_enumeration(raw)
+        assert len(names) == 150
+        assert names[0] == "Dup"  # first-seen order, single copy
+        assert names.count("Dup") == 1
+
+
+class TestExtractionRecipes:
+    def test_enumerate_primes_stage2_with_candidates(self):
+        enum_raw = (
+            '{"entities": [{"name": "DreamStation"}, {"name": "Philips"}], "relationships": []}'
+        )
+        extraction = WireExtraction(entities=[WireEntity(name="DreamStation", types=["Product"])])
+        engine = EnumerateEngine(enum_raw, extraction)
+        cfg = ExtractionSettings(recipe="enumerate", gleaning_rounds=0)
+
+        result = extract_chunk(_chunk("enum text"), PURPOSE, Ontology(), engine, cfg)
+
+        assert len(engine.text_calls) == 1  # stage 1 names-only
+        assert len(engine.calls) == 1  # stage 2 extraction
+        stage2_system = engine.calls[0][0]["content"]
+        assert "Candidate names detected" in stage2_system
+        assert "- DreamStation" in stage2_system
+        assert "- Philips" in stage2_system
+        # candidate order preserved as enumerated
+        assert stage2_system.index("- DreamStation") < stage2_system.index("- Philips")
+        assert [e.name for e in result.entities] == ["DreamStation"]
+
+    def test_mention_recipe_single_call_with_no_dedup_instruction(self):
+        extraction = WireExtraction(entities=[WireEntity(name="DreamStation", types=["Product"])])
+        engine = SequenceEngine([extraction])
+        cfg = ExtractionSettings(recipe="mention", gleaning_rounds=0)
+
+        extract_chunk(_chunk("mention text"), PURPOSE, Ontology(), engine, cfg)
+
+        assert len(engine.calls) == 1  # single combined call
+        system = engine.calls[0][0]["content"]
+        assert "do NOT deduplicate" in system
+        assert "surface MENTION" in system
+
+
+class TestRecipePrompts:
+    def test_mention_prompt_contains_no_dedup_instruction(self):
+        system = extraction_messages("chunk text", PURPOSE, Ontology(), mention=True)[0]["content"]
+        assert "do NOT deduplicate or canonicalize" in system
+        assert PURPOSE in system
+
+    def test_candidate_block_appended_when_names_given(self):
+        system = extraction_messages(
+            "chunk text", PURPOSE, Ontology(), candidate_names=["Alpha", "Beta"]
+        )[0]["content"]
+        assert "Candidate names detected" in system
+        assert "- Alpha" in system
+        assert "- Beta" in system
+
+    def test_single_prompt_byte_identical_regression(self):
+        plain = extraction_messages("chunk text", PURPOSE, Ontology())
+        explicit = extraction_messages(
+            "chunk text", PURPOSE, Ontology(), candidate_names=None, mention=False
+        )
+        assert plain == explicit
+        assert "Candidate names" not in plain[0]["content"]
+        assert "surface MENTION" not in plain[0]["content"]

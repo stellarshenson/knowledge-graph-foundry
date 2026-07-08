@@ -19,6 +19,13 @@ class TestDefaults:
         with pytest.raises(ValidationError):
             Settings(llm={"engine": "quantum"})
 
+    def test_extraction_recipe_defaults_to_single(self):
+        assert Settings().extraction.recipe == "single"
+
+    def test_invalid_extraction_recipe_fails_fast(self):
+        with pytest.raises(ValidationError):
+            Settings(extraction={"recipe": "bogus"})
+
 
 class TestPrecedence:
     def test_config_file_overrides_defaults(self, tmp_path: Path):

@@ -1,0 +1,19 @@
+# R24-SLOT2 H240(b) scratch ingest - mention arm (H258 mention-emission).
+# Copied from config-h241-v2.yml; the ONLY behavioural change is extraction.recipe.
+# Local vLLM gpt-oss-120b engine (free post-H229), Bedrock Titan embeddings (light).
+# Neo4j pinned EXPLICITLY to the fresh scratch instance neo4j4 per DEF-4/DEF-5.
+neo4j:
+  uri: bolt://172.19.0.4:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 180
+resolution:
+  identity_stack: v2
+extraction:
+  recipe: mention
+event_log: logs/h240b-mention-events.jsonl

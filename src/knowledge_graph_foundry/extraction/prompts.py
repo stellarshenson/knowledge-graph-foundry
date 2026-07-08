@@ -48,15 +48,49 @@ def _format_names(names: list[str]) -> str:
     return "\n".join(f"- {n}" for n in names)
 
 
-def extraction_messages(chunk_text: str, purpose: str, ontology: Ontology) -> list[dict]:
-    """Build the system+user messages for one chunk extraction."""
+# R24-SLOT2-H258: mention-emission clause appended to the extraction system prompt.
+_MENTION_CLAUSE = """You extract every surface MENTION of every entity for a knowledge graph. Purpose: {purpose}. Emit each entity mention AS IT APPEARS in the text, including repeated and variant mentions of the same entity - do NOT deduplicate or canonicalize; a downstream resolver will merge duplicates."""
+
+# R24-SLOT2-H246: candidate block appended to the stage-2 extraction system prompt.
+_CANDIDATE_BLOCK = """Candidate names detected in this text (extract those that are real entities, add any missed):
+{names}"""
+
+# R24-SLOT2-H246: stage-1 names-only enumeration system prompt (measured harness wording).
+_ENUMERATION_TEMPLATE = """You exhaustively LIST entity NAMES for a knowledge graph. Purpose: {purpose}. List every distinct entity name present - products, device models, manufacturers, components, accessories, model codes, features. Be exhaustive; names only, do not describe types.
+Return ONLY a JSON object of the form {{"entities": [{{"name": "..."}}], "relationships": []}}. Use specific entity names; no commentary outside the JSON."""
+
+
+def extraction_messages(
+    chunk_text: str,
+    purpose: str,
+    ontology: Ontology,
+    candidate_names: list[str] | None = None,
+    mention: bool = False,
+) -> list[dict]:
+    """Build the system+user messages for one chunk extraction.
+
+    candidate_names appends an H246 candidate block; mention appends the H258
+    mention-emission clause. With neither, the system content is unchanged.
+    """
     system = _SYSTEM_TEMPLATE.format(
         purpose=purpose,
         types=_format_types(ontology),
         relationship_types=_format_relationship_types(ontology),
     )
+    if mention:
+        system = f"{system}\n\n{_MENTION_CLAUSE.format(purpose=purpose)}"
+    if candidate_names:
+        system = f"{system}\n\n{_CANDIDATE_BLOCK.format(names=_format_names(candidate_names))}"
     return [
         {"role": "system", "content": system},
+        {"role": "user", "content": chunk_text},
+    ]
+
+
+def enumeration_messages(chunk_text: str, purpose: str) -> list[dict]:
+    """Build the H246 stage-1 names-only enumeration messages (plain chat, JSON out)."""
+    return [
+        {"role": "system", "content": _ENUMERATION_TEMPLATE.format(purpose=purpose)},
         {"role": "user", "content": chunk_text},
     ]
 

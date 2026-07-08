@@ -24,3 +24,7 @@ class Engine(Protocol):
     name: str
 
     def complete(self, messages: list[dict[str, str]], response_model: type[T]) -> T: ...
+
+    def complete_text(self, system: str, user: str) -> str:
+        """Raw text completion (no structured output) - names-only enumeration path."""
+        ...

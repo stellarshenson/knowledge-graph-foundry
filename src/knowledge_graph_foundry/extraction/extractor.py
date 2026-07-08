@@ -12,6 +12,7 @@ from knowledge_graph_foundry.engines.base import Engine
 from knowledge_graph_foundry.events import emit
 from knowledge_graph_foundry.extraction.prompts import (
     entity_only_messages,
+    enumeration_messages,
     extraction_messages,
     gleaning_messages,
     relation_only_messages,
@@ -28,6 +29,9 @@ from knowledge_graph_foundry.ontology.seed import normalize_type_name
 from knowledge_graph_foundry.settings import ExtractionSettings
 
 _CAMEL_BOUNDARY = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
+_ENUM_OBJECT = re.compile(r"\{.*\}", re.DOTALL)  # outermost JSON object
+_ENUM_NAME = re.compile(r'"name"\s*:\s*"([^"]+)"')  # regex fallback on parse failure
+_ENUM_CANDIDATE_CAP = 150  # H246: cap candidate names fed to stage 2
 
 
 def normalize_relationship_type(name: str) -> str:
@@ -62,10 +66,49 @@ class WireExtraction(BaseModel):
     relationships: list[WireRelationship] = Field(default_factory=list)
 
 
+def _parse_enumeration(raw: str) -> list[str]:
+    """Parse stage-1 names-only output: strip fences, regex outermost {...}, JSON-then-regex
+    fallback (reproduces the measured harness tolerance). Order-preserving dedup, capped."""
+    text = raw.strip()
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:json)?", "", text).strip()
+        if text.endswith("```"):
+            text = text[:-3].strip()
+    match = _ENUM_OBJECT.search(text)
+    blob = match.group(0) if match else text
+    names: list[str] = []
+    try:
+        data = json.loads(blob)
+        for entity in data.get("entities", []):
+            name = entity.get("name")
+            if name:
+                names.append(name)
+    except Exception:
+        names = _ENUM_NAME.findall(blob)
+    return list(dict.fromkeys(names))[:_ENUM_CANDIDATE_CAP]
+
+
+def _enumerate_names(chunk_text: str, purpose: str, engine: Engine) -> list[str]:
+    """H246 stage 1: names-only plain-chat completion, parsed to a candidate list."""
+    raw = engine.complete_text(enumeration_messages(chunk_text, purpose)[0]["content"], chunk_text)
+    return _parse_enumeration(raw)
+
+
 def _first_pass(
     chunk_text: str, purpose: str, ontology: Ontology, engine: Engine, cfg: ExtractionSettings
 ) -> WireExtraction:
-    """Run the initial extraction: combined single call, or split entity-then-relation calls."""
+    """Run the initial extraction: recipe selects single/split, enumerate (H246), or mention (H258)."""
+    if cfg.recipe == "enumerate":
+        candidates = _enumerate_names(chunk_text, purpose, engine)
+        return engine.complete(
+            extraction_messages(chunk_text, purpose, ontology, candidate_names=candidates),
+            WireExtraction,
+        )
+    if cfg.recipe == "mention":
+        return engine.complete(
+            extraction_messages(chunk_text, purpose, ontology, mention=True), WireExtraction
+        )
+
     if not cfg.split_entity_relation:
         return engine.complete(extraction_messages(chunk_text, purpose, ontology), WireExtraction)
 
