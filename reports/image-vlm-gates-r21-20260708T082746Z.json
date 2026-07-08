@@ -1,0 +1,99 @@
+{
+ "round": "R21",
+ "hypotheses": [
+  "H218",
+  "H224"
+ ],
+ "utc": "20260708T082746Z",
+ "corpus": "cpap-datasheets-and-manuals",
+ "gpu": "GPU0 RTX PRO 4000 Blackwell sm_120 (cu130 torch)",
+ "frozen_inputs": {
+  "census": "data/processed/image-census-h216.json",
+  "blind_gold": "reports/h218-gold-frozen-20260708T075750Z.json"
+ },
+ "H224": {
+  "bars": {
+   "discard>=": 0.6,
+   "false_discard<=": 0.05,
+   "refute_false>": 0.1
+  },
+  "discard_rate_place": 0.9684628214492058,
+  "discard_rate_record": 0.06167608286252354,
+  "false_discard_place": 0.0,
+  "false_discard_record": 0.0,
+  "discarded_placements": 88840,
+  "total_placements": 91733,
+  "discarded_records": 131,
+  "info_bearing_placements": 2262,
+  "false_discarded_records": 0,
+  "T_recur": 24,
+  "T_tiny": 98,
+  "entropy_ib_median": 3.73725769034542,
+  "entropy_deco_median": 5.384605526134335,
+  "verdict": "CONFIRMED",
+  "summary": "recurrence(>=24 placements)+sub-visible-size(<=98px) filter discards 96.8% of the raw image stream at 0.00% false-discard; recurrence+size carry the discrimination as predicted; entropy corroborates."
+ },
+ "H218": {
+  "bars": {
+   "recall>=": 0.8,
+   "precision>=": 0.9
+  },
+  "engines": {
+   "qwen2.5-vl-7b": {
+    "product_photo": {
+     "recall": 0.906,
+     "precision": 0.833,
+     "recall_pass": true,
+     "precision_pass": false
+    },
+    "diagram": {
+     "recall": 0.977,
+     "precision": 0.917,
+     "recall_pass": true,
+     "precision_pass": true
+    },
+    "rendered_table_vector": {
+     "recall": 0.936,
+     "precision": 1.0,
+     "recall_pass": true,
+     "precision_pass": true
+    }
+   },
+   "docling-smolvlm-256m": {
+    "product_photo": {
+     "recall": 0.396,
+     "precision": 1.0,
+     "recall_pass": false,
+     "precision_pass": true
+    },
+    "diagram": {
+     "recall": 0.318,
+     "precision": 1.0,
+     "recall_pass": false,
+     "precision_pass": true
+    },
+    "rendered_table_vector": {
+     "recall": 0.617,
+     "precision": 1.0,
+     "recall_pass": false,
+     "precision_pass": true
+    }
+   }
+  },
+  "hallucinations_qwen": {
+   "img06": [
+    "respironics"
+   ],
+   "img07": [
+    "philips",
+    "respironics"
+   ],
+   "img12": [
+    "philips",
+    "respironics"
+   ]
+  },
+  "fidelity_verdict": "PARTIAL PASS; not refuted (Qwen clears 80/90 on diagram+table); registered direction REFUTED (dense tables did not lose cells; product-photo precision failed via brand hallucination); Docling/SmolVLM fails recall on all classes",
+  "extraction_clause": "QUEUED BEHIND LLM TIER (reserved campaign LLM; not attempted)"
+ }
+}

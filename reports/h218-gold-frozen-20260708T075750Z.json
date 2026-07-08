@@ -1,0 +1,2108 @@
+{
+ "hypothesis": "R21-H218",
+ "step": "blind_gold_frozen",
+ "utc": "20260708T075750Z",
+ "grader": "human-vision (Read tool render) by executor agent, BEFORE any VLM ran",
+ "immutable": true,
+ "corpus": "cpap-datasheets-and-manuals (benchmark document set)",
+ "n_images": 36,
+ "class_counts": {
+  "product_photo": 12,
+  "diagram": 12,
+  "rendered_table_vector": 12
+ },
+ "scoring_protocol": {
+  "recall": "fraction of gold_facts whose ANY alias substring appears (case-insensitive) in engine description; bar>=0.80 per class",
+  "precision": "1 - hallucinated_checkable_claims/total_checkable_claims; hallucination = asserted brand/model/number/entity absent from image; bar>=0.90 per class",
+  "notes": "weak-content images (blank/logo/symbol/lifestyle) carry few/no product facts; reported separately"
+ },
+ "records": [
+  {
+   "img_id": "img00",
+   "census_class": "product_photo",
+   "subtype": "photo_lifestyle",
+   "source_doc": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+   "page": 2,
+   "file": "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes__p2__a1__x6__0.jpeg",
+   "carries_product_or_value_facts": false,
+   "note": "lifestyle stock photo, no CPAP device or text",
+   "n_gold_facts": 2,
+   "gold_facts": [
+    {
+     "fact": "older/mature couple",
+     "aliases": [
+      "couple",
+      "man and woman",
+      "two people",
+      "elderly",
+      "older",
+      "mature",
+      "senior"
+     ]
+    },
+    {
+     "fact": "outdoors",
+     "aliases": [
+      "outdoor",
+      "outside",
+      "trees",
+      "nature",
+      "park",
+      "garden",
+      "sun"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img01",
+   "census_class": "product_photo",
+   "subtype": "logo",
+   "source_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "page": 1,
+   "file": "moh-adp-product-manual-respiratory-devices-airway-clearance-__p1__a1__x1070__0.png",
+   "carries_product_or_value_facts": false,
+   "note": "Ontario government logo (census-labeled product_photo)",
+   "n_gold_facts": 2,
+   "gold_facts": [
+    {
+     "fact": "word 'Ontario'",
+     "aliases": [
+      "ontario"
+     ]
+    },
+    {
+     "fact": "trillium/trefoil emblem",
+     "aliases": [
+      "trillium",
+      "trefoil",
+      "logo",
+      "emblem",
+      "symbol",
+      "flower"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img02",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "DreamStation_CPAP_Pro_DataSheet.pdf",
+   "page": 1,
+   "file": "DreamStation_CPAP_Pro_DataSheet__p1__a1__x42__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "DreamStation CPAP device",
+     "aliases": [
+      "dreamstation",
+      "dream station"
+     ]
+    },
+    {
+     "fact": "nasal CPAP mask worn by sleeping person",
+     "aliases": [
+      "mask",
+      "nasal"
+     ]
+    },
+    {
+     "fact": "person(s) sleeping in bed",
+     "aliases": [
+      "sleep",
+      "bed",
+      "pillow"
+     ]
+    },
+    {
+     "fact": "tube/hose",
+     "aliases": [
+      "tube",
+      "tubing",
+      "hose"
+     ]
+    },
+    {
+     "fact": "device on nightstand with display",
+     "aliases": [
+      "nightstand",
+      "bedside",
+      "display",
+      "screen"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img03",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024.pdf",
+   "page": 2,
+   "file": "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024__p2__a1__x48__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": "close-up bCPAP flow generator",
+   "n_gold_facts": 3,
+   "gold_facts": [
+    {
+     "fact": "blue circular pressure/flow dial",
+     "aliases": [
+      "dial",
+      "blue",
+      "circular",
+      "valve",
+      "knob"
+     ]
+    },
+    {
+     "fact": "numbers 3-8 on dial",
+     "aliases": [
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "number",
+      "scale"
+     ]
+    },
+    {
+     "fact": "corrugated tube with green collar",
+     "aliases": [
+      "tube",
+      "tubing",
+      "hose",
+      "green",
+      "corrugat"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img04",
+   "census_class": "product_photo",
+   "subtype": "logo",
+   "source_doc": "DSDC-CPAP-Therapy-Catalogue.pdf",
+   "page": 1,
+   "file": "DSDC-CPAP-Therapy-Catalogue__p1__a1__x1657__0.jpeg",
+   "carries_product_or_value_facts": false,
+   "note": "sleep-clinic logo/watermark",
+   "n_gold_facts": 2,
+   "gold_facts": [
+    {
+     "fact": "crescent moon logo with figures",
+     "aliases": [
+      "moon",
+      "crescent",
+      "logo",
+      "figure",
+      "emblem"
+     ]
+    },
+    {
+     "fact": "tagline 'Partners For Sleep Health'",
+     "aliases": [
+      "partners for sleep",
+      "sleep health",
+      "sleep disorder"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img05",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+   "page": 1,
+   "file": "CPAP-V3-MKT-01-CPAP-Brochure-2_00EN_NEW__p1__a1__x24__0.png",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 9,
+   "gold_facts": [
+    {
+     "fact": "MTTS brand device",
+     "aliases": [
+      "mtts"
+     ]
+    },
+    {
+     "fact": "ALARM indicator",
+     "aliases": [
+      "alarm"
+     ]
+    },
+    {
+     "fact": "digital temperature display 37.5 C",
+     "aliases": [
+      "37.5",
+      "temperature",
+      "temp",
+      "display"
+     ]
+    },
+    {
+     "fact": "TEMPERATURE CONTROL label",
+     "aliases": [
+      "temperature control",
+      "temperature"
+     ]
+    },
+    {
+     "fact": "HUMIDIFIER control",
+     "aliases": [
+      "humidifier",
+      "humidif"
+     ]
+    },
+    {
+     "fact": "ON/OFF switch",
+     "aliases": [
+      "on/off",
+      "on off",
+      "power switch",
+      "switch"
+     ]
+    },
+    {
+     "fact": "two glass humidifier bottles (500 ml)",
+     "aliases": [
+      "bottle",
+      "500",
+      "glass",
+      "jar",
+      "flask",
+      "container"
+     ]
+    },
+    {
+     "fact": "flowmeter tube",
+     "aliases": [
+      "flowmeter",
+      "flow meter",
+      "flow tube",
+      "gauge"
+     ]
+    },
+    {
+     "fact": "Air/Oxygen flow table on front",
+     "aliases": [
+      "oxygen",
+      "air",
+      "l/min",
+      "flow table",
+      "table"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img06",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+   "page": 1,
+   "file": "Brochure_BMC_GIII_A20_Oxygenium_Medical__p1__a1__x338__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "BMC brand CPAP device",
+     "aliases": [
+      "bmc"
+     ]
+    },
+    {
+     "fact": "black device with touchscreen + dial",
+     "aliases": [
+      "touchscreen",
+      "screen",
+      "display",
+      "dial",
+      "black"
+     ]
+    },
+    {
+     "fact": "clear humidifier water chamber",
+     "aliases": [
+      "humidifier",
+      "water chamber",
+      "water tank",
+      "chamber"
+     ]
+    },
+    {
+     "fact": "CPAP mask on sleeping man",
+     "aliases": [
+      "mask",
+      "nasal"
+     ]
+    },
+    {
+     "fact": "couple sleeping in bed",
+     "aliases": [
+      "bed",
+      "sleep",
+      "couple",
+      "pillow"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img07",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "Sleep And Respiratory Medical Devices Brochure.pdf",
+   "page": 4,
+   "file": "Sleep_And_Respiratory_Medical_Devices_Brochure__p4__a1__x19__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 4,
+   "gold_facts": [
+    {
+     "fact": "black CPAP device with color screen + dial on nightstand",
+     "aliases": [
+      "device",
+      "screen",
+      "display",
+      "dial",
+      "cpap",
+      "machine"
+     ]
+    },
+    {
+     "fact": "CPAP mask worn by sleeping man",
+     "aliases": [
+      "mask",
+      "nasal"
+     ]
+    },
+    {
+     "fact": "woman holding a tablet",
+     "aliases": [
+      "tablet",
+      "ipad"
+     ]
+    },
+    {
+     "fact": "bedroom scene with lamps",
+     "aliases": [
+      "bed",
+      "lamp",
+      "bedroom",
+      "pillow"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img08",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "PrismaSmart-and-Soft-Max-Brochure.pdf",
+   "page": 1,
+   "file": "PrismaSmart-and-Soft-Max-Brochure__p1__a1__x520__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "white prisma/Loewenstein CPAP device with button panel",
+     "aliases": [
+      "prisma",
+      "device",
+      "cpap",
+      "white",
+      "panel",
+      "machine"
+     ]
+    },
+    {
+     "fact": "CPAP mask with headgear",
+     "aliases": [
+      "mask",
+      "headgear"
+     ]
+    },
+    {
+     "fact": "tablet/Surface showing a chart/report",
+     "aliases": [
+      "tablet",
+      "surface",
+      "screen",
+      "chart",
+      "report",
+      "graph"
+     ]
+    },
+    {
+     "fact": "clinician in white coat",
+     "aliases": [
+      "clinician",
+      "white coat",
+      "doctor",
+      "nurse",
+      "glasses"
+     ]
+    },
+    {
+     "fact": "laptop on desk",
+     "aliases": [
+      "laptop",
+      "notebook computer"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img09",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "Airsense-Brochure.pdf",
+   "page": 1,
+   "file": "Airsense-Brochure__p1__a1__x188__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 6,
+   "gold_facts": [
+    {
+     "fact": "ResMed brand",
+     "aliases": [
+      "resmed"
+     ]
+    },
+    {
+     "fact": "AirSense 10 AutoSet",
+     "aliases": [
+      "airsense 10",
+      "airsense",
+      "autoset"
+     ]
+    },
+    {
+     "fact": "color touchscreen Home menu (My Options / Sleep Report)",
+     "aliases": [
+      "home",
+      "my options",
+      "sleep report",
+      "menu",
+      "screen"
+     ]
+    },
+    {
+     "fact": "control dial",
+     "aliases": [
+      "dial",
+      "knob"
+     ]
+    },
+    {
+     "fact": "clear water chamber with MAX line",
+     "aliases": [
+      "water chamber",
+      "humidifier",
+      "max",
+      "chamber"
+     ]
+    },
+    {
+     "fact": "on wooden nightstand",
+     "aliases": [
+      "nightstand",
+      "table",
+      "bedside"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img10",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "product_and_solutions_catalog.pdf",
+   "page": 3,
+   "file": "product_and_solutions_catalog__p3__a1__x8__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "Philips Respironics System One",
+     "aliases": [
+      "system one",
+      "respironics",
+      "philips"
+     ]
+    },
+    {
+     "fact": "REMstar Auto A-Flex",
+     "aliases": [
+      "remstar",
+      "a-flex",
+      "aflex"
+     ]
+    },
+    {
+     "fact": "LCD display",
+     "aliases": [
+      "lcd",
+      "display",
+      "screen"
+     ]
+    },
+    {
+     "fact": "control dial",
+     "aliases": [
+      "dial",
+      "knob"
+     ]
+    },
+    {
+     "fact": "heated tube + humidifier chamber",
+     "aliases": [
+      "tube",
+      "tubing",
+      "hose",
+      "humidifier",
+      "chamber",
+      "water"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img11",
+   "census_class": "product_photo",
+   "subtype": "photo_device",
+   "source_doc": "CPAP-Machines-Brochure.pdf",
+   "page": 9,
+   "file": "CPAP-Machines-Brochure__p9__a1__x6342__2.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "wheeled cart-mounted CPAP/ventilator",
+     "aliases": [
+      "cart",
+      "trolley",
+      "wheel",
+      "caster",
+      "stand",
+      "ventilator"
+     ]
+    },
+    {
+     "fact": "analog pressure gauge",
+     "aliases": [
+      "gauge",
+      "dial",
+      "analog",
+      "meter"
+     ]
+    },
+    {
+     "fact": "color display FiO2 / 24.5%",
+     "aliases": [
+      "fio2",
+      "24.5",
+      "display",
+      "screen",
+      "%"
+     ]
+    },
+    {
+     "fact": "overhead support arm with patient tubing",
+     "aliases": [
+      "arm",
+      "tube",
+      "tubing",
+      "circuit",
+      "hose"
+     ]
+    },
+    {
+     "fact": "humidifier bottle",
+     "aliases": [
+      "humidifier",
+      "bottle",
+      "chamber",
+      "water"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img12",
+   "census_class": "diagram",
+   "subtype": "diagram_partmap",
+   "source_doc": "ResMed-Airsense-11-Manual.pdf",
+   "page": 2,
+   "file": "ResMed-Airsense-11-Manual__p2__a1__x6__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": "line-art setup/connection diagram",
+   "n_gold_facts": 6,
+   "gold_facts": [
+    {
+     "fact": "AirSense 11 device (numeral 11)",
+     "aliases": [
+      "airsense 11",
+      "11",
+      "device"
+     ]
+    },
+    {
+     "fact": "power supply brick 65W",
+     "aliases": [
+      "power supply",
+      "65w",
+      "adapter",
+      "brick",
+      "power"
+     ]
+    },
+    {
+     "fact": "humidifier tub with cleaning icon",
+     "aliases": [
+      "humidifier",
+      "tub",
+      "water",
+      "chamber",
+      "clean"
+     ]
+    },
+    {
+     "fact": "air tube",
+     "aliases": [
+      "tube",
+      "tubing",
+      "hose",
+      "air tube"
+     ]
+    },
+    {
+     "fact": "USB / cable connection",
+     "aliases": [
+      "usb",
+      "cable",
+      "cord"
+     ]
+    },
+    {
+     "fact": "three mask types (nasal, full-face, pillow)",
+     "aliases": [
+      "mask",
+      "nasal",
+      "full face",
+      "full-face",
+      "pillow"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img13",
+   "census_class": "diagram",
+   "subtype": "photo_device",
+   "source_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "page": 1,
+   "file": "DreamStation_CPAP_User_Manual__p1__a1__x4487__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 3,
+   "gold_facts": [
+    {
+     "fact": "Philips DreamStation CPAP render",
+     "aliases": [
+      "dreamstation",
+      "dream station"
+     ]
+    },
+    {
+     "fact": "display screen + control dial",
+     "aliases": [
+      "display",
+      "screen",
+      "dial",
+      "knob"
+     ]
+    },
+    {
+     "fact": "white device",
+     "aliases": [
+      "white",
+      "device"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img14",
+   "census_class": "diagram",
+   "subtype": "ui_screenshot",
+   "source_doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "page": 1,
+   "file": "Resvent-iBreeze-Auto-CPAP-User-Manual__p1__a1__x14__0.png",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "CPAP device display screen",
+     "aliases": [
+      "display",
+      "screen",
+      "cpap"
+     ]
+    },
+    {
+     "fact": "clock time 4:12",
+     "aliases": [
+      "4:12",
+      "4.12",
+      "clock",
+      "time"
+     ]
+    },
+    {
+     "fact": "menu items Info/Humidity/Mask fit/Comfort",
+     "aliases": [
+      "info",
+      "humidity",
+      "mask fit",
+      "comfort",
+      "menu"
+     ]
+    },
+    {
+     "fact": "lung/breathing icon",
+     "aliases": [
+      "lung",
+      "breath",
+      "icon",
+      "leaf"
+     ]
+    },
+    {
+     "fact": "control dial",
+     "aliases": [
+      "dial",
+      "knob"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img15",
+   "census_class": "diagram",
+   "subtype": "symbol",
+   "source_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "page": 6,
+   "file": "SleepStyle_200_Operating_Manual__p6__a1__x370__0.png",
+   "carries_product_or_value_facts": true,
+   "note": "CE mark symbol (weak-content)",
+   "n_gold_facts": 2,
+   "gold_facts": [
+    {
+     "fact": "CE conformity marking",
+     "aliases": [
+      "ce",
+      "conformity",
+      "marking",
+      "mark"
+     ]
+    },
+    {
+     "fact": "notified body number 0123",
+     "aliases": [
+      "0123",
+      "notified body",
+      "number"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img16",
+   "census_class": "diagram",
+   "subtype": "blank",
+   "source_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "page": 9,
+   "file": "BMC_RESmart_AutoCPAP_User_Manual__p9__a1__x86__0.png",
+   "carries_product_or_value_facts": false,
+   "note": "mislabeled diagram: empty table-border fragment",
+   "n_gold_facts": 1,
+   "gold_facts": [
+    {
+     "fact": "blank/empty grey region (no content)",
+     "aliases": [
+      "blank",
+      "empty",
+      "grey",
+      "gray",
+      "no content",
+      "nothing",
+      "border",
+      "cell"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img17",
+   "census_class": "diagram",
+   "subtype": "photo_device",
+   "source_doc": "ResMed-Airsense-11-Manual.pdf",
+   "page": 1,
+   "file": "ResMed-Airsense-11-Manual__p1__a1__x4254__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "ResMed brand",
+     "aliases": [
+      "resmed"
+     ]
+    },
+    {
+     "fact": "AirSense device render",
+     "aliases": [
+      "airsense",
+      "device",
+      "cpap"
+     ]
+    },
+    {
+     "fact": "screen Home / MY OPTIONS / MY SLEEP VIEW / MORE",
+     "aliases": [
+      "home",
+      "my options",
+      "my sleep view",
+      "more",
+      "menu",
+      "screen"
+     ]
+    },
+    {
+     "fact": "power button",
+     "aliases": [
+      "power button",
+      "power",
+      "button"
+     ]
+    },
+    {
+     "fact": "HumidAir water tub with MAX line",
+     "aliases": [
+      "humidair",
+      "water tub",
+      "humidifier",
+      "max",
+      "chamber"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img18",
+   "census_class": "diagram",
+   "subtype": "ui_screenshot",
+   "source_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "page": 18,
+   "file": "DreamStation_CPAP_User_Manual__p18__a1__x195__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "congratulations progress message (last 30 days)",
+     "aliases": [
+      "congratulation",
+      "progress",
+      "30 days",
+      "30-day"
+     ]
+    },
+    {
+     "fact": "'Nights Used' label",
+     "aliases": [
+      "nights used",
+      "nights"
+     ]
+    },
+    {
+     "fact": "value 8",
+     "aliases": [
+      "8"
+     ]
+    },
+    {
+     "fact": "value 21",
+     "aliases": [
+      "21"
+     ]
+    },
+    {
+     "fact": "Click to Close button",
+     "aliases": [
+      "click to close",
+      "close"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img19",
+   "census_class": "diagram",
+   "subtype": "photo_device",
+   "source_doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "page": 1,
+   "file": "Resvent-iBreeze-Auto-CPAP-User-Manual__p1__a1__x16__0.png",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 4,
+   "gold_facts": [
+    {
+     "fact": "Resvent brand device",
+     "aliases": [
+      "resvent"
+     ]
+    },
+    {
+     "fact": "'Setting' screen button",
+     "aliases": [
+      "setting",
+      "settings",
+      "menu",
+      "screen"
+     ]
+    },
+    {
+     "fact": "control dial",
+     "aliases": [
+      "dial",
+      "knob"
+     ]
+    },
+    {
+     "fact": "water chamber with MAX marks",
+     "aliases": [
+      "max",
+      "water chamber",
+      "humidifier",
+      "chamber"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img20",
+   "census_class": "diagram",
+   "subtype": "symbol",
+   "source_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "page": 6,
+   "file": "SleepStyle_200_Operating_Manual__p6__a1__x372__0.png",
+   "carries_product_or_value_facts": true,
+   "note": "IPX1 symbol (weak-content)",
+   "n_gold_facts": 2,
+   "gold_facts": [
+    {
+     "fact": "IPX1 ingress marking",
+     "aliases": [
+      "ipx1",
+      "ipx",
+      "ingress",
+      "drip"
+     ]
+    },
+    {
+     "fact": "water drop symbol",
+     "aliases": [
+      "drop",
+      "droplet",
+      "water"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img21",
+   "census_class": "diagram",
+   "subtype": "blank",
+   "source_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "page": 8,
+   "file": "BMC_RESmart_AutoCPAP_User_Manual__p8__a1__x38__0.png",
+   "carries_product_or_value_facts": false,
+   "note": "mislabeled diagram: reversed text fragment",
+   "n_gold_facts": 1,
+   "gold_facts": [
+    {
+     "fact": "reversed/partial text fragment (no reliable content)",
+     "aliases": [
+      "text",
+      "reversed",
+      "fragment",
+      "blank",
+      "empty",
+      "nothing",
+      "no content",
+      "mirror"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img22",
+   "census_class": "diagram",
+   "subtype": "diagram_partmap",
+   "source_doc": "ResMed-Airsense-11-Manual.pdf",
+   "page": 8,
+   "file": "ResMed-Airsense-11-Manual__p8__a1__x21__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": null,
+   "n_gold_facts": 6,
+   "gold_facts": [
+    {
+     "fact": "AirSense 11 labelled parts diagram with callouts 1-10",
+     "aliases": [
+      "airsense 11",
+      "11",
+      "callout",
+      "number",
+      "label",
+      "diagram",
+      "parts",
+      "1",
+      "2",
+      "3"
+     ]
+    },
+    {
+     "fact": "power button",
+     "aliases": [
+      "power button",
+      "power",
+      "button"
+     ]
+    },
+    {
+     "fact": "display screen",
+     "aliases": [
+      "display",
+      "screen"
+     ]
+    },
+    {
+     "fact": "HumidAir 11 water tub 'Distilled Water Only'",
+     "aliases": [
+      "humidair",
+      "distilled water",
+      "water tub",
+      "tub",
+      "chamber"
+     ]
+    },
+    {
+     "fact": "ResMed logo",
+     "aliases": [
+      "resmed",
+      "logo",
+      "wave"
+     ]
+    },
+    {
+     "fact": "tube connectors",
+     "aliases": [
+      "tube",
+      "connector",
+      "tubing"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img23",
+   "census_class": "diagram",
+   "subtype": "ui_screenshot",
+   "source_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "page": 18,
+   "file": "DreamStation_CPAP_User_Manual__p18__a1__x191__0.jpeg",
+   "carries_product_or_value_facts": true,
+   "note": "mask-fit check screen",
+   "n_gold_facts": 4,
+   "gold_facts": [
+    {
+     "fact": "'Checking...' status card",
+     "aliases": [
+      "checking",
+      "check"
+     ]
+    },
+    {
+     "fact": "green checkmark",
+     "aliases": [
+      "check mark",
+      "checkmark",
+      "tick",
+      "green"
+     ]
+    },
+    {
+     "fact": "40 seconds",
+     "aliases": [
+      "40 second",
+      "40 sec",
+      "40"
+     ]
+    },
+    {
+     "fact": "Click to Close button",
+     "aliases": [
+      "click to close",
+      "close"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img24",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "DreamStation_CPAP_User_Manual.pdf",
+   "page": 21,
+   "file": "DreamStation_CPAP_User_Manual__p21__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "DreamStation alert table",
+   "n_gold_facts": 7,
+   "gold_facts": [
+    {
+     "fact": "columns Alert/Icon/Type/Description/Possible Cause/Action",
+     "aliases": [
+      "alert",
+      "type",
+      "description",
+      "possible cause",
+      "action",
+      "icon"
+     ]
+    },
+    {
+     "fact": "row Heated Tube Error (Status)",
+     "aliases": [
+      "heated tube",
+      "heated tube error"
+     ]
+    },
+    {
+     "fact": "row power supply does not support humidification (Alert 2)",
+     "aliases": [
+      "does not support humidification",
+      "not support humidification",
+      "alert 2"
+     ]
+    },
+    {
+     "fact": "row Service Required (Safe State)",
+     "aliases": [
+      "service required",
+      "safe state"
+     ]
+    },
+    {
+     "fact": "row Check Power (Notification)",
+     "aliases": [
+      "check power"
+     ]
+    },
+    {
+     "fact": "row Low Voltage (Notification)",
+     "aliases": [
+      "low voltage"
+     ]
+    },
+    {
+     "fact": "brand Philips Respironics DreamStation",
+     "aliases": [
+      "philips respironics",
+      "dreamstation",
+      "respironics"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img25",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "DT_guide_to_select_cpap.pdf",
+   "page": 10,
+   "file": "DT_guide_to_select_cpap__p10__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "Babylog VN500 spec table",
+   "n_gold_facts": 11,
+   "gold_facts": [
+    {
+     "fact": "device Babylog VN500",
+     "aliases": [
+      "babylog",
+      "vn500",
+      "vn 500"
+     ]
+    },
+    {
+     "fact": "manufacturer Draeger",
+     "aliases": [
+      "draeger",
+      "drager",
+      "dr\u00e4ger"
+     ]
+    },
+    {
+     "fact": "link http://www.draeger.com",
+     "aliases": [
+      "draeger.com",
+      "www.draeger",
+      "http"
+     ]
+    },
+    {
+     "fact": "Type Ventilator with CPAP mode",
+     "aliases": [
+      "ventilator with cpap",
+      "ventilator",
+      "cpap mode"
+     ]
+    },
+    {
+     "fact": "SPN-CPAP/PS and SPN-CPAP/VS",
+     "aliases": [
+      "spn-cpap",
+      "spn cpap",
+      "ps",
+      "vs",
+      "pressure support",
+      "volume support"
+     ]
+    },
+    {
+     "fact": "approximate price US$10,000",
+     "aliases": [
+      "10,000",
+      "10000",
+      "$10",
+      "us$10",
+      "price"
+     ]
+    },
+    {
+     "fact": "Low cost: NO",
+     "aliases": [
+      "low cost",
+      "no"
+     ]
+    },
+    {
+     "fact": "Safe: yes",
+     "aliases": [
+      "safe"
+     ]
+    },
+    {
+     "fact": "Durable: yes",
+     "aliases": [
+      "durable"
+     ]
+    },
+    {
+     "fact": "Easy to use: NO",
+     "aliases": [
+      "easy to use"
+     ]
+    },
+    {
+     "fact": "Easy to repair: NO",
+     "aliases": [
+      "easy to repair"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img26",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+   "page": 31,
+   "file": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1_7_ENG-1__p31__a3__c1.png",
+   "carries_product_or_value_facts": true,
+   "note": "RESmart EMC immunity table",
+   "n_gold_facts": 8,
+   "gold_facts": [
+    {
+     "fact": "EMC immunity declaration table",
+     "aliases": [
+      "electromagnetic",
+      "emc",
+      "immunity",
+      "declaration"
+     ]
+    },
+    {
+     "fact": "columns Immunity test / IEC 60601 test level / Compliance level / guidance",
+     "aliases": [
+      "immunity test",
+      "iec 60601",
+      "compliance level",
+      "guidance"
+     ]
+    },
+    {
+     "fact": "ESD IEC 61000-4-2 +/-6kV contact +/-8kV air",
+     "aliases": [
+      "61000-4-2",
+      "esd",
+      "electrostatic",
+      "6 kv",
+      "8 kv",
+      "6kv",
+      "8kv"
+     ]
+    },
+    {
+     "fact": "Electrical fast transient IEC 61000-4-4 +/-2kV/+/-1kV",
+     "aliases": [
+      "61000-4-4",
+      "fast transient",
+      "2 kv",
+      "1 kv",
+      "2kv",
+      "1kv"
+     ]
+    },
+    {
+     "fact": "Surge IEC 61000-4-5",
+     "aliases": [
+      "61000-4-5",
+      "surge"
+     ]
+    },
+    {
+     "fact": "Voltage dips IEC 61000-4-11",
+     "aliases": [
+      "61000-4-11",
+      "voltage dip",
+      "dip"
+     ]
+    },
+    {
+     "fact": "Power frequency IEC 61000-4-8 3 A/m",
+     "aliases": [
+      "61000-4-8",
+      "power frequency",
+      "3 a/m",
+      "3a/m",
+      "a/m"
+     ]
+    },
+    {
+     "fact": "RESmart device",
+     "aliases": [
+      "resmart"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img27",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "product_and_solutions_catalog.pdf",
+   "page": 8,
+   "file": "product_and_solutions_catalog__p8__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "accessories parts table (very dense)",
+   "n_gold_facts": 10,
+   "gold_facts": [
+    {
+     "fact": "sleep therapy accessories parts table",
+     "aliases": [
+      "accessories",
+      "part number",
+      "humidification",
+      "tubing",
+      "filter"
+     ]
+    },
+    {
+     "fact": "System One 60 humidifier DS6H/IN6H E0562",
+     "aliases": [
+      "ds6h",
+      "in6h",
+      "e0562",
+      "system one"
+     ]
+    },
+    {
+     "fact": "60 watt power supply 1091398",
+     "aliases": [
+      "1091398",
+      "60 watt",
+      "60w"
+     ]
+    },
+    {
+     "fact": "80 watt power supply 1091399",
+     "aliases": [
+      "1091399",
+      "80 watt",
+      "80w"
+     ]
+    },
+    {
+     "fact": "Power cord 1005894",
+     "aliases": [
+      "1005894",
+      "power cord"
+     ]
+    },
+    {
+     "fact": "System One Heated Tube SYS1HT15",
+     "aliases": [
+      "sys1ht15",
+      "heated tube"
+     ]
+    },
+    {
+     "fact": "Pollen filter A7039",
+     "aliases": [
+      "a7039",
+      "pollen"
+     ]
+    },
+    {
+     "fact": "Ultra-fine filter A7038",
+     "aliases": [
+      "a7038",
+      "ultra-fine",
+      "ultra fine"
+     ]
+    },
+    {
+     "fact": "SD card 1063859",
+     "aliases": [
+      "1063859",
+      "sd card"
+     ]
+    },
+    {
+     "fact": "HCPCS codes present",
+     "aliases": [
+      "hcpcs",
+      "e0562",
+      "a4604",
+      "a7039",
+      "a7038",
+      "a7037",
+      "a9279"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img28",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+   "page": 23,
+   "file": "Resvent-iBreeze-Auto-CPAP-User-Manual__p23__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "Resvent alert table",
+   "n_gold_facts": 10,
+   "gold_facts": [
+    {
+     "fact": "columns Alert/Type/Possible Cause/Action",
+     "aliases": [
+      "alert",
+      "type",
+      "possible cause",
+      "action"
+     ]
+    },
+    {
+     "fact": "Input voltage abnormal (Alert 2)",
+     "aliases": [
+      "input voltage",
+      "voltage is abnormal",
+      "abnormal"
+     ]
+    },
+    {
+     "fact": "SD card write/read underway (Notification)",
+     "aliases": [
+      "write/read underway",
+      "data synchronization",
+      "synchronization"
+     ]
+    },
+    {
+     "fact": "SD Card Removed",
+     "aliases": [
+      "sd card removed",
+      "no sd card"
+     ]
+    },
+    {
+     "fact": "SD Card Full (200M)",
+     "aliases": [
+      "sd card full",
+      "200m",
+      "storage space"
+     ]
+    },
+    {
+     "fact": "SD card can't be written / read-only",
+     "aliases": [
+      "can't be written",
+      "cannot be written",
+      "read-only",
+      "read only"
+     ]
+    },
+    {
+     "fact": "Non-original card please format",
+     "aliases": [
+      "non-original",
+      "format"
+     ]
+    },
+    {
+     "fact": "Software update underway",
+     "aliases": [
+      "software update"
+     ]
+    },
+    {
+     "fact": "System error code XXXX",
+     "aliases": [
+      "system error",
+      "error code",
+      "sensor failure",
+      "blower failure"
+     ]
+    },
+    {
+     "fact": "Resvent power adapter",
+     "aliases": [
+      "resvent"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img29",
+   "census_class": "rendered_table_vector",
+   "subtype": "symbol",
+   "source_doc": "SleepStyle_200_Operating_Manual.pdf",
+   "page": 6,
+   "file": "SleepStyle_200_Operating_Manual__p6__a3__c5.png",
+   "carries_product_or_value_facts": true,
+   "note": "symbol legend + warnings (mixed textbox)",
+   "n_gold_facts": 8,
+   "gold_facts": [
+    {
+     "fact": "symbol Type BF applied part",
+     "aliases": [
+      "type bf",
+      "applied part",
+      "bf"
+     ]
+    },
+    {
+     "fact": "IPX1 drip proof",
+     "aliases": [
+      "ipx1",
+      "drip proof",
+      "drip"
+     ]
+    },
+    {
+     "fact": "Class II double insulated",
+     "aliases": [
+      "class ii",
+      "class 2",
+      "double insulated"
+     ]
+    },
+    {
+     "fact": "CE 0123",
+     "aliases": [
+      "ce",
+      "0123"
+     ]
+    },
+    {
+     "fact": "93/42/EEC Class IIb",
+     "aliases": [
+      "93/42",
+      "eec",
+      "class iib",
+      "iib"
+     ]
+    },
+    {
+     "fact": "SleepStyle 200 Series CPAP",
+     "aliases": [
+      "sleepstyle",
+      "sleep style",
+      "200 series"
+     ]
+    },
+    {
+     "fact": "Fisher & Paykel Healthcare",
+     "aliases": [
+      "fisher",
+      "paykel"
+     ]
+    },
+    {
+     "fact": "room temp limit 35C/95F",
+     "aliases": [
+      "35",
+      "95",
+      "room temperature"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img30",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+   "page": 25,
+   "file": "BMC_RESmart_AutoCPAP_User_Manual__p25__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "RESmart RF EMC table",
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "EMC RF immunity declaration table",
+     "aliases": [
+      "electromagnetic",
+      "emc",
+      "immunity",
+      "declaration",
+      "rf"
+     ]
+    },
+    {
+     "fact": "Conducted RF IEC 61000-4-6 3 Vrms 150kHz-80MHz",
+     "aliases": [
+      "61000-4-6",
+      "conducted rf",
+      "3 vrms",
+      "vrms",
+      "150 khz",
+      "150khz"
+     ]
+    },
+    {
+     "fact": "Radiated RF IEC 61000-4-3 3 V/m 80MHz-2.5GHz",
+     "aliases": [
+      "61000-4-3",
+      "radiated rf",
+      "3 v/m",
+      "v/m",
+      "2.5 ghz",
+      "2.5ghz"
+     ]
+    },
+    {
+     "fact": "separation distance d=1.2sqrt(P) / d=2.3sqrt(P)",
+     "aliases": [
+      "1.2",
+      "2.3",
+      "separation distance",
+      "separation"
+     ]
+    },
+    {
+     "fact": "RESmart device",
+     "aliases": [
+      "resmart"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img31",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "PDF RESmart Service Manual CPAP.pdf",
+   "page": 24,
+   "file": "PDF_RESmart_Service_Manual_CPAP__p24__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "RESmart service parts list (very dense ~40 rows)",
+   "n_gold_facts": 8,
+   "gold_facts": [
+    {
+     "fact": "columns Part Name/S/N/Qty/Unit/Classify/Use",
+     "aliases": [
+      "part name",
+      "s/n",
+      "qty",
+      "unit",
+      "classify",
+      "use"
+     ]
+    },
+    {
+     "fact": "Main Board PCBA 20211151",
+     "aliases": [
+      "main board",
+      "20211151",
+      "pcba"
+     ]
+    },
+    {
+     "fact": "Heater PCBA 20212-41",
+     "aliases": [
+      "heater pcba",
+      "20212"
+     ]
+    },
+    {
+     "fact": "Power Supply PCBA 20311101",
+     "aliases": [
+      "power supply pcba",
+      "20311101"
+     ]
+    },
+    {
+     "fact": "Blower 40211",
+     "aliases": [
+      "blower",
+      "40211"
+     ]
+    },
+    {
+     "fact": "Heater Plane 45010101",
+     "aliases": [
+      "heater plane",
+      "45010101"
+     ]
+    },
+    {
+     "fact": "Device Pad 4012110601 qty 6",
+     "aliases": [
+      "device pad",
+      "4012110601"
+     ]
+    },
+    {
+     "fact": "classify categories PCBA/Plastic/Metal/Rubber/Foam",
+     "aliases": [
+      "plastic",
+      "metal",
+      "rubber",
+      "foam",
+      "assembly",
+      "wire"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img32",
+   "census_class": "rendered_table_vector",
+   "subtype": "infocard",
+   "source_doc": "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024.pdf",
+   "page": 1,
+   "file": "Clinical-Job-Aid_bCPAP-Diamedica_Final_07-05-2024__p5__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "full-page job aid (vector textbox region)",
+   "n_gold_facts": 6,
+   "gold_facts": [
+    {
+     "fact": "Bubble CPAP - Diamedica repair & maintenance job aid",
+     "aliases": [
+      "bubble cpap",
+      "diamedica",
+      "repair",
+      "maintenance"
+     ]
+    },
+    {
+     "fact": "Diamedica Baby CPAP",
+     "aliases": [
+      "baby cpap",
+      "diamedica"
+     ]
+    },
+    {
+     "fact": "daily maintenance: disinfect with 70% alcohol",
+     "aliases": [
+      "70% alcohol",
+      "70 % alcohol",
+      "disinfect",
+      "alcohol"
+     ]
+    },
+    {
+     "fact": "preventive: total flow 10 L/min run 15 min weekly",
+     "aliases": [
+      "10 l/min",
+      "15 minutes",
+      "15 min",
+      "weekly",
+      "preventive"
+     ]
+    },
+    {
+     "fact": "troubleshooting steps (device won't turn on, bubbling, flowmeter, low oxygen alarm)",
+     "aliases": [
+      "turn on",
+      "bubbling",
+      "flowmeter",
+      "oxygen",
+      "alarm",
+      "troubleshoot"
+     ]
+    },
+    {
+     "fact": "NEST360 / July 2024",
+     "aliases": [
+      "nest360",
+      "july 2024",
+      "2024"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img33",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_dense",
+   "source_doc": "moh-adp-product-manual-respiratory-devices-airway-clearance-en-2023-06-14.pdf",
+   "page": 4,
+   "file": "moh-adp-product-manual-respiratory-devices-airway-clearance-__p4__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "device approval price table (dense)",
+   "n_gold_facts": 10,
+   "gold_facts": [
+    {
+     "fact": "columns Device Type/Manufacturer/Device/Device Code/Max Qty/Approved Price",
+     "aliases": [
+      "device type",
+      "manufacturer",
+      "device code",
+      "approved price",
+      "max allowed"
+     ]
+    },
+    {
+     "fact": "APAP row set at $554.00",
+     "aliases": [
+      "apap",
+      "auto-titrating",
+      "554"
+     ]
+    },
+    {
+     "fact": "Fisher & Paykel Icon Auto REAFP098B",
+     "aliases": [
+      "icon",
+      "reafp098b",
+      "fisher",
+      "paykel"
+     ]
+    },
+    {
+     "fact": "ResMed AirSense 10 AutoSet PS0001183",
+     "aliases": [
+      "airsense 10",
+      "ps0001183"
+     ]
+    },
+    {
+     "fact": "AirSense 11 Autoset PS0001896",
+     "aliases": [
+      "airsense 11",
+      "ps0001896"
+     ]
+    },
+    {
+     "fact": "DreamStation Auto PS0001274",
+     "aliases": [
+      "dreamstation auto",
+      "ps0001274",
+      "cax500"
+     ]
+    },
+    {
+     "fact": "BPAP row set at $950.00",
+     "aliases": [
+      "bpap",
+      "bi-level",
+      "bilevel",
+      "950"
+     ]
+    },
+    {
+     "fact": "AirCurve 10 S PS0001231 / 10 V PS0001230",
+     "aliases": [
+      "aircurve",
+      "ps0001231",
+      "ps0001230"
+     ]
+    },
+    {
+     "fact": "DreamStation BIPAP Auto/Pro PS0001276/PS0001275",
+     "aliases": [
+      "dreamstation bipap",
+      "ps0001276",
+      "ps0001275",
+      "cax700",
+      "cax600"
+     ]
+    },
+    {
+     "fact": "Remstar BiPAP Pro/Auto PS0000961/PS0000962",
+     "aliases": [
+      "remstar",
+      "ps0000961",
+      "ps0000962"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img34",
+   "census_class": "rendered_table_vector",
+   "subtype": "table_template",
+   "source_doc": "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+   "page": 29,
+   "file": "ARTP_Standards_of_Care_-_CPAP_Devices__Technical_and_Perform__p29__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "test-matrix template, empty data cells",
+   "n_gold_facts": 5,
+   "gold_facts": [
+    {
+     "fact": "columns Tidal Volume Vt(ml)/Set Ventilation Pressure p(hPa)/Breathing Frequency f/Short-term Accuracy/Mean Pressure/Figure in Appendix",
+     "aliases": [
+      "tidal volume",
+      "ventilation pressure",
+      "breathing frequency",
+      "short-term accuracy",
+      "mean pressure",
+      "figure in appendix",
+      "hpa",
+      "breaths/min"
+     ]
+    },
+    {
+     "fact": "Tidal Volume 500 ml",
+     "aliases": [
+      "500"
+     ]
+    },
+    {
+     "fact": "breathing frequency values 10/15/20",
+     "aliases": [
+      "10",
+      "15",
+      "20"
+     ]
+    },
+    {
+     "fact": "Figure in Appendix 1-15",
+     "aliases": [
+      "figure",
+      "appendix",
+      "1",
+      "15"
+     ]
+    },
+    {
+     "fact": "accuracy/mean-pressure data cells blank",
+     "aliases": [
+      "blank",
+      "empty",
+      "not filled",
+      "no value"
+     ]
+    }
+   ]
+  },
+  {
+   "img_id": "img35",
+   "census_class": "rendered_table_vector",
+   "subtype": "infocard",
+   "source_doc": "DSDC-CPAP-Therapy-Catalogue.pdf",
+   "page": 7,
+   "file": "DSDC-CPAP-Therapy-Catalogue__p7__a3__c0.png",
+   "carries_product_or_value_facts": true,
+   "note": "nasal-pillow info card (mostly prose textbox)",
+   "n_gold_facts": 6,
+   "gold_facts": [
+    {
+     "fact": "Nasal Pillow CPAP Masks card",
+     "aliases": [
+      "nasal pillow",
+      "nasal cushion",
+      "pillow mask"
+     ]
+    },
+    {
+     "fact": "mannequin head wearing nasal-pillow mask + tube",
+     "aliases": [
+      "mannequin",
+      "head",
+      "mask",
+      "face",
+      "tube",
+      "tubing"
+     ]
+    },
+    {
+     "fact": "rests at nostrils / above upper lip",
+     "aliases": [
+      "nostril",
+      "upper lip",
+      "nose"
+     ]
+    },
+    {
+     "fact": "minimal/less obtrusive headgear",
+     "aliases": [
+      "minimal",
+      "headgear",
+      "less obtrusive",
+      "smaller"
+     ]
+    },
+    {
+     "fact": "works only when breathing through nose",
+     "aliases": [
+      "through their nose",
+      "through the nose",
+      "nose"
+     ]
+    },
+    {
+     "fact": "good for people with beards",
+     "aliases": [
+      "beard"
+     ]
+    }
+   ]
+  }
+ ]
+}
