@@ -1,0 +1,263 @@
+{
+  "hypothesis": "R15-H212",
+  "rerun": true,
+  "stamp": "20260708T053800Z",
+  "verdict": "INCONCLUSIVE",
+  "fresh_instance": "bolt://172.19.0.4:7687",
+  "config": "config-h212-v2.yml",
+  "ingest_log": "logs/h212-rerun.log",
+  "event_log": "logs/h212-rerun-events.jsonl",
+  "raw_event_log": "logs/h212-v2-events.jsonl",
+  "prior_attempt": "reports/clean-recall-h212-20260708T045954Z.json",
+  "bar": {
+    "warnings_le": 76,
+    "recall_ge": 0.875
+  },
+  "h158_reference": {
+    "v1_warnings": 76,
+    "v2_warnings": 119,
+    "v1_recall": 0.875,
+    "v2_recall": 0.8333,
+    "replay_false_merges": 11,
+    "false_merge_tol": 0.2,
+    "precision_bar": 0.5
+  },
+  "telemetry": {
+    "extraction_warning_total": 110,
+    "warning_by_reason": {
+      "dangling relationship": 60,
+      "chunk extraction failed": 50
+    },
+    "chunk_extraction_failed": 50,
+    "token_cap_retries": 100,
+    "event_histogram": {
+      "fsm.transition": 3,
+      "document.started": 28,
+      "extraction.completed": 27,
+      "ontology.type_emerged": 20,
+      "ontology.type_confirmed": 20,
+      "ontology.evolved": 8,
+      "curing.metrics": 8,
+      "document.completed": 23,
+      "extraction.warning": 110,
+      "resolution.defer": 633,
+      "resolution.merge": 347,
+      "resolution.block": 2303,
+      "resolution.veto": 49,
+      "load.batch": 32,
+      "load.completed": 33,
+      "curing.cured": 1,
+      "document.skipped": 5
+    }
+  },
+  "census": {
+    "entities": 1094,
+    "relationships": 3946,
+    "chunks": 132
+  },
+  "precision_proxy": {
+    "event_log": "logs/h212-rerun-events.jsonl",
+    "merges_total": 347,
+    "defers_total": 633,
+    "blocks_total": 2303,
+    "nli_vetoes": 49,
+    "proxy_tp": 10,
+    "proxy_fp": 10,
+    "proxy_fn": 42,
+    "proxy_tn": 235,
+    "same_as_precision": 0.5,
+    "false_merges": 10,
+    "proxy_recall": 0.1923,
+    "resolution_ts_first": "2026-07-08T05:13:49.795626+00:00",
+    "resolution_ts_last": "2026-07-08T05:35:09.698740+00:00"
+  },
+  "recall": {
+    "label": "v2-h212",
+    "uri": "bolt://172.19.0.4:7687",
+    "top_k": 16,
+    "entities": 1094,
+    "relationships": 3946,
+    "documents": 0,
+    "mean_recall": 0.7917,
+    "fully_covered": 17,
+    "n_probes": 24,
+    "per_probe": {
+      "P01": 1.0,
+      "P02": 1.0,
+      "P03": 1.0,
+      "P04": 1.0,
+      "P05": 1.0,
+      "P06": 1.0,
+      "P07": 1.0,
+      "P08": 0.0,
+      "P09": 0.0,
+      "P10": 1.0,
+      "P11": 0.5,
+      "P12": 1.0,
+      "P13": 1.0,
+      "P14": 1.0,
+      "P15": 0.5,
+      "P16": 0.0,
+      "P17": 0.5,
+      "P18": 0.5,
+      "P19": 1.0,
+      "P20": 1.0,
+      "P21": 1.0,
+      "P22": 1.0,
+      "P23": 1.0,
+      "P24": 1.0
+    }
+  },
+  "clauses": {
+    "warnings_le_76": false,
+    "token_cap_zero": false,
+    "recall_ge_0875": false,
+    "precision_ge_50pct": true,
+    "false_merges_within_tol": true
+  },
+  "forensics": {
+    "P08": {
+      "question": "What is the typical power consumption of the ResMed AirSense 11?",
+      "sources": [
+        "ResMed-Airsense-11-Manual.pdf"
+      ],
+      "score": 0.0,
+      "golds": [
+        {
+          "gold": "Typical power consumption: 9.0W",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        }
+      ]
+    },
+    "P09": {
+      "question": "What are the dimensions of the Fisher & Paykel SleepStyle 200?",
+      "sources": [
+        "SleepStyle_200_Operating_Manual.pdf"
+      ],
+      "score": 0.0,
+      "golds": [
+        {
+          "gold": "275mm x 170mm x 140mm",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        }
+      ]
+    },
+    "P11": {
+      "question": "Which is lighter, the ResMed AirStart 10 or the ResMed AirSense 11?",
+      "sources": [
+        "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+        "ResMed-Airsense-11-Manual.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "1106 g",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "1130 g",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        }
+      ]
+    },
+    "P15": {
+      "question": "Which is heavier with its humidifier, the DreamStation CPAP or the BMC RESmart Auto CPAP?",
+      "sources": [
+        "BC-Dreamstation-Standard-CPAP.pdf",
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "1.98kg",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "2.4 kg",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        }
+      ]
+    },
+    "P16": {
+      "question": "What are the dimensions of the Fisher & Paykel SleepStyle 200 compared with the Resvent iBreeze?",
+      "sources": [
+        "SleepStyle_200_Operating_Manual.pdf",
+        "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+      ],
+      "score": 0.0,
+      "golds": [
+        {
+          "gold": "275mm x 170mm x 140mm",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "238*178*128 mm",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        }
+      ]
+    },
+    "P17": {
+      "question": "Which offers a longer ramp time, the Resvent iBreeze or the DreamStation CPAP?",
+      "sources": [
+        "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+        "BC-Dreamstation-Standard-CPAP.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "0-60 mins",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "0 to 45 min",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        }
+      ]
+    },
+    "P18": {
+      "question": "Which is quieter, the ResMed AirStart 10 or the ResMed AirSense 11?",
+      "sources": [
+        "airstart-10-cpap_fact-sheet_apac_eng.pdf",
+        "ResMed-Airsense-11-Manual.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "26.6 dBA",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "27 dBA",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        }
+      ]
+    }
+  },
+  "deviations": [
+    "event log logs/h212-v2-events.jsonl is append-mode across runs; harness reads the timestamp-split re-run-only file logs/h212-rerun-events.jsonl (split at 2026-07-08T05:04)"
+  ]
+}
