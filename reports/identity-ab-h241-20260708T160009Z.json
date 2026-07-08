@@ -1,0 +1,162 @@
+{
+  "hypothesis": "R15-H241",
+  "stamp": "20260708T160009Z",
+  "design": "paired v1/v2 identity A/B, one local engine (gpt-oss-120b), two sequential scratch ingests, wipe between",
+  "instance": "bolt://172.19.0.4:7687",
+  "engine": "local vLLM gpt-oss-120b @ localhost:8010",
+  "corpus": "data/external/cpap-datasheets-and-manuals",
+  "n_docs": 28,
+  "bench": "reports/identity-benchmark-h101-20260707-094448.json",
+  "probes": "tests/probes/cpap-probe-set.yml",
+  "top_k": 16,
+  "bars": {
+    "recall_delta_min": -0.02,
+    "precision_min": 0.5,
+    "false_merge_factor": 2.0
+  },
+  "arms": {
+    "v1": {
+      "identity_stack": "v1",
+      "config": "config-h241-v1.yml",
+      "precision_proxy": {
+        "event_log": "logs/h241-v1-events.jsonl",
+        "merges_total": 525,
+        "defers_total": 681,
+        "blocks_total": 6758,
+        "nli_vetoes": 0,
+        "proxy_tp": 1,
+        "proxy_fp": 11,
+        "proxy_fn": 51,
+        "proxy_tn": 234,
+        "same_as_precision": 0.0833,
+        "false_merges": 11,
+        "proxy_recall": 0.0192,
+        "resolution_ts_first": "2026-07-08T09:41:06.961857+00:00",
+        "resolution_ts_last": "2026-07-08T12:21:34.180434+00:00"
+      },
+      "recall": {
+        "label": "v1-h241",
+        "uri": "bolt://172.19.0.4:7687",
+        "top_k": 16,
+        "entities": 2727,
+        "relationships": 6986,
+        "documents": 21,
+        "mean_recall": 0.7708,
+        "fully_covered": 17,
+        "n_probes": 24,
+        "per_probe": {
+          "P01": 1.0,
+          "P02": 1.0,
+          "P03": 1.0,
+          "P04": 1.0,
+          "P05": 1.0,
+          "P06": 1.0,
+          "P07": 1.0,
+          "P08": 0.0,
+          "P09": 0.0,
+          "P10": 1.0,
+          "P11": 1.0,
+          "P12": 1.0,
+          "P13": 1.0,
+          "P14": 0.5,
+          "P15": 1.0,
+          "P16": 0.5,
+          "P17": 0.5,
+          "P18": 1.0,
+          "P19": 1.0,
+          "P20": 1.0,
+          "P21": 0.0,
+          "P22": 0.0,
+          "P23": 1.0,
+          "P24": 1.0
+        }
+      },
+      "telemetry": {
+        "extraction_warnings": 351,
+        "token_cap_retries": 0
+      }
+    },
+    "v2": {
+      "identity_stack": "v2",
+      "config": "config-h241-v2.yml",
+      "precision_proxy": {
+        "event_log": "logs/h241-v2-events.jsonl",
+        "merges_total": 1016,
+        "defers_total": 1996,
+        "blocks_total": 7069,
+        "nli_vetoes": 355,
+        "proxy_tp": 11,
+        "proxy_fp": 7,
+        "proxy_fn": 41,
+        "proxy_tn": 238,
+        "same_as_precision": 0.6111,
+        "false_merges": 7,
+        "proxy_recall": 0.2115,
+        "resolution_ts_first": "2026-07-08T13:46:53.981877+00:00",
+        "resolution_ts_last": "2026-07-08T15:31:57.637911+00:00"
+      },
+      "recall": {
+        "label": "v2-h241",
+        "uri": "bolt://172.19.0.4:7687",
+        "top_k": 16,
+        "entities": 2824,
+        "relationships": 8534,
+        "documents": 11,
+        "mean_recall": 0.7708,
+        "fully_covered": 17,
+        "n_probes": 24,
+        "per_probe": {
+          "P01": 1.0,
+          "P02": 1.0,
+          "P03": 1.0,
+          "P04": 1.0,
+          "P05": 1.0,
+          "P06": 1.0,
+          "P07": 1.0,
+          "P08": 0.0,
+          "P09": 0.0,
+          "P10": 1.0,
+          "P11": 1.0,
+          "P12": 1.0,
+          "P13": 1.0,
+          "P14": 0.5,
+          "P15": 1.0,
+          "P16": 0.5,
+          "P17": 1.0,
+          "P18": 0.5,
+          "P19": 1.0,
+          "P20": 1.0,
+          "P21": 0.0,
+          "P22": 0.0,
+          "P23": 1.0,
+          "P24": 1.0
+        }
+      },
+      "telemetry": {
+        "extraction_warnings": 376,
+        "token_cap_retries": 0
+      }
+    }
+  },
+  "clauses": {
+    "non_regression": {
+      "recall_delta": 0.0,
+      "bar": -0.02,
+      "pass": true
+    },
+    "false_merges": {
+      "v1": 11,
+      "v2": 7,
+      "ratio_fewer": 1.5714285714285714,
+      "pass": false
+    },
+    "precision_proxy": {
+      "v2": 0.6111,
+      "bar": 0.5,
+      "pass": true
+    }
+  },
+  "recommendation": "NO-GO",
+  "verdict_branch": "clause failure - flip not approved",
+  "confound": "temp-0 extraction variance is model-inherent (~0.60 JD, H229); two ingests do not share a byte-identical extraction stream; entity-count delta conflates extraction variance with v2 defer-rate; reported not assumed away"
+}

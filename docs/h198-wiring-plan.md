@@ -8,7 +8,7 @@ Composed every promoted lever into the shipped engine and rebuilt the graph on i
 
 ## Decision slots (pending verdicts - filled before Phase 2 begins)
 
-- **SLOT-1 (H241)**: v2 identity stack becomes default? GO -> `resolution.identity_stack: v2` in shipped config; NO-GO -> v1 stays, v2 remains flagged, gap-ledger entry
+- **SLOT-1 (H241)**: RESOLVED 2026-07-08 - **NO-GO, v1 stays default**. The paired A/B landed PARTIAL (2 of 3 clauses): recall tie 0.7708 = 0.7708 PASS, precision proxy 0.611 vs 0.50 bar PASS, false-merge factor 1.57x vs the registered 2x bar FAIL (11 -> 7 raw count). Per the registered branch: v1 stays default, v2 stays behind `resolution.identity_stack`, gap-ledger entry records v2's measured advantages (7.3x precision, 11x bench recall, equal probe recall, per-merge false rate 3.1x lower). The shipped precision repair is the demote-don't-delete court (SLOT-3), whose docket is exactly v1's false-merge surface. A future flip needs a new pre-registered decider - not a renegotiated bar
 - **SLOT-2 (H250)**: RESOLVED 2026-07-08 - **H246 enumerate-then-extract ships as the default extraction recipe** (0.971 of union-of-5 at 1.05x cost, only fully-passed operator; frontier table in the H250 ledger entry). Staged upgrade: H258 mention-emission strictly dominates (1.000 at 0.76x, 1.53x mention inflation) but its resolver-precision clause is untestable offline - H240(b)'s scratch arm runs BOTH recipes and the precision clause decides whether mention-emission displaces enumerate as default. Dead: GLiNER-primed extraction, n-sampling (build cannot execute n>1), complement pass, union demos, GLiNER+adjudication; GLiNER stays as audit lexicon stage only
 - **SLOT-3 (H292)**: RESOLVED - type-blind confirmed at the bars but NOT shipped: under demote-don't-delete, over-splits are costless while missed false merges persist as SAME_AS poison; the court ships as H282 baseline judge + demotion (98.0% detection), type labels stay in the judge context
 - **SLOT-4 (H240b)**: union-ingest E2E validation on scratch - confirms SLOT-2's recipe survives the full pipeline before the production rebuild
@@ -29,7 +29,7 @@ Wire by subsystem, cheapest-risk first; every lever behind a config key so the c
 
 **Config-only flips** (implemented, wrong default - one-line changes)
 - top_k 8 -> 16 in `settings.py` GraphRAGSettings (H53; consumed pipeline.py:850); generous-top_k truncation convention (H195a)
-- identity_stack v1 -> v2 in `settings.py` resolution (SLOT-1, pending H241)
+- identity_stack stays v1 (SLOT-1 resolved NO-GO); v2 remains available behind `resolution.identity_stack` for ablation
 
 **New retrieval/render defaults** (not-implemented - target `pipeline._render` + graphrag)
 - R19 trio: fanout cap k=5 query-ranked, miss detector ~0.668 + abstention render, adaptive render budget B=60% (note: compose with ppr_enabled default per the H37 optional-removal flag)
@@ -43,7 +43,7 @@ Wire by subsystem, cheapest-risk first; every lever behind a config key so the c
 - Extraction recipe per SLOT-2
 
 **Identity**
-- SLOT-1 default; per-corpus self-calibration path (H157 requirement, H142 lineage) - offline-fit, runtime-frozen per corpus
+- SLOT-1 resolved: v1 default + demote-don't-delete court as the shipped precision repair; per-corpus self-calibration path (H157 requirement, H142 lineage) - offline-fit, runtime-frozen per corpus
 - H268 soft SIMILAR_TO edges for the defer zone (posterior-weighted, render-traversable)
 - Demote-don't-delete court (R27): single-shot judge over the SAME_AS docket at ingest-close, judged-false edges demoted to soft links; K=3 effort constant; escalation caps as standing constants; SLOT-3 inside the judge context
 - H267 freebie: exact-normalized defers skip the judge queue

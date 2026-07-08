@@ -1,0 +1,18 @@
+# R15-H241 engine-matched identity A/B - v2 arm (isotonic Titan cosine + NLI veto +
+# logistic arbitration; H158 shipped stack). Paired with config-h241-v1.yml: IDENTICAL
+# except resolution.identity_stack. Local vLLM gpt-oss-120b engine (free post-H229),
+# Bedrock Titan embeddings (light). Neo4j pinned EXPLICITLY to the fresh scratch
+# instance neo4j4 per DEF-4/DEF-5 (never .env inheritance).
+neo4j:
+  uri: bolt://172.19.0.4:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 180
+resolution:
+  identity_stack: v2
+event_log: logs/h241-v2-events.jsonl
