@@ -54,3 +54,16 @@ Knowledge Graph Builder CLI (`kg-builder-cli`) - a Python CLI tool for building 
 - Always use Makefile targets (`make install`, `make test`, `make lint`, `make format`) - never direct uv/pip commands
 - Follow copier-data-science template conventions for directory structure
 - Keep `data/raw/` immutable - use `data/interim/` for transforms, `data/processed/` for final datasets
+
+## Detached Compute Rule (Executor Survival)
+
+**MANDATORY for every executor agent running long computations** (LLM sweeps, ingests, gate batches, experiment chains):
+
+- Launch the computation DETACHED from the agent's own process tree: `nohup`/`setsid`, output teed to a `logs/*.log` file
+- Checkpoint results incrementally to `results/` or `reports/` as they land - never hold results only in agent memory
+- The agent watches the LOG FILE, never its own child process
+- On resume, check caches before recomputing anything
+
+**Why**: session limits or agent death must never kill the compute. The R23/R24 gates executor died mid-run (2026-07-08) and its in-flight computation died with it; the H241 chain, launched detached, survived multiple agent deaths in the same window. Compute must outlive the driver so a resumed agent or the coordinator can collect results from disk.
+
+**Enforcement**: prime every executor spec with this rule verbatim.
