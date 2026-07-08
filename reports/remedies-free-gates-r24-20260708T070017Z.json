@@ -1,0 +1,163 @@
+{
+  "tier": "R24 free gates",
+  "executor": "Claude (opus executor)",
+  "stamp": "20260708T070017Z",
+  "driver": "bolt://172.19.0.9:7687",
+  "mode": "READ-ONLY",
+  "bars": {
+    "H252_share": 0.6,
+    "H252_cost": 0.4,
+    "H253_link": 0.25,
+    "H254_ceiling": 0.5
+  },
+  "sanity_anchors": {
+    "union5": 63,
+    "single_cov": 0.7683,
+    "scanner_visible": 55
+  },
+  "results": {
+    "H252": {
+      "clause": "free (scanner-audited residue)",
+      "recoverable_share_mean": 0.6864,
+      "recoverable_share_pooled": 0.7123,
+      "per_run_share": {
+        "1": 0.625,
+        "2": 0.6923,
+        "3": 0.6,
+        "4": 0.8148,
+        "5": 0.7
+      },
+      "bar_share": 0.6,
+      "pass_share": true,
+      "token_cost_pooled_mean": 0.0505,
+      "token_cost_max_doc_mean": 0.2235,
+      "per_doc_cost_mean": {
+        "0-20190113114505.pdf": 0.2235,
+        "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.046,
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.0041,
+        "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 0.0035,
+        "Airsense-Brochure.pdf": 0.0902,
+        "BC-Dreamstation-Standard-CPAP.pdf": 0.0496,
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf": 0.0085,
+        "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": 0.0642,
+        "CPAP-Machines-Brochure.pdf": 0.0151,
+        "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": 0.0
+      },
+      "bar_cost": 0.4,
+      "pass_cost": true,
+      "pass": true,
+      "verdict_recommendation": "CONFIRMED",
+      "scanner_visible": 55,
+      "recoverable_carriers": 55,
+      "union5": 63,
+      "note": "residue is scanner-visible+span-locatable; token cost is the union of residue span-sentences per (run,doc) over doc chunk tokens; both clauses clear their bars"
+    },
+    "H253": {
+      "never_extracted_misses": 12,
+      "never_extracted_docs": [
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+        "DreamStation_CPAP_User_Manual.pdf",
+        "PrismaSmart-and-Soft-Max-Brochure.pdf",
+        "ResMed-Airsense-11-Manual.pdf"
+      ],
+      "severed_overlap_docs": [
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+        "DreamStation_CPAP_User_Manual.pdf",
+        "ResMed-Airsense-11-Manual.pdf"
+      ],
+      "severed_rows_recomputed": {
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 3,
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf": 3,
+        "DreamStation_CPAP_User_Manual.pdf": 13,
+        "PrismaSmart-and-Soft-Max-Brochure.pdf": 0,
+        "ResMed-Airsense-11-Manual.pdf": 8
+      },
+      "linked": [
+        {
+          "doc": "DreamStation_CPAP_User_Manual.pdf",
+          "product": "DreamStation CPAP",
+          "feature": "heated_tube",
+          "score": 70.6
+        },
+        {
+          "doc": "DreamStation_CPAP_User_Manual.pdf",
+          "product": "DreamStation CPAP",
+          "feature": "cellular_modem",
+          "score": 72.7
+        },
+        {
+          "doc": "DreamStation_CPAP_User_Manual.pdf",
+          "product": "DreamStation CPAP",
+          "feature": "auto_adjust",
+          "score": 70.6
+        }
+      ],
+      "link_share": 0.25,
+      "bar": 0.25,
+      "match_threshold": 70,
+      "threshold_sensitivity": {
+        "60": 3,
+        "65": 3,
+        "70": 3,
+        "75": 0,
+        "80": 0,
+        "85": 0,
+        "90": 0
+      },
+      "per_doc_never_linked": {
+        "ResMed-Airsense-11-Manual.pdf": [
+          2,
+          0
+        ],
+        "DreamStation_CPAP_User_Manual.pdf": [
+          5,
+          3
+        ],
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf": [
+          1,
+          0
+        ],
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": [
+          2,
+          0
+        ],
+        "PrismaSmart-and-Soft-Max-Brochure.pdf": [
+          2,
+          0
+        ]
+      },
+      "nominal_pass": true,
+      "fragile": true,
+      "pass": false,
+      "verdict_recommendation": "REFUTED",
+      "note": "linkage lands at exactly 3/12=25.0% at the registered token_set_ratio>=70 but collapses to 0/12 at threshold 75; all three links score 71-73 on a single shared token (heated/cellular/adjust) and one (auto_adjust vs 'adjust the time') is a semantic false positive - the two loss classes separate cleanly, so H145 stays deprioritized"
+    },
+    "H254": {
+      "clause": "free ceiling (graph-as-lexicon)",
+      "ceiling_mean": 0.629,
+      "ceiling_pooled": 0.6712,
+      "per_run_ceiling": {
+        "1": 0.375,
+        "2": 0.6923,
+        "3": 0.6,
+        "4": 0.7778,
+        "5": 0.7
+      },
+      "bar": 0.5,
+      "pass": true,
+      "first_appearance_share_mean": 0.3147,
+      "ever_missed_unique": 31,
+      "fate": {
+        "healable": 23,
+        "in_graph_multi_doc": 24,
+        "in_graph_single_doc_or_absent": 7,
+        "matched_a_graph_entity": 30
+      },
+      "graph_entities": 2798,
+      "verdict_recommendation": "CONFIRMED",
+      "note": "'name appears in chunk text' uses the H248 scanner span-localization (a raw token_set_ratio of a short name vs a whole document is diluted); healable = span-locatable AND graph knows the carrier from another document; ceiling clears comfortably, ~31% first-appearance slice needs the paid cures"
+    }
+  }
+}

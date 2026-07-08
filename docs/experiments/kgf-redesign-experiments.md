@@ -2863,6 +2863,8 @@ R23's CPU tier localized the loss at SELECTION - near-tie entity choices flipped
 - **Prediction** - both clauses pass - cued span-level extraction is recognition, the easy regime; this becomes the cost-frontier winner if H251's sampling correlation disappoints, and the audit loop doubles as the self-auditing-foundry completeness instrument (the gap ledger gains a per-document "scanner residue" signal)
 - **Acceptance bar** - free clause gates the LLM clause; refuted if located candidates resist extraction even when cued (the model refuses the candidates as non-entities - the scanner's precision, not recall, would then be the problem and the false-candidate rate gets measured)
 - **Synthetic gate** - the free clause IS the gate: CPU on checkpoints + chunk cache + the H248 scanner; runs immediately
+- **Result (free clause)** - (executor 2026-07-08, [`remedies_free_gates_r24.ipynb`](../../notebooks/remedies_free_gates_r24.ipynb) / [`remedies-free-gates-r24-20260708T070017Z.json`](../../reports/remedies-free-gates-r24-20260708T070017Z.json); anchors reproduced exactly) mean **68.6%** (pooled 71.2%) of per-run missed carriers are scanner-visible AND span-locatable (bar 60%), at a span token cost of **5.0%** pooled / 22.3% worst-doc of chunk tokens (bar 40%)
+- **Verdict (interim)** - gate CONFIRMED with margin - the audit is free and the residue is surgically small; the micro-pass LLM clause earns its run behind H229, now with GLiNER (H260, 95.2% visibility) upgrading the audit lexicon beyond the 87.3% scanner it was gated on
 
 ### R24-H253 The severed-association linkage - two measured gaps, one cause?
 
@@ -2871,6 +2873,8 @@ R23's CPU tier localized the loss at SELECTION - near-tie entity choices flipped
 - **Prediction** - a material minority links - the catalogue-genre docs dominate both lists; confirmation promotes H145 to the post-H229 queue with header-carryover as the specified fix and the intersection as its acceptance target; refutation cleanly separates the classes (severance loses table VALUES, the ownership gap loses prose-stated features) and semantic chunking stays deprioritized against extraction-recall levers
 - **Acceptance bar** - the >= 25% clause on the frozen H226 miss table x the recomputed H144 severed-row list; either outcome routes cleanly
 - **Synthetic gate** - none needed: pure CPU intersection of two existing artifacts; runs immediately
+- **Result** - (same executor/report; full severed-row set recomputed via the H144 method, honest doc-overlap noted - 4 of 5 never-extracted docs carry severed rows) nominally 3/12 = 25.0% linked at the registered token_set_ratio >= 70 - a grazing touch of the bar that FAILS robustness: all three links score 71-73 on a single shared token, one is a clear semantic false positive (a clock-setting row), and the linkage collapses to 0/12 at threshold 75; every hit sits in one document
+- **Verdict** - REFUTED (the nominal graze recorded honestly, adjudicated on robustness) - the two loss classes separate cleanly: severed table rows lose table VALUES, the ownership gap loses prose-stated features. H145 (SaT/table-atomic chunking) stays DEPRIORITIZED against extraction-recall levers - the user's semantic-chunking question now has a measured answer: it targets a real but separate and currently non-binding loss class
 
 ### R24-H254 Graph-as-lexicon healing - documents repair each other for free
 
@@ -2879,6 +2883,8 @@ R23's CPU tier localized the loss at SELECTION - near-tie entity choices flipped
 - **Prediction** - the ceiling clears easily on this corpus (products recur across catalogues and manuals); the operator ships as a default load stage in H198 and partially substitutes for K-pass aggregation on RECURRING entities - the expensive cures then only need to cover first-appearance entities
 - **Acceptance bar** - ceiling clause gates the operator; refuted if missed carriers are mostly first-appearance (the lexicon has nothing to offer and aggregation carries the full load)
 - **Synthetic gate** - the ceiling clause IS the gate: CPU on checkpoints + reference graph (READ-ONLY) + chunk cache; runs immediately
+- **Result (ceiling clause)** - (same executor/report) mean **62.9%** (pooled 67.1%) of per-run missed carriers already exist in the reference graph from ANOTHER document and re-appear in the missed doc's chunk text (bar 50%); first-appearance slice = 31.5% (the residue only paid extraction cures can reach); localization caveat: scanner span-matching used (raw whole-doc fuzzy matching dilutes short names)
+- **Verdict (interim)** - ceiling CONFIRMED - the zero-LLM lexicon scan is a real load-stage recall lever, convergent with H258's 81.4% cross-document known-but-dropped signal; the operator clause (wired scan + false-positive audit) earns its run, and the division of labor is now measurable: healing covers the ~63-67% recurring slice for free, K-pass cures need only cover the ~31% first-appearance slice
 
 ### R24 fanout extension (H255-H265) - five-lens remedy fan-out, curated 2026-07-08
 
