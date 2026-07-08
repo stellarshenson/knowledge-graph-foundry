@@ -1,0 +1,141 @@
+{
+ "round": "R26",
+ "tier": "free-gate (zero-LLM, zero-GPU)",
+ "author": "Claude executor",
+ "utc": "20260708T075940Z",
+ "matching_harness": "rapidfuzz token_set_ratio>=85, lowercased (frozen R23)",
+ "substrate_note": "live default .env graph is a research-paper KG (9836 entities, 553 KGFEntityVersion events); CPAP benchmark graph off-limits (neo4j2). Union-of-5 production recall reproduced 63/101.",
+ "bars": {
+  "H271_ratio": 1.5,
+  "H273_invalidation": 0.95,
+  "H274_safe_reuse_frac": 0.9,
+  "H274_surface_frac": 0.2,
+  "H275_prec": 0.9,
+  "H275_rec": 0.9,
+  "H275_retain": 0.9,
+  "H275_cut": 0.5,
+  "H276_latency_x": 5.0,
+  "H276_storage_frac": 0.15,
+  "H276_maint_frac": 0.1,
+  "H277_candidates": 20,
+  "H277_survive": 0.8,
+  "H277_flips": 1,
+  "H278_lift": 0.1
+ },
+ "adjudications": {
+  "H271": {
+   "verdict": "CONFIRMED",
+   "dw_uniform_ratio_by_budget": {
+    "1": {
+     "demand_weighted": 39,
+     "uniform_exp": 2.38,
+     "ratio": 16.38
+    },
+    "2": {
+     "demand_weighted": 39,
+     "uniform_exp": 4.76,
+     "ratio": 8.19
+    },
+    "3": {
+     "demand_weighted": 40,
+     "uniform_exp": 7.14,
+     "ratio": 5.6
+    },
+    "5": {
+     "demand_weighted": 40,
+     "uniform_exp": 11.9,
+     "ratio": 3.36
+    },
+    "10": {
+     "demand_weighted": 41,
+     "uniform_exp": 23.81,
+     "ratio": 1.72
+    }
+   },
+   "spearman_demand_gap": -0.071,
+   "spearman_p": 0.759,
+   "total_gap_probes": 50,
+   "top_doc": "product_and_solutions_catalog.pdf",
+   "top_doc_gap_share": 0.78,
+   "bar_ratio": 1.5,
+   "pass": true,
+   "caveat": "win driven by gap concentration on the single most-queried doc; rank-corr across docs null; dominant doc outside frozen H119 corpus"
+  },
+  "H273": {
+   "verdict": "CONFIRMED",
+   "answer_units": 7260,
+   "evidence_changed": 2479,
+   "stale_frac": 0.341,
+   "invalidation_rate": 1.0,
+   "false_invalidation": 0,
+   "blast_mean": 9.5,
+   "blast_max": 185,
+   "bar_invalidation": 0.95,
+   "pass": true,
+   "caveat": "frame problem (absence-dependent answers) uncovered by both mechanisms; immaterial on attribute-lookup corpus (~0 negation probes); 553 events unfalsify rather than stress"
+  },
+  "H274": {
+   "verdict": "CONFIRMED_PREFERRED",
+   "safe_reuse_rate": 0.659,
+   "rel_safe_reuse_vs_H273": 1.0,
+   "surface_H273": 4,
+   "surface_H274": 0,
+   "surface_frac": 0.0,
+   "surface_rule": "graph-schema changes + write-path coupling points; H273=label+rel+property+mutation-time invalidation=4; H274=external read-only fingerprint cache=0",
+   "bar_safe_reuse_frac": 0.9,
+   "bar_surface_frac": 0.2,
+   "pass": true,
+   "ships": "H274 (round ships the external cache)"
+  },
+  "H275": {
+   "verdict": "REFUTED",
+   "cluster_precision": 0.708,
+   "cluster_recall": 0.765,
+   "gain_retained": 0.44,
+   "actions_cut": 0.737,
+   "bars": {
+    "prec": 0.9,
+    "rec": 0.9,
+    "retain": 0.9,
+    "cut": 0.5
+   },
+   "pass": false,
+   "note": "clustering short of 0.9/0.9; recurrence gate retains only 44% of H271 gain - recoverable mass is one-off products"
+  },
+  "H276": {
+   "verdict": "REFUTED",
+   "latency_speedup_x": 328.1,
+   "storage_growth_frac": 4.944,
+   "maintenance_vs_rebuild_frac": 0.649,
+   "byte_identical": true,
+   "blast_max": 185,
+   "bars": {
+    "latency_x": 5.0,
+    "storage_frac": 0.15,
+    "maint_frac": 0.1
+   },
+   "pass": false,
+   "note": "latency 286x passes but storage 494% and hub-fanout maintenance 63% both refute; storage/latency is a fundamental tradeoff"
+  },
+  "H277": {
+   "verdict": "REFUTED",
+   "candidates": 15,
+   "survive_frac": 0.2,
+   "exact_match_products": 63,
+   "flip_clause": "UNTESTABLE (no SAME_AS/model_code substrate)",
+   "bars": {
+    "candidates": 20,
+    "survive": 0.8
+   },
+   "pass": false,
+   "note": "15<20 candidates, mostly spurious never-extracted matches; recalled products already match graph names >=85 (refutation condition)"
+  },
+  "H278": {
+   "verdict": "UNTESTABLE",
+   "demand_rank_corr_halves": -0.371,
+   "reason": "no timestamped query stream; static catalogue, stationary by construction",
+   "disposition": "park to production telemetry"
+  }
+ },
+ "H280_composition_recommendation": "ship to H198: H271 demand-weighted repair allocation + H274 external fingerprint cache. Drop H273 (H274 dominates); H275/H276/H277 refuted; H278 parked."
+}

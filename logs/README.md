@@ -38,3 +38,5 @@ Background job logs for Knowledge Graph Foundry.
 - `h229-runner.log` - detached script run of the H229/gates harness (same code as the notebook; fills results/h229 checkpoints)
 
 - `r24-free-gates.log` - R24 free-gate tier adjudication (H252 scanner-audited residue, H253 severed-association linkage, H254 graph-as-lexicon ceiling)
+
+- `r26-gates.log` - R26 usage-coupling free-gate adjudication (H271 demand ledger, H273/H274 derived layer vs external cache, H275 recurrence gate, H276 render views, H277 alias harvest, H278 demand decay); nbconvert execution of notebooks/usage_coupling_gates_r26.ipynb

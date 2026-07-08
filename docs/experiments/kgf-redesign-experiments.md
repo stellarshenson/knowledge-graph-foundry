@@ -3196,6 +3196,7 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - part-number lookups for this vocabulary return usable disambiguation (manufacturer catalogues are indexed); failures concentrate where the identifier is genuinely shared across product families
 - **Acceptance bar** - both clauses on the frozen identifier-collision pairs; refuted if web results are ambiguous or wrong for >= 30% of lookups (web then stays OUT of the ladder entirely and the class routes to abstention + soft links); the gate is structural: web is reachable ONLY from the identifier-collision + deep-defer intersection, never as a general rung
 - **Experiment** - LLM tier + web tool, frozen pairs only, full query/response provenance logged for audit
+- **Post-registration note (2026-07-08, user direction)** - H286 is USER-GATED: "let's first achieve SOTA without web search, and then we will try it - I want to exhaust current paths now". The web arm does not run in this wave; the round proceeds on the in-corpus rungs (H281-H285, H287-H290), H290's frontier composes WITHOUT a web rung, and H281's class (d) routes to abstention + soft links until the user re-opens this gate
 
 ### R27-H287 The escalation gate - who earns the expensive court
 
