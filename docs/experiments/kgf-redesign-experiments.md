@@ -2843,3 +2843,131 @@ R22 established WHAT the extraction disease is - undersampling (H231: single-run
 - **Prediction** - enumerate-then-extract or primed-pass wins; if none dominates, union-of-2-decorrelated ships at its known price and the mechanism round still pays for itself by having settled H249's determinism interaction before production tripped over it
 - **Acceptance bar** - the frontier table (coverage, cost multiplier, per-candidate) with the winner named; this hypothesis cannot be refuted, only resolved - it is the round's decision procedure, and its output is the H198 extraction-recipe input
 - **Experiment** - composes the round's surviving artifacts; runs LAST, after the LLM-gated hypotheses clear or close; the winner's clause (b)-style scratch-ingest validation merges into H240 clause (b)'s arm (same scratch instance, same harness) so the ingest-integrated proof is paid once
+
+## R24 - remedies: repricing aggregation and closing the loss classes without paying for K passes (user-directed, pre-registered 2026-07-08)
+
+R23's CPU tier localized the loss at SELECTION - near-tie entity choices flipped by batch numerics and amplified by autoregressive path dependence - with run stochasticity as the only diversity source (H244) and the carriers lexically visible for free (H248: 87.3%). The user directs a deep remedy slate. Four mechanisms, each attacking the cost or the loss class directly rather than adding passes: (1) K samples do NOT cost K passes on this serving stack - vLLM parallel sampling (n=K) shares the prefill and prefix cache, so union economics were mispriced from independent-run arithmetic; (2) the deterministic scanner can AUDIT each pass and buy back the residue surgically; (3) the H144 severed-association class may be where H226's never-extracted ownerships died - linking two measured gaps would promote H145 (SaT/table-atomic chunking) with a sized payoff; (4) the graph itself is a growing lexicon that can heal single-pass misses across documents for zero LLM tokens. Free gates run immediately on existing artifacts; LLM arms queue behind H229 with the rest of the tier.
+
+### R24-H251 Parallel-sampling union - K samples for the price of ~1.3 passes
+
+- **Grounding** - H240 priced union-of-2 at 2.0x from INDEPENDENT-run arithmetic, but extraction is prefill-dominated (chunk + prompt >> emitted JSON) and vLLM's n-parameter samples K completions off ONE shared prefill (prefix caching extends this across requests); the true marginal cost of K samples is roughly 1 + K * (output/input share) - potentially ~1.2-1.5x for K=4-5, which would make blind union strictly dominant over every mechanism cure before any of them runs; diversity requires temp > 0 (greedy n-samples collapse to near-identical), so the arm inherently tests temperature as the diversity knob - possibly cheaper fuel than run count
+- **Hypothesis** - (a) n=5 sampling at temp 0.3 on 3 documents reaches >= 95% of the independent union-of-5 gold-carrier coverage at <= 1.6x measured single-pass token cost (input tokens counted once per shared prefill), and (b) coverage at n=5/temp 0.3 exceeds n=5/temp~0 by >= 10 pts (temperature, not batching noise, is the efficient diversity source)
+- **Prediction** - both confirmed; the H250 frontier gains an operator at ~89-100% coverage near 1.5x cost and the "aggregation is expensive" premise of the whole mechanism round dissolves; failure mode to watch: higher temp inflates froth and the resolver's false-merge band prices the cleanup
+- **Acceptance bar** - both clauses with token telemetry from the server (not estimated); refuted if n-sampling coverage lags independent runs materially (sample correlation under shared prefill - a real possibility worth knowing) or cost lands near Kx anyway
+- **Synthetic gate** - GATE (1 doc, one n=5 request at temp 0.3 vs the doc's 5 independent checkpoints): union coverage within 10 pts of the independent union AND measured cost <= 2x single pass; ~1 request, queues behind H229
+
+### R24-H252 Scanner-audited surgical re-extraction - buy back only the residue
+
+- **Grounding** - H248's scanner sees 87.3% of gold carriers deterministically, which means after ANY pass the system can compute exactly which lexically-visible candidates were NOT extracted and WHERE they sit (sentence spans in chunk text); a micro-pass that re-reads only those spans ("extract entities from these sentences; candidates you must adjudicate: ...") pays tokens proportional to the RESIDUE, not the corpus - the audit is free, the repair is surgical, and the operator composes with any base recipe including n-sampling
+- **Hypothesis** - (free clause) >= 60% of the gold carriers missed by a single arm-A run are scanner-visible AND locatable to sentence spans totaling <= 0.4x the document's chunk tokens; (LLM clause) the micro-pass converts >= 70% of those located candidates into extracted entities, lifting single-pass coverage to >= 85% of union-of-5 at <= 1.4x total cost
+- **Prediction** - both clauses pass - cued span-level extraction is recognition, the easy regime; this becomes the cost-frontier winner if H251's sampling correlation disappoints, and the audit loop doubles as the self-auditing-foundry completeness instrument (the gap ledger gains a per-document "scanner residue" signal)
+- **Acceptance bar** - free clause gates the LLM clause; refuted if located candidates resist extraction even when cued (the model refuses the candidates as non-entities - the scanner's precision, not recall, would then be the problem and the false-candidate rate gets measured)
+- **Synthetic gate** - the free clause IS the gate: CPU on checkpoints + chunk cache + the H248 scanner; runs immediately
+
+### R24-H253 The severed-association linkage - two measured gaps, one cause?
+
+- **Grounding** - H144 measured 64 table rows severed from their headers (7 docs, catalogue/manual genre); H226 measured 41.3% feature-ownership absence with a 32% never-extracted slice (humidification, wifi, app-monitoring features missing from BOTH sibling fragments); severed rows produce exactly this signature - the feature VALUE reaches extraction without its OWNER context - and if the two lists intersect materially, H145 (SaT/table-atomic chunking with header carryover) stops being a speculative fidelity lever and becomes a sized attachment-gap fix, answering whether semantic chunking helps with a number instead of an intuition
+- **Hypothesis** - >= 25% of H226's never-extracted ownership misses name features whose evidence rows sit in H144's severed-row set (same document, same table region)
+- **Prediction** - a material minority links - the catalogue-genre docs dominate both lists; confirmation promotes H145 to the post-H229 queue with header-carryover as the specified fix and the intersection as its acceptance target; refutation cleanly separates the classes (severance loses table VALUES, the ownership gap loses prose-stated features) and semantic chunking stays deprioritized against extraction-recall levers
+- **Acceptance bar** - the >= 25% clause on the frozen H226 miss table x the recomputed H144 severed-row list; either outcome routes cleanly
+- **Synthetic gate** - none needed: pure CPU intersection of two existing artifacts; runs immediately
+
+### R24-H254 Graph-as-lexicon healing - documents repair each other for free
+
+- **Grounding** - undersampling is per-PASS, but the foundry is a long-lived accumulating system: a carrier missed in document B's pass often already EXISTS in the graph from document A's pass, and its name demonstrably appears in B's chunk text (the scanner sees it); a zero-LLM ingest stage that greps the graph's entity lexicon against each new document's chunks can recover MENTIONED_IN edges, co-occurrence signal, and ownership candidates for entities the pass dropped - converting the graph from a passive store into the completeness instrument the self-auditing doctrine specifies, with recall that IMPROVES as the graph grows
+- **Hypothesis** - (free ceiling clause) >= 50% of the gold carriers missed by each single arm-A run are already present as reference-graph entities extracted from OTHER documents AND their names appear (token_set_ratio >= 85) in the missed document's chunk text - the healing ceiling is material; (operator clause, post-ceiling) wiring the lexicon scan as a load-stage step recovers those mention edges at zero LLM cost with false-positive rate < 5% on a hand-checked sample
+- **Prediction** - the ceiling clears easily on this corpus (products recur across catalogues and manuals); the operator ships as a default load stage in H198 and partially substitutes for K-pass aggregation on RECURRING entities - the expensive cures then only need to cover first-appearance entities
+- **Acceptance bar** - ceiling clause gates the operator; refuted if missed carriers are mostly first-appearance (the lexicon has nothing to offer and aggregation carries the full load)
+- **Synthetic gate** - the ceiling clause IS the gate: CPU on checkpoints + reference graph (READ-ONLY) + chunk cache; runs immediately
+
+### R24 fanout extension (H255-H265) - five-lens remedy fan-out, curated 2026-07-08
+
+User-directed fan-out: five parallel ideation agents (sampling statistics, decoding systems, IE literature, contrarian economics, pipeline architecture) each primed with the measured facts and the registered-remedy list, proposing only new mechanisms. ~20 proposals curated to eleven: the four adaptive-allocation variants merged into H255; batch-composition jitter folded into H249's diversity-manufacture arm; the chunk-claim queue DEFERRED (gate blocked on per-chunk extraction provenance - logging requirement routed to H198); diverse beam search rejected (vLLM capability risk, dominated by H257); chain-of-verification rejected by its own lens (precision mechanism - prunes recall like the dead voting cure). The do-nothing-priced discipline arm is absorbed into H240 clause (b)'s existing bar, with H262's free gate as its cheap predictor.
+
+### R24-H255 Adaptive-K allocation - spend passes where the residue is
+
+- **Grounding** - fixed union-K overpays saturated documents and starves hard ones (single-run coverage swings 34-89% per doc); four controller candidates estimate per-doc residue and allocate the next pass greedily: Chao2 richness (f1²/2f2 over pass-incidence), Good-Turing new-entity rate (f1/k), scanner-residue shrinkage (H248 carriers still unextracted), and static scanner carrier-density quartiles; the engine's curing gate already blesses nonparametric missing-mass estimation
+- **Hypothesis** - (a) Chao2 from 3 passes predicts union-of-5 recoverable count within ±15% median absolute error; (b) at matched total budget (mean 2 passes/doc), residue-greedy allocation recovers >= 5 pts more gold carriers than uniform-2; (c) adaptive stop at estimated coverage >= 0.95 reaches >= 90% of union-5 carriers using < 5 passes on >= 5 of 10 docs
+- **Acceptance bar** - all three clauses on checkpoint resampling; the winning controller (accuracy x simplicity) feeds H250's frontier; refuted if residue estimates do not rank documents (allocation has no signal and fixed-K stands)
+- **Synthetic gate** - none needed: pure resampling on the 25 checkpoints; CPU only
+- **Cost** - gate free; production NEGATIVE vs fixed-K (fewer passes on easy docs)
+
+### R24-H256 Completeness instrumentation - missing mass from one pass
+
+- **Grounding** - the scanner is a second, independent capture occasion: Chapman two-source estimator (LLM pass x scanner) yields a per-document recoverable-mass estimate from ONE pass; per-doc Good-Turing coverage (1 - f1/n) gives the gap ledger the abstention scalar the self-auditing doctrine specifies; known bias: both sources co-miss consumable-class names - measure the co-absence rate and report the estimator as a corrected lower bound
+- **Hypothesis** - (a) Chapman from (1 pass + scanner) predicts union-of-5 count within ±25% or with a stable measurable negative bias across the 10 docs; (b) per-doc coverage computed from 2 passes rank-correlates with actual gold-carrier recall at Spearman rho >= 0.6
+- **Acceptance bar** - both clauses; even the biased-lower-bound branch ships (an honest floor beats no signal); refuted if the estimator is unstable doc-to-doc
+- **Synthetic gate** - none needed: checkpoints + scanner, CPU only
+- **Cost** - gate free; production = free byproduct of any pass
+
+### R24-H257 Logit-level candidate harvesting - the near-tie losers ARE the missing entities
+
+- **Grounding** - the mechanism model says missing carriers sit just below the argmax at entity-name emission positions; under guided-JSON decoding (H233) those positions are FSM-identified, and reading top-k alternative tokens (k <= 4, floor p >= 0.05) exposes the candidates union-of-K spends K passes sampling - one prefill, near-union coverage; clause (b): the sampling variant - FSM-aware min-p sampling ONLY inside name slots (greedy structure, wide values) injects diversity exactly where churn lives with zero JSON risk
+- **Hypothesis** - (a) top-k harvesting at name slots of ONE pass recovers >= 85% of gold carriers at <= 15% junk-candidate rate (junk filterable by scanner + resolver); (b) value-slot-only min-p lifts per-pass coverage >= 70% (vs 55.4%) with zero parse-failure increase
+- **Acceptance bar** - either clause landing makes this the cost-frontier leader (~1x cost); refuted if alternatives at name positions do not contain the missing golds (path dependence, not near-tie selection, dominates - a decisive mechanism datum either way)
+- **Synthetic gate** - rides H245's 1-doc logprob capture (extend it to record top-k alternatives at name positions; ~same 6 calls); queues behind H229 with H245
+- **Cost** - gate ~free on top of H245; full test 1 pass/doc + a logit processor
+
+### R24-H258 Mention-emission - move the dedup boundary out of the model
+
+- **Grounding** - an LLM told to extract ENTITIES internally deduplicates: later mentions of an already-listed entity read as redundant and are dropped - some of the 45% loss may be the model's own silent canonicalization; re-tasking the prompt to emit every surface MENTION and letting the shipped v2 resolver aggregate moves dedup from opaque model behavior to the auditable component built for it
+- **Hypothesis** - (free gate clause) >= 30% of each run's missed gold carriers were extracted by the SAME run elsewhere in the document (known-but-locally-dropped signal); (LLM clause) mention-emission single pass reaches >= 80% carrier coverage with resolver holding precision loss <= 5 pts at ~2-3x mention inflation
+- **Acceptance bar** - gate clause first; refuted if misses are genuinely unseen (not internal dedup) - the signal then belongs to H257's near-tie account
+- **Synthetic gate** - checkpoint set-diff per run per doc, CPU only, runs immediately
+- **Cost** - gate free; full test = prompt rewrite + 1 pass, resolver already deployed
+
+### R24-H259 Extract-then-mask peeling - remove the salience anchors
+
+- **Grounding** - the captured 55% are the salient carriers; H243's complement keeps them IN context (attention stays anchored) - masking DELETES extracted mention spans from the chunk and re-extracts the residual, forcing a fresh salience computation over the tail; model-driven residue targeting, no scanner dependency
+- **Hypothesis** - (free gate clause) missed carriers cluster in chunks dense with FOUND entities (salience-shadowing: missed-carrier chunk share of extracted entities >= 1.5x the base rate); (LLM clause) 2-round mask-peel union reaches >= 85% carrier coverage at 2 passes
+- **Acceptance bar** - gate clause first; the LLM clause competes with H243 head-to-head in H250's frontier (same cost class, different residue-targeting mechanism); refuted if shadowing signal absent
+- **Synthetic gate** - checkpoint + chunk-cache arithmetic, CPU only, runs immediately
+- **Cost** - gate free; full test 2 passes/doc
+
+### R24-H260 Learned span proposer - GLiNER on the idle card
+
+- **Grounding** - the regex scanner's 87.3% has a fixed-pattern ceiling (misses consumable-class names); a GLiNER-class zero-shot span model with the cured 12 type labels runs on idle GPU 0/2 in minutes and generalizes past regex; converts the LLM's job from open-vocabulary recall (undersamples to 55%) to closed-set adjudication (LLM strength); upgrades H248's priming source and H252's audit lexicon
+- **Hypothesis** - (gate clause) GLiNER raw span recall on the 10 docs' chunk text >= 90% of gold carriers (must beat the 87.3% regex floor to live); (LLM clause) GLiNER-candidates + one LLM adjudication pass >= 89% (union-of-2 parity at ~1x LLM cost)
+- **Acceptance bar** - the regex floor is the kill line - a learned model that cannot beat grep dies; refuted cleanly by the gate
+- **Synthetic gate** - GPU 0/2 inference over on-disk chunk text, zero LLM/vLLM touch, runs anytime
+- **Cost** - gate = model download + minutes of idle-GPU inference; full test +1 LLM pass
+
+### R24-H261 In-context union distillation - teach exhaustivity by example
+
+- **Grounding** - the union-of-5 sets on disk are free supervision for what EXHAUSTIVE extraction looks like; 2-3 held-out-document union demonstrations in the prompt recalibrate the model's stopping/exhaustivity prior - the quantity that collapses to 55% under a bare prompt - at inference cost only, no tuning
+- **Hypothesis** - a single pass primed with 2-3 low-overlap union demos reaches >= 78% carrier coverage (>= +20 pts over baseline) at 1 pass + ~2k prompt tokens
+- **Acceptance bar** - the +20 pt clause with leakage controlled (demo/target docs selected for low lexical overlap - the free gate computes the overlap matrix and picks clean splits); refuted if gains vanish under clean splits
+- **Synthetic gate** - overlap matrix on chunk texts, CPU, runs immediately; the LLM probe (1 doc) queues behind H229
+- **Cost** - gate free; full test 1 pass/doc with longer prompts
+
+### R24-H262 Chunk-fallback render - recover at query time what ingest dropped
+
+- **Grounding** - chunks are already graph nodes co-resident with entities, and the scanner sees 87.3% of carriers IN chunk text; when a probe's seed chunk contains a carrier name that no extracted entity links, injecting the chunk span into the rendered context recovers the carrier with ZERO extraction cost - a render-layer edit, bounded (<= 1 extra chunk per probe), and the cheap predictor of what the whole extraction-fix program is actually worth end-to-end
+- **Hypothesis** - chunk-fallback closes >= 60% of ingest-side absent-carrier probe misses on the frozen graph at <= 1 extra rendered chunk per probe and <= 3 pts precision cost
+- **Acceptance bar** - the closure clause; a PASS here re-prices every ingest-side cure in H250's frontier (the query-time floor rises); refuted if the injected chunks do not carry scoreable evidence (presence != evidence)
+- **Synthetic gate** - none needed: frozen graph (READ-ONLY) + failed probes + scanner, simulated injection + re-score, CPU only
+- **Cost** - gate free; production = microseconds of regex per query
+
+### R24-H263 Recall SLA per regime - pay K only where the use case probes
+
+- **Grounding** - the use-case regime doctrine narrows every stage; union-K applied globally spends on entity classes the regime never probes; if probe gold carriers concentrate in a minority of classes, class-scoped union buys the probed recall at a fraction of the blanket price, and the rest goes to the gap ledger as priced abstention
+- **Hypothesis** - probe gold carriers concentrate in <= 40% of entity classes, and class-scoped union-K on those classes matches global-union probe recall within 3 pts at < 0.5x the incremental extraction cost
+- **Acceptance bar** - both clauses on the frozen probe-class mapping; refuted if carriers spread class-uniformly (no scoping leverage - blanket K stands)
+- **Synthetic gate** - none needed: probe catalogue x checkpoint types x class concentration, CPU only
+- **Cost** - gate free; production = policy knob on whatever operator H250 ships
+
+### R24-H264 Heterogeneous union member - cross-family decorrelation
+
+- **Grounding** - same-model union's only diversity axis is run stochasticity (H244); a different model FAMILY (different architecture/tokenizer/training mix, idle GPU 2) is a structurally independent miss distribution - its marginal carrier yield as the second union member may exceed a same-model rerun's; extends H239 (variance-floor gate pending) with the union question its 1-doc x 3-run artifacts can partially answer for free
+- **Hypothesis** - hetero union-of-2 (1 production + 1 second-family pass) reaches >= 95% carrier coverage vs the 89% homogeneous union-of-2, with cross-family missed-set Jaccard < same-model missed-set Jaccard
+- **Acceptance bar** - both clauses on matched documents; refuted if the hetero member's marginal yield <= a same-model second pass (family diversity buys nothing over stochasticity)
+- **Synthetic gate** - rides H239's gate outputs (compute missed-set overlap from its 1-doc runs before any sweep); queues with H239
+- **Cost** - gate free on H239's artifacts; full test = 1 sweep on idle GPU 2 (~free wall-clock) + resolver load
+
+### R24-H265 Ship-then-top-up - asynchronous background union
+
+- **Grounding** - the foundry is long-lived with proven idempotent kill-resume re-ingest and an always-in-flight background doctrine; union-K need not sit on the critical path: pass 1 ships the graph immediately, passes 2..K run as idle-time merge jobs through the v2 resolver, decoupling the latency/coverage tradeoff fixed-K couples; the operational form in which ANY winning aggregation operator actually ships
+- **Hypothesis** - replaying the frozen checkpoints as sequential resolver merges, cumulative carrier coverage tracks offline union-of-N within ±2 pts, is monotone non-decreasing, and false-merge count stays within the H158 band at every step
+- **Acceptance bar** - monotonicity + band clauses (a merge that regresses coverage or blows the band kills the async form and union ships synchronous); the resolver-load-vs-K curve measured here bounds every union-family remedy
+- **Synthetic gate** - none needed: sequential merge simulation on checkpoints, CPU only (resolver logic offline, no graph writes)
+- **Cost** - gate free; production = orchestration wiring only
