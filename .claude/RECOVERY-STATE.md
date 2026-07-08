@@ -16,7 +16,7 @@
 ## Live streams
 
 ### 1. H229 serial variance + R22 LLM gates - detached nbconvert
-- 11/15 checkpoints at 06:55 (ls results/h229/*.json | grep -c H229_free). ETA ~07:30. Process: pgrep -f serving_determinism_h229. Log logs/h229-gates.log, logs/h229-nbconvert.log.
+- COMPLETE and RECORDED (H229 refuted, H232/H233 closed NO-GO, H239 gate GO recall-gated, H249 refuted) - stream CLOSED; vLLM FREE.
 - After 15/15 the SAME notebook runs the gates: H232 seeded (JD<0.3 gate), H233 guided-JSON (>=15% reduction gate), H239 second model (within-1.5x closes; a Qwen server for it was pre-staged detached). Report reports/serving-determinism-h229-*.json expected with H229 verdict + 3 gate recommendations.
 - On report: record H229 + gate outcomes (they adjudicate H249's premise and the whole R23/R24 LLM-tier design); then LAUNCH the LLM tier queue (below).
 - If dead without report: relaunch resumes from checkpoints: .venv/bin/jupyter nbconvert --to notebook --execute --inplace notebooks/serving_determinism_h229.ipynb --ExecutePreprocessor.timeout=36000 >> logs/h229-nbconvert.log 2>&1

@@ -1,0 +1,91 @@
+{
+  "hypothesis": "R11-H229 (+ R22 gates H232/H233/H239)",
+  "utc": "20260708T075923Z",
+  "endpoint_A": "http://localhost:8010/v1",
+  "model_A": "gpt-oss-120b",
+  "endpoint_B": "http://127.0.0.1:8011/v1",
+  "model_B": "models/qwen2.5-7b/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+  "purpose": "compare CPAP machines",
+  "temperature": 0.0,
+  "seed": 1234,
+  "documents": [
+    "0-20190113114505.pdf",
+    "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+    "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf"
+  ],
+  "gate_document": "0-20190113114505.pdf",
+  "chunk_counts": {
+    "0-20190113114505.pdf": 1,
+    "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 2,
+    "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 8
+  },
+  "ambient_load_note": "shared vLLM gpt-oss-120b on GPU 1; H119 done but a light single-doc H157 paper ingest still shares the server - runs are serial from the client but the server is not perfectly idle; per-run wall-clock logged",
+  "h229": {
+    "runs_per_doc": 5,
+    "per_doc_serial": {
+      "0-20190113114505.pdf": 0.7085908634094541,
+      "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.4288956297730525,
+      "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.6657923350384791
+    },
+    "per_doc_concurrent_A": {
+      "0-20190113114505.pdf": 0.4,
+      "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.7786909965034965,
+      "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.7734797750855512
+    },
+    "serial_mean": 0.6010929427403285,
+    "concurrent_mean": 0.6507235905296825,
+    "serial_over_concurrent_ratio": 0.9237300621774674,
+    "bar": {
+      "confirmed_at_or_below": 0.5,
+      "refuted_at_or_above": 0.8
+    },
+    "verdict": "REFUTED"
+  },
+  "h232_gate": {
+    "runs": 3,
+    "seeded_serial_jd": 0.5509304355982712,
+    "normalized_set_reproduction_rate": 0.0,
+    "raw_list_reproduction_rate": 0.0,
+    "all_runs_byte_identical": false,
+    "entity_counts": [
+      48,
+      40,
+      36
+    ],
+    "gate_bar": "JD < 0.3",
+    "decision": "NO-GO"
+  },
+  "h233_gate": {
+    "runs": 3,
+    "guided_jd": 0.8545028970492307,
+    "free_jd_3run": 0.7046640316205534,
+    "free_jd_5run": 0.7085908634094541,
+    "jd_reduction_vs_free": -0.21263873094825755,
+    "guided_entity_counts": [
+      41,
+      39,
+      50
+    ],
+    "gate_bar": ">= 15% JD reduction",
+    "decision": "NO-GO"
+  },
+  "h239_gate": {
+    "runs": 3,
+    "model": "models/qwen2.5-7b/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+    "deviation": "free production decode failed on Qwen-7B (non-JSON output, instructor retries exhausted, n=0 across 3 runs) - gate rerun grammar-constrained (llama.cpp response_format json_schema); band checked vs gpt-oss free (primary) and guided (matched-mode) references",
+    "qwen_guided_jd": 0.4197530864197531,
+    "gpt_oss_free_jd": 0.7046640316205534,
+    "ratio_vs_free": 0.5956783198575137,
+    "within_1_5x_vs_free": false,
+    "gpt_oss_guided_jd": 0.8545028970492307,
+    "ratio_vs_guided": 0.49122488392870806,
+    "within_1_5x_vs_guided": false,
+    "qwen_entity_counts": [
+      17,
+      20,
+      20
+    ],
+    "gate_bar": "within 1.5x -> close not-worth-testing",
+    "decision": "GO"
+  }
+}

@@ -2555,6 +2555,8 @@ The campaign has run ~113 adjudications ordered by judgment; the potentials fami
 - **Prediction** - serialized runs still show substantial variance (the floor stays well above 0.2 - extraction is genuinely nondeterministic even quiet), but the concurrent measurement overstates it; the resolver-workload conclusion survives at reduced magnitude
 - **Acceptance bar** - the 0.5x clause decides the attribution; refuted if the serial value is >= 0.8x concurrent (the variance is then model-inherent and the H119 refutation's magnitude stands as measured); either way the QUIET number becomes the citable extraction-variance figure
 - **Experiment** - 15 serial extractions on the idle vLLM after H119 and H157 complete; cheap; the H119 checkpoints provide the concurrent-arm comparison for the same documents
+- **Result** - (executor 2026-07-08, [`serving_determinism_h229.ipynb`](../../notebooks/serving_determinism_h229.ipynb) / [`serving-determinism-h229-20260708T075923Z.json`](../../reports/serving-determinism-h229-20260708T075923Z.json); deviation recorded: light H157 single-doc ambient load throughout - serial from the client, server not perfectly idle) serial mean JD **0.6011** vs concurrent 0.6507 on the same 3 docs - ratio **0.924** (confirm bar <= 0.5, refute bar >= 0.8); per-doc pairs 0.709/0.400, 0.429/0.779, 0.666/0.774 - no consistent direction
+- **Verdict** - REFUTED - temp-0 extraction variance is MODEL-INHERENT, not serving concurrency: the H119 magnitude stands as measured, the resolver-workload conclusion survives at full size, and the citable quiet-conditions extraction-variance figure is **~0.60 mean pairwise JD**. Together with the H232 gate (seed pinning does not help), the entire serving-side determinism family is closed - aggregation cures operate on solid ground
 
 ## R22 - the failure mechanism: extraction variance anatomy and its cures (user-directed, pre-registered 2026-07-08)
 
@@ -2587,6 +2589,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - seed + serial gets close to exact reproduction (residual variance only from any nondeterministic kernel paths); if so, production ingest can offer a `deterministic: true` mode at a throughput cost, and the re-extraction variance class dissolves for single-worker ingests
 - **Acceptance bar** - the <= 0.15 clause; refuted if seeded-serial variance stays > 0.3 (nondeterminism is then in the engine's kernel paths and only ensemble cures remain)
 - **Synthetic gate** - GATE (cheap, 1 doc x 3 seeded-serial runs on the idle vLLM post-H119): if one document does not drop below JD 0.3 seeded, the full test is pointless - closes for ~6 LLM calls
+- **Result (gate)** - (same executor/report as H229) seeded-serial JD **0.5509** (gate bar < 0.3); exact reproduction 0/3 pairs set-identical, 0/3 raw-identical, entity counts 48/40/36 across three seeded runs of one document
+- **Verdict** - CLOSED at the gate (NO-GO) - per-request seed + serial submission does not approach determinism on this stack; the registered refutation branch fires: nondeterminism lives in the engine's kernel paths, deterministic extraction mode is NOT AVAILABLE, and only aggregation cures remain
 
 ### R22-H233 Constrained decoding - the format is part of the noise
 
@@ -2595,6 +2599,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - constraint helps but does not cure (the model still CHOOSES different entities; constraint only stops format drift); combines with voting
 - **Acceptance bar** - the >= 30% at equal recall; refuted if constrained variance matches free (choice, not format, is the noise source - a mechanistically valuable null)
 - **Synthetic gate** - GATE (1 doc x 3 guided runs vs the doc's existing free-run checkpoints): >= 15% JD reduction on the single doc to earn the full grid
+- **Result (gate)** - (same executor/report) guided json_schema decoding JD **0.8545** vs the doc's free-run JD 0.7047 - a **-21.3%** reduction (gate bar >= +15%): the format constraint made variance WORSE
+- **Verdict** - CLOSED at the gate (NO-GO), with the registered mechanistically-valuable null landing hard: entity CHOICE churn, not format freedom, is the noise source (convergent with H242/H244/H259 - selection is the locus); constrained decoding retains value only for parse reliability, not variance
 ### R22-H234 Post-pass canonicalization - normalize the output, not the prompt
 
 - **Grounding** - H119's addendum tried to make the model emit canonical names and made things worse; the inversion: let extraction emit freely, then canonicalize DETERMINISTICALLY after - the H190 glyph operator + rule family (case/hyphen/plural fold, marketing-suffix strip, subset-name merge within a document) applied to the emitted sets; deterministic rules cannot add variance and their effect is exactly measurable on the existing checkpoints
@@ -2654,6 +2660,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - the smaller model is MORE variable (less confident entity choices) - but a >= 2x-lower surprise would redirect the whole round toward model selection
 - **Acceptance bar** - the >= 2x either-direction clause on matched documents/settings; refuted if floors are within 2x (variance is then endemic to the extraction task and pipeline cures are correctly prioritized)
 - **Synthetic gate** - GATE (1 doc x 3 runs on the second model): if the single-doc floor is within 1.5x of gpt-oss-120b's on the same doc, close as not-worth-testing before standing up the full grid
+- **Result (gate)** - (same executor/report; deviation recorded: Qwen2.5-7B-Instruct Q4_K_M via llama.cpp on GPU 0 FAILED the free production decode outright - raw token-list emissions, instructor retries exhausted, n=0 - so the gate reran grammar-constrained via json_schema) qwen guided JD **0.4198** = 0.596x gpt-oss free / 0.491x gpt-oss guided on the same doc - OUTSIDE the 1.5x band in the SURPRISE direction: the 7B is ~2x LESS variable
+- **Verdict (interim)** - gate GO - variance IS model-dependent and in the direction nobody predicted; the full test earns its slot with a mandatory recall gate (qwen emitted 17-20 entities vs gpt-oss ~44 - the lower variance may be bought with lower recall, and a 7B cannot run the production path unmodified). Model kept at models/qwen2.5-7b/ for the full test; its runs also feed H264's heterogeneous-union gate for free
 
 ### R22-H240 Union extraction - variance as sampling, aggregation as the cure
 
@@ -2835,6 +2843,8 @@ R22 established WHAT the extraction disease is - undersampling (H231: single-run
 - **Prediction** - confirmed on both halves; the shipping recipe becomes explicit: K passes with DELIBERATE variation (seeds, prompt rotation), never K repeats - and "deterministic mode" and "high-recall mode" are documented as mutually exclusive ingest configurations
 - **Acceptance bar** - both halves measured on H232's gate artifacts (plus 2-3 extra seeded calls if needed); refuted if seeded union still gains (residual kernel nondeterminism is itself the diversity source - fragile but functional)
 - **Synthetic gate** - none beyond H232's own gate runs, which this hypothesis consumes; adjudicates immediately after H232's gate lands
+- **Result** - (adjudicated from the H232/H229 artifacts, 2026-07-08) the contrarian's antecedent FAILED empirically: seeded-serial decoding leaves JD at 0.5509 (H232 gate) and H229 attributes the variance to the model, not the serving stack - no achievable "deterministic production configuration" exists whose adoption could starve union of diversity; seeded runs remain fully diverse (entity counts 48/40/36, zero identical pairs), so seeded union self-evidently still gains
+- **Verdict** - REFUTED per the registered branch (seeded union still gains), with the branch's caveat promoted to a standing operational note: union's diversity source is residual engine/model nondeterminism - functional but ENVIRONMENTAL, not designed. If a future stack upgrade ever delivers true determinism, blind union dies with it - H232's 6-call gate is the standing canary to rerun on every engine upgrade. The registered "deterministic mode vs high-recall mode" documentation split is moot: deterministic mode does not exist on this stack
 
 ### R23-H250 The cost frontier - which operator ships in H198
 
