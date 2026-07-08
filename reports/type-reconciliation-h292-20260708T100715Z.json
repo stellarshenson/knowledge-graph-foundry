@@ -1,0 +1,568 @@
+{
+ "round": "R27-H292",
+ "utc": "20260708T100715Z",
+ "hypothesis": "type-label reconciliation lifts type-conflict TM-preservation from 0.25 to >=0.75 while overall FM-detection stays >=95%",
+ "bars": {
+  "type_conflict_strata_preservation": 0.75,
+  "overall_fm_detection": 0.95
+ },
+ "substrate": {
+  "frozen_labels": "r27-precision-labels-frozen-20260708T095229Z.json",
+  "warm_cache": "llm_cache.json",
+  "n_pairs": 127,
+  "n_true": 26,
+  "n_false": 101,
+  "type_conflict_strata_true": 8
+ },
+ "endpoint": {
+  "model": "gpt-oss-120b",
+  "base": "http://localhost:8010/v1",
+  "temp": 0.0,
+  "reasoning_effort": "medium"
+ },
+ "baseline_h282": {
+  "false_merge_detection": 0.9801980198019802,
+  "true_merge_preservation": 0.6923076923076923,
+  "type_conflict_strata_preservation": 0.25
+ },
+ "candidates": {
+  "type-blind": {
+   "n": 127,
+   "n_false": 101,
+   "n_true": 26,
+   "false_merge_detection": 0.9504950495049505,
+   "true_merge_preservation": 0.8461538461538461,
+   "true_merge_losses": [
+    [
+     "APAP",
+     "Auto",
+     false
+    ],
+    [
+     "SleepStyle 200 Series",
+     "HC230-Series",
+     false
+    ],
+    [
+     "AirFit N20",
+     "AirFit N20 Classic",
+     true
+    ],
+    [
+     "AirFit N20",
+     "ResMed AirFit N20 Classic",
+     true
+    ]
+   ],
+   "n_true_merge_loss": 4,
+   "false_merges_admitted": [
+    [
+     "CT2 adult Alice 5",
+     "CT2 effort sensor",
+     "code_shared"
+    ],
+    [
+     "HC230 Product Range",
+     "HC230 Standard Range",
+     "type_conflict+code_shared"
+    ],
+    [
+     "bCPAP prongs",
+     "CPAP prongs",
+     "clean"
+    ],
+    [
+     "Full Face Mask",
+     "Full-Face Mask",
+     "type_conflict"
+    ],
+    [
+     "AirFit F30",
+     "AirFit F30 for AirMini",
+     "code_shared"
+    ]
+   ],
+   "n_false_merge_admitted": 5,
+   "unresolved": 0,
+   "per_class": {
+    "clean": {
+     "n": 32,
+     "n_false": 19,
+     "n_true": 13,
+     "false_merge_detection": 0.9473684210526315,
+     "true_merge_preservation": 0.9230769230769231,
+     "true_merge_losses": [
+      [
+       "APAP",
+       "Auto",
+       false
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "bCPAP prongs",
+       "CPAP prongs",
+       "clean"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    },
+    "code_shared": {
+     "n": 34,
+     "n_false": 29,
+     "n_true": 5,
+     "false_merge_detection": 0.9310344827586207,
+     "true_merge_preservation": 0.8,
+     "true_merge_losses": [
+      [
+       "AirFit N20",
+       "AirFit N20 Classic",
+       true
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "CT2 adult Alice 5",
+       "CT2 effort sensor",
+       "code_shared"
+      ],
+      [
+       "AirFit F30",
+       "AirFit F30 for AirMini",
+       "code_shared"
+      ]
+     ],
+     "n_false_merge_admitted": 2,
+     "unresolved": 0
+    },
+    "type_conflict": {
+     "n": 31,
+     "n_false": 24,
+     "n_true": 7,
+     "false_merge_detection": 0.9583333333333334,
+     "true_merge_preservation": 0.8571428571428571,
+     "true_merge_losses": [
+      [
+       "SleepStyle 200 Series",
+       "HC230-Series",
+       false
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "Full Face Mask",
+       "Full-Face Mask",
+       "type_conflict"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    },
+    "type_conflict+code_shared": {
+     "n": 30,
+     "n_false": 29,
+     "n_true": 1,
+     "false_merge_detection": 0.9655172413793104,
+     "true_merge_preservation": 0.0,
+     "true_merge_losses": [
+      [
+       "AirFit N20",
+       "ResMed AirFit N20 Classic",
+       true
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "HC230 Product Range",
+       "HC230 Standard Range",
+       "type_conflict+code_shared"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    }
+   },
+   "type_conflict_strata_preservation": 0.75,
+   "tokens_per_pair": 480.5,
+   "candidate": "type-blind",
+   "pass_tc_preservation": true,
+   "pass_fm_detection": true,
+   "verdict": "PASS"
+  },
+  "multi-label": {
+   "n": 127,
+   "n_false": 101,
+   "n_true": 26,
+   "false_merge_detection": 0.9603960396039604,
+   "true_merge_preservation": 0.8076923076923077,
+   "true_merge_losses": [
+    [
+     "APAP",
+     "Auto",
+     false
+    ],
+    [
+     "SleepStyle 200 Series",
+     "HC230-Series",
+     false
+    ],
+    [
+     "Flow Meter",
+     "Flowmeter",
+     false
+    ],
+    [
+     "AirFit N20",
+     "AirFit N20 Classic",
+     true
+    ],
+    [
+     "AirFit N20",
+     "ResMed AirFit N20 Classic",
+     true
+    ]
+   ],
+   "n_true_merge_loss": 5,
+   "false_merges_admitted": [
+    [
+     "CT2 adult Alice 5",
+     "CT2, pediatric",
+     "code_shared"
+    ],
+    [
+     "HC230 Product Range",
+     "HC230 Standard Range",
+     "type_conflict+code_shared"
+    ],
+    [
+     "Full Face Mask",
+     "Full-Face Mask",
+     "type_conflict"
+    ],
+    [
+     "Ultra-Fine Filter Disposable",
+     "Ultra-fine Filter Disposable 1-pack",
+     "type_conflict"
+    ]
+   ],
+   "n_false_merge_admitted": 4,
+   "unresolved": 0,
+   "per_class": {
+    "clean": {
+     "n": 32,
+     "n_false": 19,
+     "n_true": 13,
+     "false_merge_detection": 1.0,
+     "true_merge_preservation": 0.9230769230769231,
+     "true_merge_losses": [
+      [
+       "APAP",
+       "Auto",
+       false
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [],
+     "n_false_merge_admitted": 0,
+     "unresolved": 0
+    },
+    "code_shared": {
+     "n": 34,
+     "n_false": 29,
+     "n_true": 5,
+     "false_merge_detection": 0.9655172413793104,
+     "true_merge_preservation": 0.8,
+     "true_merge_losses": [
+      [
+       "AirFit N20",
+       "AirFit N20 Classic",
+       true
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "CT2 adult Alice 5",
+       "CT2, pediatric",
+       "code_shared"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    },
+    "type_conflict": {
+     "n": 31,
+     "n_false": 24,
+     "n_true": 7,
+     "false_merge_detection": 0.9166666666666666,
+     "true_merge_preservation": 0.7142857142857143,
+     "true_merge_losses": [
+      [
+       "SleepStyle 200 Series",
+       "HC230-Series",
+       false
+      ],
+      [
+       "Flow Meter",
+       "Flowmeter",
+       false
+      ]
+     ],
+     "n_true_merge_loss": 2,
+     "false_merges_admitted": [
+      [
+       "Full Face Mask",
+       "Full-Face Mask",
+       "type_conflict"
+      ],
+      [
+       "Ultra-Fine Filter Disposable",
+       "Ultra-fine Filter Disposable 1-pack",
+       "type_conflict"
+      ]
+     ],
+     "n_false_merge_admitted": 2,
+     "unresolved": 0
+    },
+    "type_conflict+code_shared": {
+     "n": 30,
+     "n_false": 29,
+     "n_true": 1,
+     "false_merge_detection": 0.9655172413793104,
+     "true_merge_preservation": 0.0,
+     "true_merge_losses": [
+      [
+       "AirFit N20",
+       "ResMed AirFit N20 Classic",
+       true
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "HC230 Product Range",
+       "HC230 Standard Range",
+       "type_conflict+code_shared"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    }
+   },
+   "type_conflict_strata_preservation": 0.625,
+   "tokens_per_pair": 545.5,
+   "candidate": "multi-label",
+   "pass_tc_preservation": false,
+   "pass_fm_detection": true,
+   "verdict": "FAIL"
+  },
+  "cured-ontology": {
+   "n": 127,
+   "n_false": 101,
+   "n_true": 26,
+   "false_merge_detection": 0.9504950495049505,
+   "true_merge_preservation": 0.7307692307692307,
+   "true_merge_losses": [
+    [
+     "MD300W314B4",
+     "Wrist Pulse Oximeter MD300W314B4",
+     false
+    ],
+    [
+     "SleepStyle 200 Series",
+     "HC230-Series",
+     false
+    ],
+    [
+     "Apnea Hypopnea Index",
+     "Apnea-Hypopnea Index",
+     false
+    ],
+    [
+     "Auto EPAP",
+     "Auto-EPAP",
+     false
+    ],
+    [
+     "Flow Meter",
+     "Flowmeter",
+     false
+    ],
+    [
+     "AirFit N20",
+     "AirFit N20 Classic",
+     true
+    ],
+    [
+     "AirFit N20",
+     "ResMed AirFit N20 Classic",
+     true
+    ]
+   ],
+   "n_true_merge_loss": 7,
+   "false_merges_admitted": [
+    [
+     "CT2 adult Alice 5",
+     "CT2, pediatric",
+     "code_shared"
+    ],
+    [
+     "HC230 Product Range",
+     "HC230 Standard Range",
+     "type_conflict+code_shared"
+    ],
+    [
+     "bCPAP prongs",
+     "CPAP prongs",
+     "clean"
+    ],
+    [
+     "Full Face Mask",
+     "Full-Face Mask",
+     "type_conflict"
+    ],
+    [
+     "AirFit F30",
+     "AirFit F30 for AirMini",
+     "code_shared"
+    ]
+   ],
+   "n_false_merge_admitted": 5,
+   "unresolved": 0,
+   "per_class": {
+    "clean": {
+     "n": 32,
+     "n_false": 19,
+     "n_true": 13,
+     "false_merge_detection": 0.9473684210526315,
+     "true_merge_preservation": 1.0,
+     "true_merge_losses": [],
+     "n_true_merge_loss": 0,
+     "false_merges_admitted": [
+      [
+       "bCPAP prongs",
+       "CPAP prongs",
+       "clean"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    },
+    "code_shared": {
+     "n": 34,
+     "n_false": 29,
+     "n_true": 5,
+     "false_merge_detection": 0.9310344827586207,
+     "true_merge_preservation": 0.8,
+     "true_merge_losses": [
+      [
+       "AirFit N20",
+       "AirFit N20 Classic",
+       true
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "CT2 adult Alice 5",
+       "CT2, pediatric",
+       "code_shared"
+      ],
+      [
+       "AirFit F30",
+       "AirFit F30 for AirMini",
+       "code_shared"
+      ]
+     ],
+     "n_false_merge_admitted": 2,
+     "unresolved": 0
+    },
+    "type_conflict": {
+     "n": 31,
+     "n_false": 24,
+     "n_true": 7,
+     "false_merge_detection": 0.9583333333333334,
+     "true_merge_preservation": 0.2857142857142857,
+     "true_merge_losses": [
+      [
+       "MD300W314B4",
+       "Wrist Pulse Oximeter MD300W314B4",
+       false
+      ],
+      [
+       "SleepStyle 200 Series",
+       "HC230-Series",
+       false
+      ],
+      [
+       "Apnea Hypopnea Index",
+       "Apnea-Hypopnea Index",
+       false
+      ],
+      [
+       "Auto EPAP",
+       "Auto-EPAP",
+       false
+      ],
+      [
+       "Flow Meter",
+       "Flowmeter",
+       false
+      ]
+     ],
+     "n_true_merge_loss": 5,
+     "false_merges_admitted": [
+      [
+       "Full Face Mask",
+       "Full-Face Mask",
+       "type_conflict"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    },
+    "type_conflict+code_shared": {
+     "n": 30,
+     "n_false": 29,
+     "n_true": 1,
+     "false_merge_detection": 0.9655172413793104,
+     "true_merge_preservation": 0.0,
+     "true_merge_losses": [
+      [
+       "AirFit N20",
+       "ResMed AirFit N20 Classic",
+       true
+      ]
+     ],
+     "n_true_merge_loss": 1,
+     "false_merges_admitted": [
+      [
+       "HC230 Product Range",
+       "HC230 Standard Range",
+       "type_conflict+code_shared"
+      ]
+     ],
+     "n_false_merge_admitted": 1,
+     "unresolved": 0
+    }
+   },
+   "type_conflict_strata_preservation": 0.25,
+   "tokens_per_pair": 979.5,
+   "candidate": "cured-ontology",
+   "pass_tc_preservation": false,
+   "pass_fm_detection": true,
+   "verdict": "FAIL",
+   "n_reconciled_equal": 70,
+   "n_tc_reconciled_equal": 11
+  }
+ },
+ "passing_candidates": [
+  "type-blind"
+ ],
+ "ships_into_h290": "type-blind"
+}
