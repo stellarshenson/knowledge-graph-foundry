@@ -1,0 +1,70 @@
+{
+  "audit": "R15-H198 clause (a) - promotion-vs-code wiring inventory",
+  "generated_utc": "20260708T102631Z",
+  "source_ledger": "docs/sota-promotions.md",
+  "engine_root": "src/knowledge_graph_foundry/",
+  "bar": "zero promotion entries unaccounted for",
+  "counts": {
+    "ledger_entries_total": 66,
+    "levers": 15,
+    "doctrine": 22,
+    "instrument": 18,
+    "negative": 9,
+    "superseded": 2,
+    "unclassified": 0
+  },
+  "lever_wiring_summary": {
+    "SHIPPED-DEFAULT": 0,
+    "CONFIG-ONLY": 2,
+    "NOTEBOOK-ONLY": 4,
+    "NOT-IMPLEMENTED": 9
+  },
+  "levers": [
+    {"entry": "H53 top_k 8->16", "class": "LEVER", "status": "CONFIG-ONLY", "integration_point": "settings.py GraphRAGSettings.top_k (default 8); consumed pipeline.py:850 _render, pipeline.py:593 (repair top_k=3 hardcoded)", "effect": "+28% relative pure-seed evidence recall (H53); three-arm 0.667->0.854", "source_hyp": "H53/three-arm", "acceptance_check": "H150 name recall + H194-router probe recall; three-arm pure-seed recall", "note": "default still 8; one-line flip to 16"},
+    {"entry": "H158/H106/H129/H128 v2 identity stack", "class": "LEVER", "status": "CONFIG-ONLY", "integration_point": "settings.py ResolutionSettings.identity_stack (default 'v1'); resolver.py:192 _v2_stack; resolution/identity_stack.py", "effect": "SAME_AS precision proxy 11.8%->52.2%, false merges 30->11", "source_hyp": "H158", "acceptance_check": "identity precision proxy (H101 bench); default flip gated by H241/H212", "note": "shipped in-engine, off by default; flip = DECISION SLOT H241"},
+    {"entry": "R19 trio (H180/181/182): fanout cap k=5, miss-detector ~0.668 + abstention render, render budget B=60%", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "target pipeline.py _render (838+) + graph/graphrag.py; NONE present (grep: zero fanout/budget/0.668 markers)", "effect": "k=5 zero recall loss; miss-detect 86.7% @0% false-abstain, 95% token cut on miss class; B=60% ~40% token cut zero recall loss", "source_hyp": "H180/H181/H182", "acceptance_check": "H194-router probe recall at each pruning level; miss-class token/abstention rates", "note": "H17 abstention_min_score=0.75 gate exists but is a DIFFERENT structural-coverage gate, not the R19 miss detector"},
+    {"entry": "H173 proposition splitter >300 tok", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "target graph/propositions.py ingest-time; only H22 quote-selector present (select_quote_sentences max_len=400 chars, not >300 tok verbatim split)", "effect": "PROP-attached materialization cost 3-4x cut (290->81, 278->108 tok), zero regressions/137 golds", "source_hyp": "H173", "acceptance_check": "H150 recall unchanged; PROP-attached render token cost", "note": "notebook-only prototype"},
+    {"entry": "H190 glyph normalization (parser post-process + resolver name-identity detector)", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "target ingest/readers.py post-process + models.normalize_name / resolver detector; normalize_name (models.py:17) only strip/lower/split - no glyph stripping", "effect": "69/69 previously-absent names recovered, 0 false conflations on 2797-name vocab", "source_hyp": "H190 (H147 dissolution)", "acceptance_check": "H150 name recall; false-conflation count on name vocab", "note": "cheapest fidelity lever, notebook-only"},
+    {"entry": "H153 header carryover (chunker fix)", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "target ingest/chunking.py; chunk_document has no header re-association", "effect": "64 severed table rows re-associated at 0.258% token overhead, zero false injections", "source_hyp": "H153", "acceptance_check": "H150 name recall on table-heavy docs; token overhead", "note": "notebook-only"},
+    {"entry": "H146-H151 / H51 parser union (pypdf partner to pymupdf4llm)", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "ingest/readers.py:52 only pymupdf4llm.to_markdown; no pypdf/docling union pass", "effect": "pypdf recovers 93.7% of 95 lost names @~0.03s/page CPU; +9.1 pts name recall over project parser", "source_hyp": "H146-151 (root cause H51)", "acceptance_check": "H150 name-recall harness (standing acceptance test for any parser change)", "note": "notebook-only; Docling table-structure stage is backend candidate for H152/H153"},
+    {"entry": "H268 soft SIMILAR_TO defer-zone links (link-never-merge, render hops)", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "target resolver defer-band + render hop; densify.py SIMILAR_TO exists but is H13 kNN densification (cosine-gated PPR reach), NOT posterior-weighted defer-zone demote-links with H212 attribution rule", "effect": "64.7% of sibling-fragment attachment misses close on frozen graph (bar 30%), zero false-merge risk", "source_hyp": "H268", "acceptance_check": "H226 attachment-gap closure %; false-merge count", "note": "new R26 design; wires via H198"},
+    {"entry": "H271 demand-weighted repair allocation", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "no repair-allocator module in engine", "effect": "1.7x-16.4x uniform-allocation gain at every budget K=1..10", "source_hyp": "H271", "acceptance_check": "repair gain vs uniform at fixed K", "note": "new R26 shipper; mechanism = demand concentration"},
+    {"entry": "H274 external fingerprint-keyed answer cache", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "no external answer-cache layer; keyed to graph fingerprint (H197), zero graph coupling by design", "effect": "100% correct invalidation of evidence-changed answers, zero false invalidation", "source_hyp": "H274", "acceptance_check": "invalidation correctness on evidence-changed answer set", "note": "new R26 shipper; lives OUTSIDE graph"},
+    {"entry": "R27 demote-don't-delete court (H288/H282/H290): single-shot judge + SIMILAR_TO demote", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "no judge-court module; target resolver post-pass over SAME_AS docket", "effect": "98.0% SAME_AS false-merge detection @513 tok/pair (~65k/graph); demote to soft link at +0.0 pt render recall (H288 equivalence)", "source_hyp": "H288/H282/H290", "acceptance_check": "false-merge detection rate; render-recall equivalence (+0.0)", "note": "new R27 design; over-split failure mode = DECISION SLOT H292"},
+    {"entry": "H81/H83->H192 self-auditing edit selector + gap-ledger labeler", "class": "LEVER", "status": "NOTEBOOK-ONLY", "integration_point": "evidence-search menu derivation in potentials notebooks; no engine edit-selector", "effect": "recall 0.667->0.970 at +0.28% tokens, monotone gains, swap-stable (H192 honest instrument)", "source_hyp": "H192 (supersedes amended H81)", "acceptance_check": "knee-budget recall (H171); submodularity/swap-stability", "note": "H81 magnitude superseded by H192; edit selector still notebook-only"},
+    {"entry": "H171 data-driven knee budget (certificate parameter)", "class": "LEVER", "status": "NOTEBOOK-ONLY", "integration_point": "potentials_ext_r18 notebook; certificate not emitted by engine", "effect": "Kneedle knee +5.6% tokens, 10.7x post-knee marginal cost replaces fixed +10% bar", "source_hyp": "H171", "acceptance_check": "knee location CI on wide probe set (H186)", "note": "instrument/certificate; feeds edit selector"},
+    {"entry": "H211 prop-val linkage rule (property value == entity name, 224-target map)", "class": "LEVER", "status": "NOTEBOOK-ONLY", "integration_point": "residue-pricing notebook; only cheap non-edge recovery found; no engine render-append policy", "effect": "recovers unranked residue below the 51.6x full-recovery price; monotone-scorer regression lemma protects render-append", "source_hyp": "H211", "acceptance_check": "unranked-residue recall vs H171 knee cost", "note": "most residue priced out to gap ledger (H161 abstention); firing-geometry + monotone lemma are INSTRUMENTS"},
+    {"entry": "H157 per-corpus self-calibration path (H142 lineage)", "class": "LEVER", "status": "NOT-IMPLEMENTED", "integration_point": "resolution/calibration.py fits isotonic; constants are corpus-class-bound (identity_stack_artifact baked), no per-corpus self-calibration runtime path", "effect": "transfer ECE 0.2606 = 5.18x held-out ref - isotonic constants must NOT ship across corpus classes", "source_hyp": "H157", "acceptance_check": "per-corpus ECE; blind merge precision/block correctness on new corpus", "note": "named an explicit H198 requirement; per-domain deterministic detector surfaces (model-code vs author-name) also need per-corpus audit"}
+  ],
+  "gliner_note": {
+    "entry": "H260 GLiNER lexicon stage (candidate priming, supersedes H248 lexical pre-scanner)",
+    "status": "NOT-IMPLEMENTED",
+    "ledger_state": "NOT a dedicated line in docs/sota-promotions.md - lives in R23 tier line (H248 scanner promote) and in JOURNAL/commits (H260 GLiNER gate PASS 95.2% span recall). Flagged: ledger lag - a GLiNER/H260 promotion line should be added so the audit set is complete",
+    "integration_point": "no gliner/lexicon/pre-scanner in engine (grep zero hits)",
+    "acceptance_check": "union-of-5 gold-carrier coverage; span recall"
+  },
+  "r25_engineering_note": "truncation-resilient JSONL parsing + discrete confidence rubric (R25) are engine hardening items referenced in the mission but NOT present as dedicated promotion lines; DEF-2 (JSONL text-heavy routing) is the related open defect. Treated as engineering backlog, not ledger promotions.",
+  "decision_slots": [
+    {"slot": "H241", "desc": "v2 identity default flip (resolution.identity_stack v1->v2)", "state": "in flight", "gate": "H212 clean-conditions recall re-run closes the 2-probe extraction-noise confound"},
+    {"slot": "H250", "desc": "extraction recipe (union-of-K aggregation cure)", "state": "in flight", "gate": "H240 union-of-K + resolver duplicate absorption validated at ingest"},
+    {"slot": "H292", "desc": "type reconciliation (R27 judge over-split of cross-type aliases)", "state": "in flight", "gate": "conflicting extractor type-label reconciliation before demote-court ships"},
+    {"slot": "H240(b)", "desc": "union ingest validation", "state": "queued", "gate": "post-cure churn measured in constrained (non-discovery) mode; union ingest reproduces recall"}
+  ],
+  "def_6": {
+    "id": "DEF-6",
+    "state": "OPEN (MEDIUM), assigned to H198",
+    "location": "src/knowledge_graph_foundry/engines/local_gpu.py:28",
+    "current_code": "self._client = instructor.from_litellm(litellm.completion, mode=instructor.Mode.JSON)",
+    "root_cause": "instructor 1.15.4 v2 mode registry populated by import side effects; (OPENAI, Mode.JSON) registered only when instructor.v2.providers.openai.handlers is imported - construction raises RegistryError depending on kernel import order",
+    "minimal_fix_surface": "add explicit `import instructor.v2.providers.openai.handlers` before from_litellm in LocalGpuEngine.__init__ (or construct with an always-registered mode); removes the import-order dependency. Notebooks currently carry the workaround import.",
+    "verified": "grep confirms no explicit handler import present in local_gpu.py"
+  },
+  "closed_avenues_verified_no_contradiction": [
+    "H37 PPR removed from quality path - ppr_enabled=True still default (harmless; removal was optional, not mandated)",
+    "H86 materialized views - no view subsystem in engine (confirmed)",
+    "H119 in-prompt canonicalization DEAD - no canonicalization pass in readers/extractor (confirmed)",
+    "H209/H217 render-side attribution + pixel coverage - closed, no engine change",
+    "H267/H269 exact-normalized-ID identity + domain/range validation - explicitly excluded from H198",
+    "H271-refuted: recurrence gating, materialized render views, alias harvesting (graph/aliases.py exists but production-telemetry territory)"
+  ]
+}

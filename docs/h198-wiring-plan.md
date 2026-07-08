@@ -13,18 +13,25 @@ Composed every promoted lever into the shipped engine and rebuilt the graph on i
 - **SLOT-3 (H292)**: RESOLVED - type-blind confirmed at the bars but NOT shipped: under demote-don't-delete, over-splits are costless while missed false merges persist as SAME_AS poison; the court ships as H282 baseline judge + demotion (98.0% detection), type labels stay in the judge context
 - **SLOT-4 (H240b)**: union-ingest E2E validation on scratch - confirms SLOT-2's recipe survives the full pipeline before the production rebuild
 
-## Phase 1 - inventory (running)
+## Phase 1 - inventory (COMPLETE 2026-07-08)
 
-H198 clause (a): complete promotion-vs-code audit - every promotions entry classified (lever / doctrine / instrument / negative / superseded), every lever mapped to wiring status (shipped-default / config-only / notebook-only / not-implemented) with integration point and acceptance check. Executor running; inventory lands in `reports/h198-wiring-inventory-*.json` and is folded into this plan as the Phase 2 checklist.
+H198 clause (a) met: 66 promotion entries classified, zero unaccounted - 15 LEVER / 22 DOCTRINE / 18 INSTRUMENT / 9 NEGATIVE / 2 SUPERSEDED. Full machine-readable inventory: `reports/h198-wiring-inventory-20260708T102631Z.json`. Headline: no promoted lever is live in the engine default path - 2 config-only at the wrong default (top_k=8 in `settings.py`, identity_stack=v1), 3 notebook-only, 9-10 not-implemented.
+
+**Wiring constraint (binding until the experiment chains finish)**: the H241 chain and the R23/R24 batch execute from this working tree - NO engine code or default-config edits until both report, or the running arms are contaminated mid-experiment. Wiring order below starts the moment the tree is free.
+
+**DEF-6 minimal fix (first wiring commit)**: `engines/local_gpu.py:28` - add the explicit `instructor.v2.providers.openai.handlers` import before `from_litellm` (instructor 1.15.4 populates its mode registry by import side effect; notebooks carry the workaround today).
 
 ## Phase 2 - wiring (the sweep)
 
 Wire by subsystem, cheapest-risk first; every lever behind a config key so the capstone can ablate it. Known members (inventory completes this list):
 
-**Config-only flips**
-- top_k 8 -> 16 (H53); generous-top_k truncation convention (H195a)
-- R19 trio defaults: fanout cap k=5 query-ranked, miss detector ~0.668 + abstention render, adaptive render budget B=60%
-- H205 foreign-device exclusion as optional layer
+**Config-only flips** (implemented, wrong default - one-line changes)
+- top_k 8 -> 16 in `settings.py` GraphRAGSettings (H53; consumed pipeline.py:850); generous-top_k truncation convention (H195a)
+- identity_stack v1 -> v2 in `settings.py` resolution (SLOT-1, pending H241)
+
+**New retrieval/render defaults** (not-implemented - target `pipeline._render` + graphrag)
+- R19 trio: fanout cap k=5 query-ranked, miss detector ~0.668 + abstention render, adaptive render budget B=60% (note: compose with ppr_enabled default per the H37 optional-removal flag)
+- H205 foreign-device exclusion as optional layer; H211 prop-val linkage rule (notebook-only today)
 
 **Ingest operators**
 - Parser union: pypdf partner alongside pymupdf4llm (H51/H146-151); Docling table-structure stage where promoted (H152/H153 scope)

@@ -1959,8 +1959,8 @@ Trigger: the maturity assessment (2026-07-07) - the campaign targets the identit
 - **Prediction** - most retrieval-side levers are one-line config changes; the ingest-side operators (glyph, carryover, splitter, parser union) need real wiring; composition surprises, if any, appear between the render-budget and fanout-cap levers (both shrink context)
 - **Acceptance bar** - clause (a) complete inventory + clause (b) composed E2E reproduction within CIs; refuted if composing the levers loses any promoted effect (that interaction then gets its own hypothesis before anything ships)
 - **Experiment** - audit script over docs/sota-promotions.md vs settings.py/engine defaults, then the wiring PR, then a scratch-instance E2E; queued behind H158's scratch-instance cycle
-- **Result** - pending
-- **Verdict** - pending
+- **Result** - clause (a) COMPLETE (auditor 2026-07-08, [`h198-wiring-inventory-20260708T102631Z.json`](../../reports/h198-wiring-inventory-20260708T102631Z.json)): all 66 promotion entries classified with ZERO unaccounted - 15 LEVER, 22 DOCTRINE, 18 INSTRUMENT, 9 NEGATIVE, 2 SUPERSEDED. Headline: **no promoted lever is live in the engine default path** - top_k still defaults 8 (settings.py) and identity_stack still defaults v1 (both implemented, wrong default); 3 levers notebook-only (edit selector, knee budget, prop-val linkage); 9-10 not-implemented (R19 trio, H173 splitter, H190 glyph, H153 carryover, parser union, H268 soft links, demote court, H271 allocator, H274 cache, self-calibration). DEF-6 root-caused to `engines/local_gpu.py:28` (instructor v2 mode registry populated by import side effects; minimal fix = one explicit handler import). Audit flags actioned: H260 GLiNER promotion line added to the ledger (was riding the R23 tier line only); H37's optional-removal note carried to the R19 composition. Clause (b) - composed E2E reproduction within CIs - runs after the wiring, on the rebuild
+- **Verdict** - pending (clause b)
 
 
 ## R16 - long-horizon operations: the mutation and scale flank (pre-registered 2026-07-07)
