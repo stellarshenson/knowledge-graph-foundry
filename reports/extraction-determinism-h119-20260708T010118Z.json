@@ -1,0 +1,134 @@
+{
+  "hypothesis": "R11-H119",
+  "title": "Extraction determinism - variance is a prompt property",
+  "utc": "20260708T010118Z",
+  "endpoint": "http://localhost:8010/v1",
+  "model": "gpt-oss-120b",
+  "purpose": "compare CPAP machines",
+  "temperature": 0.0,
+  "runs_per_arm": 5,
+  "concurrency": 8,
+  "documents": [
+    "0-20190113114505.pdf",
+    "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf",
+    "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+    "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf",
+    "Airsense-Brochure.pdf",
+    "BC-Dreamstation-Standard-CPAP.pdf",
+    "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+    "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+    "CPAP-Machines-Brochure.pdf",
+    "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf"
+  ],
+  "chunk_counts": {
+    "0-20190113114505.pdf": 1,
+    "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 2,
+    "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 8,
+    "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 12,
+    "Airsense-Brochure.pdf": 1,
+    "BC-Dreamstation-Standard-CPAP.pdf": 1,
+    "BMC_RESmart_AutoCPAP_User_Manual.pdf": 7,
+    "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": 1,
+    "CPAP-Machines-Brochure.pdf": 3,
+    "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": 1
+  },
+  "frozen_metrics": {
+    "normalization": "models.normalize_name (strip+lower+ws-collapse) + hyphen->space fold",
+    "variance": "mean pairwise Jaccard distance across 5 runs, averaged over 10 docs",
+    "bar": "(distance_A - distance_B)/distance_A >= 0.50",
+    "stable_reference": "entities in >=3 of arm A's 5 runs",
+    "recall_clause": "arm B recovers >=95% of arm-A stable reference (union of B runs)",
+    "surface_vs_content": "token_set_ratio >= 80 => surface-form counterpart"
+  },
+  "extraction_settings": {
+    "split_entity_relation": true,
+    "gleaning_rounds": 1,
+    "chunk_size": 2000,
+    "chunk_overlap": 200,
+    "ontology": "empty, fixed across all runs/arms"
+  },
+  "deviation": "Production temperature is 0.0 (config-apnea.yml / LLMSettings default). Arm C config is identical to Arm A; the temperature lever is zero by construction, so any A->B reduction is attributable to the prompt. Arm C run as an independent noise-floor cross-check.",
+  "per_doc_distance": {
+    "A_production": {
+      "0-20190113114505.pdf": 0.4,
+      "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.7786909965034965,
+      "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.7734797750855512,
+      "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 0.9053300319461972,
+      "Airsense-Brochure.pdf": 0.6423076923076924,
+      "BC-Dreamstation-Standard-CPAP.pdf": 0.8040989699479665,
+      "BMC_RESmart_AutoCPAP_User_Manual.pdf": 0.7874639902544647,
+      "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": 0.8231351469942958,
+      "CPAP-Machines-Brochure.pdf": 0.7439190089585966,
+      "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": 0.8365968433752409
+    },
+    "B_canonical": {
+      "0-20190113114505.pdf": 0.9608245987520304,
+      "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.8499032650754315,
+      "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.6752813928753477,
+      "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 0.8129335053115645,
+      "Airsense-Brochure.pdf": 0.7507738095238096,
+      "BC-Dreamstation-Standard-CPAP.pdf": 0.928717646536865,
+      "BMC_RESmart_AutoCPAP_User_Manual.pdf": 0.7391116541603816,
+      "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": 0.8375095392970218,
+      "CPAP-Machines-Brochure.pdf": 0.7673367925922346,
+      "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": 0.8977409988385598
+    },
+    "C_attribution": {
+      "0-20190113114505.pdf": 0.0,
+      "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.7509016697588127,
+      "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.7781425682055122,
+      "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 0.8187750891790181,
+      "Airsense-Brochure.pdf": 0.7496527777777777,
+      "BC-Dreamstation-Standard-CPAP.pdf": 0.4,
+      "BMC_RESmart_AutoCPAP_User_Manual.pdf": 0.6568930440890499,
+      "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": 0.5582080567913332,
+      "CPAP-Machines-Brochure.pdf": 0.8617662603804261,
+      "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": 0.8665661005661005
+    }
+  },
+  "arm_distance": {
+    "A_production": 0.7495022455373501,
+    "B_canonical": 0.8220133202963247,
+    "C_attribution": 0.6440905566748031
+  },
+  "raw_mean_entity_counts": {
+    "A_production": 62,
+    "B_canonical": 54.88,
+    "C_attribution": 56.38
+  },
+  "reduction_B_vs_A": -0.09674564044433019,
+  "reduction_C_vs_A": 0.14064225889940182,
+  "recall_retention": {
+    "micro": 0.6917808219178082,
+    "macro": 0.5880518836322408,
+    "per_doc": {
+      "0-20190113114505.pdf": null,
+      "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": 0.0625,
+      "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": 0.6493506493506493,
+      "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": 0.8367346938775511,
+      "Airsense-Brochure.pdf": null,
+      "BC-Dreamstation-Standard-CPAP.pdf": 0.07142857142857142,
+      "BMC_RESmart_AutoCPAP_User_Manual.pdf": 0.8409090909090909,
+      "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": 0.7777777777777778,
+      "CPAP-Machines-Brochure.pdf": 0.68,
+      "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": 0.7857142857142857
+    }
+  },
+  "surface_content": {
+    "arm_A": {
+      "surface": 1810,
+      "content": 5814,
+      "surface_fraction": 0.23740818467995803
+    },
+    "arm_B": {
+      "surface": 2898,
+      "content": 3696,
+      "surface_fraction": 0.4394904458598726
+    }
+  },
+  "bar_clauses": {
+    "reduction_ge_0.50": false,
+    "recall_ge_0.95": false
+  },
+  "verdict_recommendation": "REFUTED"
+}
