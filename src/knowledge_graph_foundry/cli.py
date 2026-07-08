@@ -143,7 +143,9 @@ def repurpose(
     except Exception as exc:
         _fail(str(exc))
     console.print(f"repurposed - now: [bold]{result['purpose']}[/bold]")
-    console.print(f"[dim]previous: {result['previous_purpose']} (change #{result['purpose_changes']})[/dim]")
+    console.print(
+        f"[dim]previous: {result['previous_purpose']} (change #{result['purpose_changes']})[/dim]"
+    )
     if result["seeded_types_added"]:
         console.print(f"seeded types added: {', '.join(result['seeded_types_added'])}")
     foundry.close()

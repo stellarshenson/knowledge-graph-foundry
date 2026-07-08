@@ -40,6 +40,10 @@ class EmbeddingSettings(BaseModel):
     fallback_model: str = "all-MiniLM-L6-v2"
 
 
+class IngestSettings(BaseModel):
+    text_column_median_chars: int = 200  # DEF-2: column median cell length above which a structured file is text-heavy and each row chunk-extracts as its own document
+
+
 class ExtractionSettings(BaseModel):
     chunk_size: int = 2000
     chunk_overlap: int = 200
@@ -49,7 +53,9 @@ class ExtractionSettings(BaseModel):
     parser_union: bool = True  # R15-H146-151: pypdf text-layer union partner to pymupdf4llm
     glyph_normalization: bool = True  # R15-H190: strip trademark/unicode glyphs (parser+resolver)
     header_carryover: bool = True  # R15-H153: re-print table header on severed continuation chunks
-    recipe: Literal["single", "enumerate", "mention"] = "single"  # R24-SLOT2: extraction recipe - single (default), enumerate (H246), mention (H258)
+    recipe: Literal["single", "enumerate", "mention"] = (
+        "single"  # R24-SLOT2: extraction recipe - single (default), enumerate (H246), mention (H258)
+    )
 
 
 class ResolutionSettings(BaseModel):
@@ -66,8 +72,12 @@ class ResolutionSettings(BaseModel):
     calibration_min_labels: int = 100  # R7: below this, use a fixed threshold not a curve
     split_guard: bool = True  # R8: correlation-clustering split after union-find
     split_guard_min_avg_similarity: float = 0.5  # R8: cut components below this cohesion
-    identity_stack: Literal["v1", "v2"] = "v1"  # R15-H158: v2 = calibrated cosine + NLI veto + logistic
-    identity_stack_artifact: str = "data/processed/identity-calibration-v2.json"  # v2 baked coefficients
+    identity_stack: Literal["v1", "v2"] = (
+        "v1"  # R15-H158: v2 = calibrated cosine + NLI veto + logistic
+    )
+    identity_stack_artifact: str = (
+        "data/processed/identity-calibration-v2.json"  # v2 baked coefficients
+    )
     nli_veto_threshold: float = 0.5  # R15-H158: contradiction prob that vetoes a merge (H122/H128)
 
 
@@ -134,6 +144,7 @@ class Settings(BaseModel):
     # extraction while a stronger model orchestrates (R9).
     extraction_llm: Optional[LLMSettings] = None
     embeddings: EmbeddingSettings = EmbeddingSettings()
+    ingest: IngestSettings = IngestSettings()
     extraction: ExtractionSettings = ExtractionSettings()
     resolution: ResolutionSettings = ResolutionSettings()
     curing: CuringSettings = CuringSettings()

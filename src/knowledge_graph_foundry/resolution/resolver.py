@@ -228,10 +228,17 @@ def resolve_entities(
         decision = evidence(collapsed[i], collapsed[j], cfg)
         if stack is not None:
             contra = nli_scores.get((i, j), 0.0)
-            verdict, score, vetoed = stack.decide(collapsed[i], collapsed[j], decision.posterior, contra)
+            verdict, score, vetoed = stack.decide(
+                collapsed[i], collapsed[j], decision.posterior, contra
+            )
             decision = decision.model_copy(update={"posterior": score, "decision": verdict})
             if vetoed:
-                emit("resolution.veto", left_id=collapsed[i].id, right_id=collapsed[j].id, nli_contra=contra)
+                emit(
+                    "resolution.veto",
+                    left_id=collapsed[i].id,
+                    right_id=collapsed[j].id,
+                    nli_contra=contra,
+                )
         elif calibrator is not None:
             calibrated = calibrator.calibrate(decision.posterior)
             if calibrated >= cfg.merge_threshold:

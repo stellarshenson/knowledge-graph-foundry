@@ -119,12 +119,7 @@ def generate_propositions(
                 text = render_property_sentence(row["name"], spec)
                 sentences.setdefault(text, set()).add(row["id"])
 
-        existing = {
-            r["id"]
-            for r in session.run(
-                "MATCH (p:Proposition) RETURN p.id AS id"
-            )
-        }
+        existing = {r["id"] for r in session.run("MATCH (p:Proposition) RETURN p.id AS id")}
 
     sentences = _split_fat_propositions(sentences, split_max_tokens)
     new = {t: ids for t, ids in sentences.items() if proposition_id(t) not in existing}
@@ -286,10 +281,7 @@ def diversify_hits(hits: list[dict], top_k: int, threshold: float = 0.4) -> list
     picked: list[tuple[dict, set[str]]] = []
     for h in hits:
         grams = _trigrams(h["text"])
-        if any(
-            len(grams & taken) / max(1, len(grams | taken)) > threshold
-            for _, taken in picked
-        ):
+        if any(len(grams & taken) / max(1, len(grams | taken)) > threshold for _, taken in picked):
             continue
         picked.append((h, grams))
         if len(picked) == top_k:

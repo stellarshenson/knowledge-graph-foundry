@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import statistics
 import tempfile
 import zipfile
 
@@ -146,6 +147,38 @@ def read_structured(path: Path) -> list[dict]:
     records = df.to_dict(orient="records")
     logger.debug("read {} ({} records)", path.name, len(records))
     return records
+
+
+def text_heavy_columns(rows: list[dict], median_chars: int) -> list[str]:
+    """Columns whose median cell length exceeds median_chars (DEF-2).
+
+    A structured file with any text-heavy column carries prose the tabular
+    mapping path would never show the LLM; callers route such rows through
+    the chunk-and-extract path instead. None cells do not contribute."""
+    lengths: dict[str, list[int]] = {}
+    for row in rows:
+        for key, value in row.items():
+            if value is None:
+                continue
+            lengths.setdefault(key, []).append(len(str(value)))
+    return [key for key, ls in lengths.items() if statistics.median(ls) > median_chars]
+
+
+def row_document(path: Path, row: dict, index: int, text_columns: list[str]) -> Document:
+    """Build a Document from one text-heavy structured row (DEF-2).
+
+    The row's text-heavy column values concatenate into the document text;
+    the remaining short columns ride along in metadata."""
+    text = "\n\n".join(str(row[c]) for c in text_columns if row.get(c) is not None)
+    metadata: dict = {"file_name": path.name, "row_index": index}
+    metadata.update({k: v for k, v in row.items() if k not in text_columns})
+    return Document(
+        id="d_" + hashlib.sha1(f"{path.name}#row{index}".encode()).hexdigest()[:16],
+        path=str(path),
+        format=path.suffix.lstrip(".").lower(),
+        text=text,
+        metadata=metadata,
+    )
 
 
 def iter_source_files(path: Path, workdir: Path | None = None) -> list[Path]:

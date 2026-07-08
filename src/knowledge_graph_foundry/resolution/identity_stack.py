@@ -114,7 +114,9 @@ class V2IdentityStack:
         self._nli = (tok, model, device, con_ix)
         logger.info("v2 identity stack: NLI model {} loaded on {}", self._nli_model_id, device)
 
-    def nli_contra_batch(self, pairs: list[tuple[Entity, Entity]], batch_size: int = 32) -> list[float]:
+    def nli_contra_batch(
+        self, pairs: list[tuple[Entity, Entity]], batch_size: int = 32
+    ) -> list[float]:
         """Symmetric contradiction score max(contra(a->b), contra(b->a)) per pair."""
         if not pairs:
             return []

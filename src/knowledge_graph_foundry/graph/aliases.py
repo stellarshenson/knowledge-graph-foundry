@@ -23,8 +23,8 @@ provenance-carrying, consumed at read time by the alias-cluster render.
 
 from __future__ import annotations
 
-import re
 from collections import Counter, defaultdict
+import re
 
 from loguru import logger
 
@@ -53,11 +53,7 @@ def code_tokens(name: str) -> set[str]:
     measurement tokens (digits + short unit suffix: 15mm, 2.5kg) excluded -
     measured false-alias source: unit tokens clustered cables, thermistors
     and tubing into nonsense families."""
-    return {
-        t.casefold()
-        for t in _CODE_TOKEN.findall(name)
-        if not _MEASUREMENT.match(t)
-    }
+    return {t.casefold() for t in _CODE_TOKEN.findall(name) if not _MEASUREMENT.match(t)}
 
 
 def is_specific_name(name: str) -> bool:
@@ -119,21 +115,15 @@ def find_alias_pairs(
         # overlap outranks raw occurrence count - measured failures: pure
         # counting anchored deictic aliases on 'Device', then 'Patient Menu'
         doc_text = " ".join(chunks).casefold()
-        fname_tokens = set(
-            re.findall(r"[a-z0-9]+", (doc_names or {}).get(doc_id, "").casefold())
-        )
+        fname_tokens = set(re.findall(r"[a-z0-9]+", (doc_names or {}).get(doc_id, "").casefold()))
         scores: dict[str, tuple[int, int]] = {}
         for eid, n in names.items():
             if len(n) < 4 or not is_specific_name(n):
                 continue
             count = doc_text.count(n.casefold())
-            member = (
-                doc_id in entity_docs.get(eid, set()) if entity_docs else count > 0
-            )
+            member = doc_id in entity_docs.get(eid, set()) if entity_docs else count > 0
             if member:
-                overlap = len(
-                    set(re.findall(r"[a-z0-9]+", n.casefold())) & fname_tokens
-                )
+                overlap = len(set(re.findall(r"[a-z0-9]+", n.casefold())) & fname_tokens)
                 scores[eid] = (overlap, count)
         primary = max(scores, key=lambda k: scores[k]) if scores else None
 
@@ -205,8 +195,7 @@ def generate_alias_edges(driver) -> int:
             "ON CREATE SET r.method = row.method, r.evidence = left(row.evidence, 300), "
             "r.created_at = timestamp()",
             rows=[
-                {"left": l, "right": rgt, "method": m, "evidence": ev}
-                for l, rgt, m, ev in pairs
+                {"left": l, "right": rgt, "method": m, "evidence": ev} for l, rgt, m, ev in pairs
             ],
         ).consume()
 

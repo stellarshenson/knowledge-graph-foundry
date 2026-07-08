@@ -5,11 +5,11 @@
 ## Contents
 
 - [DEF-1: Per-mention re-embedding on every document](#def-1-per-mention-re-embedding-on-every-document) - fixed
-- [DEF-2: JSONL with text-heavy rows routed to tabular mapping, LLM never reads the text](#def-2-jsonl-with-text-heavy-rows-routed-to-tabular-mapping-llm-never-reads-the-text) - open
+- [DEF-2: JSONL with text-heavy rows routed to tabular mapping, LLM never reads the text](#def-2-jsonl-with-text-heavy-rows-routed-to-tabular-mapping-llm-never-reads-the-text) - fixed
 - [DEF-3: Curing floors not scale-aware - 481-doc wave cured at document 4](#def-3-curing-floors-not-scale-aware---481-doc-wave-cured-at-document-4) - fixed
 - [DEF-4: .env NEO4J_URI silently overrides --config target, wave 2 ingested into the wrong instance](#def-4-env-neo4j_uri-silently-overrides---config-target-wave-2-ingested-into-the-wrong-instance) - fixed
 - [DEF-5: benchmark harness seeded from the .env default instance while rendering from neo4j2](#def-5-benchmark-harness-seeded-from-the-env-default-instance-while-rendering-from-neo4j2) - fixed
-- [DEF-6: engine LLM client construction depends on instructor's import-order-sensitive mode registry](#def-6-engine-llm-client-construction-depends-on-instructors-import-order-sensitive-mode-registry) - open
+- [DEF-6: engine LLM client construction depends on instructor's import-order-sensitive mode registry](#def-6-engine-llm-client-construction-depends-on-instructors-import-order-sensitive-mode-registry) - fixed
 
 ### DEF-1: Per-mention re-embedding on every document
 
@@ -19,8 +19,9 @@
 
 ### DEF-2: JSONL with text-heavy rows routed to tabular mapping, LLM never reads the text
 
-- [ ] HIGH a .jsonl of 481 articles ingested as one "document" yielding a mechanical 2 entities + 1 relationship per row; cause: `_extract_file` dispatches every structured extension to `structured_mapping`/`apply_mapping` (deterministic column mapping) regardless of content shape, so long free-text columns are never chunk-extracted, and the whole file is one resume fingerprint / one curing document; fix pending: detect text-heavy columns (e.g. median cell length threshold) and route each row's text through the unstructured chunk-and-extract path as its own document; workaround: campaign waves rewritten as one .txt per article; `src/knowledge_graph_foundry/pipeline.py`
+- [x] HIGH a .jsonl of 481 articles ingested as one "document" yielding a mechanical 2 entities + 1 relationship per row; cause: `_extract_file` dispatches every structured extension to `structured_mapping`/`apply_mapping` (deterministic column mapping) regardless of content shape, so long free-text columns are never chunk-extracted, and the whole file is one resume fingerprint / one curing document; fix: detect text-heavy columns (median cell length above `ingest.text_column_median_chars`) and route each row's text through the unstructured chunk-and-extract path as its own document; workaround: campaign waves rewritten as one .txt per article; `src/knowledge_graph_foundry/pipeline.py`, `src/knowledge_graph_foundry/ingest/readers.py`, `src/knowledge_graph_foundry/settings.py`
   - 2026-07-06 reported: R05 wave 1 first launch - "ingested 1 documents: 962 entities, 481 relationships" with zero LLM reading of article bodies; data/external README already promised the text-column routing but code never implemented it
+  - 2026-07-08 fixed: median-cell-length routing - a structured file with any column whose median cell length exceeds `ingest.text_column_median_chars` (default 200) expands to one document PER ROW, the row's text-heavy column values chunk-and-extract through the unstructured path (own resume fingerprint `name#rowN:sha1(row)`, own curing document, short columns kept as Document metadata); non-text-heavy structured files keep the mapping path unchanged; 9 tests (detection median/boundary/None cells, row-to-document routing, per-row resume/revision, mapping-path regression, empty rows), suite 345 green
 
 ### DEF-3: Curing floors not scale-aware - 481-doc wave cured at document 4
 
@@ -44,5 +45,6 @@
 
 ### DEF-6: engine LLM client construction depends on instructor's import-order-sensitive mode registry
 
-- [ ] MEDIUM `LocalGpuEngine.__init__` calls `instructor.from_litellm(litellm.completion, mode=instructor.Mode.JSON)`, which in instructor 1.15.4 dispatches to the v2 path whose mode registry is populated by IMPORT SIDE EFFECTS - `(OPENAI, Mode.JSON)` is registered only when `instructor.v2.providers.openai.handlers` happens to be imported, so the same construction succeeds or raises `RegistryError` depending on what was imported first in the process; cause: registry population via decorator side effects with no explicit dependency from `from_litellm` to the handler module; fix pending: engine imports `instructor.v2.providers.openai.handlers` explicitly (or constructs with an always-registered mode) - route via the H198 wiring sweep; workaround: notebooks add the explicit import before engine construction; `src/knowledge_graph_foundry/engines/local_gpu.py`
+- [x] MEDIUM `LocalGpuEngine.__init__` calls `instructor.from_litellm(litellm.completion, mode=instructor.Mode.JSON)`, which in instructor 1.15.4 dispatches to the v2 path whose mode registry is populated by IMPORT SIDE EFFECTS - `(OPENAI, Mode.JSON)` is registered only when `instructor.v2.providers.openai.handlers` happens to be imported, so the same construction succeeds or raises `RegistryError` depending on what was imported first in the process; cause: registry population via decorator side effects with no explicit dependency from `from_litellm` to the handler module; fix: engine imports `instructor.v2.providers.openai.handlers` explicitly before client construction (H198 tranche 1); workaround: notebooks add the explicit import before engine construction; `src/knowledge_graph_foundry/engines/local_gpu.py`
   - 2026-07-07 reported: H119 harness - the sequential notebook run extracted fine, the parallelized relaunch of the SAME notebook crashed twice with `RegistryError: Mode Mode.JSON is not registered for provider Provider.OPENAI`; standalone scripts with identical imports succeed in main thread and 10 threads - the differing kernel import order is the trigger, not threading; verified fix: explicit handler import flips `mode_registry.is_registered(OPENAI, JSON)` to True
+  - 2026-07-08 fixed: H198 tranche 1 - explicit `instructor.v2.providers.openai.handlers` import in `engines/local_gpu.py` plus a fresh-interpreter regression test; commit b4b9096

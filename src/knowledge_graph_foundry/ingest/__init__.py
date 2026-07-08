@@ -10,6 +10,8 @@ from knowledge_graph_foundry.ingest.readers import (
     iter_source_files,
     read_document,
     read_structured,
+    row_document,
+    text_heavy_columns,
 )
 
 __all__ = [
@@ -22,4 +24,6 @@ __all__ = [
     "iter_source_files",
     "read_document",
     "read_structured",
+    "row_document",
+    "text_heavy_columns",
 ]
