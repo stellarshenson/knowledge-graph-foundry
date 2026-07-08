@@ -34,3 +34,24 @@
 2. H272 abstention-triggered repair (rides H252 micro-pass machinery), H270 schema-as-graph (scratch after H241), H264 (rides H239 artifacts), H280 composition (needs H272)
 3. R27 LLM arms if H288 clears (H282-H285, H287, H289, H290 - web arm stays user-gated)
 4. H198 wiring sweep (DEF-6 fix, v2 default if H241 GO, extraction recipe from H250, H238 retention pricing, GLiNER lexicon stage, H268 soft links, H271 demand allocator, H274 external cache, per-corpus self-calibration from H157, truncation-resilient parsing + confidence rubric from R25) -> full re-ingestion -> H113-H117 capstone under pinned H207 harness. User-gated: H202, H286/web, corpus decisions.
+
+## BRACE 2026-07-08 ~12:55Z - credits ran out mid-recovery
+
+**vLLM (port 8010) is DOWN** - external SIGTERM 12:20:29Z (unattributed), then 3 failed relaunch attempts (JIT traps, all root-caused).
+FIRST ACTION next session: purge poisoned JIT cache + relaunch via `bash scripts/vllm-serve.sh` (correct CUDA_HOME = vllm venv's own nvidia/cu13; full trap writeup in `~/.claude/skills/my-gpu/issues/2026-07-08-vllm-restart-jit-traps.md`):
+  rm -rf ~/.cache/flashinfer/0.6.12/120f/cached_ops/sampling && bash scripts/vllm-serve.sh
+Health check: curl -s http://localhost:8010/v1/models (200 = up; engine init ~3-5 min incl JIT).
+
+**Then everything self-heals, already armed detached:**
+- `scripts/h241_v2_rerun.sh` (running, polling health): wipe neo4j4 -> v2 arm -> measure -> touches logs/h241-chain.DONE
+- Batch driver run_batch.py PID 3262792 is SIGSTOPped - after vLLM healthy: `kill -CONT 3262792` (finishes H261 + report reports/undersampling-llm-gates-r23r24-*.json; autorender2.sh then executes the notebook)
+- If those PIDs/scripts died: caches in results/r23r24_llm/ (h246/h248/h243/h251/h245_257/h258/h260 all cached), only h261+report remain
+
+**Valid results on disk (do NOT recompute):**
+- v1 arm VALID: reports/h241-v1-recall.json + h241-v1-stats.json - recall 0.7708 (17/24), precision 0.083 (11 false merges), 2727 entities, fp bc194b65b08137bf, wall 14439s
+- v2 first attempt INVALID (ran against dead server): quarantined in reports/invalid/ - must NOT be used
+- Batch verdicts cached: H246 0.971@1.05x, H258 1.000@1.53x inflation, H248 0.943, H251 0.912@3.05x indep=1.000, H243 comp_new=0, H245 sep=0.0066, H260 adjudicated_cov=0.873
+- Confound record for H241 verdict: v1 had 6 timeout losses under batch contention (pre-11:55Z pause); v2 rerun runs post-outage - note conditions in verdict
+
+**Wiring tranche 1 READY** in worktree agent-aea0ebaec7aac3122 (uncommitted, base 0735aac) - merge after chains release tree (see docs/h198-wiring-plan.md).
+**Pending recordings**: R23/R24 round close (all verdicts above + H261 + H250 frontier -> SLOT-2), H241 verdict -> SLOT-1, journal entries, promotions.
