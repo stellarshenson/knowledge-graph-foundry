@@ -2931,8 +2931,8 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - the regex floor is the kill line - a learned model that cannot beat grep dies; refuted cleanly by the gate
 - **Synthetic gate** - GPU 0/2 inference over on-disk chunk text, zero LLM/vLLM touch, runs anytime
 - **Cost** - gate = model download + minutes of idle-GPU inference; full test +1 LLM pass
-
-### R24-H261 In-context union distillation - teach exhaustivity by example
+- **Result (gate)** - (executor 2026-07-08, [`gliner_gate_h260.ipynb`](../../notebooks/gliner_gate_h260.ipynb) / [`gliner-gate-h260-20260708T065305Z.json`](../../reports/gliner-gate-h260-20260708T065305Z.json); gliner_multi-v2.1 on the idle Ada card, 8 cured-ontology-shaped labels, 7.6 s wall-clock over all 10 docs) raw span recall **60/63 = 95.2%** at confidence 0.10 (93.7% at 0.30 with half the spans) - clears the 90% bar and beats the 87.3% regex kill line by +7.9 pts; GLiNER's hits are a STRICT SUPERSET of the scanner's (catches 5 of its 8 consumable-class misses; the 3 residual misses are punctuation-heavy list variants - a normalization surface, not detection failure)
+- **Verdict (interim)** - gate PASSED decisively - a 7.6-second zero-LLM span model sees MORE gold carriers (95.2%) than a single LLM extraction pass averages (76.8% of union-5); GLiNER supersedes the regex scanner as the audit/priming lexicon in the H248/H252/H255/H256 designs (feed the adjudicator at confidence 0.30 for a lean closed set); the LLM adjudication clause queues behind H229
 
 - **Grounding** - the union-of-5 sets on disk are free supervision for what EXHAUSTIVE extraction looks like; 2-3 held-out-document union demonstrations in the prompt recalibrate the model's stopping/exhaustivity prior - the quantity that collapses to 55% under a bare prompt - at inference cost only, no tuning
 - **Hypothesis** - a single pass primed with 2-3 low-overlap union demos reaches >= 78% carrier coverage (>= +20 pts over baseline) at 1 pass + ~2k prompt tokens

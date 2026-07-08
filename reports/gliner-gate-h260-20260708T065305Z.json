@@ -1,0 +1,141 @@
+{
+  "round": "R24",
+  "hypothesis": "H260",
+  "tier": "synthetic gate (GPU, zero LLM/vLLM)",
+  "generated_utc": "20260708T065305Z",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "model": "urchade/gliner_multi-v2.1",
+  "labels": [
+    "product",
+    "device model",
+    "manufacturer",
+    "component",
+    "accessory",
+    "specification",
+    "feature",
+    "model code"
+  ],
+  "windowing": {
+    "words": 300,
+    "overlap": 50
+  },
+  "gold_carrier_definition": "token_set_ratio(span.lower(), product.lower()) >= 85; union-of-5 = probed products matched by any of 5 arm-A runs pooled over 10 docs",
+  "union5": 63,
+  "bar_recall": 0.9,
+  "regex_floor": 0.873,
+  "wall_clock_s": 7.6,
+  "total_spans_base": 3630,
+  "recall_primary": {
+    "threshold": 0.1,
+    "recalled": 60,
+    "recall": 0.9524,
+    "beats_bar": true,
+    "beats_floor": true
+  },
+  "recall_sweep": {
+    "0.10": {
+      "recalled": 60,
+      "recall": 0.9524,
+      "n_spans": 3630
+    },
+    "0.30": {
+      "recalled": 59,
+      "recall": 0.9365,
+      "n_spans": 1888
+    },
+    "0.50": {
+      "recalled": 53,
+      "recall": 0.8413,
+      "n_spans": 994
+    }
+  },
+  "per_document": {
+    "0-20190113114505.pdf": {
+      "present": 7,
+      "recalled": 6,
+      "spans": 116
+    },
+    "1017900r4_ResMed_Product_Catalogue_ANZ_Eng_LowRes.pdf": {
+      "present": 11,
+      "recalled": 10,
+      "spans": 359
+    },
+    "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf": {
+      "present": 5,
+      "recalled": 5,
+      "spans": 901
+    },
+    "ARTP_Standards_of_Care_-_CPAP_Devices_(Technical_and_Performance)_Version_5.0_-_05-02-2022.pdf": {
+      "present": 7,
+      "recalled": 3,
+      "spans": 1038
+    },
+    "Airsense-Brochure.pdf": {
+      "present": 8,
+      "recalled": 6,
+      "spans": 103
+    },
+    "BC-Dreamstation-Standard-CPAP.pdf": {
+      "present": 8,
+      "recalled": 6,
+      "spans": 95
+    },
+    "BMC_RESmart_AutoCPAP_User_Manual.pdf": {
+      "present": 3,
+      "recalled": 3,
+      "spans": 652
+    },
+    "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf": {
+      "present": 6,
+      "recalled": 4,
+      "spans": 95
+    },
+    "CPAP-Machines-Brochure.pdf": {
+      "present": 2,
+      "recalled": 1,
+      "spans": 203
+    },
+    "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf": {
+      "present": 1,
+      "recalled": 1,
+      "spans": 68
+    }
+  },
+  "complementarity": {
+    "scanner_hits": 55,
+    "gliner_hits": 60,
+    "union_both": 60,
+    "union_both_recall": 0.9524,
+    "scanner_misses": [
+      "Nasal cannula, adult",
+      "REMstar Pro C-Flex+",
+      "Pollen  filter , reusable",
+      "Nasal/oral cannula, adult",
+      "Water chamber",
+      "REMstar Plus C-Flex",
+      "Ultra-fine filter , disposable",
+      "Cannula, Pro-Flow, nasal, adult 10 pk"
+    ],
+    "scanner_misses_caught_by_gliner": [
+      "Pollen  filter , reusable",
+      "Water chamber",
+      "REMstar Plus C-Flex",
+      "Ultra-fine filter , disposable",
+      "Cannula, Pro-Flow, nasal, adult 10 pk"
+    ],
+    "gliner_only_carriers": [
+      "Cannula, Pro-Flow, nasal, adult 10 pk",
+      "Pollen  filter , reusable",
+      "REMstar Plus C-Flex",
+      "Ultra-fine filter , disposable",
+      "Water chamber"
+    ],
+    "scanner_only_carriers": [],
+    "gliner_misses": [
+      "Nasal cannula, adult",
+      "REMstar Pro C-Flex+",
+      "Nasal/oral cannula, adult"
+    ]
+  },
+  "verdict_recommendation": "PASS (>= 90% bar)"
+}
