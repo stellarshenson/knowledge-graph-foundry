@@ -1,0 +1,1918 @@
+{
+ "round": "R27",
+ "utc": "20260708T095229Z",
+ "source": "SAME_AS surface on neo4j2 (127 pairs) + H101 hard labels",
+ "metric": "false-merge removal at zero true-merge loss",
+ "n_pairs": 127,
+ "n_merge": 26,
+ "n_distinct": 101,
+ "pairs": [
+  {
+   "key": "e_ea37edc97b46b864|e_e34dca49c077576e",
+   "an": "AirFit P10",
+   "bn": "Transcend P10 battery",
+   "ta": "KGFEntityVersion",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "P10"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "H101",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_03a2243cd9c39783|e_e95b529fd856b82e",
+   "an": "Alice LoFlo C5 Sidestream module",
+   "bn": "LoFlo C5 Sidestream module",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "C5"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_e3852c23cab173c8|e_738a52624c065d49",
+   "an": "Body Position Sensor Sandman SD20",
+   "bn": "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "SD20"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "H101",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_e3852c23cab173c8|e_e12eb04570231175",
+   "an": "Body Position Sensor Sandman SD20",
+   "bn": "Sandman SD20",
+   "ta": "Accessory",
+   "tb": "ProductModel",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "SD20"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d5f4898d7c7ba5|e_1e7960ae6fcb4f2b",
+   "an": "CT2 adult Alice 5",
+   "bn": "CT2 effort sensor",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "CT2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d5f4898d7c7ba5|e_dfdeeccd572290b2",
+   "an": "CT2 adult Alice 5",
+   "bn": "CT2, adult",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "CT2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": true
+  },
+  {
+   "key": "e_94d5f4898d7c7ba5|e_4f7eaab89e998f67",
+   "an": "CT2 adult Alice 5",
+   "bn": "CT2, pediatric",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "CT2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_1ba8e4cc68008602|e_f2080490fc53977a",
+   "an": "Control FiO2 Display",
+   "bn": "FiO2 Table",
+   "ta": "Feature",
+   "tb": "ClinicalFeature",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "FIO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_22cf3ecb92c9eb03",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Battery Cover",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_399e3581d414a33b",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Carrying Case",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_fbd41a52f4fc70a6",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Circuit - Infant 6ft",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_67525d60deb8285e",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Circuit Retainer",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_1daabc6c064e0cc5",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Foot Pedal",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_bb5ebc1172193e64",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Oximetry Interface Kit",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_147f4a5006360c60",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Roll Stand",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_94d47d669b6f303a|e_7778b7a167ca10d1",
+   "an": "CoughAssist T70",
+   "bn": "CoughAssist T70 Water Trap",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "T70"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_23c06761cdcba83a|e_27cce3a9ea24a242",
+   "an": "Cylinder cart MD15 ME24 MD22 ME36",
+   "bn": "Large cylinder bag MD15 MD22",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "MD15",
+    "MD22"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_23c06761cdcba83a|e_38e33578512ffb1e",
+   "an": "Cylinder cart MD15 ME24 MD22 ME36",
+   "bn": "MD15 cylinder US 2000 psi",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "MD15"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_23c06761cdcba83a|e_43d66ae0f0edb295",
+   "an": "Cylinder cart MD15 ME24 MD22 ME36",
+   "bn": "MD22 cylinder US 3000 psi",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "MD22"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_b123ddacc1c62133|e_084a443c876fecaa",
+   "an": "DreamStation Cellular/SpO2 Modem",
+   "bn": "DreamStation SpO2 module",
+   "ta": "ConnectivityDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "SPO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_b123ddacc1c62133|e_b53738503bbefc59",
+   "an": "DreamStation Cellular/SpO2 Modem",
+   "bn": "Nonin SpO2 assembly",
+   "ta": "ConnectivityDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "SPO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_b123ddacc1c62133|e_a50316a374ac7138",
+   "an": "DreamStation Cellular/SpO2 Modem",
+   "bn": "SpO2",
+   "ta": "ConnectivityDevice",
+   "tb": "Specification",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "SPO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_b123ddacc1c62133|e_a91e52afa89c9b71",
+   "an": "DreamStation Cellular/SpO2 Modem",
+   "bn": "SpO2 Kit",
+   "ta": "ConnectivityDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "SPO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_b123ddacc1c62133|e_773dc9a90b429b8a",
+   "an": "DreamStation Cellular/SpO2 Modem",
+   "bn": "SpO2 extension cable",
+   "ta": "ConnectivityDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "SPO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_b123ddacc1c62133|e_578e9aeb87c5c515",
+   "an": "DreamStation Cellular/SpO2 Modem",
+   "bn": "SpO2 sensor (finger clip)",
+   "ta": "ConnectivityDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "SPO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_955686aea2763ccc|e_60574898c9463300",
+   "an": "G3 A20",
+   "bn": "Sleepware G3",
+   "ta": "CPAPDevice",
+   "tb": "Software",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "G3"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_955686aea2763ccc|e_27f4361cc2899fcc",
+   "an": "G3 A20",
+   "bn": "Sleepware G3 Getting Started Guide, English",
+   "ta": "CPAPDevice",
+   "tb": "Feature",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "G3"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_955686aea2763ccc|e_9bb0878c0df953aa",
+   "an": "G3 A20",
+   "bn": "Sleepware G3, English only",
+   "ta": "CPAPDevice",
+   "tb": "Software",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "G3"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_955686aea2763ccc|e_93d369ef4f583463",
+   "an": "G3 A20",
+   "bn": "Sleepware G3, Multi-language",
+   "ta": "CPAPDevice",
+   "tb": "Software",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "G3"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_1d6b44943ca0e0ff|e_484fc1e562efeea6",
+   "an": "GO2 carrying case",
+   "bn": "GO2 finger oximeter",
+   "ta": "Accessory",
+   "tb": "CPAPDevice",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "GO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_1d6b44943ca0e0ff|e_f13ce484a981c9f1",
+   "an": "GO2 carrying case",
+   "bn": "GO2 lanyard",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "GO2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_1d6b44943ca0e0ff|e_5b4588deb7d0606f",
+   "an": "GO2 carrying case",
+   "bn": "GO2 oximeter",
+   "ta": "Accessory",
+   "tb": "CPAPDevice",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "GO2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d69d444b9b004f48|e_b50d35105be2ca73",
+   "an": "HC230 Product Range",
+   "bn": "HC230 Standard Range",
+   "ta": "ProductModel",
+   "tb": "CPAPDevice",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "HC230"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d69d444b9b004f48|e_b23e9ca8b0913d4b",
+   "an": "HC230 Product Range",
+   "bn": "HC230-Series",
+   "ta": "ProductModel",
+   "tb": "ProductModel",
+   "cls": "code_shared",
+   "shared_code": [
+    "HC230"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": true
+  },
+  {
+   "key": "e_cdf154e82f74d922|e_de613c53414079de",
+   "an": "HL7 bi-directional interface",
+   "bn": "HL7 inbound only interface",
+   "ta": "Software",
+   "tb": "Software",
+   "cls": "code_shared",
+   "shared_code": [
+    "HL7"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_84ad891826a2061f|e_994fde4532456524",
+   "an": "Host software manual v2.0 (Domestic)",
+   "bn": "Host software manual v2.0 (French)",
+   "ta": "Software",
+   "tb": "Software",
+   "cls": "code_shared",
+   "shared_code": [
+    "V2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_84ad891826a2061f|e_2df0f17244fc43c1",
+   "an": "Host software manual v2.0 (Domestic)",
+   "bn": "Host software manual v2.0 (International English)",
+   "ta": "Software",
+   "tb": "Software",
+   "cls": "code_shared",
+   "shared_code": [
+    "V2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_84ad891826a2061f|e_e27aab70e30f6346",
+   "an": "Host software manual v2.0 (Domestic)",
+   "bn": "Host software manual v2.0 (Spanish)",
+   "ta": "Software",
+   "tb": "Software",
+   "cls": "code_shared",
+   "shared_code": [
+    "V2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_84ad891826a2061f|e_94c9ed78f0ceded4",
+   "an": "Host software manual v2.0 (Domestic)",
+   "bn": "Host software v2.0",
+   "ta": "Software",
+   "tb": "Software",
+   "cls": "code_shared",
+   "shared_code": [
+    "V2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_ba02783a68b2fa50|e_67a541df11d4af02",
+   "an": "M10 oxygen concentrator",
+   "bn": "Millennium M10",
+   "ta": "CPAPDevice",
+   "tb": "CPAPDevice",
+   "cls": "code_shared",
+   "shared_code": [
+    "M10"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_7a8e828ca9bf6a9d|e_47cd120f87631279",
+   "an": "M4 cylinder Canada 2000 psi",
+   "bn": "M4 cylinder US 2000 psi",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "M4"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_7a8e828ca9bf6a9d|e_d9a8a67858c2fe8f",
+   "an": "M4 cylinder Canada 2000 psi",
+   "bn": "Medium cylinder bag M4 M6 MB08",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "M4"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_2b03bee584a54f5a|e_d9a8a67858c2fe8f",
+   "an": "MB08 cylinder US 3000 psi",
+   "bn": "Medium cylinder bag M4 M6 MB08",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "MB08"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_1fa887fb36f44941|e_f9ab6cc8d74b2796",
+   "an": "MC13 cylinder US 3000 psi",
+   "bn": "Small cylinder bag M9 MC13",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "MC13"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_46ed71f5b020d5d4|e_0c447ac68e19b5be",
+   "an": "MD300W314B4",
+   "bn": "Wrist Pulse Oximeter MD300W314B4",
+   "ta": "ProductModel",
+   "tb": "Accessory",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_25742dde2ce3115a|e_5827c77b2f7688fe",
+   "an": "Nurse Call RJ9 Cable Open Ends",
+   "bn": "RJ9 to 1/4 inch Nurse Call Cable Alarm Closed",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "RJ9"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_25742dde2ce3115a|e_17b532360d761a2f",
+   "an": "Nurse Call RJ9 Cable Open Ends",
+   "bn": "RJ9 to 2.5mm 3 inch Female Adapter Cable",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "RJ9"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_01c631fa335f0a50|e_ee70a42de158985d",
+   "an": "PTAF2",
+   "bn": "PTAF2 Extension with coupler (25')",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "PTAF2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_01c631fa335f0a50|e_514afb60ef6015f4",
+   "an": "PTAF2",
+   "bn": "PTAF2 High level cable (7', 1/8 male connector)",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "PTAF2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_01c631fa335f0a50|e_7ee7e580216dc03d",
+   "an": "PTAF2",
+   "bn": "PTAF2 Startup Kit",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "PTAF2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_01c631fa335f0a50|e_a83111147cb99c94",
+   "an": "PTAF2",
+   "bn": "PTAF2 cable",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "PTAF2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_01c631fa335f0a50|e_e4374e2d7c2e14ed",
+   "an": "PTAF2",
+   "bn": "PTAF2 extension cable",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "PTAF2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_3df79de2cb6dca9a|e_630dd97a8ae68455",
+   "an": "Sensor adapter WristOx2 3150",
+   "bn": "USB PC download cable WristOx2",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "H101",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_3df79de2cb6dca9a|e_b3f4bb55fce0f9e4",
+   "an": "Sensor adapter WristOx2 3150",
+   "bn": "USB PC download cable for WristOx2",
+   "ta": "Accessory",
+   "tb": "ConnectivityDevice",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "H101",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_3df79de2cb6dca9a|e_6a42cf88df8074b2",
+   "an": "Sensor adapter WristOx2 3150",
+   "bn": "WristOx2",
+   "ta": "Accessory",
+   "tb": "CPAPDevice",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_3df79de2cb6dca9a|e_0f1b8b93f458b6b9",
+   "an": "Sensor adapter WristOx2 3150",
+   "bn": "WristOx2 3150",
+   "ta": "Accessory",
+   "tb": "CPAPDevice",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_3df79de2cb6dca9a|e_f9cc5c46f21a24f0",
+   "an": "Sensor adapter WristOx2 3150",
+   "bn": "WristOx2 3150 pulse oximeter",
+   "ta": "Accessory",
+   "tb": "CPAPDevice",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_3df79de2cb6dca9a|e_5cc28a25eababc68",
+   "an": "Sensor adapter WristOx2 3150",
+   "bn": "WristOx2 wrist band 10 inch",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "H101",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_dd0bcafe916a7589|e_479e8a79625fee11",
+   "an": "Trilogy100",
+   "bn": "Trilogy100 Exhalation Port Block Active",
+   "ta": "CPAPDevice",
+   "tb": "Accessory",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_dd0bcafe916a7589|e_70d0c5b24a78a7cc",
+   "an": "Trilogy100",
+   "bn": "Trilogy100 ventilator",
+   "ta": "CPAPDevice",
+   "tb": "CPAPDevice",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_274a60ddea50b384|e_0d612c12d2ac3362",
+   "an": "APAP",
+   "bn": "Auto",
+   "ta": "OperatingMode",
+   "tb": "OperatingMode",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_274a60ddea50b384|e_49134fb3592b6e94",
+   "an": "APAP",
+   "bn": "CPAP",
+   "ta": "OperatingMode",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_274a60ddea50b384|e_f3a929b3364b471a",
+   "an": "APAP",
+   "bn": "Device",
+   "ta": "OperatingMode",
+   "tb": "Accessory",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_49134fb3592b6e94",
+   "an": "bCPAP prongs",
+   "bn": "CPAP",
+   "ta": "Accessory",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_78ce674a636ababa",
+   "an": "bCPAP prongs",
+   "bn": "CPAP prongs",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_e97ba6aed5561a3d",
+   "an": "bCPAP prongs",
+   "bn": "Cable",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_f3a929b3364b471a",
+   "an": "bCPAP prongs",
+   "bn": "Device",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_4bb4ca75941b7bbc",
+   "an": "bCPAP prongs",
+   "bn": "Filter",
+   "ta": "Accessory",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_acd6df47291ab1ab",
+   "an": "bCPAP prongs",
+   "bn": "Fine particle filter",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_4bc6ef2c9075f14d",
+   "an": "bCPAP prongs",
+   "bn": "Flowmeter",
+   "ta": "Accessory",
+   "tb": "Feature",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_b2d27a1f368d878c",
+   "an": "bCPAP prongs",
+   "bn": "Gross particle filter",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_a2dd7ec666aacd57",
+   "an": "bCPAP prongs",
+   "bn": "Handle",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_8ff50292d78187cd",
+   "an": "bCPAP prongs",
+   "bn": "Humidifier",
+   "ta": "Accessory",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_d651baec215babae",
+   "an": "bCPAP prongs",
+   "bn": "Internal filter",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_7ecd8a01485e1915",
+   "an": "bCPAP prongs",
+   "bn": "Low oxygen level alarm",
+   "ta": "Accessory",
+   "tb": "Feature",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_158873d90a7ef40f",
+   "an": "bCPAP prongs",
+   "bn": "MANU",
+   "ta": "Accessory",
+   "tb": "OperatingMode",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_4f4a129b3ac39d50",
+   "an": "bCPAP prongs",
+   "bn": "Outlet",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_2d72dfd8cb7b3a9b",
+   "an": "bCPAP prongs",
+   "bn": "Oxygen concentrator",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_b1b0b8de8a6228f6",
+   "an": "bCPAP prongs",
+   "bn": "Patient",
+   "ta": "Accessory",
+   "tb": "Person",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_bbfb4845ae6baeb4",
+   "an": "bCPAP prongs",
+   "bn": "Total flowmeter",
+   "ta": "Accessory",
+   "tb": "Feature",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_c3ba68b8ecfa582f",
+   "an": "bCPAP prongs",
+   "bn": "Tubing",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_4cd87cdcd94fd1b8",
+   "an": "bCPAP prongs",
+   "bn": "User manual",
+   "ta": "Accessory",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9d54bf34cc98a53d|e_c4721ba64adb0785",
+   "an": "bCPAP prongs",
+   "bn": "Water trap",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d6003d5091d5b5b4|e_49134fb3592b6e94",
+   "an": "Apnea",
+   "bn": "CPAP",
+   "ta": "KGFEntityVersion",
+   "tb": "KGFEntityVersion",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d6003d5091d5b5b4|e_0e2579792c7841d9",
+   "an": "Apnea",
+   "bn": "CPAP mask",
+   "ta": "KGFEntityVersion",
+   "tb": "KGFEntityVersion",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d6003d5091d5b5b4|e_9d4cca1595c30e43",
+   "an": "Apnea",
+   "bn": "Mask",
+   "ta": "KGFEntityVersion",
+   "tb": "KGFEntityVersion",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d6003d5091d5b5b4|e_54f226d723d4e640",
+   "an": "Apnea",
+   "bn": "Nasal mask",
+   "ta": "KGFEntityVersion",
+   "tb": "KGFEntityVersion",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d6003d5091d5b5b4|e_20bbc0c1726dc778",
+   "an": "Apnea",
+   "bn": "sleep apnea",
+   "ta": "KGFEntityVersion",
+   "tb": "KGFEntityVersion",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_d6003d5091d5b5b4|e_a8a511e78b886864",
+   "an": "Apnea",
+   "bn": "Therapy",
+   "ta": "KGFEntityVersion",
+   "tb": "Feature",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_0ed60c8d014be182|e_6618b9d7c7e40074",
+   "an": "DreamStation CPAP",
+   "bn": "Air filter",
+   "ta": "CPAPDevice",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_0ed60c8d014be182|e_4bb4ca75941b7bbc",
+   "an": "DreamStation CPAP",
+   "bn": "Filter",
+   "ta": "CPAPDevice",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "H101",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_0ed60c8d014be182|e_158873d90a7ef40f",
+   "an": "DreamStation CPAP",
+   "bn": "MANU",
+   "ta": "CPAPDevice",
+   "tb": "OperatingMode",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_27c8180283f53e64|e_b23e9ca8b0913d4b",
+   "an": "SleepStyle 200 Series",
+   "bn": "HC230-Series",
+   "ta": "CPAPDevice",
+   "tb": "ProductModel",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_27c8180283f53e64|e_158873d90a7ef40f",
+   "an": "SleepStyle 200 Series",
+   "bn": "MANU",
+   "ta": "CPAPDevice",
+   "tb": "OperatingMode",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_88b6b77a2b4eeb30|e_3987ad7e587b835d",
+   "an": "Air Filter Cover",
+   "bn": "Filter Cover",
+   "ta": "Accessory",
+   "tb": "KGFEntityVersion",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_45853ddd847bf5a0|e_9a351f94432569a8",
+   "an": "Apnea Hypopnea Index",
+   "bn": "Apnea-Hypopnea Index",
+   "ta": "EventType",
+   "tb": "ClinicalFeature",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_2d2f2c68ff77f94b|e_b0516707b62c701b",
+   "an": "Auto EPAP",
+   "bn": "Auto-EPAP",
+   "ta": "ClinicalFeature",
+   "tb": "OperatingMode",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_2102380a78e34a75|e_76179773c533b58a",
+   "an": "Auto Off",
+   "bn": "Auto-Off",
+   "ta": "ComfortFeature",
+   "tb": "ComfortFeature",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_eb8ea26a9b94eacb|e_1d0604af21a949ca",
+   "an": "Auto On",
+   "bn": "Auto-On",
+   "ta": "ComfortFeature",
+   "tb": "ComfortFeature",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_3917f45c357602eb|e_5cf91461fcc05523",
+   "an": "Auto Ramp",
+   "bn": "AutoRamp",
+   "ta": "ComfortFeature",
+   "tb": "ComfortFeature",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_e35d20d3578b9844|e_76e589540ef5b278",
+   "an": "Auto Start",
+   "bn": "autoSTART",
+   "ta": "KGFEntityVersion",
+   "tb": "ComfortFeature",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_bcaf40248fc3dc56|e_bcccf1a2e4f44525",
+   "an": "C-Flex",
+   "bn": "C-Flex+",
+   "ta": "ComfortFeature",
+   "tb": "ComfortFeature",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_12c300f4d8fe83a8|e_23e73ab8b49ca18b",
+   "an": "CISPR 11",
+   "bn": "CISPR11",
+   "ta": "KGFEntityVersion",
+   "tb": "Standard",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_fcfd783c4d30111d|e_4bc6ef2c9075f14d",
+   "an": "Flow Meter",
+   "bn": "Flowmeter",
+   "ta": "Accessory",
+   "tb": "Feature",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_ea62596cea35bbda|e_45798ab5ccb15f68",
+   "an": "Full Face Mask",
+   "bn": "Full-Face Mask",
+   "ta": "KGFEntityVersion",
+   "tb": "Accessory",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_7076076a68b89f40|e_5859e91aa35e99ca",
+   "an": "ISO 80601-2-70:2015",
+   "bn": "ISO 80601-2-70:2015",
+   "ta": "Feature",
+   "tb": "Feature",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_608b7bdf74a05d58|e_f509b767a46a130e",
+   "an": "Nasal Cannulas Adult",
+   "bn": "Nasal cannulas (adult)",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_a32a19f1781425de|e_fb0007e82675ab7d",
+   "an": "Performance Tubing (22mm)",
+   "bn": "Performance Tubing 22mm",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_6b0abcbfedbdba7f|e_2326f2aff891d8ba",
+   "an": "Pre-heat",
+   "bn": "Preheat",
+   "ta": "ComfortFeature",
+   "tb": "ComfortFeature",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_b267aa9c08ab53b2|e_2086e73883e31a09",
+   "an": "Pressure Start Stop Button",
+   "bn": "Pressure Start/Stop Button",
+   "ta": "Feature",
+   "tb": "Feature",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_74ac1ae93f7f2f25|e_0bd8ca9618700875",
+   "an": "ResMed AirSense 10",
+   "bn": "ResMed Airsense10",
+   "ta": "CPAPDevice",
+   "tb": "CPAPDevice",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_96d892439b2bbac4|e_5ae3fd4b0940e794",
+   "an": "Smart Ramp",
+   "bn": "SmartRamp",
+   "ta": "KGFEntityVersion",
+   "tb": "KGFEntityVersion",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_e966a406a81c38e1|e_b494c9d31285f520",
+   "an": "Ultra-Fine Filter Disposable",
+   "bn": "Ultra-fine Filter Disposable 1-pack",
+   "ta": "KGFEntityVersion",
+   "tb": "Accessory",
+   "cls": "type_conflict",
+   "shared_code": [],
+   "type_conflict": true,
+   "code_shared": false,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_f0bf0af99c196e41|e_3de4d8eedb5a309b",
+   "an": "ezRIP module (abdomen)",
+   "bn": "ezRIP module, abdomen",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "clean",
+   "shared_code": [],
+   "type_conflict": false,
+   "code_shared": false,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_838dc37bd922b98f|e_087dbec277e0739c",
+   "an": "20 cmH2O",
+   "bn": "40 cmH2O",
+   "ta": "Specification",
+   "tb": "Specification",
+   "cls": "code_shared",
+   "shared_code": [
+    "CMH2O"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_f61608ba0dc28269|e_69580440cac95153",
+   "an": "Air and O2 Hoses",
+   "bn": "High Precision O2 Concentration Detection",
+   "ta": "Accessory",
+   "tb": "ClinicalFeature",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "O2"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_f61608ba0dc28269|e_f934f26772aa70ed",
+   "an": "Air and O2 Hoses",
+   "bn": "O2 enrichment attachments",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "O2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_f61608ba0dc28269|e_bca139024a29ddc0",
+   "an": "Air and O2 Hoses",
+   "bn": "Oxymixer Air and O2 Blender",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "O2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_f61608ba0dc28269|e_30a0c813fd8a96c5",
+   "an": "Air and O2 Hoses",
+   "bn": "Trilogy O2 quick-disconnect insert",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "O2"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_381ecde23e0b7f85|e_d5a4f561b7beb76f",
+   "an": "AirFit F10",
+   "bn": "AirFit F10 for Her",
+   "ta": "KGFEntityVersion",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "F10"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_e559f696bfe56be4|e_774e6312c8ef583d",
+   "an": "AirFit F20 for Her",
+   "bn": "AirTouch F20",
+   "ta": "ProductModel",
+   "tb": "Accessory",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "F20"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_654ddc87ee4b5a7c|e_51aafded3752d151",
+   "an": "AirFit F30",
+   "bn": "AirFit F30 bedside starter kit Small",
+   "ta": "Accessory",
+   "tb": "ProductModel",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "F30"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_654ddc87ee4b5a7c|e_e460b79b8d956250",
+   "an": "AirFit F30",
+   "bn": "AirFit F30 for AirMini",
+   "ta": "Accessory",
+   "tb": "Accessory",
+   "cls": "code_shared",
+   "shared_code": [
+    "F30"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_9380778f8869caa8|e_7acfee868d30ba1a",
+   "an": "AirFit N20",
+   "bn": "AirFit N20 Classic",
+   "ta": "ProductModel",
+   "tb": "ProductModel",
+   "cls": "code_shared",
+   "shared_code": [
+    "N20"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": true
+  },
+  {
+   "key": "e_9380778f8869caa8|e_515033c69c3909cf",
+   "an": "AirFit N20",
+   "bn": "ResMed AirFit N20 Classic",
+   "ta": "ProductModel",
+   "tb": "CPAPDevice",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "N20"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "MERGE",
+   "gold_src": "executor",
+   "gold_lowconf": true
+  },
+  {
+   "key": "e_ea37edc97b46b864|e_3878711d8b9c16b6",
+   "an": "AirFit P10",
+   "bn": "AirFit P10 bedside starter kit",
+   "ta": "KGFEntityVersion",
+   "tb": "ProductModel",
+   "cls": "type_conflict+code_shared",
+   "shared_code": [
+    "P10"
+   ],
+   "type_conflict": true,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  },
+  {
+   "key": "e_ea37edc97b46b864|e_703d382d16537845",
+   "an": "AirFit P10",
+   "bn": "AirFit P10 for AirMini",
+   "ta": "KGFEntityVersion",
+   "tb": "KGFEntityVersion",
+   "cls": "code_shared",
+   "shared_code": [
+    "P10"
+   ],
+   "type_conflict": false,
+   "code_shared": true,
+   "gold": "DISTINCT",
+   "gold_src": "executor",
+   "gold_lowconf": false
+  }
+ ]
+}

@@ -45,3 +45,8 @@ Background job logs for Knowledge Graph Foundry.
 - `r21-qwenvl-download.log`, `r21-smolvlm-download.log` - HF snapshot downloads of Qwen2.5-VL-7B-Instruct and SmolVLM-256M-Instruct for the H218 engine contest
 - `r21-qwenvl-infer.log`, `r21-qwenvl-infer2.log` - Qwen2.5-VL-7B describe-then-extract inference on the 36 selected images (GPU 0); infer2 is the resumable rerun
 - `r21-smolvlm-infer.log` - SmolVLM-256M (Docling picture-description model) inference on the same 36 images
+
+- `h241-ab.log` - R15-H241 paired v1/v2 identity A/B: wipe/init/ingest markers, per-arm wall-clock, measurement lines (both arms on local gpt-oss-120b)
+- `h241-v1-driver.log` / `h241-chain.log` - detached driver of the v1 arm and the orchestration chain (wait v1 -> measure -> run v2 -> measure)
+- `h241-v1-events.jsonl` / `h241-v2-events.jsonl` - JSONL event logs (resolution.merge/defer/block/veto) driving the H241 precision proxy per arm
+- `r27-precision-arms.log` - R27 precision arms (H282-H285/H289) false-merge removal execution

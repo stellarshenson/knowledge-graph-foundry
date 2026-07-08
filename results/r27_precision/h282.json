@@ -1,0 +1,138 @@
+{
+ "per_class": {
+  "clean": {
+   "n": 32,
+   "n_false": 19,
+   "n_true": 13,
+   "false_merge_detection": 1.0,
+   "true_merge_preservation": 0.9230769230769231,
+   "true_merge_losses": [
+    [
+     "APAP",
+     "Auto",
+     false
+    ]
+   ],
+   "n_true_merge_loss": 1,
+   "unresolved": 0
+  },
+  "code_shared": {
+   "n": 34,
+   "n_false": 29,
+   "n_true": 5,
+   "false_merge_detection": 0.9655172413793104,
+   "true_merge_preservation": 0.8,
+   "true_merge_losses": [
+    [
+     "AirFit N20",
+     "AirFit N20 Classic",
+     true
+    ]
+   ],
+   "n_true_merge_loss": 1,
+   "unresolved": 0
+  },
+  "type_conflict": {
+   "n": 31,
+   "n_false": 24,
+   "n_true": 7,
+   "false_merge_detection": 1.0,
+   "true_merge_preservation": 0.2857142857142857,
+   "true_merge_losses": [
+    [
+     "MD300W314B4",
+     "Wrist Pulse Oximeter MD300W314B4",
+     false
+    ],
+    [
+     "SleepStyle 200 Series",
+     "HC230-Series",
+     false
+    ],
+    [
+     "Apnea Hypopnea Index",
+     "Apnea-Hypopnea Index",
+     false
+    ],
+    [
+     "Auto EPAP",
+     "Auto-EPAP",
+     false
+    ],
+    [
+     "Flow Meter",
+     "Flowmeter",
+     false
+    ]
+   ],
+   "n_true_merge_loss": 5,
+   "unresolved": 0
+  },
+  "type_conflict+code_shared": {
+   "n": 30,
+   "n_false": 29,
+   "n_true": 1,
+   "false_merge_detection": 0.9655172413793104,
+   "true_merge_preservation": 0.0,
+   "true_merge_losses": [
+    [
+     "AirFit N20",
+     "ResMed AirFit N20 Classic",
+     true
+    ]
+   ],
+   "n_true_merge_loss": 1,
+   "unresolved": 0
+  }
+ },
+ "n": 127,
+ "n_false": 101,
+ "n_true": 26,
+ "false_merge_detection": 0.9801980198019802,
+ "true_merge_preservation": 0.6923076923076923,
+ "true_merge_losses": [
+  [
+   "MD300W314B4",
+   "Wrist Pulse Oximeter MD300W314B4",
+   false
+  ],
+  [
+   "APAP",
+   "Auto",
+   false
+  ],
+  [
+   "SleepStyle 200 Series",
+   "HC230-Series",
+   false
+  ],
+  [
+   "Apnea Hypopnea Index",
+   "Apnea-Hypopnea Index",
+   false
+  ],
+  [
+   "Auto EPAP",
+   "Auto-EPAP",
+   false
+  ],
+  [
+   "Flow Meter",
+   "Flowmeter",
+   false
+  ],
+  [
+   "AirFit N20",
+   "AirFit N20 Classic",
+   true
+  ],
+  [
+   "AirFit N20",
+   "ResMed AirFit N20 Classic",
+   true
+  ]
+ ],
+ "n_true_merge_loss": 8,
+ "unresolved": 0,
+ "tokens_per_pair": 512.9
+}

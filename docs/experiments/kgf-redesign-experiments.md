@@ -3172,6 +3172,8 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - the stratification IS the result: class (b) near ceiling, class (c) near coin-flip; the aggregate number alone would mislead
 - **Acceptance bar** - F1/precision/recall + tokens per pair, per H281 stratum, on the local endpoint; this is the round's control arm - resolved by measurement, not pass/fail; flags if even class (b) underperforms the calibrated stack (the judge would then be NET NEGATIVE where it is currently trusted)
 - **Experiment** - LLM tier (local endpoint), frozen pairs, temperature 0, three repeats for variance honesty
+- **Result** - (executor 2026-07-08, precision re-scope, [`agentic_precision_arms_r27.ipynb`](../../notebooks/agentic_precision_arms_r27.ipynb) / [`agentic-precision-arms-r27-20260708T095229Z.json`](../../reports/agentic-precision-arms-r27-20260708T095229Z.json); eval = all 127 SAME_AS edges blind-adjudicated pre-LLM to 26 true / 101 false, H101 labels winning where present, frozen to [`r27-precision-labels-frozen-20260708T095229Z.json`](../../reports/r27-precision-labels-frozen-20260708T095229Z.json)) the single-shot judge: **98.0% false-merge detection at 513 tok/pair**, 3-repeat FM stability [0.92, 0.92]. Stratified: clean 1.00 FM / 0.92 TM, code_shared 0.97/0.80, but type_conflict strata TM-preservation collapses to 0.29 and 0.00 - all 8 true-merge losses are cross-type aliases whose CONFLICTING EXTRACTOR TYPE LABELS trigger the judge's device-vs-accessory rule. Harness note: gpt-oss-120b at high reasoning effort emits empty final content under tool protocols; all arms ran at medium effort
+- **Verdict** - MEASURED (control arm resolved): the one-call judge is a near-perfect false-merge REMOVER and a poor cross-type-alias preserver - and the loss anatomy points UPSTREAM: conflicting type labels are extractor noise wearing identity-signal clothes (H292 registered below). TM-pres caveat: rests on 26 pairs (~3.8%/pair)
 
 ### R27-H283 The tool-agent - evidence fetch under a bounded loop
 
@@ -3180,6 +3182,8 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - source-span fetch carries most of the lift (same lesson as H252/H258: the knowledge exists, selection/starvation loses it); neighborhood expansion is decoration
 - **Acceptance bar** - both clauses per-stratum; refuted if gains spread uniformly across strata (the lift is then prompt-shape, not evidence, and the cheap fix is a better single-shot context per H282)
 - **Experiment** - LLM tier: bounded agent (K=4 rounds cap pending H284) on the frozen class-stratified pairs; per-tool ablation logged
+- **Result** - (same executor/report) the K=4 tool-agent FAILS all three re-aimed clauses: false-merge detection **85.1%** = -12.9 pts vs single-shot (bar +10), **3.93x** tokens (2017/pair, bar <= 3x), **5 true-merge losses** (bar zero). Tools genuinely used (source-span 118 fetches, neighborhood 56, string/code 18; the value comparator was never chosen), mean 2.5 rounds. Mechanism: fetched supporting spans make the agent merge-LENIENT - it recovers cross-type true merges (TM 0.69 -> 0.81) by letting false merges through (code_shared FM collapses 0.97 -> 0.69)
+- **Verdict** - REFUTED - the tool-agent does not detect better, it trades detection for preservation at 4x the price; for the removal-at-zero-true-loss objective it is strictly dominated by the H290 composition (single-shot + demote-to-soft-link), which buys preservation structurally instead of paying tokens for leniency
 
 ### R27-H284 The effort law - where does deliberation saturate?
 
@@ -3188,6 +3192,8 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - saturation by K=3; late rounds re-argue rather than re-discover (the agent stops fetching new evidence and starts rationalizing)
 - **Acceptance bar** - the accuracy-vs-K curve with per-round evidence-fetch counts (did round N fetch NEW evidence or re-reason?); refuted if the curve climbs past K=4 - effort then enters H290's frontier as a priced dial
 - **Experiment** - LLM tier, rides H283's harness on the same frozen pairs
+- **Result** - (same executor/report; 30-pair sweep) K=1 FM 0.80 -> K=2 0.90 -> K=4 1.00 -> K=8 0.95 - saturates by K=4 and DIPS at K=8; late-round audit shows K=8 rounds re-argue rather than fetch new evidence (3/4 late rounds fetched nothing new), exactly the registered rationalization prediction
+- **Verdict** - CONFIRMED - the effort knee sits at K=2-4 and more effort is mildly NEGATIVE past it; the effort cap sets at ~3 by measurement, and "thinking longer" without new evidence is now a measured anti-lever on this task
 
 ### R27-H285 CONTRARIAN - deliberation is theater: strip the tools
 
@@ -3196,6 +3202,8 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - confirmed; and the sharpest corollary follows: a NON-agentic pipeline (deterministically fetch class-(c) evidence per H281's map, then one call) matches the tool-agent at a fraction of its cost
 - **Acceptance bar** - the three-way comparison (single-shot / no-tools agent / tool-agent) per stratum; if the corollary pipeline matches the tool-agent within 3 pts, the SHIPPED form is fetch-then-judge and the agent loop is recorded as an unnecessary abstraction
 - **Experiment** - LLM tier, same harness, tools disabled; plus the fetch-then-judge pipeline arm
+- **Result** - (same executor/report) four-way on detection: single-shot 98.0%, no-tools agent 99.0% (+1.0 pt - within the 3-pt theater band), tool-agent 85.1%, fetch-then-judge 97.0%. The corollary REFUTED: fetch-then-judge is +11.9 pts over the tool-agent on detection and behaves like the single-shot (precision-biased) - the multi-round tool loop is NOT reducible to deterministic-fetch-plus-one-call, because its distinguishing behavior is the preservation SHIFT, not better evidence
+- **Verdict** - PARTIAL, theater clause CONFIRMED - deliberation without evidence adds ~1 pt (theater, as predicted); but the shipped-form corollary dies: no pipeline reproduces the tool-agent's merge-lenient profile. Moot for shipping - H290 buys preservation structurally (soft-link demotion) instead of behaviorally, so neither the loop nor the fetch pipeline ships as the adjudicator; the plain single-shot does
 
 ### R27-H286 Web escalation - the identifier class goes outside the corpus
 
@@ -3213,6 +3221,7 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - the cap is nearly free (value concentrates, per H279's 2.05x demand-concentration law); the gate is what makes the tier "exceptional, not ordinary" by construction rather than by hope
 - **Acceptance bar** - both clauses on the frozen pairs with H282/H283 verdicts as the flip source; the cap numbers ship into H290's frontier as binding constants
 - **Experiment** - free once H282/H283 verdicts exist (pure replay arithmetic over their outputs)
+- **Result/Verdict** - RESOLVED-MOOT by the measured population: the precision court's entire docket is ~130 pairs per graph (127 SAME_AS edges + the deep-defer identifier sliver), and the shipped adjudicator costs 513 tok/pair - the whole court runs for ~65k tokens, less than one document's ingest. There is no budget to allocate and nothing for a gate to protect; the registered hard caps (<= 5% of defer band escalated, per-document token ceiling) are adopted as standing constants in H290's composition anyway, as insurance for corpus classes where the SAME_AS surface scales
 
 ### R27-H289 The harness tax - does the framework earn its abstraction?
 
@@ -3221,6 +3230,7 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - the tax lands under 20% (tool-call plumbing amortizes over rounds) but is nonzero and worth measuring once, not assuming forever
 - **Acceptance bar** - matched-sample token accounting, both harnesses, same model/policy; resolved by measurement - the cheaper harness ships in H290's frontier
 - **Experiment** - LLM tier, small matched sample (20 pairs), rides H283's arms
+- **Result/Verdict** - UNTESTABLE as registered (honest): Strands Agents SDK is not installed in the project venv and is not a declared dependency, so the comparison had no second harness to run; per the no-plumbing directive the bare loop's reference cost was recorded (2448.6 tok/pair on the matched 20) and the bare loop ships by default. Moot in practice: H290 ships no agent loop at all
 
 ### R27-H290 The ladder frontier - what ships, at what price, behind what cap
 
@@ -3229,6 +3239,7 @@ The user directs a fan-out on AGENTIC LLM resolution for the defer band: when th
 - **Prediction** - the shipped form is LESS agentic than the round's name: fetch-then-judge + a web sliver behind the H287 gate, with the full agent loop priced out - the exceptional-not-ordinary law enforced by arithmetic
 - **Acceptance bar** - the composition table with per-rung accuracy/cost/population numbers and the knee verdict; ships into H198 (or records that the calibrated stack + soft links IS the frontier and the court of appeal stays closed)
 - **Experiment** - composes the round's artifacts; runs LAST
+- **Result/Verdict** - RESOLVED, and the shipped form is even less agentic than the registered prediction: **demote-don't-delete**. The composition: (1) the plain single-shot judge adjudicates the SAME_AS docket (98.0% false-merge detection, 513 tok/pair, ~65k tokens per graph - H287 moot); (2) judged-false edges are DEMOTED to posterior-weighted SIMILAR_TO soft links, never deleted - which makes the judge's one weakness (8 over-split true cross-type aliases) structurally costless, because H288 measured that a soft link carries a merge's entire render-recall value (+0.0 pts delta); the identity-precision poison leaves the SAME_AS surface while every possibly-true pair remains traversable; (3) effort cap K=3 constant recorded (H284), no tool loop (H283 refuted: 4x cost to trade detection for leniency), no fetch pipeline (H285: theater on detection), no framework (H289: nothing to host), no web (user-gated AND unneeded - H281 measured 1.1% world-knowledge territory). Zero-true-loss is achieved by construction rather than by any arm's accuracy - the escalation ladder collapses to one call plus one edge rewrite, the exceptional-not-ordinary law enforced by arithmetic exactly as the round demanded. Ships to H198; upstream root cause of the over-splits routes to H292
 
 ## R21 extension - the brand guard (registered 2026-07-08, post-H218)
 
@@ -3241,3 +3252,15 @@ H218's inverted prediction raises the registered question this hypothesis answer
 - **Prediction** - (iii) abstain-on-brand wins: photos rarely carry legible brand text, document context already names the product (H220's anchoring), and asserting identity from pixels is exactly the task VLMs fake - the guard aligns the modality with what it actually knows, the same lesson as the abstention doctrine everywhere else in the engine
 - **Acceptance bar** - both numbers per guard on the frozen H218 gold (same 12 photos + the 3 hallucination cases as the must-fix set); refuted if every guard that fixes precision destroys recall below 0.80 (the photo class then ships description-only-with-anchoring or enters the gap ledger)
 - **Experiment** - rides the H218 harness and frozen gold (cheap: 12 photos x 3 guards on the GPU-0 Qwen setup); queue with the R21 next tier
+
+## R27 extension - the type-label root cause (registered 2026-07-08, post-precision-arms)
+
+The precision arms' loss anatomy raises the registered question: every true-merge loss was a cross-type alias (Flow Meter[Accessory] = Flowmeter[Feature]) whose CONFLICTING extractor type labels triggered the judge's type-mismatch rule - the labels are extraction noise, not identity evidence, and no adjudicator behavior can fix what the labels poison.
+
+### R27-H292 Type-conflict is extractor noise - reconcile labels before judging identity
+
+- **Grounding** - H282's stratified collapse (TM-preservation 0.29 / 0.00 exactly and only on the type-conflict strata) localizes the failure to the type axis; the campaign owns three reconciliation candidates: multi-label union (an entity may be Accessory AND Feature - the cross-type resolver already emits multi_facet decisions), type-blind judging (strip type labels from the judge context, decide on name/description/provenance), and cured-ontology label arbitration (the hybrid consolidation machinery re-types the pair before the judge sees it); H229 closed the door on fixing this by extraction determinism, so reconciliation must happen post-hoc
+- **Hypothesis** - at least one reconciliation lifts single-shot true-merge preservation on the type-conflict strata from 0.29/0.00 to >= 0.75 while false-merge detection stays >= 95% overall - restoring the judge as a safe standalone instrument (and shrinking H290's reliance on demotion as the safety net)
+- **Prediction** - type-blind judging wins cheapest: the judge's own reasoning cites the type conflict as its split reason, and names/descriptions/shared provenance carry the true signal; multi-label union wins on principle but needs resolver plumbing
+- **Acceptance bar** - both numbers per candidate on the frozen 127-pair labels (the type-conflict strata are the must-fix set); refuted if every candidate that fixes preservation drags detection under 95% - the demote-don't-delete composition then stands as the permanent form and type labels are recorded as identity-hostile
+- **Experiment** - cheap: rides the frozen labels + warm LLM cache (results/r27_precision/), 61 type-conflict pairs x 3 candidates; queue on the local endpoint behind the running batch
