@@ -2989,3 +2989,118 @@ User-directed fan-out: five parallel ideation agents (sampling statistics, decod
 - **Acceptance bar** - monotonicity + band clauses (a merge that regresses coverage or blows the band kills the async form and union ships synchronous); the resolver-load-vs-K curve measured here bounds every union-family remedy
 - **Synthetic gate** - none needed: sequential merge simulation on checkpoints, CPU only (resolver logic offline, no graph writes)
 - **Cost** - gate free; production = orchestration wiring only
+
+## R25 - peer harvest: mechanisms climbed from graphify and TrustGraph (user-directed, pre-registered 2026-07-08)
+
+User-directed competitive climb of two peer graph builders (graphify SKILL pipeline; TrustGraph at HEAD 0374098, shallow clone under tmp/peers/). Verdict: NEITHER turns the tables - both run single-pass extraction with no variance awareness (our undersampling diagnosis transfers to them wholesale and silently), both use lexical-slug identity that our measured extraction-variance failure defeats permanently, neither has completeness auditing (graphify's "honest audit trail" is edge-provenance labeling - a precision instrument under a recall-sounding name), and TrustGraph's RDF-triple granularity AMPLIFIES attachment fragmentation rather than sidestepping it (ownership facts scatter across duplicate surface-form URIs; OntoRAG validation can even drop valid ownership triples). Neither has ontology curing, drift detection, or bitemporal versioning. Five mechanisms survived scrutiny as worth testing; two engineering items route to H198 without hypotheses (truncation-resilient JSONL parsing - TrustGraph agent/extract.py:141 - so partial LLM output yields partial results instead of dropped chunks; the discrete 5-value confidence rubric as anti-collapse evidence for our calibration artifact - graphify lines 376-388).
+
+### R25-H266 Query-answer write-back - the graph learns from its own usage
+
+- **Grounding** - (graphify save-result, SKILL lines 1017-1023) every answered query is reinjected into the graph as a node and extracted on the next update; KGF has no usage-driven enrichment - yet the use-case regime doctrine says the declared use case should narrow everything, and actual queries ARE the use case speaking; composes with H254 healing (repeat-queried subgraphs densify exactly where users care)
+- **Hypothesis** - persisting answered probe renders (answer + cited evidence + query embedding) as first-class graph nodes lifts repeat-query recall >= 5 pts on the benchmark's paraphrase pairs at < 2% graph growth, with zero regression on untouched probes
+- **Acceptance bar** - the paraphrase-pair clause on the frozen bench; refuted if write-back nodes pollute retrieval (seed slots displaced on unrelated probes)
+- **Experiment** - free gate first: replay the existing benchmark answer set as simulated write-back nodes against the frozen graph + rerun the pinned census; the live form joins H198 if the gate clears
+
+### R25-H267 Deterministic-ID fast path - reserve the resolver for the hard residual
+
+- **Grounding** - (graphify line 390) exact-normalized-surface matches merge for free by deterministic ID with zero resolver cost; KGF routes EVERY mention pair through blocking + Bayesian scoring; if a large share of production merge decisions are exact-normalized matches, the fast path cuts resolver load precisely where H265 measures union-K load scaling - the easy majority merges deterministically, the calibrated machinery handles only variance-class pairs
+- **Hypothesis** - >= 50% of the reference graph's historical merge decisions are exact matches under the H190 normalization operator (free census on resolution event logs), and wiring the fast path preserves every v2 identity clause while cutting resolver defer/judge volume >= 30% on a replay
+- **Acceptance bar** - both clauses; refuted if exact matches are a minority (variance dominates and the fast path saves nothing) or if fast-path merges introduce false merges the calibrated path would have vetoed (the deterministic path must be provably safe, not just cheap)
+- **Experiment** - census clause free on logs/h157-events.jsonl + campaign event logs; replay clause offline on frozen resolution decisions; ships via H198 if both clear
+
+### R25-H268 Soft similarity links - abstention as a graph primitive
+
+- **Grounding** - (graphify semantically_similar_to, line 361) near-duplicates stay LINKED, not merged; KGF's defer zone parks undecided pairs in a ledger invisible to retrieval - a soft SIMILAR_TO edge weighted by the posterior would let PPR/render traverse an unresolved pair (recovering H236-class attachment fragments BEFORE the merge decision) while preserving the abstention doctrine (no irreversible merge)
+- **Hypothesis** - materializing defer-zone pairs as weighted soft edges recovers >= 30% of the sibling-fragment attachment misses on the frozen graph (render hops the soft edge) at zero false-merge risk and <= 5% render token growth
+- **Acceptance bar** - the recovery clause simulated on neo4j2 read-only (H236's 17 sibling pairs + the defer ledger); refuted if soft-edge hops pollute renders with wrong-entity facts (the H212 attribution rule must hold across soft edges)
+- **Experiment** - free simulation on the frozen graph + defer logs; live wiring via H198 if it clears
+
+### R25-H269 Ontology-constrained extraction - the precision lever we never ran
+
+- **Grounding** - (TrustGraph OntoRAG, extract/kg/ontology/extract.py:322/571) embed-select a relevant ontology subset per chunk, constrain extraction to it, and REJECT triples violating declared domain/range with cycle-safe subclass checking; KGF extraction is schema-free post-cure (types guide, nothing validates); orthogonal to undersampling (it trades recall for precision - it would DROP valid low-frequency facts, exactly the class our union cures recover) but may cut spurious-predicate/type noise that inflates resolver load and render dilution
+- **Hypothesis** - replaying domain/range validation over the frozen reference graph's relationships (cured ontology expressed as constraints) flags >= 15% of relationships as violations, of which >= 70% are genuine junk on blind adjudication (a real precision surface) and < 10% are benchmark-load-bearing (the recall cost is affordable)
+- **Acceptance bar** - all three clauses on the free replay; refuted if violations are rare (extraction already schema-consistent - a clean exoneration) or if the flagged set is materially load-bearing (validation would repeat H237's voting mistake on the relationship axis)
+- **Experiment** - entirely free: cured ontology + frozen graph + blind adjudication protocol; a live constrained-extraction arm only if the replay shows a real, affordable surface
+
+### R25-H270 Schema-as-graph - the ontology becomes queryable substrate
+
+- **Grounding** - (TrustGraph build_ontology_triples :695) ontology elements written into the graph as first-class triples make the active schema embeddable and retrievable next to data; KGF's cured ontology lives in config - invisible to retrieval, so type-level questions cannot be answered from the graph, and H269's validator would need the schema in-graph anyway
+- **Hypothesis** - materializing the cured ontology as typed schema nodes/edges (< 100 nodes) enables type-level probe answers (>= 3 of the benchmark's schema-shaped questions flip from unanswerable) at zero regression on the standard set
+- **Acceptance bar** - the flip clause on the frozen bench + regression guard; refuted if no benchmark question is schema-shaped (park it as an ops nicety in the gap ledger, not a lever)
+- **Experiment** - free: schema materialization is deterministic; measure on a scratch copy after H241 releases neo4j4
+
+- **Post-registration note on H266 (2026-07-08, user direction)** - the naive reinjection form is SUPERSEDED BY DESIGN before running: the user flags that raw question/answer write-back "will create complete mess" because answers are tied to the graph AS IT WAS at answer time - a written-back answer is a derived fact whose validity decays as the graph evolves, and untracked derived content pollutes the source-of-truth layer. The mechanism family is re-scoped into R26 (usage-coupling round) with staleness/invalidation as the organizing constraint; H266's gate does not run in this form
+
+## R26 - usage coupling done right: demand signals, derived layers, and the staleness law (user-directed, pre-registered 2026-07-08)
+
+The peer climb surfaced usage-driven enrichment (graphify's write-back) and the user endorsed the direction while killing the naive form: reinjecting answers as ordinary nodes creates untracked derived content whose validity is pinned to a past graph state. This round researches the EFFECTIVE mechanisms: the principle is to write back SIGNALS (demand, aliases, gaps) which age gracefully, and treat CONTENT (answers, renders) as derived artifacts with explicit dependency tracking and invalidation - never as source-of-truth nodes. Grounding concepts: materialized-view incremental maintenance, cache invalidation by dependency fingerprint, demand paging. KGF already owns the needed substrate: bitemporal edges, drift detection, graph fingerprints, the gap ledger. H267 (deterministic-ID fast path) stands as registered in R25 - user-endorsed, gates unchanged.
+
+### R26-H271 The demand ledger - queries as repair-budget allocators
+
+- **Grounding** - every benchmark/production query already computes seed embeddings and hit/miss outcomes; logging (query embedding, seeds, outcome, graph fingerprint) as a DEMAND LEDGER (outside the graph) gives the foundry a map of which neighborhoods users actually touch; the R24 finding that repair passes are scarce (union costs money) meets the obvious allocator: spend repair where demand is
+- **Hypothesis** - replaying the benchmark query history as a demand ledger and allocating a fixed repair budget (union passes, healing scans) demand-weighted recovers >= 1.5x the probe-recall gain of corpus-uniform allocation at equal budget
+- **Acceptance bar** - the 1.5x clause on frozen-artifact simulation (checkpoints + probe outcomes); refuted if demand and gaps are uncorrelated (queried neighborhoods are already the well-extracted ones - a plausible null worth knowing)
+- **Experiment** - free simulation: probe outcomes x per-doc residue from the R24 audits
+
+### R26-H272 Abstention-triggered repair - the gap ledger closes its own entries
+
+- **Grounding** - a failed/abstained query is the highest-value gap signal (a user WANTED the missing content); the gap ledger currently records abstentions passively; wiring abstention -> targeted repair job (GLiNER-audited residue re-extraction of the query's seed neighborhood source spans, per H252) makes the foundry self-healing exactly where it visibly fails - the lazy form of extraction-on-demand
+- **Hypothesis** - for the benchmark's failed probes, triggering the H252 surgical micro-pass on each failure's seed-neighborhood documents flips >= 40% of the failures at a per-failure cost <= 0.2x a full document re-ingest
+- **Acceptance bar** - both clauses; refuted if failures do not localize to repairable neighborhoods (misses spread across documents - repair jobs would be full re-ingests in disguise)
+- **Experiment** - LLM tier (rides H252's micro-pass machinery once it clears); queue behind the current LLM queue
+
+### R26-H273 The derived layer - answers as dependent facts with invalidation
+
+- **Grounding** - if answers/renders ARE persisted, they must live in a typed DERIVED layer: nodes carrying DERIVED_FROM edges to their evidence, the graph fingerprint at derivation time, and bitemporal stamps; KGF's drift detector + versioning then give invalidation for free (evidence node mutated -> derived node marked stale); derived nodes are excluded from extraction, resolution, and curing - they can never contaminate the source-of-truth layer (the user's mess concern, answered structurally)
+- **Hypothesis** - a derived layer with dependency invalidation keeps answer reuse SAFE across graph evolution: on the recorded mutation history, >= 95% of derived answers whose evidence changed are correctly invalidated, and reused (still-valid) answers show zero divergence from fresh recomputation
+- **Acceptance bar** - both clauses on replay; refuted if dependency tracking misses indirect staleness (answer depends on ABSENCE of contradicting facts - the frame problem; if material, only the H274 cache form survives)
+- **Experiment** - free replay over the wave-2 mutation events + benchmark answers; the frame-problem clause is the honest killer to watch
+
+### R26-H274 CONTRARIAN - keep it out of the graph entirely
+
+- **Grounding** - the simplest mess-proof design: answers cached OUTSIDE the graph, keyed by (query-embedding cluster, supporting-subgraph fingerprint); any change to the supporting subgraph changes the fingerprint and the entry silently misses - no in-graph derived layer, no invalidation machinery, no frame problem (the fingerprint covers the whole render surface including absences); the graph stays pure source-of-truth
+- **Hypothesis** - the fingerprint-keyed cache achieves >= 90% of H273's safe-reuse rate at <= 20% of its implementation surface (no schema changes, no drift-detector coupling), making it the dominating design unless H273's in-graph queryability is itself load-bearing
+- **Acceptance bar** - head-to-head with H273 on the same replay; the round ships exactly one of the two (or neither)
+- **Experiment** - same free replay; the comparison IS the experiment
+
+### R26-H275 The recurrence gate - only repeated demand earns materialization
+
+- **Grounding** - one-off queries must not trigger materialization/repair (mess by accumulation); demand becomes actionable only when it RECURS - paraphrase-cluster the query log (embedding similarity) and gate every usage-coupled action (H271 allocation, H272 repair, H273/H274 persistence) on cluster mass >= threshold
+- **Hypothesis** - on the benchmark's paraphrase pairs + distractor one-offs, embedding clustering separates recurring from one-off demand at >= 0.9 precision/recall, and gating repair on recurrence retains >= 90% of H271's gain while cutting actions >= 50%
+- **Acceptance bar** - both clauses; refuted if paraphrase clustering is unreliable at this scale (the gate then falls back to exact-repeat counting)
+- **Experiment** - free: probe catalogue has paraphrase structure by construction
+
+### R26-H276 Materialized render views - pay the render once, maintain incrementally
+
+- **Grounding** - retrieval-first doctrine shifts work to ingest; the render (1-2 hop context assembly) is recomputed per query today; materializing per-entity render views as versioned artifacts maintained incrementally on mutation (classic materialized-view maintenance) turns query-time assembly into a lookup; differs from H273 (renders are mechanical projections, not LLM-derived answers - no staleness semantics beyond the graph's own)
+- **Hypothesis** - materialized views cut query-time render latency >= 5x at <= 15% storage growth, with incremental maintenance cost <= 10% of ingest wall-clock on the recorded mutation history, and byte-identical output to fresh renders
+- **Acceptance bar** - all three clauses; refuted if mutation fan-out makes maintenance rival recomputation (high-degree hubs invalidate constantly)
+- **Experiment** - free simulation on the frozen graph + mutation replay; ships via H198 if it clears
+
+### R26-H277 Query-alias harvesting - usage teaches the resolver
+
+- **Grounding** - users name entities in their own surface forms; when a query term vector-matches an entity at moderate similarity and the interaction succeeds, that term IS an alias attestation with zero LLM cost; the resolver's blocking and the H190 normalization gain exactly the surface-form coverage extraction variance keeps fumbling - identity improves from usage without any write-back of content
+- **Hypothesis** - harvesting query-term/entity pairs from the benchmark run logs yields >= 20 alias candidates of which >= 80% survive blind adjudication, and adding them to the resolver's alias table flips >= 1 of the persistent identity failures (the model-code SAME_AS class)
+- **Acceptance bar** - all clauses; refuted if query vocabulary already matches graph names (nothing to harvest on this corpus class)
+- **Experiment** - free census on benchmark logs + blind adjudication; resolver replay offline
+
+### R26-H278 Demand decay - the ledger forgets gracefully
+
+- **Grounding** - demand signals must age or the first hot week hoards the repair budget forever (the staleness concern applied to SIGNALS, not just content); an exponential decay half-life on demand markers keeps allocation tracking CURRENT usage; the right half-life is measurable, not guessable
+- **Hypothesis** - on a time-sliced replay of the query history, decayed demand (half-life swept) predicts NEXT-slice demand better than cumulative demand (>= 10% lift in rank correlation), and the optimal half-life is stable across slices
+- **Acceptance bar** - both clauses; refuted if demand is stationary at this corpus scale (decay then defers to production telemetry, parked in the gap ledger)
+- **Experiment** - free replay; requires only the benchmark run timestamps
+
+### R26-H279 CONTRARIAN - the staleness law measured
+
+- **Grounding** - the user's mess warning, quantified: ANY persisted derived content decays in validity as the graph mutates; before shipping H273/H274/H276, measure the actual decay curve - answer-validity half-life in mutation events - on the recorded wave-2 history; if the half-life is short relative to query recurrence intervals, ALL content persistence is net-negative and only signal write-back (H271/H277) survives
+- **Hypothesis** - >= 30% of benchmark answers become evidence-stale within the recorded mutation window, and staleness is concentrated in exactly the high-demand neighborhoods (mutation follows the same documents queries follow) - making naive persistence worst precisely where it would be used most
+- **Acceptance bar** - the measured curve is the deliverable; the 30%/concentration clauses decide whether content persistence ships at all
+- **Experiment** - free replay; RUNS FIRST in the round - its curve parameterizes H273/H274/H276's bars
+
+### R26-H280 The usage-coupling frontier - what ships
+
+- **Grounding** - the round yields up to six mechanisms (demand allocation, abstention repair, derived layer, external cache, render views, alias harvesting) gated by two disciplines (recurrence, decay) under one law (H279's staleness curve); H198 needs a single coherent usage-coupling design, not six features
+- **Hypothesis** - a coherent composition exists in which every surviving mechanism strictly improves the benchmark (recall, latency, or identity) with zero cross-interference, and signal write-back mechanisms dominate content persistence on this corpus class
+- **Acceptance bar** - the composition table with per-mechanism deltas; the decision procedure of the round - resolved, not refuted; its output is the H198 usage-coupling input
+- **Experiment** - composes the round's surviving artifacts; runs LAST
