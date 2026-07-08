@@ -69,6 +69,9 @@ class ResolutionSettings(BaseModel):
     identity_stack: Literal["v1", "v2"] = "v1"  # R15-H158: v2 = calibrated cosine + NLI veto + logistic
     identity_stack_artifact: str = "data/processed/identity-calibration-v2.json"  # v2 baked coefficients
     nli_veto_threshold: float = 0.5  # R15-H158: contradiction prob that vetoes a merge (H122/H128)
+    soft_links: bool = True  # R15-H268: materialize defer-zone pairs as posterior-weighted SIMILAR_TO edges (link, never merge)
+    demotion_court: bool = True  # R15-R27/H290: ingest-close single-shot judge over the SAME_AS docket; judged-false edges demoted to soft links
+    calibration_path: Optional[str] = None  # R15-H157/H142: per-corpus frozen isotonic artifact; None = current behavior
 
 
 class CuringSettings(BaseModel):

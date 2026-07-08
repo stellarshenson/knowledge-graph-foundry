@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import math
+from pathlib import Path
 from typing import Optional
 
 from loguru import logger
@@ -71,6 +72,40 @@ class PosteriorCalibrator:
     def from_json(cls, data: str) -> "PosteriorCalibrator":
         parsed = json.loads(data)
         return cls(parsed["x"], parsed["y"])
+
+
+def fit_calibration_from_events(
+    events_path: Path | str,
+    ground_truth_path: Path | str,
+    min_observations: int = 50,
+) -> Optional[PosteriorCalibrator]:
+    """R15-H157/H142: fit a per-corpus isotonic curve from the corpus's own
+    resolution events and a ground-truth pairs file, offline. The ground-truth
+    file is a JSON list of {left_id, right_id, same} objects; each resolution
+    event carrying a posterior and matching a ground-truth pair contributes one
+    (posterior, label) observation. Returns None below the label floor - the
+    resolver then keeps its fixed documented threshold."""
+    labels_by_pair: dict[frozenset[str], bool] = {}
+    for row in json.loads(Path(ground_truth_path).read_text()):
+        labels_by_pair[frozenset((row["left_id"], row["right_id"]))] = bool(row["same"])
+
+    posteriors: list[float] = []
+    labels: list[bool] = []
+    with open(events_path) as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            rec = json.loads(line)
+            if not str(rec.get("event", "")).startswith("resolution."):
+                continue
+            if "left_id" not in rec or "right_id" not in rec or "posterior" not in rec:
+                continue
+            key = frozenset((rec["left_id"], rec["right_id"]))
+            if key in labels_by_pair:
+                posteriors.append(float(rec["posterior"]))
+                labels.append(labels_by_pair[key])
+    return PosteriorCalibrator.fit(posteriors, labels, min_observations=min_observations)
 
 
 def _clip(p: float, eps: float = 1e-6) -> float:

@@ -129,6 +129,45 @@ def optimize(config: Optional[Path] = typer.Option(None, help="Path to config.ym
 
 
 @app.command()
+def calibrate(
+    ground_truth: Path = typer.Argument(
+        ..., help="Ground-truth pairs JSON: [{left_id, right_id, same}]"
+    ),
+    events: Optional[Path] = typer.Option(
+        None, help="Resolution event log JSONL (default: settings.event_log)"
+    ),
+    output: Optional[Path] = typer.Option(
+        None, help="Artifact output (default: settings.resolution.calibration_path)"
+    ),
+    config: Optional[Path] = typer.Option(None, help="Path to config.yml"),
+) -> None:
+    """Fit a per-corpus isotonic calibration artifact from resolution events and
+    ground-truth pairs (H157/H142). Offline-fit and runtime-frozen: the resolver
+    loads the artifact when resolution.calibration_path points at it."""
+    from knowledge_graph_foundry.resolution.calibration import fit_calibration_from_events
+
+    settings = load_settings(config)
+    events_path = events or Path(settings.event_log or "logs/kgf-events.jsonl")
+    out_path = output or (
+        Path(settings.resolution.calibration_path)
+        if settings.resolution.calibration_path
+        else None
+    )
+    if out_path is None:
+        _fail("no output: set resolution.calibration_path in config or pass --output")
+    if not events_path.exists():
+        _fail(f"event log not found: {events_path}")
+    calibrator = fit_calibration_from_events(
+        events_path, ground_truth, settings.resolution.calibration_min_observations
+    )
+    if calibrator is None:
+        _fail("too few matched labels to fit a curve - resolver keeps its fixed threshold")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(calibrator.to_json())
+    console.print(f"calibration artifact written to [bold]{out_path}[/bold]")
+
+
+@app.command()
 def repurpose(
     purpose: str = typer.Argument(..., help="The new use case driving future extraction"),
     seed: Optional[str] = typer.Option(

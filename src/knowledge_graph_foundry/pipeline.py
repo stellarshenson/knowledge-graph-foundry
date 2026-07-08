@@ -112,6 +112,35 @@ class Foundry:
 
         write_control(self.driver, state)
 
+    def _make_calibrator(self, state: dict) -> Optional[PosteriorCalibrator]:
+        """Load the resolver's calibrator. A per-corpus frozen artifact
+        (resolution.calibration_path, H157/H142) wins when present; otherwise
+        the calibration persisted in graph state; otherwise none (fixed
+        threshold)."""
+        path = self.settings.resolution.calibration_path
+        if path and Path(path).exists():
+            return PosteriorCalibrator.from_json(Path(path).read_text())
+        if state.get("calibration"):
+            return PosteriorCalibrator.from_json(state["calibration"])
+        return None
+
+    def _materialize_soft_links(self, decisions, id_map: dict[str, str]) -> None:
+        """R15-H268: turn resolver defer-zone decisions into posterior-weighted
+        SIMILAR_TO soft links (link, never merge). Ids are remapped through the
+        resolution id map so an endpoint merged elsewhere still links correctly."""
+        from knowledge_graph_foundry.graph.densify import add_soft_links
+
+        pairs: list[tuple[str, str, float]] = []
+        for d in decisions:
+            if d.decision != "defer":
+                continue
+            left = id_map.get(d.left_id, d.left_id)
+            right = id_map.get(d.right_id, d.right_id)
+            if left != right:
+                pairs.append((left, right, d.posterior))
+        if pairs:
+            add_soft_links(self.driver, pairs)
+
     # -- operations -------------------------------------------------------
 
     def init_project(self, purpose: str, seed: Optional[str] = None) -> Ontology:
@@ -256,11 +285,7 @@ class Foundry:
         metrics = StabilityMetrics()
         detector = CuringDetector(curing_cfg)
         drift: Optional[DriftDetector] = None
-        calibrator = (
-            PosteriorCalibrator.from_json(state["calibration"])
-            if state.get("calibration")
-            else None
-        )
+        calibrator = self._make_calibrator(state)
 
         if lifecycle.state in ("INITIALIZING", "CURING"):
             if state.get("buffer_cache"):
@@ -423,11 +448,7 @@ class Foundry:
             raise FoundryError("repair requires a STABLE graph")
         purpose = state.get("purpose", "")
         ontology = Ontology(**state["ontology"])
-        calibrator = (
-            PosteriorCalibrator.from_json(state["calibration"])
-            if state.get("calibration")
-            else None
-        )
+        calibrator = self._make_calibrator(state)
         focused = f"{purpose}\nRepair focus - extract the facts that answer: {question}"
 
         run_id = new_run_id()
@@ -564,6 +585,8 @@ class Foundry:
         )
         load_relationships(self.driver, relationships, batch_size=self.settings.load.batch_size)
         self._reconcile(relationships)
+        if self.settings.resolution.soft_links:
+            self._materialize_soft_links(result.decisions, result.id_map)
 
         ontology.cured = True
         emit(
@@ -662,6 +685,8 @@ class Foundry:
             self.driver, merged_relationships, batch_size=self.settings.load.batch_size
         )
         invalidated = self._reconcile(merged_relationships)
+        if self.settings.resolution.soft_links:
+            self._materialize_soft_links(result.decisions, id_map)
 
         unknown = sum(1 for e in merged_entities if not any(t in ontology.types for t in e.types))
         remap_rate = unknown / len(merged_entities) if merged_entities else 0.0
@@ -723,12 +748,18 @@ class Foundry:
                 threshold=self.settings.graphrag.similarity_threshold,
                 top_k=self.settings.graphrag.similarity_top_k,
             )
+        court = None
+        if self.settings.resolution.demotion_court:
+            from knowledge_graph_foundry.graph.court import run_demotion_court
+
+            court = run_demotion_court(self.driver, self.engine, self.settings.resolution)
         card = scorecard(self.driver)
         result = {
             "communities": communities,
             "summaries": summaries,
             "propositions": propositions,
             "similarity_edges": similarity_edges,
+            "court": court,
             "scorecard": card,
         }
         self._persist_scorecard(result)
