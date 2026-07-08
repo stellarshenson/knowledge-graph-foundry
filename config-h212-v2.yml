@@ -1,0 +1,15 @@
+# R15-H212 clean-conditions recall re-run - identity_stack v2 (H158 v2 arm replayed).
+# Copy of config-h158-v2.yml; neo4j pinned explicitly to the FRESH scratch instance
+# per DEF-4/DEF-5 (never .env inheritance). Bedrock Sonnet engine reproduces the
+# H158 v2 extraction path exactly, re-run under quiet Bedrock (no concurrent wave-2).
+neo4j:
+  uri: bolt://172.19.0.4:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: frontier
+  model: bedrock/eu.anthropic.claude-sonnet-4-5-20250929-v1:0
+  region: eu-central-1
+resolution:
+  identity_stack: v2
+event_log: logs/h212-v2-events.jsonl

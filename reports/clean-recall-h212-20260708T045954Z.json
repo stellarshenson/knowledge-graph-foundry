@@ -1,0 +1,264 @@
+{
+  "hypothesis": "R15-H212",
+  "stamp": "20260708T045954Z",
+  "verdict": "INCONCLUSIVE",
+  "fresh_instance": "bolt://172.19.0.4:7687",
+  "config": "config-h212-v2.yml",
+  "bar": {
+    "warnings_le": 76,
+    "recall_ge": 0.875
+  },
+  "h158_reference": {
+    "v1_warnings": 76,
+    "v2_warnings": 119,
+    "v1_recall": 0.875,
+    "v2_recall": 0.8333,
+    "replay_false_merges": 11,
+    "false_merge_tol": 0.2,
+    "precision_bar": 0.5
+  },
+  "telemetry": {
+    "extraction_warning_total": 82,
+    "warning_by_reason": {
+      "self-referencing relationship on AirFit F10": 1,
+      "self-referencing relationship on Quattro Air": 1,
+      "dangling relationship": 50,
+      "chunk extraction failed": 30
+    },
+    "chunk_extraction_failed": 30,
+    "event_histogram": {
+      "fsm.transition": 3,
+      "document.started": 28,
+      "extraction.completed": 27,
+      "ontology.type_emerged": 25,
+      "ontology.type_confirmed": 23,
+      "ontology.evolved": 10,
+      "curing.metrics": 10,
+      "document.completed": 26,
+      "extraction.warning": 82,
+      "resolution.defer": 965,
+      "resolution.merge": 527,
+      "resolution.block": 3427,
+      "resolution.veto": 91,
+      "load.batch": 35,
+      "load.completed": 35,
+      "curing.cured": 1,
+      "document.skipped": 2
+    }
+  },
+  "census": {
+    "entities": 1585,
+    "relationships": 5798,
+    "chunks": 132
+  },
+  "precision_proxy": {
+    "event_log": "logs/h212-v2-events.jsonl",
+    "merges_total": 527,
+    "defers_total": 965,
+    "blocks_total": 3427,
+    "nli_vetoes": 91,
+    "proxy_tp": 15,
+    "proxy_fp": 14,
+    "proxy_fn": 37,
+    "proxy_tn": 231,
+    "same_as_precision": 0.5172,
+    "false_merges": 14,
+    "proxy_recall": 0.2885,
+    "resolution_ts_first": "2026-07-07T23:29:53.711047+00:00",
+    "resolution_ts_last": "2026-07-07T23:57:16.656256+00:00"
+  },
+  "recall": {
+    "label": "v2-h212",
+    "uri": "bolt://172.19.0.4:7687",
+    "top_k": 16,
+    "entities": 1585,
+    "relationships": 5798,
+    "documents": 5,
+    "mean_recall": 0.75,
+    "fully_covered": 16,
+    "n_probes": 24,
+    "per_probe": {
+      "P01": 1.0,
+      "P02": 1.0,
+      "P03": 1.0,
+      "P04": 1.0,
+      "P05": 1.0,
+      "P06": 1.0,
+      "P07": 1.0,
+      "P08": 0.0,
+      "P09": 0.0,
+      "P10": 1.0,
+      "P11": 1.0,
+      "P12": 1.0,
+      "P13": 1.0,
+      "P14": 0.5,
+      "P15": 0.5,
+      "P16": 0.5,
+      "P17": 0.5,
+      "P18": 1.0,
+      "P19": 1.0,
+      "P20": 1.0,
+      "P21": 0.0,
+      "P22": 1.0,
+      "P23": 1.0,
+      "P24": 0.0
+    }
+  },
+  "clauses": {
+    "warnings_le_76": false,
+    "recall_ge_0875": false,
+    "precision_ge_50pct": true,
+    "false_merges_within_tol": false
+  },
+  "forensics": {
+    "P08": {
+      "question": "What is the typical power consumption of the ResMed AirSense 11?",
+      "sources": [
+        "ResMed-Airsense-11-Manual.pdf"
+      ],
+      "score": 0.0,
+      "golds": [
+        {
+          "gold": "Typical power consumption: 9.0W",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        }
+      ]
+    },
+    "P09": {
+      "question": "What are the dimensions of the Fisher & Paykel SleepStyle 200?",
+      "sources": [
+        "SleepStyle_200_Operating_Manual.pdf"
+      ],
+      "score": 0.0,
+      "golds": [
+        {
+          "gold": "275mm x 170mm x 140mm",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        }
+      ]
+    },
+    "P14": {
+      "question": "Which has the larger humidifier water capacity, the ResMed AirSense 11 or the Resvent iBreeze?",
+      "sources": [
+        "ResMed-Airsense-11-Manual.pdf",
+        "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "380 mL",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        },
+        {
+          "gold": "290 ml",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        }
+      ]
+    },
+    "P15": {
+      "question": "Which is heavier with its humidifier, the DreamStation CPAP or the BMC RESmart Auto CPAP?",
+      "sources": [
+        "BC-Dreamstation-Standard-CPAP.pdf",
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "1.98kg",
+          "in_source_chunks": true,
+          "in_graph": false,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "2.4 kg",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        }
+      ]
+    },
+    "P16": {
+      "question": "What are the dimensions of the Fisher & Paykel SleepStyle 200 compared with the Resvent iBreeze?",
+      "sources": [
+        "SleepStyle_200_Operating_Manual.pdf",
+        "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "275mm x 170mm x 140mm",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "238*178*128 mm",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        }
+      ]
+    },
+    "P17": {
+      "question": "Which offers a longer ramp time, the Resvent iBreeze or the DreamStation CPAP?",
+      "sources": [
+        "Resvent-iBreeze-Auto-CPAP-User-Manual.pdf",
+        "BC-Dreamstation-Standard-CPAP.pdf"
+      ],
+      "score": 0.5,
+      "golds": [
+        {
+          "gold": "0-60 mins",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        },
+        {
+          "gold": "0 to 45 min",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": true
+        }
+      ]
+    },
+    "P21": {
+      "question": "What is the purpose of the EZ-Start feature on the DreamStation CPAP Pro?",
+      "sources": [
+        "DreamStation_CPAP_Pro_DataSheet.pdf"
+      ],
+      "score": 0.0,
+      "golds": [
+        {
+          "gold": "gradually acclimate",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        }
+      ]
+    },
+    "P24": {
+      "question": "On the ResMed AirSense 11, what does the EPR feature do during breathing?",
+      "sources": [
+        "ResMed-Airsense-11-Manual.pdf"
+      ],
+      "score": 0.0,
+      "golds": [
+        {
+          "gold": "reduces the pressure during expiration",
+          "in_source_chunks": true,
+          "in_graph": true,
+          "in_top16_seeds": false
+        }
+      ]
+    }
+  },
+  "deviations": []
+}
