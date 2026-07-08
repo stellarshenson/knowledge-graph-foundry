@@ -107,7 +107,7 @@ class GraphRAGSettings(BaseModel):
     foreign_device_exclusion: bool = False  # R19-H205: optional - drop foreign-device sections
     prop_val_linkage: bool = True  # R19-H211: surface entities whose property value == a seed name
     proposition_split_max_tokens: int = 300  # R15-H173: split fat propositions (0 disables)
-    ppr_enabled: bool = True  # R2: PPR traversal seeded from vector top-k
+    ppr_enabled: bool = False  # R2 lever, H37-refuted: PPR is theater (0.994 containment in seeds+1hop) - off in the promoted composition, code retained for ablation
     ppr_top_n: int = 15  # R2: PPR nodes taken into the answer context
     ppr_damping: float = 0.85  # R2: PageRank damping
     propositions_enabled: bool = True  # R02-H11: fact sentences as retrieval targets
