@@ -2566,6 +2566,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - the froth is mostly the model free-associating abstractions ("compliance", "therapy", "pressure") differently per run; the entities the GRAPH actually needs (products, codes, specs) sit in the stable core - which would mean the 0.749 overstates the harm
 - **Acceptance bar** - the class table with per-class stability rates; the >= 60% and >= 3x clauses; refuted if churn is class-uniform (the noise is then structural and only decoding/ensemble cures apply)
 - **Synthetic gate** - none needed: the entire test runs on existing checkpoints, CPU-only - it IS its own gate; runs first, its class table feeds every other gate in the round
+- **Result** - (executor 2026-07-08, [`failure_mechanism_r22.ipynb`](../../notebooks/failure_mechanism_r22.ipynb) / [`failure-mechanism-r22-20260708T051237Z.json`](../../reports/failure-mechanism-r22-20260708T051237Z.json); sanity anchors reproduced exactly - singleton 62.4%, stable 6.4%) the class table refutes both clauses: generic+fragment = 45.3% of froth (bar 60) because PRODUCT-FORM names are the largest singleton class (469 of 1041); and neither code-bearing (0.94x base stability - LESS stable than average) nor product-form (1.25x) approaches the 3x bar. Fragments are the most stable class (2.9x)
+- **Verdict** - REFUTED - the churn has no exploitable class structure: even product and code names churn at near-base rates, so class-targeted cures are dead and the refuter's conclusion stands - the noise is structural (decoding/ensemble territory only)
 
 ### R22-H231 CONTRARIAN - the variance is harmless downstream
 
@@ -2574,6 +2576,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - contrarian split: coverage of gold-relevant names is run-stable (they live in the stable core) BUT the H226 attachment gaps correlate with run choice - variance is harmless for presence, harmful for attachment
 - **Acceptance bar** - the coverage-delta clause; confirmed -> the variance framing is demoted and H101-class identity benchmarks stay the lever; refuted (run choice swings coverage > 5 pts) -> variance directly costs recall and the ensemble/decoding cures gain priority
 - **Synthetic gate** - none needed: pure CPU on existing checkpoints + the frozen probe sets; runs with H230
+- **Result** - (same executor/report) of 101 wide-set gold carriers, 35 are coverable by these 10 documents; single-run coverage: 88.6 / 57.1 / 48.6 / 34.3 / 48.6 percent across the 5 runs (mean 55.4%, swing 54.3 pts) vs UNION-of-5 coverage **100%** - both clauses fail by an order of magnitude (bar: within 5 pts). Caveat recorded: the attachment sub-prediction was untestable from name-only checkpoints
+- **Verdict** - REFUTED, and the refutation is the round's most consequential finding: run choice DIRECTLY costs benchmark recall - gold carriers live disproportionately in the churned tail, a single extraction pass samples roughly half of what the model can extract, and the union of 5 passes recovers ALL of it. Variance is not noise around a sufficient core; it is undersampling. This single-handedly reframes the coverage ceiling (H207's two-thirds-absent class may be largely recoverable by re-extraction alone) and inverts the cure direction from stabilization to AGGREGATION - registered R22-H240
 
 ### R22-H232 The decoding lever - determinism lives in the serving stack, not the prompt
 
@@ -2597,6 +2601,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - rules alone get 15-25% (the H107 forensics found 71% of duplicate pairs are surface-form variance); rules + voting clears 50%; the composed operator becomes the shipping candidate
 - **Acceptance bar** - both clauses (rules >= 25% alone is desirable but the COMPOSED >= 50% is the bar that matters); refuted if composition stalls under 40% - the residue is then genuine content churn, ensemble-only territory
 - **Synthetic gate** - none needed: entirely CPU on existing checkpoints; runs with H230
+- **Result** - (same executor/report; the H190 rule stack reconstructed as deterministic merge/rename-only operators, 96 entity merges applied) rules alone: **-1.5%** variance reduction (bar >= 25%) - essentially nothing; composed with voting: 27.8% (bar >= 50%, refutation floor 40%)
+- **Verdict** - REFUTED including its refutation floor - surface-form normalization has no purchase because (per H119's decomposition) the churn is 76% content-class; the residue is genuine content churn, exactly the registered ensemble-only branch, and now even ensemble stabilization is contraindicated by H231/H237 (it drops gold carriers). Post-pass canonicalization retains value only as a RESOLVER aid (its original H190 role), not as a variance cure
 
 ### R22-H235 Chunk-boundary churn - the window is part of the mechanism
 
@@ -2605,6 +2611,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - a real but minority effect (boundary share of churn ~20-30%); the majority of froth is content-free abstraction churn (H230's class)
 - **Acceptance bar** - the >= 2x odds ratio; refuted if boundary proximity does not discriminate (chunking exonerated - one suspect eliminated cheaply)
 - **Synthetic gate** - none needed: CPU on checkpoints + chunk cache; runs with H230
+- **Result** - (same executor/report; power-limited - 5 of 10 docs are single-chunk with no internal boundary, 221 singletons + 77 stable located in the multi-chunk docs) boundary-proximal odds ratio **0.47** (bar >= 2.0) - inverted: stable entities are MORE likely near boundaries than singletons (0.64 vs 0.45)
+- **Verdict** - REFUTED - chunking exonerated as a churn driver on this corpus; one suspect eliminated cheaply, with the honest power caveat recorded
 
 ### R22-H236 CONTRARIAN - the attachment gap is a resolution artifact, not an extraction failure
 
@@ -2613,6 +2621,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - confirmed; the H226 fix routing amends from "ingest attachment" to "identity default flip (H212) + H228 gleaning" with no new mechanism required
 - **Acceptance bar** - the >= 60% sibling-close clause; refuted if merged fragments still lack the features (the features were never extracted anywhere - the gap is then genuinely extraction recall and H226's original routing stands)
 - **Synthetic gate** - none needed: read-only simulation on neo4j2 + the H226 report's frozen miss table; CPU only
+- **Result** - (same executor/report; all 17 sibling-fragment cases simulated on neo4j2, per-case detail recorded) simulated merges close **9/17 = 52.9%** of sibling misses (bar >= 60%) - the resolver-side share of the TOTAL attachment gap is 23.7%; the 8 unclosed cases split between features absent from BOTH fragments (genuinely unextracted - humidification, wifi, app-monitoring on several families) and low-similarity pairs no resolver should merge (cross-brand, 25-48% name similarity)
+- **Verdict** - REFUTED by 7 points, with the contrarian half-vindicated: a quarter of the attachment gap IS resolver-side and the v2 default flip will collect it for free, but the majority is genuine extraction absence - H226's original routing stands (H228 gleaning for the never-extracted slice), now with the precise split measured
 
 ### R22-H237 Ensemble voting - stability by majority
 
@@ -2621,6 +2631,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - 2-of-3 lands near 3-of-5's number; composition clears the bar; the cost question becomes the ship decision and may motivate voting only on identity-critical document classes
 - **Acceptance bar** - both clauses + the knee arithmetic; refuted if retention of benchmark-relevant entities drops under voting (the froth was load-bearing - unlikely but the contrarian check is mandatory)
 - **Synthetic gate** - none needed: 2-of-3 subsets computable from existing 5-run checkpoints; CPU only; runs with H230
+- **Result** - (same executor/report) 2-of-3 voting: variance reduction 30.01% (bar 30, thinnest possible pass) at 100% STABLE-reference retention - but **benchmark-relevant retention is 60%** (bar >= 95%): vote sets drop 40% of the gold-carrier coverage, because gold carriers live in the churned tail (H231's finding) and majority voting is precisely a churn filter. Composed with rules: 27.8% (bar 55)
+- **Verdict** - REFUTED on the clause that matters - the mandatory contrarian check ("the froth was load-bearing") FIRED: voting stabilizes exactly by discarding the low-frequency entities the benchmark needs. Ensemble-as-stabilizer is dead alongside prompt canonicalization and rule normalization; the H231-indicated inversion (union, not intersection) is registered as R22-H240
 
 ### R22-H238 Dangling relationships - the reference-without-referent loss class
 
@@ -2629,6 +2641,8 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - the dangling class is feature/spec-heavy (relationships like HAS_FEATURE pointing at never-listed features); the retention rule is a one-line load-stage fix with measurable recall gain
 - **Acceptance bar** - clause (a) census + clause (b) simulated on the logged warnings (what WOULD have been added); refuted if the endpoints are froth-class (retaining them would add noise, and the drop is correct behavior)
 - **Synthetic gate** - none needed: the warnings are already logged with their triplets; CPU census first, the retention rule simulation follows on the same log
+- **Result** - (same executor/report; 901 dangling warnings, 538 distinct endpoints, top relationship types COMPATIBLE_WITH/LEADS_TO/HAS_PART_NUMBER/CONTROLS/HAS_FEATURE) endpoint overlap with the known miss classes: **5.3% by occurrence, 6.9% distinct** (bar >= 30%) - the dangling endpoints are overwhelmingly froth-class references, not the missing features/codes
+- **Verdict** - REFUTED - the silent drop is CORRECT behavior: retaining dangling endpoints would add noise, not recall; the loss classes the campaign cares about die elsewhere (extraction sampling, per H231). The census itself stands as the reusable instrument
 
 ### R22-H239 CONTRARIAN - the model is the lever, not the pipeline
 
@@ -2637,6 +2651,14 @@ The H119 preview refuted the in-prompt canonicalization cure and exposed the dis
 - **Prediction** - the smaller model is MORE variable (less confident entity choices) - but a >= 2x-lower surprise would redirect the whole round toward model selection
 - **Acceptance bar** - the >= 2x either-direction clause on matched documents/settings; refuted if floors are within 2x (variance is then endemic to the extraction task and pipeline cures are correctly prioritized)
 - **Synthetic gate** - GATE (1 doc x 3 runs on the second model): if the single-doc floor is within 1.5x of gpt-oss-120b's on the same doc, close as not-worth-testing before standing up the full grid
+
+### R22-H240 Union extraction - variance as sampling, aggregation as the cure
+
+- **Grounding** - the R22 CPU sweep inverted the cure direction: H231 measured single-run gold-carrier coverage at 55.4% mean (swing 54 pts) vs UNION-of-5 at 100%, and H237 showed majority voting stabilizes precisely by discarding the low-frequency entities the benchmark needs; extraction variance is therefore UNDERSAMPLING of a larger recoverable entity set, and the correct operator is union-of-K extraction passes with the resolver (v2 stack) absorbing the duplicate load - froth precision is the resolver's job by design, recall is extraction's, and every stabilization cure conflated the two
+- **Hypothesis** - (a) union-of-2 extraction reaches >= 85% and union-of-3 >= 95% of the union-of-5 gold-carrier coverage on the H119 checkpoints (diminishing-returns curve measurable for free); (b) an ingest-integrated union-of-2 arm on a scratch instance lifts wide-set absent-class recall by >= 15 points over single-pass at <= 2.2x extraction cost, with the v2 resolver holding false merges within its H158 band - the coverage ceiling's "absent" class is substantially a sampling artifact
+- **Prediction** - the coverage curve saturates fast (K=2 captures most of it); the ingest arm confirms; the graph grows fatter but retrieval quality rises because absent golds enter; the H171-style knee arithmetic prices K
+- **Acceptance bar** - clause (a) free on checkpoints (gate: K=2 >= 80% of union-5 coverage, else the curve is too flat and the full test needs K=3 economics from the start); clause (b) on the scratch arm; refuted if the resolver drowns (false merges blow the band) - the froth then costs more than the coverage pays, and the union operator needs a precision co-fix before shipping
+- **Experiment** - clause (a) CPU-only on existing checkpoints (runs immediately); clause (b) scratch-instance ingest arm after H212's re-run frees neo4j4; the H119 refutation's replacement candidate, priced honestly
 
 ## R21 - images in documents: extraction, description, and embedding of visual content (user-directed, pre-registered 2026-07-07)
 

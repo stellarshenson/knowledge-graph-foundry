@@ -1,0 +1,466 @@
+{
+  "round": "R22",
+  "tier": "cpu",
+  "utc": "20260708T051237Z",
+  "hypotheses": {
+    "H230": {
+      "clauses": {
+        "a_generic_fragment_ge_60pct": {
+          "value_pct": 45.34101825168108,
+          "bar_pct": 60,
+          "pass": false
+        },
+        "b_code_and_product_ge_3x_stable": {
+          "code_bearing_x": 0.942168976980493,
+          "product_form_x": 1.250158452124411,
+          "bar_x": 3.0,
+          "pass": false
+        }
+      },
+      "base_stable_rate": 0.06411024565608149,
+      "n_singletons": 1041,
+      "singleton_composition": {
+        "product-form": 469,
+        "code-bearing": 100,
+        "generic-concept": 428,
+        "fragment": 44
+      },
+      "class_table": {
+        "code-bearing": {
+          "n_names": 149,
+          "singleton_share": 0.6711409395973155,
+          "stable_share": 0.06040268456375839,
+          "stable_vs_base_x": 0.942168976980493
+        },
+        "product-form": {
+          "n_names": 811,
+          "singleton_share": 0.5782983970406905,
+          "stable_share": 0.08014796547472257,
+          "stable_vs_base_x": 1.250158452124411
+        },
+        "generic-concept": {
+          "n_names": 618,
+          "singleton_share": 0.6925566343042071,
+          "stable_share": 0.025889967637540454,
+          "stable_vs_base_x": 0.40383510268275713
+        },
+        "fragment": {
+          "n_names": 91,
+          "singleton_share": 0.4835164835164835,
+          "stable_share": 0.18681318681318682,
+          "stable_vs_base_x": 2.9139365307589604
+        }
+      },
+      "pass": false,
+      "verdict": "REFUTED"
+    },
+    "H231": {
+      "n_gold_carriers": 101,
+      "n_coverable": 35,
+      "per_run_coverage_pct": {
+        "1": 88.57142857142857,
+        "2": 57.14285714285714,
+        "3": 48.57142857142857,
+        "4": 34.285714285714285,
+        "5": 48.57142857142857
+      },
+      "union_coverage_pct": 100.0,
+      "mean_run_coverage_pct": 55.42857142857143,
+      "delta_union_minus_meanrun_pts": 44.57142857142857,
+      "run_swing_pts": 54.285714285714285,
+      "clauses": {
+        "single_within_5pts_of_union": {
+          "value_pts": 44.57142857142857,
+          "bar_pts": 5,
+          "pass": false
+        },
+        "run_swing_le_5pts": {
+          "value_pts": 54.285714285714285,
+          "bar_pts": 5,
+          "pass": false
+        }
+      },
+      "pass": false,
+      "verdict": "REFUTED (run choice costs coverage)",
+      "note": "attachment sub-prediction not testable from name-only checkpoints (no relationships); presence-coverage clause only"
+    },
+    "H234": {
+      "clauses": {
+        "rules_alone_ge_25pct": {
+          "value_pct": -1.4627350008058926,
+          "bar_pct": 25,
+          "pass": false
+        },
+        "composed_ge_50pct": {
+          "value_pct": 27.760144946594068,
+          "bar_pct": 50,
+          "pass": false
+        }
+      },
+      "refuted_if_under_40pct": {
+        "value_pct": 27.760144946594068,
+        "floor_pct": 40,
+        "refuted": true
+      },
+      "variance_rules_alone": 0.8760772084282409,
+      "variance_composed": 0.6237530513241727,
+      "entity_merges": 96,
+      "pass": false,
+      "verdict": "REFUTED",
+      "note": "H190 rule stack reconstructed (no single importable operator); deterministic, merge/rename only"
+    },
+    "H235": {
+      "multi_chunk_docs": 5,
+      "single_chunk_docs_excluded": 5,
+      "p_near_boundary_singleton": 0.4479638009049774,
+      "p_near_boundary_stable": 0.6363636363636364,
+      "located_singleton": 221,
+      "located_stable": 77,
+      "clauses": {
+        "odds_ratio_ge_2x": {
+          "value": 0.46765615337043903,
+          "bar": 2.0,
+          "pass": false
+        }
+      },
+      "probability_ratio": 0.7039431157078216,
+      "pass": false,
+      "verdict": "REFUTED (chunking exonerated)",
+      "note": "power limited - 5/10 docs single-chunk (no internal boundary)"
+    },
+    "H236": {
+      "n_sibling_rows": 17,
+      "n_closed": 9,
+      "sibling_close_rate_pct": 52.94117647058824,
+      "total_gap_resolver_share_pct": 23.684210526315788,
+      "clauses": {
+        "sibling_close_ge_60pct": {
+          "value_pct": 52.94117647058824,
+          "bar_pct": 60,
+          "pass": false
+        }
+      },
+      "detail": [
+        {
+          "product": "AirSense 11 AutoSet",
+          "other_owner": "AirSense 11",
+          "feature": "ramp",
+          "p_node": "AirSense 11 AutoSet",
+          "o_node": "AirSense 11",
+          "frag_sim": 100.0,
+          "feat_on_owner": "Ramp Time",
+          "via": "HAS_FEATURE",
+          "closed": true
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "other_owner": "AirSense 11",
+          "feature": "pressure_relief",
+          "p_node": "AirSense 11 AutoSet",
+          "o_node": "AirSense 11",
+          "frag_sim": 100.0,
+          "feat_on_owner": "Pressure Relief",
+          "via": "HAS_FEATURE",
+          "closed": true
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "other_owner": "AirSense 11",
+          "feature": "auto_onoff",
+          "p_node": "AirSense 11 AutoSet",
+          "o_node": "AirSense 11",
+          "frag_sim": 100.0,
+          "feat_on_owner": null,
+          "via": null,
+          "closed": false
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "other_owner": "AirSense 11",
+          "feature": "humidification",
+          "p_node": "AirSense 11 AutoSet",
+          "o_node": "AirSense 11",
+          "frag_sim": 100.0,
+          "feat_on_owner": null,
+          "via": null,
+          "closed": false
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "other_owner": "AirSense 11",
+          "feature": "wifi",
+          "p_node": "AirSense 11 AutoSet",
+          "o_node": "AirSense 11",
+          "frag_sim": 100.0,
+          "feat_on_owner": null,
+          "via": null,
+          "closed": false
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "other_owner": "AirSense 11",
+          "feature": "mask_fit",
+          "p_node": "AirSense 11 AutoSet",
+          "o_node": "AirSense 11",
+          "frag_sim": 100.0,
+          "feat_on_owner": "Mask Fit",
+          "via": "HAS_FEATURE",
+          "closed": true
+        },
+        {
+          "product": "DreamStation CPAP",
+          "other_owner": "DreamStation CPAP Pro",
+          "feature": "ez_start",
+          "p_node": "DreamStation CPAP",
+          "o_node": "DreamStation CPAP Pro",
+          "frag_sim": 100.0,
+          "feat_on_owner": "EZ-Start",
+          "via": "HAS_FEATURE",
+          "closed": true
+        },
+        {
+          "product": "DreamStation CPAP",
+          "other_owner": "DreamStation CPAP Pro",
+          "feature": "app_monitoring",
+          "p_node": "DreamStation CPAP",
+          "o_node": "DreamStation CPAP Pro",
+          "frag_sim": 100.0,
+          "feat_on_owner": "Remote monitoring solution",
+          "via": "HAS_FEATURE",
+          "closed": true
+        },
+        {
+          "product": "DreamStation CPAP Pro",
+          "other_owner": "DreamStation Auto CPAP with humidifier",
+          "feature": "heated_tube",
+          "p_node": "DreamStation CPAP Pro",
+          "o_node": "DreamStation Auto CPAP with humidifier",
+          "frag_sim": 89.47368421052632,
+          "feat_on_owner": "DreamStation heated humidifier",
+          "via": "INCLUDES_COMPONENT",
+          "closed": true
+        },
+        {
+          "product": "DreamStation CPAP Pro",
+          "other_owner": "ResMed AirSense 10 AutoSet",
+          "feature": "wifi",
+          "p_node": "DreamStation CPAP Pro",
+          "o_node": "ResMed AirSense 10 AutoSet",
+          "frag_sim": 25.531914893617028,
+          "feat_on_owner": null,
+          "via": null,
+          "closed": false
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "other_owner": "RESmart Auto",
+          "feature": "pressure_relief",
+          "p_node": "RESmart Auto CPAP System",
+          "o_node": "RESmart Auto",
+          "frag_sim": 100.0,
+          "feat_on_owner": "Pressure Start/Stop Button",
+          "via": "HAS_FEATURE",
+          "closed": true
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "other_owner": "RESmart Auto",
+          "feature": "auto_onoff",
+          "p_node": "RESmart Auto CPAP System",
+          "o_node": "RESmart Auto",
+          "frag_sim": 100.0,
+          "feat_on_owner": "Auto Mode",
+          "via": "SUPPORTS_MODE",
+          "closed": true
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "other_owner": "RESmart Auto",
+          "feature": "auto_adjust",
+          "p_node": "RESmart Auto CPAP System",
+          "o_node": "RESmart Auto",
+          "frag_sim": 100.0,
+          "feat_on_owner": "Auto Mode",
+          "via": "SUPPORTS_MODE",
+          "closed": true
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "other_owner": "RESmart Auto",
+          "feature": "app_monitoring",
+          "p_node": "RESmart Auto CPAP System",
+          "o_node": "RESmart Auto",
+          "frag_sim": 100.0,
+          "feat_on_owner": null,
+          "via": null,
+          "closed": false
+        },
+        {
+          "product": "SleepStyle 200 Series",
+          "other_owner": "HC230-Series",
+          "feature": "ramp",
+          "p_node": "SleepStyle 200 Series",
+          "o_node": "HC230-Series",
+          "frag_sim": 48.484848484848484,
+          "feat_on_owner": "Ramp",
+          "via": "SUPPORTS_MODE",
+          "closed": false
+        },
+        {
+          "product": "SleepStyle 200 Series",
+          "other_owner": "HC230-Series",
+          "feature": "altitude_comp",
+          "p_node": "SleepStyle 200 Series",
+          "o_node": "HC230-Series",
+          "frag_sim": 48.484848484848484,
+          "feat_on_owner": "Automatic Altitude Adjustment",
+          "via": "HAS_CLINICAL_FEATURE",
+          "closed": false
+        },
+        {
+          "product": "ResMed AirSense 10 AutoSet",
+          "other_owner": "Fisher & Paykel SleepStyle",
+          "feature": "heated_tube",
+          "p_node": "ResMed AirSense 10 AutoSet",
+          "o_node": "Fisher & Paykel SleepStyle",
+          "frag_sim": 34.61538461538461,
+          "feat_on_owner": null,
+          "via": null,
+          "closed": false
+        }
+      ],
+      "pass": false,
+      "verdict": "REFUTED (features genuinely unextracted)"
+    },
+    "H237": {
+      "clauses": {
+        "voting_reduction_ge_30pct": {
+          "value_pct": 30.010500910325167,
+          "bar_pct": 30,
+          "pass": true
+        },
+        "benchmark_retention_ge_95pct": {
+          "value_pct": 60.0,
+          "bar_pct": 95,
+          "pass": false
+        },
+        "composed_ge_55pct": {
+          "value_pct": 27.760144946594068,
+          "bar_pct": 55,
+          "pass": false
+        }
+      },
+      "stable_reference_retention_pct": 100.0,
+      "voted_mean_size": 33.73,
+      "knee_arithmetic": {
+        "K_runs": 3,
+        "extraction_cost_x": 3,
+        "voted_size": 33.73,
+        "base_size": 54.46
+      },
+      "pass": false,
+      "verdict": "PARTIAL/REFUTED (see clauses)",
+      "note": "benchmark retention over H231 coverable gold carriers; 30%% clause margin is thin - exact value reported"
+    },
+    "H238": {
+      "n_dangling": 901,
+      "distinct_endpoints": 538,
+      "top_reltypes": [
+        [
+          "COMPATIBLE_WITH",
+          90
+        ],
+        [
+          "LEADS_TO",
+          89
+        ],
+        [
+          "HAS_PART_NUMBER",
+          82
+        ],
+        [
+          "CONTROLS",
+          60
+        ],
+        [
+          "HAS_FEATURE",
+          59
+        ],
+        [
+          "INDICATES",
+          45
+        ],
+        [
+          "USES",
+          45
+        ],
+        [
+          "TREATS",
+          32
+        ]
+      ],
+      "clauses": {
+        "a_endpoints_in_miss_classes_ge_30pct": {
+          "value_pct_occ": 5.3274139844617086,
+          "value_pct_distinct": 6.877323420074349,
+          "bar_pct": 30,
+          "pass": false
+        },
+        "b_retention_rule_recovers": {
+          "recoverable_distinct_entities": 538,
+          "total_dropped_triplets": 901,
+          "hallucination_risk": "zero (name emitted by model in a relationship)"
+        }
+      },
+      "pass": false,
+      "verdict": "REFUTED (endpoints are froth-class; drop is correct)"
+    }
+  },
+  "sanity_anchors": {
+    "n_distinct_names": 1669,
+    "singleton_share": 0.6237267825044938,
+    "stable_share": 0.06411024565608149,
+    "base_run_mean_size": 54.46,
+    "base_variance_V0": 0.8634472630974144,
+    "voting_residual_variance": 0.6043224143453871,
+    "voted_mean_size": 33.73,
+    "voting_reduction_pct": 30.010500910325167,
+    "preview_reference": {
+      "JD": 0.749,
+      "singleton": 0.624,
+      "stable": 0.064,
+      "vote_JD": 0.489,
+      "vote_size": 34
+    }
+  },
+  "summary": {
+    "H230": {
+      "pass": false,
+      "verdict": "REFUTED"
+    },
+    "H231": {
+      "pass": false,
+      "verdict": "REFUTED (run choice costs coverage)"
+    },
+    "H234": {
+      "pass": false,
+      "verdict": "REFUTED"
+    },
+    "H235": {
+      "pass": false,
+      "verdict": "REFUTED (chunking exonerated)"
+    },
+    "H236": {
+      "pass": false,
+      "verdict": "REFUTED (features genuinely unextracted)"
+    },
+    "H237": {
+      "pass": false,
+      "verdict": "PARTIAL/REFUTED (see clauses)"
+    },
+    "H238": {
+      "pass": false,
+      "verdict": "REFUTED (endpoints are froth-class; drop is correct)"
+    }
+  }
+}
