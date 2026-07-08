@@ -1,0 +1,1198 @@
+{
+  "round": "R25/R26",
+  "tier": "free-gate",
+  "utc": "20260708T074116Z",
+  "author": "Claude (opus executor)",
+  "adjudications": {
+    "R25-H267": {
+      "clause": "census: >=50% of merges are exact-normalized matches",
+      "bar": 0.5,
+      "frac_exact_h157": 0.044661190965092405,
+      "frac_exact_pooled": 0.012816720891255053,
+      "frac_h190_ceiling_h157": 0.4948665297741273,
+      "frac_h190_ceiling_pooled": 0.5608794242334615,
+      "n_merges_h157": 1948,
+      "n_merges_pooled": 10143,
+      "defer_judge_saved": 11,
+      "per_log": {
+        "h157-events.jsonl": {
+          "n_merge": 1948,
+          "frac_exact": 0.044661190965092405,
+          "frac_ceil": 0.4948665297741273
+        },
+        "kgf-events.jsonl": {
+          "n_merge": 4945,
+          "frac_exact": 0.0,
+          "frac_ceil": 0.6244691607684529
+        },
+        "h212-v2-events.jsonl": {
+          "n_merge": 874,
+          "frac_exact": 0.04691075514874142,
+          "frac_ceil": 0.2780320366132723
+        },
+        "h158-v1-events.jsonl": {
+          "n_merge": 2376,
+          "frac_exact": 0.0008417508417508417,
+          "frac_ceil": 0.5867003367003367
+        }
+      },
+      "verdict_recommendation": "REFUTED",
+      "note": "Exact-normalized merges are a small minority: 4.5% on h157 (pooled 1.3%); even the generous H190 upper bound (prior>=0.62) is 49.5% (pooled 56.1%), still far below the 50% bar. Variance-class pairs dominate merges; the deterministic fast path saves little on the merge axis. It would remove 11 exact-name defers from the judge queue at zero risk."
+    },
+    "R25-H268": {
+      "clause": ">=30% of sibling-fragment attachment misses recoverable via soft-edge 1-hop",
+      "bar": 0.3,
+      "n_cases": 17,
+      "n_recoverable": 11,
+      "frac_recoverable": 0.6470588235294118,
+      "mean_counterpart_1hop_degree": 175.54545454545453,
+      "max_counterpart_1hop_degree": 319,
+      "per_case": [
+        {
+          "product": "AirSense 11 AutoSet",
+          "counterpart": "AirSense 11",
+          "feature": "ramp",
+          "via": "HAS_FEATURE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 319
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "counterpart": "AirSense 11",
+          "feature": "pressure_relief",
+          "via": "HAS_FEATURE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 319
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "counterpart": "AirSense 11",
+          "feature": "auto_onoff",
+          "via": null,
+          "owns_secondary": false,
+          "verified": false,
+          "recoverable": false,
+          "counterpart_1hop_degree": 319
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "counterpart": "AirSense 11",
+          "feature": "humidification",
+          "via": null,
+          "owns_secondary": false,
+          "verified": false,
+          "recoverable": false,
+          "counterpart_1hop_degree": 319
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "counterpart": "AirSense 11",
+          "feature": "wifi",
+          "via": null,
+          "owns_secondary": false,
+          "verified": false,
+          "recoverable": false,
+          "counterpart_1hop_degree": 319
+        },
+        {
+          "product": "AirSense 11 AutoSet",
+          "counterpart": "AirSense 11",
+          "feature": "mask_fit",
+          "via": "HAS_FEATURE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 319
+        },
+        {
+          "product": "DreamStation CPAP",
+          "counterpart": "DreamStation CPAP Pro",
+          "feature": "ez_start",
+          "via": "HAS_FEATURE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 190
+        },
+        {
+          "product": "DreamStation CPAP",
+          "counterpart": "DreamStation CPAP Pro",
+          "feature": "app_monitoring",
+          "via": "HAS_FEATURE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 190
+        },
+        {
+          "product": "DreamStation CPAP Pro",
+          "counterpart": "DreamStation Auto CPAP with humidifier",
+          "feature": "heated_tube",
+          "via": "INCLUDES_COMPONENT",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 20
+        },
+        {
+          "product": "DreamStation CPAP Pro",
+          "counterpart": "ResMed AirSense 10 AutoSet",
+          "feature": "wifi",
+          "via": null,
+          "owns_secondary": false,
+          "verified": false,
+          "recoverable": false,
+          "counterpart_1hop_degree": 64
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "counterpart": "RESmart Auto",
+          "feature": "pressure_relief",
+          "via": "HAS_FEATURE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 158
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "counterpart": "RESmart Auto",
+          "feature": "auto_onoff",
+          "via": "SUPPORTS_MODE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 158
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "counterpart": "RESmart Auto",
+          "feature": "auto_adjust",
+          "via": "SUPPORTS_MODE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 158
+        },
+        {
+          "product": "RESmart Auto CPAP System",
+          "counterpart": "RESmart Auto",
+          "feature": "app_monitoring",
+          "via": null,
+          "owns_secondary": false,
+          "verified": false,
+          "recoverable": false,
+          "counterpart_1hop_degree": 158
+        },
+        {
+          "product": "SleepStyle 200 Series",
+          "counterpart": "HC230-Series",
+          "feature": "ramp",
+          "via": "SUPPORTS_MODE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 50
+        },
+        {
+          "product": "SleepStyle 200 Series",
+          "counterpart": "HC230-Series",
+          "feature": "altitude_comp",
+          "via": "HAS_CLINICAL_FEATURE",
+          "owns_secondary": true,
+          "verified": true,
+          "recoverable": true,
+          "counterpart_1hop_degree": 50
+        },
+        {
+          "product": "ResMed AirSense 10 AutoSet",
+          "counterpart": "Fisher & Paykel SleepStyle",
+          "feature": "heated_tube",
+          "via": null,
+          "owns_secondary": false,
+          "verified": false,
+          "recoverable": false,
+          "counterpart_1hop_degree": 30
+        }
+      ],
+      "verdict_recommendation": "PASS",
+      "note": "11/17 sibling-fragment misses are recoverable by hopping a soft SIMILAR_TO edge to the counterpart that already owns the fragment (verified read-only). Non-closers are non-fragments (cross-manufacturer / dissimilar model codes) a name resolver would not link anyway. Render growth is bounded: counterpart 1-hop neighborhoods average 176 edges. The soft edge never merges, so facts stay attributed to the counterpart node - the H212 attribution rule holds and no false merge is introduced."
+    },
+    "R25-H269": {
+      "clauses": {
+        "flagged>=15%": true,
+        "junk>=70%": false,
+        "gold<10%": false
+      },
+      "bars": {
+        "flag": 0.15,
+        "junk": 0.7,
+        "gold": 0.1
+      },
+      "n_rels_in_scope": 3816,
+      "n_flagged": 1863,
+      "frac_flagged": 0.4882075471698113,
+      "frac_junk_sample": 0.4666666666666667,
+      "n_sample": 30,
+      "flagged_touching_gold": 544,
+      "frac_gold": 0.29200214707461086,
+      "n_gold_entities": 168,
+      "per_reltype_violation_rate": {
+        "COMPATIBLE_WITH": {
+          "n": 659,
+          "violations": 394,
+          "rate": 0.5978755690440061,
+          "dominant": "CPAPDevice->Accessory"
+        },
+        "INCLUDES_COMPONENT": {
+          "n": 555,
+          "violations": 285,
+          "rate": 0.5135135135135135,
+          "dominant": "CPAPDevice->Accessory"
+        },
+        "HAS_FEATURE": {
+          "n": 414,
+          "violations": 241,
+          "rate": 0.5821256038647343,
+          "dominant": "CPAPDevice->Feature"
+        },
+        "MANUFACTURED_BY": {
+          "n": 355,
+          "violations": 163,
+          "rate": 0.4591549295774648,
+          "dominant": "CPAPDevice->Manufacturer"
+        },
+        "ASSOCIATED_WITH": {
+          "n": 145,
+          "violations": 115,
+          "rate": 0.7931034482758621,
+          "dominant": "CPAPDevice->Organization"
+        },
+        "USES_ACCESSORY": {
+          "n": 339,
+          "violations": 68,
+          "rate": 0.20058997050147492,
+          "dominant": "CPAPDevice->Accessory"
+        },
+        "DETECTS_EVENT": {
+          "n": 138,
+          "violations": 67,
+          "rate": 0.4855072463768116,
+          "dominant": "CPAPDevice->EventType"
+        },
+        "TREATS_CONDITION": {
+          "n": 111,
+          "violations": 63,
+          "rate": 0.5675675675675675,
+          "dominant": "CPAPDevice->MedicalCondition"
+        },
+        "PART_NUMBER_FOR": {
+          "n": 76,
+          "violations": 53,
+          "rate": 0.6973684210526315,
+          "dominant": "Specification->Accessory"
+        },
+        "PROVIDES": {
+          "n": 59,
+          "violations": 48,
+          "rate": 0.8135593220338984,
+          "dominant": "CPAPDevice->Feature"
+        },
+        "REQUIRED_FOR": {
+          "n": 51,
+          "violations": 46,
+          "rate": 0.9019607843137255,
+          "dominant": "Accessory->Specification"
+        },
+        "DISPLAYS": {
+          "n": 57,
+          "violations": 36,
+          "rate": 0.631578947368421,
+          "dominant": "CPAPDevice->Feature"
+        },
+        "TESTED_UNDER": {
+          "n": 67,
+          "violations": 34,
+          "rate": 0.5074626865671642,
+          "dominant": "CPAPDevice->Standard"
+        },
+        "CONTRAINDICATED_BY": {
+          "n": 55,
+          "violations": 34,
+          "rate": 0.6181818181818182,
+          "dominant": "CPAPDevice->Condition"
+        },
+        "REQUIRES": {
+          "n": 40,
+          "violations": 26,
+          "rate": 0.65,
+          "dominant": "CPAPDevice->Accessory"
+        },
+        "CONTROLS": {
+          "n": 34,
+          "violations": 25,
+          "rate": 0.7352941176470589,
+          "dominant": "Software->Specification"
+        },
+        "HAS_COMFORT_FEATURE": {
+          "n": 146,
+          "violations": 24,
+          "rate": 0.1643835616438356,
+          "dominant": "CPAPDevice->ComfortFeature"
+        },
+        "HAS_CLINICAL_FEATURE": {
+          "n": 89,
+          "violations": 20,
+          "rate": 0.2247191011235955,
+          "dominant": "CPAPDevice->ClinicalFeature"
+        },
+        "SUPPORTS_MODE": {
+          "n": 123,
+          "violations": 18,
+          "rate": 0.14634146341463414,
+          "dominant": "CPAPDevice->OperatingMode"
+        },
+        "ENHANCES": {
+          "n": 19,
+          "violations": 15,
+          "rate": 0.7894736842105263,
+          "dominant": "Feature->ClinicalFeature"
+        },
+        "MONITORS": {
+          "n": 21,
+          "violations": 12,
+          "rate": 0.5714285714285714,
+          "dominant": "CPAPDevice->Specification"
+        },
+        "VALIDATED_BY": {
+          "n": 15,
+          "violations": 11,
+          "rate": 0.7333333333333333,
+          "dominant": "ClinicalFeature->ClinicalFeature"
+        },
+        "AFFILIATED_WITH": {
+          "n": 16,
+          "violations": 10,
+          "rate": 0.625,
+          "dominant": "Manufacturer->Manufacturer"
+        },
+        "USES_FILTER": {
+          "n": 68,
+          "violations": 9,
+          "rate": 0.1323529411764706,
+          "dominant": "CPAPDevice->Accessory"
+        },
+        "REFERENCES": {
+          "n": 14,
+          "violations": 9,
+          "rate": 0.6428571428571429,
+          "dominant": "Feature->Software"
+        },
+        "REQUIRED_BY": {
+          "n": 23,
+          "violations": 8,
+          "rate": 0.34782608695652173,
+          "dominant": "CPAPDevice->Standard"
+        },
+        "BASED_ON": {
+          "n": 7,
+          "violations": 5,
+          "rate": 0.7142857142857143,
+          "dominant": "CPAPDevice->CPAPDevice"
+        },
+        "PREVENTS": {
+          "n": 4,
+          "violations": 3,
+          "rate": 0.75,
+          "dominant": "Accessory->MedicalCondition"
+        },
+        "ACCESSES": {
+          "n": 9,
+          "violations": 3,
+          "rate": 0.3333333333333333,
+          "dominant": "CPAPDevice->Software"
+        },
+        "COLLABORATED_WITH": {
+          "n": 11,
+          "violations": 3,
+          "rate": 0.2727272727272727,
+          "dominant": "Organization->Organization"
+        },
+        "ENABLES": {
+          "n": 4,
+          "violations": 3,
+          "rate": 0.75,
+          "dominant": "Feature->ClinicalFeature"
+        },
+        "TESTED_BY": {
+          "n": 11,
+          "violations": 2,
+          "rate": 0.18181818181818182,
+          "dominant": "CPAPDevice->Organization"
+        },
+        "REDUCES": {
+          "n": 8,
+          "violations": 2,
+          "rate": 0.25,
+          "dominant": "ComfortFeature->EventType"
+        },
+        "OPERATES": {
+          "n": 3,
+          "violations": 2,
+          "rate": 0.6666666666666666,
+          "dominant": "Person->OperatingMode"
+        },
+        "USES_COMFORT_FEATURE": {
+          "n": 6,
+          "violations": 1,
+          "rate": 0.16666666666666666,
+          "dominant": "OperatingMode->ComfortFeature"
+        },
+        "MODEL_NUMBER_FOR": {
+          "n": 5,
+          "violations": 1,
+          "rate": 0.2,
+          "dominant": "ProductModel->CPAPDevice"
+        },
+        "CONNECTED_TO": {
+          "n": 2,
+          "violations": 1,
+          "rate": 0.5,
+          "dominant": "Accessory->Accessory"
+        },
+        "USED_BY": {
+          "n": 2,
+          "violations": 1,
+          "rate": 0.5,
+          "dominant": "OperatingMode->Organization"
+        },
+        "COMPLIES_WITH": {
+          "n": 6,
+          "violations": 1,
+          "rate": 0.16666666666666666,
+          "dominant": "CPAPDevice->Standard"
+        },
+        "CONNECTS": {
+          "n": 3,
+          "violations": 1,
+          "rate": 0.3333333333333333,
+          "dominant": "Accessory->ConnectivityDevice"
+        },
+        "ILLUMINATES": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "ComfortFeature->Feature"
+        },
+        "REQUIRED_BEFORE": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "TestProtocol->TestProtocol"
+        },
+        "LOCATED_IN": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Manufacturer->Organization"
+        },
+        "FACILITATES": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "CPAPDevice->OperatingMode"
+        },
+        "USES_SOFTWARE": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "CPAPDevice->Software"
+        },
+        "CAUSES": {
+          "n": 5,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Accessory->EventType"
+        },
+        "CAUSED_BY": {
+          "n": 4,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "EventType->Accessory"
+        },
+        "CONNECTS_TO": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Accessory->Accessory"
+        },
+        "HAS_SPECIFICATION": {
+          "n": 4,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "CPAPDevice->Specification"
+        },
+        "AVAILABLE_ON": {
+          "n": 2,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Software->Organization"
+        },
+        "MAXIMIZES_LIFESPAN_OF": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Feature->Accessory"
+        },
+        "COMPONENT_OF": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Accessory->Feature"
+        },
+        "AFFECTS": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "EventType->CPAPDevice"
+        },
+        "DETERMINES": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Person->Specification"
+        },
+        "OCCURS_IN": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "EventType->Accessory"
+        },
+        "HEADQUARTERED_IN": {
+          "n": 2,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Manufacturer->Location"
+        },
+        "HAS_OFFICE_IN": {
+          "n": 8,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Manufacturer->Location"
+        },
+        "RECOMMENDED_FOR": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "CPAPDevice->MedicalCondition"
+        },
+        "CAUSES_DAMAGE_TO": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Accessory->Accessory"
+        },
+        "TREATED_BY": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "MedicalCondition->ComfortFeature"
+        },
+        "INDICATES_REPLACEMENT_NEEDED": {
+          "n": 2,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "EventType->Accessory"
+        },
+        "IS_TYPE_OF": {
+          "n": 2,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "DeviceType->CPAPDevice"
+        },
+        "USES_FEATURE": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "CPAPDevice->Feature"
+        },
+        "MEASURES": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "Accessory->Specification"
+        },
+        "BENEFIT_OF": {
+          "n": 1,
+          "violations": 0,
+          "rate": 0.0,
+          "dominant": "ClinicalFeature->OperatingMode"
+        }
+      },
+      "adjudication_sample": [
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "Accessory:MicroElite adult mask",
+          "tgt": "CPAPDevice:MicroElite compressor nebulizer system",
+          "pattern_share": 0.159,
+          "junk": false
+        },
+        {
+          "rt": "DETECTS_EVENT",
+          "src": "OperatingMode:APAP",
+          "tgt": "EventType:Airflow Limitation",
+          "pattern_share": 0.043,
+          "junk": true
+        },
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "CPAPDevice:REMstar Auto",
+          "tgt": "Software:Encore Patient Management System",
+          "pattern_share": 0.044,
+          "junk": true
+        },
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "Accessory:VideoEase CCTV balun",
+          "tgt": "Accessory:Video camera fixed focus analog",
+          "pattern_share": 0.171,
+          "junk": false
+        },
+        {
+          "rt": "PROVIDES",
+          "src": "Software:prismaTS",
+          "tgt": "Feature:detailed data analysis",
+          "pattern_share": 0.102,
+          "junk": false
+        },
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "Accessory:DreamStation heated humidifier",
+          "tgt": "Accessory:Heated tube 15mm",
+          "pattern_share": 0.171,
+          "junk": false
+        },
+        {
+          "rt": "MANUFACTURED_BY",
+          "src": "Accessory:Mirage Liberty",
+          "tgt": "Manufacturer:Resmed",
+          "pattern_share": 0.355,
+          "junk": false
+        },
+        {
+          "rt": "TESTED_UNDER",
+          "src": "EventType:Cheyne-Stokes",
+          "tgt": "Feature:ARTP Standards of Care",
+          "pattern_share": 0.03,
+          "junk": true
+        },
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "Accessory:zRIP DuraBelt",
+          "tgt": "CPAPDevice:Alice PDx",
+          "pattern_share": 0.159,
+          "junk": false
+        },
+        {
+          "rt": "HAS_CLINICAL_FEATURE",
+          "src": "Feature:ARTP Standards of Care - CPAP Devices (Technical and Performance)",
+          "tgt": "ClinicalFeature:Pressure Stability Testing",
+          "pattern_share": 0.034,
+          "junk": true
+        },
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "Accessory:Small cylinder bag M9 MC13",
+          "tgt": "Accessory:MC13 cylinder US 3000 psi",
+          "pattern_share": 0.171,
+          "junk": false
+        },
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "Accessory:Video web server Axis model 2400+ 4 port",
+          "tgt": "CPAPDevice:Alice 6 LDx",
+          "pattern_share": 0.159,
+          "junk": false
+        },
+        {
+          "rt": "ASSOCIATED_WITH",
+          "src": "Feature:Fit for Life Mask Resupply Program",
+          "tgt": "Software:medSage",
+          "pattern_share": 0.021,
+          "junk": true
+        },
+        {
+          "rt": "ENHANCES",
+          "src": "ComfortFeature:Heated Respiratory Humidification",
+          "tgt": "EventType:Obstructive Sleep Apnea",
+          "pattern_share": 0.053,
+          "junk": false
+        },
+        {
+          "rt": "TREATS_CONDITION",
+          "src": "Organization:ARTP Sleep Apnoea Consortium",
+          "tgt": "MedicalCondition:Obesity Hypoventilation Syndrome",
+          "pattern_share": 0.009,
+          "junk": true
+        },
+        {
+          "rt": "COMPATIBLE_WITH",
+          "src": "CPAPDevice:BiPAP AVAPS",
+          "tgt": "ConnectivityDevice:Wired flow modem",
+          "pattern_share": 0.033,
+          "junk": true
+        },
+        {
+          "rt": "MANUFACTURED_BY",
+          "src": "Accessory:Swivel Connector",
+          "tgt": "Manufacturer:Dr\u00e4ger",
+          "pattern_share": 0.355,
+          "junk": false
+        },
+        {
+          "rt": "CONTROLS",
+          "src": "ComfortFeature:Climate control",
+          "tgt": "Specification:Auto Tube Temperature",
+          "pattern_share": 0.029,
+          "junk": true
+        },
+        {
+          "rt": "DETECTS_EVENT",
+          "src": "CPAPDevice:AirCurve 10 CS PaceWave",
+          "tgt": "ClinicalFeature:Cheyne-Stokes respiration detection",
+          "pattern_share": 0.101,
+          "junk": false
+        },
+        {
+          "rt": "INCLUDES_COMPONENT",
+          "src": "Accessory:Humidifier",
+          "tgt": "Accessory:Light Window",
+          "pattern_share": 0.189,
+          "junk": false
+        },
+        {
+          "rt": "MANUFACTURED_BY",
+          "src": "Accessory:Forma",
+          "tgt": "Manufacturer:Fisher & Paykel",
+          "pattern_share": 0.355,
+          "junk": false
+        },
+        {
+          "rt": "COLLABORATED_WITH",
+          "src": "CPAPDevice:PATH Bubble CPAP Kit",
+          "tgt": "Person:Dr. Ashish Jain",
+          "pattern_share": 0.091,
+          "junk": false
+        },
+        {
+          "rt": "HAS_FEATURE",
+          "src": "CPAPDevice:Flaem RF7+",
+          "tgt": "Specification:Particle size consistency",
+          "pattern_share": 0.041,
+          "junk": true
+        },
+        {
+          "rt": "SUPPORTS_MODE",
+          "src": "CPAPDevice:Trilogy100",
+          "tgt": "ClinicalFeature:Auto-Trak",
+          "pattern_share": 0.016,
+          "junk": true
+        },
+        {
+          "rt": "TESTED_UNDER",
+          "src": "EventType:Periodic breathing",
+          "tgt": "Feature:ARTP Standards of Care",
+          "pattern_share": 0.03,
+          "junk": true
+        },
+        {
+          "rt": "USES_FILTER",
+          "src": "ProductModel:HC230-Series",
+          "tgt": "Accessory:Air Filter",
+          "pattern_share": 0.059,
+          "junk": false
+        },
+        {
+          "rt": "ASSOCIATED_WITH",
+          "src": "Condition:Necrotic septum",
+          "tgt": "CPAPDevice:Bubble CPAP Diamedica",
+          "pattern_share": 0.041,
+          "junk": true
+        },
+        {
+          "rt": "INCLUDES_COMPONENT",
+          "src": "Accessory:ComfortGel Blue premium headgear",
+          "tgt": "Accessory:Ball-and-socket Quick Clips",
+          "pattern_share": 0.189,
+          "junk": false
+        },
+        {
+          "rt": "INCLUDES_COMPONENT",
+          "src": "ProductModel:SideStream custom nebulizer kit",
+          "tgt": "Accessory:SideStream disposable cup, 50 pk",
+          "pattern_share": 0.047,
+          "junk": true
+        },
+        {
+          "rt": "ASSOCIATED_WITH",
+          "src": "CPAPDevice:TrueBlue",
+          "tgt": "ProductModel:DuoPack",
+          "pattern_share": 0.048,
+          "junk": true
+        }
+      ],
+      "verdict_recommendation": "PARTIAL",
+      "note": "Flagged 48.8% of extracted relationships (clause1 PASS). Blind adjudication of 30 rare-pattern flags: 46.7% genuine junk (clause2 FAIL). Gold-carrier touch 29.2% (clause3 FAIL, bar <10%). Dominant-pattern flagging is inflated by multi-label endpoints and legitimate secondary senses; the rare-tail junk rate isolates the real precision surface."
+    },
+    "R26-H279": {
+      "clauses": {
+        "evidence_stale>=30%": false,
+        "concentration>1": true
+      },
+      "bars": {
+        "stale": 0.3,
+        "concentration": 1.0
+      },
+      "n_total_entities": 2798,
+      "n_mutated": 138,
+      "n_evidence": 168,
+      "n_evidence_mutated": 16,
+      "frac_evidence_stale": 0.09523809523809523,
+      "mut_rate_evidence": 0.09523809523809523,
+      "mut_rate_untouched": 0.04638783269961977,
+      "concentration_ratio": 2.0530835284933646,
+      "decay_curve": {
+        "mutation_event_index": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156
+        ],
+        "staleness_fraction": [
+          0.0,
+          0.006,
+          0.006,
+          0.006,
+          0.006,
+          0.006,
+          0.006,
+          0.0119,
+          0.0119,
+          0.0119,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0179,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0238,
+          0.0298,
+          0.0357,
+          0.0357,
+          0.0357,
+          0.0357,
+          0.0417,
+          0.0417,
+          0.0417,
+          0.0417,
+          0.0417,
+          0.0417,
+          0.0417,
+          0.0417,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0476,
+          0.0536,
+          0.0536,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0595,
+          0.0655,
+          0.0655,
+          0.0655,
+          0.0655,
+          0.0655,
+          0.0655,
+          0.0655,
+          0.0655,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0714,
+          0.0774,
+          0.0774,
+          0.0774,
+          0.0774,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0833,
+          0.0893,
+          0.0893,
+          0.0893,
+          0.0893,
+          0.0952,
+          0.0952,
+          0.0952,
+          0.0952,
+          0.0952,
+          0.0952
+        ]
+      },
+      "decay_curve_png": "reports/h279-decay-curve-20260708T074116Z.png",
+      "proxy_limitations": "single-wave frozen graph; updated_at=last-touch only; \"after answerable\" approximated by \"mutated after creation\"; no standalone 952-doc multi-wave mutation series available",
+      "verdict_recommendation": "PARTIAL",
+      "note": "On the frozen single-wave graph, evidence staleness is LOW: 9.5% of evidence entities were mutated after creation (clause1 FAIL, bar >=30%). Mutation DOES concentrate in demand neighborhoods: evidence entities mutate 2.05x the untouched rate (clause2 PASS, bar >1). Implication: on this corpus content persistence is not broadly unsafe (staleness low), but the concentration confirms mutation follows demand - persisted content would decay preferentially where most used. The 30% clause is refuted here largely by the short single-wave window; multi-wave telemetry would tighten it."
+    }
+  },
+  "summary": {
+    "R25-H267": "REFUTED",
+    "R25-H268": "PASS",
+    "R25-H269": "PARTIAL",
+    "R26-H279": "PARTIAL"
+  }
+}

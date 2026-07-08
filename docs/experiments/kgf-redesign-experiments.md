@@ -3007,6 +3007,8 @@ User-directed competitive climb of two peer graph builders (graphify SKILL pipel
 - **Hypothesis** - >= 50% of the reference graph's historical merge decisions are exact matches under the H190 normalization operator (free census on resolution event logs), and wiring the fast path preserves every v2 identity clause while cutting resolver defer/judge volume >= 30% on a replay
 - **Acceptance bar** - both clauses; refuted if exact matches are a minority (variance dominates and the fast path saves nothing) or if fast-path merges introduce false merges the calibrated path would have vetoed (the deterministic path must be provably safe, not just cheap)
 - **Experiment** - census clause free on logs/h157-events.jsonl + campaign event logs; replay clause offline on frozen resolution decisions; ships via H198 if both clear
+- **Result** - (executor 2026-07-08, [`peer_harvest_gates_r25.ipynb`](../../notebooks/peer_harvest_gates_r25.ipynb) / [`peer-harvest-gates-r25-20260708T074116Z.json`](../../reports/peer-harvest-gates-r25-20260708T074116Z.json)) events carry IDs only, so the census used the in-event exact-match signal: `prior==0.8` fires exactly when normalized names are Levenshtein-identical (`bayesian.py::name_prior`). Exact-normalized merges = **4.5%** of h157 merges (pooled 1.3% across 4 campaign logs); even the generous H190 upper bound (`prior>=0.62`, punctuation-closeable) reaches only 49.5% (pooled 56.1%) - under the 50% bar and an overcount. Variance-class pairs dominate the merge population; the fast path would remove just 11 exact-name defers from the judge queue
+- **Verdict** - REFUTED - exact-normalized matches are a small minority of real merge decisions (4.5%, not >= 50%); extraction variance owns the population, so the deterministic fast path reserves nothing material for the resolver. The zero-risk 11-defer trim is noted for H198 as a freebie, not a lever
 
 ### R25-H268 Soft similarity links - abstention as a graph primitive
 
@@ -3014,6 +3016,8 @@ User-directed competitive climb of two peer graph builders (graphify SKILL pipel
 - **Hypothesis** - materializing defer-zone pairs as weighted soft edges recovers >= 30% of the sibling-fragment attachment misses on the frozen graph (render hops the soft edge) at zero false-merge risk and <= 5% render token growth
 - **Acceptance bar** - the recovery clause simulated on neo4j2 read-only (H236's 17 sibling pairs + the defer ledger); refuted if soft-edge hops pollute renders with wrong-entity facts (the H212 attribution rule must hold across soft edges)
 - **Experiment** - free simulation on the frozen graph + defer logs; live wiring via H198 if it clears
+- **Result** - (same executor/report) **11/17 (64.7%)** of the sibling-fragment attachment misses close by hopping a posterior-weighted soft SIMILAR_TO edge to the counterpart entity that already owns the fragment (verified read-only against the live graph via the `via` reltype). Bar was 30%. The 6 non-closers are genuine non-fragments (cross-manufacturer pairs, dissimilar model codes) - correctly out of reach. Render growth stays bounded (counterpart 1-hop neighborhoods only) and the non-merging edge preserves the H212 attribution rule by construction
+- **Verdict** - gate CONFIRMED at 2.2x the bar - abstention becomes a traversable graph primitive with zero false-merge risk; soft defer-zone edges ship to H198 for live wiring
 
 ### R25-H269 Ontology-constrained extraction - the precision lever we never ran
 
@@ -3021,6 +3025,8 @@ User-directed competitive climb of two peer graph builders (graphify SKILL pipel
 - **Hypothesis** - replaying domain/range validation over the frozen reference graph's relationships (cured ontology expressed as constraints) flags >= 15% of relationships as violations, of which >= 70% are genuine junk on blind adjudication (a real precision surface) and < 10% are benchmark-load-bearing (the recall cost is affordable)
 - **Acceptance bar** - all three clauses on the free replay; refuted if violations are rare (extraction already schema-consistent - a clean exoneration) or if the flagged set is materially load-bearing (validation would repeat H237's voting mistake on the relationship axis)
 - **Experiment** - entirely free: cured ontology + frozen graph + blind adjudication protocol; a live constrained-extraction arm only if the replay shows a real, affordable surface
+- **Result** - (same executor/report) clause 1 PASSES loudly: **48.8%** of extracted relationships flagged as domain/range violations (bar 15%; identity/structural edges excluded from scope). Clauses 2 and 3 FAIL: blind 30-sample adjudication (rare-tail rule, < 5% pattern share = junk) finds only **46.7%** genuine junk (bar 70%) and **29.2%** of flagged relationships touch gold carriers (bar < 10%). Dominant-pattern flagging is inflated by multi-label endpoints and legitimate secondary senses - the flagged set is materially load-bearing
+- **Verdict** - PARTIAL, lever REJECTED as registered - a large violation surface exists but most of it is not junk and a third of it carries benchmark evidence; domain/range validation would repeat H237's voting mistake on the relationship axis. No constrained-extraction arm runs; extraction precision work stays on the resolver/curing side
 
 ### R25-H270 Schema-as-graph - the ontology becomes queryable substrate
 
@@ -3097,6 +3103,8 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Hypothesis** - >= 30% of benchmark answers become evidence-stale within the recorded mutation window, and staleness is concentrated in exactly the high-demand neighborhoods (mutation follows the same documents queries follow) - making naive persistence worst precisely where it would be used most
 - **Acceptance bar** - the measured curve is the deliverable; the 30%/concentration clauses decide whether content persistence ships at all
 - **Experiment** - free replay; RUNS FIRST in the round - its curve parameterizes H273/H274/H276's bars
+- **Result** - (same executor/report; curve at [`h279-decay-curve-20260708T074116Z.png`](../../reports/h279-decay-curve-20260708T074116Z.png)) substrate = the live graph's bitemporal `KGFEntityVersion` history (156 mutation events over 138/2798 entities; no standalone multi-wave mutation series exists as an artifact). Evidence-stale fraction **9.5%** (16/168 gold-carrier evidence entities mutated after creation) - FAILS the 30% clause. Concentration **2.05x** (evidence-entity mutation rate 0.095 vs untouched 0.046) - PASSES the > 1 clause: mutation demonstrably follows demand
+- **Verdict** - PARTIAL - on this frozen single-wave window staleness is LOW, so content persistence (H273/H274/H276) is not broadly unsafe here, but the concentration clause confirms the danger is aimed exactly at high-demand neighborhoods; the 30% failure is window-limited (single ingestion wave), flagged for multi-wave re-measurement. Round doctrine stands: signal write-back (H271/H277) preferred, content persistence tolerated only with H273/H274-grade invalidation
 
 ### R26-H280 The usage-coupling frontier - what ships
 

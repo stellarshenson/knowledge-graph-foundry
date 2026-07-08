@@ -1,8 +1,8 @@
 # Recovery State - live board snapshot
 
-**Purpose**: if the session dies, a restored session reads THIS FILE FIRST (after JOURNAL.md) and picks up every stream. Detached compute survives session death; only recording/relaunch duties need the restored session. Updated 2026-07-08 ~07:00 UTC.
+**Purpose**: if the session dies, a restored session reads THIS FILE FIRST (after JOURNAL.md) and picks up every stream. Detached compute survives session death; only recording/relaunch duties need the restored session. Updated 2026-07-08 ~07:50 UTC.
 
-**Board delta at last update**: R23 registered + CPU tier RECORDED (H242/H244 refuted, H247 void, H248 scanner gate passed 87.3%). R24 registered (H251-H254) + fanout extension (H255-H265, five-lens ideation). RECORDED: H260 GLiNER gate PASS (95.2%, supersedes scanner), r24b six gates (H255/H256/H259/H263 refuted, H258 gate CONFIRMED 81.4% cross-doc known-but-dropped, H261 demo split selected). Pending recording: R24 graph gates (H252/H253/H254 - executor running), H229 + R22 gates, H157.
+**Board delta at last update**: RECORDED since 07:00 - R24 graph gates (H252 CONFIRMED 68.6%/5%, H253 REFUTED robustness, H254 ceiling CONFIRMED 62.9%), R25 registered (H266-H270, peer harvest) + H266 superseded by design, R26 registered (H271-H280, usage coupling), R25/R26 first gates (H267 REFUTED 4.5% exact-normalized, H268 gate CONFIRMED 64.7% soft-link recovery -> ships to H198, H269 PARTIAL lever rejected, H279 PARTIAL staleness 9.5%/concentration 2.05x). Pending recording: H229 + R22 gates, H157, R26 remainder executor, R21 VLM executor.
 
 ## Standing rules (binding)
 

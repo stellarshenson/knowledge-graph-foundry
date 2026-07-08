@@ -30,3 +30,11 @@ Background job logs for Knowledge Graph Foundry.
 - `h216-arm2-docling.log` - R21-H216 Arm 2 (Docling) figure/layout extraction over the 27-doc corpus
 - `h226-h227-forensics.log` - R19-H227 probe-pair cross-pairing audit + R19-H226 feature-ownership attachment census (both CPU-only, neo4j2 read-only)
 - `h203-h210-scale.log` - R19-H203 exact-k vs HNSW convention A/B + R19-H210 conflict-density census on the wave-2 neo4j3 graph (both CPU-only, read-only)
+- `r22-cpu-tier.log` - R22 CPU-tier execution (H230/H231/H234/H235/H236/H237/H238 failure-mechanism analysis on H119 checkpoints, event logs, census, probes; neo4j2 read-only merge sim)
+- `h229-gates.log` - R11-H229 serial-vs-concurrent per-run progress + R22 synthetic gates (H232 seed, H233 guided decode, H239 second-model) on the first 3 H119 docs
+- `h229-nbconvert.log` - R11-H229 notebook execution output (serving_determinism_h229.ipynb)
+- `h239-model-download.log` - Qwen2.5-7B-Instruct Q4_K_M GGUF download for the H239 second-model gate
+- `h239-llama-server.log` - llama.cpp server for Qwen2.5-7B on GPU 0 port 8011 (H239)
+- `h229-runner.log` - detached script run of the H229/gates harness (same code as the notebook; fills results/h229 checkpoints)
+
+- `r24-free-gates.log` - R24 free-gate tier adjudication (H252 scanner-audited residue, H253 severed-association linkage, H254 graph-as-lexicon ceiling)
