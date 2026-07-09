@@ -68,3 +68,38 @@ class TestCli:
             result = runner.invoke(app, ["query", "pressure range?"])
         assert result.exit_code == 0
         assert "AirSense 11" in result.output
+
+    def test_calibrate_writes_artifact(self, tmp_path):
+        import json
+
+        events = tmp_path / "events.jsonl"
+        gt = tmp_path / "gt.json"
+        out = tmp_path / "calib.json"
+        lines, truth = [], []
+        for i in range(12):
+            p = i / 11
+            lines.append(json.dumps(
+                {"event": "resolution.defer", "left_id": f"l{i}", "right_id": f"r{i}", "posterior": p}
+            ))
+            truth.append({"left_id": f"l{i}", "right_id": f"r{i}", "same": p >= 0.5})
+        events.write_text("\n".join(lines) + "\n")
+        gt.write_text(json.dumps(truth))
+
+        settings = MagicMock()
+        settings.event_log = str(events)
+        settings.resolution.calibration_path = str(out)
+        settings.resolution.calibration_min_observations = 5
+        with patch("knowledge_graph_foundry.cli.load_settings", return_value=settings):
+            result = runner.invoke(app, ["calibrate", str(gt)])
+        assert result.exit_code == 0
+        assert out.exists()
+
+    def test_calibrate_no_output_fails(self, tmp_path):
+        gt = tmp_path / "gt.json"
+        gt.write_text("[]")
+        settings = MagicMock()
+        settings.event_log = None
+        settings.resolution.calibration_path = None
+        with patch("knowledge_graph_foundry.cli.load_settings", return_value=settings):
+            result = runner.invoke(app, ["calibrate", str(gt)])
+        assert result.exit_code == 1

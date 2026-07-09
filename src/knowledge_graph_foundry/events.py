@@ -28,6 +28,8 @@ SIGNALS = [
     "resolution.defer",
     "resolution.block",
     "resolution.synonym_cluster",
+    "resolution.soft_links",
+    "resolution.court",
     # ontology lifecycle
     "ontology.type_emerged",
     "ontology.type_confirmed",

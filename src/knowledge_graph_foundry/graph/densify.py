@@ -54,3 +54,29 @@ def add_similarity_edges(driver, index_name: str, threshold: float = 0.8, top_k:
     emit("densify.completed", edges_created=created, edges_total=total)
     logger.info("similarity edges: {} created, {} total", created, total)
     return created
+
+
+def add_soft_links(driver, pairs: list[tuple[str, str, float]]) -> int:
+    """R15-H268: materialize resolver defer-zone pairs as SIMILAR_TO soft links
+    weighted by the Bayesian posterior. Link, never merge - render-traversable
+    at zero false-merge risk (the H212 attribution rule is preserved by
+    construction). Idempotent via id-ordered MERGE. Returns edges written."""
+    rows = [
+        {"left": left, "right": right, "weight": float(weight)} for left, right, weight in pairs
+    ]
+    if not rows:
+        return 0
+    with driver.session() as session:
+        session.run(
+            "UNWIND $rows AS row "
+            "MATCH (x:Entity {id: row.left}), (y:Entity {id: row.right}) "
+            "WITH row, CASE WHEN x.id < y.id THEN x ELSE y END AS a, "
+            "     CASE WHEN x.id < y.id THEN y ELSE x END AS b "
+            "MERGE (a)-[r:SIMILAR_TO]->(b) "
+            "ON CREATE SET r.created_at = timestamp(), r.kind = 'soft_link', r.weight = row.weight "
+            "ON MATCH SET r.kind = 'soft_link', r.weight = row.weight",
+            rows=rows,
+        ).consume()
+    emit("resolution.soft_links", count=len(rows))
+    logger.info("soft links: {} defer-zone SIMILAR_TO edges", len(rows))
+    return len(rows)
