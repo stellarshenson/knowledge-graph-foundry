@@ -54,7 +54,7 @@ class ExtractionSettings(BaseModel):
     glyph_normalization: bool = True  # R15-H190: strip trademark/unicode glyphs (parser+resolver)
     header_carryover: bool = True  # R15-H153: re-print table header on severed continuation chunks
     recipe: Literal["single", "enumerate", "mention"] = (
-        "single"  # R24-SLOT2: extraction recipe - single (default), enumerate (H246), mention (H258)
+        "enumerate"  # R24-SLOT2/SLOT-4: enumerate (H246) ships as default; mention (H258) refuted, single retained
     )
 
 

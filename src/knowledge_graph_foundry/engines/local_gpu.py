@@ -68,6 +68,7 @@ class LocalGpuEngine:
                 ],
                 temperature=self.cfg.temperature,
                 timeout=self.cfg.timeout,
+                num_retries=self.cfg.max_retries,  # DEF-8: stage-1 enumeration retried like the instructor path
                 api_base=self.cfg.base_url,
                 api_key="local",
             )

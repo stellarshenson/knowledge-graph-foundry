@@ -19,8 +19,8 @@ class TestDefaults:
         with pytest.raises(ValidationError):
             Settings(llm={"engine": "quantum"})
 
-    def test_extraction_recipe_defaults_to_single(self):
-        assert Settings().extraction.recipe == "single"
+    def test_extraction_recipe_defaults_to_enumerate(self):
+        assert Settings().extraction.recipe == "enumerate"
 
     def test_invalid_extraction_recipe_fails_fast(self):
         with pytest.raises(ValidationError):

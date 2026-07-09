@@ -40,6 +40,9 @@ from knowledge_graph_foundry.settings import ExtractionSettings
 
 PURPOSE = "map CPAP devices, their components and operating modes"
 
+# Single-path tests pin the recipe explicitly; the shipped default is enumerate (SLOT-2/SLOT-4)
+SINGLE = ExtractionSettings(recipe="single")
+
 
 class FakeEngine:
     """Canned-response engine; per-chunk responses selected by text marker."""
@@ -114,7 +117,7 @@ class TestExtractChunk:
         )
         chunk = _chunk("AutoRamp text")
 
-        result = extract_chunk(chunk, PURPOSE, Ontology(purpose=PURPOSE), FakeEngine(wire))
+        result = extract_chunk(chunk, PURPOSE, Ontology(purpose=PURPOSE), FakeEngine(wire), SINGLE)
 
         assert len(result.entities) == 1
         entity = result.entities[0]
@@ -135,7 +138,7 @@ class TestExtractChunk:
         )
         chunk = _chunk("provenance text", document_id="doc42", index=3)
 
-        result = extract_chunk(chunk, PURPOSE, Ontology(), FakeEngine(wire))
+        result = extract_chunk(chunk, PURPOSE, Ontology(), FakeEngine(wire), SINGLE)
 
         for entity in result.entities:
             assert entity.source_documents == ["doc42"]
@@ -156,7 +159,7 @@ class TestExtractChunk:
         )
         chunk = _chunk("dangling text")
 
-        result = extract_chunk(chunk, PURPOSE, Ontology(), FakeEngine(wire))
+        result = extract_chunk(chunk, PURPOSE, Ontology(), FakeEngine(wire), SINGLE)
 
         assert result.relationships == []
         assert len(warnings) == 1
@@ -172,7 +175,7 @@ class TestExtractChunk:
         )
         chunk = _chunk("self ref text")
 
-        result = extract_chunk(chunk, PURPOSE, Ontology(), FakeEngine(wire))
+        result = extract_chunk(chunk, PURPOSE, Ontology(), FakeEngine(wire), SINGLE)
 
         assert result.relationships == []
         assert len(warnings) == 1
@@ -180,7 +183,7 @@ class TestExtractChunk:
 
     def test_empty_extraction_accepted(self):
         result = extract_chunk(
-            _chunk("nothing here"), PURPOSE, Ontology(), FakeEngine(WireExtraction())
+            _chunk("nothing here"), PURPOSE, Ontology(), FakeEngine(WireExtraction()), SINGLE
         )
         assert result.entities == []
         assert result.relationships == []
@@ -192,7 +195,7 @@ class TestExtractDocument:
         wire = WireExtraction(entities=[WireEntity(name="Alpha", types=["Product"])])
         engine = FailingEngine(wire, fail_marker="BOOM")
 
-        result = extract_document(chunks, PURPOSE, Ontology(), engine)
+        result = extract_document(chunks, PURPOSE, Ontology(), engine, extraction_cfg=SINGLE)
 
         assert [e.name for e in result.entities] == ["Alpha"]
         assert any("chunk extraction failed" in w["reason"] for w in warnings)
@@ -208,7 +211,9 @@ class TestExtractDocument:
         }
         engine = FakeEngine(WireExtraction(), by_marker=by_marker)
 
-        result = extract_document(chunks, PURPOSE, Ontology(), engine, concurrency=4)
+        result = extract_document(
+            chunks, PURPOSE, Ontology(), engine, concurrency=4, extraction_cfg=SINGLE
+        )
 
         assert [e.name for e in result.entities] == ["E0", "E1", "E2", "E3"]
 
@@ -221,7 +226,9 @@ class TestExtractDocument:
         subscribe("extraction.completed", _receiver)
         try:
             wire = WireExtraction(entities=[WireEntity(name="Alpha", types=["Product"])])
-            extract_document([_chunk("alpha")], PURPOSE, Ontology(), FakeEngine(wire))
+            extract_document(
+                [_chunk("alpha")], PURPOSE, Ontology(), FakeEngine(wire), extraction_cfg=SINGLE
+            )
         finally:
             unsubscribe("extraction.completed", _receiver)
 
@@ -346,7 +353,7 @@ class TestGleaning:
             ]
         )
         engine = SequenceEngine([first, glean])
-        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=1)
+        cfg = ExtractionSettings(recipe="single", split_entity_relation=False, gleaning_rounds=1)
 
         result = extract_chunk(_chunk("glean text"), PURPOSE, Ontology(), engine, cfg)
 
@@ -356,7 +363,7 @@ class TestGleaning:
     def test_gleaning_stops_on_empty_round(self):
         first = WireExtraction(entities=[WireEntity(name="E1", types=["Product"])])
         engine = SequenceEngine([first, WireExtraction()])  # empty gleaning round
-        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=3)
+        cfg = ExtractionSettings(recipe="single", split_entity_relation=False, gleaning_rounds=3)
 
         result = extract_chunk(_chunk("stop text"), PURPOSE, Ontology(), engine, cfg)
 
@@ -367,7 +374,7 @@ class TestGleaning:
         first = WireExtraction(entities=[WireEntity(name="E1", types=["Product"])])
         would_glean = WireExtraction(entities=[WireEntity(name="E2", types=["Product"])])
         engine = SequenceEngine([first, would_glean])
-        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=0)
+        cfg = ExtractionSettings(recipe="single", split_entity_relation=False, gleaning_rounds=0)
 
         result = extract_chunk(_chunk("noglean text"), PURPOSE, Ontology(), engine, cfg)
 
@@ -389,7 +396,7 @@ class TestSplitEntityRelation:
             ]
         )
         engine = SequenceEngine([entities, relations])
-        cfg = ExtractionSettings(split_entity_relation=True, gleaning_rounds=0)
+        cfg = ExtractionSettings(recipe="single", split_entity_relation=True, gleaning_rounds=0)
 
         result = extract_chunk(_chunk("split text"), PURPOSE, Ontology(), engine, cfg)
 
@@ -406,7 +413,7 @@ class TestSplitEntityRelation:
             entities=[WireEntity(name="DreamStation", types=["Product"])],
         )
         engine = SequenceEngine([combined])
-        cfg = ExtractionSettings(split_entity_relation=False, gleaning_rounds=0)
+        cfg = ExtractionSettings(recipe="single", split_entity_relation=False, gleaning_rounds=0)
 
         result = extract_chunk(_chunk("combined text"), PURPOSE, Ontology(), engine, cfg)
 
