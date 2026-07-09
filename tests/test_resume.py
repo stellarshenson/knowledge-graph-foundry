@@ -1,6 +1,8 @@
 """Kill-resume ingestion proof (S5): a run that dies mid-ingest resumes
 without re-processing completed documents; a revised file re-ingests."""
 
+import json
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -203,3 +205,184 @@ class TestRepurpose:
         f2._embed = lambda e: e
         f2.ingest(tmp_path)
         assert seen["purpose"] == "new objective for the same graph"
+
+
+class TestTextHeavyRouting:
+    """DEF-2: a structured file with text-heavy columns ingests one row = one
+    document (own resume fingerprint, own curing contribution); short-column
+    structured files keep the whole-file mapping path."""
+
+    @staticmethod
+    def _jsonl(tmp_path, rows):
+        path = tmp_path / "articles.jsonl"
+        path.write_text("\n".join(json.dumps(r) for r in rows))
+        return path
+
+    def test_text_heavy_rows_become_own_documents(self, tmp_path, lease_patches):
+        rows = [{"title": f"t{i}", "body": f"article {i} " + "x" * 500} for i in range(3)]
+        path = self._jsonl(tmp_path, rows)
+        store: dict = {}
+        _seed_state(store)
+
+        f = _foundry(store)
+        seen = []
+
+        def spy_text_extract(document, source_name, purpose, ontology):
+            seen.append(document)
+            name = f"e-{document.metadata['row_index']}"
+            return [Entity.create(name, types=["Thing"], description="x")], []
+
+        f._extract_text_document = spy_text_extract
+        f._extract_file = MagicMock()  # the mapping path must not fire
+        f._embed = lambda e: e
+        summary = f.ingest(path)
+
+        assert summary["documents"] == 3
+        f._extract_file.assert_not_called()
+        assert [d.metadata["row_index"] for d in seen] == [0, 1, 2]
+        assert len({d.id for d in seen}) == 3  # each row is its own document
+        assert all(f"article {i} " in seen[i].text for i in range(3))
+        fingerprints = store["processed_documents"]
+        assert len(fingerprints) == 3
+        assert all("#row" in fp for fp in fingerprints)  # per-row resume fingerprints
+
+    def test_short_column_structured_keeps_mapping_path(self, tmp_path, lease_patches):
+        rows = [{"name": f"n{i}", "price": i} for i in range(3)]
+        path = self._jsonl(tmp_path, rows)
+        store: dict = {}
+        _seed_state(store)
+
+        f = _foundry(store)
+        f._extract_file = MagicMock(side_effect=lambda p, pu, o: (_entity_for(p), []))
+        f._extract_text_document = MagicMock()
+        f._embed = lambda e: e
+        summary = f.ingest(path)
+
+        assert summary["documents"] == 1  # whole file stays one document
+        f._extract_file.assert_called_once()
+        f._extract_text_document.assert_not_called()
+        (fp,) = store["processed_documents"]
+        assert fp.startswith("articles.jsonl:")
+        assert "#row" not in fp  # file-level fingerprint unchanged
+
+    def test_text_heavy_rows_resume_individually(self, tmp_path, lease_patches):
+        rows = [{"body": f"article {i} " + "x" * 500} for i in range(3)]
+        path = self._jsonl(tmp_path, rows)
+        store: dict = {}
+        _seed_state(store)
+
+        def extract(document, source_name, purpose, ontology):
+            name = f"e-{document.metadata['row_index']}"
+            return [Entity.create(name, types=["Thing"], description="x")], []
+
+        f1 = _foundry(store)
+        f1._extract_text_document = extract
+        f1._embed = lambda e: e
+        assert f1.ingest(path)["documents"] == 3
+
+        # unchanged rows: all skipped on the next run
+        f2 = _foundry(store)
+        f2._extract_text_document = MagicMock()
+        f2._embed = lambda e: e
+        assert f2.ingest(path)["documents"] == 0
+        f2._extract_text_document.assert_not_called()
+
+        # revise ONE row: only that row's fingerprint changes and re-ingests
+        rows[1]["body"] = "REVISED " + rows[1]["body"]
+        path.write_text("\n".join(json.dumps(r) for r in rows))
+        f3 = _foundry(store)
+        seen = []
+
+        def spy(document, source_name, purpose, ontology):
+            seen.append(document.metadata["row_index"])
+            return extract(document, source_name, purpose, ontology)
+
+        f3._extract_text_document = spy
+        f3._embed = lambda e: e
+        assert f3.ingest(path)["documents"] == 1
+        assert seen == [1]
+
+    def test_empty_text_rows_skipped(self, tmp_path, lease_patches):
+        rows = [
+            {"body": "article one " + "x" * 500},
+            {"body": ""},
+            {"body": None},
+        ]
+        path = self._jsonl(tmp_path, rows)
+        store: dict = {}
+        _seed_state(store)
+
+        f = _foundry(store)
+        f._engine = MagicMock()
+        f.settings.load.provenance_nodes = False
+
+        def fake_extract_document(chunks, purpose, ontology, engine, **kwargs):
+            return SimpleNamespace(
+                entities=[Entity.create("e", types=["Thing"], description="x")],
+                relationships=[],
+            )
+
+        f._embed = lambda e: e
+        with patch(
+            "knowledge_graph_foundry.extraction.extract_document", fake_extract_document
+        ):
+            summary = f.ingest(path)
+
+        # empty/None rows chunk to nothing and are skipped as documents
+        assert summary["documents"] == 1
+        assert len(store["processed_documents"]) == 1
+
+
+class TestCorpusExhaustedConsolidation:
+    """DEF-7: a corpus that ends while the FSM is still CURING consolidates on
+    whatever evidence it has - the graph is usable after ingest, and the next
+    ingestion session simply continues in STABLE (incremental load, no re-cure)."""
+
+    def test_corpus_end_consolidates_and_graph_is_usable(self, tmp_path, lease_patches):
+        paths = _files(tmp_path, ["a.txt", "b.txt"])
+        store: dict = {}
+        _seed_state(store)
+
+        f = _foundry(store)  # never-cure gate: corpus will end fluid
+        f._extract_file = lambda p, pu, o: (_entity_for(p), [])
+        f._embed = lambda e: e
+        consolidations = []
+        real_consolidate = f._consolidate
+
+        def spy(buffer, purpose, calibrator, reason):
+            consolidations.append(reason)
+            return real_consolidate(buffer, purpose, calibrator, reason)
+
+        f._consolidate = spy
+        summary = f.ingest(tmp_path)
+
+        assert consolidations == ["corpus_exhausted"]
+        assert summary["cured"] is True
+        assert store["fsm_state"] == "STABLE"
+        assert store["buffer_cache"] is None  # nothing left unconsolidated
+
+    def test_next_session_simply_continues_stable(self, tmp_path, lease_patches):
+        _files(tmp_path, ["a.txt", "b.txt"])
+        store: dict = {}
+        _seed_state(store)
+
+        f = _foundry(store)
+        f._extract_file = lambda p, pu, o: (_entity_for(p), [])
+        f._embed = lambda e: e
+        f.ingest(tmp_path)
+        assert store["fsm_state"] == "STABLE"
+
+        # session 2: a new document arrives - stable incremental load, no re-cure
+        _files(tmp_path, ["c.txt"])
+        f2 = _foundry(store)
+        f2._extract_file = lambda p, pu, o: (_entity_for(p), [])
+        f2._embed = lambda e: e
+        stable_loads = []
+        f2._stable_load = lambda e, r, o, c: (stable_loads.append(len(e)) or (0.0, 0))
+        f2._consolidate = MagicMock()
+        summary2 = f2.ingest(tmp_path)
+
+        assert stable_loads == [1]  # only c.txt, loaded incrementally
+        assert summary2["documents"] == 1
+        f2._consolidate.assert_not_called()
+        assert store["fsm_state"] == "STABLE"

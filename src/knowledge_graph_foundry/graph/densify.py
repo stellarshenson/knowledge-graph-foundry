@@ -16,9 +16,7 @@ from loguru import logger
 from knowledge_graph_foundry.events import emit
 
 
-def add_similarity_edges(
-    driver, index_name: str, threshold: float = 0.8, top_k: int = 5
-) -> int:
+def add_similarity_edges(driver, index_name: str, threshold: float = 0.8, top_k: int = 5) -> int:
     """kNN pass over entity embeddings; returns the number of edges created."""
 
     def _total(session) -> int:

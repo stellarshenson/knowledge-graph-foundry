@@ -15,6 +15,8 @@ from knowledge_graph_foundry.ingest import (
     iter_source_files,
     read_document,
     read_structured,
+    row_document,
+    text_heavy_columns,
 )
 
 # -- unstructured -----------------------------------------------------------
@@ -236,3 +238,54 @@ def test_iter_zip_expansion_sorted(tmp_path):
     assert files == sorted(files)
     assert [f.name for f in files] == ["a.txt", "m.csv", "z.md"]
     assert all(workdir in f.parents for f in files)
+
+
+# -- DEF-2 text-heavy detection and row documents ----------------------------
+
+
+def test_text_heavy_columns_median_math():
+    rows = [
+        {"title": "short", "body": "x" * 500},
+        {"title": "tiny", "body": "y" * 10},
+        {"title": "small", "body": "z" * 300},
+    ]
+    # body medians [10, 300, 500] -> 300 > 200; title stays short
+    assert text_heavy_columns(rows, 200) == ["body"]
+
+
+def test_text_heavy_columns_threshold_boundary():
+    rows = [{"body": "x" * 200}]
+    assert text_heavy_columns(rows, 200) == []  # median == threshold: not heavy
+    rows = [{"body": "x" * 201}]
+    assert text_heavy_columns(rows, 200) == ["body"]  # strictly above: heavy
+
+
+def test_text_heavy_columns_ignores_none_cells_and_empty_rows():
+    assert text_heavy_columns([], 200) == []
+    rows = [
+        {"body": None, "id": 1},
+        {"body": "x" * 500, "id": 2},
+    ]
+    # the None cell does not drag the median down: [500] -> heavy
+    assert text_heavy_columns(rows, 200) == ["body"]
+
+
+def test_row_document_text_and_metadata(tmp_path):
+    path = tmp_path / "articles.jsonl"
+    row = {"title": "t1", "body": "x" * 500, "abstract": "y" * 300}
+    doc = row_document(path, row, 3, ["body", "abstract"])
+    assert doc.text == "x" * 500 + "\n\n" + "y" * 300
+    assert doc.format == "jsonl"
+    assert doc.path == str(path)
+    assert doc.metadata["file_name"] == "articles.jsonl"
+    assert doc.metadata["row_index"] == 3
+    assert doc.metadata["title"] == "t1"  # short column rides along
+    assert "body" not in doc.metadata  # text columns are the text, not metadata
+    other = row_document(path, row, 4, ["body", "abstract"])
+    assert doc.id != other.id  # each row is its own document
+
+
+def test_row_document_none_text_cell_skipped(tmp_path):
+    path = tmp_path / "articles.jsonl"
+    doc = row_document(path, {"body": None, "title": "t"}, 0, ["body"])
+    assert doc.text == ""

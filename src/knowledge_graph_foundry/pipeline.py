@@ -23,8 +23,10 @@ from knowledge_graph_foundry.ingest.readers import (
     iter_source_files,
     read_document,
     read_structured,
+    row_document,
+    text_heavy_columns,
 )
-from knowledge_graph_foundry.models import Entity, Ontology, Relationship
+from knowledge_graph_foundry.models import Document, Entity, Ontology, Relationship
 from knowledge_graph_foundry.ontology.buffer import FluidBuffer
 from knowledge_graph_foundry.ontology.clustering import (
     apply_type_remap,
@@ -292,77 +294,114 @@ class Foundry:
         state_drift = None
 
         for file_path in files:
-            fingerprint = (
-                f"{file_path.name}:{hashlib.sha1(file_path.read_bytes()).hexdigest()[:16]}"
-            )
-            if fingerprint in processed_documents:
-                emit("document.skipped", path=str(file_path), reason="already ingested")
-                continue
-            emit("document.started", path=str(file_path))
+            # DEF-2: a text-heavy structured file expands to one unit per row,
+            # each its own document; everything else is one whole-file unit
             try:
-                entities, relationships = self._extract_file(file_path, purpose, ontology)
+                units = self._document_units(file_path)
             except Exception as exc:  # corrupt file: skip, continue run
                 emit("document.skipped", path=str(file_path), reason=str(exc))
                 logger.warning(f"skipping {file_path}: {exc}")
                 continue
+            for fingerprint, row_doc in units:
+                if fingerprint in processed_documents:
+                    emit("document.skipped", path=str(file_path), reason="already ingested")
+                    continue
+                emit("document.started", path=str(file_path))
+                try:
+                    if row_doc is not None:
+                        entities, relationships = self._extract_text_document(
+                            row_doc,
+                            f"{file_path.name}#row{row_doc.metadata['row_index']}",
+                            purpose,
+                            ontology,
+                        )
+                    else:
+                        entities, relationships = self._extract_file(file_path, purpose, ontology)
+                except Exception as exc:  # corrupt file: skip, continue run
+                    emit("document.skipped", path=str(file_path), reason=str(exc))
+                    logger.warning(f"skipping {file_path}: {exc}")
+                    continue
 
-            if not entities:
-                emit("document.skipped", path=str(file_path), reason="no entities")
-                continue
+                if not entities:
+                    emit("document.skipped", path=str(file_path), reason="no entities")
+                    continue
 
-            entities = self._embed(entities)
-            processed_documents.add(fingerprint)
-            documents_processed += 1
-            summary["documents"] += 1
-            summary["entities"] += len(entities)
-            summary["relationships"] += len(relationships)
+                entities = self._embed(entities)
+                processed_documents.add(fingerprint)
+                documents_processed += 1
+                summary["documents"] += 1
+                summary["entities"] += len(entities)
+                summary["relationships"] += len(relationships)
 
-            if lifecycle.state in ("INITIALIZING", "CURING"):
-                if lifecycle.state == "INITIALIZING":
-                    lifecycle.start_curing()
-                buffer.add_document(entities, relationships)
-                ontology = buffer.ontology
-                record = metrics.record(buffer.type_frequencies())
-                detector.record(record)
-                should_cure, reason = detector.should_cure()
-                if should_cure:
-                    ontology, drift = self._consolidate(buffer, purpose, calibrator, reason)
-                    lifecycle.cure()
-                    summary["cured"] = True
-                    buffer = None
-            else:
-                remap_rate, invalidated = self._stable_load(
-                    entities, relationships, ontology, calibrator
+                if lifecycle.state in ("INITIALIZING", "CURING"):
+                    if lifecycle.state == "INITIALIZING":
+                        lifecycle.start_curing()
+                    buffer.add_document(entities, relationships)
+                    ontology = buffer.ontology
+                    record = metrics.record(buffer.type_frequencies())
+                    detector.record(record)
+                    should_cure, reason = detector.should_cure()
+                    if should_cure:
+                        ontology, drift = self._consolidate(buffer, purpose, calibrator, reason)
+                        lifecycle.cure()
+                        summary["cured"] = True
+                        buffer = None
+                else:
+                    remap_rate, invalidated = self._stable_load(
+                        entities, relationships, ontology, calibrator
+                    )
+                    verdict = drift.record_document(remap_rate, self._frequencies(entities))
+                    fact_verdict = drift.record_contradictions(invalidated, len(entities))
+                    if verdict.action == "recure":
+                        lifecycle.recure()
+                        drift.begin_recure()
+                    state_drift = fact_verdict.action if fact_verdict else verdict.action
+
+                # persist after EVERY document - resumability is the contract;
+                # the heartbeat keeps the lease live and detects a takeover
+                if not heartbeat(self.driver, run_id):
+                    raise FoundryError(
+                        "ingest lease lost mid-run (stale takeover) - aborting to avoid "
+                        "concurrent state mutation; state through the previous document is persisted"
+                    )
+                self._save_state(
+                    {
+                        "fsm_state": lifecycle.state,
+                        "purpose": purpose,
+                        "ontology": ontology.model_dump(),
+                        "buffer_cache": buffer.to_dict() if buffer else None,
+                        "metrics_history": metrics.history() if buffer else None,
+                        "calibration": calibrator.to_json() if calibrator else None,
+                        "drift": drift.to_dict() if drift else None,
+                        "documents_processed": documents_processed,
+                        "processed_documents": sorted(processed_documents),
+                        "drift_verdict": state_drift if lifecycle.state == "STABLE" else None,
+                    }
                 )
-                verdict = drift.record_document(remap_rate, self._frequencies(entities))
-                fact_verdict = drift.record_contradictions(invalidated, len(entities))
-                if verdict.action == "recure":
-                    lifecycle.recure()
-                    drift.begin_recure()
-                state_drift = fact_verdict.action if fact_verdict else verdict.action
+                emit("document.completed", path=str(file_path), entities=len(entities))
 
-            # persist after EVERY document - resumability is the contract;
-            # the heartbeat keeps the lease live and detects a takeover
-            if not heartbeat(self.driver, run_id):
-                raise FoundryError(
-                    "ingest lease lost mid-run (stale takeover) - aborting to avoid "
-                    "concurrent state mutation; state through the previous document is persisted"
-                )
+        # DEF-7: corpus exhausted while still fluid - the gate never fired, so the
+        # buffer would outlive the ingest and the graph would stay entity-less;
+        # consolidate on whatever evidence the corpus provided
+        if buffer is not None and buffer.documents_processed > 0:
+            ontology, drift = self._consolidate(buffer, purpose, calibrator, "corpus_exhausted")
+            lifecycle.cure()
+            summary["cured"] = True
+            buffer = None
             self._save_state(
                 {
                     "fsm_state": lifecycle.state,
                     "purpose": purpose,
                     "ontology": ontology.model_dump(),
-                    "buffer_cache": buffer.to_dict() if buffer else None,
-                    "metrics_history": metrics.history() if buffer else None,
+                    "buffer_cache": None,
+                    "metrics_history": None,
                     "calibration": calibrator.to_json() if calibrator else None,
                     "drift": drift.to_dict() if drift else None,
                     "documents_processed": documents_processed,
                     "processed_documents": sorted(processed_documents),
-                    "drift_verdict": state_drift if lifecycle.state == "STABLE" else None,
+                    "drift_verdict": None,
                 }
             )
-            emit("document.completed", path=str(file_path), entities=len(entities))
 
         emit("load.completed", **summary)
         return summary
@@ -374,7 +413,6 @@ class Foundry:
     ) -> tuple[list[Entity], list[Relationship]]:
         from knowledge_graph_foundry.extraction import (
             apply_mapping,
-            extract_document,
             structured_mapping,
         )
 
@@ -384,31 +422,71 @@ class Foundry:
                 return [], []
             mapping = structured_mapping(rows[:5], purpose, self.engine)
             result = apply_mapping(rows, mapping, document_id=f"d_{file_path.stem}")
-        else:
-            document = read_document(
-                file_path,
-                parser_union=self.settings.extraction.parser_union,
-                glyph_normalization=self.settings.extraction.glyph_normalization,
-            )
-            chunks = chunk_document(
-                document,
-                chunk_size=self.settings.extraction.chunk_size,
-                chunk_overlap=self.settings.extraction.chunk_overlap,
-                header_carryover=self.settings.extraction.header_carryover,
-            )
-            if not chunks:
-                return [], []
-            result = extract_document(
-                chunks,
-                purpose,
-                ontology,
-                self.extraction_engine,
-                concurrency=self.settings.extraction.concurrency,
-                extraction_cfg=self.settings.extraction,
-            )
-            if self.settings.load.provenance_nodes:
-                self._load_provenance(document, chunks, file_path.name)
+            return result.entities, result.relationships
+        document = read_document(
+            file_path,
+            parser_union=self.settings.extraction.parser_union,
+            glyph_normalization=self.settings.extraction.glyph_normalization,
+        )
+        return self._extract_text_document(document, file_path.name, purpose, ontology)
+
+    def _extract_text_document(
+        self, document: Document, source_name: str, purpose: str, ontology: Ontology
+    ) -> tuple[list[Entity], list[Relationship]]:
+        """Chunk-and-extract one Document - the unstructured path shared by
+        whole files and text-heavy structured rows (DEF-2)."""
+        from knowledge_graph_foundry.extraction import extract_document
+
+        chunks = chunk_document(
+            document,
+            chunk_size=self.settings.extraction.chunk_size,
+            chunk_overlap=self.settings.extraction.chunk_overlap,
+            header_carryover=self.settings.extraction.header_carryover,
+        )
+        if not chunks:
+            return [], []
+        result = extract_document(
+            chunks,
+            purpose,
+            ontology,
+            self.extraction_engine,
+            concurrency=self.settings.extraction.concurrency,
+            extraction_cfg=self.settings.extraction,
+        )
+        if self.settings.load.provenance_nodes:
+            self._load_provenance(document, chunks, source_name)
         return result.entities, result.relationships
+
+    def _document_units(self, file_path: Path) -> "list[tuple[str, Optional[Document]]]":
+        """Expand a source file into resumable (fingerprint, document) units.
+
+        DEF-2: a structured file with a text-heavy column (median cell length
+        above ingest.text_column_median_chars) yields one unit PER ROW - each
+        row is its own document with its own resume fingerprint and its own
+        curing contribution, so the prose actually reaches the LLM. Everything
+        else stays one whole-file unit (document None) extracted as before."""
+        if is_structured(file_path):
+            rows = read_structured(file_path)
+            columns = text_heavy_columns(rows, self.settings.ingest.text_column_median_chars)
+            if columns:
+                units: list[tuple[str, Optional[Document]]] = []
+                for index, row in enumerate(rows):
+                    digest = hashlib.sha1(
+                        json.dumps(row, sort_keys=True, default=str).encode()
+                    ).hexdigest()[:16]
+                    units.append(
+                        (
+                            f"{file_path.name}#row{index}:{digest}",
+                            row_document(file_path, row, index, columns),
+                        )
+                    )
+                return units
+        return [
+            (
+                f"{file_path.name}:{hashlib.sha1(file_path.read_bytes()).hexdigest()[:16]}",
+                None,
+            )
+        ]
 
     def repair(self, question: str, sources: "list[str | Path]") -> dict:
         """R04 targeted repair: a failing question names its source documents;
@@ -909,9 +987,7 @@ class Foundry:
         # R03-H17 coverage signals: best vector/proposition hit score
         coverage = {
             "top_score": max(
-                [s.get("score", 0.0) for s in seeds]
-                + [h.get("score", 0.0) for h in hits]
-                or [0.0]
+                [s.get("score", 0.0) for s in seeds] + [h.get("score", 0.0) for h in hits] or [0.0]
             )
         }
 
