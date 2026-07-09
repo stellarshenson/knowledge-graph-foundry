@@ -114,8 +114,15 @@ class GraphRAGSettings(BaseModel):
     vector_index_name: str = "kgf_entity_embeddings"
     vector_dimensions: int = 1024
     top_k: int = 16  # R15-H53: vector seed budget (+28% relative pure-seed recall over 8)
+    overfetch_factor: int = 4  # R15-H195a: fetch top_k*factor then truncate to top_k (GEN_K=64/16)
+    fanout_cap: int = 5  # R19-H180: query-ranked 1-hop neighbor cap per seed (0 disables)
+    miss_detector: bool = True  # R19-H181: short-circuit to an abstention render on the miss class
+    miss_threshold: float = 0.668  # R19-H181: top-seed similarity below which the detector fires
+    render_budget: float = 0.6  # R19-H182: keep the top-similarity mass share (1.0 disables)
+    foreign_device_exclusion: bool = False  # R19-H205: optional - drop foreign-device sections
+    prop_val_linkage: bool = True  # R19-H211: surface entities whose property value == a seed name
     proposition_split_max_tokens: int = 300  # R15-H173: split fat propositions (0 disables)
-    ppr_enabled: bool = True  # R2: PPR traversal seeded from vector top-k
+    ppr_enabled: bool = False  # R2 lever, H37-refuted: PPR is theater (0.994 containment in seeds+1hop) - off in the promoted composition, code retained for ablation
     ppr_top_n: int = 15  # R2: PPR nodes taken into the answer context
     ppr_damping: float = 0.85  # R2: PageRank damping
     propositions_enabled: bool = True  # R02-H11: fact sentences as retrieval targets
