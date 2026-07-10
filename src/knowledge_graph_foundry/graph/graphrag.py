@@ -169,6 +169,31 @@ def detect_miss(seeds: list[dict[str, Any]], threshold: float) -> bool:
     return max((s.get("score", 0.0) for s in seeds), default=0.0) < threshold
 
 
+def detect_escalation(seeds: list[dict[str, Any]], threshold: float) -> bool:
+    """R37-H382: True when the best seed similarity sits below ``threshold`` -
+    the sufficiency band above the miss class where the rung-0 render
+    under-serves the query and retrieval escalates to the higher rungs. The
+    fitted cut (~0.765 on the pinned pile) is the CRC solution at alpha=0.08
+    (R38-H383) and is corpus-class-bound (H157) - loaded through the two-tier
+    record, never shipped as a constant."""
+    return max((s.get("score", 0.0) for s in seeds), default=0.0) < threshold
+
+
+def fetch_entities(driver: Driver, ids: list[str]) -> list[dict[str, Any]]:
+    """Entity rows in the seed-dict shape for explicit ids - the rung-1
+    escalation render (H367-B) pulls proposition-seeded entities into the
+    rendered node set; the caller scores them."""
+    if not ids:
+        return []
+    with driver.session() as session:
+        return session.run(
+            "MATCH (e:Entity) WHERE e.id IN $ids "
+            "RETURN e.id AS id, e.name AS name, labels(e) AS types, "
+            "e.description AS description, 0.0 AS score",
+            ids=list(ids),
+        ).data()
+
+
 def truncate_to_budget(units: list[tuple[Any, float, float]], budget: float) -> list[Any]:
     """R19-H182: keep the top-similarity ``budget`` fraction of render mass.
     ``units`` is ``(item, similarity, size)``; ranks by similarity descending and

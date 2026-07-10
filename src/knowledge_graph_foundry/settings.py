@@ -40,6 +40,27 @@ class EmbeddingSettings(BaseModel):
     fallback_model: str = "all-MiniLM-L6-v2"
 
 
+class ChannelEmbedding(BaseModel):
+    """Per-channel embedding space (acc-crit Embeddings): any model connects
+    through config; the (provider, model) pair is pinned to every index built
+    with it. `device` is the nvidia-smi index or GPU UUID for local-gpu
+    (PCI_BUS_ID order set before torch import); "cpu" only by explicit
+    config, never as a silent fallback."""
+
+    provider: Literal["bedrock", "local-gpu", "openai"] = "local-gpu"
+    model: str = "BAAI/bge-m3"
+    device: str = "2"  # nvidia-smi index or UUID; "cpu" explicit only
+    endpoint: Optional[str] = None  # openai provider: base URL of /v1/embeddings
+
+
+class EmbeddingChannels(BaseModel):
+    """Retrieval channels may pin different embedding models (acc-crit
+    per-channel spaces). The entity channel stays on EmbeddingSettings
+    (Titan - the live index space, fixed control arm)."""
+
+    passages: ChannelEmbedding = ChannelEmbedding()
+
+
 class IngestSettings(BaseModel):
     text_column_median_chars: int = 200  # DEF-2: column median cell length above which a structured file is text-heavy and each row chunk-extracts as its own document
 
@@ -120,6 +141,16 @@ class GraphRAGSettings(BaseModel):
     fanout_cap: int = 5  # R19-H180: query-ranked 1-hop neighbor cap per seed (0 disables)
     miss_detector: bool = True  # R19-H181: short-circuit to an abstention render on the miss class
     miss_threshold: float = 0.668  # R19-H181: top-seed similarity below which the detector fires
+    escalation_gate: bool = False  # R37-H382: sufficiency-gated render escalation
+    # R38-H384: a-priori gate cut in index-score units - pile-fitted (H382), CRC
+    # alpha=0.08 (H383), corpus-class-bound (H157); upgraded per corpus, never final
+    escalation_threshold_prior: float = 0.765
+    escalation_min_labels: int = 12  # R38-H385: refit floor; below it the record stands
+    gate_calibration_path: Optional[str] = None  # R38-H384: frozen artifact, wins over graph
+    passages_enabled: bool = False  # R34-H366: span store + query-anchored window (rung 2)
+    passage_index_name: str = "kgf_passage_embeddings"
+    passage_span_chars: int = 900  # H366 s900k1: window size; stride is half
+    passage_top_k: int = 1  # spans appended to the render under escalation
     render_budget: float = 0.6  # R19-H182: keep the top-similarity mass share (1.0 disables)
     foreign_device_exclusion: bool = False  # R19-H205: optional - drop foreign-device sections
     prop_val_linkage: bool = True  # R19-H211: surface entities whose property value == a seed name
@@ -158,6 +189,7 @@ class Settings(BaseModel):
     # extraction while a stronger model orchestrates (R9).
     extraction_llm: Optional[LLMSettings] = None
     embeddings: EmbeddingSettings = EmbeddingSettings()
+    embedding_channels: EmbeddingChannels = EmbeddingChannels()
     ingest: IngestSettings = IngestSettings()
     extraction: ExtractionSettings = ExtractionSettings()
     resolution: ResolutionSettings = ResolutionSettings()

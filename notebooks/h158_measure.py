@@ -136,18 +136,24 @@ def _render_nodes(session, node_ids):
 
 
 def recall_at_k(uri: str, top_k: int, label: str,
-                probes_path: str = "tests/probes/cpap-probe-set.yml") -> dict:
+                probes_path: str = "tests/probes/cpap-probe-set.yml",
+                overfetch_factor: int = None) -> dict:
+    """DEF-14: default retrieval is ENGINE PARITY - overfetch top_k*factor then
+    truncate, exactly as the shipped read path (R15-H195a). Pass
+    overfetch_factor=1 to reproduce the pre-parity instrument for
+    comparability with maps measured before 2026-07-10."""
     from copy import deepcopy
 
     import yaml
     from knowledge_graph_foundry import load_settings
     from knowledge_graph_foundry.extraction import generate_embeddings
-    from knowledge_graph_foundry.graph.graphrag import vector_query
+    from knowledge_graph_foundry.graph.graphrag import overfetch_seeds, vector_query
     from knowledge_graph_foundry.models import Entity
     from knowledge_graph_foundry.pipeline import Foundry
 
     base = load_settings(Path("config.yml"))
     vec = base.graphrag.vector_index_name
+    factor = base.graphrag.overfetch_factor if overfetch_factor is None else overfetch_factor
     probes = [p for p in yaml.safe_load(Path(probes_path).read_text()) if p.get("gold_evidence")]
     st = deepcopy(base)
     st.neo4j.uri, st.neo4j.user, st.neo4j.password = uri, "neo4j", "kgfoundry"
@@ -162,14 +168,15 @@ def recall_at_k(uri: str, top_k: int, label: str,
             q = p["question"]
             pe = Entity.create(q[:80], types=["Query"], description=q)
             emb = generate_embeddings([pe], st.embeddings)[0].embedding
-            seeds = [s["id"] for s in vector_query(f.driver, emb, vec, top_k=top_k)]
+            seeds = [s["id"] for s in overfetch_seeds(
+                lambda k: vector_query(f.driver, emb, vec, top_k=k), top_k, factor)]
             with f.driver.session() as sess:
                 ctx = _render_nodes(sess, seeds)
             golds = p["gold_evidence"]
             per[p["id"]] = sum(_present(g, ctx) for g in golds) / len(golds)
     mean = sum(per.values()) / len(per)
     return {
-        "label": label, "uri": uri, "top_k": top_k,
+        "label": label, "uri": uri, "top_k": top_k, "overfetch_factor": factor,
         "entities": ents, "relationships": rels, "documents": docs,
         "mean_recall": round(mean, 4),
         "fully_covered": sum(1 for v in per.values() if v == 1.0),

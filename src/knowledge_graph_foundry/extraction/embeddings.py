@@ -13,13 +13,14 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from typing import Optional
 
 import boto3
 from loguru import logger
 
 from knowledge_graph_foundry.models import Entity
-from knowledge_graph_foundry.settings import EmbeddingSettings
+from knowledge_graph_foundry.settings import ChannelEmbedding, EmbeddingSettings
 
 _BATCH_SIZE = 25
 
@@ -231,3 +232,116 @@ def generate_embeddings(entities: list[Entity], cfg: EmbeddingSettings) -> list[
             cfg.fallback,
         )
         return entities
+
+
+# -- channel embeddings (acc-crit Embeddings: provider-abstracted, any model,
+# -- GPU by default, per-channel spaces) --------------------------------------
+
+_channel_models: dict[tuple[str, str], object] = {}  # (model, device) -> instance
+_channel_dims: dict[tuple[str, str], int] = {}  # (provider, model) -> dimensions
+
+
+def _load_channel_model(model_name: str, device: str):
+    """Load a local HF/sentence-transformers model on the requested GPU.
+    Device is the nvidia-smi index or UUID; env pinning must happen before
+    the first torch import, so a mask conflict raises instead of silently
+    embedding on the wrong card. "cpu" only by explicit config."""
+    key = (model_name, device)
+    if key in _channel_models:
+        return _channel_models[key]
+
+    if device != "cpu":
+        if "torch" not in sys.modules:
+            os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+            os.environ["CUDA_VISIBLE_DEVICES"] = device
+        elif os.environ.get("CUDA_VISIBLE_DEVICES") != device:
+            raise RuntimeError(
+                f"torch already imported with CUDA_VISIBLE_DEVICES="
+                f"{os.environ.get('CUDA_VISIBLE_DEVICES')!r}; cannot repin to "
+                f"{device!r} - set the device before the first torch import"
+            )
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ImportError as exc:
+        raise RuntimeError(
+            "sentence-transformers not installed - required by the local-gpu provider"
+        ) from exc
+
+    try:
+        model = SentenceTransformer(model_name, device="cpu" if device == "cpu" else "cuda")
+    except Exception as exc:
+        cache = os.environ.get("HF_HOME", os.path.expanduser("~/.cache/huggingface"))
+        raise RuntimeError(
+            f"could not load embedding model {model_name!r} (HF cache: {cache}); "
+            f"if offline, pre-download it or unset HF_HUB_OFFLINE: {exc}"
+        ) from exc
+    if device != "cpu":
+        import torch
+
+        if not torch.cuda.is_available():
+            raise RuntimeError(
+                f"device {device!r} requested but CUDA is unavailable - "
+                "set device='cpu' explicitly to run on CPU"
+            )
+        model.half()
+    _channel_models[key] = model
+    return model
+
+
+def _embed_openai(texts: list[str], model: str, endpoint: str) -> list[list[float]]:
+    """OpenAI-compatible /v1/embeddings endpoint (vLLM, TEI)."""
+    import urllib.request
+
+    req = urllib.request.Request(
+        endpoint.rstrip("/") + "/v1/embeddings",
+        data=json.dumps({"model": model, "input": texts}).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=300) as resp:
+        body = json.loads(resp.read())
+    rows = sorted(body["data"], key=lambda d: d["index"])
+    return [r["embedding"] for r in rows]
+
+
+def _embed_bedrock_texts(texts: list[str], model: str) -> list[list[float]]:
+    profile = os.environ.get("AWS_PROFILE", "kolomolo")
+    region = os.environ.get(
+        "AWS_REGION_NAME", os.environ.get("AWS_DEFAULT_REGION", "eu-central-1")
+    )
+    client = boto3.Session(profile_name=profile, region_name=region).client("bedrock-runtime")
+    out = []
+    for text in texts:
+        response = client.invoke_model(
+            modelId=model,
+            contentType="application/json",
+            accept="application/json",
+            body=json.dumps({"inputText": text}),
+        )
+        out.append(json.loads(response["body"].read())["embedding"])
+    return out
+
+
+def embed_channel_texts(texts: list[str], cfg: ChannelEmbedding) -> list[list[float]]:
+    """Embed raw texts in a channel's pinned (provider, model) space."""
+    if not texts:
+        return []
+    if cfg.provider == "local-gpu":
+        model = _load_channel_model(cfg.model, cfg.device)
+        vectors = model.encode(texts, normalize_embeddings=True, show_progress_bar=False)
+        return [v.tolist() for v in vectors]
+    if cfg.provider == "openai":
+        if not cfg.endpoint:
+            raise ValueError("openai provider requires ChannelEmbedding.endpoint")
+        return _embed_openai(texts, cfg.model, cfg.endpoint)
+    if cfg.provider == "bedrock":
+        return _embed_bedrock_texts(texts, cfg.model)
+    raise ValueError(f"Unknown channel embedding provider: {cfg.provider}")
+
+
+def channel_dimensions(cfg: ChannelEmbedding) -> int:
+    """Vector dimensions of the channel's model, derived from the model itself
+    (acc-crit dimension-index coupling) - one probe embed, cached."""
+    key = (cfg.provider, cfg.model)
+    if key not in _channel_dims:
+        _channel_dims[key] = len(embed_channel_texts(["dimension probe"], cfg)[0])
+    return _channel_dims[key]

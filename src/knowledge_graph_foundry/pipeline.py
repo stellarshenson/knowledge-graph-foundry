@@ -129,6 +129,30 @@ class Foundry:
             return PosteriorCalibrator.from_json(state["calibration"])
         return None
 
+    def _gate_threshold(self) -> float:
+        """R38-H384 two-tier escalation cut: a frozen per-corpus file artifact
+        wins; else the graph-persisted record (fingerprint-checked against the
+        pile it was fitted on); else the a-priori settings prior. Fitted cuts
+        are corpus-class-bound (H157) - a record fitted on a different pile
+        falls back to the prior instead of transferring silently."""
+        from knowledge_graph_foundry.graph.gate_calibration import corpus_fingerprint
+
+        path = self.settings.graphrag.gate_calibration_path
+        if path and Path(path).exists():
+            return float(json.loads(Path(path).read_text())["threshold"])
+        state = self._load_state()
+        record = state.get("gate_calibration")
+        if record:
+            fp = corpus_fingerprint(state.get("processed_documents") or [])
+            rec_fp = (record.get("provenance") or {}).get("corpus_fingerprint")
+            if rec_fp and rec_fp != fp:
+                logger.warning(
+                    f"gate_calibration fingerprint mismatch ({rec_fp} != {fp}) - using prior"
+                )
+                return self.settings.graphrag.escalation_threshold_prior
+            return float(record["threshold"])
+        return self.settings.graphrag.escalation_threshold_prior
+
     def _materialize_soft_links(self, decisions, id_map: dict[str, str]) -> None:
         """R15-H268: turn resolver defer-zone decisions into posterior-weighted
         SIMILAR_TO soft links (link, never merge). Ids are remapped through the
@@ -874,6 +898,24 @@ class Foundry:
                 self.settings.graphrag.vector_dimensions,
                 split_max_tokens=self.settings.graphrag.proposition_split_max_tokens,
             )
+        passages = 0
+        if self.settings.graphrag.passages_enabled:
+            from knowledge_graph_foundry.extraction.embeddings import (
+                channel_dimensions,
+                embed_channel_texts,
+            )
+            from knowledge_graph_foundry.graph.passages import generate_passages
+
+            ch = self.settings.embedding_channels.passages
+            passages = generate_passages(
+                self.driver,
+                lambda texts: embed_channel_texts(texts, ch),
+                self.settings.graphrag.passage_index_name,
+                channel_dimensions(ch),
+                ch.provider,
+                ch.model,
+                span_chars=self.settings.graphrag.passage_span_chars,
+            )
         similarity_edges = 0
         if self.settings.graphrag.similarity_edges_enabled:
             from knowledge_graph_foundry.graph.densify import add_similarity_edges
@@ -894,6 +936,7 @@ class Foundry:
             "communities": communities,
             "summaries": summaries,
             "propositions": propositions,
+            "passages": passages,
             "similarity_edges": similarity_edges,
             "court": court,
             "scorecard": card,
@@ -969,6 +1012,12 @@ class Foundry:
                     if name not in supporting:
                         supporting.append(name)
                 coverage["top_score"] = max(coverage["top_score"], cov["top_score"])
+                coverage["seed_top_score"] = max(
+                    coverage.get("seed_top_score", 0.0), cov.get("seed_top_score", 0.0)
+                )
+                coverage["escalated"] = coverage.get("escalated", False) or cov.get(
+                    "escalated", False
+                )
             path = "ppr+decomposed"
         else:
             context_lines, supporting, coverage = self._retrieve_local(question)
@@ -1009,6 +1058,17 @@ class Foundry:
             ],
             Answer,
         )
+        # R38-H385: the outcome side of the gate's label loop - the retrieval
+        # twin of the resolution.* event bus (signal + outcome per query)
+        emit(
+            "query.answered",
+            question=question,
+            path=path,
+            seed_top_score=coverage.get("seed_top_score", coverage["top_score"]),
+            escalated=coverage.get("escalated", False),
+            answer=result.answer,
+            supporting_entities=result.supporting_entities or supporting,
+        )
         return {
             "answer": result.answer,
             "supporting_entities": result.supporting_entities or supporting,
@@ -1023,8 +1083,10 @@ class Foundry:
         from knowledge_graph_foundry.extraction import generate_embeddings
         from knowledge_graph_foundry.graph.graphrag import (
             cap_fanout,
+            detect_escalation,
             detect_miss,
             exclude_foreign_devices,
+            fetch_entities,
             link_prop_values,
             overfetch_seeds,
             ppr_query,
@@ -1057,6 +1119,17 @@ class Foundry:
                 [s["name"] for s in seeds[:8]],
                 {"top_score": top},
             )
+
+        # R37-H382: sufficiency gate - decide once, on the pure top-seed
+        # signal, whether this query's render escalates beyond rung 0; the
+        # escalation band sits above the miss class ([miss, gate) never fires)
+        seed_top = max((s.get("score", 0.0) for s in seeds), default=0.0)
+        escalated = False
+        if self.settings.graphrag.escalation_gate and detect_escalation(
+            seeds, self._gate_threshold()
+        ):
+            escalated = True
+            emit("query.escalated", question=question, top_score=seed_top)
 
         # R02-H11: proposition hits are primary evidence AND extra PPR seeds
         fact_lines: list[str] = []
@@ -1099,16 +1172,33 @@ class Foundry:
                         seen.add(n["id"])
                         nodes.append(n)
 
+        # R37-H382 rung 1 (H367-B): under escalation the proposition-seeded
+        # entities join the rendered node set, scored by their proposition hit
+        # so the render budget ranks them honestly
+        if escalated and hits:
+            have = {n["id"] for n in nodes}
+            prop_score: dict[str, float] = {}
+            for h in hits:
+                for eid in h["entity_ids"]:
+                    prop_score[eid] = max(prop_score.get(eid, 0.0), h.get("score", 0.0))
+            extra = fetch_entities(self.driver, [e for e in prop_score if e not in have])
+            for row in extra:
+                row["score"] = prop_score[row["id"]]
+            nodes = nodes + extra
+
         # R19-H205 (optional, default off): drop foreign-device render sections,
         # keeping the queried product (top seed) and every non-device node
         if self.settings.graphrag.foreign_device_exclusion and seeds:
             nodes = exclude_foreign_devices(nodes, {seeds[0]["id"]})
 
-        # R03-H17 coverage signals: best vector/proposition hit score
+        # R03-H17 coverage signals: best vector/proposition hit score; the gate
+        # signal (pure top-seed, R37-H382) rides beside the composite
         coverage = {
             "top_score": max(
                 [s.get("score", 0.0) for s in seeds] + [h.get("score", 0.0) for h in hits] or [0.0]
-            )
+            ),
+            "seed_top_score": seed_top,
+            "escalated": escalated,
         }
 
         cap = self.settings.graphrag.fanout_cap
@@ -1217,6 +1307,26 @@ class Foundry:
         if fact_lines:
             context_lines.append("## Facts\n" + "\n".join(f"- {t}" for t in fact_lines))
         context_lines.extend(entity_blocks)
+
+        # R37-H382 rung 2 (H366): under escalation append the top query-anchored
+        # span from the passage channel; a space mismatch refuses the span query
+        # (never mixes spaces silently) but leaves the rung-0/1 render standing
+        if escalated and self.settings.graphrag.passages_enabled:
+            from knowledge_graph_foundry.extraction.embeddings import embed_channel_texts
+            from knowledge_graph_foundry.graph.passages import check_space, passage_query
+
+            ch = self.settings.embedding_channels.passages
+            index = self.settings.graphrag.passage_index_name
+            try:
+                check_space(self.driver, index, ch.provider, ch.model)
+                q_emb = embed_channel_texts([question], ch)[0]
+                for h in passage_query(
+                    self.driver, q_emb, index, self.settings.graphrag.passage_top_k
+                ):
+                    context_lines.append("## Source excerpt\n" + h["text"])
+            except Exception as exc:
+                logger.warning(f"passage escalation unavailable: {exc}")
+
         return context_lines, supporting, coverage
 
     def current_relationships(self, entity_id: str) -> list[dict]:

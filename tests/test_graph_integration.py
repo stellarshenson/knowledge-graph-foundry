@@ -193,6 +193,89 @@ class TestMetanode:
                 with driver.session() as session:
                     session.run("MATCH (c:KGFControl {id: 'kgf'}) DELETE c").consume()
 
+    def test_gate_calibration_record_round_trip(self, driver):
+        # R38-H384: the gate record (threshold + provenance) survives the
+        # metanode JSON round-trip intact; None-write clears it on restore
+        from knowledge_graph_foundry.graph.gate_calibration import build_record
+
+        prior = read_control(driver)
+        record = build_record(0.7644, 0.08, 24, "abcdef0123456789")
+        try:
+            write_control(driver, {"gate_calibration": record})
+            read_back = read_control(driver)
+            assert read_back["gate_calibration"] == record
+        finally:
+            if prior is None:
+                with driver.session() as session:
+                    session.run("MATCH (c:KGFControl {id: 'kgf'}) DELETE c").consume()
+            else:
+                write_control(driver, {"gate_calibration": prior.get("gate_calibration")})
+
+
+class TestPassages:
+    """R34-H366: span store round-trip and the space-mismatch refusal.
+
+    generate_passages deliberately processes EVERY stored chunk, so on a
+    shared database the test snapshots pre-existing passage ids and deletes
+    exactly the delta it created - never assumes it was alone."""
+
+    def test_generate_query_and_space_check(self, driver):
+        from knowledge_graph_foundry.graph.passages import (
+            check_space,
+            generate_passages,
+            passage_query,
+        )
+
+        chunk_id = f"chunk_{RUN_ID}"
+        index = f"kgf_test_passages_{RUN_ID[-8:]}"
+        embed_fn = lambda texts: [[0.1] * DIMENSIONS for _ in texts]  # noqa: E731
+        with driver.session() as session:
+            before = {r["id"] for r in session.run("MATCH (p:KGFPassage) RETURN p.id AS id")}
+        try:
+            with driver.session() as session:
+                session.run(
+                    "CREATE (c:Chunk {id: $id, text: $text, prop_run_id: $run})",
+                    id=chunk_id,
+                    text="alpha " * 200,  # 1200 chars -> two spans at 900/450
+                    run=RUN_ID,
+                ).consume()
+            created = generate_passages(
+                driver, embed_fn, index, DIMENSIONS, "local-gpu", "test-model", span_chars=900
+            )
+            assert created >= 2  # my chunk's spans, plus any other stored chunks'
+            with driver.session() as session:
+                mine = {
+                    r["id"]
+                    for r in session.run(
+                        "MATCH (p:KGFPassage) WHERE p.id STARTS WITH $prefix RETURN p.id AS id",
+                        prefix=chunk_id,
+                    )
+                }
+            assert mine == {f"{chunk_id}:900:0", f"{chunk_id}:900:450"}
+            # idempotent: second run creates nothing
+            assert (
+                generate_passages(
+                    driver, embed_fn, index, DIMENSIONS, "local-gpu", "test-model", 900
+                )
+                == 0
+            )
+            check_space(driver, index, "local-gpu", "test-model")  # matching pair passes
+            with pytest.raises(RuntimeError, match="refusing query"):
+                check_space(driver, index, "bedrock", "other-model")
+            # all test vectors are identical so top-1 is an arbitrary span;
+            # assert the round-trip shape, not the winner
+            hits = passage_query(driver, [0.1] * DIMENSIONS, index, top_k=1)
+            assert hits and ":900:" in hits[0]["id"] and hits[0]["text"]
+        finally:
+            with driver.session() as session:
+                session.run(
+                    "MATCH (p:KGFPassage) WHERE NOT p.id IN $before DETACH DELETE p",
+                    before=list(before),
+                ).consume()
+                session.run("MATCH (c:Chunk {id: $id}) DETACH DELETE c", id=chunk_id).consume()
+                session.run("MATCH (s:KGFIndexSpace {index_name: $i}) DELETE s", i=index).consume()
+                session.run(f"DROP INDEX {index} IF EXISTS").consume()
+
 
 class TestScorecard:
     def test_sane_numbers(self, loaded):

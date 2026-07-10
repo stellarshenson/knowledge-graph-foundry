@@ -46,6 +46,9 @@ SIGNALS = [
     "densify.completed",
     # query
     "query.abstained",
+    "query.miss",
+    "query.escalated",
+    "query.answered",
     # drift
     "drift.warning",
     "drift.decision",

@@ -167,26 +167,36 @@ Two-sided bar governing every regime-narrowing change: hold the general control,
 
 Embedding generation is provider-abstracted and model-agnostic: any embedding model connects through configuration, local models run on the workstation GPUs, and every vector space is pinned to the (provider, model) pair that created it.
 
-- [ ] **Provider abstraction** - `embeddings.provider` selects among `bedrock`, `local-gpu` (HF/sentence-transformers), and an OpenAI-compatible served endpoint (vLLM/TEI `/v1/embeddings`); adding a provider touches only the embeddings module
+- [x] **Provider abstraction** - `embeddings.provider` selects among `bedrock`, `local-gpu` (HF/sentence-transformers), and an OpenAI-compatible served endpoint (vLLM/TEI `/v1/embeddings`); adding a provider touches only the embeddings module
   - log: 2026-07-10 criterion added (user directive: any embedding model connectable, configurable)
-- [ ] **Any model connectable** - `embeddings.model` accepts any HF model id or provider model id; no model names hardcoded outside settings defaults
+  - log: 2026-07-10 implemented (v0.8.73): `embed_channel_texts` in `extraction/embeddings.py`, `ChannelEmbedding` in settings; three providers dispatched in one module
+- [x] **Any model connectable** - `embeddings.model` accepts any HF model id or provider model id; no model names hardcoded outside settings defaults
   - log: 2026-07-10 criterion added
-- [ ] **GPU deployment** - the local provider runs on GPU with a device selection knob (nvidia-smi index or UUID, `CUDA_DEVICE_ORDER=PCI_BUS_ID` set before torch import); CPU only by explicit config, never as a silent fallback
+  - log: 2026-07-10 implemented (v0.8.73): `ChannelEmbedding.model` is a free string; defaults live only in settings
+- [x] **GPU deployment** - the local provider runs on GPU with a device selection knob (nvidia-smi index or UUID, `CUDA_DEVICE_ORDER=PCI_BUS_ID` set before torch import); CPU only by explicit config, never as a silent fallback
   - log: 2026-07-10 criterion added (user directive: use the workstation GPUs where possible)
-- [ ] **Bulk on GPU** - bulk embedding jobs (rebuilds, backfills, prototype channels) default to a local GPU model when a card is available; cloud providers are an option, not the bulk default
+  - log: 2026-07-10 implemented (v0.8.73): `ChannelEmbedding.device`, PCI_BUS_ID pinned before first torch import, mask conflict raises, cuda-unavailable raises unless device="cpu" explicit
+- [x] **Bulk on GPU** - bulk embedding jobs (rebuilds, backfills, prototype channels) default to a local GPU model when a card is available; cloud providers are an option, not the bulk default
   - log: 2026-07-10 criterion added (user directive: no Titan for new bulk embedding compute)
-- [ ] **Dimension-index coupling** - vector index dimensions derive from the active model; a model/index dimension mismatch fails fast naming the index and the re-embed path, never mixes spaces silently
+  - log: 2026-07-10 implemented (v0.8.73): passage channel defaults local-gpu bge-m3 on device 2; the ENTITY channel deliberately stays Titan (live index space, fixed control arm - user decision), not a gap
+- [x] **Dimension-index coupling** - vector index dimensions derive from the active model; a model/index dimension mismatch fails fast naming the index and the re-embed path, never mixes spaces silently
   - log: 2026-07-10 criterion added
+  - log: 2026-07-10 implemented (v0.8.73): `channel_dimensions()` probes the model; the passage index is created with derived dims; `check_space` refuses mismatched pairs naming index and both pairs
 - [ ] **Space provenance** - every embedding-bearing node records the (provider, model) that embedded it; query-time embedding always uses the pair the target index was built with
   - log: 2026-07-10 criterion added
-- [ ] **Per-channel spaces** - retrieval channels (entities, propositions, passages, questions) may pin different embedding models; each channel's index-model pair lives in config
+  - log: 2026-07-10 partial (v0.8.73): KGFPassage nodes stamped + `(:KGFIndexSpace)` registry + query-time `check_space`; entity and proposition channels remain legacy-unstamped (Titan, pre-abstraction) - stamping them rides their next rebuild
+- [x] **Per-channel spaces** - retrieval channels (entities, propositions, passages, questions) may pin different embedding models; each channel's index-model pair lives in config
   - log: 2026-07-10 criterion added
+  - log: 2026-07-10 implemented (v0.8.73): `EmbeddingChannels.passages` (bge-m3) beside the Titan entity channel; adding a channel is one settings field
 - [ ] **Benchmark parity** - the peer-benchmark campaign can pin NV-Embed-v2 (HippoRAG-2 regime) through the same abstraction, served on GPU
   - log: 2026-07-10 criterion added
-- [ ] **Edge: model not cached and no network** - fails fast naming the model id and the HF cache path, no hang (HF_HUB_OFFLINE honored)
+  - log: 2026-07-10 mechanism ready (any HF id via local-gpu, or served via openai provider); verification rides the benchmark build (#59)
+- [x] **Edge: model not cached and no network** - fails fast naming the model id and the HF cache path, no hang (HF_HUB_OFFLINE honored)
   - log: 2026-07-10 criterion added
-- [ ] **Edge: index built with model A, query embedded with model B** - refused with a clear error before the vector query executes
+  - log: 2026-07-10 implemented (v0.8.73): load failure raises naming model id + HF cache path + the offline hint
+- [x] **Edge: index built with model A, query embedded with model B** - refused with a clear error before the vector query executes
   - log: 2026-07-10 criterion added
+  - log: 2026-07-10 implemented (v0.8.73): `check_space` raises before the vector query; verified live in `tests/test_graph_integration.py::TestPassages`
 
 ## Entity Resolution
 

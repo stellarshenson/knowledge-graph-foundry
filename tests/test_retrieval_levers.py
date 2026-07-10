@@ -4,6 +4,7 @@ helpers - no live Neo4j or LLM."""
 
 from knowledge_graph_foundry.graph.graphrag import (
     cap_fanout,
+    detect_escalation,
     detect_miss,
     exclude_foreign_devices,
     link_prop_values,
@@ -79,6 +80,22 @@ class TestMissDetector:
 
     def test_empty_seeds_is_a_miss(self):
         assert detect_miss([], 0.668) is True
+
+
+class TestEscalationGate:
+    """R37-H382: fire when best seed similarity sits below the calibrated cut
+    (~0.765 on the pinned pile) - the sufficiency band above the miss class."""
+
+    def test_fires_below_threshold(self):
+        seeds = [{"score": 0.70}, {"score": 0.75}]
+        assert detect_escalation(seeds, 0.765) is True
+
+    def test_does_not_fire_above_threshold(self):
+        seeds = [{"score": 0.70}, {"score": 0.80}]
+        assert detect_escalation(seeds, 0.765) is False
+
+    def test_empty_seeds_escalate(self):
+        assert detect_escalation([], 0.765) is True
 
 
 class TestRenderBudget:

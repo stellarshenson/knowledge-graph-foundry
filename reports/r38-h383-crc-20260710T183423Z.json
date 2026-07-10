@@ -1,0 +1,52 @@
+{
+  "hypothesis": "R38-H383 CRC certificate on the H382 ledger",
+  "generated": "20260710T183423Z",
+  "ledger": "reports/r37-h382-ladder-arm1-20260710T173529Z.json",
+  "n": 24,
+  "monotonicity_inversions": [],
+  "crc_sweep": {
+    "0.04": {
+      "theta": 0.8851,
+      "infeasible": true,
+      "empirical_risk": 0.0417,
+      "escalation_rate": 1.0
+    },
+    "0.08": {
+      "theta": 0.7644,
+      "infeasible": false,
+      "empirical_risk": 0.0417,
+      "escalation_rate": 0.25
+    },
+    "0.12": {
+      "theta": 0.7565,
+      "infeasible": false,
+      "empirical_risk": 0.0833,
+      "escalation_rate": 0.2083
+    }
+  },
+  "fitted_cuts_h382": {
+    "fold_a": 0.76495,
+    "fold_b": 0.7644
+  },
+  "target_alpha": 0.08,
+  "oof": {
+    "a": {
+      "theta": 0.76495,
+      "infeasible": false,
+      "oof_misses": 1,
+      "oof_n": 12,
+      "slack_B_over_n1": 0.0769
+    },
+    "b": {
+      "theta": 0.8851,
+      "infeasible": true,
+      "oof_misses": 0,
+      "oof_n": 12,
+      "slack_B_over_n1": 0.0769
+    }
+  },
+  "pooled_oof_miss_rate": 0.0417,
+  "unfixable_probes": [
+    "P08"
+  ]
+}

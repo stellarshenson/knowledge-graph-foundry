@@ -1,0 +1,47 @@
+{
+  "hypothesis": "R38-H386 drift-triggered refit (two-channel monitor, offline)",
+  "generated": "20260710T185118Z",
+  "ledger": "reports/r37-h382-ladder-arm1-20260710T173529Z.json",
+  "theta": 0.7644,
+  "alpha": 0.08,
+  "eps_tol": 0.02,
+  "delta": 0.05,
+  "alternatives": [
+    0.15,
+    0.2,
+    0.3,
+    0.5
+  ],
+  "batch": 24,
+  "seeds": 500,
+  "cases": {
+    "benign": {
+      "outcome_alarm_rate": 0.0,
+      "outcome_alarm_within_2": 0.0,
+      "outcome_median_batch": null,
+      "sketch_flag_rate": 0.008,
+      "sketch_flag_within_2": 0.002,
+      "sketch_median_batch": 4
+    },
+    "harm_A_embedder_swap": {
+      "outcome_alarm_rate": 0.108,
+      "outcome_alarm_within_2": 0.068,
+      "outcome_median_batch": 2,
+      "sketch_flag_rate": 0.972,
+      "sketch_flag_within_2": 0.216,
+      "sketch_median_batch": 3
+    },
+    "harm_B_register_change": {
+      "outcome_alarm_rate": 0.656,
+      "outcome_alarm_within_2": 0.298,
+      "outcome_median_batch": 3,
+      "sketch_flag_rate": 0.004,
+      "sketch_flag_within_2": 0.0,
+      "sketch_median_batch": 4
+    }
+  },
+  "benign_3_ingestions": {
+    "outcome_alarm": null,
+    "sketch_flag": null
+  }
+}
