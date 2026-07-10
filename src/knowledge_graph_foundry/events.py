@@ -30,6 +30,8 @@ SIGNALS = [
     "resolution.synonym_cluster",
     "resolution.soft_links",
     "resolution.court",
+    "resolution.series_bridge",
+    "resolution.spec_hoist",
     # ontology lifecycle
     "ontology.type_emerged",
     "ontology.type_confirmed",
@@ -52,6 +54,8 @@ SIGNALS = [
     # drift
     "drift.warning",
     "drift.decision",
+    "drift.types_adopted",
+    "drift.recure_completed",
     # lifecycle
     "fsm.transition",
     "pipeline.error",

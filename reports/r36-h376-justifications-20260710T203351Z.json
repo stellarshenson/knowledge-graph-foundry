@@ -1,0 +1,128 @@
+{
+  "hypothesis": "R36-H376 justification reconstruction + dirty flood",
+  "generated": "20260710T203351Z",
+  "graph_uri": "bolt://172.19.0.4:7687",
+  "reversioned_doc": "d_a2b1f7a495a9deda",
+  "census": {
+    "entity_description": {
+      "total": 5213,
+      "reconstructable": 5213
+    },
+    "similar_to_edge": {
+      "total": 573,
+      "reconstructable": 573
+    },
+    "kgf_passage": {
+      "total": 4253,
+      "reconstructable": 4253
+    },
+    "hoisted_props": {
+      "total": 2,
+      "reconstructable": 0
+    }
+  },
+  "e1": {
+    "dirty_entities_props": [
+      "e_b23e9ca8b0913d4b",
+      "e_82c117b14e8f555e"
+    ],
+    "dirty_similar_to": 0,
+    "dirty_passages": 0
+  },
+  "e2": {
+    "dirty_chunks": 8,
+    "dirty_passages": 132,
+    "dirty_entities": 148,
+    "dirty_entities_single_doc": 92,
+    "dirty_similar_to": 12,
+    "dirty_similar_to_strict": 9
+  },
+  "adjudication": {
+    "true_dirty": 235,
+    "caught": 235,
+    "coverage": 1.0,
+    "false_dirty": 59,
+    "false_over_true": 0.2511,
+    "e1_similar_to_flagged": 0
+  },
+  "affected_probes": [
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P07",
+    "P09",
+    "P10",
+    "P12",
+    "P13",
+    "P16",
+    "P17",
+    "P18",
+    "P19",
+    "P24"
+  ],
+  "baseline_per_probe": {
+    "P01": 1.0,
+    "P02": 1.0,
+    "P03": 1.0,
+    "P04": 1.0,
+    "P05": 1.0,
+    "P06": 1.0,
+    "P07": 1.0,
+    "P08": 0.0,
+    "P09": 1.0,
+    "P10": 1.0,
+    "P11": 1.0,
+    "P12": 1.0,
+    "P13": 1.0,
+    "P14": 1.0,
+    "P15": 0.5,
+    "P16": 1.0,
+    "P17": 1.0,
+    "P18": 1.0,
+    "P19": 1.0,
+    "P20": 1.0,
+    "P21": 1.0,
+    "P22": 0.0,
+    "P23": 1.0,
+    "P24": 1.0
+  },
+  "out_labeled_per_probe": {
+    "P01": 1.0,
+    "P02": 1.0,
+    "P03": 1.0,
+    "P04": 1.0,
+    "P05": 1.0,
+    "P06": 1.0,
+    "P07": 1.0,
+    "P08": 0.0,
+    "P09": 0.0,
+    "P10": 1.0,
+    "P11": 1.0,
+    "P12": 1.0,
+    "P13": 1.0,
+    "P14": 1.0,
+    "P15": 0.5,
+    "P16": 0.5,
+    "P17": 1.0,
+    "P18": 1.0,
+    "P19": 1.0,
+    "P20": 1.0,
+    "P21": 1.0,
+    "P22": 0.0,
+    "P23": 1.0,
+    "P24": 1.0
+  },
+  "regressions": {
+    "P09": [
+      1.0,
+      0.0
+    ],
+    "P16": [
+      1.0,
+      0.5
+    ]
+  },
+  "unaffected_regressions": {}
+}

@@ -73,3 +73,7 @@ Background job logs for Knowledge Graph Foundry.
 - `r38-h383-crc.log` - R38-H383 CRC certificate fit on the H382 escalation ledger: alpha sweep, monotonicity check, out-of-fold verification (report reports/r38-h383-crc-*.json)
 - `r38-h386-monitor.log` - R38-H386 two-channel drift monitor simulation: mixture-LR sequential test + label-free escalation-rate sketch over bootstrap replays (report reports/r38-h386-monitor-*.json)
 - `r38-h385-engine-replay.log` - R38-H385 engine replay (context side): live passage build on the pile + 24-probe three-arm replay through the shipped gated read path (report reports/r38-h385-engine-replay-*.json)
+- `r36-h376-justifications.log` - R36-H376 justification reconstruction + dirty-flag flood on the pile (report reports/r36-h376-justifications-*.json)
+- `r36-h380-worth.log` - R36-H380 outcome-linked worth counters over 96 replayed probe-episodes (report reports/r36-h380-worth-*.json)
+- `r35-h375-sdr.log` - R35-H375 SDR signature overlap vs cosine blocking head-to-head, post- and pre-repair arms (report reports/r35-h375-sdr-*.json)
+- `r35-h374-consensus.log` - R35-H374 multi-view consensus voting: entity/prop/span channels, RRF + agreement ranking (report reports/r35-h374-consensus-*.json)

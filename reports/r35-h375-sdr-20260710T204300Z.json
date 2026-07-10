@@ -1,0 +1,272 @@
+{
+  "hypothesis": "R35-H375 SDR signature overlap vs cosine blocking",
+  "generated": "20260710T204300Z",
+  "graph_uri": "bolt://172.19.0.4:7687",
+  "true_pairs": 14,
+  "true_pairs_unmapped": [
+    [
+      "CPAP",
+      "CPAP mode"
+    ],
+    [
+      "CPAP mode",
+      "Standard CPAP"
+    ],
+    [
+      "Ultra-fine filter",
+      "Ultra-Fine Filter Disposable 1 Pack"
+    ],
+    [
+      "Ultra-fine filter, disposable (1 per pack)",
+      "Ultra-Fine Filter Disposable 1 Pack"
+    ],
+    [
+      "Pre-heat humidifier",
+      "Pre-heat Humidifier Option"
+    ],
+    [
+      "RESmart Auto CPAP System",
+      "RESmart CPAP"
+    ],
+    [
+      "BMC Medical Co.",
+      "BMC Medical Co., Ltd."
+    ],
+    [
+      "IEC60601",
+      "EN 60601-1"
+    ],
+    [
+      "Actual Pressure Display",
+      "Pressure Display"
+    ],
+    [
+      "APAP",
+      "APAP therapy"
+    ],
+    [
+      "APAP",
+      "APAP Mode"
+    ],
+    [
+      "RESmart Auto CPAP System",
+      "RESmart CPAP V1.0"
+    ],
+    [
+      "Continuous Flow Oxygen Delivery",
+      "Continuous flow"
+    ],
+    [
+      "Dubai",
+      "Goldengate Holdings Limited"
+    ],
+    [
+      "Diamedica Bubble CPAP",
+      "Bubble CPAP Diamedica"
+    ],
+    [
+      "DreamStation Auto CPAP",
+      "DreamStation CPAP Pro"
+    ],
+    [
+      "Heated tube 15mm",
+      "DreamStation 15mm heated tube"
+    ],
+    [
+      "Pollen Filter Reusable",
+      "Pollen (foam) filter, reusable (1 per pack)"
+    ],
+    [
+      "Pollen Foam Filter Reusable 1 Pack",
+      "Pollen Filter Reusable"
+    ],
+    [
+      "Ultra-fine filter, disposable (1 per pack)",
+      "Ultra-fine Filter Disposable 1-pack"
+    ],
+    [
+      "Ramp Feature",
+      "Ramp function"
+    ],
+    [
+      "FOT",
+      "Forced Oscillatory Technique"
+    ],
+    [
+      "EN 60601-1-1",
+      "EN 60601-1"
+    ],
+    [
+      "Mask Expired",
+      "Mask Expiration Alert"
+    ],
+    [
+      "Transcend 365 miniCPAP transcend heater wick pack",
+      "Transcend 365 miniCPAP heater wick pack of six"
+    ],
+    [
+      "Eson\u2122 nasal mask",
+      "Eson\u2122 mask"
+    ],
+    [
+      "Salter Cannula Paediatric",
+      "Salter Cannula Infant"
+    ],
+    [
+      "Remstar BiPAP Pro",
+      "Remstar Bipap Auto"
+    ],
+    [
+      "Medela Healthcare Clario AC/DC Suction Pump",
+      "Medela Healthcare Clario Home Care Pump AC/DC"
+    ],
+    [
+      "REMstar SE with Heated Tube humidifier",
+      "REMstar SE with humidifier"
+    ],
+    [
+      "BiPAP Auto Bi-Flex with humidifier",
+      "BiPAP Auto Bi-Flex with Heated Tube humidifier"
+    ],
+    [
+      "BiPAP autoSV Advanced with Heated Tube humidifier",
+      "BiPAP autoSV Advanced with humidifier"
+    ],
+    [
+      "Pollen Foam Filter Reusable 1 Pack",
+      "Pollen (foam) filter, reusable (1 per pack)"
+    ],
+    [
+      "Wireless flow modem",
+      "Wired flow modem"
+    ],
+    [
+      "1/4 inch to 2.5mm NC Nurse Call Cable",
+      "Nurse Call Adaptor Cable"
+    ],
+    [
+      "OptiChamber Diamond, 10 pk, Canada",
+      "OptiChamber Diamond, 10 pk"
+    ],
+    [
+      "Portable Design",
+      "Lightweight, self-contained, portable design"
+    ],
+    [
+      "EverFlo oxygen concentrator",
+      "EverFlo oxygen concentrator, transfill"
+    ],
+    [
+      "SimplyFlo travel case",
+      "Travel accessory case"
+    ],
+    [
+      "Petite size",
+      "Petite"
+    ],
+    [
+      "EasyLife without headgear, medium",
+      "EasyLife without headgear, small"
+    ],
+    [
+      "EasyLife cushion set, medium",
+      "EasyLife cushion set, small"
+    ],
+    [
+      "EasyLife cushion set, medium",
+      "EasyLife cushion set, large"
+    ],
+    [
+      "Pro-Flow nasal cannula",
+      "Pro-Flow adult nasal cannula"
+    ],
+    [
+      "Host software manual v2.0 (International English)",
+      "Host software manual v2.0 (French)"
+    ],
+    [
+      "Host software manual v2.0 (International English)",
+      "Host software manual v2.0 (Spanish)"
+    ],
+    [
+      "Host software manual v2.0 (French)",
+      "Host software manual v2.0 (Spanish)"
+    ],
+    [
+      "Cannula or titration filter",
+      "Cannula titration filter (50 pack)"
+    ],
+    [
+      "Cannula titration filter (50 pack)",
+      "Cannula or titration filter 10 pack"
+    ],
+    [
+      "BreathSensor cable (SD20, adult, 220 connector, 3-pin keyhole)",
+      "BreathSensor cable (adult, 249 connector, 2-pin keyhole, orange)"
+    ],
+    [
+      "Thermistor (1 channel, pediatric small, nasal bridgemount, 2.5mm connector)",
+      "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)"
+    ],
+    [
+      "Thermistor (oral, adult, 1.5mm connectors)",
+      "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)"
+    ],
+    [
+      "Thermistor (1 channel, nasal/oral, adult, 2.5mm connector)",
+      "Thermistor (1 channel, nasal/oral, adult, 249 connector, 2-pin keyhole)"
+    ],
+    [
+      "Thermistor (oral, adult, 1.5mm connectors)",
+      "Thermistor (oral, adult, 249 connector, 2-pin keyhole)"
+    ],
+    [
+      "Thermistor (oral, adult, 249 connector, 2-pin keyhole)",
+      "Thermistor (1 channel, nasal/oral, adult, 249 connector, 2-pin keyhole)"
+    ]
+  ],
+  "budgets": [
+    500,
+    1000,
+    2000,
+    5000,
+    10000
+  ],
+  "cosine_recall": {
+    "500": 1,
+    "1000": 3,
+    "2000": 3,
+    "5000": 5,
+    "10000": 8
+  },
+  "sdr_recall": {
+    "500": 4,
+    "1000": 4,
+    "2000": 6,
+    "5000": 6,
+    "10000": 7
+  },
+  "sdr_pre_repair_recall": {
+    "500": 2,
+    "1000": 2,
+    "2000": 4,
+    "5000": 4,
+    "10000": 5
+  },
+  "cosine_candidates": 37009,
+  "sdr_candidates": 59905,
+  "fragment_in_cosine_top10k": {
+    "('e_b23e9ca8b0913d4b', 'e_d69d444b9b004f48')": false,
+    "('e_82c117b14e8f555e', 'e_b23e9ca8b0913d4b')": true
+  },
+  "fragment_sdr_rank": {
+    "('e_b23e9ca8b0913d4b', 'e_d69d444b9b004f48')": 41,
+    "('e_82c117b14e8f555e', 'e_b23e9ca8b0913d4b')": 40
+  },
+  "fragment_sdr_rank_pre_repair": {
+    "('e_b23e9ca8b0913d4b', 'e_d69d444b9b004f48')": 58062,
+    "('e_82c117b14e8f555e', 'e_b23e9ca8b0913d4b')": null
+  },
+  "df_cap": 50,
+  "knn": 10
+}

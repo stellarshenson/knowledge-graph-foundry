@@ -104,6 +104,7 @@ class ResolutionSettings(BaseModel):
     nli_veto_threshold: float = 0.5  # R15-H158: contradiction prob that vetoes a merge (H122/H128)
     soft_links: bool = True  # R15-H268: materialize defer-zone pairs as posterior-weighted SIMILAR_TO edges (link, never merge)
     demotion_court: bool = True  # R15-R27/H290: ingest-close single-shot judge over the SAME_AS docket; judged-false edges demoted to soft links
+    spec_hoist: bool = False  # R33-H365: series-fragment bridge + unanimous child spec hoist at optimize(); default off until clean-rebuild verification
     calibration_path: Optional[str] = (
         None  # R15-H157/H142: per-corpus frozen isotonic artifact; None = current behavior
     )
@@ -130,6 +131,10 @@ class DriftSettings(BaseModel):
     window: int = 3
     rebuild_jsd_threshold: float = 0.15
     contradiction_rate_threshold: float = 0.2  # R8: fact-drift alarm on invalidations/window
+    cusum_enabled: bool = False  # R36-H378/DEF-9: CUSUM recure trigger (H317) replacing the anti-phase boolean; default off until the drift replay verdict
+    cusum_k: float = 0.02  # H317 slack: per-doc JSD drift tolerated above baseline
+    cusum_h: float = 0.30  # H317 decision threshold on the accumulated excess
+    recure_adopt_share: float = 0.05  # RECURING exit: window-mass share above which a drifted type is adopted into the cured ontology
 
 
 class GraphRAGSettings(BaseModel):

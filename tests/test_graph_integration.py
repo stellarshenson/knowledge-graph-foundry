@@ -277,6 +277,93 @@ class TestPassages:
                 session.run(f"DROP INDEX {index} IF EXISTS").consume()
 
 
+class TestSpecHoist:
+    def test_bridge_and_hoist_with_exact_rollback(self, driver):
+        from knowledge_graph_foundry.graph.hoist import (
+            bridge_series_fragments,
+            hoist_unanimous_specs,
+        )
+
+        with driver.session() as s:
+            before_hoist = {
+                r["id"]: r["keys"]
+                for r in s.run(
+                    "MATCH (e:Entity) WHERE e.spec_hoisted IS NOT NULL "
+                    "RETURN e.id AS id, e.spec_hoisted AS keys"
+                )
+            }
+            before_bridge = [
+                r["rid"]
+                for r in s.run(
+                    "MATCH ()-[r:PART_OF {spec_bridge: true}]->() RETURN elementId(r) AS rid"
+                )
+            ]
+            s.run(
+                "CREATE (:Entity {id: 'zzt_series', name: 'ZZ990-Series', prop_run_id: $run}) "
+                "CREATE (hub:Entity {id: 'zzt_hub', name: 'ZZ990 Product Range', "
+                "        prop_zz_volt: '999V', prop_run_id: $run}) "
+                "CREATE (a:Entity {id: 'zzt_c1', name: 'ZZ991', prop_zz_volt: '230V', "
+                "        prop_zz_weight: '1kg', prop_run_id: $run}) "
+                "CREATE (b:Entity {id: 'zzt_c2', name: 'ZZ992', prop_zz_volt: '230V', "
+                "        prop_zz_weight: '2kg', prop_run_id: $run}) "
+                "CREATE (a)-[:PART_OF]->(hub) CREATE (b)-[:PART_OF]->(hub)",
+                run=RUN_ID,
+            ).consume()
+        try:
+            bridged = bridge_series_fragments(driver)
+            assert bridged >= 2  # at minimum the two fixture children reach the fragment
+            hoist_unanimous_specs(driver)
+            with driver.session() as s:
+                n = s.run(
+                    "MATCH (:Entity)-[r:PART_OF {spec_bridge: true}]->(:Entity {id: 'zzt_series'}) "
+                    "RETURN count(r) AS n"
+                ).single()["n"]
+                assert n == 2
+                frag = s.run(
+                    "MATCH (e:Entity {id: 'zzt_series'}) RETURN properties(e) AS p"
+                ).single()["p"]
+                assert frag["prop_zz_volt"] == "230V"  # unanimous spec hoisted
+                assert "prop_zz_weight" not in frag  # conflicting spec stays put
+                assert "prop_zz_volt" in frag["spec_hoisted"]
+                hub = s.run(
+                    "MATCH (e:Entity {id: 'zzt_hub'}) RETURN properties(e) AS p"
+                ).single()["p"]
+                assert hub["prop_zz_volt"] == "999V"  # existing value never overwritten
+            # idempotency: a second pass finds nothing new
+            assert bridge_series_fragments(driver) == 0
+            assert hoist_unanimous_specs(driver)["props"] == 0
+        finally:
+            with driver.session() as s:
+                # exact global rollback via the markers (no-overwrite guarantees
+                # every hoisted key was previously absent)
+                for row in s.run(
+                    "MATCH (e:Entity) WHERE e.spec_hoisted IS NOT NULL "
+                    "RETURN e.id AS id, e.spec_hoisted AS keys"
+                ).data():
+                    old = before_hoist.get(row["id"], [])
+                    new_keys = [k for k in row["keys"] if k not in old]
+                    if not new_keys:
+                        continue
+                    s.run(
+                        "MATCH (e:Entity {id: $id}) "
+                        "CALL apoc.create.removeProperties(e, $keys) YIELD node "
+                        "RETURN node",
+                        id=row["id"],
+                        keys=new_keys + ([] if old else ["spec_hoisted"]),
+                    ).consume()
+                    if old:
+                        s.run(
+                            "MATCH (e:Entity {id: $id}) SET e.spec_hoisted = $keys",
+                            id=row["id"],
+                            keys=old,
+                        ).consume()
+                s.run(
+                    "MATCH ()-[r:PART_OF {spec_bridge: true}]->() "
+                    "WHERE NOT elementId(r) IN $before DELETE r",
+                    before=before_bridge,
+                ).consume()
+
+
 class TestScorecard:
     def test_sane_numbers(self, loaded):
         card = scorecard(loaded)

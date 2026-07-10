@@ -15,7 +15,7 @@ from typing import Optional
 
 from loguru import logger
 
-from knowledge_graph_foundry.drift import DriftDetector
+from knowledge_graph_foundry.drift import DriftDetector, adopt_drifted_types
 from knowledge_graph_foundry.engines import Engine, create_engine
 from knowledge_graph_foundry.events import emit
 from knowledge_graph_foundry.fsm import Lifecycle
@@ -459,6 +459,17 @@ class Foundry:
                     if verdict.action == "recure":
                         lifecycle.recure()
                         drift.begin_recure()
+                    elif lifecycle.state == "RECURING" and drift.recure_ready():
+                        # R36-H378/DEF-9: bounded RECURING exit - adopt the
+                        # drifted register's sustained types (patch tier),
+                        # re-baseline the detector, walk back to STABLE
+                        window = drift.recure_window_frequencies()
+                        adopted = adopt_drifted_types(
+                            ontology, window, self.settings.drift.recure_adopt_share
+                        )
+                        drift.end_recure(window)
+                        lifecycle.cure()
+                        emit("drift.recure_completed", adopted=adopted)
                     state_drift = fact_verdict.action if fact_verdict else verdict.action
 
                 # persist after EVERY document - resumability is the contract;
@@ -887,6 +898,15 @@ class Foundry:
             summaries = summarize_communities(
                 self.driver, self.engine, self.settings.graphrag.community_min_size
             )
+        spec_hoist = None
+        if self.settings.resolution.spec_hoist:
+            from knowledge_graph_foundry.graph.hoist import (
+                bridge_series_fragments,
+                hoist_unanimous_specs,
+            )
+
+            bridged = bridge_series_fragments(self.driver)
+            spec_hoist = {"bridged_edges": bridged, **hoist_unanimous_specs(self.driver)}
         propositions = 0
         if self.settings.graphrag.propositions_enabled:
             from knowledge_graph_foundry.graph.propositions import generate_propositions
@@ -938,6 +958,7 @@ class Foundry:
             "propositions": propositions,
             "passages": passages,
             "similarity_edges": similarity_edges,
+            "spec_hoist": spec_hoist,
             "court": court,
             "scorecard": card,
         }
