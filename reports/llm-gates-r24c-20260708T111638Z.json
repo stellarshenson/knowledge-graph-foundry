@@ -1,0 +1,205 @@
+{
+  "round": "R23/R24",
+  "tier": "LLM-gate batch (local vLLM gpt-oss-120b)",
+  "executor": "Claude (opus executor)",
+  "generated_utc": "20260708T111638Z",
+  "endpoint": "http://localhost:8010/v1",
+  "model": "gpt-oss-120b",
+  "purpose": "compare CPAP machines",
+  "gold_carrier_definition": "token_set_ratio(name.lower(), product.lower()) >= 85; per-doc reference = that doc's union-of-5 (u5doc); global union-of-5 = 63 carriers",
+  "anchors": {
+    "union5": 63,
+    "single_run_mean_cov": 0.7683
+  },
+  "target_docs": {
+    "enumerate": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+    "logprobs": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+    "nsampling": "CPAP-Machines-Brochure.pdf",
+    "trio": [
+      "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+      "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf"
+    ],
+    "fewshot_target": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+    "fewshot_demos": [
+      "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "CPAP-Machines-Brochure.pdf"
+    ]
+  },
+  "serving_note": "gpt-oss-120b on vLLM emits verbose harmony reasoning; batched n>1 requests throw an intermittent 'Unexpected token 200005' harmony-parse 500 - all gate calls are wrapped so one failure never aborts the batch (max_tokens caps bound runaway temp>0 generations)",
+  "gates": {
+    "H243": {
+      "worst_doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "worst_run": 3,
+      "worst_cov": 0.043,
+      "prior_carriers": 1,
+      "complement_new_carriers": 3,
+      "new_carrier_names": [
+        "RESmart Auto CPAP System",
+        "Water chamber",
+        "iBreeze CPAP System"
+      ],
+      "gate_close": false,
+      "verdict_recommendation": "GO",
+      "note": "complement new-carrier yield on the worst doc is run-noisy (observed 0-4 across attempts)"
+    },
+    "H246": {
+      "doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+      "enum_union_cov": 0.882,
+      "single_pass_cov": 0.447,
+      "lift_pts": 43.5,
+      "bar_pts": 15,
+      "temperature": 0.3,
+      "pass": true,
+      "verdict_recommendation": "GO"
+    },
+    "H245": {
+      "doc": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "stable_n": 13,
+      "churn_n": 13,
+      "stable_mean_logprob": -0.004,
+      "churn_mean_logprob": -0.031,
+      "separation_nats": 0.027,
+      "bar_nats": 0.5,
+      "pass": false,
+      "verdict_recommendation": "CLOSE"
+    },
+    "H257": {
+      "doc": "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+      "argmax_missed_carriers": 0,
+      "alt_supported_carriers": 0,
+      "supported_names": [],
+      "verdict_recommendation": "CLOSE",
+      "caveat": "token-granularity proxy - single-token top-k alts cannot reconstruct full carrier names; degenerate when argmax misses 0 carriers on this clean small doc"
+    },
+    "H251": {
+      "doc": "CPAP-Machines-Brochure.pdf",
+      "n5_union_cov": 0.033,
+      "gap_pts": 96.7,
+      "bar_gap_pts": 10,
+      "cost_multiplier": 5.0,
+      "cost_path": "sequential(5x n=1) - shared-prefill 500s",
+      "bar_cost": 2.0,
+      "n5_shared_prefill_error": "InternalServerError: Error code: 500 - {'error': {'message': 'Unexpected token 200005 while expecting start token 200006', 'type': 'InternalS",
+      "temperature": 0.3,
+      "pass": false,
+      "verdict_recommendation": "NO-GO",
+      "note": "shared-prefill n=5 request 500s (harmony-parse) on this gpt-oss/vLLM stack - the mispriced-aggregation cost premise cannot be realized here; coverage measured via sequential fallback"
+    },
+    "H248": {
+      "docs": [
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+        "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf"
+      ],
+      "per_doc": [
+        {
+          "doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+          "primed_cov": 0.353,
+          "base_cov": 0.447,
+          "lift_pts": -9.4,
+          "error": null
+        },
+        {
+          "doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+          "primed_cov": 0.103,
+          "base_cov": 0.559,
+          "lift_pts": -45.5,
+          "error": null
+        },
+        {
+          "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+          "primed_cov": 0.087,
+          "base_cov": 0.217,
+          "lift_pts": -13.0,
+          "error": null
+        }
+      ],
+      "mean_lift_pts": -22.7,
+      "bar_pts": 20,
+      "pass": false,
+      "verdict_recommendation": "CLOSE"
+    },
+    "H258_llm": {
+      "docs": [
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+        "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf"
+      ],
+      "per_doc": [
+        {
+          "doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+          "cov": 0.0,
+          "inflation": 0.0,
+          "error": "APITimeoutError: Request timed out."
+        },
+        {
+          "doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+          "cov": 0.0,
+          "inflation": 0.0,
+          "error": "APITimeoutError: Request timed out."
+        },
+        {
+          "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+          "cov": 0.217,
+          "inflation": 1.22,
+          "error": null
+        }
+      ],
+      "mean_cov": 0.217,
+      "mean_inflation": 1.22,
+      "bar_cov": 0.8,
+      "pass": false,
+      "verdict_recommendation": "CLOSE"
+    },
+    "H260_llm": {
+      "docs": [
+        "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+        "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+        "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf"
+      ],
+      "per_doc": [
+        {
+          "doc": "3B_User-Manual_CPAP-Auto-CPAP_RESmart_BMC_V1.7_ENG-1.pdf",
+          "cov": 0.971,
+          "kept": 90,
+          "candidates": 110,
+          "error": null
+        },
+        {
+          "doc": "BMC_RESmart_AutoCPAP_User_Manual.pdf",
+          "cov": 0.759,
+          "kept": 62,
+          "candidates": 100,
+          "error": null
+        },
+        {
+          "doc": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+          "cov": 1.0,
+          "kept": 23,
+          "candidates": 24,
+          "error": null
+        }
+      ],
+      "mean_cov": 0.91,
+      "bar_cov": 0.89,
+      "cost": "~1x (single adjudication pass)",
+      "pass": true,
+      "verdict_recommendation": "GO"
+    },
+    "H261": {
+      "target": "Brochure_BMC_GIII_A20_Oxygenium_Medical.pdf",
+      "demos": [
+        "CPAP-V3-MKT-01-CPAP-Brochure-2.00EN_NEW.pdf",
+        "CPAP-Machines-Brochure.pdf"
+      ],
+      "fewshot_cov": 0.174,
+      "base_cov": 0.217,
+      "lift_pts": -4.3,
+      "bar_pts": 20,
+      "error": null,
+      "pass": false,
+      "verdict_recommendation": "CLOSE"
+    }
+  }
+}

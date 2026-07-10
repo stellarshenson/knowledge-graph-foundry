@@ -48,6 +48,8 @@ class ExtractionSettings(BaseModel):
     chunk_size: int = 2000
     chunk_overlap: int = 200
     concurrency: int = 4
+    document_concurrency: int = 1  # DEF-12/R30-H343: cross-doc extraction look-ahead in STABLE; 1 = serial (shipped default until the R30 verdict)
+    union_k: int = 1  # DEF-11/DEF-13/R31-H349: independent extraction passes per chunk, results unioned; 1 = single pass (shipped default until the H349 verdict)
     gleaning_rounds: int = 1  # R3: extra "what did we miss" passes (0 disables)
     split_entity_relation: bool = True  # R3: separate entity and relation passes
     parser_union: bool = True  # R15-H146-151: pypdf text-layer union partner to pymupdf4llm

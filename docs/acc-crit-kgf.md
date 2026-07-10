@@ -17,6 +17,7 @@ Consolidated acceptance criteria for the KGF v2 rewrite: a CLI+TUI system that b
 - [Temporal and Longevity](#temporal-and-longevity)
 - [CLI](#cli)
 - [TUI](#tui)
+- [Throughput Calibration](#throughput-calibration)
 - [End-to-End CPAP](#end-to-end-cpap)
 - [SOTA Acceptance Frame](#sota-acceptance-frame)
 
@@ -348,6 +349,37 @@ SOTA-driven redesign for months-long operation (R1): the graph is bi-temporal an
 - [x] **Edge: neo4j unreachable at TUI start** - dashboard renders with connection error banner instead of crashing
   - log: 2026-07-06 criterion added
   - log: 2026-07-06 implemented (v0.1.2)
+
+## Throughput Calibration
+
+Per-setup throughput cache with trust-but-verify warm starts (R30-H362, design approved 2026-07-10); the engine feeds the GPU at a measured knee, recalibrates when the cached numbers stop matching reality.
+
+- [ ] **Cache keying** - one entry per full inference identity: engine type -> endpoint (base_url or region) -> model ID -> extraction-config hash; switching setups selects a different entry, never invalidates others
+  - log: 2026-07-10 criterion added
+- [ ] **Entry contents** - knee concurrency, tok/s + chunks/min at the knee, latency p50/p95, window-measurement variance, provenance flag (shipped | measured)
+  - log: 2026-07-10 criterion added
+- [ ] **Warm-start band** - ingest starts at the cached knee; first ~90 s window of real chunks compared vs cached mean +/- 2-3 sigma; in band -> proceed (the run is the verification), out of band -> recalibrate and replace the entry
+  - log: 2026-07-10 criterion added
+- [ ] **Cold-path ramp** - no or lost cache -> doubling ramp (1, 2, 4...) with early exit when a doubling gains under ~20%; knee = smallest concurrency within 90-95% of peak goodput
+  - log: 2026-07-10 criterion added
+- [ ] **Engine-class signal** - local-gpu validates on tok/s/latency band; frontier on throttle rate (throttle-onset knee, operating point below onset, AIMD backoff on bursts); claude-cli exempt
+  - log: 2026-07-10 criterion added
+- [ ] **Pre-shipped entries** - package ships seed entries (provenance `shipped`) plus class-level priors used only as ramp starting brackets; the warm-start band validates shipped entries exactly like measured ones
+  - log: 2026-07-10 criterion added
+- [ ] **Cross-run smoothing** - EWMA update of the cached expectation across runs; never a mid-run concurrency change (A/B arms keep identical config)
+  - log: 2026-07-10 criterion added
+- [ ] **Tuning indicator** - during calibration the TUI shows a live tuning state (current probe concurrency, measured chunks/min per step) so the user sees the system is tuning, not stalled
+  - log: 2026-07-10 criterion added
+- [ ] **Stable throughput readout** - once calibration settles, the TUI shows the tuned stable throughput as a running average (chunks/min and tok/s) alongside the knee concurrency in use
+  - log: 2026-07-10 criterion added
+- [ ] **Raw throttle counting** - the calibrator counts raw 429/throttle responses per request ATTEMPT at the client; a retry-masked success still increments the counter - goodput alone is never the throttle signal
+  - log: 2026-07-10 criterion added (user: retries mask throttling right up to the cliff)
+- [ ] **Throttle surfacing** - the TUI shows the throttle rate when nonzero (frontier engines); zero-rate runs show nothing
+  - log: 2026-07-10 criterion added
+- [ ] **Edge: calibration cache lost** - engine falls back to the cold ramp, TUI shows the tuning state, run proceeds
+  - log: 2026-07-10 criterion added
+- [ ] **Edge: out-of-band warm start** - cached knee fails the verification band -> TUI shows a recalibration notice, entry replaced
+  - log: 2026-07-10 criterion added
 
 ## End-to-End CPAP
 

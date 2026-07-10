@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-import pytest
 from pydantic import ValidationError
+import pytest
 
 from knowledge_graph_foundry.settings import Settings, load_settings
 
@@ -25,6 +25,24 @@ class TestDefaults:
     def test_invalid_extraction_recipe_fails_fast(self):
         with pytest.raises(ValidationError):
             Settings(extraction={"recipe": "bogus"})
+
+    def test_registered_resolution_defaults(self):
+        # Regression guard on the registered shipped identity/resolution defaults.
+        # Each encodes an experimental verdict - flipping one is a registered-verdict
+        # change (ledger + GAP-1 + DEF-10, re-run the decider), never a silent edit.
+        # This is the guard that catches a premature identity_stack flip (see R29).
+        r = Settings().resolution
+        assert r.identity_stack == "v1"  # SLOT-1 default (H241 NO-GO); v2 reopen = R29
+        assert r.demotion_court is True  # v1 false-merge repair (H290)
+        assert r.soft_links is True  # defer-zone SIMILAR_TO (H268)
+        assert r.split_guard is True  # snowball over-merge guard (R8)
+        assert r.calibration_path is None  # isotonic refit unwired (H157)
+        assert r.merge_threshold == 0.6  # three-zone merge line
+        assert r.defer_lower == 0.4  # three-zone defer floor
+
+    def test_invalid_identity_stack_fails_fast(self):
+        with pytest.raises(ValidationError):
+            Settings(resolution={"identity_stack": "v3"})
 
 
 class TestPrecedence:

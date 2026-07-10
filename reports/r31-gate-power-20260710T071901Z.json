@@ -1,0 +1,41 @@
+{
+  "hypothesis": "R31-H351",
+  "generated": "20260710T071901Z",
+  "band_recall": 0.03,
+  "families": {
+    "v1-scratch": {
+      "n": 3,
+      "means": [
+        0.7708,
+        0.7917,
+        0.7292
+      ],
+      "sd": 0.0318
+    },
+    "v2-scratch": {
+      "n": 4,
+      "means": [
+        0.7708,
+        0.75,
+        0.7917,
+        0.7292
+      ],
+      "sd": 0.0269
+    }
+  },
+  "pooled_sigma": 0.029,
+  "two_run_false_fail_analytic": 0.4639,
+  "two_run_false_fail_mc": 0.4652,
+  "empirical_sigma_v2family": 0.0419,
+  "empirical_false_fail_v2family": 0.5984,
+  "ci_gate_type1": 0.05,
+  "min_detectable_diff_by_n": {
+    "2": 0.072,
+    "3": 0.0588,
+    "4": 0.0509,
+    "5": 0.0455,
+    "6": 0.0416
+  },
+  "runs_per_arm_to_detect_003": 12,
+  "verdict": "PASS"
+}

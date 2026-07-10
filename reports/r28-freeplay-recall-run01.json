@@ -1,0 +1,78 @@
+{
+  "cluster": "recall",
+  "runtag": "run01",
+  "baseline": "passive DriftDetector (remap 0.3, rebuild_jsd 0.15, window 3): 52 drift.warning, 0 recure, 0 rebuild",
+  "arms": {
+    "H293": {
+      "verdict": "CONFIRMED",
+      "recall_drop": 0.0625,
+      "cov_drop": 3,
+      "passive_alarms_on_degradation": 0,
+      "active_fires_on_degradation": true,
+      "active_false_alarms_flat": 0,
+      "passive_benign_warnings_flat": 6
+    },
+    "H294": {
+      "verdict": "CONFIRMED",
+      "spearman_jsd_recall": -0.1471,
+      "abs_r": 0.1471,
+      "spearman_jsd_fullcovered": -0.2772,
+      "n_builds": 6,
+      "note": "br-B seeded render-mutation arm queues behind Phase-3 (needs in-memory render reconstruction)"
+    },
+    "H298": {
+      "verdict": "REFUTED",
+      "top2_pc_variance": 0.5228,
+      "effective_rank": 5.45,
+      "coverage_channel": "chao1_coverage",
+      "coverage_R2": 0.0386,
+      "coverage_spearman": -0.1964,
+      "best_single_metric": "gini_coefficient",
+      "best_R2": 0.3344,
+      "coverage_ge_0p9x_best": false,
+      "jsd_terminal_spearman": 0.0,
+      "jsd_partial_given_coverage": 0.366,
+      "jsd_partial_lt_0p15": false,
+      "bar_pca": false
+    },
+    "H299": {
+      "verdict": "CONFIRMED",
+      "series": [
+        2.224,
+        6.218,
+        3.059,
+        0.0,
+        2.844
+      ],
+      "fires_idx": [
+        1
+      ],
+      "proliferation_build_idx": [
+        1
+      ],
+      "proliferation_delta_nat": 3.995,
+      "false_alarms": 0,
+      "baseline_drift_decisions": 0
+    },
+    "H300": {
+      "verdict": "CONFIRMED",
+      "ece_proxy_drift": 0.2977,
+      "posterior_mean_shift": 0.2977,
+      "kgf_post_mean": 0.7964,
+      "h240b_enum_post_mean": 0.545,
+      "drift_alarms_total": 0
+    },
+    "H311": {
+      "verdict": "CONFIRMED",
+      "targeted_flips": 39,
+      "full_rebuild_flips": 41,
+      "gain_fraction": 0.9512,
+      "targeted_token_fraction_knee": 0.056,
+      "recall_per_token_ratio_knee": 16.99,
+      "recall_per_token_ratio_02x": 4.76,
+      "census_tokens": 2140060,
+      "knee_tokens": 119843,
+      "localizes_to_repairable_neighborhood": true
+    }
+  }
+}

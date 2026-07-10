@@ -57,3 +57,7 @@ Background job logs for Knowledge Graph Foundry.
 
 - `r24c-llm-gates.log` - R23/R24 LLM-GATE BATCH (R24c) per-gate compute/verdict markers (H243 complement, H246 enumerate, H245/H257 logprob, H251 n-sampling, H248 primed, H258 mention-emission, H260 adjudication, H261 few-shot) on local gpt-oss-120b; source-of-record notebook notebooks/llm_gates_r24c.ipynb, report reports/llm-gates-r24c-*.json
 - `r24c-nbconvert.log` - nbconvert execution output of notebooks/llm_gates_r24c.ipynb
+
+- `phase3-rebuild.log` - H198 Phase-3 reproducibility rebuild: TWO clean-state runs of the composed DEFAULT engine (config-phase3.yml, enumerate recipe, v1 identity, concurrency 16) on neo4j4, wipe between; per-run recall + entity-id fingerprint checkpointed to reports/phase3-run{1,2}-{recall,stats}.json for the matching-numbers gate; DONE marker logs/phase3-rebuild.DONE
+- `r30-ramp.log` - R30-H341/H342 per-doc concurrency ramp on the real extraction workload (detached; steps checkpoint to results/r30/ramp-steps.jsonl)
+- `r31-h353-gate.log` - R31-H353 gold-carrier chunk gate for union-of-K (6 passes/chunk; checkpoints to results/r31/h353-chunks.jsonl)

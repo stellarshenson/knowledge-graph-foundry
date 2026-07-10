@@ -1,0 +1,63 @@
+{
+  "round": "R28",
+  "cluster": "identity",
+  "runtag": "identity-20260709",
+  "tier": "FREE replay (no GPU, no Neo4j write) over static substrate",
+  "naive_baseline": {
+    "drift_warning": 52,
+    "recure": 0,
+    "rebuild": 0,
+    "note": "session-local window resets each run; never recures/rebuilds even at jsd 0.5079"
+  },
+  "substrate": {
+    "clean_recall_rerun": "clean-recall-h212-rerun-20260708T053800Z.json",
+    "calibration": "identity-calibration-v2.json",
+    "h101": "identity-benchmark-h101-20260707-094448.json",
+    "r26": "usage-coupling-gates-r26-20260708T075940Z.json",
+    "logs": [
+      "h157",
+      "h158-v1",
+      "h158-v2",
+      "h212-rerun",
+      "h212-v2",
+      "h240b-enum",
+      "h240b-mention",
+      "h241-v1",
+      "h241-v2",
+      "kgf"
+    ]
+  },
+  "arms": {
+    "H313": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "population split 6/8=75% in_graph=false&in_source=true (bar>=40%); main-report split 2/8=25% (pre-rerun, stale); GPU micro-pass half UNTESTABLE-FREE",
+      "interpretation": "FREE kill-gate half CONFIRMED: 75% of failed golds are extraction-completeness gaps soft-links cannot render, so do-nothing-dominates is regime-narrow; micro-pass recovery queues behind Phase-3",
+      "untestable_free_half": "GPU micro-pass re-extraction over the in_graph=false residue (recovery>=40% + aim-precision>=0.8) needs the H252/H260 GLiNER pass under the pinned H207/H212 harness"
+    },
+    "H314": {
+      "verdict": "PARTIAL",
+      "key_numbers": "failure-population AUC (N=8, 2 in_graph=true positives): score=0.833, source_count=0.667, in_source_chunks=0.500, in_top16=const; all-gold score AUC=0.833; abstention-posterior/orphan-degree feature UNTESTABLE-FREE (absent per-gold)",
+      "interpretation": "the pre-registered REFUTE bar (some feature AUC>=0.7) is nominally cleared by score=0.833, BUT score is the question-grain recall outcome shared across a probes golds (cannot pick which gold is repairable), rests on only 2 in_graph=true positives (near-zero power), and the genuine query-time self-eval signal the arm targets (abstention posterior, orphan/degree) is not recorded per-gold; the ambient-trigger contrarian claim is neither confirmed nor cleanly refuted free",
+      "untestable_free_half": "per-gold abstention posterior / orphan-degree signals + Phase-3 forensics widening beyond the 8 unique probes needed to power the AUC"
+    },
+    "H337": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "parity max|diff|=0e+00 (graph-reconstructed==file); isotonic(0.6-raw-merge-thr)=0.085 true-prob; raw-vs-calibrated flips=18383/111048 (17%); of 11131 raw merges only 701 survive calibration",
+      "interpretation": "artifact is load-bearing and must persist in-graph: it reconstructs exactly from the same knots (parity) yet raw posteriors are ~7x overconfident at the merge line (isotonic(0.6)=0.085), so absent the artifact thousands of SAME_AS merges fire miscalibrated - every merge decays without it",
+      "untestable_free_half": ":CalibrationPair + isotonic-knot in-graph write validation queues behind Phase-3"
+    },
+    "H336": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "in-graph invalidation_rate=1.0, false_invalidation=0, stale_served=0/2479; hit-rate rel-to-external=1.0 (H274 safe_reuse=0.659); blast mean/max=9.5/185",
+      "interpretation": "in-graph answer cache stays faithful: 0 stale served on the superseded-fact replay (every bitemporal dependency edge invalidated, 0 false) at H274 external hit-rate within noise (rel=1.0), inverting the R26 head-to-head under statelessness - the external stores freedom to drop entries is not needed",
+      "caveat": "H273 caveat inherited: attribute-lookup corpus has ~0 negation probes, 553 events unfalsify rather than stress; Neo4j dependency-edge write-validation queues behind Phase-3",
+      "untestable_free_half": "live Neo4j dependency-edge invalidation on neo4j4 queues behind Phase-3"
+    },
+    "H338": {
+      "verdict": "PARTIAL",
+      "key_numbers": "demand/uniform ratio up to 16.38x (K=1), 1.72x at K=10 -> ledger non-decorative (reorders repairs, >1.5 bar); spearman(demand,gap)=-0.071 (cross-doc null, win driven by top_doc share 0.78); literal Kendall-tau UNCOMPUTABLE - only aggregate coverage-by-budget persisted, not the per-gap ranked demand vector",
+      "interpretation": "round-trip fidelity holds in principle (in-graph Demand reconstruction is a lossless fold over the same persisted hit-counts, tau=1.0) and the ledger is demonstrably non-decorative (16.38x demand/uniform), clearing both falsification prongs - but the pre-registered Kendall-tau>=0.9 on a ranked gap vector is UNTESTABLE-FREE because the frozen artifact stores only aggregate allocation; the true round-trip + Demand-node write queues behind Phase-3",
+      "untestable_free_half": "in-graph Demand-node write + per-gap ranked-vector Kendall-tau round-trip on neo4j4 queues behind Phase-3"
+    }
+  }
+}

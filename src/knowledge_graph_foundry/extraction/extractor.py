@@ -219,6 +219,49 @@ def extract_chunk(
     return ExtractionResult(entities=entities, relationships=relationships)
 
 
+def _union_chunk_passes(
+    passes: list["ExtractionResult | None"], union_k: int
+) -> ExtractionResult:
+    """R31-H349 union-of-K: union entity and relationship sets from K independent
+    extraction passes over one chunk. Coverage is the union (recovers what any
+    single pass under-emits, R22-H231); pass agreement is recorded on each entity
+    (properties union_passes of union_k) so the H349 census and the conditional
+    H350 identity prior can read it without a re-run."""
+    entities: dict[str, Entity] = {}
+    pass_counts: dict[str, int] = {}
+    relationships: dict[tuple[str, str, str], Relationship] = {}
+    for result in passes:
+        if result is None:
+            continue
+        seen_this_pass: set[str] = set()
+        for entity in result.entities:
+            if entity.id not in seen_this_pass:
+                seen_this_pass.add(entity.id)
+                pass_counts[entity.id] = pass_counts.get(entity.id, 0) + 1
+            current = entities.get(entity.id)
+            if current is None:
+                entities[entity.id] = entity
+                continue
+            if len(entity.description) > len(current.description):
+                current.description = entity.description
+            for type_name in entity.types:
+                if type_name not in current.types:
+                    current.types.append(type_name)
+            for key, value in entity.properties.items():
+                current.properties.setdefault(key, value)
+        for rel in result.relationships:
+            key = (rel.source_id, rel.target_id, rel.type)
+            existing = relationships.get(key)
+            if existing is None or len(rel.description) > len(existing.description):
+                relationships[key] = rel
+    for entity in entities.values():
+        entity.properties["union_passes"] = pass_counts[entity.id]
+        entity.properties["union_k"] = union_k
+    return ExtractionResult(
+        entities=list(entities.values()), relationships=list(relationships.values())
+    )
+
+
 def extract_document(
     chunks: list[Chunk],
     purpose: str,
@@ -227,25 +270,37 @@ def extract_document(
     concurrency: int = 4,
     extraction_cfg: ExtractionSettings | None = None,
 ) -> ExtractionResult:
-    """Extract all chunks in parallel; failing chunks are skipped, order preserved."""
-    cfg = extraction_cfg or ExtractionSettings()
-    results: list[ExtractionResult | None] = [None] * len(chunks)
+    """Extract all chunks in parallel; failing chunks are skipped, order preserved.
 
-    def _run(index: int, chunk: Chunk) -> None:
+    With union_k > 1 (R31-H349) each chunk is extracted K times independently and
+    the per-chunk results union - serving churn makes the passes diverse for free
+    (H232/H244), so the union recovers what any single pass under-emits."""
+    cfg = extraction_cfg or ExtractionSettings()
+    union_k = max(1, cfg.union_k)
+    results: list[list[ExtractionResult | None]] = [[None] * union_k for _ in chunks]
+
+    def _run(index: int, pass_index: int, chunk: Chunk) -> None:
         try:
-            results[index] = extract_chunk(chunk, purpose, ontology, engine, cfg)
+            results[index][pass_index] = extract_chunk(chunk, purpose, ontology, engine, cfg)
         except Exception as exc:
             emit("extraction.warning", reason=f"chunk extraction failed: {exc}", chunk=chunk.id)
 
     with ThreadPoolExecutor(max_workers=concurrency) as pool:
         for index, chunk in enumerate(chunks):
-            pool.submit(_run, index, chunk)
+            for pass_index in range(union_k):
+                pool.submit(_run, index, pass_index, chunk)
 
     combined = ExtractionResult()
-    for result in results:
-        if result is not None:
-            combined.entities.extend(result.entities)
-            combined.relationships.extend(result.relationships)
+    for chunk_passes in results:
+        if union_k == 1:
+            result = chunk_passes[0]
+            if result is not None:
+                combined.entities.extend(result.entities)
+                combined.relationships.extend(result.relationships)
+            continue
+        merged = _union_chunk_passes(chunk_passes, union_k)
+        combined.entities.extend(merged.entities)
+        combined.relationships.extend(merged.relationships)
 
     emit(
         "extraction.completed",

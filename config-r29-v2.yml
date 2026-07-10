@@ -1,0 +1,20 @@
+# R29 SLOT-1 v2 reopen - v2 arm (candidate: v2 calibrated identity stack + demotion court).
+# IDENTICAL to config-r29-v1.yml except resolution.identity_stack. Composed default engine,
+# local vLLM gpt-oss-120b, Bedrock Titan embeddings, neo4j4 scratch (DEF-4/DEF-5). recipe enumerate (H246).
+# v2 loads the mDeBERTa NLI model in-process - pin CUDA_VISIBLE_DEVICES=0 (idle PRO 4000) at launch, off the vLLM card.
+neo4j:
+  uri: bolt://172.19.0.4:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 600
+extraction:
+  recipe: enumerate
+  concurrency: 8
+resolution:
+  identity_stack: v2
+event_log: logs/r29-v2-events.jsonl

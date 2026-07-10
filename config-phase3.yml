@@ -1,0 +1,23 @@
+# Phase-3 production rebuild - the composed DEFAULT engine (H198 shipped composition).
+# SLOT-1: identity_stack omitted -> v1 code default (NOT v2; the h240b arms used v2 for the A/B).
+# SLOT-2/SLOT-4: extraction.recipe enumerate (H246). DEF-8: retry fix live in local_gpu.
+# Concurrency 8 + timeout 600: c16/t180 dropped ~485 chunks; c8/t300 still dropped ~8/doc clustered on
+# large-doc enumerations that exceed 300s under 8-way load (doc4: 18 timeouts). Timeouts are NOT systemic
+# (one doc had 0), so more timeout headroom converts a slow request from a drop into a slow success; t600
+# gives 2x headroom over the observed 300s tail, driving drops toward the model-inherent variance floor (H229).
+# All GraphRAG / curing / soft-link / demotion-court / tranche levers inherit their code defaults = the composition.
+# Neo4j pinned EXPLICITLY to the neo4j4 scratch per DEF-4/DEF-5. Local vLLM gpt-oss-120b, Bedrock Titan embeddings.
+neo4j:
+  uri: bolt://172.19.0.4:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 600
+extraction:
+  recipe: enumerate
+  concurrency: 8
+event_log: logs/phase3-rebuild-events.jsonl

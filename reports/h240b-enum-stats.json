@@ -1,0 +1,15 @@
+{
+  "arm": "enum",
+  "entities": 4363,
+  "relationships": 18946,
+  "chunks": 247,
+  "kgf_documents": 27,
+  "entity_id_fingerprint": "a725c4095d505ec8",
+  "mean_recall": 0.7292,
+  "fully_covered": 17,
+  "same_as_precision": 0.5517,
+  "false_merges": 13,
+  "merges_total": 2217,
+  "defers_total": 3126,
+  "nli_vetoes": 388
+}

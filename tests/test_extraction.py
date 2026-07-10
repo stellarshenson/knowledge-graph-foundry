@@ -537,3 +537,86 @@ class TestRecipePrompts:
         assert plain == explicit
         assert "Candidate names" not in plain[0]["content"]
         assert "surface MENTION" not in plain[0]["content"]
+
+
+class ChurnEngine:
+    """Engine returning a different canned response per successive call -
+    simulates the run-to-run emission churn union-of-K exists to harvest."""
+
+    name = "churn"
+
+    def __init__(self, responses: list[BaseModel], fail_first: bool = False):
+        import threading
+
+        self.responses = list(responses)
+        self.fail_first = fail_first
+        self.calls = 0
+        self._lock = threading.Lock()
+
+    def complete(self, messages: list[dict[str, str]], response_model: type) -> BaseModel:
+        with self._lock:
+            self.calls += 1
+            if self.fail_first and self.calls == 1:
+                raise EngineError("simulated pass failure")
+            return self.responses.pop(0)
+
+
+class TestUnionOfK:
+    """DEF-11/DEF-13/R31-H349: union_k independent passes per chunk, unioned."""
+
+    CFG_ONE_CALL = dict(recipe="single", gleaning_rounds=0, split_entity_relation=False)
+
+    def test_default_single_pass_no_union_metadata(self):
+        wire = WireExtraction(entities=[WireEntity(name="Alpha", types=["Product"])])
+        cfg = ExtractionSettings(**self.CFG_ONE_CALL)
+        engine = ChurnEngine([wire])
+        result = extract_document([_chunk("alpha")], PURPOSE, Ontology(), engine, extraction_cfg=cfg)
+        assert engine.calls == 1
+        assert "union_passes" not in result.entities[0].properties
+
+    def test_union_recovers_entities_across_passes(self):
+        pass_a = WireExtraction(
+            entities=[WireEntity(name="Alpha", types=["Product"], description="short")]
+        )
+        pass_b = WireExtraction(
+            entities=[
+                WireEntity(name="Alpha", types=["Device"], description="a much longer description"),
+                WireEntity(name="Beta", types=["Product"]),
+            ]
+        )
+        cfg = ExtractionSettings(union_k=2, **self.CFG_ONE_CALL)
+        engine = ChurnEngine([pass_a, pass_b])
+        result = extract_document(
+            [_chunk("alpha")], PURPOSE, Ontology(), engine, concurrency=1, extraction_cfg=cfg
+        )
+        assert engine.calls == 2
+        by_name = {e.name: e for e in result.entities}
+        assert set(by_name) == {"Alpha", "Beta"}  # union, not intersection
+        assert by_name["Alpha"].properties["union_passes"] == 2
+        assert by_name["Beta"].properties["union_passes"] == 1
+        assert by_name["Alpha"].properties["union_k"] == 2
+        assert by_name["Alpha"].description == "a much longer description"
+        assert set(by_name["Alpha"].types) == {"Product", "Device"}
+
+    def test_union_dedupes_relationships(self):
+        entities = [WireEntity(name="Alpha", types=["Product"]), WireEntity(name="Beta", types=["Product"])]
+        rel = WireRelationship(source="Alpha", target="Beta", type="HAS_PART")
+        both = WireExtraction(entities=entities, relationships=[rel])
+        cfg = ExtractionSettings(union_k=2, **self.CFG_ONE_CALL)
+        result = extract_document(
+            [_chunk("alpha")], PURPOSE, Ontology(), ChurnEngine([both, both]),
+            concurrency=1, extraction_cfg=cfg,
+        )
+        assert len(result.relationships) == 1  # deduped by (source, target, type)
+        assert len(result.entities) == 2
+
+    def test_failed_pass_survived_by_the_other(self, warnings):
+        wire = WireExtraction(entities=[WireEntity(name="Alpha", types=["Product"])])
+        cfg = ExtractionSettings(union_k=2, **self.CFG_ONE_CALL)
+        result = extract_document(
+            [_chunk("alpha")], PURPOSE, Ontology(), ChurnEngine([wire], fail_first=True),
+            concurrency=1, extraction_cfg=cfg,
+        )
+        assert [e.name for e in result.entities] == ["Alpha"]
+        assert result.entities[0].properties["union_passes"] == 1
+        assert any("chunk extraction failed" in w["reason"] for w in warnings)

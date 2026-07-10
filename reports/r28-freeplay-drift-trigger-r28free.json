@@ -1,0 +1,54 @@
+{
+  "cluster": "drift-trigger",
+  "runtag": "r28free",
+  "notebook": "notebooks/r28_freeplay_drift_trigger.ipynb",
+  "naive_baseline": {
+    "settings": {
+      "remap_threshold": 0.3,
+      "rebuild_jsd": 0.15,
+      "window": 3
+    },
+    "drift_warning": 52,
+    "drift_decision": 0,
+    "recure": 0,
+    "rebuild": 0,
+    "max_jsd": 0.5078944071651263
+  },
+  "arms": {
+    "H295": {
+      "verdict": "REFUTED",
+      "key_numbers": "pooled Jaccard=0.000 (bar>=0.9 FAIL); kgf counter=5 detector=46 intersection=0; Spearman(te,remap) undefined (te constant 0 on all 52 warn docs, bar>=0.7 FAIL); counter FA=5 <= detector FA=52 PASS; benign-remap docs=17",
+      "interpretation": "Counter and detector fire on DISJOINT doc sets (Jaccard 0): 41/46 kgf warnings are remap-driven with zero new types, so the dead type-burst counter does NOT reproduce the detector's schedule - deflation fails."
+    },
+    "H296": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "post-cure te>0 share=0.4%; timer FA share on te==0 windows ranges 0.96-0.99 (all >=0.30 PASS); counter FA share=0.00; timer >> counter",
+      "interpretation": "A contentless cadence timer places 96-100% of its fires on type_emerged==0 windows (99.6% of post-cure docs carry no content dose) vs the counter's 0% - the timer blows the H59 guardrail, so the type-burst counter, not a bare timer, is the minimal trigger floor."
+    },
+    "H297": {
+      "verdict": "PARTIAL",
+      "key_numbers": "10 segments; Spearman(singleton_fraction,warns)=0.674 p=0.033 (PASS); Spearman(js_divergence_var,warns)=-0.090 (FAIL); only 3/10 segments have >0 following warns",
+      "interpretation": "Singleton-fraction at cure-exit leads the following-segment warning count (rho=0.67, p<0.05) but js_divergence_var does not (rho=-0.09); target is near-degenerate (8/10 segments have zero warnings), so the panel half-leads - one signal passes the bar, the other fails."
+    },
+    "H305": {
+      "verdict": "MEASURED",
+      "key_numbers": "effective rank (participation ratio)=3.16 (95%-var needs 6 PCs, top-3=0.79); real joint-only outliers on 123 vectors=0; seeded Q/SPE detect up to 0.02 vs univariate ~0; kill-gate (rank<=3 AND 0 joint-only)=not tripped",
+      "interpretation": "MEASURED: participation-ratio rank 3.16 is a hair over the <=3 kill threshold (top-3 PCs already 79% var), and the corpus has 0 real joint-only outliers; retaining 6 PCs for 95% variance makes Q/SPE insensitive - it flags only 2% of seeded breaks (bar 80% FAIL) while univariate misses too. The monitor is not vacuous by the strict rank test but has nothing real to catch here."
+    },
+    "H306": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "drift.decision=0 across all logs (criterion A); free-measurable oracle TP=0; hindsight-optimal single-metric detector=never-fire; H305 corroborates 0 real joint-only panel outliers; post-cure novel-type docs=8 (criterion B per-type forward mass NOT free-measurable -> Phase-3)",
+      "interpretation": "On every free-measurable criterion the material-block set is empty: 0 drift.decisions and (H305) 0 real joint-only panel outliers, so the hindsight-optimal single-metric threshold is the never-fire detector - the anomaly-detection ceiling collapses to do-nothing. The forward-mass OR-clause needs per-type post-cure frequencies absent from the free logs and queues behind Phase-3."
+    },
+    "H307": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "kgf floor-15 removes 45/46=97.8% warnings (bar>=90% PASS); warning-doc entities 2-18 mean 6.4; escalations suppressed=0/0",
+      "interpretation": "An entity floor of 15 on the remap arm removes 45/46 (97.8%) of kgf's benign warnings and suppresses 0 escalations (none exist) - benign warnings are small-doc (2-18 entity) quantization noise on the remap rate. Caveat: h241 warnings fire on 268-318 entity docs, so the small-doc mechanism is kgf-specific."
+    },
+    "H308": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "would-recure=0, would-rebuild=0 (0/0); max JSD=0.5079; recall@16=0.75 delta=0.0 pts (bar<=2); same_as_precision=0.5172 delta=0.0 (bar<=0.2); self-heal compute reduced 100%",
+      "interpretation": "0 recure and 0 rebuild ever fired even at JSD 0.5079, so append-only+abstain is byte-identical to the full self-heal on recall@16 (0.75) and same_as_precision (0.517) - deleting the active self-heal channel removes 100% of self-heal compute at zero recall/precision cost. The do-nothing null dominates."
+    }
+  }
+}

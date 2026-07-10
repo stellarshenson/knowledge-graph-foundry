@@ -1,0 +1,32 @@
+{
+  "runtag": "20260709",
+  "cluster": "drift-recon",
+  "baseline": "DriftDetector 52 warn / 0 recure / 0 rebuild",
+  "arms": {
+    "H332": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "recompute-from-state recure+rebuild: original-order=0, breach-clustered-order=15; snapshot multiset invariant across 4 orderings (warn=46); 17/48 docs breach, 0 3-consecutive in real order",
+      "interpretation": "Drift verdict is a function of ingest ORDER: recompute-from-final-state re-windows and fires recure/rebuild under a breach-clustering permutation that never fires in the live order, while snapshot-rehydrate reads the frozen emit-time verdict back order-invariant. Snapshot wins; H331's pure-fold-over-state loses the trajectory."
+    },
+    "H331": {
+      "verdict": "REFUTED",
+      "key_numbers": "4945 resolution.merge events consume pre-merge nodes (fold is lossy); trigger is order-dependent (recure 0->15 under reordering) but final bitemporal state is order-free; strict byte-for-byte JSD fold UNTESTABLE-FREE (no per-entity temporal stamps in the logs)",
+      "interpretation": "The pure-fold-over-final-state claim is falsified on two counts: the merges rewrite the pre-merge histogram (lossy fold) and the verdict is order-dependent while final state is a set. H315's snapshot ledger is vindicated. Live-graph byte-for-byte confirmation queues behind Phase-3."
+    },
+    "H315": {
+      "verdict": "PARTIAL",
+      "key_numbers": "parity snapshot==continuous: True over 46 windows; naive stateless non-none=0 (0-warning pathology) vs snapshot non-none=46 (reproduces all warns); continuous recure+rebuild=0 (rebuild-at-0.5079 sub-claim REFUTED - AND-gate needs 3 consecutive remap>0.3 which never co-occurs with high jsd)",
+      "interpretation": "Snapshot reconstruction reproduces the continuous window verdict-for-verdict and recovers all 46 warns the naive stateless baseline drops to 0 - the reconstruction MECHANISM is confirmed. But the continuous oracle itself fires 0 recure/rebuild: remap breaches and high jsd are anti-phase so the sustained-remap AND-gate never trips. The 'fires a rebuild' prediction is refuted by the data, not by the reconstruction."
+    },
+    "H333": {
+      "verdict": "PARTIAL",
+      "key_numbers": "cured type-set recovered from proxy: 61 types (curing.cured reports 66); reference-frequency dict logged: False; _jsd(empty_ref,.)=0.500 degenerate; round-trip identity=True; recure+rebuild missed by baseline=0",
+      "interpretation": "The cured type-set - the transient H333 names - IS recoverable from the type_confirmed proxy (61 types), and once pinned the remap-defined replay is deterministic and round-trip identical. But the cured reference FREQUENCY dict is a SECOND unlogged datum (the jsd baseline is degenerate without it), so 'solvable except ONE' is optimistic; and 0 recure/rebuild fires (same anti-phase AND-gate as H315). Full jsd round-trip queues behind a Phase-3 OntologySnapshot write."
+    },
+    "H317": {
+      "verdict": "CONFIRMED",
+      "key_numbers": "CUSUM (mu0=0.206,k=0.02,h=0.3) fires 1x on real post-cure series (first at idx 18, jsd=0.508) vs single-doc boolean 0; slow-ramp (max 0.139<0.15): CUSUM 10 vs boolean 0; left-fold deterministic (memo==recompute)",
+      "interpretation": "CUSUM folded over the reconstructed JSD series fires where the 3-consecutive boolean structurally cannot: 0 under single-doc-session partition and 0 on a sub-threshold slow-ramp, while CUSUM catches both. The accumulator is a deterministic left-fold, fully reconstructable from ordered snapshots."
+    }
+  }
+}

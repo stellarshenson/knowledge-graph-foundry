@@ -1,0 +1,15 @@
+{
+  "arm": "mention",
+  "entities": 5124,
+  "relationships": 19931,
+  "chunks": 247,
+  "kgf_documents": 27,
+  "entity_id_fingerprint": "745793a5d0e8db7d",
+  "mean_recall": 0.6667,
+  "fully_covered": 14,
+  "same_as_precision": 0.48,
+  "false_merges": 13,
+  "merges_total": 2601,
+  "defers_total": 3414,
+  "nli_vetoes": 156
+}

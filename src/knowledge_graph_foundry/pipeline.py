@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import re
 from typing import Optional
@@ -319,34 +321,86 @@ class Foundry:
         processed_documents = set(state.get("processed_documents", []))
         state_drift = None
 
-        for file_path in files:
-            # DEF-2: a text-heavy structured file expands to one unit per row,
-            # each its own document; everything else is one whole-file unit
-            try:
-                units = self._document_units(file_path)
-            except Exception as exc:  # corrupt file: skip, continue run
-                emit("document.skipped", path=str(file_path), reason=str(exc))
-                logger.warning(f"skipping {file_path}: {exc}")
-                continue
-            for fingerprint, row_doc in units:
-                if fingerprint in processed_documents:
-                    emit("document.skipped", path=str(file_path), reason="already ingested")
-                    continue
-                emit("document.started", path=str(file_path))
+        # DEF-12/R30-H343: cross-document extraction look-ahead. Extraction is
+        # pure (doc, purpose, ontology) -> (entities, relationships), so in
+        # STABLE/RECURING - where the cured ontology is loop-invariant - up to
+        # document_concurrency extractions run ahead of the consumer, while
+        # everything order-sensitive (curing, drift, resolution, graph write,
+        # state save, resume fingerprints) consumes strictly in corpus order.
+        # While fluid (INITIALIZING/CURING) the ontology evolves per document,
+        # so that prefix stays serial regardless of the knob.
+        doc_concurrency = max(1, self.settings.extraction.document_concurrency)
+
+        def unit_stream():
+            for stream_path in files:
+                # DEF-2: a text-heavy structured file expands to one unit per row,
+                # each its own document; everything else is one whole-file unit
                 try:
-                    if row_doc is not None:
-                        entities, relationships = self._extract_text_document(
-                            row_doc,
-                            f"{file_path.name}#row{row_doc.metadata['row_index']}",
-                            purpose,
-                            ontology,
-                        )
-                    else:
-                        entities, relationships = self._extract_file(file_path, purpose, ontology)
+                    units = self._document_units(stream_path)
                 except Exception as exc:  # corrupt file: skip, continue run
-                    emit("document.skipped", path=str(file_path), reason=str(exc))
-                    logger.warning(f"skipping {file_path}: {exc}")
+                    emit("document.skipped", path=str(stream_path), reason=str(exc))
+                    logger.warning(f"skipping {stream_path}: {exc}")
                     continue
+                for unit_fingerprint, unit_row_doc in units:
+                    if unit_fingerprint in processed_documents:
+                        emit("document.skipped", path=str(stream_path), reason="already ingested")
+                        continue
+                    yield stream_path, unit_fingerprint, unit_row_doc
+
+        def extract_unit(unit_path, unit_row_doc, unit_ontology):
+            if unit_row_doc is not None:
+                return self._extract_text_document(
+                    unit_row_doc,
+                    f"{unit_path.name}#row{unit_row_doc.metadata['row_index']}",
+                    purpose,
+                    unit_ontology,
+                )
+            return self._extract_file(unit_path, purpose, unit_ontology)
+
+        stream = unit_stream()
+        pending: deque = deque()
+        pool = (
+            ThreadPoolExecutor(max_workers=doc_concurrency, thread_name_prefix="kgf-doc")
+            if doc_concurrency > 1
+            else None
+        )
+        try:
+            while True:
+                if pool is not None and lifecycle.state in ("STABLE", "RECURING"):
+                    while len(pending) < doc_concurrency:
+                        nxt = next(stream, None)
+                        if nxt is None:
+                            break
+                        ahead_path, ahead_fingerprint, ahead_row_doc = nxt
+                        emit("document.started", path=str(ahead_path))
+                        pending.append(
+                            (
+                                pool.submit(extract_unit, ahead_path, ahead_row_doc, ontology),
+                                ahead_path,
+                                ahead_fingerprint,
+                            )
+                        )
+                    if not pending:
+                        break
+                    future, file_path, fingerprint = pending.popleft()
+                    try:
+                        entities, relationships = future.result()
+                    except Exception as exc:  # corrupt file: skip, continue run
+                        emit("document.skipped", path=str(file_path), reason=str(exc))
+                        logger.warning(f"skipping {file_path}: {exc}")
+                        continue
+                else:
+                    nxt = next(stream, None)
+                    if nxt is None:
+                        break
+                    file_path, fingerprint, row_doc = nxt
+                    emit("document.started", path=str(file_path))
+                    try:
+                        entities, relationships = extract_unit(file_path, row_doc, ontology)
+                    except Exception as exc:  # corrupt file: skip, continue run
+                        emit("document.skipped", path=str(file_path), reason=str(exc))
+                        logger.warning(f"skipping {file_path}: {exc}")
+                        continue
 
                 if not entities:
                     emit("document.skipped", path=str(file_path), reason="no entities")
@@ -405,6 +459,9 @@ class Foundry:
                     }
                 )
                 emit("document.completed", path=str(file_path), entities=len(entities))
+        finally:
+            if pool is not None:
+                pool.shutdown(wait=False, cancel_futures=True)
 
         # DEF-7: corpus exhausted while still fluid - the gate never fired, so the
         # buffer would outlive the ingest and the graph would stay entity-less;

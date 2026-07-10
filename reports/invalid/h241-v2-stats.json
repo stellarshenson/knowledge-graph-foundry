@@ -1,0 +1,15 @@
+{
+  "arm": "v2",
+  "entities": 0,
+  "relationships": 132,
+  "chunks": 132,
+  "kgf_documents": 27,
+  "entity_id_fingerprint": "e3b0c44298fc1c14",
+  "mean_recall": 0.0,
+  "fully_covered": 0,
+  "same_as_precision": 0.0,
+  "false_merges": 0,
+  "merges_total": 0,
+  "defers_total": 0,
+  "nli_vetoes": 0
+}

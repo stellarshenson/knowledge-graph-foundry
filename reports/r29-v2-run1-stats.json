@@ -1,0 +1,20 @@
+{
+  "arm": "v2",
+  "run": "1",
+  "entities": 4236,
+  "relationships": 19217,
+  "mean_recall": 0.7292,
+  "fully_covered": 16,
+  "n_probes": 24,
+  "same_as_precision": 0.6957,
+  "false_merges": 7,
+  "merges_total": 2232,
+  "false_merge_rate": 0.0031,
+  "defers_total": 3713,
+  "nli_vetoes": 623,
+  "court_docket": 0,
+  "court_demoted": 0,
+  "same_as_edges": 0,
+  "similar_to_edges": 777,
+  "entity_id_fingerprint": "8cc0cfe1c262f049"
+}

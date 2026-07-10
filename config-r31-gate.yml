@@ -1,0 +1,19 @@
+# R31-H353 gate config - config-r29-v1.yml with llm.timeout 600 -> 3600 ONLY (R30 ramp showed p50 latency exceeds 600s from c~32, causing silent client retries; raised so the gate runs single-attempt at the c=64 feed). Extraction semantics identical.
+# IDENTICAL to config-r29-v2.yml except resolution.identity_stack. Composed default engine,
+# local vLLM gpt-oss-120b, Bedrock Titan embeddings, neo4j4 scratch (DEF-4/DEF-5). recipe enumerate (H246).
+neo4j:
+  uri: bolt://172.19.0.4:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 3600
+extraction:
+  recipe: enumerate
+  concurrency: 8
+resolution:
+  identity_stack: v1
+event_log: logs/r29-v1-events.jsonl
