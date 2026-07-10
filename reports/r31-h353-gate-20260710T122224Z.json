@@ -1,0 +1,25 @@
+{
+  "hypothesis": "R31-H353",
+  "generated": "20260710T122224Z",
+  "passes": 6,
+  "concurrency": 64,
+  "chunks_measured": 33,
+  "golds_carried": 26,
+  "golds_uncarried": [
+    "Typical power consumption: 9.0W"
+  ],
+  "coverage": {
+    "single": 0.8077,
+    "union2": 0.8462,
+    "union3": 0.8462,
+    "union6_ceiling": 0.8846
+  },
+  "jd": {
+    "single": 0.5483,
+    "union2": 0.5274,
+    "union3": 0.5025
+  },
+  "union2_gain": 0.0385,
+  "jd_ratio_union2": 0.9619,
+  "gate": "FAIL"
+}

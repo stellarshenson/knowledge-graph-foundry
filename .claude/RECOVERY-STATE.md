@@ -55,3 +55,25 @@ Health check: curl -s http://localhost:8010/v1/models (200 = up; engine init ~3-
 
 **Wiring tranche 1 READY** in worktree agent-aea0ebaec7aac3122 (uncommitted, base 0735aac) - merge after chains release tree (see docs/h198-wiring-plan.md).
 **Pending recordings**: R23/R24 round close (all verdicts above + H261 + H250 frontier -> SLOT-2), H241 verdict -> SLOT-1, journal entries, promotions.
+
+## BRACE 2026-07-10 ~16:05Z - session horizon unknown
+
+Supersedes the 2026-07-08 section where they conflict. Active /goal: fix DEF-8..DEF-13 fixes-first with measured verdicts. Standing directive (2026-07-10): NO Titan for new bulk embedding compute - local GPU models (bge-m3 on GPU idx 2), configurable providers; spec = docs/acc-crit-kgf.md "Embeddings" section (10 criteria). Entity-channel QUERY embedding stays Titan only because the live entity index is Titan-space (fixed control arm). Executor model for this campaign: Fable ("fable" in agent model opts).
+
+**RUNNING (detached, survives session death):**
+- H363 clean GPU ramp: PID 46692 (setsid, sid=46692), `scripts/r30_gpu_ramp.py`, log `logs/r30-h363-ramp.log`. STEP c=16 done: 1.55 chunks/min, 520.3 tok/s total (309.2 gen), hidden_attempts=0, errors=0, peak run/wait 16/0 (single-attempt regime confirmed). c=24 mid-window; rungs 32/48/64/96 remain; ~20:30-21:00Z finish. Holds GPU 1 (PRO 6000) + vLLM :8010. On completion: record H363, fit H347 knee offline, seed first H362 cache entry, then H343/H345 (task #58 remainder)
+- Nothing else runs. H366 COMPLETED (below).
+
+**DONE - PENDING VERDICT RECORDING (first analysis duty of next session):**
+- R34-H366 passage-node prototype COMPLETE: `reports/r34-h366-passages-20260710T154339Z.json` (log `logs/r34-h366-passages.log`). M=0 reproduced baseline EXACTLY (0.8542, 20/24 - control valid). M=1: mean 0.9583, 23/24 fully covered, ctx growth +78%; M=2/M=4 identical recall at +160%/+321% growth. Registered bar was "P21+P22 flip, zero regressions, <=30% ctx growth" - recall part massively exceeded at M=1, ctx-growth clause EXCEEDED (78% > 30%). Verdict must weigh the clause honestly (partial pass / confirmed-with-caveat per per-probe diff in the report). Chunk embedding cache: `results/r34/h366-chunk-embs-bgem3.jsonl` (bge-m3, 247 chunks, reusable for H367/H371+)
+- Maintenance research (R36 inputs) BOTH LANDED, persisted to disk:
+  - `reports/r36-maintenance-literature-brief-20260710.md` (external literature: IVM/DRed/TMS, EraRAG, Mem0, A-MEM, sleep-time, Drift-Adapter, Memory-Worth; five proven-novel open slots; 5 new papers archived to references/papers/)
+  - `reports/r36-maintenance-internal-map-20260710.md` (cartographer, recovered verbatim: R28 fence H293-H339, DEF-9 = H317 CUSUM confirmed-not-wired, RECURING dead-end end_recure zero callers, functional_relationship_types=[] -> valid_to never set, derived-object invalidation matrix = nothing invalidates anything)
+
+**Recorded earlier today (already in canonical docs, do NOT redo):** H364 CONFIRMED (resolution_loss 83.3%, ranking zero) + H365 CONFIRMED (prototype repair: 0.7917 -> 0.8542, P09/P16 flipped, 22 flat) in docs/experiments/kgf-redesign-experiments.md; DEF-13 dated notes in docs/defects.md; R34 (H366-H370) + R35 (H371-H375) registered; journal entries 192-194; acc-crit Embeddings section added.
+
+**Graph state neo4j4 (bolt://172.19.0.4:7687, neo4j/kgfoundry):** layered pile 5213 ents/23472 rels WITH H365 repair applied (additive, marker `e.h365_hoisted`, edges `PART_OF {h365:true}`; rollback in scripts/r33_h365_repair.py docstring). Fresh baseline pair: pre-repair 0.7917 (reports/h364-fresh-recall-20260710T135437Z.json), post-repair 0.8542 (reports/h365-repaired-recall-20260710T143152Z.json). The old h212-v2 recall map is STALE - never diff against it.
+
+**FIRST ACTION next session:** read this section, then (1) record the H366 verdict in docs/experiments/kgf-redesign-experiments.md against its registered bar (numbers above, per-probe diff in the report JSON), (2) check `logs/r30-h363-ramp.log` - if finished, record H363 + knee fit, (3) register R36 (maintenance of derived objects) from the two reports/r36-*.md briefs - fence against R28/R15-R17/R26, claim: derived-object invalidation as a class, RECURING dead-end, dead fact-drift alarm, maintenance of NEW R34/R35 objects; give DEF-9 its workstream (wire H317 CUSUM). Then continue task #70 (H367/H369/H370 prototypes; H370 retro-arm needs temporary H365 rollback) and #71 (R35, generation post-H363). Journal entry for maintenance-research + acc-crit + H366 still owed (via /journal:update only).
+
+**Task list**: cleaned 2026-07-10 (43 completed deleted); live: #70 R34 prototypes (in_progress), #71 R35, #66 H363 ramp, #69 wire H365 into engine, #58/#62/#64/#49-#53/#56/#59.

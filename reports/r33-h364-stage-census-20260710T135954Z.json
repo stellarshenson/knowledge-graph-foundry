@@ -1,0 +1,305 @@
+{
+  "hypothesis": "R33-H364",
+  "generated": "20260710T135954Z",
+  "graph": {
+    "uri": "bolt://172.19.0.4:7687",
+    "entities": 5213,
+    "relationships": 23472
+  },
+  "census_input": "reports/r32-h354-census-20260710T135843Z.json",
+  "stage_masses": {
+    "resolution_loss": 1.25,
+    "recovered_now": 0.25
+  },
+  "detail": [
+    {
+      "probe": "P09",
+      "gold": "275mm x 170mm x 140mm",
+      "mass": 1.0,
+      "stage": "resolution_loss",
+      "n_carriers": 7,
+      "best_carrier": {
+        "id": "e_ae2377532590e4c7",
+        "name": "HC234",
+        "types": [
+          "Entity",
+          "DeviceModel"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": null,
+        "n_rels": 59,
+        "subject_overlap": []
+      },
+      "carriers": [
+        {
+          "id": "e_ae2377532590e4c7",
+          "name": "HC234",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 59,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_7e4bd427f59c3813",
+          "name": "HC238",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_c9f2d11f5bd699be",
+          "name": "HC232",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_713c09a674d79727",
+          "name": "HC236",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 43,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_d69d444b9b004f48",
+          "name": "HC230 Product Range",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 12,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_a78095bbdba80798",
+          "name": "HC231",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 30,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_33fc261f3bffe9b3",
+          "name": "HC233",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 28,
+          "subject_overlap": []
+        }
+      ]
+    },
+    {
+      "probe": "P16",
+      "gold": "275mm x 170mm x 140mm",
+      "mass": 0.25,
+      "stage": "resolution_loss",
+      "n_carriers": 7,
+      "best_carrier": {
+        "id": "e_ae2377532590e4c7",
+        "name": "HC234",
+        "types": [
+          "Entity",
+          "DeviceModel"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": 133,
+        "n_rels": 59,
+        "subject_overlap": []
+      },
+      "carriers": [
+        {
+          "id": "e_ae2377532590e4c7",
+          "name": "HC234",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 133,
+          "n_rels": 59,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_713c09a674d79727",
+          "name": "HC236",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 144,
+          "n_rels": 43,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_c9f2d11f5bd699be",
+          "name": "HC232",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 171,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_7e4bd427f59c3813",
+          "name": "HC238",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_d69d444b9b004f48",
+          "name": "HC230 Product Range",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 12,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_a78095bbdba80798",
+          "name": "HC231",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 30,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_33fc261f3bffe9b3",
+          "name": "HC233",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 28,
+          "subject_overlap": []
+        }
+      ]
+    },
+    {
+      "probe": "P16",
+      "gold": "238*178*128 mm",
+      "mass": 0.25,
+      "stage": "recovered_now",
+      "n_carriers": 1,
+      "best_carrier": {
+        "id": "e_927b6e36f87e2e4c",
+        "name": "iBreeze CPAP System",
+        "types": [
+          "Entity",
+          "DeviceSeries",
+          "DeviceModel",
+          "Series"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": 2,
+        "n_rels": 324,
+        "subject_overlap": [
+          "ibreeze"
+        ]
+      },
+      "carriers": [
+        {
+          "id": "e_927b6e36f87e2e4c",
+          "name": "iBreeze CPAP System",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "DeviceModel",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 2,
+          "n_rels": 324,
+          "subject_overlap": [
+            "ibreeze"
+          ]
+        }
+      ]
+    }
+  ]
+}

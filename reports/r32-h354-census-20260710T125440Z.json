@@ -1,0 +1,123 @@
+{
+  "hypothesis": "R32-H354",
+  "generated": "20260710T125440Z",
+  "recall_report": "reports/h212-v2-recall-rerun.json",
+  "failed_probes": {
+    "P08": 1.0,
+    "P09": 1.0,
+    "P11": 0.5,
+    "P15": 0.5,
+    "P16": 1.0,
+    "P17": 0.5,
+    "P18": 0.5
+  },
+  "class_masses": {
+    "parse_loss_reader": 1.0,
+    "i_emission_covered": 3.0,
+    "iii_cross_document": 1.0
+  },
+  "gate_verdicts": {
+    "H355_size (i stochastic+deterministic)": {
+      "share": 0.0,
+      "lives": false
+    },
+    "H356_doc_relation_pass (iii intra-doc)": {
+      "share": 0.0,
+      "lives": false
+    },
+    "H357_subject_injection (iv)": {
+      "share": 0.0,
+      "lives": false
+    },
+    "H358_coref_escalation (iv)": {
+      "share": 0.0,
+      "lives": false
+    },
+    "H359_sat_boundaries (ii)": {
+      "share": 0.0,
+      "lives": false
+    },
+    "H360_atomic_tables (v)": {
+      "share": 0.0,
+      "lives": false
+    },
+    "H361_section_windows (ii + iii intra-doc)": {
+      "share": 0.0,
+      "lives": false
+    }
+  },
+  "detail": [
+    {
+      "probe": "P08",
+      "gold": "Typical power consumption: 9.0W",
+      "class": "parse_loss_reader",
+      "mass": 1.0
+    },
+    {
+      "probe": "P09",
+      "gold": "275mm x 170mm x 140mm",
+      "class": "i_emission_covered",
+      "mass": 1.0
+    },
+    {
+      "probe": "P11",
+      "gold": "1106 g",
+      "class": "i_emission_covered",
+      "mass": 0.25
+    },
+    {
+      "probe": "P11",
+      "gold": "1130 g",
+      "class": "i_emission_covered",
+      "mass": 0.25
+    },
+    {
+      "probe": "P15",
+      "gold": "1.98kg",
+      "class": "iii_cross_document",
+      "mass": 0.25
+    },
+    {
+      "probe": "P15",
+      "gold": "2.4 kg",
+      "class": "iii_cross_document",
+      "mass": 0.25
+    },
+    {
+      "probe": "P16",
+      "gold": "275mm x 170mm x 140mm",
+      "class": "i_emission_covered",
+      "mass": 0.5
+    },
+    {
+      "probe": "P16",
+      "gold": "238*178*128 mm",
+      "class": "i_emission_covered",
+      "mass": 0.5
+    },
+    {
+      "probe": "P17",
+      "gold": "0-60 mins",
+      "class": "i_emission_covered",
+      "mass": 0.25
+    },
+    {
+      "probe": "P17",
+      "gold": "0 to 45 min",
+      "class": "i_emission_covered",
+      "mass": 0.25
+    },
+    {
+      "probe": "P18",
+      "gold": "26.6 dBA",
+      "class": "iii_cross_document",
+      "mass": 0.25
+    },
+    {
+      "probe": "P18",
+      "gold": "27 dBA",
+      "class": "iii_cross_document",
+      "mass": 0.25
+    }
+  ]
+}

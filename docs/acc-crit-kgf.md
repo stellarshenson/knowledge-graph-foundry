@@ -9,6 +9,7 @@ Consolidated acceptance criteria for the KGF v2 rewrite: a CLI+TUI system that b
 - [Ingestion](#ingestion)
 - [Schema Seeding](#schema-seeding)
 - [Extraction](#extraction)
+- [Embeddings](#embeddings)
 - [Entity Resolution](#entity-resolution)
 - [Ontology Lifecycle](#ontology-lifecycle)
 - [Graph Loading](#graph-loading)
@@ -161,6 +162,31 @@ Two-sided bar governing every regime-narrowing change: hold the general control,
 - [x] **Edge: self-referencing or dangling relationship** - dropped with warning event
   - log: 2026-07-06 criterion added
   - log: 2026-07-06 implemented (v0.1.2)
+
+## Embeddings
+
+Embedding generation is provider-abstracted and model-agnostic: any embedding model connects through configuration, local models run on the workstation GPUs, and every vector space is pinned to the (provider, model) pair that created it.
+
+- [ ] **Provider abstraction** - `embeddings.provider` selects among `bedrock`, `local-gpu` (HF/sentence-transformers), and an OpenAI-compatible served endpoint (vLLM/TEI `/v1/embeddings`); adding a provider touches only the embeddings module
+  - log: 2026-07-10 criterion added (user directive: any embedding model connectable, configurable)
+- [ ] **Any model connectable** - `embeddings.model` accepts any HF model id or provider model id; no model names hardcoded outside settings defaults
+  - log: 2026-07-10 criterion added
+- [ ] **GPU deployment** - the local provider runs on GPU with a device selection knob (nvidia-smi index or UUID, `CUDA_DEVICE_ORDER=PCI_BUS_ID` set before torch import); CPU only by explicit config, never as a silent fallback
+  - log: 2026-07-10 criterion added (user directive: use the workstation GPUs where possible)
+- [ ] **Bulk on GPU** - bulk embedding jobs (rebuilds, backfills, prototype channels) default to a local GPU model when a card is available; cloud providers are an option, not the bulk default
+  - log: 2026-07-10 criterion added (user directive: no Titan for new bulk embedding compute)
+- [ ] **Dimension-index coupling** - vector index dimensions derive from the active model; a model/index dimension mismatch fails fast naming the index and the re-embed path, never mixes spaces silently
+  - log: 2026-07-10 criterion added
+- [ ] **Space provenance** - every embedding-bearing node records the (provider, model) that embedded it; query-time embedding always uses the pair the target index was built with
+  - log: 2026-07-10 criterion added
+- [ ] **Per-channel spaces** - retrieval channels (entities, propositions, passages, questions) may pin different embedding models; each channel's index-model pair lives in config
+  - log: 2026-07-10 criterion added
+- [ ] **Benchmark parity** - the peer-benchmark campaign can pin NV-Embed-v2 (HippoRAG-2 regime) through the same abstraction, served on GPU
+  - log: 2026-07-10 criterion added
+- [ ] **Edge: model not cached and no network** - fails fast naming the model id and the HF cache path, no hang (HF_HUB_OFFLINE honored)
+  - log: 2026-07-10 criterion added
+- [ ] **Edge: index built with model A, query embedded with model B** - refused with a clear error before the vector query executes
+  - log: 2026-07-10 criterion added
 
 ## Entity Resolution
 

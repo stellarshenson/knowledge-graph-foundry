@@ -1,0 +1,913 @@
+{
+  "hypothesis": "R33-H364",
+  "generated": "20260710T135223Z",
+  "graph": {
+    "uri": "bolt://172.19.0.4:7687",
+    "entities": 5213,
+    "relationships": 23472
+  },
+  "census_input": "reports/r32-h354-census-20260710T125440Z.json",
+  "stage_masses": {
+    "resolution_loss": 1.5,
+    "recovered_now": 1.5
+  },
+  "detail": [
+    {
+      "probe": "P09",
+      "gold": "275mm x 170mm x 140mm",
+      "mass": 1.0,
+      "stage": "resolution_loss",
+      "n_carriers": 7,
+      "best_carrier": {
+        "id": "e_ae2377532590e4c7",
+        "name": "HC234",
+        "types": [
+          "Entity",
+          "DeviceModel"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": null,
+        "n_rels": 59,
+        "subject_overlap": []
+      },
+      "carriers": [
+        {
+          "id": "e_ae2377532590e4c7",
+          "name": "HC234",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 59,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_7e4bd427f59c3813",
+          "name": "HC238",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_c9f2d11f5bd699be",
+          "name": "HC232",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_713c09a674d79727",
+          "name": "HC236",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 43,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_d69d444b9b004f48",
+          "name": "HC230 Product Range",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 12,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_a78095bbdba80798",
+          "name": "HC231",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 30,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_33fc261f3bffe9b3",
+          "name": "HC233",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 28,
+          "subject_overlap": []
+        }
+      ]
+    },
+    {
+      "probe": "P11",
+      "gold": "1106 g",
+      "mass": 0.25,
+      "stage": "recovered_now",
+      "n_carriers": 14,
+      "best_carrier": {
+        "id": "e_d204720a589fe30b",
+        "name": "AirStart 10 CPAP",
+        "types": [
+          "Entity",
+          "DeviceModel"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": 3,
+        "n_rels": 29,
+        "subject_overlap": [
+          "10",
+          "airstart"
+        ]
+      },
+      "carriers": [
+        {
+          "id": "e_d204720a589fe30b",
+          "name": "AirStart 10 CPAP",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 3,
+          "n_rels": 29,
+          "subject_overlap": [
+            "10",
+            "airstart"
+          ]
+        },
+        {
+          "id": "e_93b8c370c0d67784",
+          "name": "Device Pad",
+          "types": [
+            "Entity",
+            "Component"
+          ],
+          "where": [
+            "props",
+            "rels"
+          ],
+          "rank": null,
+          "n_rels": 3,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_10fe2fe1d370f6d0",
+          "name": "4012110601",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_9ae3d2ae92432595",
+          "name": "SimplyGo shoulder strap",
+          "types": [
+            "Entity",
+            "Accessory"
+          ],
+          "where": [
+            "rels"
+          ],
+          "rank": null,
+          "n_rels": 2,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_c3ef17a746ca25fe",
+          "name": "PartNumber 1106598",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name",
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_88e28efca634631a",
+          "name": "Nuance gel pillows mask, without headgear",
+          "types": [
+            "Entity",
+            "Accessory",
+            "DeviceModel"
+          ],
+          "where": [
+            "rels"
+          ],
+          "rank": null,
+          "n_rels": 7,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_649bbb139c4c8f1b",
+          "name": "1106194",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_a9d42a6a7e77b019",
+          "name": "1106195",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        }
+      ]
+    },
+    {
+      "probe": "P11",
+      "gold": "1130 g",
+      "mass": 0.25,
+      "stage": "recovered_now",
+      "n_carriers": 9,
+      "best_carrier": {
+        "id": "e_f278afdb3968326e",
+        "name": "AirSense 11",
+        "types": [
+          "Entity",
+          "DeviceSeries",
+          "DeviceModel",
+          "Series"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": 4,
+        "n_rels": 324,
+        "subject_overlap": [
+          "11",
+          "airsense"
+        ]
+      },
+      "carriers": [
+        {
+          "id": "e_f278afdb3968326e",
+          "name": "AirSense 11",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "DeviceModel",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 4,
+          "n_rels": 324,
+          "subject_overlap": [
+            "11",
+            "airsense"
+          ]
+        },
+        {
+          "id": "e_1d3378758d0e1f19",
+          "name": "HumidifierClip",
+          "types": [
+            "Entity",
+            "Component"
+          ],
+          "where": [
+            "props",
+            "rels"
+          ],
+          "rank": null,
+          "n_rels": 5,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_3c51d5e0ad4bd6d7",
+          "name": "Air filter cover",
+          "types": [
+            "Entity",
+            "Component"
+          ],
+          "where": [
+            "props",
+            "rels"
+          ],
+          "rank": null,
+          "n_rels": 6,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_ab7a693aab9afcc3",
+          "name": "ShieldBack",
+          "types": [
+            "Entity",
+            "Component"
+          ],
+          "where": [
+            "props",
+            "rels"
+          ],
+          "rank": null,
+          "n_rels": 4,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_42b48db81d2bdb2b",
+          "name": "4011130201",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_0811661b6fa6c9bf",
+          "name": "4011130501",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_856a4fd896eb372d",
+          "name": "4011130801",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_bb216d5a7e07a8e7",
+          "name": "4011130901",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": null,
+          "n_rels": 1,
+          "subject_overlap": []
+        }
+      ]
+    },
+    {
+      "probe": "P16",
+      "gold": "275mm x 170mm x 140mm",
+      "mass": 0.5,
+      "stage": "resolution_loss",
+      "n_carriers": 7,
+      "best_carrier": {
+        "id": "e_ae2377532590e4c7",
+        "name": "HC234",
+        "types": [
+          "Entity",
+          "DeviceModel"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": 133,
+        "n_rels": 59,
+        "subject_overlap": []
+      },
+      "carriers": [
+        {
+          "id": "e_ae2377532590e4c7",
+          "name": "HC234",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 133,
+          "n_rels": 59,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_713c09a674d79727",
+          "name": "HC236",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 144,
+          "n_rels": 43,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_c9f2d11f5bd699be",
+          "name": "HC232",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 171,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_7e4bd427f59c3813",
+          "name": "HC238",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_d69d444b9b004f48",
+          "name": "HC230 Product Range",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 12,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_a78095bbdba80798",
+          "name": "HC231",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 30,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_33fc261f3bffe9b3",
+          "name": "HC233",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 28,
+          "subject_overlap": []
+        }
+      ]
+    },
+    {
+      "probe": "P16",
+      "gold": "238*178*128 mm",
+      "mass": 0.5,
+      "stage": "recovered_now",
+      "n_carriers": 1,
+      "best_carrier": {
+        "id": "e_927b6e36f87e2e4c",
+        "name": "iBreeze CPAP System",
+        "types": [
+          "Entity",
+          "DeviceSeries",
+          "DeviceModel",
+          "Series"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": 2,
+        "n_rels": 324,
+        "subject_overlap": [
+          "ibreeze"
+        ]
+      },
+      "carriers": [
+        {
+          "id": "e_927b6e36f87e2e4c",
+          "name": "iBreeze CPAP System",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "DeviceModel",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 2,
+          "n_rels": 324,
+          "subject_overlap": [
+            "ibreeze"
+          ]
+        }
+      ]
+    },
+    {
+      "probe": "P17",
+      "gold": "0-60 mins",
+      "mass": 0.25,
+      "stage": "recovered_now",
+      "n_carriers": 13,
+      "best_carrier": {
+        "id": "e_bf370e7ab3bac6fc",
+        "name": "Ramp Time",
+        "types": [
+          "Entity",
+          "Feature",
+          "Option",
+          "Capability"
+        ],
+        "where": [
+          "props"
+        ],
+        "rank": 10,
+        "n_rels": 8,
+        "subject_overlap": [
+          "ramp",
+          "time"
+        ]
+      },
+      "carriers": [
+        {
+          "id": "e_bf370e7ab3bac6fc",
+          "name": "Ramp Time",
+          "types": [
+            "Entity",
+            "Feature",
+            "Option",
+            "Capability"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 10,
+          "n_rels": 8,
+          "subject_overlap": [
+            "ramp",
+            "time"
+          ]
+        },
+        {
+          "id": "e_ae2377532590e4c7",
+          "name": "HC234",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 54,
+          "n_rels": 59,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_713c09a674d79727",
+          "name": "HC236",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 65,
+          "n_rels": 43,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_c9f2d11f5bd699be",
+          "name": "HC232",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 78,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_7e4bd427f59c3813",
+          "name": "HC238",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 102,
+          "n_rels": 41,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_23c27394b04583c4",
+          "name": "NLF-200A",
+          "types": [
+            "Entity",
+            "DeviceModel",
+            "Model"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 161,
+          "n_rels": 64,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_c3d2e2b1b8799e80",
+          "name": "Philips Respironics",
+          "types": [
+            "Entity",
+            "Manufacturer",
+            "DeviceSeries",
+            "DeviceModel",
+            "Provider",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": 180,
+          "n_rels": 841,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_75742e5810c0ae79",
+          "name": "ELK-200 Series",
+          "types": [
+            "Entity",
+            "DeviceModel",
+            "Model",
+            "Series"
+          ],
+          "where": [
+            "props"
+          ],
+          "rank": null,
+          "n_rels": 30,
+          "subject_overlap": []
+        }
+      ]
+    },
+    {
+      "probe": "P17",
+      "gold": "0 to 45 min",
+      "mass": 0.25,
+      "stage": "recovered_now",
+      "n_carriers": 2819,
+      "best_carrier": {
+        "id": "e_927b6e36f87e2e4c",
+        "name": "iBreeze CPAP System",
+        "types": [
+          "Entity",
+          "DeviceSeries",
+          "DeviceModel",
+          "Series"
+        ],
+        "where": [
+          "props",
+          "rels"
+        ],
+        "rank": 1,
+        "n_rels": 324,
+        "subject_overlap": [
+          "cpap",
+          "ibreeze"
+        ]
+      },
+      "carriers": [
+        {
+          "id": "e_927b6e36f87e2e4c",
+          "name": "iBreeze CPAP System",
+          "types": [
+            "Entity",
+            "DeviceSeries",
+            "DeviceModel",
+            "Series"
+          ],
+          "where": [
+            "props",
+            "rels"
+          ],
+          "rank": 1,
+          "n_rels": 324,
+          "subject_overlap": [
+            "cpap",
+            "ibreeze"
+          ]
+        },
+        {
+          "id": "e_72ee24c3dc8ad600",
+          "name": "Resvent",
+          "types": [
+            "Entity",
+            "Manufacturer"
+          ],
+          "where": [
+            "rels"
+          ],
+          "rank": 2,
+          "n_rels": 8,
+          "subject_overlap": [
+            "resvent"
+          ]
+        },
+        {
+          "id": "e_608370d400bc8b13",
+          "name": "DreamStation 2 Auto CPAP Advanced",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "props",
+            "rels"
+          ],
+          "rank": 3,
+          "n_rels": 19,
+          "subject_overlap": [
+            "cpap",
+            "dreamstation"
+          ]
+        },
+        {
+          "id": "e_23109667e2865428",
+          "name": "DreamStation CPAP (CAX200T12/CAX200H12)",
+          "types": [
+            "Entity",
+            "DeviceModel"
+          ],
+          "where": [
+            "name",
+            "props",
+            "rels"
+          ],
+          "rank": 4,
+          "n_rels": 24,
+          "subject_overlap": [
+            "cpap",
+            "dreamstation"
+          ]
+        },
+        {
+          "id": "e_fffc1daab144bed3",
+          "name": "PS0001574_CAX200H12",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name",
+            "desc",
+            "rels"
+          ],
+          "rank": 5,
+          "n_rels": 1,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_b0964a4b8f1d2dd0",
+          "name": "DSX200S11",
+          "types": [
+            "Entity",
+            "DeviceModel",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": 6,
+          "n_rels": 2,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_9592d3cce074ec51",
+          "name": "DSX200H11",
+          "types": [
+            "Entity",
+            "DeviceModel",
+            "PartNumber"
+          ],
+          "where": [
+            "name"
+          ],
+          "rank": 8,
+          "n_rels": 2,
+          "subject_overlap": []
+        },
+        {
+          "id": "e_a836a4e9d74ce582",
+          "name": "PS0001278_CAX200T12",
+          "types": [
+            "Entity",
+            "PartNumber"
+          ],
+          "where": [
+            "name",
+            "desc",
+            "rels"
+          ],
+          "rank": 9,
+          "n_rels": 1,
+          "subject_overlap": []
+        }
+      ]
+    }
+  ]
+}

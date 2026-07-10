@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import threading
 from typing import TypeVar
 
 from pydantic import BaseModel
@@ -33,8 +34,18 @@ class LocalGpuEngine:
         self.cfg = cfg
         litellm.suppress_debug_info = True
         self._client = instructor.from_litellm(litellm.completion, mode=instructor.Mode.JSON)
+        # H363/H362 instrumentation: logical LLM calls issued at the engine
+        # boundary; hidden attempts (HTTP/validation retries) = server-received
+        # requests minus this counter, so retries can never hide behind errors=0
+        self.calls = 0
+        self._calls_lock = threading.Lock()
+
+    def _count_call(self) -> None:
+        with self._calls_lock:
+            self.calls += 1
 
     def complete(self, messages: list[dict[str, str]], response_model: type[T]) -> T:
+        self._count_call()
         model = self.cfg.model
         if not model.startswith("openai/"):
             model = f"openai/{model}"
@@ -56,6 +67,7 @@ class LocalGpuEngine:
         """Raw text completion via litellm (bypasses instructor) for names-only enumeration."""
         import litellm
 
+        self._count_call()
         model = self.cfg.model
         if not model.startswith("openai/"):
             model = f"openai/{model}"
