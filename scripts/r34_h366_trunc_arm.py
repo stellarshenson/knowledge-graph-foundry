@@ -7,7 +7,7 @@ full-chunk point (internal control), then 1200/800/500 chars. The clause is
 settled by the largest TRUNC that keeps all three flips with zero regressions
 inside the 30% budget - or shown unreachable by head-truncation.
 
-Reuses results/r34/h366-chunk-embs-bgem3.jsonl (bge-m3 cache); only the 24 probe
+Reuses tmp/cache/h366-chunk-embs-bgem3.jsonl (bge-m3 cache); only the 24 probe
 questions are embedded fresh on GPU 2. Entity channel unchanged (Titan query
 embedding, live index space). Graph writes: NONE.
 """
@@ -45,7 +45,7 @@ TRUNC_SWEEP = [None, 1200, 800, 500]  # chars of rendered chunk text; None = ful
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 EMB_MODEL = "BAAI/bge-m3"
-CACHE = Path("results/r34/h366-chunk-embs-bgem3.jsonl")
+CACHE = Path("tmp/cache/h366-chunk-embs-bgem3.jsonl")
 
 
 def main():

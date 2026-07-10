@@ -61,8 +61,8 @@ PROP_TOP_K = 8
 SPAN = 900
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 EMB_MODEL = "BAAI/bge-m3"
-SPAN_CACHE = Path("results/r34/h366-span-embs-bgem3.jsonl")
-PROP_CACHE = Path("results/r34/h367-prop-embs-bgem3.jsonl")
+SPAN_CACHE = Path("tmp/cache/h366-span-embs-bgem3.jsonl")
+PROP_CACHE = Path("tmp/cache/h367-prop-embs-bgem3.jsonl")
 RUNGS = ["rung0", "rung1", "rung2"]
 SHIPPED_THR = 0.668  # R19-H181 miss_threshold, reference policy only
 

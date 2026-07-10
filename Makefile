@@ -1,8 +1,11 @@
-.PHONY: clean data lint format requirements upgrade build sync_data_up sync_data_down sync_models_up sync_models_down test docs docs_serve register_environment preflight
+.PHONY: clean data lint format requirements upgrade build install help sync_data_up sync_data_down sync_models_up sync_models_down test docs docs_serve create_environment remove_environment register_environment increment_version_number preflight
 
 #################################################################################
 # GLOBALS                                                                       #
 #################################################################################
+
+# running bare `make` prints the help screen
+.DEFAULT_GOAL := help
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = knowledge-graph-foundry
@@ -60,6 +63,8 @@ clean:
 	@find . -type d -name '.pytest_cache' -exec rm -r {} +
 	@echo "$(MSG_PREFIX) removing dist and build directory"
 	@rm -rf build dist
+	@echo "$(MSG_PREFIX) removing logs and tmp directories"
+	@rm -rf logs tmp
 
 ## Lint using ruff (use `make format` to do formatting)
 lint:
@@ -176,7 +181,7 @@ increment_version_number:
 ## Make dataset
 data: requirements
 	@echo "$(MSG_PREFIX) generating dataset"
-	$(PYTHON_INTERPRETER) src/knowledge_graph_foundry/dataset.py
+	$(PROJECT_DIR)/.venv/bin/python src/knowledge_graph_foundry/dataset.py
 
 #################################################################################
 # Self Documenting Commands                                                     #

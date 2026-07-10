@@ -61,7 +61,7 @@ TOP_K = 16
 PROP_TOP_K = 8  # engine default proposition_top_k
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 EMB_MODEL = "BAAI/bge-m3"
-CACHE = Path("results/r34/h367-prop-embs-bgem3.jsonl")
+CACHE = Path("tmp/cache/h367-prop-embs-bgem3.jsonl")
 ARMS = ["A", "B", "C", "D"]
 
 

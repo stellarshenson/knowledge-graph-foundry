@@ -1,3 +1,7 @@
+# Logs and temporary working directories
+/logs/
+/tmp/
+
 # Data - ignore contents but keep directory structure via .gitkeep
 /data/*
 !/data/external/
@@ -12,6 +16,11 @@
 !/data/raw/
 /data/raw/*
 !/data/raw/.gitkeep
+
+# Models - general-purpose downloaded weights are never committed; whitelist
+# own fine-tuned/developed models here case by case
+/models/*
+!/models/.gitkeep
 
 # Mac OS-specific storage files
 .DS_Store

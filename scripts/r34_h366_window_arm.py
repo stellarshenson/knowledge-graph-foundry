@@ -7,7 +7,7 @@ averages ~9.4k chars). A query-anchored window - sub-spans ranked by query
 similarity in bge-m3 space - can reach a gold ANYWHERE in a chunk within budget.
 
 Spans: sliding windows over each chunk (SPAN chars, stride SPAN/2), embedded on
-GPU 2 (cache results/r34/h366-span-embs-bgem3.jsonl). Per probe the top-K spans
+GPU 2 (cache tmp/cache/h366-span-embs-bgem3.jsonl). Per probe the top-K spans
 by dot product are rendered after the entity blocks. Sweep (SPAN, K) in
 {900, 1200} x {1, 2}. Bar: P21+P22 flip, zero regressions, growth <= 30%.
 Entity channel unchanged (Titan query embedding, live index space). Writes: NONE.
@@ -45,7 +45,7 @@ SWEEP = [(900, 1), (900, 2), (1200, 1), (1200, 2)]  # (span chars, spans rendere
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 EMB_MODEL = "BAAI/bge-m3"
-CACHE = Path("results/r34/h366-span-embs-bgem3.jsonl")
+CACHE = Path("tmp/cache/h366-span-embs-bgem3.jsonl")
 
 
 def spans_of(text: str, span: int):

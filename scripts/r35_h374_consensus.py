@@ -48,8 +48,8 @@ from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
 URI = "bolt://172.19.0.4:7687"
 PROBES = Path("tests/probes/cpap-probe-set.yml")
-PROP_CACHE = Path("results/r34/h367-prop-embs-bgem3.jsonl")
-SPAN_CACHE = Path("results/r34/h366-span-embs-bgem3.jsonl")
+PROP_CACHE = Path("tmp/cache/h367-prop-embs-bgem3.jsonl")
+SPAN_CACHE = Path("tmp/cache/h366-span-embs-bgem3.jsonl")
 TOP_K = 16
 CHANNEL_K = 32  # per-channel candidate depth
 RRF_K = 60

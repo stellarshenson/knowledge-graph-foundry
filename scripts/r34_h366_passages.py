@@ -49,7 +49,7 @@ M_SWEEP = [0, 1, 2, 4]
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 EMB_MODEL = "BAAI/bge-m3"  # local, GPU; 1024-dim dense
-CACHE = Path("results/r34/h366-chunk-embs-bgem3.jsonl")
+CACHE = Path("tmp/cache/h366-chunk-embs-bgem3.jsonl")
 
 
 def main():
