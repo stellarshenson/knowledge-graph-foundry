@@ -7,7 +7,7 @@ The scenarios KGF is designed to carry, each naming the flow, the capabilities t
 An analyst has a folder of product documentation and needs grounded comparisons the same day.
 
 - **Flow** - `kgf.build("compare CPAP machines", "data/manuals/")` → query comparisons
-- **Carried by** - purpose-guided extraction, curing on a small corpus, PPR retrieval, comparison decomposition (R03-H15)
+- **Carried by** - purpose-guided extraction, curing on a small corpus, vector-seed + proposition retrieval, comparison decomposition (R03-H15)
 - **Must hold** - zero-config startup (env-only), cure on a 10-30 document corpus, answers cite sources
 
 ## S2 - Continuous ingestion over months
@@ -71,7 +71,7 @@ A user asks about a device the corpus never mentioned.
 Nine months in, the embedding model or the LLM engine is upgraded.
 
 - **Flow** - swap `EmbeddingSettings.model` / `LLMSettings` config; re-embed or adapt without downtime
-- **Carried by** - single-provider-per-run embedding discipline, model-stamped vectors (planned with the cache), Drift-Adapter pattern held as the scale path
+- **Carried by** - single-provider-per-run embedding discipline, model-stamped index spaces with query-time space refusal (KGFIndexSpace - passage channel live, legacy channels stamp on next rebuild), Drift-Adapter pattern held as the scale path
 - **Must hold** - old and new vectors never mix in one index; retrieval quality measured before cutover
 
 ## S10 - Agent memory (episodic)
@@ -86,7 +86,7 @@ A host agent streams conversation/transcript episodes into the graph as long-ter
 
 | scenario | primary subsystems | measured by |
 |---|---|---|
-| S1 one-shot corpus | extraction, curing, PPR | probe set accuracy, cure-by-document |
+| S1 one-shot corpus | extraction, curing, seed + proposition retrieval | probe set accuracy, cure-by-document |
 | S2 months of drift | temporal, drift, versioning | supersede probe, per-doc cost trend |
 | S3 embedded library | API, settings, events | test_public_api, no-CLI import |
 | S4 weak reader | propositions, serialization | weak-reader probe delta (R02-H11, R03-H16) |
