@@ -77,3 +77,24 @@ Supersedes the 2026-07-08 section where they conflict. Active /goal: fix DEF-8..
 **FIRST ACTION next session:** read this section, then (1) record the H366 verdict in docs/experiments/kgf-redesign-experiments.md against its registered bar (numbers above, per-probe diff in the report JSON), (2) check `logs/r30-h363-ramp.log` - if finished, record H363 + knee fit, (3) register R36 (maintenance of derived objects) from the two reports/r36-*.md briefs - fence against R28/R15-R17/R26, claim: derived-object invalidation as a class, RECURING dead-end, dead fact-drift alarm, maintenance of NEW R34/R35 objects; give DEF-9 its workstream (wire H317 CUSUM). Then continue task #70 (H367/H369/H370 prototypes; H370 retro-arm needs temporary H365 rollback) and #71 (R35, generation post-H363). Journal entry for maintenance-research + acc-crit + H366 still owed (via /journal:update only).
 
 **Task list**: cleaned 2026-07-10 (43 completed deleted); live: #70 R34 prototypes (in_progress), #71 R35, #66 H363 ramp, #69 wire H365 into engine, #58/#62/#64/#49-#53/#56/#59.
+
+---
+
+# BRACE 2026-07-11 (session end after docs consolidation; user order: let the GPU finish, pick up on return)
+
+**RUNNING - detached, DO NOT KILL:** H363 ramp, pid 46692 (PPID 1, disowned, 9h21m up), `scripts/r30_gpu_ramp.py`, log `logs/r30-h363-ramp.log`. Closed rungs: c=16 520.3 / c=24 533.1 / c=32 612.3 tok/s - knee NOT reached, throughput still climbing. c=48 window filling; rungs 48/64/96 remain; the script checkpoints STEP lines to the log and writes its own report on completion. The session-owned watcher (grep loop) dies with this session - irrelevant, just tail the log.
+
+**DOWN / needs restart:** nothing.
+
+**VALID ON DISK (all pushed to origin GitLab, HEAD b8a11f7):**
+- `2f6202a` - H365 spec-hoist engine wiring (`graph/hoist.py`, `resolution.spec_hoist` default off) + H378 CUSUM/RECURING exit (`drift.cusum_enabled` default off) + R35/R36 verdicts: H376 CONFIRMED, H380 REFUTED (harness density), H375 REFUTED (contamination caught - pre-repair arm decisive, Hawkins retired), H374 deferred to precision arm. 437 unit + 10 live integration green. Reports `reports/r35-*`, `reports/r36-*`
+- `b8a11f7` - docs consolidation: `@archive/` gains sota-decision, h198-wiring-plan, DESIGN; `docs/defects/defects.md`, `docs/acceptance-criteria/acc-crit-kgf.md`; `api.md` REMOVED (rewrite post-RC from `scratchpad/api-md-audit-findings-20260710.md`); usage-scenarios PPR fix; gap-ledger audited current
+- Journal at entry 207, `journal-tools check` 0 errors
+
+**NOT COMMITTED (deliberate):** `models/qwen2.5-7b/` (4.4G), `results/r34/h366-span-embs-bgem3.jsonl` (145M) + `h367-prop-embs-bgem3.jsonl` (230M) (LFS pending user), `scratchpad/build_r24c*.py`.
+
+**PENDING USER DECISIONS:** GitHub remote 4 commits behind GitLab origin; LFS for the two >100MB caches; #56 enhancements doc plan is v1-stale - re-scope or drop.
+
+**PENDING WORK (post-H363 queue, in order):** H363 verdict + H347 knee fit + H362 cache seed (#64) + H343/H345 (#58); then LLM-gated: H385 answer side + optimize() refit hook (#74), H382 self-report rider (#73), H377 + H378 induced-drift replay (closes DEF-9) + H379 replay arm (#72), H371-H373 generation + H374 precision arm (#71), R31 H349/H352 (closes DEF-11) (#62), DEF-13 cures. Chained: H381 on H373; H387/H368/NV-Embed-v2 parity on the #59 second corpus. Open flag: rung-1 additive-vs-displacement parity needs a proposition index on the pile - engine prop index is Titan space, conflicts with the no-Titan-bulk rule.
+
+**FIRST ACTION next session:** tail `logs/r30-h363-ramp.log` and `ps -p 46692`. If new STEP lines landed (c=48+): collect them; if the ramp finished all rungs or died: record the H363 verdict + H347 knee fit in `docs/experiments/kgf-redesign-experiments.md`, seed the H362 throughput-cache entry, then start the post-H363 LLM queue above. If still running: the user directive stands - wait on the GPU, execute only non-GPU work.
