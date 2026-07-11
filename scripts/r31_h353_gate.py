@@ -44,7 +44,7 @@ from knowledge_graph_foundry.models import Ontology  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 from knowledge_graph_foundry.settings import load_settings  # noqa: E402
 
-CONFIG = Path("config-r31-gate.yml")  # r29-v1 + llm.timeout 3600 (R30: p50 > 600s from c~32 -> silent retries)
+CONFIG = Path("config/experiments/config-r31-gate.yml")  # r29-v1 + llm.timeout 3600 (R30: p50 > 600s from c~32 -> silent retries)
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 RAMP_STEPS = Path("results/r30/ramp-steps.jsonl")

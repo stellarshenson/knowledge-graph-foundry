@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Phase-3 reproducibility rebuild - the composed DEFAULT engine, TWO clean-state runs on neo4j4.
-# Same config-phase3.yml both runs; the matching-numbers gate compares entity_id_fingerprint +
+# Same config/experiments/config-phase3.yml both runs; the matching-numbers gate compares entity_id_fingerprint +
 # entities + mean_recall across runs (within the H229 model-inherent variance floor).
 # Detached-compute rule: launched via setsid nohup, watch logs/phase3-rebuild.log, checkpoint per run.
 set -euo pipefail
 cd /home/lab/workspace/learning/projects/knowledge-graph-foundry
 
 CORPUS="data/external/cpap-datasheets-and-manuals"
-CONFIG="config-phase3.yml"
+CONFIG="config/experiments/config-phase3.yml"
 LOG="logs/phase3-rebuild.log"
 
 # vLLM health gate

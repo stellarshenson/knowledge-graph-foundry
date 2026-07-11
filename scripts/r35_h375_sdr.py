@@ -33,7 +33,7 @@ from pathlib import Path
 
 from neo4j import GraphDatabase
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 FORENSICS = Path("reports/identity-forensics-r11-final-20260706-205147.json")
 FRAGMENT_PAIRS = [
     ("HC230-Series", "HC230 Product Range"),

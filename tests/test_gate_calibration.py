@@ -226,3 +226,52 @@ class TestGateThresholdLoader:
         # prior applies until per-corpus labels re-accumulate (survival matrix)
         f = self._foundry(monkeypatch, {"fsm_state": "EMPTY", "calibration": None})
         assert f._gate_threshold() == f.settings.graphrag.escalation_threshold_prior
+
+
+class TestGateRefitHook:
+    """R38-H385: the optimize() refit hook - harvest, floor discipline, persist."""
+
+    PROBES = TestFitFromEvents.PROBES
+
+    def _foundry(self, monkeypatch, tmp_path, events_path, min_labels):
+        import yaml
+
+        probe_path = tmp_path / "probes.yml"
+        probe_path.write_text(yaml.safe_dump(self.PROBES))
+        settings = Settings()
+        settings.graphrag.escalation_gate = True
+        settings.graphrag.gate_probe_set = str(probe_path)
+        settings.graphrag.escalation_min_labels = min_labels
+        settings.event_log = str(events_path)
+        f = Foundry(settings)
+        state = {"processed_documents": ["doc:aaaa"]}
+        saved = {}
+        monkeypatch.setattr(f, "_load_state", lambda: state)
+        monkeypatch.setattr(f, "_save_state", lambda s: saved.update(s))
+        return f, saved
+
+    def test_refit_persists_record(self, monkeypatch, tmp_path):
+        events = TestFitFromEvents()._events(tmp_path)
+        f, saved = self._foundry(monkeypatch, tmp_path, events, min_labels=3)
+        out = f._refit_gate()
+        assert out["refit"] is True and out["labels"] == 3
+        rec = saved["gate_calibration"]
+        assert rec["threshold"] == out["threshold"]
+        assert rec["provenance"]["corpus_fingerprint"] == corpus_fingerprint(["doc:aaaa"])
+
+    def test_floor_discipline_no_write(self, monkeypatch, tmp_path):
+        events = TestFitFromEvents()._events(tmp_path)
+        f, saved = self._foundry(monkeypatch, tmp_path, events, min_labels=12)
+        out = f._refit_gate()
+        assert out == {"labels": 3, "refit": False}
+        assert saved == {}  # below the floor nothing is persisted
+
+    def test_silent_without_gate_or_probe_set(self, monkeypatch, tmp_path):
+        events = TestFitFromEvents()._events(tmp_path)
+        f, saved = self._foundry(monkeypatch, tmp_path, events, min_labels=3)
+        f.settings.graphrag.escalation_gate = False
+        assert f._refit_gate() is None
+        f.settings.graphrag.escalation_gate = True
+        f.settings.graphrag.gate_probe_set = None
+        assert f._refit_gate() is None
+        assert saved == {}

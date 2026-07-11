@@ -37,7 +37,7 @@ from knowledge_graph_foundry.models import Ontology
 from knowledge_graph_foundry.pipeline import Foundry
 from knowledge_graph_foundry.settings import load_settings
 
-CONFIG = Path("config-r31-gate.yml")  # r29-v1 + llm.timeout 3600 (single-attempt regime)
+CONFIG = Path("config/experiments/config-r31-gate.yml")  # r29-v1 + llm.timeout 3600 (single-attempt regime)
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
 METRICS_URL = "http://localhost:8010/metrics"
 STEPS = [int(a) for a in sys.argv[1:]] or [32, 48, 64, 96, 128]

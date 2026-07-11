@@ -54,7 +54,7 @@ from knowledge_graph_foundry.graph.propositions import (  # noqa: E402
 from knowledge_graph_foundry.models import Entity  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 TOP_K = 16
 OVERFETCH = 64
 PROP_TOP_K = 8
@@ -97,7 +97,7 @@ def eval_policy(ids, thr, signal, recall, ctx):
 
 
 def main():
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     vec = base.graphrag.vector_index_name
     split_max = base.graphrag.proposition_split_max_tokens
     st = deepcopy(base)
@@ -105,7 +105,7 @@ def main():
     st.graphrag.top_k = TOP_K
 
     # span pool: rebuild texts (parse) and pair with the cached embeddings
-    ex = load_settings(Path("config-r29-v1.yml")).extraction
+    ex = load_settings(Path("config/experiments/config-r29-v1.yml")).extraction
     from knowledge_graph_foundry.ingest.chunking import chunk_document
     from knowledge_graph_foundry.ingest.readers import iter_source_files, read_document
 

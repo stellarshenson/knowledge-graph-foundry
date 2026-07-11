@@ -15,7 +15,7 @@ until [ "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8010/v1/model
 done
 
 for ARM in enum mention; do
-  CONFIG="config-h240b-${ARM}.yml"
+  CONFIG="config/experiments/config-h240b-${ARM}.yml"
   EVENTLOG="logs/h240b-${ARM}-events.jsonl"
   echo "=== H240b arm ${ARM} START $(date -u +%Y-%m-%dT%H:%M:%SZ) ===" | tee -a "$LOG"
   rm -f "$EVENTLOG"

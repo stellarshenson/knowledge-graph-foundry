@@ -4,7 +4,7 @@
 # Pins neo4j4 + local gpt-oss-120b engine via config-h241-<arm>.yml (DEF-4/DEF-5).
 set -euo pipefail
 ARM="$1"
-CONFIG="config-h241-${ARM}.yml"
+CONFIG="config/experiments/config-h241-${ARM}.yml"
 EVENTLOG="logs/h241-${ARM}-events.jsonl"
 CORPUS="data/external/cpap-datasheets-and-manuals"
 LOG="logs/h241-ab.log"

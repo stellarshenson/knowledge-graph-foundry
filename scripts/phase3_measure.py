@@ -14,7 +14,7 @@ from h158_measure import precision_proxy, recall_at_k  # noqa: E402
 from neo4j import GraphDatabase  # noqa: E402
 
 RUN = sys.argv[1]
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 AUTH = ("neo4j", "kgfoundry")
 EVENTS = "logs/phase3-rebuild-events.jsonl"
 RECALL_JSON = f"reports/phase3-{RUN}-recall.json"

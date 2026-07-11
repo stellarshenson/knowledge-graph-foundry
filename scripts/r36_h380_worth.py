@@ -39,7 +39,7 @@ from knowledge_graph_foundry.graph.graphrag import overfetch_seeds, vector_query
 from knowledge_graph_foundry.models import Entity  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 KS = [8, 12, 16, 24]
 SUPERSEDED = "HC230 Product Range"
@@ -59,7 +59,7 @@ def episode(f, st, emb, k, excluded=frozenset()):
 
 
 def main():
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     st = deepcopy(base)
     st.neo4j.uri, st.neo4j.user, st.neo4j.password = URI, "neo4j", "kgfoundry"
     probes = [p for p in yaml.safe_load(PROBES.read_text()) if p.get("gold_evidence")]

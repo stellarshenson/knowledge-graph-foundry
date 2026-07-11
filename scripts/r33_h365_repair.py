@@ -24,7 +24,7 @@ import json
 
 from neo4j import GraphDatabase
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 SOURCE_HUB = "HC230 Product Range"  # carrier fragment the children link to
 TARGETS = ["HC230-Series", "Sleep Style 200 Series"]  # retrieved series-level subjects
 

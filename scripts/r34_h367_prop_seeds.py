@@ -56,7 +56,7 @@ from knowledge_graph_foundry.graph.propositions import (  # noqa: E402
 from knowledge_graph_foundry.models import Entity  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 TOP_K = 16
 PROP_TOP_K = 8  # engine default proposition_top_k
 PROBES = Path("tests/probes/cpap-probe-set.yml")
@@ -66,7 +66,7 @@ ARMS = ["A", "B", "C", "D"]
 
 
 def main():
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     vec = base.graphrag.vector_index_name
     split_max = base.graphrag.proposition_split_max_tokens
     st = deepcopy(base)

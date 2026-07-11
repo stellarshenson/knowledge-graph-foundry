@@ -39,7 +39,7 @@ from knowledge_graph_foundry.ingest.readers import iter_source_files, read_docum
 from knowledge_graph_foundry.models import Entity  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 TOP_K = 16
 SWEEP = [(900, 1), (900, 2), (1200, 1), (1200, 2)]  # (span chars, spans rendered)
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
@@ -59,7 +59,7 @@ def spans_of(text: str, span: int):
 
 
 def main():
-    settings = load_settings(Path("config-r29-v1.yml"))
+    settings = load_settings(Path("config/experiments/config-r29-v1.yml"))
     ex = settings.extraction
 
     chunks = []
@@ -114,7 +114,7 @@ def main():
                           normalize_embeddings=True, show_progress_bar=False)
     q_emb_by_id = {p["id"]: e for p, e in zip(probes, q_embs)}
 
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     vec = base.graphrag.vector_index_name
     st = deepcopy(base)
     st.neo4j.uri, st.neo4j.user, st.neo4j.password = URI, "neo4j", "kgfoundry"

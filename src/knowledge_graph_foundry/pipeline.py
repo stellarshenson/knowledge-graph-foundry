@@ -568,7 +568,7 @@ class Foundry:
             purpose,
             ontology,
             self.extraction_engine,
-            concurrency=self.settings.extraction.concurrency,
+            concurrency=self._extraction_concurrency(),
             extraction_cfg=self.settings.extraction,
         )
         if self.settings.load.provenance_nodes:
@@ -951,6 +951,7 @@ class Foundry:
             from knowledge_graph_foundry.graph.court import run_demotion_court
 
             court = run_demotion_court(self.driver, self.engine, self.settings.resolution)
+        gate_refit = self._refit_gate()
         card = scorecard(self.driver)
         result = {
             "communities": communities,
@@ -960,10 +961,85 @@ class Foundry:
             "similarity_edges": similarity_edges,
             "spec_hoist": spec_hoist,
             "court": court,
+            "gate_refit": gate_refit,
             "scorecard": card,
         }
         self._persist_scorecard(result)
         return result
+
+    def _extraction_concurrency(self) -> int:
+        """R30-H362 warm start: under ``extraction.auto_calibrate`` the
+        concurrency comes from the throughput cache's entry for this setup's
+        full inference identity (measured knee); a cache miss falls back to
+        the configured integer with a log line. Resolved once per Foundry."""
+        ex = self.settings.extraction
+        if not ex.auto_calibrate:
+            return ex.concurrency
+        if getattr(self, "_calibrated_concurrency", None) is not None:
+            return self._calibrated_concurrency
+        from knowledge_graph_foundry.extraction.throughput import (
+            ThroughputCache,
+            setup_key,
+        )
+
+        llm = self.settings.llm
+        key = setup_key(
+            llm.engine,
+            llm.base_url or getattr(llm, "region", "") or "",
+            llm.model,
+            {"recipe": ex.recipe, "timeout": llm.timeout},
+        )
+        entry = ThroughputCache().get(key)
+        if entry and entry.get("knee_concurrency"):
+            self._calibrated_concurrency = int(entry["knee_concurrency"])
+            logger.info(
+                f"throughput warm start: concurrency {self._calibrated_concurrency} "
+                f"from cached knee ({entry.get('provenance')}, {entry.get('tok_s_generation')} gen tok/s)"
+            )
+        else:
+            self._calibrated_concurrency = ex.concurrency
+            logger.info(
+                f"throughput cache miss for {key} - configured concurrency {ex.concurrency} stands"
+            )
+        return self._calibrated_concurrency
+
+    def _refit_gate(self) -> Optional[dict]:
+        """R38-H385 refit hook: harvest gate labels from the event log's
+        two-pass ``query.answered`` records against the configured probe gold
+        and refit the CRC cut. Fires only when the gate, a probe set, and an
+        event log are all present; below the ``escalation_min_labels`` floor
+        the existing record (or prior) stands - no write."""
+        gr = self.settings.graphrag
+        if not (gr.escalation_gate and gr.gate_probe_set and self.settings.event_log):
+            return None
+        events = Path(self.settings.event_log)
+        probe_path = Path(gr.gate_probe_set)
+        if not events.exists() or not probe_path.exists():
+            return None
+        import yaml
+
+        from knowledge_graph_foundry.graph.gate_calibration import (
+            corpus_fingerprint,
+            fit_gate_from_events,
+        )
+
+        probes = [p for p in yaml.safe_load(probe_path.read_text()) if p.get("gold_evidence")]
+        state = self._load_state()
+        fp = corpus_fingerprint(state.get("processed_documents") or [])
+        ledger, record = fit_gate_from_events(
+            events, probes, min_labels=gr.escalation_min_labels, fingerprint=fp
+        )
+        if record is None:
+            logger.info(
+                f"gate refit: {len(ledger)} labels < floor {gr.escalation_min_labels} - record stands"
+            )
+            return {"labels": len(ledger), "refit": False}
+        state["gate_calibration"] = record
+        self._save_state(state)
+        logger.info(
+            f"gate refit: threshold {record['threshold']} from {len(ledger)} labels persisted"
+        )
+        return {"labels": len(ledger), "refit": True, "threshold": record["threshold"]}
 
     def _persist_scorecard(self, result: dict) -> None:
         from datetime import datetime, timezone

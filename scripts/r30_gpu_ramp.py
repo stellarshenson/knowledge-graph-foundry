@@ -6,7 +6,7 @@ client retries). This extension repairs the instrument per the H363 registration
 
   - COMPLETION-SIZED windows: per rung, warmup = every worker banks 1 chunk,
     measurement window = every worker banks 3 MORE (window completions >= 3c)
-  - t=3600 via config-r31-gate.yml so every request is single-attempt
+  - t=3600 via config/experiments/config-r31-gate.yml so every request is single-attempt
   - per-ATTEMPT reconciliation: engine.calls (logical calls at the engine
     boundary) vs vLLM request_success_total delta; excess = hidden attempts
     (HTTP retries + instructor validation re-asks) - the H362 blind spot
@@ -36,7 +36,7 @@ from knowledge_graph_foundry.models import Ontology
 from knowledge_graph_foundry.pipeline import Foundry
 from knowledge_graph_foundry.settings import load_settings
 
-CONFIG = Path("config-r31-gate.yml")  # r29-v1 + llm.timeout 3600 (single-attempt regime)
+CONFIG = Path("config/experiments/config-r31-gate.yml")  # r29-v1 + llm.timeout 3600 (single-attempt regime)
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
 METRICS_URL = "http://localhost:8010/metrics"
 STEPS = [int(a) for a in sys.argv[1:]] or [16, 24, 32, 48, 64, 96]

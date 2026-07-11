@@ -12,7 +12,7 @@ from h158_measure import recall_at_k, precision_proxy  # noqa: E402
 from neo4j import GraphDatabase  # noqa: E402
 
 ARM = sys.argv[1]
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 AUTH = ("neo4j", "kgfoundry")
 EVENTS = f"logs/h240b-{ARM}-events.jsonl"
 RECALL_JSON = f"reports/h240b-{ARM}-recall.json"

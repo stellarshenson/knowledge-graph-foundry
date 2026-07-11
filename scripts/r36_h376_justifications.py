@@ -49,7 +49,7 @@ from knowledge_graph_foundry.graph.graphrag import overfetch_seeds, vector_query
 from knowledge_graph_foundry.models import Entity  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 DOC = "d_a2b1f7a495a9deda"  # SleepStyle_200_Operating_Manual.pdf
 HOIST_TARGETS = ["e_b23e9ca8b0913d4b", "e_82c117b14e8f555e"]  # H365 repair entities
 PROBES = Path("tests/probes/cpap-probe-set.yml")
@@ -181,7 +181,7 @@ def recall_with_exclusion(f, st, probes, excluded, label):
 
 
 def main():
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     st = deepcopy(base)
     st.neo4j.uri, st.neo4j.user, st.neo4j.password = URI, "neo4j", "kgfoundry"
     probes = [p for p in yaml.safe_load(PROBES.read_text()) if p.get("gold_evidence")]

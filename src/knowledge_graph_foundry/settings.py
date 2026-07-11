@@ -2,7 +2,7 @@
 
 Precedence: environment variables > .env > config.yml > model defaults.
 Neo4j credentials come from env (NEO4J_URI/NEO4J_USER/NEO4J_PASSWORD);
-everything else lives in config.yml at the project root (path configurable).
+everything else lives in config/config.yml (path configurable).
 """
 
 from __future__ import annotations
@@ -69,6 +69,7 @@ class ExtractionSettings(BaseModel):
     chunk_size: int = 2000
     chunk_overlap: int = 200
     concurrency: int = 4
+    auto_calibrate: bool = False  # R30-H362: resolve concurrency from the throughput cache (warm start at the measured knee)
     document_concurrency: int = 1  # DEF-12/R30-H343: cross-doc extraction look-ahead in STABLE; 1 = serial (shipped default until the R30 verdict)
     union_k: int = 1  # DEF-11/DEF-13/R31-H349: independent extraction passes per chunk, results unioned; 1 = single pass (shipped default until the H349 verdict)
     gleaning_rounds: int = 1  # R3: extra "what did we miss" passes (0 disables)
@@ -152,6 +153,7 @@ class GraphRAGSettings(BaseModel):
     escalation_threshold_prior: float = 0.765
     escalation_min_labels: int = 12  # R38-H385: refit floor; below it the record stands
     gate_calibration_path: Optional[str] = None  # R38-H384: frozen artifact, wins over graph
+    gate_probe_set: Optional[str] = None  # R38-H385: probe gold consumed by the optimize() refit hook
     passages_enabled: bool = False  # R34-H366: span store + query-anchored window (rung 2)
     passage_index_name: str = "kgf_passage_embeddings"
     passage_span_chars: int = 900  # H366 s900k1: window size; stride is half
@@ -212,7 +214,7 @@ def load_settings(config_path: Optional[Path] = None) -> Settings:
     load_dotenv()
 
     data: dict = {}
-    path = config_path or Path("config.yml")
+    path = config_path or Path("config/config.yml")
     if path.exists():
         with open(path) as f:
             data = yaml.safe_load(f) or {}

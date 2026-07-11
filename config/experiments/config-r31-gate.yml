@@ -2,7 +2,7 @@
 # IDENTICAL to config-r29-v2.yml except resolution.identity_stack. Composed default engine,
 # local vLLM gpt-oss-120b, Bedrock Titan embeddings, neo4j4 scratch (DEF-4/DEF-5). recipe enumerate (H246).
 neo4j:
-  uri: bolt://172.19.0.4:7687
+  uri: bolt://172.19.0.100:7687  # neo4j4 repinned 2026-07-11 after reboot (watchtower took .4)
   user: neo4j
   password: kgfoundry
 llm:

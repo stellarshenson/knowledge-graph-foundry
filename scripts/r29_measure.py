@@ -20,7 +20,7 @@ from neo4j import GraphDatabase  # noqa: E402
 
 ARM = sys.argv[1]
 RUN = sys.argv[2]
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 AUTH = ("neo4j", "kgfoundry")
 EVENTS = f"logs/r29-{ARM}-events.jsonl"
 STATS = f"reports/r29-{ARM}-run{RUN}-stats.json"

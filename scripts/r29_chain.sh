@@ -22,7 +22,7 @@ done
 
 for RUN in 1 2; do
   for ARM in v1 v2; do
-    CONFIG="config-r29-${ARM}.yml"
+    CONFIG="config/experiments/config-r29-${ARM}.yml"
     echo "=== R29 arm ${ARM} run ${RUN} START $(date -u +%Y-%m-%dT%H:%M:%SZ) ===" | tee -a "$LOG"
     rm -f "logs/r29-${ARM}-events.jsonl"
     .venv/bin/kgf wipe --yes --config "$CONFIG" 2>&1 | tee -a "$LOG"

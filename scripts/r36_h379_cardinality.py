@@ -17,7 +17,7 @@ from pathlib import Path
 
 from neo4j import GraphDatabase
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 EXCLUDE = {"SIMILAR_TO"}
 SWEEP = [0.90, 0.95, 1.00]
 

@@ -32,7 +32,7 @@ from knowledge_graph_foundry.ingest.chunking import _find_tables, chunk_document
 from knowledge_graph_foundry.ingest.readers import iter_source_files, read_document  # noqa: E402
 from knowledge_graph_foundry.settings import load_settings  # noqa: E402
 
-CONFIG = Path("config-r29-v1.yml")
+CONFIG = Path("config/experiments/config-r29-v1.yml")
 CORPUS = Path("data/external/cpap-datasheets-and-manuals")
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 RECALL_REPORT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("reports/h212-v2-recall-rerun.json")  # freshest per-probe map

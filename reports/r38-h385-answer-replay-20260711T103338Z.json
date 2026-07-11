@@ -1,0 +1,259 @@
+{
+  "hypothesis": "R38-H385 engine replay (answer side, LLM labels)",
+  "generated": "20260711T103338Z",
+  "config": "config/experiments/config-r31-gate.yml",
+  "events": "logs/r38-h385-answer-events.jsonl",
+  "ledger": [
+    {
+      "question": "What is the operating pressure range of the DreamStation CPAP?",
+      "signal": 0.7886133193969727,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "What is the sound pressure level of the Resvent iBreeze CPAP?",
+      "signal": 0.776841402053833,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "What is the warranty period of the DreamStation CPAP device?",
+      "signal": 0.7927863597869873,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "What is the ramp time setting on the DreamStation CPAP?",
+      "signal": 0.8269095420837402,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "What is the operating altitude range of the ResMed AirStart 10 CPAP?",
+      "signal": 0.7786850929260254,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "What are the dimensions of the Fisher & Paykel SleepStyle 200?",
+      "signal": 0.8216307163238525,
+      "rung0_covered": true,
+      "rung2_covered": true
+    },
+    {
+      "question": "What is the data storage capacity of the DreamStation CPAP SD card?",
+      "signal": 0.7814807891845703,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "Which is lighter, the ResMed AirStart 10 or the ResMed AirSense 11?",
+      "signal": 0.8322055339813232,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "Which device tolerates a higher operating altitude, the ResMed AirSense 11 or the ResMed AirStart 10?",
+      "signal": 0.8175177574157715,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "Which is heavier with its humidifier, the DreamStation CPAP or the BMC RESmart Auto CPAP?",
+      "signal": 0.7609827518463135,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "What are the dimensions of the Fisher & Paykel SleepStyle 200 compared with the Resvent iBreeze?",
+      "signal": 0.7779684066772461,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "Which offers a longer ramp time, the Resvent iBreeze or the DreamStation CPAP?",
+      "signal": 0.7771086692810059,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "Which is quieter, the ResMed AirStart 10 or the ResMed AirSense 11?",
+      "signal": 0.8001885414123535,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "On the DreamStation, what does the SmartRamp mode do differently from the standard ramp mode?",
+      "signal": 0.8184993267059326,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "Which ResMed device has a therapy algorithm designed specifically for women?",
+      "signal": 0.7832410335540771,
+      "rung0_covered": true,
+      "rung2_covered": true
+    },
+    {
+      "question": "What is the purpose of the EZ-Start feature on the DreamStation CPAP Pro?",
+      "signal": 0.8353526592254639,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "On the Seattle-PAP bubble CPAP system, what does the 135-degree angle in the submersed tubing accomplish?",
+      "signal": 0.7598528861999512,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "What does the ResMed AutoRamp feature rely on to know when to ramp up to the prescribed pressure?",
+      "signal": 0.81109619140625,
+      "rung0_covered": false,
+      "rung2_covered": false
+    },
+    {
+      "question": "On the ResMed AirSense 11, what does the EPR feature do during breathing?",
+      "signal": 0.8751418590545654,
+      "rung0_covered": false,
+      "rung2_covered": false
+    }
+  ],
+  "record": {
+    "version": 1,
+    "threshold": 0.8851418590545654,
+    "signal": "top_seed_index_score",
+    "provenance": {
+      "hypothesis": "H382/H383",
+      "method": "crc",
+      "alpha": 0.08,
+      "n_labels": 19,
+      "infeasible": true,
+      "fitted_at": "2026-07-11T10:33:38.180326+00:00",
+      "corpus_fingerprint": ""
+    }
+  },
+  "signal_diffs_vs_offline": {
+    "P02": [
+      0.7886,
+      0.7886,
+      0.0
+    ],
+    "P03": [
+      0.7768,
+      0.7768,
+      0.0
+    ],
+    "P04": [
+      0.7928,
+      0.7928,
+      0.0
+    ],
+    "P05": [
+      0.8269,
+      0.8269,
+      0.0
+    ],
+    "P07": [
+      0.7787,
+      0.7787,
+      0.0
+    ],
+    "P09": [
+      0.8216,
+      0.8216,
+      0.0
+    ],
+    "P10": [
+      0.7815,
+      0.7815,
+      0.0
+    ],
+    "P11": [
+      0.8322,
+      0.7987,
+      0.0335
+    ],
+    "P13": [
+      0.8175,
+      0.8175,
+      0.0
+    ],
+    "P15": [
+      0.761,
+      0.7531,
+      0.0079
+    ],
+    "P16": [
+      0.778,
+      0.778,
+      0.0
+    ],
+    "P17": [
+      0.7771,
+      0.7771,
+      0.0
+    ],
+    "P18": [
+      0.8002,
+      0.7934,
+      0.0068
+    ],
+    "P19": [
+      0.8185,
+      0.8185,
+      0.0
+    ],
+    "P20": [
+      0.7832,
+      0.7832,
+      0.0
+    ],
+    "P21": [
+      0.8354,
+      0.8354,
+      0.0
+    ],
+    "P22": [
+      0.7599,
+      0.7599,
+      0.0
+    ],
+    "P23": [
+      0.8111,
+      0.8111,
+      0.0
+    ],
+    "P24": [
+      0.8751,
+      0.8751,
+      0.0
+    ]
+  },
+  "max_signal_diff": 0.0335,
+  "offline_theta": 0.7644,
+  "fit_equivalent_within_one_cut": false,
+  "offline_needy": [
+    "P15",
+    "P22"
+  ],
+  "engine_rung0_uncovered": [
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P07",
+    "P10",
+    "P11",
+    "P13",
+    "P15",
+    "P16",
+    "P17",
+    "P18",
+    "P19",
+    "P21",
+    "P22",
+    "P23",
+    "P24"
+  ]
+}

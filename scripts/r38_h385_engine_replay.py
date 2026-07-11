@@ -37,7 +37,7 @@ from knowledge_graph_foundry.extraction.embeddings import (  # noqa: E402
 from knowledge_graph_foundry.graph.passages import generate_passages  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 OFFLINE_ESCALATED = ["P01", "P06", "P08", "P12", "P15", "P22"]  # H382 pooled holdout
 
@@ -56,7 +56,7 @@ def replay(f, probes):
 
 
 def main():
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     st = deepcopy(base)
     st.neo4j.uri, st.neo4j.user, st.neo4j.password = URI, "neo4j", "kgfoundry"
     st.graphrag.passages_enabled = True

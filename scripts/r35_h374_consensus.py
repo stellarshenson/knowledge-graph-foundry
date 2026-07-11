@@ -46,7 +46,7 @@ from knowledge_graph_foundry.graph.propositions import (  # noqa: E402
 from knowledge_graph_foundry.models import Entity  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"
+URI = "bolt://172.19.0.100:7687"
 PROBES = Path("tests/probes/cpap-probe-set.yml")
 PROP_CACHE = Path("tmp/cache/h367-prop-embs-bgem3.jsonl")
 SPAN_CACHE = Path("tmp/cache/h366-span-embs-bgem3.jsonl")
@@ -73,7 +73,7 @@ def spearman(order_a: list, order_b: list) -> float:
 
 
 def main():
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     vec = base.graphrag.vector_index_name
     st = deepcopy(base)
     st.neo4j.uri, st.neo4j.user, st.neo4j.password = URI, "neo4j", "kgfoundry"

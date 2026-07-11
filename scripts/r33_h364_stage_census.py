@@ -19,7 +19,7 @@ Retrieval/render/matching primitives are the recall harness's own (h158_measure)
 so a stage verdict here is a verdict about the measured pipeline, not a proxy.
 
 Inputs: reports/r32-h354-census-*.json (target golds), tests/probes/cpap-probe-set.yml,
-the h212-v2 graph (bolt://172.19.0.4:7687). Output: reports/r33-h364-stage-census-<ts>.json
+the h212-v2 graph (bolt://172.19.0.100:7687). Output: reports/r33-h364-stage-census-<ts>.json
 + printed per-gold stage table with carrier evidence.
 """
 
@@ -41,7 +41,7 @@ from knowledge_graph_foundry.graph.graphrag import vector_query  # noqa: E402
 from knowledge_graph_foundry.models import Entity  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
 
-URI = "bolt://172.19.0.4:7687"  # the graph the failing recall map (h212-v2 rerun) measured
+URI = "bolt://172.19.0.100:7687"  # the graph the failing recall map (h212-v2 rerun) measured
 TOP_K = 16
 RANK_K = 200  # extended retrieval depth for locating carriers below the cutoff
 PROBES = Path("tests/probes/cpap-probe-set.yml")
@@ -59,7 +59,7 @@ def main():
     probe_ids = sorted({pid for pid, _, _ in targets})
     print(f"walking {len(targets)} golds across probes {probe_ids}", flush=True)
 
-    base = load_settings(Path("config.yml"))
+    base = load_settings(Path("config/config.yml"))
     vec = base.graphrag.vector_index_name
     st = deepcopy(base)
     st.neo4j.uri, st.neo4j.user, st.neo4j.password = URI, "neo4j", "kgfoundry"
