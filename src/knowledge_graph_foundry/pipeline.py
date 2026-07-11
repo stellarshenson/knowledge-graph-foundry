@@ -979,16 +979,10 @@ class Foundry:
             return self._calibrated_concurrency
         from knowledge_graph_foundry.extraction.throughput import (
             ThroughputCache,
-            setup_key,
+            setup_key_from_settings,
         )
 
-        llm = self.settings.llm
-        key = setup_key(
-            llm.engine,
-            llm.base_url or getattr(llm, "region", "") or "",
-            llm.model,
-            {"recipe": ex.recipe, "timeout": llm.timeout},
-        )
+        key = setup_key_from_settings(self.settings)
         entry = ThroughputCache().get(key)
         if entry and entry.get("knee_concurrency"):
             self._calibrated_concurrency = int(entry["knee_concurrency"])
@@ -1174,7 +1168,9 @@ class Foundry:
 
     def probe(self, question: str) -> dict:
         """Public instrumentation surface: retrieval-only replay of a question
-        (no LLM call, no answer generation, no events emitted). External
+        (no LLM call, no answer generation; no query.answered event -
+        miss/escalation SIGNALS still fire, and reach a JSONL only if the
+        caller enabled an event log). External
         instrumentation layers - progressive regression probers, benchmark
         harnesses, coverage audits - consume THIS, never the private
         retrieval internals. Returns {context_lines, supporting_names,

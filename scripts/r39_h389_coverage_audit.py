@@ -39,18 +39,25 @@ _STOP = frozenset(
 )
 
 
-def _norm(s: str) -> str:
+def _norm_terms(s: str) -> str:
+    # NOTE: strips non-alphanumerics (term matching) - deliberately DIFFERENT
+    # from notebooks/h158_measure._norm which only squeezes whitespace
     return re.sub(r"[^a-z0-9 ]", " ", s.lower())
 
 
 def content_terms(s: str) -> list[str]:
-    return [t for t in _norm(s).split() if len(t) > 2 and t not in _STOP]
+    # numeric tokens kept regardless of length - spec-value misses (the P08
+    # '9.0W' class) are exactly short numerics (adversarial finding A4/D-minor)
+    return [
+        t for t in _norm_terms(s).split()
+        if t not in _STOP and (len(t) > 2 or any(ch.isdigit() for ch in t))
+    ]
 
 
 def grounded(probe: str, chunk_text: str) -> bool:
     """Groundedness gate: every content term of the probe appears in the
     chunk - the probe set cannot claim what the source does not say."""
-    chunk_terms = set(_norm(chunk_text).split())
+    chunk_terms = set(_norm_terms(chunk_text).split())
     terms = content_terms(probe)
     return bool(terms) and all(t in chunk_terms for t in terms)
 
@@ -61,7 +68,7 @@ def supported(probe: str, graph_text: str, threshold: float = 0.8) -> bool:
     terms = content_terms(probe)
     if not terms:
         return False
-    graph_terms = set(_norm(graph_text).split())
+    graph_terms = set(_norm_terms(graph_text).split())
     return sum(t in graph_terms for t in terms) / len(terms) >= threshold
 
 
@@ -81,9 +88,11 @@ def generate_probes(engine, chunk_text: str, k: int = PROBES_PER_CHUNK) -> list[
     return [p for p in probes if grounded(p, chunk_text)][:k]
 
 
-def doc_graph_text(session, doc_id: str) -> str:
-    """Everything the graph holds for this document: entity names,
-    descriptions, properties, and passage span texts."""
+def doc_graph_texts(session, doc_id: str) -> tuple[str, str]:
+    """Two SEPARATE support corpora (adversarial finding A5/D1/M1: spans
+    tile the full chunk text, so groundedness-gated probes are span-supported
+    BY CONSTRUCTION - folding them together makes coverage ~1.0 tautologically).
+    Returns (entity_text, span_text); the CERTIFICATE keys on entity_text."""
     ents = session.run(
         "MATCH (e:Entity) WHERE $d IN e.source_documents "
         "RETURN e.name AS n, e.description AS de, properties(e) AS p",
@@ -99,8 +108,7 @@ def doc_graph_text(session, doc_id: str) -> str:
         parts.append(e["n"] or "")
         parts.append(e["de"] or "")
         parts.append(json.dumps({k: v for k, v in (e["p"] or {}).items() if isinstance(v, str)}))
-    parts.extend(t or "" for t in spans)
-    return " ".join(parts)
+    return " ".join(parts), " ".join(t or "" for t in spans)
 
 
 def main():
@@ -123,27 +131,31 @@ def main():
         print(f"auditing {len(docs)} documents from {config}", flush=True)
         total_probes = total_supported = 0
         for i, doc in enumerate(docs):
-            gtext = doc_graph_text(s, doc["id"])
+            ent_text, span_text = doc_graph_texts(s, doc["id"])
             probes, misses = [], []
+            span_supported = 0
             for chunk in doc["chunks"]:
                 for p in generate_probes(engine, chunk):
                     probes.append(p)
-                    if supported(p, gtext):
+                    if supported(p, ent_text):
                         total_supported += 1
                     else:
                         misses.append(p)
+                    if supported(p, span_text):
+                        span_supported += 1
             total_probes += len(probes)
             coverage = round(1 - len(misses) / len(probes), 4) if probes else None
             rec = {
                 "doc": doc["id"],
                 "name": doc["name"],
                 "probes": len(probes),
-                "coverage": coverage,
+                "coverage": coverage,  # ENTITY/PROPERTY support - the certificate metric
+                "span_coverage": round(span_supported / len(probes), 4) if probes else None,
                 "misses": misses,
             }
             with out_path.open("a") as fh:
                 fh.write(json.dumps(rec) + "\n")
-            print(f"[{i+1}/{len(docs)}] {doc['name']}: coverage={coverage} misses={len(misses)}", flush=True)
+            print(f"[{i+1}/{len(docs)}] {doc['name']}: coverage={coverage} span_cov={rec['span_coverage']} misses={len(misses)}", flush=True)
         overall = round(total_supported / total_probes, 4) if total_probes else None
         print(f"H389 AUDIT COMPLETE: overall coverage {overall} ({total_supported}/{total_probes}) -> {out_path}", flush=True)
 

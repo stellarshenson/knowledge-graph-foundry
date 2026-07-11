@@ -54,13 +54,14 @@ class TestCache:
 
 class TestWarmStartBand:
     def test_in_and_out_of_band(self):
-        entry = {"chunks_per_min": 2.4, "chunks_per_min_std": 0.2}
-        assert in_band(entry, 2.5)
-        assert not in_band(entry, 4.0)  # > 3 sigma -> recalibrate
+        entry = {"tok_s_generation": 580.0, "tok_s_generation_std": 20.0}
+        assert in_band(entry, 590.0)
+        assert not in_band(entry, 700.0)  # > 3 sigma -> recalibrate
 
-    def test_default_spread_when_no_variance_recorded(self):
-        assert in_band({"chunks_per_min": 2.4}, 2.4)
-        assert not in_band({}, 2.4)  # no expectation -> cannot verify
+    def test_no_variance_means_cannot_verify(self):
+        # H351 rule: no measured variance -> no magic fallback band
+        assert not in_band({"tok_s_generation": 580.0}, 580.0)
+        assert not in_band({}, 580.0)
 
 
 class TestColdRamp:
@@ -101,10 +102,7 @@ class TestWarmStartWiring:
         s.extraction.concurrency = 4
         if entry:
             cache = throughput.ThroughputCache(tmp_path / "cache.json")
-            key = throughput.setup_key(
-                s.llm.engine, s.llm.base_url or getattr(s.llm, "region", "") or "",
-                s.llm.model, {"recipe": s.extraction.recipe, "timeout": s.llm.timeout},
-            )
+            key = throughput.setup_key_from_settings(s)
             cache.put(key, entry)
         return Foundry(s)
 

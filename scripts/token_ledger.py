@@ -20,7 +20,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-METRICS_URL = "http://localhost:8010/metrics"
+METRICS_URL = "http://localhost:8010/metrics"  # NOTE: sibling parsers in scripts/r30_fast_ramp.py + r30_gpu_ramp.py - keep prefix logic in sync
 LEDGER = Path("results/token-ledger.jsonl")
 DOC = Path("docs/token-ledger.md")
 # manual pre-ledger estimate: R30 slow-ramp measurement windows (recorded

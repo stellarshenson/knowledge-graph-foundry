@@ -47,9 +47,18 @@ OCCUPANCY_FLOOR = 0.95  # min running / c through the window, else tainted
 CHECKPOINT = Path("results/r30/h388-fast-steps.jsonl")
 
 
-def server_counters() -> dict:
-    with urllib.request.urlopen(METRICS_URL, timeout=5) as r:
-        text = r.read().decode()
+def server_counters(retries: int = 5) -> dict:
+    last = None
+    for _ in range(retries):
+        try:
+            with urllib.request.urlopen(METRICS_URL, timeout=5) as r:
+                text = r.read().decode()
+            break
+        except Exception as exc:  # boundary reads must survive transient hiccups
+            last = exc
+            time.sleep(5)
+    else:
+        raise RuntimeError(f"metrics endpoint unreachable after {retries} tries: {last}")
     out = {}
     for line in text.splitlines():
         for key, name in (
@@ -94,9 +103,22 @@ def main():
     CHECKPOINT.parent.mkdir(parents=True, exist_ok=True)
     chunk_cycle = itertools.cycle(chunks)
     all_steps = []
+    active = {}  # current rung's stop event + pool, for the crash-path finally
 
-    for c in STEPS:
-        lock = threading.Lock()
+    try:
+        _ladder(STEPS, chunks, chunk_cycle, all_steps, engine, ex, purpose, ontology, active)
+    finally:
+        # zombie guard: on ANY exception or interrupt, stop the workers so the
+        # non-daemon pool cannot block interpreter shutdown forever while
+        # saturating the GPU (bug-hunter repro 2026-07-11)
+        if active:
+            active["stop"].set()
+            active["pool"].shutdown(wait=False, cancel_futures=True)
+
+
+def _ladder(steps, chunks, chunk_cycle, all_steps, engine, ex, purpose, ontology, active):
+    for c in steps:
+        lock = threading.Lock()  # NOTE: stop/drain guaranteed by the finally below
         latencies, errors = [], [0]
         completions = [0]
         stop = threading.Event()
@@ -119,6 +141,7 @@ def main():
                     completions[0] += 1
 
         pool = ThreadPoolExecutor(max_workers=c, thread_name_prefix=f"fast-c{c}")
+        active["stop"], active["pool"] = stop, pool
         t_rung = time.monotonic()
         for _ in range(c):
             pool.submit(work)
@@ -128,7 +151,10 @@ def main():
         min_completions = max(c // 2, 8)
         samples = deque(maxlen=9)  # 9 x 15s = trailing 2 min
         prev_rate = None
+        warmup_deadline = time.monotonic() + 3600  # dead server must not wedge the rung forever
         while True:
+            if time.monotonic() > warmup_deadline:
+                raise RuntimeError(f"warmup exceeded 1h at c={c} - aborting rung")
             time.sleep(15)
             try:
                 s = server_counters()
@@ -149,6 +175,7 @@ def main():
         with lock:
             base_completions = completions[0]
             base_lat_n = len(latencies)
+            base_errors = errors[0]  # errors windowed like completions (review N2)
         start_counters = server_counters()
         calls_start = engine.calls
         t_win = time.monotonic()
@@ -181,7 +208,12 @@ def main():
         gen = end_counters.get("generation", 0) - start_counters.get("generation", 0)
         server_reqs = end_counters.get("success", 0) - start_counters.get("success", 0)
         client_calls = calls_end - calls_start
-        tainted = occupancy["min_running"] < OCCUPANCY_FLOOR * c
+        # no successful occupancy sample (min stayed inf) -> tainted, and
+        # keep the JSON standard (no Infinity literals)
+        no_samples = occupancy["min_running"] == float("inf")
+        if no_samples:
+            occupancy["min_running"] = -1.0
+        tainted = no_samples or occupancy["min_running"] < OCCUPANCY_FLOOR * c
         step = {
             "concurrency": c,
             "warmup_s": round(warmup_s, 1),
@@ -193,7 +225,7 @@ def main():
             "client_calls_window": client_calls,
             "server_requests_window": server_reqs,
             "hidden_attempts": round(server_reqs - client_calls, 1),
-            "errors": errors[0],
+            "errors": errors[0] - base_errors,
             "latencies_s": window_latencies,
             "min_running": occupancy["min_running"],
             "peak_waiting": occupancy["peak_waiting"],

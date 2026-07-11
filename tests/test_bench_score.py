@@ -59,4 +59,4 @@ class TestScoreFile:
         p = tmp_path / "answers.jsonl"
         p.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
         out = bench_score.score_file(p)
-        assert out == {"n": 2, "em": 0.5, "f1": 0.5, "recall_at_5": 0.5}
+        assert out == {"n": 2, "em": 0.5, "f1": 0.5, "recall_at_5": 0.5, "recall_at_5_n": 2}

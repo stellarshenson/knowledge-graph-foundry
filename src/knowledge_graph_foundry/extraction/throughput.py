@@ -1,17 +1,21 @@
 """R30-H362 throughput calibration: the engine remembers its knee.
 
-A per-setup cache maps the full inference identity (engine type -> endpoint
--> model ID -> extraction-config hash) to a measured operating point (knee
-concurrency, tok/s, chunks/min, latency envelope). Ingest warm-starts at the
-cached knee and verifies it against the entry's own variance band inside the
-first measurement window (trust-but-verify); a cold or lost cache falls back
-to a doubling ramp with early exit. Probe methodology = the H388 fast rung
-(stability-gated warmup + fixed counter window with an occupancy guard),
-CONFIRMED at <= 1/3 the completion-gated wall cost with work-rate parity
-0.6% (see kgf-redesign-experiments.md R30-H388).
+A per-setup cache maps an inference-identity key (engine type -> endpoint ->
+model ID -> {recipe, timeout} hash) to a measured operating point.
+
+SHIPPED TODAY: ingest warm-starts at the cached concurrency
+(`Foundry._extraction_concurrency`); a cache miss falls back to the
+configured integer with a log line. NOT YET WIRED (helpers below exist for
+the pending H362 clauses, no production caller yet): the in-window band
+verification (`in_band`), the cold doubling ramp (`cold_ramp` - also needs a
+production probe routine extracted from scripts/r30_fast_ramp.py), and the
+EWMA cross-run update (`smooth`). The H362 verdict is withheld until those
+clauses run (see kgf-redesign-experiments.md R30-H362).
 
 Calibration metrics are generation tok/s and chunks/min - total tok/s
-carries prompt-mix composition noise at short windows (H388 caveat).
+carries prompt-mix composition noise at short windows (H388 caveat; note
+chunks/min itself shows ~20%+ relative spread across repeat windows, so
+single-window agreements are not parity evidence).
 """
 
 import hashlib
@@ -21,20 +25,40 @@ from typing import Any, Callable, Optional
 
 from loguru import logger
 
-DEFAULT_CACHE_PATH = Path("reports/throughput-cache.json")
+from knowledge_graph_foundry.config import PROJ_ROOT
+
+# absolute: a detached ingest launched off-root must not silently miss the
+# cache and fall back to the configured default (14x throughput loss)
+DEFAULT_CACHE_PATH = PROJ_ROOT / "reports" / "throughput-cache.json"
 BAND_SIGMA = 3.0  # warm-start verification band width
 EWMA_ALPHA = 0.3  # cross-run smoothing of the cached expectation
 RAMP_EARLY_EXIT_GAIN = 0.20  # doubling gains under this end the cold ramp
-KNEE_GOODPUT_SHARE = 0.90  # knee = smallest c within this share of peak
+KNEE_GOODPUT_SHARE = 0.90  # cold-ramp knee rule (share-of-peak); NOTE: cached entries store the adjudicated plateau operating point instead - align before wiring (#64)
 
 
 def setup_key(engine: str, endpoint: str, model: str, extraction_config: dict) -> str:
-    """One entry per full inference identity; switching setups selects a
-    different entry, never invalidates others."""
+    """One entry per inference identity; switching setups selects a
+    different entry, never invalidates others. NOTE: the identity hash
+    covers {recipe, timeout} only (see setup_key_from_settings) - prompt,
+    chunking and max_tokens changes reuse the entry; widen deliberately, in
+    ONE place, if that ever bites."""
     cfg = hashlib.sha256(
         json.dumps(extraction_config, sort_keys=True).encode()
     ).hexdigest()[:12]
     return f"{engine}::{endpoint}::{model}::{cfg}"
+
+
+def setup_key_from_settings(settings) -> str:
+    """THE canonical key builder - every producer and consumer (pipeline,
+    seeders, tests) must key through this one function; hand-built key dicts
+    already forked the live cache once (orphan seed entry, 2026-07-11)."""
+    llm = settings.llm
+    return setup_key(
+        llm.engine,
+        llm.base_url or llm.region or "",
+        llm.model,
+        {"recipe": settings.extraction.recipe, "timeout": llm.timeout},
+    )
 
 
 class ThroughputCache:
@@ -83,15 +107,19 @@ class ThroughputCache:
         return entry
 
 
-def in_band(entry: dict, window_chunks_per_min: float, sigma: float = BAND_SIGMA) -> bool:
-    """Warm-start verification: the first real window's work rate against the
-    entry's own variance band. In band -> the run itself is the verification;
-    out of band -> recalibrate and replace the entry."""
-    mean = entry.get("chunks_per_min")
-    spread = entry.get("chunks_per_min_std") or (0.15 * mean if mean else None)
+def in_band(entry: dict, window_gen_tok_s: float, sigma: float = BAND_SIGMA) -> bool:
+    """Warm-start verification: the first real window's GENERATION tok/s
+    against the entry's own measured variance band (gen tok/s is the band
+    metric - ~4% relative spread across repeat windows vs ~23% for
+    chunks/min, which gave a band that could not fail). In band -> the run
+    itself is the verification; out of band -> recalibrate."""
+    mean = entry.get("tok_s_generation")
+    spread = entry.get("tok_s_generation_std")
+    # no measured variance -> cannot verify (H351 rule: bands priced off
+    # measured variance, never a magic fallback tolerance)
     if mean is None or spread is None:
         return False
-    return abs(window_chunks_per_min - mean) <= sigma * spread
+    return abs(window_gen_tok_s - mean) <= sigma * spread
 
 
 def cold_ramp(

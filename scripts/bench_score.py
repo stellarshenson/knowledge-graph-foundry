@@ -61,23 +61,31 @@ def recall_at_k(retrieved_titles: list[str], gold_titles: list[str], k: int = 5)
 
 def score_file(path: Path) -> dict:
     n = em_sum = f1_sum = r5_sum = 0
+    r5_n = 0  # recall@5 averaged only over questions WITH gold titles
     with open(path) as fh:
         for line in fh:
             line = line.strip()
             if not line:
                 continue
             rec = json.loads(line)
-            golds = rec.get("gold_answers") or [rec["gold_answer"]]
+            golds = rec.get("gold_answers")
+            if not golds:  # schema is gold_answers; skip loudly rather than deflate
+                print(f"skipping record without gold_answers: {rec.get('id')}")
+                continue
             em, f1 = best_over_golds(rec.get("answer") or "", golds)
             em_sum += em
             f1_sum += f1
-            r5_sum += recall_at_k(rec.get("retrieved_titles") or [], rec.get("gold_titles") or [])
+            gt = rec.get("gold_titles") or []
+            if gt:  # exclude gold-less questions from recall@5 instead of deflating
+                r5_sum += recall_at_k(rec.get("retrieved_titles") or [], gt)
+                r5_n += 1
             n += 1
     return {
         "n": n,
         "em": round(em_sum / n, 4) if n else 0.0,
         "f1": round(f1_sum / n, 4) if n else 0.0,
-        "recall_at_5": round(r5_sum / n, 4) if n else 0.0,
+        "recall_at_5": round(r5_sum / r5_n, 4) if r5_n else None,
+        "recall_at_5_n": r5_n,
     }
 
 

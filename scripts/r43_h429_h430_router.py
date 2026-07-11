@@ -14,7 +14,6 @@ Usage: python scripts/r43_h429_h430_router.py
 
 import json
 import math
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -84,11 +83,6 @@ def main():
     sims.sort(reverse=True)
 
     gold_ids = {m["id"] for ms in gold.values() for m in ms}
-    adj: dict[str, set[str]] = {}
-    for r in rels:
-        if r["birth"]:
-            adj.setdefault(r["a"], set()).add(r["b"])
-            adj.setdefault(r["b"], set()).add(r["a"])
 
     def connected(a_id, b_id, t):
         """BFS on edges born <= t."""
@@ -112,10 +106,23 @@ def main():
             frontier = nxt
         return False
 
-    film_ids = [m["id"] for m in gold["Interview with a Hitman"]] or [None]
-    dir1_ids = [m["id"] for m in gold["Perry Bhandal"]] or [None]
-    film2_ids = [m["id"] for m in gold["The Last Coupon"]] or [None]
-    dir2_ids = [m["id"] for m in gold["Frank Launder"]] or [None]
+    film_ids = [m["id"] for m in gold["Interview with a Hitman"]]
+    dir1_ids = [m["id"] for m in gold["Perry Bhandal"]]
+    film2_ids = [m["id"] for m in gold["The Last Coupon"]]
+    dir2_ids = [m["id"] for m in gold["Frank Launder"]]
+
+    def any_connected(ids_a, ids_b, t):
+        # duplicate gold carriers (H107 class): a path via ANY carrier pair counts
+        return any(connected(a, b, t) for a in ids_a for b in ids_b)
+
+    def direct_edge_birth(ids_a, ids_b):
+        # the 1-hop edge the render must emit - existence + birth index
+        births = [r["birth"] for r in rels if r["birth"] and ((r["a"] in ids_a and r["b"] in ids_b) or (r["b"] in ids_a and r["a"] in ids_b))]
+        return min(births) if births else None
+
+    edge1_birth = direct_edge_birth(film_ids, dir1_ids)
+    edge2_birth = direct_edge_birth(film2_ids, dir2_ids)
+    print(f"direct film-director edges: pair1 birth={edge1_birth} pair2 birth={edge2_birth}", flush=True)
 
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out_path = OUT / f"h429-h430-router-{ts}.jsonl"
@@ -124,23 +131,19 @@ def main():
             eligible = [x for x in sims if x[1] <= t]
             ranks = {}
             for rank, (sc, _b, name, eid) in enumerate(eligible, 1):
-                if eid in gold_ids:
+                if eid in gold_ids and name not in ranks:  # best rank per name (descending score order)
                     ranks[name] = rank
             cut_score = eligible[TOP_K - 1][0] if len(eligible) >= TOP_K else None
-            path1 = (
-                connected(film_ids[0], dir1_ids[0], t)
-                if film_ids[0] and dir1_ids[0] else False
-            )
-            path2 = (
-                connected(film2_ids[0], dir2_ids[0], t)
-                if film2_ids[0] and dir2_ids[0] else False
-            )
+            path1 = any_connected(film_ids, dir1_ids, t) if film_ids and dir1_ids else False
+            path2 = any_connected(film2_ids, dir2_ids, t) if film2_ids and dir2_ids else False
             rec = {
                 "t": t,
                 "gold_ranks": ranks,
                 "topk_cut_score": round(cut_score, 4) if cut_score else None,
                 "path_film1_dir1": path1,
                 "path_film2_dir2": path2,
+                "direct_edge1_born": edge1_birth is not None and edge1_birth <= t,
+                "direct_edge2_born": edge2_birth is not None and edge2_birth <= t,
             }
             fh.write(json.dumps(rec) + "\n")
             if t in (103, 121, 135, 136, 145, 153, 154, 160, 176, 197, 200):

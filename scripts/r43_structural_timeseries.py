@@ -91,10 +91,15 @@ def main():
     print(f"{len(docs)} docs, {len(ents)} entities, {len(rels)} rels from {config}", flush=True)
 
     ent_births: dict[int, list[str]] = {}
+    ent_unattributed = 0
     for e in ents:
         bi = birth_index(e["sd"], doc_order)
         if bi is not None:
             ent_births.setdefault(bi, []).append(e["id"])
+        else:
+            ent_unattributed += 1
+    if ent_unattributed:
+        print(f"note: {ent_unattributed} entities carry no attributable source_documents - excluded", flush=True)
     rel_births: dict[int, list[tuple[str, str]]] = {}
     unattributed = 0
     for r in rels:
