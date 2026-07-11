@@ -1,0 +1,418 @@
+{"cycle": "2026-07-11T14:07:59.246263+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 54, "answer_in_context": false}
+{"cycle": "2026-07-11T14:07:59.246263+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 54, "answer_in_context": true}
+{"cycle": "2026-07-11T14:07:59.246263+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 54, "answer_in_context": true}
+{"cycle": "2026-07-11T14:07:59.246263+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 54, "answer_in_context": true}
+{"cycle": "2026-07-11T14:07:59.246263+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 54, "answer_in_context": true}
+{"cycle": "2026-07-11T14:19:00.792896+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 75, "answer_in_context": false, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T14:19:00.792896+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 75, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:19:00.792896+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 75, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:19:00.792896+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 75, "answer_in_context": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T14:19:00.792896+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 75, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:19:00.792896+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 75, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:19:00.792896+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 75, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 79, "answer_in_context": false, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 79, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 79, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 79, "answer_in_context": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 79, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 79, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 79, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:21:26.014010+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 79, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 103, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 103, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:31:31.089961+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 103, "answer_in_context": false, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 121, "answer_in_context": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 121, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 121, "answer_in_context": false, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 121, "answer_in_context": false, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T14:41:34.775488+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 121, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 135, "answer_in_context": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 135, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 135, "answer_in_context": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 135, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 135, "answer_in_context": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T14:51:38.897706+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 135, "answer_in_context": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 154, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 154, "answer_in_context": false, "probe_wall_s": 0.1, "REGRESSION": true}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 154, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 154, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 154, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 154, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:01:42.957800+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 154, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 176, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 176, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 176, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 176, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 176, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 176, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:11:46.288403+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 176, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 197, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 197, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 197, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 197, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 197, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 197, "answer_in_context": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:21:49.576329+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 197, "answer_in_context": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 1.9}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.6}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:31:17.786723+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:41:27.469378+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T15:51:30.927340+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:01:34.262662+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:11:37.705565+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:21:41.140107+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:31:44.662859+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:41:48.275405+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T16:51:51.911193+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:01:55.626497+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 373, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 373, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 373, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 373, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 373, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 373, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:06:08.209748+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 373, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:11:59.471548+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 394, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 394, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 394, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 394, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 394, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 394, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:16:15.784956+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 394, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:22:03.349449+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 413, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 413, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 413, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 413, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 413, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 413, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:26:19.584867+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 413, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:32:07.284597+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 427, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 427, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 427, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 427, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 427, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 427, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:36:23.627437+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 427, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:42:11.830741+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 445, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 445, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 445, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 445, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 445, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 445, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:46:28.176069+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 445, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.2}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:52:16.500260+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 200, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.1}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "83bf3b5a0bd911eba7f7acde48001122", "ingested_titles": 463, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "a80d84e7096d11ebbdb0ac1f6bf848b6", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "2dc690ba0bdc11eba7f7acde48001122", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "462bb642099211ebbdb0ac1f6bf848b6", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "a1cdb240085811ebbd5bac1f6bf848b6", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "6718770a087311ebbd66ac1f6bf848b6", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 0.75, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "7f7046d308f711ebbdaaac1f6bf848b6", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "9fe6a6760baf11ebab90acde48001122", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "551e024408a611ebbd7fac1f6bf848b6", "ingested_titles": 463, "answer_in_context": false, "gold_titles_coverage": 0.75, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "33f51d7e0bde11eba7f7acde48001122", "ingested_titles": 463, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "914b452c0bdc11eba7f7acde48001122", "ingested_titles": 463, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "d6898f78089511ebbd75ac1f6bf848b6", "ingested_titles": 463, "answer_in_context": false, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.3}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "006d81bc0bde11eba7f7acde48001122", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.5}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "f5e3b9ca0bdb11eba7f7acde48001122", "ingested_titles": 463, "answer_in_context": false, "gold_titles_coverage": 0.5, "pass": false, "probe_wall_s": 0.4}
+{"cycle": "2026-07-11T17:54:29.194548+00:00", "id": "265daf200bdc11eba7f7acde48001122", "ingested_titles": 463, "answer_in_context": true, "gold_titles_coverage": 1.0, "pass": true, "probe_wall_s": 0.4}

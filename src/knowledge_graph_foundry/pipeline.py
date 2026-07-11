@@ -1172,6 +1172,20 @@ class Foundry:
             "path": path,
         }
 
+    def probe(self, question: str) -> dict:
+        """Public instrumentation surface: retrieval-only replay of a question
+        (no LLM call, no answer generation, no events emitted). External
+        instrumentation layers - progressive regression probers, benchmark
+        harnesses, coverage audits - consume THIS, never the private
+        retrieval internals. Returns {context_lines, supporting_names,
+        coverage}; coverage carries the structural gate signals."""
+        lines, names, coverage = self._retrieve_local(question)
+        return {
+            "context_lines": lines,
+            "supporting_names": names,
+            "coverage": coverage,
+        }
+
     def _retrieve_local(self, question: str) -> tuple[list[str], list[str], dict]:
         """Local retrieval: vector top-k seeds, expanded by PPR when enabled,
         each node rendered with its properties and currently-valid relations.

@@ -1,0 +1,19 @@
+# Multi-hop QA benchmark PILOT (task #59): 200-passage 2wiki slice on neo4j3.
+# Purpose: validate the corpus ingest path end-to-end + measure per-passage cost
+# at the calibrated knee, before the official Llama-3.3-70B seal runs.
+# neo4j3 repinned to 172.19.0.101 post-reboot; prior R05 content dumped to
+# tmp/data-dumps/20260711-neo4j3-r05-precampaign.dump before wipe.
+neo4j:
+  uri: bolt://172.19.0.101:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 3600
+extraction:
+  recipe: enumerate
+  auto_calibrate: true
+event_log: logs/bench-pilot-events.jsonl

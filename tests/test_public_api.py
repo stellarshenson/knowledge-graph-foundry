@@ -112,3 +112,22 @@ class TestRoleBasedLLM:
             assert f.extraction_engine.model == "cheap-extractor"
             assert f.engine.model == "orchestrator-model"
             assert f.extraction_engine is not f.engine
+
+
+class TestProbeInstrumentationSurface:
+    """probe() is the public retrieval-only replay for external instrumentation."""
+
+    def test_probe_wraps_retrieval(self, monkeypatch, tmp_path):
+        from knowledge_graph_foundry.pipeline import Foundry
+        from knowledge_graph_foundry.settings import Settings
+
+        f = Foundry(Settings())
+        monkeypatch.setattr(
+            f, "_retrieve_local", lambda q: (["line1"], ["EntityA"], {"top_score": 0.9})
+        )
+        out = f.probe("what is X?")
+        assert out == {
+            "context_lines": ["line1"],
+            "supporting_names": ["EntityA"],
+            "coverage": {"top_score": 0.9},
+        }
