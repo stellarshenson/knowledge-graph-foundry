@@ -4457,3 +4457,117 @@ Four-lens hostile panel (data-scientist, methodologist, architect, bug-hunter) o
 - **REG-1 demoted in the ledger** - "passed <= 135" was measured by the yes-token criterion the ledger itself disqualifies; under the valid criterion the question scores 0.75 gold-title coverage (FAIL) at every post-fix cycle - a demonstrated regression event does NOT exist; the mechanism line is a hypothesis for H434-H437, with cap_fanout / exclude_foreign_devices / truncate_to_budget unexcluded render-side alternatives
 - **Instrument repairs shipped same evening** (details in journal): H389 numeric-token blindness fixed + entity-vs-span support split (the tautology repaired; the parse-loss prediction re-scoped at next registration touch - probes generate from chunk text and cannot see parser drops); prober rotation + per-cycle slice re-glob + trajectory-seeded regression memory + instance lock + full record provenance; fast-ramp zombie guard + boundary-read retries + warmup deadline + no-sample-taints; canonical cache key builder (orphan entry deleted); CWD-independent cache path (silent c=4 fallback off-root closed); router duplicate-carrier handling + direct-edge birth series
 - **Panel credit recorded** - occupancy guard, same-instance control, withheld H362 verdict, and R39-R43 refutation branches were independently assessed as sound by all four lenses
+
+- **R39-H389 Result (instrument shakedown, 2026-07-12 - preliminary, NOT the registered adjudication run)** - first live coverage certificates on the 2wiki medium pile (1,000 docs, 25-doc sample, [`h389-coverage-20260712T063432Z.jsonl`](../../results/r39/h389-coverage-20260712T063432Z.jsonl) + run 2): entity/property coverage **64.1% then 62.1%** (66/103, 64/103 probes) - delta 1.94 points, inside the +-2% reproducibility bar at its edge (n=2 runs); the below-90% prediction confirmed in direction, landing inside KGGen's published 30-66% retention band. Instrument discriminates (per-doc range 0.0-1.0); span column reads 0.000 across the pile - correct, no passages exist (optimize() never ran on the bench pile), so the certificate is pure entity/property support. Miss lists read as genuine extraction losses ("Wrong Turn 5: Bloodlines is a 2012 American horror film" - year/genre/nationality absent from entity content). Audit cost ~10% of ingest wall (bar <= 25%). REGISTERED adjudication (known-failure-class rediscovery clause + the re-scoped parse-loss prediction) still runs on the registered corpus; this shakedown validates the repaired instrument's failure branch is reachable and its columns honest
+
+## R44 - coverage-loss root-cause round: decompose the missing 36% (user-directed, registered 2026-07-12)
+
+User directive (2026-07-12): 20-hypothesis wide fanout, exploration/exploitation mix, on the root cause of the ~36% entity-level fact-coverage loss measured by the first H389 certificates (64.1% / 62.1% on the 2wiki medium pile, 25-doc sample, [`h389-coverage-20260712T063432Z.jsonl`](../../results/r39/h389-coverage-20260712T063432Z.jsonl) + run 2). The raw material is ON DISK: 39+39 named miss lists, the graph, and the source text - most hypotheses are offline-cheap classification. Naive baseline: every miss is a true extraction loss (the 64% read at face value); the round's job is to decompose that number into instrument artifacts, storage-shape effects, and genuine losses, each with its repair lever. Fence: R39 owns the instrument and the coverage-gated repair loop (H394); R41 owns entity pinning; R22 adjudicated variance anatomy (H231 union 100% vs 55.4% single-pass); H392 owns the typed-vs-open shadow diff going forward - H454 here CLASSIFIES misses by that lens without re-running the diff. Numbering H448-H467. Sequencing: H448 decomposition FIRST (every other hypothesis consumes its classes), then the instrument-artifact family (H449/H461/H462 - they adjust the DENOMINATOR), then the exploit classes on the residual true-miss set; H464/H467 run independently.
+
+**EXPLOIT - known loss classes (11)**
+- **H448 (conformist, the instrument)** - miss-list decomposition: every miss classified {instrument-artifact | present-but-elsewhere | truly-absent} by LLM adjudication with human-checkable evidence strings; bar: classes reproducible +-1 miss across two adjudication passes; everything downstream consumes this
+- **H449 (exploit)** - paraphrase floor: H172 entailment re-check of misses vs entity content; prediction 15-30% of misses are term-share artifacts the graph actually holds; bar: entailment-recovered misses move to instrument-artifact with evidence
+- **H450 (exploit)** - single-pass omission: re-extract the miss-carrying chunks once, check fresh emissions for the missed facts; prediction >= 30% of TRUE misses appear on pass 2 (R22-H231 economics); feeds H390's union curve directly
+- **H451 (exploit)** - storage-shape blindness: the fact was extracted but lives as a RELATIONSHIP or on the neighbor entity, invisible to the entity/property column; prediction 10-25% of misses; bar: relation-side lookup recovers them with provenance
+- **H452 (exploit)** - merge swallowing: resolution merges drop the losing node's properties/description; check misses against KGFEntityVersion pre-merge content; prediction 5-15%
+- **H453 (exploit)** - keeps-longer mutation: the loader's description replacement dropped an earlier fact-bearing description; version-history check on miss carriers
+- **H454 (exploit)** - typed-ontology drop: classify true misses by the relation vocabulary they need; prediction: a concentrated subset needs relations outside the 26 cured types (the H392 leakage class, classified not re-measured)
+- **H455 (exploit)** - chunk-boundary loss: facts spanning chunk boundaries; LOW PRIOR on 2wiki (single-chunk passages) - cheap falsification expected, keeps the class honest for CPAP
+- **H456 (exploit)** - positional saturation: misses cluster in the back half of chunk text (enumerate-recipe attention decay); bar: position distribution vs uniform null
+- **H457 (exploit)** - numeric preference: numeric-bearing probes lose at a higher rate than prose probes; prediction >= 1.5x; feeds the spec-fact repair priority
+- **H458 (exploit)** - curing-era effect: docs ingested pre-cure lose more (fluid-ontology extraction); coverage vs ingestion position with the cure point marked
+
+**EXPLORE - novel candidates (9)**
+- **H459 (explore)** - per-label-class loss profile: loss concentrates by entity type (film metadata vs person bios vs works); the profile IS the repair-targeting map
+- **H460 (explore)** - description-budget ceiling: the extractor's brevity bias truncates fact-bearing descriptions; miss rate vs description length percentile
+- **H461 (explore)** - compound-probe artifact: the generator writes multi-fact probes term-share cannot match even when parts are stored; probe length/fact-count vs miss rate; adjusts the denominator
+- **H462 (explore, contrarian)** - the 0.8 term-share threshold dominates: sensitivity sweep 0.5-0.9; CONTRARIAN CONFIRMED if the loss collapses below 0.7 (instrument re-registers), REFUTED if coverage is threshold-stable (loss is real)
+- **H463 (explore, contrarian)** - the loss is STRUCTURELESS: flat across classes, positions, types, eras - pure stochastic sampling; if confirmed, targeted repair is dead and ONLY multi-pass union (H390) pays; the null every structured hypothesis must beat
+- **H464 (explore, heretical)** - the inverse audit: the graph holds facts the SOURCE never stated (extractor world-knowledge injection); sample entity properties, groundedness-check against source; the trustworthiness flip side - a precision certificate beside the recall certificate
+- **H465 (explore)** - cross-doc rescue: the missed fact exists on the same entity from ANOTHER document (2wiki entities recur); prediction: graph-LEVEL coverage >= +10 points over per-doc coverage; changes the certificate's unit of account
+- **H466 (explore)** - structure preference: facts in enumerations/list-like text lose more than prose facts (parser+extractor both prefer prose)
+- **H467 (explore, heretical)** - coverage is corpus-class-DEPENDENT: run the certificate on the CPAP pile; prediction delta >= 15 points from 2wiki (H157's transfer logic applied to coverage); if confirmed, certificates are per-corpus artifacts, never engine constants
+
+| Hypothesis | Mix | Lever | Prediction | Bar sketch |
+|---|---|---|---|---|
+| H448 | exploit/instrument | miss decomposition | 3 classes, reproducible | +-1 miss across 2 passes |
+| H449 | exploit | entailment paraphrase floor | 15-30% artifacts | recovered with evidence |
+| H450 | exploit | pass-2 re-extraction | >= 30% of true misses | fresh-emission match |
+| H451 | exploit | relation-side lookup | 10-25% stored-elsewhere | provenance recovery |
+| H452 | exploit | merge swallowing | 5-15% | version-history evidence |
+| H453 | exploit | keeps-longer mutation | small but nonzero | version diff |
+| H454 | exploit | ontology-drop classes | concentrated subset | relation-vocab classification |
+| H455 | exploit | chunk boundaries | ~0 on 2wiki | cheap falsification |
+| H456 | exploit | positional decay | back-half clustering | vs uniform null |
+| H457 | exploit | numeric preference | >= 1.5x loss rate | class rate ratio |
+| H458 | exploit | curing era | pre-cure docs worse | position curve w/ cure mark |
+| H459 | explore | label-class profile | concentrated | profile beats uniform |
+| H460 | explore | description budget | length-percentile slope | monotone trend |
+| H461 | explore | compound probes | denominator artifact | length vs miss rate |
+| H462 | explore/contrarian | threshold sweep | loss threshold-stable | collapse below 0.7 = re-register |
+| H463 | explore/contrarian | structureless null | some structure exists | every class test vs this null |
+| H464 | explore/heretical | inverse precision audit | injection exists but small | grounded share of properties |
+| H465 | explore | cross-doc rescue | graph-level >= +10 pts | entity-level recount |
+| H466 | explore | list-vs-prose | lists lose more | class rate ratio |
+| H467 | explore/heretical | corpus-class dependence | >= 15 pt CPAP delta | cross-pile certificate |
+
+### R44-H468 Relation-type-aware fanout ranking repairs the REG-2/REG-3 crowd-out class (fix hypothesis, registered 2026-07-12 pre-code)
+
+- **Persona** - exploit (the fix candidate named by the boundary root-cause: both valid regressions share fanout-cap crowd-out - the carrier's 1-hop render ranks neighbors by LEXICAL query similarity only, and the relationally-correct neighbor loses its slot as same-type neighbors accumulate)
+- **Grounding** - REG-2/REG-3 root-cause (regression ledger 2026-07-12): "Changed It" (deg 11) renders co-performers while Nicki Minaj (deg 38, holds the birthplace) is excluded; the film node renders cast while the director (deg 12, holds the son) is excluded; H180 shipped the cap k=5-10 ranked by query similarity with zero recall loss ON THE 24-PROBE CPAP HARNESS - which never had multi-neighbor crowd-out at this scale
+- **Hypothesis** - boosting fanout candidates whose RELATION TYPE matches the query's relation vocabulary (e.g. "performer" -> PERFORMED_BY/PERFORMER_OF, "director" -> DIRECTED_BY, "child" -> CHILD_OF) flips the REG-2/REG-3 class at zero cost to currently-passing questions
+- **Prediction** - REG-2 and REG-3 answers return to the probe context; the currently-passing prober panel shows ZERO pass->fail flips; context size unchanged (same k, different ranking)
+- **Acceptance bar** - PASS if both named regressions flip to pass AND a full prober sweep over ALL currently-eligible questions shows no new failure vs the pre-fix sweep (paired comparison, same pile frozen at 1044 docs) AND the CPAP 24-probe harness stays flat; REFUTED if the regressions do not flip (the mechanism inference was wrong - back to H434-H437) or any paired regression appears (the boost trades one class for another)
+- **Experiment** - engine change behind `graphrag.fanout_relation_boost` (default off); implementation: cap_fanout ranking adds a bonus when the relation type's name tokens overlap the query tokens; A/B on the frozen 1044-doc pile: pre-fix sweep (flag off) vs post-fix sweep (flag on), paired per-question
+
+- **R44-H468 Result + Verdict (2026-07-12, same day)** - ([`h468-ab-20260712T071052Z.json`](../../results/r44/h468-ab-20260712T071052Z.json), paired A/B over 143 eligible questions on the frozen 1,044-doc pile, boost 0.15) - **REFUTED per the registered branch**: REG-2 and REG-3 did NOT flip (off False -> on False, both); elsewhere 1 gain / 1 loss - noise churn, no paired regression wave. The mechanism inference was WRONG in a specific, instructive way: the boost successfully governs WHICH NEIGHBOR NAMES enter the carrier's 1-hop render, but the ANSWERS live in the NEIGHBOR'S PROPERTIES (Port of Spain is a property of the Nicki Minaj node; the son is content of the director's node) - a fanout line renders "PERFORMED_BY -> Nicki Minaj", never her birthplace. The earlier passes plausibly had the answers because the property-carrying entity was itself a SEED (top-16) whose own node render includes properties; corpus growth diluted it out of the seed set - SEED dilution of the property carrier, not fanout ranking. Revised mechanism routes to Family D (H434-H436 seed-space crowding) and the render design question (should relation-matched neighbors pull their properties at 1 hop - a 2-hop-lite lever for R40/H400). The `fanout_relation_boost` flag ships default-off (tested, harmless, may compose later); no default change
+
+- **R44-H448 Result + Verdict (2026-07-12)** - two adjudication passes over the 76 misses ([`h448-decomposition-20260712T070454Z.jsonl`](../../results/r44/h448-decomposition-20260712T070454Z.jsonl) + run 2): ABSENT 37 vs 35, ELSEWHERE 20 vs 22, ARTIFACT 19 vs 19 - **PARTIAL**: the registered +-1 clause missed (two boundary misses wobble between ABSENT and ELSEWHERE), but the decomposition is stable at the share level: **true extraction loss 46-49% of misses (~17-18% of all probes), storage-shape 26-29%, instrument artifact 25%**. Consequences: the honest graph-holds-it-somewhere coverage is ~82%; H451 (storage-shape) and H449 (paraphrase floor) have measured targets; repair levers get credit only against the ABSENT class. Cross-finding from the REG-3 forensics (same day): some prober "regressions" are coverage misses flickering through shallow string-luck passes - the answer-in-context criterion needs a coherence check (answer adjacent to gold entities); feeds R42-H414-class instrument work and reframes part of the regression ledger
+
+## R45 - metric-sensitivity screen via hand-repair: which instruments see the disease (user-directed, registered 2026-07-12)
+
+User protocol (verbatim intent): measure a deliberately OVER-WIDE metric array on the current graph (temporary over-instrumentation - even exotic metrics - so blind ones can be RULED OUT later); hand-repair the graph until, under identical conditions, ALL hidden entities recover (best effort to 100%, pause only on complete stall); re-measure; metrics that MOVE between sick and repaired graphs are root-cause indicators, flat ones retire. Same differential around the H450 second extraction pass. Dumps preserved at every stage: pre-repair, post-repair, pre-pass-2, post-pass-2. The hidden set = the H448 ABSENT misses (35-37) + the REG-2/REG-3 gold facts. Verdict rule per metric: |relative delta| >= 2% between sick and repaired = MOVED (indicator), else BLIND (retire for this pathology class); repair edits are provenance-marked (`r45_repair`) and the repaired graph is a REFERENCE artifact, never a production state. Fence: R43 owns ingestion-time-series change-points; R44 owns the loss decomposition; R45 owns METRIC SENSITIVITY to the repair differential. Numbering H469-H488.
+
+**Classic graph-theory (predicted mostly BLIND - repair is local, topology is global)**
+- H469 degree moments (mean/max/variance/skew) - predicted BLIND (<2%)
+- H470 component structure (count, giant share, isolates) - predicted BLIND
+- H471 k-core profile (max core, core sizes) - predicted BLIND
+- H472 clustering coefficient (global + mean local) - predicted BLIND
+- H473 degree assortativity - predicted BLIND
+- H474 top-k Laplacian spectrum / spectral gap (LAD-class) - predicted marginal MOVE (new edges perturb spectrum weakly)
+- H475 hub condensation (k_max/E, top-hub share) - predicted BLIND
+- H476 giant-component mean path length (sampled) - predicted BLIND
+
+**Retrieval/embedding space (predicted MOVE - repair changes what queries can find)**
+- H477 kNN hubness skewness (N_k distribution over entity embeddings) - predicted marginal MOVE (repaired entities re-embed)
+- H478 query-neighborhood density at the hidden-set questions (mean top-16 cut score) - predicted MOVE
+- H479 seed-rank margin of gold carriers on the hidden-set questions - predicted STRONG MOVE (the recovery mechanism itself)
+
+**KGF-semantic (predicted STRONG MOVE - repair writes exactly here)**
+- H480 property density (props/entity, description length dist) - predicted STRONG MOVE on touched entities, graph-mean MOVE >= 2%
+- H481 relation-type entropy + vocabulary size - predicted MOVE (new edge types from repairs)
+- H482 provenance density (source_chunks per entity) - predicted MOVE
+- H483 orphan/isolate + singleton-type share - predicted MOVE (repairs connect isolates)
+- H484 facts-per-entity yield (certificate probes supported per entity) - predicted STRONG MOVE (the target variable)
+
+**Exotic (the rule-out candidates)**
+- H485 Heaps/Zipf exponents on entity names - predicted BLIND
+- H486 Ollivier-Ricci curvature (sampled edges) - predicted BLIND (exotic screen)
+- H487 von Neumann graph entropy (normalized Laplacian spectral entropy) - predicted marginal, likely BLIND
+- H488 motif census (triangles/wedges/3-paths sampled) - predicted BLIND
+
+Prediction summary pre-registered: the SEMANTIC family moves, the TOPOLOGY family is blind - if topology DOES move, the repair changed more than intended (check edits); if semantics DON'T move, the sweep instrument is broken. The screen's deliverable: the retained indicator panel for graph-health monitoring going forward.
+
+**Repair hypotheses (user-directed addition, H489-H498) - the hand-repair loop is itself an experiment; every repair action recorded with before/after evidence**
+- H489 property-write suffices for certificate recovery: writing the missing fact into the carrier entity's description/properties flips the certificate probe - predicted >= 80% of ABSENT misses recover by this template alone
+- H490 edge-creation required for multi-hop: REG-class questions (fact = relation between entities) do NOT recover from property text alone - the typed edge (e.g. BORN_IN) must exist for the render to carry it - predicted for all relation-shaped hidden facts
+- H491 placement locality: the same fact written on the question's SEED entity recovers; written only on the distal entity it does not (render locality law) - adjudicated by paired placement trials on >= 5 facts
+- H492 re-embedding requirement: repairs do not move seed ranks until the touched entity re-embeds - predicted stale-embedding gap observable between edit and re-embed
+- H493 concentration: <= 20% of touched entities carry >= 80% of hidden facts - repair effort is concentrated, not uniform
+- H494 no interference: no repair flips any previously-passing probe to fail (paired prober sweep before/after each batch) - a single interference case halts the loop for root-cause
+- H495 (contrarian) irreducible residue: some hidden entities cannot be recovered by graph edits alone (question defects, instrument defects, source ambiguity) - the 100% target stalls on a residue predicted <= 10%; each residue case gets a named reason
+- H496 cross-instrument transfer: repairs made for certificate misses also flip prober/regression questions touching the same entities - predicted >= 1 REG-class flip from certificate-driven repairs
+- H497 mechanizability: >= 80% of successful repairs follow <= 3 templates (write-property / add-edge / alias-merge) - the template census becomes the spec for automated repair (H394's targeted re-extraction)
+- H498 repair cost: median <= 2 graph edits per hidden fact; the heavy tail (>= 5 edits) identifies the pathological class worth engine attention
+
+Repair ledger: every edit recorded in `results/r45/repair-ledger.jsonl` (fact, entity, template, edits, probe flip evidence, timestamp); dumps at pre-repair / post-repair / pre-pass-2 / post-pass-2 per the dump rule.

@@ -1358,6 +1358,8 @@ class Foundry:
                         ).data(),
                         qv,
                         cap,
+                        query_text=question,
+                        relation_boost=self.settings.graphrag.fanout_relation_boost,
                     )
                 else:
                     rows = session.run(

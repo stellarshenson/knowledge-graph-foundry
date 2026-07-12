@@ -145,6 +145,7 @@ class GraphRAGSettings(BaseModel):
     top_k: int = 16  # R15-H53: vector seed budget (+28% relative pure-seed recall over 8)
     overfetch_factor: int = 4  # R15-H195a: fetch top_k*factor then truncate to top_k (GEN_K=64/16)
     fanout_cap: int = 5  # R19-H180: query-ranked 1-hop neighbor cap per seed (0 disables)
+    fanout_relation_boost: float = 0.0  # R44-H468: >0 boosts candidates whose relation type matches the query vocabulary (REG-2/3 crowd-out fix); 0 = off
     miss_detector: bool = True  # R19-H181: short-circuit to an abstention render on the miss class
     miss_threshold: float = 0.668  # R19-H181: top-seed similarity below which the detector fires
     escalation_gate: bool = False  # R37-H382: sufficiency-gated render escalation

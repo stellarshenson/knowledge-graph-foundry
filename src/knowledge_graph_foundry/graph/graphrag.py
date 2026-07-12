@@ -148,17 +148,48 @@ def _query_similarity(query_embedding: list[float], emb: Optional[list[float]]) 
     return float(sum(a * b for a, b in zip(query_embedding, emb)))
 
 
+def _relation_match(query_tokens: set[str], rel_type: str) -> bool:
+    """True when a relation-type token shares a >=5-char stem with a query
+    token ('performer' ~ PERFORMED_BY, 'director' ~ DIRECTED_BY, 'child' ~
+    CHILD_OF at the >=4-char exact-token level)."""
+    for rt in rel_type.lower().split("_"):
+        if len(rt) < 4:
+            continue
+        for qt in query_tokens:
+            if len(qt) < 4:
+                continue
+            stem = min(len(rt), len(qt), 5)
+            if rt[:stem] == qt[:stem]:
+                return True
+    return False
+
+
 def cap_fanout(
-    rows: list[dict[str, Any]], query_embedding: list[float], k: int
+    rows: list[dict[str, Any]],
+    query_embedding: list[float],
+    k: int,
+    query_text: str = "",
+    relation_boost: float = 0.0,
 ) -> list[dict[str, Any]]:
     """R19-H180: rank 1-hop neighbor rows by similarity of the neighbor embedding
     (``row['emb']``) to the query, keep the top ``k``. Zero recall loss at k=5 on
-    the R19 census; ``k <= 0`` leaves the rows unbounded."""
+    the R19 census; ``k <= 0`` leaves the rows unbounded.
+
+    R44-H468 (behind ``relation_boost > 0``): candidates whose relation TYPE
+    matches the query's relation vocabulary get a rank bonus - the lexical-only
+    ranking crowded the relationally-correct neighbor out of the capped slots
+    as same-type neighbors accumulated (REG-2/REG-3 mechanism)."""
     if k <= 0:
         return rows
-    ranked = sorted(
-        rows, key=lambda r: _query_similarity(query_embedding, r.get("emb")), reverse=True
-    )
+    q_tokens = set(query_text.lower().split()) if (relation_boost > 0 and query_text) else set()
+
+    def score(r):
+        s = _query_similarity(query_embedding, r.get("emb"))
+        if q_tokens and _relation_match(q_tokens, r.get("rel") or ""):
+            s += relation_boost
+        return s
+
+    ranked = sorted(rows, key=score, reverse=True)
     return ranked[:k]
 
 

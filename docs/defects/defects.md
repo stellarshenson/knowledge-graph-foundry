@@ -18,6 +18,7 @@
 - [DEF-12: pipeline feeds the GPU at 3-5% of its measured ceiling](#def-12-pipeline-feeds-the-gpu-at-3-5-of-its-measured-ceiling) - open
 - [DEF-13: coverage residue - failed probes are entities never extracted from source](#def-13-coverage-residue---failed-probes-are-entities-never-extracted-from-source) - open
 - [DEF-14: recall harness omits the engine's overfetch - measured maps understate the shipped read path](#def-14-recall-harness-omits-the-engines-overfetch---measured-maps-understate-the-shipped-read-path) - fixed
+- [DEF-15: kgf ingest process hangs after completion](#def-15-kgf-ingest-process-hangs-after-completion) - open
 
 ### DEF-1: Per-mention re-embedding on every document
 
@@ -112,3 +113,8 @@
 - [x] MEDIUM the pinned recall@16 harness (`notebooks/h158_measure.py`) queries the vector index at raw top_k=16 while the shipped engine reads through `overfetch_seeds` with `overfetch_factor=4` (R15-H195a: fetch top_k*4, truncate to top_k); on the fresh pile the head-16 of a 64-fetch differs from a direct 16-fetch (ANN search-depth effect) and flips P21 0.0 -> 1.0 by itself (baseline 0.8542 -> 0.8958); cause: harness written against the pre-H195a read path and never re-pinned; consequence: within-harness A/Bs stay valid (consistent instrument) but absolute maps understate the engine and retrieval-side gains partially overlap overfetch's recovery; fix: engine parity is now the harness DEFAULT (`overfetch_seeds` with the settings factor), `overfetch_factor` stamped in every report, `overfetch_factor=1` reproduces the pre-parity instrument; `notebooks/h158_measure.py`
   - 2026-07-10 reported: discovered by the H369 base arm (overfetch-64-head-16) scoring 0.8958 vs the direct-16 map's 0.8542 on the identical graph; single differing probe P21
   - 2026-07-10 fixed: parity mode default + instrument stamp shipped with the R34 engine tranche; maps measured before this date carry no overfetch_factor field and compare only against overfetch_factor=1 runs
+
+### DEF-15: kgf ingest process hangs after completion
+
+- [ ] the `kgf ingest` CLI printed its completion summary ("ingested 799 documents... ontology cured", 00:30) but the process never exited - hung 7h+ with vLLM at 0 running until SIGKILLed; cause: suspected non-daemon thread(s) surviving main (same class as the r30_fast_ramp zombie fixed 2026-07-11 - candidate: extraction ThreadPoolExecutor or document_concurrency look-ahead executor not shut down on the completion path); fix: audit executor/thread lifecycle in `pipeline.ingest` + CLI exit path, add shutdown(cancel_futures) finally; `src/knowledge_graph_foundry/pipeline.py`
+  - 2026-07-12 reported: medium-slice bench ingest (800 passages, neo4j3) completed 00:30, process alive 16h47m at kill; boundary protocol delayed 7h because the watcher keyed on process exit - watcher lesson recorded (key on the completion LINE, not the process)
