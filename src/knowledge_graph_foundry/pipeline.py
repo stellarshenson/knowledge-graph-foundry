@@ -521,6 +521,14 @@ class Foundry:
                 }
             )
 
+        # R35-H371: ABOUT edges link globally once per run, after every
+        # document's entities are in the graph (a question stored before its
+        # chunk's entities loaded gets linked here); idempotent MERGE
+        if self.settings.questions.enabled and summary["documents"]:
+            from knowledge_graph_foundry.graph.questions import link_question_entities
+
+            summary["question_links"] = link_question_entities(self.driver)
+
         emit("load.completed", **summary)
         return summary
 
@@ -573,6 +581,13 @@ class Foundry:
         )
         if self.settings.load.provenance_nodes:
             self._load_provenance(document, chunks, source_name)
+            if self.settings.questions.enabled:
+                # R35-H371: questions are an additive retrieval layer - their
+                # failure must not lose the document's entities
+                try:
+                    self._generate_questions(chunks)
+                except Exception as exc:
+                    logger.warning(f"question generation unavailable, continuing: {exc}")
         return result.entities, result.relationships
 
     def _document_units(self, file_path: Path) -> "list[tuple[str, Optional[Document]]]":
@@ -674,6 +689,57 @@ class Foundry:
                 doc_id=document.id,
             ).consume()
 
+    def _generate_questions(self, chunks) -> None:
+        """R35-H371: fixed-N expectation questions per chunk - generated on the
+        extraction engine, groundedness-gated (Doc2Query-- clause), deduplicated
+        by normalized text, embedded in the live query space and stored as
+        KGFQuestion nodes with ANSWERABLE_FROM edges to their source chunks.
+        ABOUT edges are linked globally at ingest close (entities land in the
+        graph after the chunks that mention them)."""
+        from knowledge_graph_foundry.graph.questions import (
+            ensure_question_index,
+            gate_questions,
+            generate_questions,
+            question_id,
+            store_questions,
+        )
+
+        cfg = self.settings.questions
+        per_chunk = generate_questions(
+            chunks,
+            self.extraction_engine,
+            cfg.per_chunk,
+            concurrency=self._extraction_concurrency(),
+        )
+        merged: dict[str, dict] = {}
+        n_pairs = n_gated = 0
+        for chunk in chunks:
+            pairs = per_chunk.get(chunk.id, [])
+            n_pairs += len(pairs)
+            gated = gate_questions(pairs, chunk.text)
+            n_gated += len(gated)
+            for pair in gated:
+                record = merged.setdefault(
+                    question_id(pair["q"]),
+                    {"text": pair["q"], "answer": pair["a"], "chunk_ids": []},
+                )
+                if chunk.id not in record["chunk_ids"]:
+                    record["chunk_ids"].append(chunk.id)
+        if not merged:
+            emit("questions.generated", pairs=n_pairs, gated=0, stored=0)
+            return
+        vectors = self._embed_query_texts([r["text"] for r in merged.values()])
+        rows = [
+            {"id": qid, "embedding": vector, **record}
+            for (qid, record), vector in zip(merged.items(), vectors)
+            if vector
+        ]
+        ensure_question_index(
+            self.driver, self.settings.graphrag.vector_dimensions, cfg.index_name
+        )
+        stored = store_questions(self.driver, rows)
+        emit("questions.generated", pairs=n_pairs, gated=n_gated, stored=stored)
+
     def _embed(self, entities: list[Entity]) -> list[Entity]:
         from knowledge_graph_foundry.extraction import generate_embeddings
 
@@ -690,6 +756,16 @@ class Foundry:
         probes = [
             Entity.create(f"t{i}", types=["Type"], description=t) for i, t in enumerate(texts)
         ]
+        embedded = generate_embeddings(probes, self.settings.embeddings)
+        return [e.embedding or [] for e in embedded]
+
+    def _embed_query_texts(self, texts: list[str]) -> list[list[float]]:
+        """Embed texts with the harness query wrapping (types=["Query"]) - the
+        exact space the live query embedding uses, so questions and queries
+        match in the same space (R35-H371)."""
+        from knowledge_graph_foundry.extraction import generate_embeddings
+
+        probes = [Entity.create(t[:80], types=["Query"], description=t) for t in texts]
         embedded = generate_embeddings(probes, self.settings.embeddings)
         return [e.embedding or [] for e in embedded]
 
@@ -1436,7 +1512,44 @@ class Foundry:
             except Exception as exc:
                 logger.warning(f"passage escalation unavailable: {exc}")
 
+        # R35-H371: question channel - the top-M question matches seed their
+        # ANSWERABLE_FROM chunks and ABOUT entities into the render, composed
+        # with the base entity channel (M=1: mean 1.0, 24/24 on the parity
+        # instrument, zero regressions). Purely additive - the base render
+        # above is untouched; no questions in the graph means no blocks.
+        question_blocks, question_names = self._question_channel(qv)
+        context_lines.extend(question_blocks)
+        for name in question_names:
+            if name not in supporting:
+                supporting.append(name)
+
         return context_lines, supporting, coverage
+
+    def _question_channel(self, query_embedding) -> tuple[list[str], list[str]]:
+        """R35-H371 question-channel seeding: render blocks for the top-M
+        question-matched chunks (chunk text + the ABOUT entities). No-op when
+        disabled, when M <= 0, when the graph carries no KGFQuestion nodes, or
+        when the channel errors (the base render must never lose to it)."""
+        cfg = self.settings.questions
+        if not cfg.enabled or cfg.channel_m <= 0 or not query_embedding:
+            return [], []
+        from knowledge_graph_foundry.graph.questions import question_query
+
+        try:
+            hits = question_query(self.driver, query_embedding, cfg.index_name, cfg.channel_m)
+        except Exception as exc:
+            logger.debug(f"question channel unavailable: {exc}")
+            return [], []
+        blocks: list[str] = []
+        names: list[str] = []
+        for hit in hits:
+            block = f"## Question match: {hit['question']}\n"
+            if hit["entity_names"]:
+                block += "About: " + ", ".join(hit["entity_names"]) + "\n"
+            block += "\n".join(c["text"] for c in hit["chunks"] if c.get("text"))
+            blocks.append(block)
+            names.extend(n for n in hit["entity_names"] if n not in names)
+        return blocks, names
 
     def current_relationships(self, entity_id: str) -> list[dict]:
         """Currently-valid outgoing edges of an entity (R1 time-aware read)."""

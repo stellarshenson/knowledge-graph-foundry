@@ -1,0 +1,49 @@
+{
+  "verification": "H371 wiring - ingest arm (throwaway scratch)",
+  "generated": "20260712T172941Z",
+  "graph_uri": "bolt://172.19.0.8:7687",
+  "corpus": "/tmp/claude-1000/-home-lab-workspace-learning-projects-knowledge-graph-foundry/fc7e72c3-d87e-4a10-8035-a7299b3cea8d/scratchpad/h371-mini-corpus",
+  "ingest_summary": {
+    "documents": 2,
+    "entities": 283,
+    "relationships": 276,
+    "cured": true,
+    "question_links": 44
+  },
+  "counts": {
+    "documents": 2,
+    "chunks": 4,
+    "entities": 177,
+    "questions": 32,
+    "answerable_from": 32,
+    "about": 44,
+    "questions_with_embedding": 32,
+    "provenance_source_ingest": 32
+  },
+  "question_index_present": true,
+  "sample_questions": [
+    {
+      "text": "What is the pressure range of the REMstar Auto?",
+      "answer": "4-20 cm H2O"
+    },
+    {
+      "text": "Which humidifier corresponds to part number IN6H?",
+      "answer": "System One 60 Series humidifer"
+    },
+    {
+      "text": "What is the weight of the device without the humidifier?",
+      "answer": "3 lbs; 1.36 kg (without humidifer)"
+    },
+    {
+      "text": "Which therapy modes are available on the REMstar Auto?",
+      "answer": "CPAP, Auto, CPAP-Check, Auto-Trial"
+    },
+    {
+      "text": "What feature provides comfort by adjusting pressure?",
+      "answer": "A-Flex for comfort"
+    }
+  ],
+  "probe_question_blocks": [
+    "## Question match: What is the pressure range of the DreamStation CPAP?\nAbout: DreamStation CPAP\n\n\n# Key Content **_Dream_** _Station_ \n\nCPAP \n\n## DreamStation helps support long-term patient use . while creating **new efficiencies for your business** \n\n**Connectivity** options offer more monitoring choices than any leading CPAP brand with integrated Bluetooth on every device, and offering optional Wi-Fi and cellular modems.* \n\n**Performance Check** simplifies in-home device evaluation and can help reduce the number of normally functioning devices that are returned for service. \n\n**Daily Progress Feedback** displays a simple trend of patients' nightly use to help track progress on the path to adherence. \n\n### **CPAP features** \n\n- C-Flex \n\n- SmartRamp \n\n- Basic AHI/Leak reporting \n\n- Standard integrated Bluetooth \n\n#### **DreamStation features** \n\n- Mask type resistance control \n\n- Mask fit check \n\n- Oximetry capable \n\n- Encore patient management system with optional Adherence Profiler \n\n- DreamMapper patient self-management system compatibility \n\n#### **Humidification** \n\n- Fixed, adaptive, heated tube \n\n- Pre-heat humidifier option \n\n- Modular design with one-piece, dishwasher-safe water chamber \n\n#### **Protection programs** \n\n- Flex Promise program \n\n- Bi-level Rescue program \n\n- \"One-Touch\" warranty programs \n\n***Internal assessment of 2015 competitive CPAP data comparing to ResMed Airsense10/Aircurve10 platform and Fisher & Paykel Icon series platform. The Bluetooth word mark and logos are registered trademarks owned by Bluetooth SIG, Inc. and the use of such marks by Philips Respironics is under license. Other trademarks and trade names are those of their respective owners.** \n\n## DreamStation CPAP \n\n||**Comfort features**||\n|---|---|---|\n|**Modes**|**Features**|**Flex Comfort**|\n|Fixed CPAP|N/A|C- Flex|\n\n\n\n#### **Encore data capture and reporting** \n\n**Advanced Event Flow Waveforms Detection** N/A N/A \n\n## Specifications \n\n## Ordering information \n\n|**DreamStation CPAP**||\n|---|---|\n|Pressure range|4 to 20 cm H2O|\n|Flex pressure relief|0 to 3|\n|Ramp time|0 to 45 min (5- minute increments)|\n|Starting ramp<br>pressure|4 cm H2O to CPAP Pressure (CPAP)|\n|Humidifcation|Heated humidifcation: Fixed, Adaptive,<br>Heated Tube modes; Heated Tube<br>(optional)|\n|Data storage<br>capacity (minimum)|SD card: > 1 year On- board: <6 months|\n|Altitude<br>compensation|Automatic|\n|Filters|Reusable pollen; disposable ultra- fne|\n|Device controls|LCD, control dial/push button|\n|Warranty|2 years (US)|\n|Dimensions|15.7x19.3x8.4cm (w/o humidifer)<br>29.7x19.3x8.4cm (w/ humidifer)|\n|Weight|1.33kg/2.94lbs (w/o humidifer)<br>1.98kg/4.37lbs (w/humidifer)<br>Incl. power supply|\n|Electrical<br>requirements|100 - 240 VAC, 50/60 Hz, 2.0- 1.0 A|\n\n\n\n## Ordering information \n\n|**DreamStation CPAP**|**Part number**|\n|---|---|\n|DreamStation CPAP|DSX200S11|\n|DreamStation CPAP with humidifer|DSX200H11|\n|DreamStation CPAP with humidifer<br>and heated tube|DSX200T11|\n|**Power supply**|**Part number**|\n|DreamStation 80-watt power supply|1118499|\n|Power cord|1005894|\n\n\n\n|**Humidifcation**|**Part number**|\n|---|---|\n|DreamStation humidifer|DSXH|\n|DreamStation water chamber|1122520|\n|RP-DS Humidifer Dry Box Assembly|1120668|\n|RP-DS Humidifer Flip Lid Seal|1120617|\n|RP-DS Humidifer Dry Box Inlet Seal|1120613|\n|**Tubes**|**Part number**|\n|15MM Std Tube - DreamStation - RP|PR15|\n|15MM Heated Tube|HT15|\n|**Filters**|**Part number**|\n|Pollen flter, reusable (1 per pack)|1122446|\n|Ultra-fne flter, disposable (1 per pack)|1122447|\n|Ultra-fne flter, disposable (2 per pack)|1122518|\n|Ultra-fne flter, disposable (6 per pack)|1122519|\n|**Accessories**|**Part number**|\n|Link module|1120293|\n|Nonin SpO2, assembly|1121694|\n|Reuseable fnger sensor (clip)|936|\n|Oximetry fnger sensor, adult, fex|953|\n|Flexiwrap, sens tape, adult, 25/pk|954A|\n|Reuseable fnger sensor (soft), medium|1062050|\n|Reuseable fnger sensor (soft), small|1062051|\n|**Modems**|**Part number**|\n|Cellular modem, oximetry capable|100600C|\n|Cellular modem, non-oximetry|100605C|\n|Wi-Fi accessory, oximetry capable|100700W|\n|Wi-Fi accessory, non-oximetry|100705W|\n\n\n\n 2015 Koninklijke Philips N.V. All rights reserved. Specifications are subject to change without notice. Trademarks are the property of Koninklijke Philips N.V. (Royal Philips) or their respective owners. \n\nwww.philips.com \n\n\n\nCaution: US federal law restricts these devices to sale by or on the order of a physician. \n\nedoc EB 11/12/15 MCI 4107064 1010 Murry Ridge Lane, Murrysville, PA 15668 800-345-6443 \u2022 724-387-4000 \n\n\nKey Content\nConnectivity options offer more monitoring choices than any \nleading CPAP brand with integrated Bluetooth on every device, \nand offering optional Wi-Fi and cellular modems. *\nPerformance Check simplifies in-home device evaluation and can \nhelp reduce the number of normally functioning devices that are \nreturned for service. \nDaily Progress Feedback displays a simple trend of patients' \nnightly use to help track progress on the path to adherence.\nDreamStation features\n\u2022 Mask type resistance control\n\u2022 Mask fit check\n\u2022 Oximetry capable\n\u2022 Encore patient management system with optional \nAdherence Profiler\n\u2022 DreamMapper patient self-management system compatibility\nHumidification\n\u2022 Fixed, adaptive, heated tube\n\u2022 Pre-heat humidifier option\n\u2022 Modular design with one-piece, dishwasher-safe water chamber\nProtection programs\n\u2022 Flex Promise program\n\u2022 Bi-level Rescue program\n\u2022 \"One-Touch\" warranty programs\nCPAP features\n\u2022 C-Flex\n\u2022 SmartRamp\n\u2022 Basic AHI/Leak reporting\n\u2022 Standard integrated Bluetooth\nDreamStation\nCPAP\nDreamStation helps support long-term patient use \nwhile creating new efficiencies for your business.\n*Internal assessment of 2015 competitive CPAP data comparing to ResMed Airsense10/Aircurve10 platform and Fisher & Paykel Icon series platform.\nThe Bluetooth word mark and logos are registered trademarks owned by Bluetooth SIG, Inc. and the use of such marks by Philips Respironics is under license.  \nOther trademarks and trade names are those of their respective owners.\n 2015 Koninklijke Philips N.V. All rights reserved. \nSpecifications are subject to change without notice. \nTrademarks are the property of Koninklijke Philips N.V. \n(Royal Philips) or their respective owners.\nwww.philips.com\nCaution: US federal law restricts these devices to \nsale by or on the order of a physician.\nedoc EB 11/12/15 MCI 4107064\n1010 Murry Ridge Lane, Murrysville, PA 15668 \n800-345-6443 \u2022 724-387-4000\nSpecifications\nDreamStation CPAP\nOrdering information\n4 to 20 cm H2O\n0 to 3\n0 to 45 min (5- minute increments)\n4 cm H2O to CPAP Pressure (CPAP)\nHeated humidification: Fixed, Adaptive,\nHeated Tube modes; Heated Tube  \n(optional)\nSD card: > 1 year On- board: <6 months\nAutomatic\nReusable pollen; disposable ultra-  fine\nLCD, control dial/push button\n2 years (US)\n15.7x19.3x8.4cm (w/o humidifier) \n29.7x19.3x8.4cm (w/ humidifier)\n1.33kg/2.94lbs (w/o humidifier)\n1.98kg/4.37lbs (w/humidifier)\nIncl. power supply\n100 - 240 VAC, 50/60 Hz, 2.0- 1.0 A\nPressure range\nFlex pressure relief\nRamp time\nStarting ramp\npressure\nHumidification\nData storage\ncapacity (minimum)\nAltitude \ncompensation\nFilters\nDevice controls\nWarranty\nDimensions\nWeight\nElectrical\nrequirements\nPart number\nDSX200S11\n"
+  ]
+}

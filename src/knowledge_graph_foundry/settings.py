@@ -132,10 +132,26 @@ class DriftSettings(BaseModel):
     window: int = 3
     rebuild_jsd_threshold: float = 0.15
     contradiction_rate_threshold: float = 0.2  # R8: fact-drift alarm on invalidations/window
-    cusum_enabled: bool = False  # R36-H378/DEF-9: CUSUM recure trigger (H317) replacing the anti-phase boolean; default off until the drift replay verdict
+    cusum_enabled: bool = True  # R36-H378/DEF-9: CUSUM recure trigger (H317) replacing the anti-phase boolean; promoted default-on 2026-07-12 (end-to-end drift replay passed, user approval)
     cusum_k: float = 0.02  # H317 slack: per-doc JSD drift tolerated above baseline
     cusum_h: float = 0.30  # H317 decision threshold on the accumulated excess
     recure_adopt_share: float = 0.05  # RECURING exit: window-mass share above which a drifted type is adopted into the cured ontology
+
+
+class QuestionSettings(BaseModel):
+    """R35-H371: expectation questions as retrieval targets. A fixed count of
+    question-answer pairs is generated per chunk at ingest on the extraction
+    engine, groundedness-gated (Doc2Query-- clause: the answer must be present
+    in the source chunk), embedded in the live query space and stored as
+    KGFQuestion nodes with ANSWERABLE_FROM (chunk) and ABOUT (entity) edges.
+    Retrieval seeds the render from the top-M question matches - M=1 composed
+    with the base entity channel reached mean recall 1.0, 24/24 on the DEF-14
+    parity instrument (first lever to cover every probe, zero regressions)."""
+
+    enabled: bool = True
+    per_chunk: int = 8  # registered fixed-count generation budget per chunk
+    channel_m: int = 1  # retrieval: top-M question-matched chunks seed the render
+    index_name: str = "kgf_question_embeddings"
 
 
 class GraphRAGSettings(BaseModel):
@@ -203,6 +219,7 @@ class Settings(BaseModel):
     resolution: ResolutionSettings = ResolutionSettings()
     curing: CuringSettings = CuringSettings()
     drift: DriftSettings = DriftSettings()
+    questions: QuestionSettings = QuestionSettings()
     graphrag: GraphRAGSettings = GraphRAGSettings()
     load: LoadSettings = LoadSettings()
     event_log: Optional[str] = None  # path to JSONL event log, None disables

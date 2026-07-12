@@ -3,7 +3,7 @@
 from knowledge_graph_foundry.drift import DriftDetector, _jsd
 from knowledge_graph_foundry.settings import DriftSettings
 
-CFG = DriftSettings()  # remap 0.3, window 3, rebuild jsd 0.15
+CFG = DriftSettings(cusum_enabled=False)  # boolean-path config (cusum default-on since 2026-07-12): remap 0.3, window 3, rebuild jsd 0.15
 CURED = {"Product": 50, "Component": 30, "Specification": 20}
 
 
@@ -141,7 +141,7 @@ class TestCusumTrigger:
         assert all(a == "none" for a in actions)
 
     def test_flag_off_keeps_boolean_path(self):
-        d = DriftDetector(DriftSettings(), CURED)
+        d = DriftDetector(DriftSettings(cusum_enabled=False), CURED)
         for _ in range(3):
             d.record_document(0.05, CURED)
         drifted = {"Alien": 40, "Product": 10}

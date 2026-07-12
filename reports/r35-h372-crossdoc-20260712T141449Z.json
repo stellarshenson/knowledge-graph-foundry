@@ -1,0 +1,47 @@
+{
+  "hypothesis": "R35-H372 entity-scoped cross-document questions",
+  "generated": "20260712T141449Z",
+  "graph_uri": "bolt://172.19.0.100:7687",
+  "gate_dependency": "H371 passed its gate (see r35-h371-questions-20260712T111111Z.json) - dependency satisfied",
+  "fanout_budget": {
+    "scored_pairs": 17355,
+    "blocked_to": 150,
+    "max_partners_per_entity": 6,
+    "blocking": "co-type + shared normalized prop-key stem + disjoint document sets",
+    "clause": "SATISFIED - no quadratic generation"
+  },
+  "generation": {
+    "qa_generated": 290,
+    "grounded": 289,
+    "two_sided_gated_stored": 198,
+    "note": "every stored question maps ANSWERABLE_FROM to exactly 2 chunks from disjoint documents"
+  },
+  "provenance": {
+    "h371": {
+      "nodes": 1850,
+      "r35_prototype_marked": 1850
+    },
+    "h372": {
+      "nodes": 198,
+      "r35_prototype_marked": 198
+    }
+  },
+  "combined_measure_report": "reports/r35-h371-questions-20260712T141353Z.json",
+  "combined_measure": {
+    "instrument": "engine parity (DEF-14), overfetch_factor 4, top_k 16",
+    "qg_1_mean": 1.0,
+    "fully_covered": "24/24",
+    "regressions": [],
+    "P15": 1.0
+  },
+  "standalone_p15_analysis": {
+    "base_P15": 0.5,
+    "top_crossdoc_match": "Which device is heavier, the DreamStation CPAP or the REMstar Auto A-Flex? (cos 0.759)",
+    "crossdoc_chunks_alone_cover": {
+      "1.98kg": true,
+      "2.4 kg": false
+    },
+    "finding": "no generated pair question reaches the '2.4 kg with InH2 humidifier' gold because that value was never extracted as an entity property - entity-scoped generation is bounded by extraction coverage; the registered specimen flips only in composition with the entity render, which the H371 within-doc channel already achieves alone"
+  },
+  "verdict": "PARTIAL - all registered bar clauses pass literally (P15 -> 1.0, zero regressions, capped fanout, gated on H371) but the flip is not uniquely attributable to the cross-doc object: the control (H371 alone) already flips P15 at parity, and the cross-doc object structurally cannot carry never-extracted values; 2Wiki bridge-class generalization untested on this pile"
+}

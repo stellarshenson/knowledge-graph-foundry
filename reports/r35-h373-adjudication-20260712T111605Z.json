@@ -1,0 +1,199 @@
+{
+  "hypothesis": "R35-H373 gap-ledger top-20 manual adjudication (registered precision proxy)",
+  "generated": "20260712T111605Z",
+  "ledger_report": "reports/r35-h373-ledger-20260712T111124Z.json",
+  "bar": ">= 50% of top-20 entries correspond to verifiable graph gaps",
+  "top20_verified_gaps": 12,
+  "precision_inclusive": 0.6,
+  "top20_verified_gaps_strict_value": 9,
+  "precision_strict": 0.45,
+  "all_20_chunk_grounded": true,
+  "refuted_clause_generation_noise": "did not fire - 0/20 ungrounded; the false-positive mode is retrieval-side misses of facts the graph already has (8/20)",
+  "known_gap_rediscovery": {
+    "P08_9.0W": "ledger rank 366/628 (121/180 among extraction gaps) - rediscovered blind but not top-ranked",
+    "spec_table_losses": "9 of 12 verified gaps are part-number/spec table rows - the pre-H365 spec-unreachability class, machine-rediscovered"
+  },
+  "verdict": "CONFIRMED - 12/20 (60%) verifiable gaps, above the 50% bar; strict-value variant 9/20 (45%) noted honestly",
+  "items": [
+    {
+      "rank": 1,
+      "question": "What is the part number for the EasyLife DuoPack with headgear, medium (two cushion sets*)?",
+      "answer": "1050007",
+      "top_score": 0.9565,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "PN 1050007 grounded in chunk, absent from graph; sibling EasyLife PNs (1050000/1050005) extracted, this table row missed"
+    },
+    {
+      "rank": 2,
+      "question": "What temperature does the Auto tube setting use?",
+      "answer": "80oF/27oC",
+      "top_score": 0.941,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "auto tube setting 80oF/27oC absent from graph; also surfaces degree-glyph mangling ('80oF') in chunk text"
+    },
+    {
+      "rank": 3,
+      "question": "What is the part number for the EverFlo Q 120V, transfill?",
+      "answer": "1039365",
+      "top_score": 0.9397,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "PN 1039365 (EverFlo Q 120V transfill) absent; other EverFlo items present"
+    },
+    {
+      "rank": 4,
+      "question": "What is the address of Dr\u00e4gerwerk AG & Co. KGaA corporate headquarters?",
+      "answer": "Moislinger Allee 53-55, 23542 L\u00fcbeck, Germany",
+      "top_score": 0.9329,
+      "graph_has_fact": false,
+      "verdict": "GAP_LOW_VALUE",
+      "reason": "Draeger HQ address grounded and absent from graph; document boilerplate class, low audit value"
+    },
+    {
+      "rank": 5,
+      "question": "What type of protection against electric shock does the device have?",
+      "answer": "Class II Equipment",
+      "top_score": 0.928,
+      "graph_has_fact": true,
+      "verdict": "NOT_GAP",
+      "reason": "'Class II Equipment' entity exists and RESmart props carry it; retrieval-side miss, fact in graph"
+    },
+    {
+      "rank": 6,
+      "question": "What condition triggers the low tidal volume alert?",
+      "answer": "During breath cycle, Average Vt less than 0.6*Setting Value.",
+      "top_score": 0.9221,
+      "graph_has_fact": true,
+      "verdict": "NOT_GAP",
+      "reason": "'Low Tidal Volume Event'/'Alert 0' entities encode the condition; retrieval-side miss"
+    },
+    {
+      "rank": 7,
+      "question": "What does the ramp button do?",
+      "answer": "reduce the air pressure when you are trying to fall asleep",
+      "top_score": 0.9196,
+      "graph_has_fact": true,
+      "verdict": "NOT_GAP",
+      "reason": "ramp purpose present in graph entity descriptions; retrieval-side miss"
+    },
+    {
+      "rank": 8,
+      "question": "What is the part number for the Piezo 2 channel plus pediatric kit?",
+      "answer": "P1464R",
+      "top_score": 0.9192,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "PN P1464R (Piezo 2ch plus pediatric kit) absent; sibling Piezo kits present"
+    },
+    {
+      "rank": 9,
+      "question": "What is one example temperature limit given for the dishwasher programme for a humidifier?",
+      "answer": "65\u202f\u00b0C",
+      "top_score": 0.9183,
+      "graph_has_fact": true,
+      "verdict": "NOT_GAP",
+      "reason": "dishwasher 65 C limit encoded ('Temperature Limit'/'Domestic Dishwasher Compatibility'); retrieval-side miss"
+    },
+    {
+      "rank": 10,
+      "question": "Which part number is for the DreamStation Auto CPAP with humidifier and SD card?",
+      "answer": "INX500H15",
+      "top_score": 0.9158,
+      "graph_has_fact": true,
+      "verdict": "NOT_GAP",
+      "reason": "INX500H15 present as entity and in props; retrieval-side miss"
+    },
+    {
+      "rank": 11,
+      "question": "What is the environmental correction factor K2 value shown in the example?",
+      "answer": "1.25 dB(A)",
+      "top_score": 0.9155,
+      "graph_has_fact": false,
+      "verdict": "GAP_LOW_VALUE",
+      "reason": "K2=1.25 dB(A) environmental correction factor absent; acoustic-standard boilerplate class"
+    },
+    {
+      "rank": 12,
+      "question": "What warranty period is included with the Alice\u202f6 LD\u202fE base system for North America?",
+      "answer": "1-year warranty",
+      "top_score": 0.912,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "Alice 6 LD E 1-year NA warranty absent; other warranty objects exist but not this fact"
+    },
+    {
+      "rank": 13,
+      "question": "What is the part number for the Philips Everflo stationary oxygen concentrator?",
+      "answer": "1039370",
+      "top_score": 0.9107,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "PN 1039370 (Everflo stationary concentrator) absent"
+    },
+    {
+      "rank": 14,
+      "question": "What does the Actiwatch Spectrum dock communication system not include?",
+      "answer": "does not include the Actiwatch Spectrum",
+      "top_score": 0.9101,
+      "graph_has_fact": true,
+      "verdict": "GAP_LOW_VALUE",
+      "reason": "grounded exclusion fact (dock does not include watch) absent; negation class, low audit value"
+    },
+    {
+      "rank": 15,
+      "question": "What are the two main versions of the Oxymixer that can be supplied with or without oxygen monitoring?",
+      "answer": "high-flow version and low-flow version",
+      "top_score": 0.9082,
+      "graph_has_fact": false,
+      "verdict": "NOT_GAP",
+      "reason": "Oxymixer low/high-flow variants exist as named entities; ledger phrasing false-positive"
+    },
+    {
+      "rank": 16,
+      "question": "What is the part number for the Actiwatch 2 startup system?",
+      "answer": "1044809",
+      "top_score": 0.9081,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "PN 1044809 (Actiwatch 2 startup system) absent"
+    },
+    {
+      "rank": 17,
+      "question": "What is the part number for the CoughAssist facemask for an infant?",
+      "answer": "1044190",
+      "top_score": 0.9069,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "PN 1044190 (CoughAssist infant facemask) absent; adult facemask present, infant row missed"
+    },
+    {
+      "rank": 18,
+      "question": "Which product provides the ability to monitor three parameters (airflow, snore, and EtCO2) with one patient interface?",
+      "answer": "Pro-Flow MultiPurpose and Pro-Flow Plus MultiPurpose cannulas",
+      "top_score": 0.9054,
+      "graph_has_fact": true,
+      "verdict": "NOT_GAP",
+      "reason": "Pro-Flow multi-purpose cannula entities encode the product; retrieval-side miss"
+    },
+    {
+      "rank": 19,
+      "question": "What is the part number for the MicroElite compressor nebulizer system, standard?",
+      "answer": "RDD490",
+      "top_score": 0.9035,
+      "graph_has_fact": false,
+      "verdict": "GAP",
+      "reason": "PN RDD490 (MicroElite nebulizer system) absent; MicroElite accessories present"
+    },
+    {
+      "rank": 20,
+      "question": "Which part number is for the SST flap only, large?",
+      "answer": "1040797",
+      "top_score": 0.903,
+      "graph_has_fact": true,
+      "verdict": "NOT_GAP",
+      "reason": "'PartNumber 1040797' entity exists; retrieval-side miss"
+    }
+  ]
+}

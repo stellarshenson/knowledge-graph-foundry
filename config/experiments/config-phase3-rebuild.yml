@@ -1,0 +1,31 @@
+# Phase-3 reproducible-rebuild scratch config: exact copy of config-apnea.yml
+# (the SHIPPED composed engine - nothing tuned) with the Neo4j URI repointed at
+# the kgf-neo4j2 scratch instance (172.19.0.7) and a per-run event log for the
+# precision-proxy / event summary capture.
+neo4j:
+  uri: bolt://172.19.0.7:7687
+  user: neo4j
+  password: kgfoundry
+
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  # 3600 per the R30 standing rule: per-chunk latency scales with total vLLM load
+  # (server shared across executors); timeout 180 caused litellm.Timeout retry storms
+  # and dropped chunks in the aborted first attempt (logs/phase3-rebuild-run1-aborted.log)
+  timeout: 3600
+
+# Pin the drift trigger to the run-1 behavior: cusum_enabled default flipped to
+# true mid-experiment (2026-07-12, H378 promotion); the editable install would give
+# run 2 the new default and poison the run-1-vs-run-2 metric-match comparison.
+drift:
+  cusum_enabled: false
+
+# Pin H371 question nodes off: protects the in-flight run-1-vs-run-2 reproducibility
+# A/B from the mid-experiment default change (questions shipped default-on 2026-07-12).
+questions:
+  enabled: false
+
+event_log: logs/phase3-rebuild-events.jsonl

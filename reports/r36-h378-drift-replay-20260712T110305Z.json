@@ -1,0 +1,174 @@
+{
+  "hypothesis": "R36-H378 end-to-end induced-drift replay (DEF-9 workstream)",
+  "generated": "20260712T110305Z",
+  "scratch_uri": "bolt://172.19.0.8:7687",
+  "live_uri": "bolt://172.19.0.100:7687",
+  "stream": [
+    "stationary",
+    "stationary",
+    "stationary",
+    "stationary",
+    "drifted",
+    "drifted",
+    "drifted",
+    "drifted",
+    "drifted",
+    "post_exit",
+    "post_exit",
+    "post_exit"
+  ],
+  "cured_register": {
+    "Product": 60,
+    "Manufacturer": 30,
+    "Specification": 10
+  },
+  "drifted_register": {
+    "Product": 6,
+    "AlienDevice": 2
+  },
+  "cusum_arm": {
+    "arm": "cusum",
+    "cusum_enabled": true,
+    "documents": 12,
+    "scratch_entities": 101,
+    "fsm_walk": [
+      "RECURING",
+      "STABLE"
+    ],
+    "final_fsm_state": "STABLE",
+    "remap_series": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.2857,
+      0.25,
+      0.25,
+      0.2857,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "drift_decisions": [
+      {
+        "event": "drift.decision",
+        "cusum_s": 0.311,
+        "jsd": 0.331,
+        "mu0": 0.0,
+        "action": "recure"
+      }
+    ],
+    "types_adopted": [
+      [
+        "AlienDevice"
+      ]
+    ],
+    "recure_completed": [
+      [
+        "AlienDevice"
+      ]
+    ],
+    "final_ontology_types": [
+      "AlienDevice",
+      "Manufacturer",
+      "Product",
+      "Specification"
+    ],
+    "alarm_fired": true,
+    "events_n": 5
+  },
+  "control_arm": {
+    "arm": "control",
+    "cusum_enabled": false,
+    "documents": 12,
+    "scratch_entities": 101,
+    "fsm_walk": [],
+    "final_fsm_state": "STABLE",
+    "remap_series": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.2857,
+      0.25,
+      0.25,
+      0.2857,
+      0.1429,
+      0.25,
+      0.25,
+      0.25
+    ],
+    "drift_decisions": [],
+    "types_adopted": [],
+    "recure_completed": [],
+    "final_ontology_types": [
+      "Manufacturer",
+      "Product",
+      "Specification"
+    ],
+    "alarm_fired": false,
+    "events_n": 0
+  },
+  "probe_baseline_source": "reports/r36-h379-replay-20260712T104736Z.json",
+  "probe_after": {
+    "mean": 0.8958,
+    "per_probe": {
+      "P01": 1.0,
+      "P02": 1.0,
+      "P03": 1.0,
+      "P04": 1.0,
+      "P05": 1.0,
+      "P06": 1.0,
+      "P07": 1.0,
+      "P08": 0.0,
+      "P09": 1.0,
+      "P10": 1.0,
+      "P11": 1.0,
+      "P12": 1.0,
+      "P13": 1.0,
+      "P14": 1.0,
+      "P15": 0.5,
+      "P16": 1.0,
+      "P17": 1.0,
+      "P18": 1.0,
+      "P19": 1.0,
+      "P20": 1.0,
+      "P21": 1.0,
+      "P22": 0.0,
+      "P23": 1.0,
+      "P24": 1.0
+    }
+  },
+  "probe_regressions": {},
+  "consolidation_cost": {
+    "consolidation_documents": 3,
+    "consolidation_llm_calls": 0,
+    "full_rebuild_documents": 12,
+    "cost_share_of_rebuild": 0.25
+  },
+  "clauses": {
+    "1_alarm_fired_cusum": true,
+    "1b_control_boolean_silent": true,
+    "2_fsm_walk_stable_recuring_stable": true,
+    "3_repaired_post_exit_remap_zero": true,
+    "3b_no_realarm_post_exit": true,
+    "4_zero_probe_regression": true
+  },
+  "verdict": "CONFIRMED",
+  "drift_onset_doc": 4,
+  "remap_pre_post": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.2857,
+    0.25,
+    0.25,
+    0.2857,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

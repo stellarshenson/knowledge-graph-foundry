@@ -2,6 +2,12 @@
 
 Background job logs for Knowledge Graph Foundry.
 
+- `h371-wire-verify-retrieval.log` - H371 wiring verification, retrieval arm: engine question channel + parity render on neo4j4 (READ ONLY), 24-probe DEF-14 instrument (report reports/h371-wire-retrieval-*.json)
+- `h371-wire-verify-ingest.log` - H371 wiring verification, ingest arm: 3-doc ingest with questions.enabled=true on the throwaway kgf-h371-scratch Neo4j, local vLLM (report reports/h371-wire-ingest-*.json)
+- `r36-h379-replay.log` - R36-H379 replay arm: functional invalidation micro-replay + rolled-back pile-scale reconcile + gold-safety probe A/B (report reports/r36-h379-replay-*.json)
+- `r36-h377-revalidation.log` - R36-H377 groundedness gate as staleness revalidator: 48-object A/B on H376's dirty set vs regenerate-and-compare reference (report reports/r36-h377-revalidation-*.json)
+- `r36-h378-drift-replay.log` - R36-H378/DEF-9 end-to-end induced-drift replay on scratch: CUSUM arm vs boolean control through the real pipeline (report reports/r36-h378-drift-replay-*.json)
+
 - `make-install.log` - environment creation and dependency installation
 - `neo4j-verify.log` - Neo4j connectivity and plugin verification
 - `cpap-ingest-*.log` - end-to-end ingestion runs on the CPAP corpus

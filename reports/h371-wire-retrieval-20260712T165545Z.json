@@ -1,0 +1,229 @@
+{
+  "verification": "H371 wiring - retrieval arm (engine question channel)",
+  "generated": "20260712T165545Z",
+  "graph_uri": "bolt://172.19.0.100:7687",
+  "instrument": "engine parity (DEF-14)",
+  "top_k": 16,
+  "overfetch_factor": 4,
+  "questions_on_pile": 2048,
+  "question_index_present": false,
+  "channel_m": 1,
+  "base": {
+    "mean_recall": 0.8958,
+    "fully_covered": 21,
+    "per_probe": {
+      "P01": 1.0,
+      "P02": 1.0,
+      "P03": 1.0,
+      "P04": 1.0,
+      "P05": 1.0,
+      "P06": 1.0,
+      "P07": 1.0,
+      "P08": 0.0,
+      "P09": 1.0,
+      "P10": 1.0,
+      "P11": 1.0,
+      "P12": 1.0,
+      "P13": 1.0,
+      "P14": 1.0,
+      "P15": 0.5,
+      "P16": 1.0,
+      "P17": 1.0,
+      "P18": 1.0,
+      "P19": 1.0,
+      "P20": 1.0,
+      "P21": 1.0,
+      "P22": 0.0,
+      "P23": 1.0,
+      "P24": 1.0
+    }
+  },
+  "engine_question_channel": {
+    "mean_recall": 1.0,
+    "fully_covered": 24,
+    "per_probe": {
+      "P01": 1.0,
+      "P02": 1.0,
+      "P03": 1.0,
+      "P04": 1.0,
+      "P05": 1.0,
+      "P06": 1.0,
+      "P07": 1.0,
+      "P08": 1.0,
+      "P09": 1.0,
+      "P10": 1.0,
+      "P11": 1.0,
+      "P12": 1.0,
+      "P13": 1.0,
+      "P14": 1.0,
+      "P15": 1.0,
+      "P16": 1.0,
+      "P17": 1.0,
+      "P18": 1.0,
+      "P19": 1.0,
+      "P20": 1.0,
+      "P21": 1.0,
+      "P22": 1.0,
+      "P23": 1.0,
+      "P24": 1.0
+    }
+  },
+  "regressions_vs_base": [],
+  "reference": {
+    "prototype_qg_1": 1.0,
+    "prototype_base": 0.8958
+  },
+  "channel_meta": {
+    "P01": {
+      "blocks": 1,
+      "about_names": [
+        "Humidifier tub"
+      ]
+    },
+    "P02": {
+      "blocks": 1,
+      "about_names": [
+        "CPAP"
+      ]
+    },
+    "P03": {
+      "blocks": 1,
+      "about_names": [
+        "ISO 17510-1:2009",
+        "Sound pressure level",
+        "CPAP"
+      ]
+    },
+    "P04": {
+      "blocks": 1,
+      "about_names": [
+        "CPAP"
+      ]
+    },
+    "P05": {
+      "blocks": 1,
+      "about_names": [
+        "Time",
+        "Ramp Time"
+      ]
+    },
+    "P06": {
+      "blocks": 1,
+      "about_names": []
+    },
+    "P07": {
+      "blocks": 1,
+      "about_names": [
+        "CPAP",
+        "Operating pressure range",
+        "AirStart 10 CPAP"
+      ]
+    },
+    "P08": {
+      "blocks": 1,
+      "about_names": []
+    },
+    "P09": {
+      "blocks": 1,
+      "about_names": [
+        "ELK-200A",
+        "Sleep Style 200 Series"
+      ]
+    },
+    "P10": {
+      "blocks": 1,
+      "about_names": [
+        "Data storage capacity"
+      ]
+    },
+    "P11": {
+      "blocks": 1,
+      "about_names": [
+        "RESmart Auto",
+        "AirSense 11"
+      ]
+    },
+    "P12": {
+      "blocks": 1,
+      "about_names": [
+        "AirStart 10 CPAP",
+        "iBreeze CPAP System"
+      ]
+    },
+    "P13": {
+      "blocks": 1,
+      "about_names": [
+        "RESmart",
+        "AirSense 11"
+      ]
+    },
+    "P14": {
+      "blocks": 1,
+      "about_names": [
+        "iBreeze CPAP System",
+        "AirSense 11"
+      ]
+    },
+    "P15": {
+      "blocks": 1,
+      "about_names": [
+        "REMstar Auto A-Flex with humidifier",
+        "DreamStation (generic)"
+      ]
+    },
+    "P16": {
+      "blocks": 1,
+      "about_names": [
+        "iBreeze CPAP System",
+        "RESmart"
+      ]
+    },
+    "P17": {
+      "blocks": 1,
+      "about_names": [
+        "REMstar Auto A-Flex with humidifier",
+        "DreamStation (generic)"
+      ]
+    },
+    "P18": {
+      "blocks": 1,
+      "about_names": [
+        "RESmart",
+        "AirSense 11"
+      ]
+    },
+    "P19": {
+      "blocks": 1,
+      "about_names": []
+    },
+    "P20": {
+      "blocks": 1,
+      "about_names": [
+        "AirSense 10 AutoSet",
+        "Resmed",
+        "AutoSet for Her",
+        "ResMed"
+      ]
+    },
+    "P21": {
+      "blocks": 1,
+      "about_names": [
+        "AirSense 11"
+      ]
+    },
+    "P22": {
+      "blocks": 1,
+      "about_names": []
+    },
+    "P23": {
+      "blocks": 1,
+      "about_names": [
+        "AutoRamp"
+      ]
+    },
+    "P24": {
+      "blocks": 1,
+      "about_names": []
+    }
+  }
+}

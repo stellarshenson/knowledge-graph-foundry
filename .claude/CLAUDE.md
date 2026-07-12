@@ -40,6 +40,10 @@ Knowledge Graph Builder CLI (`kg-builder-cli`) - a Python CLI tool for building 
 
 **Module**: `kg_builder_cli` (underscore), package name `kg-builder-cli` (hyphen)
 
+## Dataset Doctrine
+
+**MANDATORY**: Consult the `kgf-dataset` skill (`.claude/skills/kgf-dataset/SKILL.md`) before ANY ingest, A/B, or benchmark run. It defines the benchmark-only rule (CPAP testing abandoned 2026-07-12), the scale ladder (scout/small/medium/large rungs with purposes), corpus asset paths, Neo4j instance roles, and rung-boundary dump discipline. Route every hypothesis to the cheapest rung that can kill it.
+
 ## Implementation Phase
 
 **MANDATORY**: Read `/home/lab/workspace/learning/projects/kg-builder-cli/INSTRUCTIONS.md` at the start of every session and after every context compaction. It governs the autonomous execution mode for the implementation phase.

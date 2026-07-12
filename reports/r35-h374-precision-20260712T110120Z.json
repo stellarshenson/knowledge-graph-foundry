@@ -1,0 +1,238 @@
+{
+  "hypothesis": "R35-H374 multi-view consensus - precision arm (deferred clause)",
+  "generated": "20260712T110120Z",
+  "graph_uri": "bolt://172.19.0.100:7687",
+  "judge": "gpt-oss-120b",
+  "channels": [
+    "entity(titan)",
+    "props(bge-m3)",
+    "spans(bge-m3)"
+  ],
+  "top_k": 16,
+  "channel_k": 32,
+  "note": "channel fetch depth 32 truncated to render 16, matching the 20260710 context run",
+  "mean_precision_base": 0.1198,
+  "mean_precision_consensus": 0.1198,
+  "precision_delta": 0.0,
+  "mean_recall_base": 0.8958,
+  "mean_recall_consensus": 0.8958,
+  "recall_regressions": [],
+  "per_probe": {
+    "P01": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 7,
+      "evicted_irrelevant": 7,
+      "admitted_relevant": 0
+    },
+    "P02": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.125,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 9,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 2
+    },
+    "P03": {
+      "precision_base": 0.125,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 9,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 0
+    },
+    "P04": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.1875,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 7,
+      "evicted_irrelevant": 7,
+      "admitted_relevant": 2
+    },
+    "P05": {
+      "precision_base": 0.1875,
+      "precision_consensus": 0.25,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 10,
+      "evicted_irrelevant": 9,
+      "admitted_relevant": 2
+    },
+    "P06": {
+      "precision_base": 0.1875,
+      "precision_consensus": 0.25,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 8,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 1
+    },
+    "P07": {
+      "precision_base": 0.1875,
+      "precision_consensus": 0.125,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 8,
+      "evicted_irrelevant": 7,
+      "admitted_relevant": 0
+    },
+    "P08": {
+      "precision_base": 0.125,
+      "precision_consensus": 0.125,
+      "recall_base": 0.0,
+      "recall_consensus": 0.0,
+      "turnover": 9,
+      "evicted_irrelevant": 9,
+      "admitted_relevant": 0
+    },
+    "P09": {
+      "precision_base": 0.125,
+      "precision_consensus": 0.125,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 9,
+      "evicted_irrelevant": 9,
+      "admitted_relevant": 0
+    },
+    "P10": {
+      "precision_base": 0.0,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 10,
+      "evicted_irrelevant": 10,
+      "admitted_relevant": 1
+    },
+    "P11": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 6,
+      "evicted_irrelevant": 6,
+      "admitted_relevant": 0
+    },
+    "P12": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 8,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 0
+    },
+    "P13": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 7,
+      "evicted_irrelevant": 7,
+      "admitted_relevant": 0
+    },
+    "P14": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 10,
+      "evicted_irrelevant": 10,
+      "admitted_relevant": 0
+    },
+    "P15": {
+      "precision_base": 0.25,
+      "precision_consensus": 0.1875,
+      "recall_base": 0.5,
+      "recall_consensus": 0.5,
+      "turnover": 9,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 0
+    },
+    "P16": {
+      "precision_base": 0.1875,
+      "precision_consensus": 0.1875,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 7,
+      "evicted_irrelevant": 7,
+      "admitted_relevant": 0
+    },
+    "P17": {
+      "precision_base": 0.0,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 8,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 1
+    },
+    "P18": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.0625,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 8,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 0
+    },
+    "P19": {
+      "precision_base": 0.1875,
+      "precision_consensus": 0.125,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 8,
+      "evicted_irrelevant": 7,
+      "admitted_relevant": 0
+    },
+    "P20": {
+      "precision_base": 0.0625,
+      "precision_consensus": 0.1875,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 11,
+      "evicted_irrelevant": 10,
+      "admitted_relevant": 3
+    },
+    "P21": {
+      "precision_base": 0.3125,
+      "precision_consensus": 0.125,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 11,
+      "evicted_irrelevant": 8,
+      "admitted_relevant": 0
+    },
+    "P22": {
+      "precision_base": 0.0,
+      "precision_consensus": 0.0,
+      "recall_base": 0.0,
+      "recall_consensus": 0.0,
+      "turnover": 9,
+      "evicted_irrelevant": 9,
+      "admitted_relevant": 0
+    },
+    "P23": {
+      "precision_base": 0.25,
+      "precision_consensus": 0.1875,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 8,
+      "evicted_irrelevant": 6,
+      "admitted_relevant": 1
+    },
+    "P24": {
+      "precision_base": 0.1875,
+      "precision_consensus": 0.125,
+      "recall_base": 1.0,
+      "recall_consensus": 1.0,
+      "turnover": 10,
+      "evicted_irrelevant": 9,
+      "admitted_relevant": 0
+    }
+  }
+}

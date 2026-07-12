@@ -1,0 +1,470 @@
+{
+  "hypothesis": "R36-H379 replay arm (functional invalidation + alarm + gold safety)",
+  "generated": "20260712T104736Z",
+  "graph_uri": "bolt://172.19.0.100:7687",
+  "functional_types": [
+    "MANUFACTURED_BY"
+  ],
+  "census_before": {
+    "valid_to_set": 0,
+    "manufactured_by": 694,
+    "synthetic_nodes": 0
+  },
+  "census_after": {
+    "valid_to_set": 0,
+    "manufactured_by": 694,
+    "synthetic_nodes": 0
+  },
+  "micro_replay": {
+    "invalidated": 1,
+    "superseded_edge_valid_to_set": true,
+    "superseded_edge_expired_at_set": true,
+    "current_targets": [
+      "H379 Manufacturer v2"
+    ],
+    "history_versions": 2
+  },
+  "supersession_events": [
+    {
+      "action": "fact_supersession",
+      "invalidated": "1"
+    }
+  ],
+  "pile_scale_reconcile": {
+    "doc": "d_a2b1f7a495a9deda",
+    "doc_entities": 148,
+    "manufactured_by_subjects": 8,
+    "invalidated_on_v2_replay": 8,
+    "single_doc_contradiction_rate": 0.0541
+  },
+  "alarm_replay": {
+    "threshold": 0.2,
+    "window": 3,
+    "single_doc_replay_verdicts": [
+      "none",
+      "none",
+      "none"
+    ],
+    "single_doc_alarm_fired": false,
+    "sustained_series_verdicts": [
+      "none",
+      "none",
+      "none"
+    ],
+    "sustained_series_alarm_fired": false,
+    "min_single_doc_rate_to_fire": 0.6
+  },
+  "would_be_invalidated": [
+    {
+      "subject": "AirCurve 10 V Auto",
+      "target": "Resmed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:13810"
+    },
+    {
+      "subject": "CPAP mask wipes",
+      "target": "Resmed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:12336"
+    },
+    {
+      "subject": "RESmart",
+      "target": "BMC",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:88"
+    },
+    {
+      "subject": "RESmart",
+      "target": "3B Medical",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:306"
+    },
+    {
+      "subject": "RESmart",
+      "target": "RESmart",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:538"
+    },
+    {
+      "subject": "RESmart Auto",
+      "target": "BMC",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:89"
+    },
+    {
+      "subject": "RESmart Auto",
+      "target": "3B Medical",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:307"
+    },
+    {
+      "subject": "RESmart Auto",
+      "target": "RESmart",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:436"
+    },
+    {
+      "subject": "Philips Respironics",
+      "target": "System One",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:1124"
+    },
+    {
+      "subject": "Philips Respironics",
+      "target": "Philips",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:1553"
+    },
+    {
+      "subject": "Philips Respironics",
+      "target": "Respironics, Inc.",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:7165"
+    },
+    {
+      "subject": "Philips Respironics",
+      "target": "Koninklijke Philips N.V.",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21854"
+    },
+    {
+      "subject": "AirSense 10 Elite",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:1196"
+    },
+    {
+      "subject": "AirSense 10 device series",
+      "target": "AirSense 10 AutoSet",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:1537"
+    },
+    {
+      "subject": "AirSense 10 device series",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19111"
+    },
+    {
+      "subject": "AirSense 10 AutoSet",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19113"
+    },
+    {
+      "subject": "DreamStation (generic)",
+      "target": "Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:13822"
+    },
+    {
+      "subject": "DreamStation CPAP Pro with humidifier and SD card",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:5406"
+    },
+    {
+      "subject": "ELK-200B",
+      "target": "Elektrogenesis",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:3035"
+    },
+    {
+      "subject": "ELK-200A",
+      "target": "Elektrogenesis",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:3036"
+    },
+    {
+      "subject": "ELK-200D",
+      "target": "Elektrogenesis",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:3038"
+    },
+    {
+      "subject": "ELK-200 Series",
+      "target": "Superstar Medical",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:3174"
+    },
+    {
+      "subject": "NLF-200A",
+      "target": "Superstar Medical",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:3100"
+    },
+    {
+      "subject": "Wisp",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:20499"
+    },
+    {
+      "subject": "TrueBlue",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:20500"
+    },
+    {
+      "subject": "ComfortGel Blue",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:20501"
+    },
+    {
+      "subject": "EasyLife",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:20502"
+    },
+    {
+      "subject": "AirFit N20 for Her",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19170"
+    },
+    {
+      "subject": "Mirage FX for Her",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19172"
+    },
+    {
+      "subject": "SleepWeaver Advance",
+      "target": "Resmed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:4722"
+    },
+    {
+      "subject": "SleepWeaver 3D",
+      "target": "Resmed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:4724"
+    },
+    {
+      "subject": "SleepWeaver \u00c9lan",
+      "target": "Resmed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:4723"
+    },
+    {
+      "subject": "Amara View",
+      "target": "System One",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:12626"
+    },
+    {
+      "subject": "AirFit F10",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19175"
+    },
+    {
+      "subject": "AirFit F10 for Her",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19176"
+    },
+    {
+      "subject": "AirFit F20",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19173"
+    },
+    {
+      "subject": "ResMed AirFit F20 for Her",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19174"
+    },
+    {
+      "subject": "Quattro Air",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19177"
+    },
+    {
+      "subject": "Quattro Air for Her",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19178"
+    },
+    {
+      "subject": "Pixi",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19180"
+    },
+    {
+      "subject": "Lumin CPAP sanitiser",
+      "target": "Lumin",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:12348"
+    },
+    {
+      "subject": "Inspire Upper Airway Stimulation",
+      "target": "Inspire Medical",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:4709"
+    },
+    {
+      "subject": "prisma SOFT max",
+      "target": "L\u00f6wenstein Medical Technology",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:8146"
+    },
+    {
+      "subject": "AirSense 11",
+      "target": "Resmed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:13808"
+    },
+    {
+      "subject": "iBreeze CPAP System",
+      "target": "Resvent Medical Technology Co., Ltd.",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:10633"
+    },
+    {
+      "subject": "iBreeze CPAP System",
+      "target": "iBreeze",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:10759"
+    },
+    {
+      "subject": "Seattle-PAP",
+      "target": "Dr\u00e4gerwerk AG & Co. KGaA",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:11176"
+    },
+    {
+      "subject": "AirFit P10",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19165"
+    },
+    {
+      "subject": "AirFit N20",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19169"
+    },
+    {
+      "subject": "AirFit P30i pillows mask",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19167"
+    },
+    {
+      "subject": "AirFit P10 for Her",
+      "target": "ResMed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19166"
+    },
+    {
+      "subject": "DreamWear full face",
+      "target": "System One",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:12617"
+    },
+    {
+      "subject": "PartNumber 1068787",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:20317"
+    },
+    {
+      "subject": "Transcend 365 miniCPAP Auto machine",
+      "target": "Resmed",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:12475"
+    },
+    {
+      "subject": "Deluxe chin strap",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:20961"
+    },
+    {
+      "subject": "REMstar SE",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19972"
+    },
+    {
+      "subject": "Icon Nt Novo Cpap System",
+      "target": "Icon",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:14057"
+    },
+    {
+      "subject": "Icon Pt Premo Cpap System",
+      "target": "Icon",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:14058"
+    },
+    {
+      "subject": "REMstar Auto A-Flex",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:19971"
+    },
+    {
+      "subject": "ezRIP adult kit Alice 5/LE 84\"",
+      "target": "Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21490"
+    },
+    {
+      "subject": "ezRIP adult kit, 1.5mm, 84\"",
+      "target": "Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21481"
+    },
+    {
+      "subject": "ezRIP adult kit, 249, 84\"",
+      "target": "Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21492"
+    },
+    {
+      "subject": "Piezo 1 channel adult kit",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:23012"
+    },
+    {
+      "subject": "Piezo 2 channel plus adult kit",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:23013"
+    },
+    {
+      "subject": "Piezo 1 channel pediatric kit",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:23014"
+    },
+    {
+      "subject": "SPI (sleep position indicator) resistive",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21567"
+    },
+    {
+      "subject": "Body position sensor, DC with 3.5mm connector",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21570"
+    },
+    {
+      "subject": "Body position sensor, DC with 1.5mm connector",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21573"
+    },
+    {
+      "subject": "Body position sensor, Alice 6, 249 connector (2-pin keyhole)",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:21582"
+    },
+    {
+      "subject": "ezRIP module, thorax, harwin, 26\"",
+      "target": "Philips Respironics",
+      "eid": "5:c13bfad5-4abe-4531-a8ec-ea30c1ba7463:22749"
+    }
+  ],
+  "gold_mentions_of_invalidated_targets": [],
+  "baseline_per_probe": {
+    "P01": 1.0,
+    "P02": 1.0,
+    "P03": 1.0,
+    "P04": 1.0,
+    "P05": 1.0,
+    "P06": 1.0,
+    "P07": 1.0,
+    "P08": 0.0,
+    "P09": 1.0,
+    "P10": 1.0,
+    "P11": 1.0,
+    "P12": 1.0,
+    "P13": 1.0,
+    "P14": 1.0,
+    "P15": 0.5,
+    "P16": 1.0,
+    "P17": 1.0,
+    "P18": 1.0,
+    "P19": 1.0,
+    "P20": 1.0,
+    "P21": 1.0,
+    "P22": 0.0,
+    "P23": 1.0,
+    "P24": 1.0
+  },
+  "excluded_per_probe": {
+    "P01": 1.0,
+    "P02": 1.0,
+    "P03": 1.0,
+    "P04": 1.0,
+    "P05": 1.0,
+    "P06": 1.0,
+    "P07": 1.0,
+    "P08": 0.0,
+    "P09": 1.0,
+    "P10": 1.0,
+    "P11": 1.0,
+    "P12": 1.0,
+    "P13": 1.0,
+    "P14": 1.0,
+    "P15": 0.5,
+    "P16": 1.0,
+    "P17": 1.0,
+    "P18": 1.0,
+    "P19": 1.0,
+    "P20": 1.0,
+    "P21": 1.0,
+    "P22": 0.0,
+    "P23": 1.0,
+    "P24": 1.0
+  },
+  "regressions": {},
+  "clauses": {
+    "A_mechanics_valid_to_set": true,
+    "A_alarm_fired_single_doc_replay": false,
+    "A_alarm_fired_sustained_series": false,
+    "B_zero_gold_falsely_invalidated": true
+  },
+  "verdict": "PARTIAL"
+}

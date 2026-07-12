@@ -1,0 +1,244 @@
+{
+  "hypothesis": "R35-H373 questions as audit probes (gap ledger)",
+  "generated": "20260712T111124Z",
+  "graph_uri": "bolt://172.19.0.100:7687",
+  "instrument": "engine parity (DEF-14)",
+  "top_k": 16,
+  "overfetch_factor": 4,
+  "gated_questions": 1850,
+  "render_answerable": 1222,
+  "ledger_entries": 628,
+  "ledger_extraction_gaps": 180,
+  "ledger_retrieval_misses": 448,
+  "top_keywords": {
+    "number": 112,
+    "which": 84,
+    "should": 80,
+    "device": 69,
+    "pressure": 38,
+    "device?": 36,
+    "listed": 33,
+    "philips": 28,
+    "before": 24,
+    "phone": 23,
+    "recommended": 23,
+    "humidifier": 22,
+    "water": 22,
+    "oxygen": 18,
+    "according": 17,
+    "resmart": 17,
+    "power": 16,
+    "warranty": 15,
+    "where": 14,
+    "filter": 13,
+    "feature": 13,
+    "required": 13,
+    "setting": 12,
+    "after": 12,
+    "separation": 12
+  },
+  "top_20": [
+    {
+      "question": "What is the part number for the EasyLife DuoPack with headgear, medium (two cushion sets*)?",
+      "answer": "1050007",
+      "chunks": [
+        "c_bcd89d6541863315"
+      ],
+      "top_score": 0.9565,
+      "graph_has_fact": false,
+      "chunk_snippet": ", A7035 \n                    S, M cushion sets*                                       \n1050079        EasyLife FitPack with headgear,                    A7034, A7035 \n                    MW, L cushion sets*                                    \n1050006        EasyLife DuoPack with headgear,           "
+    },
+    {
+      "question": "What temperature does the Auto tube setting use?",
+      "answer": "80oF/27oC",
+      "chunks": [
+        "c_73bc436d9b56f486"
+      ],
+      "top_score": 0.941,
+      "graph_has_fact": false,
+      "chunk_snippet": "|Menu|Function|Description|\n|---|---|---|\n.|\n||SmartStart*|When SmartStart is enabled, therapy starts automatically when you breathe<br>into your mask.|\n||SmartStop*|When SmartStop is enabled, therapy stops automatically after a few<br>seconds when you remove your mask.|\n|MORE|Mask Fit|This function"
+    },
+    {
+      "question": "What is the part number for the EverFlo Q 120V, transfill?",
+      "answer": "1039365",
+      "chunks": [
+        "c_ee652f7e4f74dcbd"
+      ],
+      "top_score": 0.9397,
+      "graph_has_fact": false,
+      "chunk_snippet": " \n1039363               EverFlo 120V OPI, transfill                               E1390 \n1039365               EverFlo Q 120V, transfill                                  E1390 \n1039364              EverFlo Q 120V OPI, transfill                           E1390 \nM10600-10           Millennium 120V, tr"
+    },
+    {
+      "question": "What is the address of Dr\u00e4gerwerk AG & Co. KGaA corporate headquarters?",
+      "answer": "Moislinger Allee 53-55, 23542 L\u00fcbeck, Germany",
+      "chunks": [
+        "c_dc383aacdd53b6d2"
+      ],
+      "top_score": 0.9329,
+      "graph_has_fact": false,
+      "chunk_snippet": " position over the \ninfant's nose, which helps minimize leaks and maintain a consistent nCPAP level.\nMasks\nThe headgear helps secure the BabyFlow plus quickly and easily while minimizing \npressure points. It can be gently wrapped around the infant's head and secured \nwith adjustable closures. It is "
+    },
+    {
+      "question": "What type of protection against electric shock does the device have?",
+      "answer": "Class II Equipment",
+      "chunks": [
+        "c_aa6724d4eca5f27d",
+        "c_a830f814f1aebd73"
+      ],
+      "top_score": 0.928,
+      "graph_has_fact": true,
+      "chunk_snippet": " hot or very cold temperatures, allow it to adjust to room temperature (approximately 2 hours) before beginning setup. \n\n###### **WARNING!** \n\nDO NOT use the RESmart<sup></sup> CPAP and Auto-CPAP if the display is erratic. Contact your home care provider for further instructions. \n\n**4** / **33** \n\n"
+    },
+    {
+      "question": "What condition triggers the low tidal volume alert?",
+      "answer": "During breath cycle, Average Vt less than 0.6*Setting Value.",
+      "chunks": [
+        "c_f0db16d13d023277"
+      ],
+      "top_score": 0.9221,
+      "graph_has_fact": true,
+      "chunk_snippet": "Alert 0\n \nDuring breath cycle \nmo\nnitored pressure is \nhigher than the set \npressure threshold.\n \nCheck the respiration \ntube or adjust therapy \nparameter setting.\n \nLow Expiratory \nPressure.\n \nAlert 0\n \nDuring breath cycle \nmonitored pressure is \nlower than the set \npressure threshold.\n \nCheck the "
+    },
+    {
+      "question": "What does the ramp button do?",
+      "answer": "reduce the air pressure when you are trying to fall asleep",
+      "chunks": [
+        "c_ec504c9f5cab8e5d",
+        "c_0f080d0865950a10"
+      ],
+      "top_score": 0.9196,
+      "graph_has_fact": true,
+      "chunk_snippet": "idifier is available from your home care provider. The humidifier may reduce nasal dryness and irritation by adding moisture (and heat if applicable) to the airflow. \n\n#### **WARNING!** \n\nThe RESmart<sup></sup> unit should only be connected to the humidifiers or accessories specified in this Manual."
+    },
+    {
+      "question": "What is the part number for the Piezo 2 channel plus pediatric kit?",
+      "answer": "P1464R",
+      "chunks": [
+        "c_899eb38c2d14b72f"
+      ],
+      "top_score": 0.9192,
+      "graph_has_fact": false,
+      "chunk_snippet": "|1076333<br>P1736R|1073622<br>1075970<br>P1586, P1587|\n|---|---|\n/respironics \n\nRespiratory inductance plethysmography effort sensors (continued) \n\n###### **ezRIP DuraBelt kits** \n\n|**Description**|**Part number**|\n|---|---|\n|**ezRIP adult kit, 1.5mm, 84\"**|1099514|\n|1 Abd, 1 Thx, 2 zRIP DuraBelts, "
+    },
+    {
+      "question": "What is one example temperature limit given for the dishwasher programme for a humidifier?",
+      "answer": "65\u202f\u00b0C",
+      "chunks": [
+        "c_a6c12f1b047acd1f"
+      ],
+      "top_score": 0.9183,
+      "graph_has_fact": true,
+      "chunk_snippet": " devices on a global basis, at a time of global pandemic, which will take some years for the situation to return to anything like normality.  There is a potential danger that a global shortage of CPAP devices from reputable manufacturers allows for less reputable manufacturers, particularly from the"
+    },
+    {
+      "question": "Which part number is for the DreamStation Auto CPAP with humidifier and SD card?",
+      "answer": "INX500H15",
+      "chunks": [
+        "c_9f14267aed478a21"
+      ],
+      "top_score": 0.9158,
+      "graph_has_fact": true,
+      "chunk_snippet": " pollen and disposable ultra-fine\nData storage Display: compliance\ncapacity (mininum) 1 day, 7-day, 30-day averages\n SD card > 1 year\n On-board: up to 6 months\nAltitude  Automatic\ncompensation\nWarranty 2 years\nDimensions 15,7 (L) x 19,3 (W) x 8,4 cm (H)\n (without humidifier)\n 29,7 (L) x 19,3 (W) x 8"
+    },
+    {
+      "question": "What is the environmental correction factor K2 value shown in the example?",
+      "answer": "1.25 dB(A)",
+      "chunks": [
+        "c_84b3e72856357991"
+      ],
+      "top_score": 0.9155,
+      "graph_has_fact": false,
+      "chunk_snippet": " 8 27.5 16.4 9 28.0 16.4 10 30.6 16.4 Lp(ST)&######## 28.48 16.4 Table (a1): Test results tabulation using example test results \nARTP Standards of Care - CPAP Devices (Technical and Performance) \n A4 Version 5.0 - 05/02/2022  \nAppendix A 5.3 Calculation of Mean Value of the Sound Pressure Levels The"
+    },
+    {
+      "question": "What warranty period is included with the Alice\u202f6 LD\u202fE base system for North America?",
+      "answer": "1-year warranty",
+      "chunks": [
+        "c_3ef9db9638adf710"
+      ],
+      "top_score": 0.912,
+      "graph_has_fact": false,
+      "chunk_snippet": " either the LD xS or LD xN  headbox for a full-featured, \neasy-to-understand system  that allow s staff to focus m ore on patients and less on \nequipm ent. The LD xS is the perfect front-line headbox for m ost sleep center needs. \nU se the LD xN  w hen you need to increase from  19 EEG  inputs on th"
+    },
+    {
+      "question": "What is the part number for the Philips Everflo stationary oxygen concentrator?",
+      "answer": "1039370",
+      "chunks": [
+        "c_bf9747f72163cb08"
+      ],
+      "top_score": 0.9107,
+      "graph_has_fact": false,
+      "chunk_snippet": "|Ordering informati|on|\n|---|---|\n||NebulAir+|RespirAir|Smarty|\n|---|---|---|---|\nium bromide|\u00fc|\u00fc|\u00fc|\n|Budesonide|\u00fc|\u00fc|\u00fc|\n|Sodium chloride (0.9%)|\u00fc|\u00fc|\u00fc|\n|Hypertonic saline (7%)|\u00fc|\u00fc|\u00fc|\n|Dornase alfa|\u00fc|\u00fc|\u00fc|\n|Tobramycin|\u00fc|\u00fc|\u00fc|\n|Colistimethate sodium|\u00fc|\u00fc|\uf0fb|\n\n\n\n1 Data shown is in accordance with Flaem Nuov"
+    },
+    {
+      "question": "What does the Actiwatch Spectrum dock communication system not include?",
+      "answer": "does not include the Actiwatch Spectrum",
+      "chunks": [
+        "c_4c8413760d2de98d"
+      ],
+      "top_score": 0.9101,
+      "graph_has_fact": true,
+      "chunk_snippet": "places Y sensor 1007199 \nFlexible finger oximetry Y probe kit                                  Includes adult sensor tape 612054 \nButterfly wrap, adult                                                        10 per pk 1101838 \nP1328-60 \nA irflow \nD escription                                          "
+    },
+    {
+      "question": "What are the two main versions of the Oxymixer that can be supplied with or without oxygen monitoring?",
+      "answer": "high-flow version and low-flow version",
+      "chunks": [
+        "c_4561b67065d91413"
+      ],
+      "top_score": 0.9082,
+      "graph_has_fact": false,
+      "chunk_snippet": "# Dr\u00e4ger Bubble CPAP Therapy Total Solution Consumables and Accessories \n\nThe Seattle-Positive Airway Pressure (PAP) system is an innovative solution which uses the proven advantages of Bubble CPAP therapy - such as oscillatory effects like high frequency ventilation - and combines it into a unique "
+    },
+    {
+      "question": "What is the part number for the Actiwatch 2 startup system?",
+      "answer": "1044809",
+      "chunks": [
+        "c_138ccd4ce947ecf0"
+      ],
+      "top_score": 0.9081,
+      "graph_has_fact": false,
+      "chunk_snippet": " - user/patient \n\n\n\n|**Description                                                                                                                                                         Part no.**|\n|---|\n|Alice PDx user/patient guide, (Domestic/US)                                                   "
+    },
+    {
+      "question": "What is the part number for the CoughAssist facemask for an infant?",
+      "answer": "1044190",
+      "chunks": [
+        "c_3f3dc1a698888142"
+      ],
+      "top_score": 0.9069,
+      "graph_has_fact": false,
+      "chunk_snippet": " large, 6 ft                   A7020 \n1090835             CA 70 series circuit, trach, 6 ft                           A7020 \n1090836             CA 70 series circuit, mouthpiece, 6 ft                 A7020 \n1098403             CA 70 series circuit, infant, 9 ft                          A7020 \n109840"
+    },
+    {
+      "question": "Which product provides the ability to monitor three parameters (airflow, snore, and EtCO2) with one patient interface?",
+      "answer": "Pro-Flow MultiPurpose and Pro-Flow Plus MultiPurpose cannulas",
+      "chunks": [
+        "c_46989e6c36815906"
+      ],
+      "top_score": 0.9054,
+      "graph_has_fact": true,
+      "chunk_snippet": " per case),              P1295 \nmale luer lok                                                                 \nPro-Flow Plus, nasal/oral, adult, 7', (5 pack),                     P1300 \nmale luer lok \nPro-Flow Plus, nasal/oral, adult, 8.25\", (30 per case),         P1308 \nmale luer lok               "
+    },
+    {
+      "question": "What is the part number for the MicroElite compressor nebulizer system, standard?",
+      "answer": "RDD490",
+      "chunks": [
+        "c_9d34ead36984634f"
+      ],
+      "top_score": 0.9035,
+      "graph_has_fact": false,
+      "chunk_snippet": " \n\n**<mark>Part number                                                                           HCPCS</mark>** 1082456            Sami compressor with SideStream disposable     E0570 nebulizer and Tucker the Turtle mask 1082731            Sami compressor with SideStream disposable     E0570 and reu"
+    },
+    {
+      "question": "Which part number is for the SST flap only, large?",
+      "answer": "1040797",
+      "chunks": [
+        "c_f8f281186d3d67a5"
+      ],
+      "top_score": 0.903,
+      "graph_has_fact": true,
+      "chunk_snippet": ".philips.com/respironics    8 00.345 .6 443 \nAm ara \nAvailable in four sizes: P, S, M, L \nAvailable in four sizes: P, S, M, L \nSilicone \nPart num ber                                                                H CPCS \nA m ara w ith headgear \n1090200        Petite                                  "
+    }
+  ]
+}

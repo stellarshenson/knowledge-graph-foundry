@@ -1,0 +1,1118 @@
+{
+  "hypothesis": "R36-H377 groundedness gate as staleness revalidator",
+  "generated": "20260712T110540Z",
+  "graph_uri": "bolt://172.19.0.100:7687",
+  "doc": "d_a2b1f7a495a9deda",
+  "model": "gpt-oss-120b",
+  "seed": 36377,
+  "sample_n": 48,
+  "v2_edits": {
+    "total_spec_edits": 17,
+    "edited_chunks": 4,
+    "chunks": 8,
+    "per_chunk": {
+      "c_0547113ef5b1d457": 7,
+      "c_0edf5e49c2e2fb56": 0,
+      "c_117029ac3a4fa37c": 2,
+      "c_3c2e5bef52c5d0a4": 0,
+      "c_a696de7094878e04": 4,
+      "c_c991cecc2ef6fd39": 0,
+      "c_dc64081e270f978a": 4,
+      "c_f5b0e8aa4c60bbe9": 0
+    }
+  },
+  "metrics": {
+    "n": 48,
+    "agreement": 0.875,
+    "rescued_fraction": 0.5625,
+    "reference_keep_fraction": 0.4792,
+    "gate_tokens_total": 88992,
+    "gate_completion_tokens": 10237,
+    "regen_desc_tokens_total": 88822,
+    "regen_desc_completion_tokens": 12969,
+    "regen_extract_tokens_amortized": 17155.4,
+    "cost_ratio_vs_desc_regen_total": 1.0019,
+    "cost_ratio_vs_desc_regen_completion": 0.7893,
+    "cost_ratio_vs_extract_regen": 5.1874,
+    "gate_wallclock_s": 532.6,
+    "regen_desc_wallclock_s": 669.0
+  },
+  "clauses": {
+    "agreement_ge_90": false,
+    "agreement_ge_80_floor": true,
+    "rescued_ge_50": true,
+    "cost_le_tenth_of_regeneration": false,
+    "cost_le_tenth_of_desc_regen_lower_bound": false
+  },
+  "verdict": "PARTIAL",
+  "extraction_usage_per_chunk": {
+    "c_0547113ef5b1d457": {
+      "prompt_tokens": 1627,
+      "completion_tokens": 4096,
+      "total_tokens": 5723,
+      "seconds": 194.48
+    },
+    "c_0edf5e49c2e2fb56": {
+      "prompt_tokens": 1951,
+      "completion_tokens": 4096,
+      "total_tokens": 6047,
+      "seconds": 194.48
+    },
+    "c_117029ac3a4fa37c": {
+      "prompt_tokens": 1026,
+      "completion_tokens": 3440,
+      "total_tokens": 4466,
+      "seconds": 167.82
+    },
+    "c_3c2e5bef52c5d0a4": {
+      "prompt_tokens": 1769,
+      "completion_tokens": 3995,
+      "total_tokens": 5764,
+      "seconds": 190.33
+    },
+    "c_a696de7094878e04": {
+      "prompt_tokens": 1714,
+      "completion_tokens": 4096,
+      "total_tokens": 5810,
+      "seconds": 198.81
+    },
+    "c_c991cecc2ef6fd39": {
+      "prompt_tokens": 1001,
+      "completion_tokens": 4096,
+      "total_tokens": 5097,
+      "seconds": 206.64
+    },
+    "c_dc64081e270f978a": {
+      "prompt_tokens": 952,
+      "completion_tokens": 4096,
+      "total_tokens": 5048,
+      "seconds": 207.89
+    },
+    "c_f5b0e8aa4c60bbe9": {
+      "prompt_tokens": 1647,
+      "completion_tokens": 4096,
+      "total_tokens": 5743,
+      "seconds": 207.89
+    }
+  },
+  "objects_per_dirty_chunk": {
+    "c_0547113ef5b1d457": 47,
+    "c_0edf5e49c2e2fb56": 39,
+    "c_117029ac3a4fa37c": 33,
+    "c_3c2e5bef52c5d0a4": 28,
+    "c_a696de7094878e04": 46,
+    "c_c991cecc2ef6fd39": 28,
+    "c_dc64081e270f978a": 42,
+    "c_f5b0e8aa4c60bbe9": 34
+  },
+  "decisions": [
+    {
+      "id": "e_c3274cfe35e36202",
+      "name": "Benelux Office",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Benelux office of Fisher & Paykel Healthcare can be reached by telephone at\u202f+31\u202f78\u202f644\u202f0924 and by fax at\u202f+31\u202f78\u202f644\u202f0914.",
+      "gate_usage": {
+        "prompt_tokens": 2012,
+        "completion_tokens": 153,
+        "total_tokens": 2165,
+        "seconds": 7.72
+      },
+      "regen_usage": {
+        "prompt_tokens": 1950,
+        "completion_tokens": 234,
+        "total_tokens": 2184,
+        "seconds": 11.98
+      }
+    },
+    {
+      "id": "e_d264304828b2a581",
+      "name": "Total Run Hours Display",
+      "ndocs": 1,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1771,
+        "completion_tokens": 164,
+        "total_tokens": 1935,
+        "seconds": 8.43
+      },
+      "regen_usage": {
+        "prompt_tokens": 1712,
+        "completion_tokens": 126,
+        "total_tokens": 1838,
+        "seconds": 6.94
+      }
+    },
+    {
+      "id": "e_4091e4f085cfe67c",
+      "name": "Nthn Ireland Office",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Nthn Ireland Office is a Fisher &\u202fPaykel Healthcare location listed with the telephone number\u202f0800\u202f132\u202f189.",
+      "gate_usage": {
+        "prompt_tokens": 2010,
+        "completion_tokens": 260,
+        "total_tokens": 2270,
+        "seconds": 13.97
+      },
+      "regen_usage": {
+        "prompt_tokens": 1951,
+        "completion_tokens": 164,
+        "total_tokens": 2115,
+        "seconds": 7.56
+      }
+    },
+    {
+      "id": "e_a78095bbdba80798",
+      "name": "HC231",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "HC231 is a model in the Fisher\u202f&\u202fPaykel Healthcare HC230 product range that provides standard CPAP functionality and includes a proportional ramp feature.",
+      "gate_usage": {
+        "prompt_tokens": 2007,
+        "completion_tokens": 166,
+        "total_tokens": 2173,
+        "seconds": 8.5
+      },
+      "regen_usage": {
+        "prompt_tokens": 1948,
+        "completion_tokens": 486,
+        "total_tokens": 2434,
+        "seconds": 22.32
+      }
+    },
+    {
+      "id": "e_e10881236a8543b9",
+      "name": "900HC236 Isolated Serial Adaptor",
+      "ndocs": 1,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The 900HC236 Isolated Serial Adaptor is listed as an accessory for the CPAP device.",
+      "gate_usage": {
+        "prompt_tokens": 1775,
+        "completion_tokens": 221,
+        "total_tokens": 1996,
+        "seconds": 9.28
+      },
+      "regen_usage": {
+        "prompt_tokens": 1717,
+        "completion_tokens": 122,
+        "total_tokens": 1839,
+        "seconds": 4.84
+      }
+    },
+    {
+      "id": "e_8342fd1cd97e3f05",
+      "name": "MODELSHC231",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "MODELSHC231 is a device model in the integrated CPAP range. Its patient menu can display the model type, total run time, average nightly usage hours, checksum information, altitude setting, and pressure setting.",
+      "gate_usage": {
+        "prompt_tokens": 1823,
+        "completion_tokens": 233,
+        "total_tokens": 2056,
+        "seconds": 13.64
+      },
+      "regen_usage": {
+        "prompt_tokens": 1769,
+        "completion_tokens": 396,
+        "total_tokens": 2165,
+        "seconds": 23.43
+      }
+    },
+    {
+      "id": "e_a067e04ef67c8dc8",
+      "name": "Checksum Display",
+      "ndocs": 1,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1769,
+        "completion_tokens": 147,
+        "total_tokens": 1916,
+        "seconds": 9.03
+      },
+      "regen_usage": {
+        "prompt_tokens": 1711,
+        "completion_tokens": 67,
+        "total_tokens": 1778,
+        "seconds": 3.53
+      }
+    },
+    {
+      "id": "e_3342d7fe9a28229b",
+      "name": "Up button",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The Up button is a control button on the integrated CPAP device that is used to increase settings.",
+      "gate_usage": {
+        "prompt_tokens": 1767,
+        "completion_tokens": 287,
+        "total_tokens": 2054,
+        "seconds": 16.42
+      },
+      "regen_usage": {
+        "prompt_tokens": 1712,
+        "completion_tokens": 203,
+        "total_tokens": 1915,
+        "seconds": 13.22
+      }
+    },
+    {
+      "id": "e_7e4bd427f59c3813",
+      "name": "HC238",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "HC238 is a CPAP device model referenced in the Integrated CPAP range. Its patient menu shows the model type, total run time, average nightly hours, checksum, altitude setting, and pressure setting, and provides a \u201cReturn to Default\u201d option. HC238 is available only on devices that include compliance ",
+      "gate_usage": {
+        "prompt_tokens": 1826,
+        "completion_tokens": 808,
+        "total_tokens": 2634,
+        "seconds": 45.81
+      },
+      "regen_usage": {
+        "prompt_tokens": 1767,
+        "completion_tokens": 1831,
+        "total_tokens": 3598,
+        "seconds": 98.99
+      }
+    },
+    {
+      "id": "e_3337c9304a0d3980",
+      "name": "Irish Republic Office",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Irish Republic office of Fisher & Paykel Healthcare is listed with the telephone number\u202f1800\u202f409\u202f011.",
+      "gate_usage": {
+        "prompt_tokens": 2009,
+        "completion_tokens": 155,
+        "total_tokens": 2164,
+        "seconds": 9.29
+      },
+      "regen_usage": {
+        "prompt_tokens": 1949,
+        "completion_tokens": 229,
+        "total_tokens": 2178,
+        "seconds": 16.03
+      }
+    },
+    {
+      "id": "e_c83a0a4196756111",
+      "name": "Australia Office",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Australia office of Fisher &\u202fPaykel Healthcare is listed as a regional contact point, with telephone number\u202f+61\u202f3\u202f9879\u202f5022 and fax number\u202f+61\u202f3\u202f9879\u202f5232.",
+      "gate_usage": {
+        "prompt_tokens": 2006,
+        "completion_tokens": 162,
+        "total_tokens": 2168,
+        "seconds": 7.79
+      },
+      "regen_usage": {
+        "prompt_tokens": 1948,
+        "completion_tokens": 213,
+        "total_tokens": 2161,
+        "seconds": 8.17
+      }
+    },
+    {
+      "id": "e_7d417181da28df44",
+      "name": "Altitude Setting Display",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Altitude Setting Display is a feature of the CPAP device\u2019s patient menu that allows the user to view the altitude setting (along with other CPAP parameters) on the device\u2019s display.",
+      "gate_usage": {
+        "prompt_tokens": 1769,
+        "completion_tokens": 156,
+        "total_tokens": 1925,
+        "seconds": 8.13
+      },
+      "regen_usage": {
+        "prompt_tokens": 1712,
+        "completion_tokens": 176,
+        "total_tokens": 1888,
+        "seconds": 7.33
+      }
+    },
+    {
+      "id": "e_50efad9722e08e4e",
+      "name": "Transport Temperature",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "Transport Temperature is the specified environmental range for storing and transporting the device, defined as \u201310\u202f\u00b0C to 121\u202f\u00b0C. This range indicates the allowable temperatures the device can safely endure during transport.",
+      "gate_usage": {
+        "prompt_tokens": 1001,
+        "completion_tokens": 146,
+        "total_tokens": 1147,
+        "seconds": 7.61
+      },
+      "regen_usage": {
+        "prompt_tokens": 948,
+        "completion_tokens": 143,
+        "total_tokens": 1091,
+        "seconds": 6.15
+      }
+    },
+    {
+      "id": "e_ae2377532590e4c7",
+      "name": "HC234",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "HC234 is a device model in the integrated CPAP range. In the patient menu it displays the total run time (in hours) and the pressure setting (in cmH\u2082O).",
+      "gate_usage": {
+        "prompt_tokens": 1826,
+        "completion_tokens": 161,
+        "total_tokens": 1987,
+        "seconds": 7.25
+      },
+      "regen_usage": {
+        "prompt_tokens": 1767,
+        "completion_tokens": 1165,
+        "total_tokens": 2932,
+        "seconds": 67.94
+      }
+    },
+    {
+      "id": "e_64c38df74e380f38",
+      "name": "900HC010 CONNECTOR",
+      "ndocs": 1,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1060,
+        "completion_tokens": 164,
+        "total_tokens": 1224,
+        "seconds": 8.16
+      },
+      "regen_usage": {
+        "prompt_tokens": 1003,
+        "completion_tokens": 73,
+        "total_tokens": 1076,
+        "seconds": 3.39
+      }
+    },
+    {
+      "id": "e_e0a568af80c3c149",
+      "name": "Humidity Setting Display",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Humidity Setting Display is a feature of the CPAP device that shows the current humidity level by default on the screen. It allows the user to view and adjust the humidity setting in order to minimize upper\u2011airway side effects associated with CPAP therapy.",
+      "gate_usage": {
+        "prompt_tokens": 1770,
+        "completion_tokens": 108,
+        "total_tokens": 1878,
+        "seconds": 4.88
+      },
+      "regen_usage": {
+        "prompt_tokens": 1712,
+        "completion_tokens": 173,
+        "total_tokens": 1885,
+        "seconds": 11.3
+      }
+    },
+    {
+      "id": "e_a5415557182b6760",
+      "name": "900HC607 Titration Maximizer Software",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The 900HC607 Titration Maximizer Software is listed as an accessory for the CPAP device.",
+      "gate_usage": {
+        "prompt_tokens": 1773,
+        "completion_tokens": 286,
+        "total_tokens": 2059,
+        "seconds": 18.7
+      },
+      "regen_usage": {
+        "prompt_tokens": 1718,
+        "completion_tokens": 179,
+        "total_tokens": 1897,
+        "seconds": 12.04
+      }
+    },
+    {
+      "id": "e_e6dde07ca711225a",
+      "name": "230UM-3L",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The 230UM\u20113L is a Fisher &\u202fPaykel Healthcare device in the HC230 product range, identified in the operating manual (230UM\u20113L\u2011185043325F) and designed to meet EN/IEC\u202f60601\u20111 standards. It measures 275\u202fmm\u202f\u00d7\u202f170\u202fmm\u202f\u00d7\u202f140\u202fmm (10.8\u2033\u202f\u00d7\u202f6.7\u2033\u202f\u00d7\u202f5.5\u2033), weighs 1.9\u202fkg (4.2\u202flb), and operates in ambient temperat",
+      "gate_usage": {
+        "prompt_tokens": 2011,
+        "completion_tokens": 180,
+        "total_tokens": 2191,
+        "seconds": 9.52
+      },
+      "regen_usage": {
+        "prompt_tokens": 1951,
+        "completion_tokens": 405,
+        "total_tokens": 2356,
+        "seconds": 17.34
+      }
+    },
+    {
+      "id": "e_539800793bead7e2",
+      "name": "India Office",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The India office of Fisher &\u202fPaykel Healthcare can be reached at telephone\u202f+91\u202f80\u202f4123\u202f6041 and fax\u202f+91\u201180\u20114123\u202f6044.",
+      "gate_usage": {
+        "prompt_tokens": 2006,
+        "completion_tokens": 114,
+        "total_tokens": 2120,
+        "seconds": 6.11
+      },
+      "regen_usage": {
+        "prompt_tokens": 1948,
+        "completion_tokens": 212,
+        "total_tokens": 2160,
+        "seconds": 9.91
+      }
+    },
+    {
+      "id": "e_87a55eea41f14a97",
+      "name": "HC013 Conversion Kit - Cold Humidification",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "HC013 Conversion Kit\u202f\u2013\u202fCold Humidification is listed as an accessory for the CPAP device; it is a conversion kit that provides cold humidification functionality.",
+      "gate_usage": {
+        "prompt_tokens": 1774,
+        "completion_tokens": 99,
+        "total_tokens": 1873,
+        "seconds": 3.53
+      },
+      "regen_usage": {
+        "prompt_tokens": 1717,
+        "completion_tokens": 209,
+        "total_tokens": 1926,
+        "seconds": 9.16
+      }
+    },
+    {
+      "id": "e_345367a14b3caea6",
+      "name": "Italy Office",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Italy office of Fisher & Paykel Healthcare can be contacted at telephone\u202f+39\u202f06\u202f7839\u202f2939 and fax\u202f+39\u202f06\u202f7814\u202f7709.",
+      "gate_usage": {
+        "prompt_tokens": 2006,
+        "completion_tokens": 130,
+        "total_tokens": 2136,
+        "seconds": 5.25
+      },
+      "regen_usage": {
+        "prompt_tokens": 1948,
+        "completion_tokens": 222,
+        "total_tokens": 2170,
+        "seconds": 10.54
+      }
+    },
+    {
+      "id": "e_53e20fd7be3752d0",
+      "name": "Japan Office",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Japan office of Fisher\u202f&\u202fPaykel Healthcare is listed with a telephone number\u202f+81\u202f3\u202f3661\u202f7205 and a fax number\u202f+81\u202f3\u202f3661\u202f7206.",
+      "gate_usage": {
+        "prompt_tokens": 2006,
+        "completion_tokens": 118,
+        "total_tokens": 2124,
+        "seconds": 5.29
+      },
+      "regen_usage": {
+        "prompt_tokens": 1948,
+        "completion_tokens": 224,
+        "total_tokens": 2172,
+        "seconds": 11.22
+      }
+    },
+    {
+      "id": "e_201b925a8b40cf44",
+      "name": "Patient Compliance Monitoring (LCD & Full Download)",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "Patient Compliance Monitoring (LCD\u202f&\u202fFull Download) is a feature in the HC230 product range that provides compliance tracking via an LCD display and allows full data download. According to the specifications table, this feature is included on models HC232, HC234, HC236, and HC238.",
+      "gate_usage": {
+        "prompt_tokens": 2016,
+        "completion_tokens": 318,
+        "total_tokens": 2334,
+        "seconds": 15.28
+      },
+      "regen_usage": {
+        "prompt_tokens": 1954,
+        "completion_tokens": 315,
+        "total_tokens": 2269,
+        "seconds": 14.74
+      }
+    },
+    {
+      "id": "e_d61ca738b83d17a7",
+      "name": "Increase/Decrease",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "Increase/Decrease is a control feature on the device that adjusts settings upward or downward. It is operated via the Up button to increase a setting and the Down button to decrease a setting, allowing the user to modify parameters such as humidity, altitude, or pressure.",
+      "gate_usage": {
+        "prompt_tokens": 1683,
+        "completion_tokens": 242,
+        "total_tokens": 1925,
+        "seconds": 11.85
+      },
+      "regen_usage": {
+        "prompt_tokens": 1626,
+        "completion_tokens": 170,
+        "total_tokens": 1796,
+        "seconds": 8.17
+      }
+    },
+    {
+      "id": "e_357f3928660cf000",
+      "name": "HC355 Extended Life Humidification Chamber",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "HC355\u202fExtended\u202fLife\u202fHumidification\u202fChamber is an accessory listed for the CPAP device. It is identified in the accessories section as \u201cHC355\u202f*\u202fExtended Life Humidification Chamber\u201d and is noted as not being available in all countries.",
+      "gate_usage": {
+        "prompt_tokens": 1774,
+        "completion_tokens": 195,
+        "total_tokens": 1969,
+        "seconds": 9.6
+      },
+      "regen_usage": {
+        "prompt_tokens": 1716,
+        "completion_tokens": 161,
+        "total_tokens": 1877,
+        "seconds": 7.4
+      }
+    },
+    {
+      "id": "e_79375c43a6fe4b75",
+      "name": "230UM-3L-185043325F",
+      "ndocs": 1,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "230UM-3L-185043325F is the part number printed on the SleepStyle\u202f200\u202fSeries CPAP system manual. It appears in the document header with the date\u202f4/27/07 and timestamps\u202f9:07:45\u202fAM and\u202f9:07:46\u202fAM.",
+      "gate_usage": {
+        "prompt_tokens": 1092,
+        "completion_tokens": 163,
+        "total_tokens": 1255,
+        "seconds": 8.09
+      },
+      "regen_usage": {
+        "prompt_tokens": 1033,
+        "completion_tokens": 283,
+        "total_tokens": 1316,
+        "seconds": 14.24
+      }
+    },
+    {
+      "id": "e_b64f15ef64e6339b",
+      "name": "185043325",
+      "ndocs": 1,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "185043325 is the part number (document identifier) of the Fisher &\u202fPaykel Healthcare operating manual, listed as \u201c185043325\u202fREV\u202fF\u201d and appearing in the file name\u202f230UM\u20113L\u2011185043325F for the HC230 product range.",
+      "gate_usage": {
+        "prompt_tokens": 2011,
+        "completion_tokens": 198,
+        "total_tokens": 2209,
+        "seconds": 11.63
+      },
+      "regen_usage": {
+        "prompt_tokens": 1950,
+        "completion_tokens": 263,
+        "total_tokens": 2213,
+        "seconds": 15.38
+      }
+    },
+    {
+      "id": "e_e5ed7db30febf0e7",
+      "name": "Fully Integrated CPAP with Heated Humidification",
+      "ndocs": 2,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "Fully Integrated CPAP with Heated Humidification is listed as a feature in the Fisher\u202f&\u202fPaykel HC230 product range, shown as available on several models (e.g., HC232, HC233, HC234, HC236 and HC238) in the specifications table.",
+      "gate_usage": {
+        "prompt_tokens": 2019,
+        "completion_tokens": 359,
+        "total_tokens": 2378,
+        "seconds": 20.33
+      },
+      "regen_usage": {
+        "prompt_tokens": 1956,
+        "completion_tokens": 562,
+        "total_tokens": 2518,
+        "seconds": 30.15
+      }
+    },
+    {
+      "id": "e_cff27a93e38e5214",
+      "name": "Humidity Control",
+      "ndocs": 3,
+      "gate_decision": "regenerate",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "Humidity Control is a patient\u2011menu setting on the integrated CPAP range that appears as \u201cHumidity Setting (default)\u201d alongside other parameters such as model type, total run time, altitude setting and pressure setting. The humidity level can be viewed and adjusted through the menu\u2019s increase/decreas",
+      "gate_usage": {
+        "prompt_tokens": 1841,
+        "completion_tokens": 366,
+        "total_tokens": 2207,
+        "seconds": 19.72
+      },
+      "regen_usage": {
+        "prompt_tokens": 1771,
+        "completion_tokens": 833,
+        "total_tokens": 2604,
+        "seconds": 43.09
+      }
+    },
+    {
+      "id": "e_24bf9daf60296dfd",
+      "name": "Breathing tube",
+      "ndocs": 4,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1061,
+        "completion_tokens": 170,
+        "total_tokens": 1231,
+        "seconds": 9.21
+      },
+      "regen_usage": {
+        "prompt_tokens": 1000,
+        "completion_tokens": 130,
+        "total_tokens": 1130,
+        "seconds": 7.9
+      }
+    },
+    {
+      "id": "e_ef1fddfab612bbcf",
+      "name": "Automatic Altitude Adjustment/Leak Compensation",
+      "ndocs": 3,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The CPAP device\u2019s patient menu includes a display that shows altitude settings, allowing users to view altitude information together with other parameters such as humidity, compliance data, and pressure settings.",
+      "gate_usage": {
+        "prompt_tokens": 1777,
+        "completion_tokens": 154,
+        "total_tokens": 1931,
+        "seconds": 8.75
+      },
+      "regen_usage": {
+        "prompt_tokens": 1717,
+        "completion_tokens": 419,
+        "total_tokens": 2136,
+        "seconds": 19.42
+      }
+    },
+    {
+      "id": "e_1a7692b75a36498b",
+      "name": "Room Temperature Limit",
+      "ndocs": 2,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1075,
+        "completion_tokens": 168,
+        "total_tokens": 1243,
+        "seconds": 7.49
+      },
+      "regen_usage": {
+        "prompt_tokens": 1000,
+        "completion_tokens": 140,
+        "total_tokens": 1140,
+        "seconds": 6.45
+      }
+    },
+    {
+      "id": "e_82c117b14e8f555e",
+      "name": "Sleep Style 200 Series",
+      "ndocs": 2,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "Sleep Style\u202f200\u202fSeries is a range of humidified CPAP (continuous positive airway pressure) systems designed for home use in the treatment of obstructive sleep apnea (OSA).",
+      "gate_usage": {
+        "prompt_tokens": 1072,
+        "completion_tokens": 157,
+        "total_tokens": 1229,
+        "seconds": 8.49
+      },
+      "regen_usage": {
+        "prompt_tokens": 1003,
+        "completion_tokens": 180,
+        "total_tokens": 1183,
+        "seconds": 7.88
+      }
+    },
+    {
+      "id": "e_8bd7d3b3dade3bc8",
+      "name": "POWER CORD",
+      "ndocs": 7,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1066,
+        "completion_tokens": 186,
+        "total_tokens": 1252,
+        "seconds": 9.91
+      },
+      "regen_usage": {
+        "prompt_tokens": 1000,
+        "completion_tokens": 89,
+        "total_tokens": 1089,
+        "seconds": 3.69
+      }
+    },
+    {
+      "id": "e_2a8d06aeb027eb87",
+      "name": "Ramp button",
+      "ndocs": 4,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The Ramp button is a control on the integrated CPAP device that, when pressed, reduces the delivered pressure to a lower level to help the user fall asleep, with the pressure gradually returning to the full operating level over 41\u202fminutes. Pressing the button again switches the ramp off, and the ram",
+      "gate_usage": {
+        "prompt_tokens": 1784,
+        "completion_tokens": 191,
+        "total_tokens": 1975,
+        "seconds": 8.26
+      },
+      "regen_usage": {
+        "prompt_tokens": 1714,
+        "completion_tokens": 198,
+        "total_tokens": 1912,
+        "seconds": 10.53
+      }
+    },
+    {
+      "id": "e_b8a500b27305bbd9",
+      "name": "White plastic connector",
+      "ndocs": 3,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The white plastic connector is the end of the breathing tube that attaches to the device; it is pushed onto the outlet on top of the water chamber or onto the CPAP outlet.",
+      "gate_usage": {
+        "prompt_tokens": 1775,
+        "completion_tokens": 237,
+        "total_tokens": 2012,
+        "seconds": 12.48
+      },
+      "regen_usage": {
+        "prompt_tokens": 1711,
+        "completion_tokens": 148,
+        "total_tokens": 1859,
+        "seconds": 7.25
+      }
+    },
+    {
+      "id": "e_39eef303db5b50c9",
+      "name": "Heater plate",
+      "ndocs": 5,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1062,
+        "completion_tokens": 155,
+        "total_tokens": 1217,
+        "seconds": 8.4
+      },
+      "regen_usage": {
+        "prompt_tokens": 1002,
+        "completion_tokens": 87,
+        "total_tokens": 1089,
+        "seconds": 4.4
+      }
+    },
+    {
+      "id": "e_0c5e4346f510691e",
+      "name": "CPAP device",
+      "ndocs": 2,
+      "gate_decision": "keep",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The CPAP device is a continuous positive airway pressure machine intended for adult patients to treat obstructive sleep apnea, suitable for use at home or in a sleep laboratory. It delivers pressurized air to keep the airway open and can be equipped with heated respiratory humidification to reduce d",
+      "gate_usage": {
+        "prompt_tokens": 1774,
+        "completion_tokens": 339,
+        "total_tokens": 2113,
+        "seconds": 16.77
+      },
+      "regen_usage": {
+        "prompt_tokens": 1714,
+        "completion_tokens": 173,
+        "total_tokens": 1887,
+        "seconds": 9.2
+      }
+    },
+    {
+      "id": "e_f410e0466ae4b065",
+      "name": "Standard",
+      "ndocs": 3,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "Standard is a CPAP option listed in the device\u2019s patient menu under the heading \u201cSTANDARD\u202fCPAP\u202fRANGE.\u201d It designates the default CPAP mode that provides the standard pressure\u2011range settings and includes controls such as the mode button, ramp button, and increase/decrease buttons for adjusting pressu",
+      "gate_usage": {
+        "prompt_tokens": 1705,
+        "completion_tokens": 206,
+        "total_tokens": 1911,
+        "seconds": 9.53
+      },
+      "regen_usage": {
+        "prompt_tokens": 1645,
+        "completion_tokens": 271,
+        "total_tokens": 1916,
+        "seconds": 14.55
+      }
+    },
+    {
+      "id": "e_29c6c3fb0e676d77",
+      "name": "Respiratory Therapist",
+      "ndocs": 2,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1059,
+        "completion_tokens": 194,
+        "total_tokens": 1253,
+        "seconds": 9.1
+      },
+      "regen_usage": {
+        "prompt_tokens": 998,
+        "completion_tokens": 78,
+        "total_tokens": 1076,
+        "seconds": 4.08
+      }
+    },
+    {
+      "id": "e_b0338bb888fd280f",
+      "name": "Patient menu",
+      "ndocs": 2,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The Patient menu is a display feature of the CPAP device that lets the user view CPAP settings, humidity, compliance data, altitude, and pressure settings. It also provides access to adjust humidity levels to minimize upper\u2011airway side effects from CPAP use.",
+      "gate_usage": {
+        "prompt_tokens": 1778,
+        "completion_tokens": 264,
+        "total_tokens": 2042,
+        "seconds": 14.35
+      },
+      "regen_usage": {
+        "prompt_tokens": 1714,
+        "completion_tokens": 212,
+        "total_tokens": 1926,
+        "seconds": 9.2
+      }
+    },
+    {
+      "id": "e_46c79c863f914602",
+      "name": "Homecare Provider",
+      "ndocs": 4,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1067,
+        "completion_tokens": 161,
+        "total_tokens": 1228,
+        "seconds": 7.32
+      },
+      "regen_usage": {
+        "prompt_tokens": 998,
+        "completion_tokens": 86,
+        "total_tokens": 1084,
+        "seconds": 3.75
+      }
+    },
+    {
+      "id": "e_d3c8e4cafa5bfc9c",
+      "name": "On/Off",
+      "ndocs": 2,
+      "gate_decision": "keep",
+      "reference_decision": "keep",
+      "regen_not_mentioned": false,
+      "regenerated": "The On/Off feature is a button on the device that switches the machine on and off. Pressing the On/Off button powers the device up, displaying the default humidity setting, and pressing it again powers the device down.",
+      "gate_usage": {
+        "prompt_tokens": 1683,
+        "completion_tokens": 157,
+        "total_tokens": 1840,
+        "seconds": 7.7
+      },
+      "regen_usage": {
+        "prompt_tokens": 1628,
+        "completion_tokens": 165,
+        "total_tokens": 1793,
+        "seconds": 9.13
+      }
+    },
+    {
+      "id": "e_0332719bd4f0a49f",
+      "name": "Water chamber",
+      "ndocs": 2,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "The water chamber is an accessory component of the CPAP device that holds distilled water for humidification, is filled only up to the marked water\u2011level line, and is attached to the device by pressing down the finger guard and sliding it into place so the guard clicks into position. It must be empt",
+      "gate_usage": {
+        "prompt_tokens": 1779,
+        "completion_tokens": 221,
+        "total_tokens": 2000,
+        "seconds": 12.14
+      },
+      "regen_usage": {
+        "prompt_tokens": 1712,
+        "completion_tokens": 322,
+        "total_tokens": 2034,
+        "seconds": 15.18
+      }
+    },
+    {
+      "id": "e_f622146fed68a705",
+      "name": "Physician",
+      "ndocs": 4,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "Physician \u2013 The manual notes that, under U.S. federal law, the Sleep\u202fStyle\u202f200 Series CPAP system may be sold only by or on the order of a physician.",
+      "gate_usage": {
+        "prompt_tokens": 1057,
+        "completion_tokens": 249,
+        "total_tokens": 1306,
+        "seconds": 13.87
+      },
+      "regen_usage": {
+        "prompt_tokens": 996,
+        "completion_tokens": 131,
+        "total_tokens": 1127,
+        "seconds": 5.21
+      }
+    },
+    {
+      "id": "e_7f74406c0b1fc5a9",
+      "name": "Drip Proof",
+      "ndocs": 3,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1081,
+        "completion_tokens": 184,
+        "total_tokens": 1265,
+        "seconds": 9.42
+      },
+      "regen_usage": {
+        "prompt_tokens": 1026,
+        "completion_tokens": 88,
+        "total_tokens": 1114,
+        "seconds": 3.74
+      }
+    },
+    {
+      "id": "e_de62b55867687704",
+      "name": "SERIAL PORT",
+      "ndocs": 2,
+      "gate_decision": "regenerate",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": true,
+      "regenerated": "NOT MENTIONED",
+      "gate_usage": {
+        "prompt_tokens": 1061,
+        "completion_tokens": 153,
+        "total_tokens": 1214,
+        "seconds": 7.45
+      },
+      "regen_usage": {
+        "prompt_tokens": 997,
+        "completion_tokens": 72,
+        "total_tokens": 1069,
+        "seconds": 4.2
+      }
+    },
+    {
+      "id": "e_ab4ac10ce7b97639",
+      "name": "Actual Pressure",
+      "ndocs": 3,
+      "gate_decision": "keep",
+      "reference_decision": "regenerate",
+      "regen_not_mentioned": false,
+      "regenerated": "Actual Pressure is a feature that displays the current pressure being delivered by the device. It is only available on units that include the Automatic Altitude Adjustment/Leak Compensation feature.",
+      "gate_usage": {
+        "prompt_tokens": 1826,
+        "completion_tokens": 432,
+        "total_tokens": 2258,
+        "seconds": 21.2
+      },
+      "regen_usage": {
+        "prompt_tokens": 1766,
+        "completion_tokens": 141,
+        "total_tokens": 1907,
+        "seconds": 6.72
+      }
+    }
+  ]
+}
