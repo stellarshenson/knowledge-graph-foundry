@@ -13,7 +13,7 @@ Route every hypothesis to the cheapest rung that can kill it; escalate survivors
 
 | Rung | Slice | Purpose |
 |---|---|---|
-| scout | ~50 passages (to build from the 2wiki corpus head) | smoke/wiring checks, instrument dry-runs, fast engine iteration |
+| scout | 50 - `data/interim/bench/2wiki-scout-50.json` (head-50 of pilot-200, subset semantics) | smoke/wiring checks, instrument dry-runs, fast engine iteration |
 | small | 200 - `data/interim/bench/2wiki-pilot-200.json` | hypothesis screening, cheap A/B kills |
 | medium | 1,000 cumulative - `data/interim/bench/2wiki-medium-rows200-999.json` | verdict-grade confirmation, metric-sensitivity + regression work |
 | large | 6,118 rows - `data/interim/bench/2wiki-full-rows1000-6118.json` | SOTA maturation + the #59 peer eval - held-out external questions, the honest H371/H372 adjudication |

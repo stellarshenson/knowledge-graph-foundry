@@ -1,0 +1,19 @@
+# Scout rung smoke (task #83): 50-passage 2wiki slice on a THROWAWAY Neo4j
+# (user-konrad.jelen-kgf-neo4j-scout, 172.19.0.8). First scout-rung run of the
+# benchmark scale-ladder campaign with the H371 question channel ACTIVE
+# (questions.enabled defaults to True - exercising it is the point).
+# Copied from config-bench-pilot.yml; only neo4j.uri and event_log changed.
+neo4j:
+  uri: bolt://172.19.0.8:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 3600
+extraction:
+  recipe: enumerate
+  auto_calibrate: true
+event_log: logs/bench-scout-events.jsonl

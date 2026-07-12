@@ -98,3 +98,33 @@ Supersedes the 2026-07-08 section where they conflict. Active /goal: fix DEF-8..
 **PENDING WORK (post-H363 queue, in order):** H363 verdict + H347 knee fit + H362 cache seed (#64) + H343/H345 (#58); then LLM-gated: H385 answer side + optimize() refit hook (#74), H382 self-report rider (#73), H377 + H378 induced-drift replay (closes DEF-9) + H379 replay arm (#72), H371-H373 generation + H374 precision arm (#71), R31 H349/H352 (closes DEF-11) (#62), DEF-13 cures. Chained: H381 on H373; H387/H368/NV-Embed-v2 parity on the #59 second corpus. Open flag: rung-1 additive-vs-displacement parity needs a proposition index on the pile - engine prop index is Titan space, conflicts with the no-Titan-bulk rule.
 
 **FIRST ACTION next session:** tail `logs/r30-h363-ramp.log` and `ps -p 46692`. If new STEP lines landed (c=48+): collect them; if the ramp finished all rungs or died: record the H363 verdict + H347 knee fit in `docs/experiments/kgf-redesign-experiments.md`, seed the H362 throughput-cache entry, then start the post-H363 LLM queue above. If still running: the user directive stands - wait on the GPU, execute only non-GPU work.
+
+## BRACE 2026-07-12 18:11Z - server restart
+
+**HORIZON: SERVER RESTART** - host going down; EVERY job dies (detached included). Relaunch all from the commands below; do not look for surviving PIDs.
+
+### Running at brace (all WILL be killed; value already on disk)
+- **vLLM gpt-oss-120b** pid 5816 (8h19m) - stateless, no data loss. Relaunch: `scripts/vllm-serve.sh` (serves :8010; WSL pin-memory flag inside script). Token ledger banks per instance - snapshot after restart: `.venv/bin/python scripts/token_ledger.py` (NEVER --help)
+- **Progressive prober** pid 7778, `scripts/bench_progressive_probe.py` - checkpoints incrementally to `results/bench/progressive-probe-trajectory.jsonl` (2,443 rows, last cycle 18:05Z on disk; zero loss). Relaunch AFTER vLLM + neo4j3 are up: `setsid nohup .venv/bin/python scripts/bench_progressive_probe.py 2>&1 | tee -a logs/bench-progressive-probe.log &`
+- **Scout throwaway Neo4j** container `user-konrad.jelen-kgf-neo4j-scout` (172.19.0.8) - EMPTY (ingest failed pre-init), safe to lose; recreate per scout brief below
+
+### Down / completed before brace
+- **Phase-3 rebuild run 1**: COMPLETE + captured (`reports/phase3-rebuild1-20260712T175208Z.json`, dump `tmp/data-dumps/20260712-kgf-neo4j2-phase3-rebuild1.dump` 1.1G + manifest row); graph intact on neo4j2. x2 stood down, verdict OPEN. Nothing to do
+- **Scout-rung smoke executor**: died on credit outage; its ONE finding: `kgf ingest` on a fresh throwaway fails with "project not initialized - run `kgf init` first" - the ingest log `logs/bench-scout-ingest.log` ends EXIT_CODE=1 at 18:04Z. Artifacts kept: `config/experiments/config-bench-scout.yml` (URI 172.19.0.8), `data/interim/bench/2wiki-scout-50.json` (head-50 of pilot-200)
+
+### Valid on disk (headline)
+- Commit `fcea637` pushed (H371 wiring + CUSUM + doctrine + Phase-3 capture + verdict batch, 69 files)
+- Canonical log through Phase-3 run-1 section; journal entries 231-232; task #50 completed, #83 in_progress
+- Neo4j piles: neo4j2 = Phase-3 run-1 graph (KEEP), neo4j3 = bench pile, neo4j4 = read-only CPAP reference; all in Docker volumes, survive reboot. Post-reboot containers may exit(255) with stale network IDs - reattach to recreated `stellars-tech-ai-workbench_hub_network` (Phase-3 executor did exactly this for neo4j2)
+
+### Invalid / quarantined
+- none new this brace
+
+### Pending recordings / decisions
+- Scout smoke never ran - restart it per FIRST ACTION
+- Uncommitted at brace start: journal 232, canonical-log Phase-3 section, kgf-dataset skill scout-path edit, scout config + slice - INCLUDED in the brace checkpoint commit
+
+### FIRST ACTION for next session
+1. `docker ps -a` - restart neo4j2/3/4 if exited (reattach network if 255); relaunch vLLM (`scripts/vllm-serve.sh`), wait for :8010
+2. Remove stale scout container, re-run the scout smoke with the SAME brief PLUS the fix: run `kgf init` (or `--config`-scoped equivalent) against the throwaway BEFORE ingest - that was the sole failure
+3. Relaunch prober (command above); then resume ladder campaign task #83
