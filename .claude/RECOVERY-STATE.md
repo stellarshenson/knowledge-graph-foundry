@@ -128,3 +128,24 @@ Supersedes the 2026-07-08 section where they conflict. Active /goal: fix DEF-8..
 1. `docker ps -a` - restart neo4j2/3/4 if exited (reattach network if 255); relaunch vLLM (`scripts/vllm-serve.sh`), wait for :8010
 2. Remove stale scout container, re-run the scout smoke with the SAME brief PLUS the fix: run `kgf init` (or `--config`-scoped equivalent) against the throwaway BEFORE ingest - that was the sole failure
 3. Relaunch prober (command above); then resume ladder campaign task #83
+
+## BRACE-READY 2026-07-12 19:12Z - credit limits imminent
+
+**HORIZON: SESSION-ONLY** - usage credits may run out any moment; this session + its agents die, DETACHED compute SURVIVES. On resume: reattach/verify, do NOT relaunch what still runs.
+
+### Running detached (survives; verify by command, reattach only)
+- **vLLM gpt-oss-120b** pid 5621 (:8010) - `logs/vllm-server.log`; health `curl -s localhost:8010/v1/models`; if dead: `bash scripts/vllm-serve.sh`
+- **Scout smoke ingest** pid 8189 - `.venv/bin/kgf ingest data/interim/bench/2wiki-scout-50.json --config config/experiments/config-bench-scout.yml --event-log`; log `logs/bench-scout-ingest.log`, events `logs/bench-scout-events.jsonl` (6/50 docs at 19:08Z, ~33s/passage); completion = "ingested N documents" LINE (DEF-15: process may hang after - kill pid, note it); target = throwaway `user-konrad.jelen-kgf-neo4j-scout` 172.19.0.8 (H371 questions ACTIVE - the smoke's point)
+- **Progressive prober** pid 7688 - checkpoints to `results/bench/progressive-probe-trajectory.jsonl` (2,488 rows at 19:08Z); if dead: `setsid nohup .venv/bin/python scripts/bench_progressive_probe.py >> logs/bench-progressive-probe.log 2>&1 &`
+
+### Dies with session
+- Scout executor agent + its monitors - told to write `results/bench-scout-resume-brief.md` (verification steps, dump recipe, teardown, report path); a fresh agent finishes from that brief alone
+
+### After scout ingest completes (from the brief or by hand)
+1. Verify on 172.19.0.8: counts (nodes/entities/rels/chunks), KGFQuestion ~8/chunk gated source:'ingest', ANSWERABLE_FROM + ABOUT edges, index kgf_question_embeddings, one probe() with "## Question match:" block
+2. Dump to tmp/data-dumps/ + sidecar + MANIFEST row (scout-rung smoke); container dump to /data/_dumps then docker cp; then stop+rm the scout container
+3. Report reports/bench-scout-smoke-<ts>.json; record in canonical log; journal via /journal:update; then small rung next (#83)
+
+### Standing state
+- Commits fcea637 + 6487666 pushed; uncommitted since: this board section, resume brief when written - LOCAL DISK survives a session death; commit only needed against machine death (user approval required)
+- AWAITING USER: commit approval for post-brace changes
