@@ -2,6 +2,8 @@
 
 Background job logs for Knowledge Graph Foundry.
 
+- `bench-scout-ingest.log` - scout-rung smoke (task #83): 50-passage 2wiki slice into the throwaway kgf-neo4j-scout with the H371 question channel active; includes the predecessor's failed pre-init attempt, active run starts at the `=== RETRY 2026-07-12T19:04:52Z ===` marker (report reports/bench-scout-smoke-20260712T195500Z.json)
+- `bench-scout-events.jsonl` - JSONL event stream for the scout-rung smoke ingest (document.started/completed pairs drive the per-passage timing in the report)
 - `h371-wire-verify-retrieval.log` - H371 wiring verification, retrieval arm: engine question channel + parity render on neo4j4 (READ ONLY), 24-probe DEF-14 instrument (report reports/h371-wire-retrieval-*.json)
 - `h371-wire-verify-ingest.log` - H371 wiring verification, ingest arm: 3-doc ingest with questions.enabled=true on the throwaway kgf-h371-scratch Neo4j, local vLLM (report reports/h371-wire-ingest-*.json)
 - `r36-h379-replay.log` - R36-H379 replay arm: functional invalidation micro-replay + rolled-back pile-scale reconcile + gold-safety probe A/B (report reports/r36-h379-replay-*.json)

@@ -1,0 +1,20 @@
+# Small rung (R46-H499 verdict substrate, ladder rung 2): 200-passage 2wiki
+# slice on a THROWAWAY Neo4j (user-konrad.jelen-kgf-neo4j-small, 172.19.0.9).
+# Question channel ACTIVE (questions.enabled defaults to True) - this pile is
+# the substrate for the H499 question-channel verdict A/B, which was
+# underpowered on the scout pile (5 eligible questions, zero flips).
+# Copied from config-bench-scout.yml; only neo4j.uri and event_log changed.
+neo4j:
+  uri: bolt://172.19.0.9:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 3600
+extraction:
+  recipe: enumerate
+  auto_calibrate: true
+event_log: logs/bench-small-events.jsonl

@@ -149,3 +149,81 @@ Supersedes the 2026-07-08 section where they conflict. Active /goal: fix DEF-8..
 ### Standing state
 - Commits fcea637 + 6487666 pushed; uncommitted since: this board section, resume brief when written - LOCAL DISK survives a session death; commit only needed against machine death (user approval required)
 - AWAITING USER: commit approval for post-brace changes
+
+## LIVE 2026-07-12 ~20:20Z - overnight autonomous run (user: "continue until 4am, then switch model to Fable and hand over")
+
+**HORIZON: SESSION-ONLY** - fumes; this session + agents may die any moment, DETACHED compute SURVIVES. Supersedes prior BRACE sections where they conflict. Model handover to Fable planned at ~04:00 CEST (~02:00Z): at that mark write a clean handover + pause; the model switch itself is a user/runtime action (I cannot self-switch).
+
+### Running detached (survives session death; verify by command, do NOT relaunch what still runs)
+- **vLLM gpt-oss-120b** :8010 - `logs/vllm-server.log`; health `curl -s localhost:8010/v1/models`; if dead `bash scripts/vllm-serve.sh`
+- **Small-200 ladder ingest** - process 28860/28861, `.venv/bin/kgf ingest data/interim/bench/2wiki-pilot-200.json --config config/experiments/config-bench-small.yml`; log `logs/bench-small-ingest.log`, events `logs/bench-small-events.jsonl`; target throwaway `user-konrad.jelen-kgf-neo4j-small` 172.19.0.9 (H371 questions ACTIVE); launched 19:58Z, ~45/200 docs at 20:21Z, ETA ~21:45Z; completion = `EXIT_CODE=` in the log (DEF-15: may hang after the `ingested N documents` line - kill 28860 if so)
+- **Completion waiter** - harness bg task `b98t9hpja`, blocks on `EXIT_CODE=` in the ingest log, notifies on fire (re-arm with an `until grep -qE "EXIT_CODE=" logs/bench-small-ingest.log; do sleep 30; done` loop if it died)
+
+### Verified this run (no recompute)
+- `make test` GREEN: 492 passed, 18 skipped, exit 0 - BUT only in a clean color env. This shell has `FORCE_COLOR=1` which makes `test_cli.py::test_query_prints_answer` fail on a raw-substring assert vs Rich-colorized output. Always run `env -u FORCE_COLOR NO_COLOR=1 make test`. Not a code defect; no edit made.
+- Staged (not yet run - needs GPU-free window): `scripts/bench_answer_kgf.py` - #59 QA adapter, emits the bench_score.py answers schema over held-in 2wiki questions; run on the small pile after ingest, then `.venv/bin/python scripts/bench_score.py <answers.jsonl>`. recall@5 is a title-level proxy; the peer HEADLINE needs the large rung (manual)
+
+### Open-round truth (do NOT manufacture verdicts)
+- R34/R35/R36/R37/R38 fully verdicted EXCEPT: R34-H368 (PPR at bench scale, gated on substrate+H391), R36-H381 (gap-ledger lifecycle, un-gated but its "inject a doc" step needs an ingest=GPU), R38-H387 (gated on a 2nd corpus class = the bench pile, now exists)
+- R39-R44 are REGISTERED + partially executed only: R39-H389 shakedown 64.1%/62.1% coverage; R43-H429/H430 router (routes retriever-side, "provisional" per adversarial review); R44-H448 PARTIAL + H468 REFUTED. Everything else is GATED on the ladder substrate now under construction - a multi-day campaign, NOT closeable tonight
+
+### Pending (in order) after small ingest completes
+1. Verify small on 172.19.0.9: `.venv/bin/python scripts/bench_small_verify.py` (counts, KGFQuestion ~8/chunk source:'ingest', ANSWERABLE_FROM+ABOUT, index kgf_question_embeddings, one probe question-match); then dump to `tmp/data-dumps/` + sidecar + MANIFEST row (small-rung, question-active); LEAVE container UP for the A/B
+2. H499 verdict A/B (retrieval-only, no GPU contention): `.venv/bin/python scripts/r46_h499_screen.py config/experiments/config-bench-small.yml` (raise/remove MAX_ELIGIBLE for verdict grade); bar ON-OFF >= +0.03 answer-in-context AND regressions=0; record verdict in canonical log R46-H499, then decide H500 un-gate
+3. #59 shakedown: run `scripts/bench_answer_kgf.py` on the small pile (LLM), score with bench_score.py; record honestly as slice-scale harness validation (peer headline = large rung)
+4. Start MEDIUM rung rebuild (current engine, question channel) on neo4j3 172.19.0.101 per doctrine - runs past the 4am handover for Fable to monitor. LARGE rung stays MANUAL (user timing; multi-day vLLM occupancy)
+
+### AWAITING USER
+- Commit approval for all post-6487666 changes (canonical-log records, journal entries, `scripts/bench_answer_kgf.py`, this board section, dumps/reports)
+- Large-rung start timing (multi-day GPU occupancy)
+
+## LIVE 2026-07-13 ~00:35 CEST (22:35Z) - small rung DONE, medium ingest running, H274 wired
+
+**HORIZON: SESSION-ONLY** - detached compute survives. Supersedes the ~20:20Z section. Fable handover planned ~04:00 CEST.
+
+### Running detached (survives; verify by command, do NOT relaunch what still runs)
+- **vLLM gpt-oss-120b** :8010 - `logs/vllm-server.log`; health `curl -s localhost:8010/v1/models`; if dead `bash scripts/vllm-serve.sh`
+- **Medium rung ingest** - nesting `2wiki-medium-rows200-999.json` (rows200-999, 800 docs) onto the small-200 pile on .9 → 1,000-doc medium rung; `.venv/bin/kgf ingest ... --config config/experiments/config-bench-medium.yml --event-log`; log `logs/bench-medium-ingest.log`, events `logs/bench-medium-events.jsonl`; launched ~22:32Z; NO `EXIT_CODE=` wrapper - completion = the `ingested N documents` LINE (DEF-15). ETA ~08:00 CEST. Relaunch if dead: same command detached
+- **Medium completion waiter** - harness bg task `bd9uufpv9` (greps the `ingested N documents` line + process-death fallback); notifies on fire
+
+### DONE this session (captured on disk, no recompute)
+- **Small-200 rung** = ladder rung 2, LIVE on .9 until the medium increment nested over it. Verify report `reports/bench-small-verify-20260712T215613Z.json`; 1,287 ents / 200 chunks / 1,551 gated questions / index ONLINE
+- **R46-H499 small screen** = underpowered null: OFF 15/22, ON 15/22, delta 0.0, zero regressions (`results/bench/r46-h499-screen-20260712T215811Z.jsonl`); recorded in canonical log R46-H499; verdict escalates to medium (powered n)
+- **#59 shakedown** = EM 0.136 / F1 0.226 / recall@5 0.773 (`results/bench/2wikimultihopqa-answers-20260712T220025Z-fixed.jsonl`); `scripts/bench_answer_kgf.py` retrieved_titles bug fixed (d_ hash-id join via KGFDocument.name)
+- **H274 answer-cache WIRED** (default off): `graph/answer_cache.py`, `AnswerCacheSettings`, `Foundry.query()` wrapper; 498 tests green; canonical log R26-H274 + journal 234
+- **make test GREEN** 498/18-skipped in a clean color env (`env -u FORCE_COLOR NO_COLOR=1 make test` - FORCE_COLOR=1 breaks the CLI substring test, not a code defect)
+
+### PENDING for Fable (in order, after the medium ingest completes)
+1. Verify medium on .9 (counts, KGFQuestion ~8/chunk, index); dump medium to `tmp/data-dumps/20260713-neo4j-medium-2wiki-1000.dump` + sidecar + MANIFEST row (stop container / throwaway `--volumes-from` `neo4j-admin database dump` / docker cp / restart; image `neo4j:5.26.0`)
+2. **Powered R46-H499 verdict**: `.venv/bin/python scripts/r46_h499_screen.py config/experiments/config-bench-medium.yml <2wiki json> 0` (uncapped) - many more held-in eligible; bar ON-OFF >= +0.03 AND regressions=0; record verdict, then decide H500 un-gate
+3. #59 on medium: `scripts/bench_answer_kgf.py config/experiments/config-bench-medium.yml`, score with `bench_score.py` (still slice-scale; the peer HEADLINE needs the large rung)
+4. LARGE rung stays MANUAL (user timing; `2wiki-full-rows1000-6118.json`, multi-day vLLM)
+
+### Deferred (noted, not blocking)
+- Small-200 standalone physical dump SKIPPED (nesting reuses .9; ladder is strictly nested so the medium dump contains all small docs; .9 is a reproducible throwaway) - see rationale in the H274/journal record
+- DEF-16: `kgf_proposition_embeddings` / KGFPassage absent on the bench pile (optimize() never ran) - proposition rung silently skipped, span coverage 0.0; instruments log/skip gracefully
+
+### AWAITING USER
+- **Commit approval** for the whole post-`6487666` batch (canonical log H499+H274, journal 234, `scripts/bench_answer_kgf.py`, `scripts/r46_h499_screen.py`, `src` H274 trio, `tests/test_answer_cache.py`, `config-bench-medium.yml`, this board, results/reports) - nothing pushed without it
+- Large-rung start timing
+
+---
+
+## R47 GLiNER sparse graph coding - research round registered (2026-07-13 ~01:15 CEST)
+
+User pivot mid-night: "hypothesise with a wide fanout about sparse graph coding with ner at ingestion ... Research". Delivered as a registered research round; NOT executed (execution is the next phase, needs GLiNER wiring + a bench substrate).
+
+### DONE this session (on disk)
+- **R47 registered** H501-H513 (13 hypotheses) in `docs/experiments/kgf-redesign-experiments.md` (line ~4667). Two domains: IDENTITY (strong, vs weak 76.8% incumbent, targets H107, 9/13 FREE offline replays) + RETRIEVAL (contested vs dense@16=0.854, gated behind the FREE H501 ceiling gate; all constructions FUSE inside PPR, never seed-compete)
+- **H501 is the cheapest decisive experiment**: partition gold carriers spec vs prose; NULL (retrieval domain dead) if dense already holds >90% of GLiNER's spec carriers; OPEN if dense spec-slice recall <0.85. FREE offline replay - run FIRST
+- **18 load-bearing papers** downloaded + digested to `references/papers/` (150 total now, all %PDF-verified). Fanouts: research `wf_69853fe5-c2b` (8 Opus, 680k tok), digests `wf_c15bf3c3-26d` (18 Sonnet, 1.9M tok). Full research harvest cached at `/tmp/claude-1000/.../tasks/wup135zue.output` (948 lines, all 32 candidate hypotheses + ~40 papers)
+- **journal 235** (Extended) logged via plugin, journal-tools check 0 errors; task #85 created for R47 execution
+- GLiNER NOT engine-wired (H260 notebook-only) - every R47 hypothesis needs at minimum one 7.6s idle-card GLiNER pass over the target slice
+
+### R47 execution (Fable / next session, when greenlit + substrate ready)
+1. **H501 ceiling gate FIRST** (FREE) - needs a GLiNER pass over a bench slice + the dense-seed logs + gold carriers; decides whether the retrieval domain (H506-H511,H513) is worth building. No harness written yet
+2. IDENTITY domain next (H502/H503/H505 FREE over cached H260 spans + the H107 66-pair set; H504 GPU SAE) - the strong bet, independent of H501
+3. RETRIEVAL GPU work (H506/H508/H513) rides the medium/large substrate + a positive H501
+
+### AWAITING USER (updated)
+- **Commit approval** now covers the post-`6487666` batch PLUS: `docs/experiments/kgf-redesign-experiments.md` (R47 block), `.claude/JOURNAL.md` (entry 235), 18 new `references/papers/[paper]*.pdf` + `[paper digest]*.md`, this board. Nothing committed/pushed without explicit approval

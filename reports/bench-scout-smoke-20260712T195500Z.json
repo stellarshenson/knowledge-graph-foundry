@@ -1,0 +1,78 @@
+{
+  "task": "scout-rung smoke (task #83, retry executor)",
+  "utc": "2026-07-12T19:55:00Z",
+  "slice": "data/interim/bench/2wiki-scout-50.json",
+  "config": "config/experiments/config-bench-scout.yml",
+  "instance": "user-konrad.jelen-kgf-neo4j-scout (throwaway, bolt://172.19.0.8:7687)",
+  "purpose": "answer multi-hop questions over an open-domain encyclopedia corpus",
+  "question_channel": "H371 ACTIVE (questions.enabled default True, not pinned)",
+  "verification": {
+    "def4_effective_uri_is_throwaway": "PASS",
+    "entities_nonzero": "PASS",
+    "relationships_nonzero": "PASS",
+    "questions_present": "PASS",
+    "questions_all_source_ingest": "PASS",
+    "answerable_from_edges": "PASS",
+    "about_edges": "PASS",
+    "question_vector_index_online": "PASS",
+    "probe_question_match_block": "PASS"
+  },
+  "counts": {
+    "nodes_total": 805,
+    "kgf_documents": 50,
+    "chunks": 50,
+    "entities_extracted_at_load": 356,
+    "entities_after_resolution": 304,
+    "relationships_at_load": 263,
+    "relationships_total_in_graph": 1665,
+    "kgf_questions": 390,
+    "kgf_questions_source_ingest": 390,
+    "answerable_from_edges": 399,
+    "about_edges": 599,
+    "about_edges_reported_by_load_event": 604,
+    "questions_per_chunk": {"mean": 7.98, "min": 7, "max": 8, "chunks_with_questions": 50},
+    "question_vector_index": {"name": "kgf_question_embeddings", "type": "VECTOR", "state": "ONLINE"},
+    "ontology_cured": true,
+    "top_labels": {"KGFQuestion": 390, "Entity": 304, "Person": 99, "Region": 80, "KGFDocument": 50, "Chunk": 50, "Institution": 40, "Film": 34}
+  },
+  "per_passage_cost": {
+    "passages_completed": 50,
+    "passages_skipped": 0,
+    "failures": 0,
+    "wallclock_mean_s": 33.3,
+    "wallclock_min_s": 15.8,
+    "wallclock_max_s": 131.2,
+    "total_ingest_wallclock_s": 1665.6,
+    "run_window_utc": "19:04:53 - 19:32:38",
+    "llm": "gpt-oss-120b via local vLLM :8010, embeddings via bedrock"
+  },
+  "probe": {
+    "question": "Who was the husband of Teutberga?",
+    "context_lines": 9,
+    "question_match_blocks": 1,
+    "matched_stored_question": "Who was Teutberga married to?",
+    "matched_about_entities": ["Teutberga", "Lothair II"],
+    "coverage": {"top_score": 0.8345, "seed_top_score": 0.8345, "escalated": false}
+  },
+  "dump": {
+    "path": "tmp/data-dumps/20260712-neo4j-scout-2wiki-50.dump",
+    "sidecar": "tmp/data-dumps/20260712-neo4j-scout-2wiki-50.md",
+    "size_bytes": 33513692,
+    "manifest_row": "added"
+  },
+  "anomalies_and_notes": [
+    "Predecessor failure root cause CONFIRMED and fixed: throwaway had no KGFControl - `kgf init` with the bench purpose string resolved it; KGFControl verified on 172.19.0.8 before ingest (DEF-4)",
+    "No DEF-15 hang: process exited cleanly (EXIT_CODE=0) right after the 'ingested 50 documents' line",
+    "Question gate dropped ~10 of ~400 generated pairs (390 stored, min 7/chunk) - gate exercising, not failing",
+    "ABOUT edge count in graph (599) differs slightly from load event report (604); 390 questions carry 399 ANSWERABLE_FROM edges (some multi-chunk)",
+    "kgf_proposition_embeddings vector index absent on this pile - probe logged 'proposition retrieval unavailable'; question channel and base retrieval unaffected",
+    "PLAN CHANGE honored: scout container left RUNNING after the dump for the coordinator's held-out question-channel A/B screen (verified back up post-dump: 805 nodes, 390 questions); only the dumper container was removed",
+    "Dump recipe quirk: /data/_dumps did not exist in the throwaway's volume - dumper needed `bash -c 'mkdir -p /data/_dumps && neo4j-admin ...'`"
+  ],
+  "artifacts": {
+    "ingest_log": "logs/bench-scout-ingest.log",
+    "event_log": "logs/bench-scout-events.jsonl",
+    "verify_script": "scripts/bench_scout_verify.py",
+    "resume_brief": "results/bench-scout-resume-brief.md"
+  }
+}

@@ -202,6 +202,15 @@ class LoadSettings(BaseModel):
     functional_relationship_types: list[str] = []  # single-valued rels: a new target supersedes
 
 
+class AnswerCacheSettings(BaseModel):
+    """R26-H274: external query->answer cache kept OUT of the graph, keyed to
+    the corpus fingerprint; default off - a repeat-query optimization, never a
+    correctness dependency (stale entries are pruned when the graph mutates)."""
+
+    enabled: bool = False
+    path: str = "data/processed/answer-cache.json"
+
+
 class Settings(BaseModel):
     lease_ttl_seconds: int = 180  # ingest run lease staleness window
     neo4j: Neo4jSettings = Neo4jSettings()
@@ -221,6 +230,7 @@ class Settings(BaseModel):
     drift: DriftSettings = DriftSettings()
     questions: QuestionSettings = QuestionSettings()
     graphrag: GraphRAGSettings = GraphRAGSettings()
+    answer_cache: AnswerCacheSettings = AnswerCacheSettings()
     load: LoadSettings = LoadSettings()
     event_log: Optional[str] = None  # path to JSONL event log, None disables
 

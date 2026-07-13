@@ -37,12 +37,18 @@ Quirks (feedback_neo4j_dumps): socket proxy prefixes container names with `user-
 
 Then write sidecar `tmp/data-dumps/20260712-neo4j-scout-2wiki-50.md` (instance: scout throwaway .8; what: 2wiki scale-ladder SCOUT rung, 50 passages, first H371 question-channel-active bench ingest; pairs with small-200) and append a row to `tmp/data-dumps/MANIFEST.md` following the existing table format.
 
-## Step C - teardown
+## Step C - restart scout, remove dumper only (PLAN CHANGE 2026-07-12 ~19:26Z)
+
+Coordinator directive: do NOT stop/remove the scout container permanently - it stays UP for a held-out question-channel A/B screen. The dump in Step B still needs the stop; after `docker cp`:
 
 ```bash
-docker rm user-konrad.jelen-kgf-scout-dumper
-docker rm user-konrad.jelen-kgf-neo4j-scout   # already stopped in Step B
+docker start user-konrad.jelen-kgf-neo4j-scout   # back up for the A/B screen
+docker rm user-konrad.jelen-kgf-scout-dumper     # dumper is disposable
 ```
+
+Verify bolt://172.19.0.8:7687 answers again before reporting. Note "container left up for A/B screen" in the report's anomalies/notes.
+
+STATUS 19:57Z: ALL STEPS DONE. Ingest complete (EXIT_CODE=0, no DEF-15 hang), all 9 verification items PASS, dump at `tmp/data-dumps/20260712-neo4j-scout-2wiki-50.dump` + sidecar + MANIFEST row, scout container restarted and verified UP (805 nodes, 390 questions) for the A/B screen, dumper removed, report at `reports/bench-scout-smoke-20260712T195500Z.json`, logs/README.md updated. Nothing left to resume.
 
 ## Step D - report
 

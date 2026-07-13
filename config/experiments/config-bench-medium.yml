@@ -1,0 +1,21 @@
+# Medium rung (ladder rung 3): 1,000-passage 2wiki, built by NESTING the
+# rows200-999 increment onto the small-200 pile already on the THROWAWAY Neo4j
+# (user-konrad.jelen-kgf-neo4j-small, 172.19.0.9). Cumulative design per the
+# kgf-dataset doctrine: medium = small (rows0-199) + this increment (rows200-999).
+# Question channel ACTIVE. Powered substrate for the R46-H499 verdict (small-200
+# yielded only 22 held-in eligible questions - underpowered; medium yields many
+# more). Only event_log differs from config-bench-small.yml.
+neo4j:
+  uri: bolt://172.19.0.9:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 3600
+extraction:
+  recipe: enumerate
+  auto_calibrate: true
+event_log: logs/bench-medium-events.jsonl

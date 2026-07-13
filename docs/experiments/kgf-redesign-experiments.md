@@ -3110,6 +3110,7 @@ The peer climb surfaced usage-driven enrichment (graphify's write-back) and the 
 - **Experiment** - same free replay; the comparison IS the experiment
 - **Result** - (same executor/report) the external fingerprint-keyed cache achieves **100% of H273's safe-reuse rate** (bar 90%) via the identical subgraph-content-fingerprint mechanism, at implementation surface fraction **0.00 vs H273's 4 coupling points** (label schema + relationship type + property stamps + mutation-time invalidation traversal; the cache is a read-only external lookup) - far under the 0.20 bar
 - **Verdict** - CONFIRMED and PREFERRED - the dominating design as the contrarian predicted: equal safety, zero graph contamination surface, no frame-problem machinery in the graph; the round ships H274 and the answer-persistence question closes with the user's mess concern answered structurally (content lives OUTSIDE the source-of-truth layer, keyed to graph state)
+- **Engine wiring (2026-07-13, user approval)** - shipped as the sole ship-worthy tranche-4 item (H271 allocator needs production repeat-query telemetry; the GLiNER audit is the failed H248/H260 recipe, not a lever): `graph/answer_cache.py` (`AnswerCache` file-backed store keyed by `cache_key(question, corpus_fingerprint)`, prune-to-current-generation on store = automatic coarse invalidation at the shipped R38-H384 gate-calibration grade), `AnswerCacheSettings` (`enabled=False` default, `path=data/processed/answer-cache.json`), and a thin `Foundry.query()` wrapper that short-circuits the LLM on a fingerprint-matched hit (returns `path="cache"`) and stores on miss - the existing body renamed `_query_uncached`. Zero overhead when disabled (the wrapper returns `_query_uncached` before any state read). 498 tests green incl. 6 new (`tests/test_answer_cache.py`: roundtrip, fingerprint invalidation, key normalization, disabled-passthrough, hit-skips-LLM, invalidate-on-graph-change). Limitation recorded in the module: a repair that changes answers WITHOUT adding documents does not move the fingerprint (same bound the gate calibration carries); a full graph-state hash would close it at a per-query cost
 
 ### R26-H275 The recurrence gate - only repeated demand earns materialization
 
@@ -4636,3 +4637,179 @@ Repair ledger: every edit recorded in `results/r45/repair-ledger.jsonl` (fact, e
 - Dump `tmp/data-dumps/20260712-kgf-neo4j2-phase3-rebuild1.dump` (1.1G) + sidecar + MANIFEST row ("run 1 of a STOOD-DOWN x2 protocol"); graph left intact on neo4j2
 
 **Binding rule for any future resume**: per H351, a 2-run comparison must price DEF-11 run-to-run variance (naive bands false-fail >= 46% at true null) - use N>=3 means with one-sided Welch CIs, not hard 2-run bands.
+
+### Scout rung smoke - ladder rung 1 complete (2026-07-12)
+
+First bench-corpus ingest with the shipped H371 channel active, on a throwaway pile ([`bench-scout-smoke-20260712T195500Z.json`](../../reports/bench-scout-smoke-20260712T195500Z.json)): 50/50 passages (`2wiki-scout-50.json`, head-50 of pilot-200) in 27.8 min, mean 33.3 s/passage (min 15.8, max 131.2) at zero failures; 805 nodes, 304 entities post-resolution, 1,665 rels, ontology cured, clean exit (no DEF-15). Question channel end-to-end in production form: 390 KGFQuestion all source='ingest' (7.98/chunk - gate dropped ~10/400), 399 ANSWERABLE_FROM + 599 ABOUT, vector index ONLINE, and a live probe ("Who was the husband of Teutberga?") rendered a `## Question match:` block from the stored paraphrase (top_score 0.834). Ops notes: fresh piles need `kgf init` (predecessor's failure, fixed with the bench pile's verbatim purpose string); ABOUT count 599 vs 604 at load (minor, in report); `kgf_proposition_embeddings` absent on this pile (proposition channel unavailable, unrelated). Dump `20260712-neo4j-scout-2wiki-50.dump` (32 MB) + sidecar + MANIFEST row; container intentionally left up as the H499 screen target.
+
+## R46 - held-out question-channel A/B on the bench ladder (registered 2026-07-12, pre-run)
+
+The binding external test the H371 validity caveat demanded: benchmark questions are authored by the dataset creators and never seen by ingestion, so a question-channel gain here measures real retrieval transfer, not corpus-authored-probe anticipation. Design exploits the channel being retrieval-time-only: ONE questions-enabled pile serves both arms - `questions.enabled` toggled in settings at query time, zero re-ingest, perfectly paired.
+
+### R46-H499 Question channel transfers to held-out benchmark questions
+
+- **Persona** - conformist (doc2query/QuOTE lineage predicts vocabulary-gap recovery on any in-domain question distribution; the caveat only disallowed treating corpus-authored 24/24 as proof)
+- **Grounding** - H371 CONFIRMED on parity instrument + wiring verified (1.0, 24/24 through shipped `_question_channel`); scout-50 pile carries engine-generated gated questions; prober instrument already scores answer-in-context + gold-title coverage retrieval-only
+- **Hypothesis** - on 2wiki questions whose gold supporting titles are all inside the ingested slice (held-out by construction), the question channel at M=1 improves answer-in-context rate with zero per-question regressions vs the same pile with the channel off
+- **Prediction** - screen (scout-50, direction only): channel ON >= OFF on answer-in-context, no question flips ON->worse; verdict rung (small-200 or current medium pile after a questions backfill): ON - OFF >= +0.03 answer-in-context AND regressions = 0
+- **Acceptance bar** - paired per-question comparison, SAME pile SAME eligible-question set, retrieval-only (no LLM in the loop); CONFIRMED if the verdict-rung clause holds; REFUTED if delta <= 0 or any ON-regression survives forensics; scout screen is directional only, never verdict-grade (DEF-11 discipline: single-pile, paired design removes run variance but not question-set smallness)
+- **Experiment** - arm A `questions.enabled=false`, arm B `true`, same config otherwise; eligible set = 2wiki questions with all gold titles in the slice; instrument = prober scoring (`_norm`/`_present` answer-in-context + gold-title coverage), per-question JSONL to `results/bench/r46-h499-*.jsonl`
+- **Status** - REGISTERED; screen EXECUTED 2026-07-12 (`results/bench/r46-h499-screen-20260712T195358Z.jsonl`, `scripts/r46_h499_screen.py`): scout-50 yields only 5 eligible questions - paired OFF 4/5, ON 4/5, zero flips, zero regressions. Directional read: SAFE (no ON-regression) but UNDERPOWERED (base already passes 4/5; nothing for the channel to recover). The shared failure ("place of birth of the performer of Changed It") is the known REG-3 family - gold-title coverage 1.0 in both arms, answer fact never extracted (H448 coverage class, arm-independent). Verdict rung proceeding: fresh small-200 questions-enabled ingest on a new throwaway (also ladder rung 2 with the channel active). **Small-200 screen DONE 2026-07-12** (`results/bench/r46-h499-screen-20260712T215811Z.jsonl`, `scripts/r46_h499_screen.py` uncapped): ladder rung 2 built clean on 172.19.0.9 (1,287 entities, 200 chunks, 1,551 gated KGFQuestion at 7.97/chunk, `kgf_question_embeddings` ONLINE, live probe question-match verified). Only 22 held-in eligible questions (both gold titles inside the 200-doc slice) - paired **OFF 15/22, ON 15/22, delta exactly 0.0, zero flips, zero regressions**, identical pass-sets (same 7 fail both arms). Reading: the channel is HARMLESS (regressions=0 holds) but delivers ZERO measurable retrieval transfer on held-out 2wiki at this rung - the in-distribution CPAP 24/24 does NOT transfer, exactly the failure the H371 caveat flagged. STILL UNDERPOWERED though: n=22 resolves nothing below ~+-0.20 (H411/H351 question-set-smallness), so this refutes only a LARGE effect, not the +0.03 bar; the 7 shared failures are coverage misses (H448 ABSENT class) no channel toggle can move. Verdict NOT declared - escalates to the medium rung (1,000 docs -> many more held-in eligible, powered n) built by nesting rows200-999 onto this same .9 pile after the rung-2 dump
+
+### R46-H500 Cross-document question generation transfers to bridge questions (GATED)
+
+- **Persona** - heretical carry-over (H372 PARTIAL disposition ordered re-adjudication on 2wiki where bridge questions are native and H371 cannot pre-empt the flip)
+- **Hypothesis** - the H372 two-sided entity-pair generator, run over a bench pile's cross-document entities, flips bridge-class questions that the per-chunk H371 channel alone does not
+- **Gate** - runs only after H499's verdict rung AND requires the H372 generator (prototype scripts, not yet engine-wired) executed as a batch pass over the target pile; bar to be finalized at un-gating with the H499 numbers as baseline
+- **Status** - REGISTERED-GATED
+
+
+## R47 - GLiNER sparse graph coding at ingestion: NER spans as an identity substrate and a fused retrieval channel (user-directed, registered 2026-07-13)
+
+User strategic direction (verbatim intent): "hypothesise with a wide fanout about sparse graph coding with NER at ingestion ... Research." An eight-vector research star (dynamic workflow `wf_69853fe5-c2b`, 8 Opus agents, 99 web searches, 680k subagent tokens, zero session tokens) grounded the axis in external SOTA; ~40 papers surfaced, load-bearing set archived with digests. The axis: GLiNER's deterministic near-exhaustive span layer (H260: gliner_multi-v2.1, 95.2% gold-carrier recall, 7.6 s / 10 docs, zero LLM, idle card - a STRICT SUPERSET of the regex scanner and above the LLM's 76.8% single-pass average) is currently spent only as an audit-lexicon scalar; the round asks whether it can become a sparse GRAPH CODE.
+
+The fanout resolved the axis into TWO domains with opposite incumbents, and the ordering follows the cheapest-kill-gate-first rule:
+- **IDENTITY (strong bet, weak incumbent)** - the sparse code as an identity substrate beats a WEAK incumbent (single open-vocab LLM pass: 76.8% carrier recall, high run-to-run variance = KGF's DOMINANT failure H107). GLiNER's deterministic 95.2% is a large unexploited lever here; H502/H503/H505 are FREE offline replays over the cached H260 span set + the H107 66-same-type-pair forensic set. This domain does NOT have to beat 0.854.
+- **RETRIEVAL (contested, strong incumbent)** - the sparse code as a retrieval channel must beat dense-only vector seeding @top_k=16 = 0.854 pure-seed recall, which the contrarian vector argues is near-saturated on this spec-heavy corpus. GATED behind a FREE ceiling gate (H501) that measures the achievable fusion headroom before any GPU wiring; every retrieval construction FUSES inside PPR / by learned convex combination (Bruch 2210.11934), never competes for a seed slot (the H53 dilution trap: vector@16 0.854 > union@16 0.750 > rrf@8 0.646), and is benchmarked against SPLADE / learned-sparse, not just BM25.
+
+External precedents that make the axis live rather than a re-run of H53/H260/H393: DyVo (2410.07722, entities as dynamic sparse-vocabulary dimensions beat SPLADE on entity-rich ranking - BPE shatters multi-token model codes that a span dimension keeps whole); HippoRAG-2 (2502.14802, dense+sparse FUSED inside the PPR reset vector, the construction H53 never tested; node-specificity graph-IDF is the load-bearing weight type-merge endangers); PropRAG (2504.18070, LLM-FREE proposition-clique retrieval, SOTA Recall@5); CL-SR (2506.00041) + CSR (2503.01776, sparse-autoencoder codes match SPLADE at 0.11 vs 1.35 FLOPs, Archetypal-anchored 2502.12892 for determinism); Ahmad-Scheinkman (1903.11257, sparse binary codes give a CLOSED-FORM false-match bound - a calibrated SAME_AS gate); KGGen/MINE (2502.09956, published extractors keep only 30-66% of source facts - the coverage-certificate mandate).
+
+Fence: R40 owns the retrieval bridge (the promoted RETRIEVAL hypotheses feed it); R35 owns the question channel; the IDENTITY hypotheses target H107 upstream (aligned with the speculative-ingest-context directive); the INSTRUMENT hypotheses feed the self-auditing foundry / gap ledger. GLiNER is NOT engine-wired today (H260 is notebook-only) - every hypothesis costs at minimum one 7.6 s idle-card GLiNER pass; FREE = offline replay over cached spans + existing graph, GPU = a GLiNER / embed / SAE pass, LLM = none by design (Failure Mode A bans the LLM from the loop). Naive baselines: retrieval dense@16 = 0.854; identity single-LLM-pass 76.8% carrier recall + the H107 66-same-type-pair forensic set; instrument the current GLiNER-as-scalar gap ledger. Numbering H501-H513.
+
+**GATE (run first, decides the retrieval domain)**
+
+### R47-H501 Retrieval ceiling gate - dense@16 already covers GLiNER's carriers
+
+- **Persona** - contrarian (the single cheapest decisive experiment for the entire retrieval domain; BEIR 2104.08663 warns dense is strongest in-domain on salient tokens, so the sparse exact-match edge may already be priced into dense top-k; RAG-vs-GraphRAG 2502.11371: spec-heavy precise-evidence is the regime graphs help least)
+- **Grounding** - dense-only@16 = 0.854; GLiNER 95.2% carrier visibility (H260); the retrieval domain's max fusion lift is bounded by |dense-miss AND GLiNER-reachable| / |gold|. If dense already holds GLiNER's carriers, no fused channel can pay
+- **Hypothesis** - partition gold carriers into spec (alphanumeric model codes / part numbers) vs prose; dense@16 already recalls the spec slice and > 90% of GLiNER spec carriers already sit in dense top-16, so the achievable fused lift is < +2.0 pts (inside H107 run variance)
+- **Prediction** - NULL: dense@16 spec-slice recall >= 0.90 AND > 90% of GLiNER spec carriers in dense top-16 AND |dense-miss AND GLiNER-reachable| / |gold| bounds fused lift < +2.0 pts. The retrieval domain (H506-H511, H513) is alive ONLY if this null is falsified (dense spec-slice recall < ~0.85 = a real opening)
+- **Acceptance bar** - NULL CONFIRMED if bounded achievable lift < +2.0 pts over 0.854; retrieval domain FALSIFIED-OPEN (proceed) if dense spec-slice recall < 0.85. Pure set arithmetic, no LLM
+- **Experiment** - FREE offline: GLiNER-pass the ingested slice, join spans against the dense-seed logs and gold carriers, report the three quantities; `results/r47/h501-ceiling-*.json`. Go / no-go for the retrieval domain
+- **Status** - REGISTERED (run first)
+
+**IDENTITY (the strong bet - weak incumbent 76.8%, targets H107; mostly FREE)**
+
+### R47-H502 GLiNER (span,type) incidence as a deterministic identity blocking key
+
+- **Persona** - conformist (cross-doc coref 2504.05767: mentions are the pre-merge substrate feeding resolution; ELQ 2010.02413: mention detection needs no generative LLM)
+- **Grounding** - the LLM emits divergent canonical names under H107 variance (76.8% carrier recall, high variance); GLiNER's (normalized-span, type) key is deterministic and stable across runs, a strict superset of the regex scanner; feeds the existing Bayesian resolver's candidate-generation stage unchanged
+- **Hypothesis** - anchoring identity blocking on GLiNER (span,type) incidence proposes >= 95% of gold same-entity pairs and, through the existing posterior, raises merged-identity recall toward the 95.2% ceiling while driving run-to-run identity variance (H107) to ~0, at zero LLM tokens
+- **Prediction** - blocking recall (gold pair proposed) >= 0.95; end-to-end identity recall > 76.8%; identical carrier set across 3 reruns (variance ~0)
+- **Acceptance bar** - CONFIRMED if blocking recall >= 0.95 AND identity recall >= 0.90 AND cross-rerun variance ~0; must beat embedding-only blocking at cosine >= 0.9; REFUTED if blocking recall < 0.95 or variance persists. Dodges Failure Mode A (blocking is mechanical, the LLM never adjudicates the candidate list)
+- **Experiment** - FREE replay over the H107 66-same-type-pair forensic set + cached H260 spans; `results/r47/h502-blocking-*.json`
+- **Status** - REGISTERED
+
+### R47-H503 Type-bound SDR-overlap identity signatures with a calibrated SAME_AS gate
+
+- **Persona** - heretical (extends H375 SDR-overlap; Ahmad-Scheinkman 1903.11257 gives a closed-form false-match bound replacing the ad-hoc cosine cutoff)
+- **Grounding** - character-trigram sparse binary signatures (Joshi/Kanerva 1412.7026 random indexing) with entity-TYPE bound in as a role vector (Kleyko SBDR 2111.06077); high overlap on spec-heavy surface variants where dense blurs, type-binding suppresses the model_code collision (P10 mask vs battery). Ahmad-Hawkins 1601.00720 union property + subsampling law bound the merge threshold analytically
+- **Hypothesis** - SDR-overlap blocking recalls >= dense-cosine(>=0.9) same-entity pairs at <= its false-merge rate, and the Ahmad-Scheinkman-calibrated threshold hits a target false-merge rate (1e-3) with identity-probability ECE within the H129 band
+- **Prediction** - pair recall >= dense-cosine AND false-merge <= dense-cosine on the H107 set; empirical false-merge within 2x of the analytic target across rungs
+- **Acceptance bar** - CONFIRMED if recall >= dense-cosine AND calibrated false-merge within 2x target AND ECE within the H129 band; REFUTED if the abbreviation class (OSA vs obstructive sleep apnea) drops recall below dense (kill-risk: lexical SDR misses semantic-abbreviation pairs) - then demote to a type-calibrated COMPLEMENT (union of dense and SDR blocks), never a replacement
+- **Experiment** - FREE over cached spans + H107 pairs; `results/r47/h503-sdr-*.json`
+- **Status** - REGISTERED
+
+### R47-H504 Sparse-code identity likelihood in the Bayesian resolver
+
+- **Persona** - conformist (CL-SR 2506.00041 / CSR 2503.01776 sparse-autoencoder codes; Archetypal SAE 2502.12892 for run-to-run determinism to stand beside deterministic GLiNER)
+- **Grounding** - a TopK sparse autoencoder over frozen GLiNER-span embeddings yields a deterministic k-hot code; same-entity pairs that disagree lexically under H107 variance share active atoms even when dense cosine < 0.9; adds one multiplicative LR to the existing prior * LR_desc * LR_emb * LR_cooc resolver
+- **Hypothesis** - LR_sparse recovers same-entity merges the cosine >= 0.9 detector misses, raising pair-recall on the H107 66-pair set by >= 10 pts at matched false-merge rate (or cutting false-merges at matched recall), gated on SAE dictionary cosine-stability >= 0.9 across 3 seeds
+- **Prediction** - +10 pts pair-recall at matched false-merge, OR lower false-merge at matched recall; dictionary stable across seeds
+- **Acceptance bar** - CONFIRMED if the recall/precision clause holds AND dictionary stability >= 0.9; REFUTED if unstable (kill-risk: KGF's small entity population may not disentangle spec atoms into dedicated latents) or no lift over dense-cosine
+- **Experiment** - GPU: train TopK SAE (h ~ 4d, k ~ 32, Archetypal-constrained) on cached span embeddings, add LR to the resolver, replay the H107 pairs; `results/r47/h504-sparsecode-*.json`
+- **Status** - REGISTERED
+
+### R47-H505 Heal single-pass LLM misses from a growing GLiNER mention lexicon
+
+- **Persona** - conformist (operationalizes H248 graph-as-lexicon; RoSTER 2109.05003: a growing gazetteer + high-recall self-training heals incomplete-labeling misses)
+- **Grounding** - maintain a gazetteer = every GLiNER span seen across all prior docs (Aho-Corasick trie); after the single LLM pass on a new doc, scan its chunks to back-fill carriers the LLM missed HERE but captured elsewhere; targets H107 upstream, cross-document, zero LLM
+- **Hypothesis** - per-doc gold-carrier recall climbs from 76.8% toward the 95.2% GLiNER ceiling, concentrated on carriers appearing in >= 2 docs (the healable set), monotone in corpus size
+- **Prediction** - recover >= 50% of the LLM's per-doc GLiNER-visible misses that appear in another doc; net per-doc carrier recall >= 0.88; false-heal rate < 5%
+- **Acceptance bar** - CONFIRMED if >= 50% healable recovered AND net recall >= 0.88 AND false-heal < 5%; REFUTED if healing introduces > 5% wrong-chunk / identity attachments (kill-risk: short-code ambiguity P10 / S10 / 10)
+- **Experiment** - FREE offline join over stored GLiNER spans + LLM output across the ingested slice; `results/r47/h505-heal-*.json`
+- **Status** - REGISTERED
+
+**RETRIEVAL (gated on H501 + the medium/large substrate; every construction FUSES, never seeds)**
+
+### R47-H506 Materialize GLiNER spans as PPR-reachable phrase nodes
+
+- **Persona** - conformist (HippoRAG-2 2502.14802 / HippoRAG 2405.14831: PPR over a phrase-node graph; SiReRAG 2412.06206: entity-grouping is the load-bearing relatedness channel)
+- **Grounding** - build the HippoRAG-2 graph but populate the phrase layer from deterministic 95.2%-complete GLiNER spans instead of (only) LLM-OpenIE phrases (76.8%); passage-contains-span context edges + cosine synonym edges; PPR reset stays dense-seeded, sparse fuses purely as structure
+- **Hypothesis** - PPR over the GLiNER-augmented graph lifts pure-seed multi-hop recall above dense@16 = 0.854, the lift on bridge (2-hop) questions whose shared entity is a GLiNER span the LLM dropped, and beats a HippoRAG-2 graph whose phrase layer is LLM-OpenIE-only
+- **Prediction** - recall@matched-budget >= 0.874 OR bridge-subset recall >= +5.0 pts; > the OpenIE-only phrase graph
+- **Acceptance bar** - CONFIRMED if a recall clause holds AND beats OpenIE-only; REFUTED if <= 0.854 or no gain over OpenIE-only. Dodges A (spans become nodes directly), B (fuse as structure, dense seeds untouched)
+- **Experiment** - GPU: GLiNER-pass the slice, materialize span nodes + context / synonym edges, PPR replay; `results/r47/h506-ppr-*.json`
+- **Status** - REGISTERED-GATED (H501 headroom + substrate)
+
+### R47-H507 Type-conditioned synonym edges survive type-merging - the H393 / Failure-C adjudicator
+
+- **Persona** - contrarian-resolving (directly adjudicates H393 / Failure Mode C; HippoRAG-2 node-specificity graph-IDF is the load-bearing weight type-merge flattens, ablation 40.9 -> 37.6)
+- **Grounding** - untyped cosine synonym edges false-bridge across types (the P10 mask vs battery collision), leaking PPR mass to distractors; GLiNER's cured label set IS the graph's merge type system, so conditioning every synonym edge on shared GLiNER type builds the sparse layer on the merge's own keys
+- **Hypothesis** - on a type-merged graph, PPR over the type-conditioned GLiNER phrase layer retains >= 95% of pre-merge multi-hop recall (the duality TRANSFERS, refuting Failure Mode C for this construction) while the untyped variant loses recall to cross-type false-bridges
+- **Prediction** - post-merge recall >= 0.95 x pre-merge AND false-bridge PPR mass strictly below the untyped-synonym graph
+- **Acceptance bar** - CONFIRMED if both hold; REFUTED (Failure Mode C stands) if GLiNER types do not separate the colliding codes. This IS the explicit H393 test on KGF's own merged graph
+- **Experiment** - FREE offline edge re-typing on the current span set + PPR replay; `results/r47/h507-typededge-*.json`
+- **Status** - REGISTERED-GATED (H501)
+
+### R47-H508 Convex-fused entity-impact sparse channel over GLiNER spans - DyVo transfer
+
+- **Persona** - conformist (DyVo 2410.07722: entity dimensions beat SPLADE on entity-rich ranking; Bruch 2210.11934: convex combination beats RRF, sample-efficient single alpha - the fusion H53 lacked; Surface-Form Sparse 2605.17762 / ESPLADE 2509.16621: surface-form dims recover BPE-fragmented codes)
+- **Grounding** - per chunk emit a sparse vector over (normalized-span x type) dimensions weighted by GLiNER confidence x idf (no learned head; LI-LSR 2505.01452 makes the query side a lookup, zero query-encoder); spec-heavy model codes that BPE shatters become single stable dimensions; final seed score = alpha * norm(dense) + (1-alpha) * norm(sparse) over the SAME candidate pool
+- **Hypothesis** - convex-fused pure-seed recall@16 exceeds dense@16 = 0.854 AND both H53 sparse configs (union@16 0.750, rrf@8 0.646), with the GLiNER channel's lift > an equivalently-fused SPLADE wordpiece channel on the spec-heavy rungs
+- **Prediction** - fused recall@16 >= 0.874 (paired bootstrap p < 0.05) AND > 0.750 AND GLiNER-fusion lift > SPLADE-fusion lift by >= 2 pts
+- **Acceptance bar** - CONFIRMED if fused >= 0.874 AND beats SPLADE-fusion; REFUTED if <= 0.854 (channel adds no coverage) OR reduces to a BM25-variant (kill-risk: unlearned idf weights over surface forms = the H53 family that already lost)
+- **Experiment** - GPU: build the inverted index from cached spans, tune alpha on <= 50 held-out queries (Bruch), score; includes the FREE weighting ablation (binary / confidence / idf / learned) to isolate whether 'learned' beats idf here; `results/r47/h508-convex-*.json`
+- **Status** - REGISTERED-GATED (H501)
+
+### R47-H509 Mention postings as PPR personalization mass + spec-token exact floor
+
+- **Persona** - conformist (entity-mention retrieval 2408.02795 beats BM25 ~25% nDCG but caps at 56.5% linker coverage - GLiNER's 95.2% removes the cap; Tran-Yates 2208.04887: the mention channel wins via run FUSION, additive coverage)
+- **Grounding** - a bipartite mention-inverted index (normalized surface -> mention node -> chunk postings) from GLiNER spans; at query time inject matched-chunk postings as ADDED PPR personalization mass, and add a spec-token exact-match floor OUTSIDE the fixed 16 dense seeds - the sanctioned H53 remedy (add cheap coverage, do not compete for seeds)
+- **Hypothesis** - mention postings + spec floor lift pure-seed / passage recall above dense@16 on lexically-exact spec tokens dense blurs, without touching the 16 dense seeds, and beat a SPLADE-expansion-fusion variant
+- **Prediction** - >= +2 pts over 0.854 at matched budget; spec-anchored-question coverage recall >= +5 pts with the floor; > SPLADE-expansion fusion
+- **Acceptance bar** - CONFIRMED if both recall clauses hold AND beats SPLADE-fusion; REFUTED if short-code ambiguity (P10 / S10) washes out the dense signal (kill-risk: re-importing Failure Mode B one layer up)
+- **Experiment** - FREE CPU inverted-index build + query-time PPR-mass injection replay; `results/r47/h509-postings-*.json`
+- **Status** - REGISTERED-GATED (H501)
+
+### R47-H510 Deterministic co-occurrence cliques as PropRAG-style hyper-edges
+
+- **Persona** - conformist (PropRAG 2504.18070: implicit hyper-edge cliques over co-occurring entities, LLM-FREE, SOTA Recall@5 - substitute GLiNER co-occurrence for the LLM proposition extractor)
+- **Grounding** - form a clique among all GLiNER spans co-occurring within a sentence / chunk window, weighted by co-occurrence count, from stored char offsets; supplies the 'relatedness' channel on top of the synonym 'similarity' channel (H506), making bridge entities mutually PPR-reachable without any LLM relation extraction
+- **Hypothesis** - adding sentence-window co-occurrence clique edges lifts multi-hop-subset recall >= +2 pts over the context+synonym-only graph, because bridge entities that never share a passage become 2-hop reachable
+- **Prediction** - multi-hop-subset recall >= H506 graph + 2.0 pts; > a BM25 / SPLADE co-occurrence-expansion baseline at matched budget
+- **Acceptance bar** - CONFIRMED if both hold; REFUTED if the dense edge mesh amplifies cross-entity contamination (kill-risk: false-bridge leakage shared with H507)
+- **Experiment** - FREE CPU clique construction from cached span offsets + PPR replay; `results/r47/h510-cliques-*.json`
+- **Status** - REGISTERED-GATED (H501)
+
+### R47-H511 GLiNER-membership gate replaces the LLM recognition memory
+
+- **Persona** - contrarian (attacks Failure Mode A at its source: HippoRAG-2's recognition-memory LLM triple-filter is the exact under-selection step KGF measured at 0.873 < 0.89)
+- **Grounding** - replace the LLM triple-filter before PPR seeding with a deterministic gate: a retrieved triple / phrase is admitted iff its head / tail surface is a GLiNER span (high-recall membership test) - removes the LLM from the fusion loop while still filtering embedding-retrieval noise
+- **Hypothesis** - the GLiNER-membership gate matches or beats the LLM recognition-memory filter's downstream PPR recall at zero LLM tokens and does NOT reproduce the under-selection collapse (it admits every GLiNER-matched candidate rather than pruning them)
+- **Prediction** - downstream PPR recall >= LLM-recognition recall AND >= 0.89 (the H260 bar the LLM clause failed at 0.873), at 0 added LLM tokens
+- **Acceptance bar** - CONFIRMED if recall >= LLM-recognition AND >= 0.89; REFUTED if the deterministic gate under- or over-admits worse than the LLM. Structurally makes under-selection impossible
+- **Experiment** - FREE drop-in replacement replay over the recognition-memory call; `results/r47/h511-recogmem-*.json`
+- **Status** - REGISTERED-GATED (H501)
+
+**INSTRUMENT (self-auditing foundry / gap ledger; FREE + one GLiREL pass)**
+
+### R47-H512 Confidence-thresholded span set as a per-document coverage certificate + abstention gate
+
+- **Persona** - conformist (self-auditing-foundry doctrine; KGGen / MINE 2502.09956: published extractors keep 30-66% of source facts, no system certifies its own per-doc coverage)
+- **Grounding** - treat GLiNER's near-exhaustive span set as the per-doc expected-carrier set; coverage-gap scalar = fraction of above-threshold GLiNER spans with NO node in the built graph; promotes the current gap-ledger scalar into a structured per-document incidence certificate; at query time, absent query entities -> abstain / source-grounded repair
+- **Hypothesis** - the per-doc coverage-gap scalar correlates with per-doc QA failure, and abstaining / repairing on high-gap docs raises answered-subset precision
+- **Prediction** - Spearman(coverage-gap, per-doc QA error) >= 0.4 AND answered-subset precision strictly increases under gating
+- **Acceptance bar** - CONFIRMED if correlation >= 0.4 AND precision rises; REFUTED if the gap scalar is blind to QA failure. Instrument, not a retriever - never a seed channel
+- **Experiment** - FREE set-difference of cached spans against the node set + correlation with the prober's per-doc outcomes; `results/r47/h512-certificate-*.json`
+- **Status** - REGISTERED
+
+### R47-H513 GLiREL typed-pair sparse code as a seed-free multi-hop coverage layer
+
+- **Persona** - conformist (GLiREL 2501.03172: deterministic zero-shot relation extraction over GLiNER spans, one pass; Godbole 1909.07598: typed-entity anchors bridge multi-hop evidence)
+- **Grounding** - run GLiREL over GLiNER spans to emit deterministic (head, relation-type, tail, confidence) triples; add surviving typed triples as extra graph edges / passage-linking hyperedges connecting passages sharing a head-tail pair; edges go to the GRAPH (2-hop reachability), never the seed budget; fact retention certified vs KGGen MINE
+- **Hypothesis** - GLiREL typed edges lift 2-hop bridge-question retrieval recall over a dense-only passage graph and raise certified retained-fact coverage, at zero LLM tokens
+- **Prediction** - 2-hop subset recall >= +3 pts over dense-only PPR AND GLiREL edge precision vs gold bridges >= 0.6 (cheap scout pre-gate)
+- **Acceptance bar** - CONFIRMED if both hold; REFUTED if GLiREL zero-shot relation precision on spec-heavy pairs is too low to add clean edges
+- **Experiment** - GPU: GLiREL pass over cached spans, add typed edges, PPR replay + edge-precision pre-gate on the scout rung; `results/r47/h513-glirel-*.json`
+- **Status** - REGISTERED-GATED (H501 + substrate)

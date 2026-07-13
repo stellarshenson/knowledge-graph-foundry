@@ -1123,6 +1123,26 @@ class Foundry:
         logger.info(f"scorecard saved to {path}")
 
     def query(self, question: str) -> dict:
+        """Answer a question over the graph. When ``answer_cache.enabled``
+        (R26-H274) a fingerprint-keyed external cache short-circuits the LLM on
+        a repeat question against an unchanged graph; the cache lives OUTSIDE
+        the graph and self-invalidates when the corpus fingerprint changes."""
+        ac = self.settings.answer_cache
+        if not ac.enabled:
+            return self._query_uncached(question)
+        from knowledge_graph_foundry.graph.answer_cache import AnswerCache
+        from knowledge_graph_foundry.graph.gate_calibration import corpus_fingerprint
+
+        fp = corpus_fingerprint(self._load_state().get("processed_documents") or [])
+        cache = AnswerCache(ac.path)
+        hit = cache.lookup(question, fp)
+        if hit is not None:
+            return {**hit, "path": "cache"}
+        result = self._query_uncached(question)
+        cache.store(question, fp, result)
+        return result
+
+    def _query_uncached(self, question: str) -> dict:
         """Answer a question over the graph. Global/thematic questions use
         community summaries; entity and multi-hop questions use Personalized
         PageRank seeded from the vector top-k (R2/R6), with currently-valid
