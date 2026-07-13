@@ -15,6 +15,7 @@ Writes: reports/experiments/bench/progressive-probe-trajectory.jsonl (append, on
 per question per cycle) - the raw material for the regression ledger.
 """
 
+import argparse
 import json
 import re
 import sys
@@ -27,16 +28,18 @@ from h158_measure import _norm, _present  # noqa: E402
 
 from knowledge_graph_foundry import load_settings  # noqa: E402
 from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
+from knowledge_graph_foundry.probe import load_manifest, select_manifest  # noqa: E402
 
-QUESTIONS = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(
-    "data/external/multihop-qa-benchmarks/2wikimultihopqa.json"
-)
-CONFIG = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(
-    "config/experiments/config-bench-pilot.yml"
-)
+DEFAULT_QUESTIONS = Path("data/external/multihop-qa-benchmarks/2wikimultihopqa.json")
+DEFAULT_CONFIG = Path("config/experiments/config-bench-pilot.yml")
 TRAJECTORY = Path("reports/experiments/bench/progressive-probe-trajectory.jsonl")
 CYCLE_S = 600  # probe cadence
 MAX_ELIGIBLE = 15  # cap per cycle - probes cost ~2-3 min each under ingest contention
+
+
+def probe_id(q: dict) -> str:
+    """Stable question id used for the trajectory record and manifest match."""
+    return q.get("_id") or q.get("id") or q["question"][:60]
 
 
 def gold_titles(q: dict) -> list[str]:
@@ -92,6 +95,18 @@ def seed_memory_from_trajectory() -> set[str]:
 
 
 def main():
+    parser = argparse.ArgumentParser(description="progressive regression prober")
+    parser.add_argument("questions", nargs="?", default=str(DEFAULT_QUESTIONS))
+    parser.add_argument("config", nargs="?", default=str(DEFAULT_CONFIG))
+    parser.add_argument(
+        "--manifest",
+        default=None,
+        help="R49-H541 frozen question-manifest file (ids list); overrides "
+        "probe.manifest and replaces per-cycle resampling with the fixed set",
+    )
+    args = parser.parse_args()
+    config_path = Path(args.config)
+
     # single-instance guard: two concurrent probers interleave contradictory
     # doc counts into one trajectory (live-confirmed fault)
     import fcntl
@@ -102,10 +117,18 @@ def main():
     except BlockingIOError:
         raise SystemExit("another prober instance holds the lock - refusing to start")
 
-    st = load_settings(CONFIG)
+    st = load_settings(config_path)
     st.event_log = None
     st.graphrag.passages_enabled = True  # stamped into every record below
-    questions = json.loads(QUESTIONS.read_text())
+    questions = json.loads(Path(args.questions).read_text())
+    manifest_path = args.manifest or st.probe.manifest
+    manifest_ids = load_manifest(manifest_path) if manifest_path else None
+    if manifest_ids is not None:
+        print(
+            f"frozen manifest {manifest_path}: {len(manifest_ids)} question ids "
+            "(H541 paired probes, resampling off)",
+            flush=True,
+        )
     TRAJECTORY.parent.mkdir(parents=True, exist_ok=True)
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     passed_before = seed_memory_from_trajectory()
@@ -125,9 +148,13 @@ def main():
                 q for q in questions
                 if gold_titles(q) and all(t in titles for t in gold_titles(q))
             ]
-            # round-robin rotation: every eligible question gets probed across
-            # cycles (bug: fixed prefix froze surveillance at the first 15)
-            if full:
+            # R49-H541 frozen manifest: probe the fixed set in manifest order,
+            # no resampling. Otherwise round-robin rotation so every eligible
+            # question gets probed across cycles (bug: fixed prefix froze
+            # surveillance at the first 15)
+            if manifest_ids is not None:
+                eligible = select_manifest(full, manifest_ids, probe_id)
+            elif full:
                 rotate %= len(full)
                 eligible = (full[rotate:] + full[:rotate])[:MAX_ELIGIBLE]
                 rotate += MAX_ELIGIBLE
@@ -136,7 +163,7 @@ def main():
             cycle_ts = datetime.now(timezone.utc).isoformat()
             n_pass = n_fail = 0
             for q in eligible:
-                qid = q.get("_id") or q.get("id") or q["question"][:60]
+                qid = probe_id(q)
                 t0 = time.monotonic()
                 try:
                     res = f.probe(q["question"])  # public instrumentation surface
@@ -159,7 +186,7 @@ def main():
                 rec = {
                     "cycle": cycle_ts,
                     "run_id": run_id,
-                    "config": str(CONFIG),
+                    "config": str(config_path),
                     "passages_enabled": True,
                     "criterion": "gold_titles_full" if (q.get("answer") or "").strip().lower() in ("yes", "no") else "answer_in_context",
                     "id": qid,

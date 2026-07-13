@@ -216,6 +216,15 @@ class AnswerCacheSettings(BaseModel):
     path: str = "data/processed/answer-cache.json"
 
 
+class ProbeSettings(BaseModel):
+    """R49-H541: paired frozen-probe mandate (unpaired resampling retired). A
+    manifest file (JSON list or newline-delimited list of question ids) pins the
+    exact probe set and its order so paired A/B arms replay identical questions.
+    None = the caller's default (e.g. per-cycle resampling)."""
+
+    manifest: Optional[str] = None
+
+
 class Settings(BaseModel):
     lease_ttl_seconds: int = 180  # ingest run lease staleness window
     neo4j: Neo4jSettings = Neo4jSettings()
@@ -237,6 +246,7 @@ class Settings(BaseModel):
     graphrag: GraphRAGSettings = GraphRAGSettings()
     answer_cache: AnswerCacheSettings = AnswerCacheSettings()
     load: LoadSettings = LoadSettings()
+    probe: ProbeSettings = ProbeSettings()
     event_log: Optional[str] = None  # path to JSONL event log, None disables
 
 
