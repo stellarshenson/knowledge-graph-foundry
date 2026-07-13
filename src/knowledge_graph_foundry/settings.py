@@ -34,7 +34,11 @@ class LLMSettings(BaseModel):
 
 
 class EmbeddingSettings(BaseModel):
-    provider: Literal["bedrock", "sentence-transformers"] = "bedrock"
+    # R47-H582b: e5-local (intfloat/e5-base-v2, 109M, 768-dim) reaches statistical
+    # parity with Titan. NEW-GRAPHS-ONLY - the entity vector index is pinned to
+    # the (provider, model) dimension; Titan stays the default because swapping
+    # providers on a live 1024-dim graph is a silent dimension mismatch.
+    provider: Literal["bedrock", "sentence-transformers", "e5-local"] = "bedrock"
     model: str = "amazon.titan-embed-text-v2:0"
     fallback: Optional[str] = "sentence-transformers"
     fallback_model: str = "all-MiniLM-L6-v2"
@@ -132,7 +136,7 @@ class DriftSettings(BaseModel):
     window: int = 3
     rebuild_jsd_threshold: float = 0.15
     contradiction_rate_threshold: float = 0.2  # R8: fact-drift alarm on invalidations/window
-    cusum_enabled: bool = True  # R36-H378/DEF-9: CUSUM recure trigger (H317) replacing the anti-phase boolean; promoted default-on 2026-07-12 (end-to-end drift replay passed, user approval)
+    cusum_enabled: bool = False  # R28-H306/H308: oracle recure TP=0, hindsight-optimal = never fire; the CUSUM recure ACTION (noise-triggered) mutates the cured ontology, default off. Detection (_evaluate) still runs when disabled; config-overridable to re-arm the H317 trigger
     cusum_k: float = 0.02  # H317 slack: per-doc JSD drift tolerated above baseline
     cusum_h: float = 0.30  # H317 decision threshold on the accumulated excess
     recure_adopt_share: float = 0.05  # RECURING exit: window-mass share above which a drifted type is adopted into the cured ontology
@@ -148,13 +152,14 @@ class QuestionSettings(BaseModel):
     with the base entity channel reached mean recall 1.0, 24/24 on the DEF-14
     parity instrument (first lever to cover every probe, zero regressions)."""
 
-    enabled: bool = True
+    enabled: bool = False  # R46-H499: +0.0076 retrieval lift at n=132 (REFUTED at the +0.03 bar), ~25% of per-chunk LLM budget; default off, config-overridable, existing KGFQuestion nodes untouched
     per_chunk: int = 8  # registered fixed-count generation budget per chunk
     channel_m: int = 1  # retrieval: top-M question-matched chunks seed the render
     index_name: str = "kgf_question_embeddings"
 
 
 class GraphRAGSettings(BaseModel):
+    communities_enabled: bool = False  # H68/H528: Leiden detection + community summaries have zero query-time readers (provenance artifacts, NMI 0.846); default off, config-overridable
     community_min_size: int = 3
     vector_index_name: str = "kgf_entity_embeddings"
     vector_dimensions: int = 1024
@@ -175,7 +180,7 @@ class GraphRAGSettings(BaseModel):
     passage_index_name: str = "kgf_passage_embeddings"
     passage_span_chars: int = 900  # H366 s900k1: window size; stride is half
     passage_top_k: int = 1  # spans appended to the render under escalation
-    render_budget: float = 0.6  # R19-H182: keep the top-similarity mass share (1.0 disables)
+    render_budget: float = 1.0  # R49-H547/H570/H572/H576 DEFECT: <1.0 drops answer-carrying blocks (duplicate-truncation, multi-gold ceiling); 1.0 disables truncation, token cost is opt-in via explicit config
     foreign_device_exclusion: bool = False  # R19-H205: optional - drop foreign-device sections
     prop_val_linkage: bool = True  # R19-H211: surface entities whose property value == a seed name
     proposition_split_max_tokens: int = 300  # R15-H173: split fat propositions (0 disables)
@@ -190,7 +195,7 @@ class GraphRAGSettings(BaseModel):
     abstention_enabled: bool = True  # R03-H17: structural coverage gate before generation
     abstention_min_score: float = 0.75  # min top seed/proposition score to attempt an answer
     context_head_tail: bool = True  # R03-H16: relevance-ordered head+tail context placement
-    similarity_edges_enabled: bool = True  # R02-H13: kNN densification for PPR reach
+    similarity_edges_enabled: bool = False  # R02-H13: kNN SIMILAR_TO densification for PPR reach; default off - no default query reader (ppr default-off, h515 retrieval excludes SIMILAR_TO), H288 value inert; config-overridable
     similarity_threshold: float = 0.8  # cosine gate for SIMILAR_TO edges
     similarity_top_k: int = 5  # neighbours considered per entity
 
@@ -209,6 +214,15 @@ class AnswerCacheSettings(BaseModel):
 
     enabled: bool = False
     path: str = "data/processed/answer-cache.json"
+
+
+class ProbeSettings(BaseModel):
+    """R49-H541: paired frozen-probe mandate (unpaired resampling retired). A
+    manifest file (JSON list or newline-delimited list of question ids) pins the
+    exact probe set and its order so paired A/B arms replay identical questions.
+    None = the caller's default (e.g. per-cycle resampling)."""
+
+    manifest: Optional[str] = None
 
 
 class Settings(BaseModel):
@@ -232,6 +246,7 @@ class Settings(BaseModel):
     graphrag: GraphRAGSettings = GraphRAGSettings()
     answer_cache: AnswerCacheSettings = AnswerCacheSettings()
     load: LoadSettings = LoadSettings()
+    probe: ProbeSettings = ProbeSettings()
     event_log: Optional[str] = None  # path to JSONL event log, None disables
 
 

@@ -150,7 +150,23 @@ class TestLeverDefaults:
         g = Settings().graphrag
         assert g.fanout_cap == 5  # H180
         assert g.miss_detector is True and g.miss_threshold == 0.668  # H181
-        assert g.render_budget == 0.6  # H182
+        assert g.render_budget == 1.0  # R49-H547/H570/H572/H576: 0.6 dropped answer-carrying blocks
+
+    def test_render_budget_override(self):
+        # the token-saving trim is opt-in via explicit config
+        assert Settings(graphrag={"render_budget": 0.6}).graphrag.render_budget == 0.6
+
+    def test_communities_and_similarity_edges_default_off(self):
+        g = Settings().graphrag
+        assert g.communities_enabled is False  # H68/H528: no query-time readers
+        assert g.similarity_edges_enabled is False  # R02-H13: no default reader (ppr off)
+
+    def test_communities_and_similarity_edges_override(self):
+        g = Settings(
+            graphrag={"communities_enabled": True, "similarity_edges_enabled": True}
+        ).graphrag
+        assert g.communities_enabled is True
+        assert g.similarity_edges_enabled is True
 
     def test_overfetch_default(self):
         assert Settings().graphrag.overfetch_factor == 4  # H195a (GEN_K=64/16)
