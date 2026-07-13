@@ -1,7 +1,15 @@
 """Embedding generation with provider fallback.
 
-Supports cloud providers (Bedrock Titan v2) and a local CPU fallback
-(sentence-transformers all-MiniLM-L6-v2) for deployment resilience.
+Supports cloud providers (Bedrock Titan v2), a local CPU fallback
+(sentence-transformers all-MiniLM-L6-v2) for deployment resilience, and a
+local e5 provider (R47-H582b: intfloat/e5-base-v2, 768-dim, statistical
+parity with Titan) honoring the e5 conventions - "query: "/"passage: "
+prefixes, mean pooling, bf16 on GPU.
+
+NEW-GRAPHS-ONLY caveat for e5-local: an entity vector index is pinned to the
+dimension of the provider/model that built it (Titan 1024-dim vs e5 768-dim),
+so e5-local must not be swapped onto a live Titan graph - it is a silent
+dimension mismatch. Titan stays the default for exactly this reason.
 
 Single-provider-per-run contract: once a provider is selected (either by
 config or via fallback after primary failure), subsequent calls in the
@@ -24,9 +32,16 @@ from knowledge_graph_foundry.settings import ChannelEmbedding, EmbeddingSettings
 
 _BATCH_SIZE = 25
 
+# R47-H582b: e5 conventions. Passage-side text (entities/documents) is prefixed
+# "passage: "; a query embedding must use E5_QUERY_PREFIX. Exposed for callers
+# that embed queries against an e5-local entity index.
+E5_QUERY_PREFIX = "query: "
+E5_PASSAGE_PREFIX = "passage: "
+
 # Module-level state: the provider locked in for the current run
 _active_provider: Optional[str] = None
 _local_model = None  # cached sentence-transformers model instance
+_e5_model = None  # cached e5 (sentence-transformers) model instance
 
 # DEF-1 embedding cache: (provider, model, text) -> vector. The same mention
 # text recurs hundreds of times within one ingest run (per-chunk mentions,
@@ -37,9 +52,10 @@ _cache: dict[tuple[str, str, str], list[float]] = {}
 
 def reset_provider_state() -> None:
     """Reset the locked provider state and cache. Intended for tests."""
-    global _active_provider, _local_model
+    global _active_provider, _local_model, _e5_model
     _active_provider = None
     _local_model = None
+    _e5_model = None
     _cache.clear()
 
 
@@ -138,6 +154,61 @@ def _embed_local(entities: list[Entity], model_name: str) -> int:
     return embedded
 
 
+def _load_e5_model(model_name: str):
+    """Load and cache a local e5 model (intfloat/e5-*). e5 does mean pooling by
+    its own config; we add bf16 on GPU. Full precision on CPU / when torch is
+    absent."""
+    global _e5_model
+    if _e5_model is not None:
+        return _e5_model
+
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ImportError as exc:
+        raise RuntimeError(
+            "sentence-transformers not installed. "
+            "Install with: pip install knowledge-graph-foundry[local-embeddings]"
+        ) from exc
+
+    logger.info("[embeddings] loading e5 model '{}' (mean pooling; bf16 on GPU)", model_name)
+    model = SentenceTransformer(model_name)
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            model.to(torch.bfloat16)  # in-place for nn.Module; returns self
+    except Exception:
+        pass  # CPU or no torch - keep full precision
+    _e5_model = model
+    return _e5_model
+
+
+def _embed_e5(entities: list[Entity], model_name: str) -> int:
+    """Embed entities via a local e5 model: passage-side prefix, normalized
+    vectors (R47-H582b)."""
+    model = _load_e5_model(model_name)
+    total = len(entities)
+    embedded = 0
+
+    for offset in range(0, total, _BATCH_SIZE):
+        batch = entities[offset : offset + _BATCH_SIZE]
+        texts = [E5_PASSAGE_PREFIX + _entity_text(e) for e in batch]
+        try:
+            vectors = model.encode(texts, normalize_embeddings=True, show_progress_bar=False)
+        except Exception as exc:
+            logger.error("[embeddings] e5 encode failed: {}", exc)
+            continue
+
+        for entity, vector in zip(batch, vectors):
+            entity.embedding = vector.tolist() if hasattr(vector, "tolist") else list(vector)
+            embedded += 1
+
+        if embedded % 50 == 0 or offset + _BATCH_SIZE >= total:
+            logger.info("Embeddings: {}/{}", embedded, total)
+
+    return embedded
+
+
 def _resolve_provider(cfg: EmbeddingSettings) -> tuple[str, str]:
     """Resolve (provider, model) from cfg, respecting the run lock."""
     if _active_provider is None or _active_provider == cfg.provider:
@@ -151,6 +222,8 @@ def _dispatch(provider: str, entities: list[Entity], model: str) -> int:
         return _embed_bedrock(entities, model)
     if provider == "sentence-transformers":
         return _embed_local(entities, model)
+    if provider == "e5-local":
+        return _embed_e5(entities, model)
     raise ValueError(f"Unknown embedding provider: {provider}")
 
 
@@ -158,7 +231,8 @@ def generate_embeddings(entities: list[Entity], cfg: EmbeddingSettings) -> list[
     """Generate embeddings for entities with optional provider fallback.
 
     Providers: "bedrock" (Titan v2, 1024-dim), "sentence-transformers"
-    (all-MiniLM-L6-v2, 384-dim).
+    (all-MiniLM-L6-v2, 384-dim), "e5-local" (intfloat/e5-base-v2, 768-dim,
+    passage-prefixed; new graphs only - see the module docstring caveat).
 
     Fallback: if the primary provider fails at the first API call, switch
     to cfg.fallback for this run. Set cfg.fallback=None to disable.

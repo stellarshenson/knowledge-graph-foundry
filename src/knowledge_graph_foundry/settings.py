@@ -34,7 +34,11 @@ class LLMSettings(BaseModel):
 
 
 class EmbeddingSettings(BaseModel):
-    provider: Literal["bedrock", "sentence-transformers"] = "bedrock"
+    # R47-H582b: e5-local (intfloat/e5-base-v2, 109M, 768-dim) reaches statistical
+    # parity with Titan. NEW-GRAPHS-ONLY - the entity vector index is pinned to
+    # the (provider, model) dimension; Titan stays the default because swapping
+    # providers on a live 1024-dim graph is a silent dimension mismatch.
+    provider: Literal["bedrock", "sentence-transformers", "e5-local"] = "bedrock"
     model: str = "amazon.titan-embed-text-v2:0"
     fallback: Optional[str] = "sentence-transformers"
     fallback_model: str = "all-MiniLM-L6-v2"

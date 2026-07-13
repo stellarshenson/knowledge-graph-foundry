@@ -148,6 +148,41 @@ class TestLocalProvider:
                 )
 
 
+class TestE5LocalProvider:
+    """R47-H582b: local e5 provider with passage-prefix + mean pooling."""
+
+    def test_passage_prefix_applied_and_embeddings_populated(self):
+        fake_model = MagicMock()
+        fake_model.encode.return_value = [[0.1] * 768, [0.2] * 768]
+        fake_module = SimpleNamespace(SentenceTransformer=MagicMock(return_value=fake_model))
+
+        entity = Entity(
+            id="e1", name="DreamStation", types=["Product"], description="A CPAP device"
+        )
+        with patch.dict(sys.modules, {"sentence_transformers": fake_module}):
+            result = generate_embeddings(
+                [entity, _entity("B")],
+                _cfg(provider="e5-local", model="intfloat/e5-base-v2", fallback=None),
+            )
+
+        texts_arg = fake_model.encode.call_args.args[0]
+        assert texts_arg[0] == "passage: Product: DreamStation - A CPAP device"
+        assert texts_arg[1].startswith("passage: ")
+        assert len(result[0].embedding) == 768
+        assert emb_mod._active_provider == "e5-local"
+        fake_module.SentenceTransformer.assert_called_once_with("intfloat/e5-base-v2")
+
+    def test_prefix_constants_exposed(self):
+        assert emb_mod.E5_QUERY_PREFIX == "query: "
+        assert emb_mod.E5_PASSAGE_PREFIX == "passage: "
+
+    def test_titan_default_unchanged(self):
+        # the swap must be opt-in: default provider/model stay Titan
+        cfg = EmbeddingSettings()
+        assert cfg.provider == "bedrock"
+        assert cfg.model == "amazon.titan-embed-text-v2:0"
+
+
 class TestProviderFallback:
     @patch("knowledge_graph_foundry.extraction.embeddings.boto3")
     def test_bedrock_failure_falls_back_to_local(self, mock_boto3):
