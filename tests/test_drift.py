@@ -3,7 +3,7 @@
 from knowledge_graph_foundry.drift import DriftDetector, _jsd
 from knowledge_graph_foundry.settings import DriftSettings
 
-CFG = DriftSettings(cusum_enabled=False)  # boolean-path config (cusum default-on since 2026-07-12): remap 0.3, window 3, rebuild jsd 0.15
+CFG = DriftSettings(cusum_enabled=False)  # boolean-path config (also the default since R28-H306): remap 0.3, window 3, rebuild jsd 0.15
 CURED = {"Product": 50, "Component": 30, "Specification": 20}
 
 
@@ -102,6 +102,24 @@ class TestFactDriftAlarm:
         fact_verdicts = [d.record_contradictions(4, 10) for _ in range(3)]  # facts churning
         assert all(v.action == "none" for v in schema_verdicts)
         assert fact_verdicts[-1] is not None and fact_verdicts[-1].action == "fact_drift"
+
+
+class TestCusumDefault:
+    """R28-H306/H308: the CUSUM recure ACTION defaults off (oracle TP=0)."""
+
+    def test_default_is_off(self):
+        assert DriftSettings().cusum_enabled is False
+
+    def test_override_arms_cusum(self):
+        assert DriftSettings(cusum_enabled=True).cusum_enabled is True
+
+    def test_detection_runs_when_disabled(self):
+        # boolean _evaluate path still tracks and can warn while the CUSUM
+        # ACTION path is off - detection separable from action
+        d = DriftDetector(DriftSettings(cusum_enabled=False), CURED)
+        d.record_document(0.05, CURED)
+        d.record_document(0.9, {"Alien": 10})
+        assert d.record_document(0.05, CURED).action == "warn"
 
 
 class TestCusumTrigger:

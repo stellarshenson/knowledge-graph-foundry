@@ -49,13 +49,16 @@ class FakeEngine:
 
 class TestQuestionSettings:
     def test_registered_defaults(self):
-        # Regression guard on the R35-H371 registered defaults: fixed-8
-        # generation budget, question channel at M=1 (mean 1.0, 24/24)
+        # R46-H499 flipped enabled off (+0.0076 lift at n=132, REFUTED at the
+        # +0.03 bar; ~25% of per-chunk LLM budget). The remaining knobs stand.
         q = Settings().questions
-        assert q.enabled is True
+        assert q.enabled is False
         assert q.per_chunk == 8
         assert q.channel_m == 1
         assert q.index_name == "kgf_question_embeddings"
+
+    def test_enabled_override(self):
+        assert Settings(questions={"enabled": True}).questions.enabled is True
 
 
 class TestQuestionId:

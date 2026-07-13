@@ -968,12 +968,19 @@ class Foundry:
             summarize_communities,
         )
 
-        communities = detect_communities(self.driver, self.settings.graphrag.community_min_size)
+        # H68/H528: community detection + summaries have zero query-time readers;
+        # default off, restored by graphrag.communities_enabled
         summaries = 0
-        if not communities.get("skipped"):
-            summaries = summarize_communities(
-                self.driver, self.engine, self.settings.graphrag.community_min_size
+        if self.settings.graphrag.communities_enabled:
+            communities = detect_communities(
+                self.driver, self.settings.graphrag.community_min_size
             )
+            if not communities.get("skipped"):
+                summaries = summarize_communities(
+                    self.driver, self.engine, self.settings.graphrag.community_min_size
+                )
+        else:
+            communities = {"skipped": True, "reason": "communities_enabled=False"}
         spec_hoist = None
         if self.settings.resolution.spec_hoist:
             from knowledge_graph_foundry.graph.hoist import (
