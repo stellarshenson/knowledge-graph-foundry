@@ -1,0 +1,180 @@
+{
+ "run_id": "20260713T223812Z",
+ "hypothesis": "R50-H583",
+ "scoring_fence": "retrieval-level only",
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "target": 0.6012,
+  "h501_reference": 0.5982,
+  "region_hit_ppr": 0.6994,
+  "reproduced_within_2pts": true
+ },
+ "n_probes": 132,
+ "n_carriers": 326,
+ "n_carriers_in_graph": 288,
+ "resolvability": {
+  "note": "entity-entity gold hops only (literal-terminating hops cannot be entity edges); structural=edge exists (relation-agnostic); typed_exact=gold relation-name exact-normalized match (sanctioned oracle convention); typed_curated_oracle=hand synonym map bracketing a best-case relation linker",
+  "hop_structural_by_class": {
+   "compositional": 0.6988,
+   "comparison": 0.1538,
+   "bridge_comparison": 0.8871,
+   "inference": 0.7895
+  },
+  "hop_typed_exact_by_class": {
+   "compositional": 0.0,
+   "comparison": 0.0,
+   "bridge_comparison": 0.0,
+   "inference": 0.0
+  },
+  "hop_typed_curated_oracle_by_class": {
+   "compositional": 0.5904,
+   "comparison": 0.1538,
+   "bridge_comparison": 0.871,
+   "inference": 0.7895
+  },
+  "per_probe_chain_by_class": {
+   "compositional": {
+    "n": 56,
+    "structural": 0.5536,
+    "typed_exact": 0.0,
+    "typed_curated_oracle": 0.4107
+   },
+   "comparison": {
+    "n": 8,
+    "structural": 0.125,
+    "typed_exact": 0.0,
+    "typed_curated_oracle": 0.125
+   },
+   "bridge_comparison": {
+    "n": 31,
+    "structural": 0.8387,
+    "typed_exact": 0.0,
+    "typed_curated_oracle": 0.8387
+   },
+   "inference": {
+    "n": 12,
+    "structural": 0.6667,
+    "typed_exact": 0.0,
+    "typed_curated_oracle": 0.6667
+   }
+  },
+  "hard_subcap_comp_bridge": {
+   "n_chains": 87,
+   "structural": 0.6552,
+   "typed_exact": 0.0,
+   "typed_curated_oracle": 0.5632,
+   "fires_below_0.50": true
+  }
+ },
+ "reachability": {
+  "convention": "H515 all-golds-in-region (top-15 PPR u seeds), paired on frozen probes; oracle seeds from gold SOURCE entities (oracle entity-linking of question anchors)",
+  "iso_reference_h515": 0.622,
+  "rates": {
+   "iso_all": {
+    "rate": 0.622,
+    "n": 127
+   },
+   "oracle_seed_all": {
+    "rate": 0.8976,
+    "n": 127
+   },
+   "oracle_typed_all": {
+    "rate": 0.8898,
+    "n": 127
+   },
+   "oracle_reledge_all": {
+    "rate": 0.874,
+    "n": 127
+   },
+   "iso_bridge": {
+    "rate": 0.5213,
+    "n": 94
+   },
+   "oracle_seed_bridge": {
+    "rate": 0.8617,
+    "n": 94
+   },
+   "oracle_typed_bridge": {
+    "rate": 0.8511,
+    "n": 94
+   },
+   "oracle_reledge_bridge": {
+    "rate": 0.8298,
+    "n": 94
+   }
+  },
+  "all_golds_delta_pp": 26.77,
+  "all_golds_mcnemar": {
+   "b_iso_only": 5,
+   "c_oracle_only": 39,
+   "p": 0.0
+  },
+  "bridge_only_delta_pp": 32.98,
+  "bridge_only_mcnemar": {
+   "b_iso_only": 5,
+   "c_oracle_only": 36,
+   "p": 0.0
+  },
+  "by_class_all_golds": {
+   "compositional": {
+    "n": 57,
+    "iso_all": 0.6316,
+    "oracle_typed_all": 0.8772
+   },
+   "comparison": {
+    "n": 28,
+    "iso_all": 1.0,
+    "oracle_typed_all": 1.0
+   },
+   "bridge_comparison": {
+    "n": 31,
+    "iso_all": 0.1613,
+    "oracle_typed_all": 0.7742
+   },
+   "inference": {
+    "n": 11,
+    "iso_all": 0.9091,
+    "oracle_typed_all": 1.0
+   }
+  }
+ },
+ "recall16_oracle": {
+  "pool": "gold-path node-type-restricted top-16 by question cosine",
+  "iso": 0.6012,
+  "typed_pool": 0.6012,
+  "delta_pp": 0.0,
+  "mcnemar": {
+   "b_iso_only": 0,
+   "c_typed_only": 0,
+   "p": 1.0
+  }
+ },
+ "clauses": [
+  {
+   "clause": "reachability lift >= +8pp (paired McNemar p<0.05) [charitable node-type oracle, all-golds]",
+   "predicted": ">= +8pp & p<0.05",
+   "measured": "26.77pp (iso 0.622 -> oracle 0.8898), McNemar p=0.0",
+   "holds": true
+  },
+  {
+   "clause": "recall@16 lift >= +8pp [gold-path node-type pool]",
+   "predicted": ">= +8pp",
+   "measured": "0.0pp (iso 0.6012 -> typed 0.6012), McNemar p=1.0",
+   "holds": false
+  },
+  {
+   "clause": "KILL: lift < +3pp on BOTH reachability and recall@16",
+   "predicted": "kill if both < +3pp",
+   "measured": "reach 26.77pp / recall 0.0pp",
+   "holds": false
+  },
+  {
+   "clause": "HARD SUB-CAP: gold relation-sequence resolvability < 50% on compositional/bridge",
+   "predicted": "axis dies at premise if < 50%",
+   "measured": "typed-exact 0.0 (curated-oracle 0.5632) over 87 comp/bridge chains",
+   "holds": true
+  }
+ ],
+ "acceptance_bar": "CONFIRMED reach&recall lift>=+8pp p<0.05; KILL both<+3pp; HARD SUB-CAP typed resolvability<50% comp/bridge = axis dies at premise",
+ "proposed_verdict": "KILLED (HARD SUB-CAP: gold topology unbuildable)"
+}

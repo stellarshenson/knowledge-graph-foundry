@@ -1,0 +1,3517 @@
+{
+ "summary": {
+  "run_id": "20260713T191754Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "n_probes": 127,
+  "n_carriers": 288,
+  "off_pass": 82,
+  "off_fail": 45,
+  "ground_truth_primary": "h499 OFF-arm probe pass/fail (bottleneck rollup)",
+  "auc_per_proxy": {
+   "seed_rank_margin": 0.5369,
+   "seed_hop_distance": 0.6809,
+   "ppr_mass_floor": 0.5493
+  },
+  "auc_per_carrier_vs_dense_hit_secondary": {
+   "seed_rank_margin": 0.8585,
+   "seed_hop_distance": 1.0,
+   "ppr_mass_floor": 0.859
+  },
+  "clauses": {
+   "seed_rank_auc_ge_0.80": false,
+   "ppr_mass_lower_by_0.10_or_degenerate": true,
+   "ppr_mass_not_ge_seed_rank": false
+  },
+  "proposed_verdict": "KILLED",
+  "deviation": "offline scipy PPR/BFS over Entity-only live-rel adjacency (h515 convention); rank-margin = ppr_top_n - PPR rank; hop cap 6 (unreachable=99)",
+  "bars": {
+   "seed_rank_ge": 0.8,
+   "mass_margin": 0.1
+  }
+ },
+ "probe_rows": [
+  {
+   "probe": "83bf3b5a0bd911eba7f7acde48001122",
+   "rank_margin": 12,
+   "neg_hop": 0,
+   "ppr_mass": 0.04570400930090774,
+   "off_pass": true
+  },
+  {
+   "probe": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "rank_margin": 8,
+   "neg_hop": 0,
+   "ppr_mass": 0.03187725072452259,
+   "off_pass": true
+  },
+  {
+   "probe": "2dc690ba0bdc11eba7f7acde48001122",
+   "rank_margin": 13,
+   "neg_hop": -1,
+   "ppr_mass": 0.04559436906501252,
+   "off_pass": false
+  },
+  {
+   "probe": "462bb642099211ebbdb0ac1f6bf848b6",
+   "rank_margin": 2,
+   "neg_hop": 0,
+   "ppr_mass": 0.021583638512908038,
+   "off_pass": true
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "rank_margin": 10,
+   "neg_hop": -1,
+   "ppr_mass": 0.030952880160919766,
+   "off_pass": true
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "rank_margin": -1,
+   "neg_hop": -1,
+   "ppr_mass": 0.0196893568547959,
+   "off_pass": true
+  },
+  {
+   "probe": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "rank_margin": 3,
+   "neg_hop": 0,
+   "ppr_mass": 0.017110260221751578,
+   "off_pass": true
+  },
+  {
+   "probe": "9fe6a6760baf11ebab90acde48001122",
+   "rank_margin": 12,
+   "neg_hop": 0,
+   "ppr_mass": 0.04831484141957675,
+   "off_pass": true
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "rank_margin": -5,
+   "neg_hop": -1,
+   "ppr_mass": 0.012827308970620826,
+   "off_pass": true
+  },
+  {
+   "probe": "33f51d7e0bde11eba7f7acde48001122",
+   "rank_margin": -21,
+   "neg_hop": -1,
+   "ppr_mass": 0.005940187339511034,
+   "off_pass": false
+  },
+  {
+   "probe": "914b452c0bdc11eba7f7acde48001122",
+   "rank_margin": -24,
+   "neg_hop": -1,
+   "ppr_mass": 0.004574064658933364,
+   "off_pass": false
+  },
+  {
+   "probe": "d6898f78089511ebbd75ac1f6bf848b6",
+   "rank_margin": 10,
+   "neg_hop": 0,
+   "ppr_mass": 0.021884506781458,
+   "off_pass": true
+  },
+  {
+   "probe": "006d81bc0bde11eba7f7acde48001122",
+   "rank_margin": -2,
+   "neg_hop": -1,
+   "ppr_mass": 0.012889634756855716,
+   "off_pass": true
+  },
+  {
+   "probe": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.0464282371287711,
+   "off_pass": false
+  },
+  {
+   "probe": "265daf200bdc11eba7f7acde48001122",
+   "rank_margin": -77,
+   "neg_hop": -1,
+   "ppr_mass": 0.0017395377808904302,
+   "off_pass": true
+  },
+  {
+   "probe": "1c0dd3b00bdc11eba7f7acde48001122",
+   "rank_margin": 15,
+   "neg_hop": 0,
+   "ppr_mass": 0.19630870089569027,
+   "off_pass": false
+  },
+  {
+   "probe": "bab3b6d00bda11eba7f7acde48001122",
+   "rank_margin": 7,
+   "neg_hop": 0,
+   "ppr_mass": 0.024432524090738105,
+   "off_pass": true
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "rank_margin": -16,
+   "neg_hop": -1,
+   "ppr_mass": 0.00328981139842177,
+   "off_pass": true
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "rank_margin": -34,
+   "neg_hop": -3,
+   "ppr_mass": 0.0017773032910317296,
+   "off_pass": true
+  },
+  {
+   "probe": "2d8f3ebe0bda11eba7f7acde48001122",
+   "rank_margin": -5,
+   "neg_hop": -1,
+   "ppr_mass": 0.01696391371228164,
+   "off_pass": false
+  },
+  {
+   "probe": "e6e38bc40bdd11eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.09018592219345448,
+   "off_pass": false
+  },
+  {
+   "probe": "0bedb7e80bdc11eba7f7acde48001122",
+   "rank_margin": 11,
+   "neg_hop": 0,
+   "ppr_mass": 0.04363452538403972,
+   "off_pass": true
+  },
+  {
+   "probe": "86508dc60bdc11eba7f7acde48001122",
+   "rank_margin": 7,
+   "neg_hop": -1,
+   "ppr_mass": 0.021260850580124824,
+   "off_pass": false
+  },
+  {
+   "probe": "e311a3ba0bdc11eba7f7acde48001122",
+   "rank_margin": 12,
+   "neg_hop": 0,
+   "ppr_mass": 0.03130612296341876,
+   "off_pass": true
+  },
+  {
+   "probe": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "rank_margin": 13,
+   "neg_hop": 0,
+   "ppr_mass": 0.03379227702581607,
+   "off_pass": true
+  },
+  {
+   "probe": "435f65fa0baf11ebab90acde48001122",
+   "rank_margin": 12,
+   "neg_hop": 0,
+   "ppr_mass": 0.07419496682323998,
+   "off_pass": true
+  },
+  {
+   "probe": "5cc01ab60bb011ebab90acde48001122",
+   "rank_margin": 13,
+   "neg_hop": -1,
+   "ppr_mass": 0.03723079746345262,
+   "off_pass": true
+  },
+  {
+   "probe": "2084260e0bde11eba7f7acde48001122",
+   "rank_margin": 11,
+   "neg_hop": 0,
+   "ppr_mass": 0.02623468025806006,
+   "off_pass": true
+  },
+  {
+   "probe": "7cb81afc0bd911eba7f7acde48001122",
+   "rank_margin": 5,
+   "neg_hop": -1,
+   "ppr_mass": 0.030172028922633147,
+   "off_pass": false
+  },
+  {
+   "probe": "a1d9a65c0bd911eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.05602553780665684,
+   "off_pass": false
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "rank_margin": -4856,
+   "neg_hop": -99,
+   "ppr_mass": 0.0,
+   "off_pass": true
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "rank_margin": -27,
+   "neg_hop": -1,
+   "ppr_mass": 0.00384474616785735,
+   "off_pass": true
+  },
+  {
+   "probe": "0dfe41f60bdc11eba7f7acde48001122",
+   "rank_margin": 12,
+   "neg_hop": -1,
+   "ppr_mass": 0.03358365881910882,
+   "off_pass": false
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "rank_margin": -4660,
+   "neg_hop": -99,
+   "ppr_mass": 0.0,
+   "off_pass": false
+  },
+  {
+   "probe": "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "rank_margin": 3,
+   "neg_hop": 0,
+   "ppr_mass": 0.02309101495808614,
+   "off_pass": true
+  },
+  {
+   "probe": "b672c1ee0bdd11eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.043208828090012585,
+   "off_pass": false
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "rank_margin": 12,
+   "neg_hop": -1,
+   "ppr_mass": 0.03765743506303111,
+   "off_pass": true
+  },
+  {
+   "probe": "c5a00e860bda11eba7f7acde48001122",
+   "rank_margin": -14,
+   "neg_hop": -1,
+   "ppr_mass": 0.009483876717387379,
+   "off_pass": false
+  },
+  {
+   "probe": "434dea7708d211ebbd95ac1f6bf848b6",
+   "rank_margin": 12,
+   "neg_hop": 0,
+   "ppr_mass": 0.03379227702581608,
+   "off_pass": true
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "rank_margin": -4273,
+   "neg_hop": -99,
+   "ppr_mass": 0.0,
+   "off_pass": true
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "rank_margin": -6,
+   "neg_hop": -1,
+   "ppr_mass": 0.011205516180174615,
+   "off_pass": true
+  },
+  {
+   "probe": "c9a769c608be11ebbd8aac1f6bf848b6",
+   "rank_margin": 15,
+   "neg_hop": 0,
+   "ppr_mass": 0.3273411490048157,
+   "off_pass": true
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "rank_margin": -28,
+   "neg_hop": -1,
+   "ppr_mass": 0.003116148545752161,
+   "off_pass": true
+  },
+  {
+   "probe": "50e4a65c0bde11eba7f7acde48001122",
+   "rank_margin": 12,
+   "neg_hop": -1,
+   "ppr_mass": 0.023214192100927514,
+   "off_pass": true
+  },
+  {
+   "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "rank_margin": -6,
+   "neg_hop": -1,
+   "ppr_mass": 0.011219675184039614,
+   "off_pass": true
+  },
+  {
+   "probe": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "rank_margin": 12,
+   "neg_hop": 0,
+   "ppr_mass": 0.03379227702581607,
+   "off_pass": true
+  },
+  {
+   "probe": "38da155f087511ebbd67ac1f6bf848b6",
+   "rank_margin": 11,
+   "neg_hop": 0,
+   "ppr_mass": 0.028805755754948825,
+   "off_pass": true
+  },
+  {
+   "probe": "49b22d0a0bde11eba7f7acde48001122",
+   "rank_margin": 11,
+   "neg_hop": 0,
+   "ppr_mass": 0.02522069824888717,
+   "off_pass": false
+  },
+  {
+   "probe": "78b10fb00bdc11eba7f7acde48001122",
+   "rank_margin": -1,
+   "neg_hop": -1,
+   "ppr_mass": 0.011685994100968496,
+   "off_pass": false
+  },
+  {
+   "probe": "879d21e208fc11ebbdadac1f6bf848b6",
+   "rank_margin": 13,
+   "neg_hop": 0,
+   "ppr_mass": 0.03379227702581608,
+   "off_pass": true
+  },
+  {
+   "probe": "cda459160bda11eba7f7acde48001122",
+   "rank_margin": -20,
+   "neg_hop": -1,
+   "ppr_mass": 0.004902501844055015,
+   "off_pass": false
+  },
+  {
+   "probe": "1dfaa6200bdd11eba7f7acde48001122",
+   "rank_margin": 13,
+   "neg_hop": -1,
+   "ppr_mass": 0.034744588788290336,
+   "off_pass": false
+  },
+  {
+   "probe": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "rank_margin": 7,
+   "neg_hop": 0,
+   "ppr_mass": 0.024307388971398898,
+   "off_pass": true
+  },
+  {
+   "probe": "8e07f1f00bda11eba7f7acde48001122",
+   "rank_margin": -23,
+   "neg_hop": -1,
+   "ppr_mass": 0.005841046267820653,
+   "off_pass": false
+  },
+  {
+   "probe": "b7f5f7200bdd11eba7f7acde48001122",
+   "rank_margin": -28,
+   "neg_hop": -1,
+   "ppr_mass": 0.002494719073612102,
+   "off_pass": false
+  },
+  {
+   "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "rank_margin": -23,
+   "neg_hop": -1,
+   "ppr_mass": 0.005741544594836784,
+   "off_pass": true
+  },
+  {
+   "probe": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "rank_margin": 13,
+   "neg_hop": 0,
+   "ppr_mass": 0.02914546123845238,
+   "off_pass": true
+  },
+  {
+   "probe": "0083038e0bde11eba7f7acde48001122",
+   "rank_margin": -11,
+   "neg_hop": -1,
+   "ppr_mass": 0.013565691551712512,
+   "off_pass": false
+  },
+  {
+   "probe": "6b8402c40bdd11eba7f7acde48001122",
+   "rank_margin": 3,
+   "neg_hop": -1,
+   "ppr_mass": 0.01574503046334581,
+   "off_pass": false
+  },
+  {
+   "probe": "d9c894ec0bd911eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.04576492578839689,
+   "off_pass": true
+  },
+  {
+   "probe": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "rank_margin": -1,
+   "neg_hop": 0,
+   "ppr_mass": 0.021777818843512438,
+   "off_pass": true
+  },
+  {
+   "probe": "a9e322b20bdc11eba7f7acde48001122",
+   "rank_margin": -12,
+   "neg_hop": -1,
+   "ppr_mass": 0.009682136250078516,
+   "off_pass": false
+  },
+  {
+   "probe": "8f783c7a0bda11eba7f7acde48001122",
+   "rank_margin": 11,
+   "neg_hop": -1,
+   "ppr_mass": 0.0363399318436545,
+   "off_pass": false
+  },
+  {
+   "probe": "b642318c0bdd11eba7f7acde48001122",
+   "rank_margin": 13,
+   "neg_hop": -1,
+   "ppr_mass": 0.03570100432005731,
+   "off_pass": false
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "rank_margin": -63,
+   "neg_hop": -1,
+   "ppr_mass": 0.0025602991523650254,
+   "off_pass": true
+  },
+  {
+   "probe": "fcdafe320bdb11eba7f7acde48001122",
+   "rank_margin": -42,
+   "neg_hop": -1,
+   "ppr_mass": 0.0035376993208522008,
+   "off_pass": false
+  },
+  {
+   "probe": "7d87730c087211ebbd66ac1f6bf848b6",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.03179398222012707,
+   "off_pass": true
+  },
+  {
+   "probe": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "rank_margin": 9,
+   "neg_hop": 0,
+   "ppr_mass": 0.035332693461022205,
+   "off_pass": true
+  },
+  {
+   "probe": "e15d99380bdd11eba7f7acde48001122",
+   "rank_margin": 5,
+   "neg_hop": -1,
+   "ppr_mass": 0.02078790184810331,
+   "off_pass": false
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "rank_margin": -3838,
+   "neg_hop": -99,
+   "ppr_mass": 0.0,
+   "off_pass": false
+  },
+  {
+   "probe": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.031265733344305165,
+   "off_pass": true
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "rank_margin": -5,
+   "neg_hop": -1,
+   "ppr_mass": 0.011257258970605994,
+   "off_pass": true
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "rank_margin": -33,
+   "neg_hop": -1,
+   "ppr_mass": 0.0037610085162211025,
+   "off_pass": true
+  },
+  {
+   "probe": "63c16246095211ebbdaeac1f6bf848b6",
+   "rank_margin": 10,
+   "neg_hop": 0,
+   "ppr_mass": 0.027421801401721416,
+   "off_pass": true
+  },
+  {
+   "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "rank_margin": -22,
+   "neg_hop": -1,
+   "ppr_mass": 0.004963432799159944,
+   "off_pass": true
+  },
+  {
+   "probe": "d18fc6640bda11eba7f7acde48001122",
+   "rank_margin": 2,
+   "neg_hop": 0,
+   "ppr_mass": 0.024039736602596687,
+   "off_pass": false
+  },
+  {
+   "probe": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "rank_margin": 9,
+   "neg_hop": 0,
+   "ppr_mass": 0.03379227702581608,
+   "off_pass": true
+  },
+  {
+   "probe": "a457e11c0bdb11eba7f7acde48001122",
+   "rank_margin": -57,
+   "neg_hop": -1,
+   "ppr_mass": 0.003303880756421094,
+   "off_pass": false
+  },
+  {
+   "probe": "632fcc82085611ebbd59ac1f6bf848b6",
+   "rank_margin": -17,
+   "neg_hop": 0,
+   "ppr_mass": 0.009375000000000001,
+   "off_pass": true
+  },
+  {
+   "probe": "076288460bde11eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.05714085745071129,
+   "off_pass": true
+  },
+  {
+   "probe": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "rank_margin": -8,
+   "neg_hop": 0,
+   "ppr_mass": 0.013268577265044292,
+   "off_pass": true
+  },
+  {
+   "probe": "9523a3df088911ebbd6eac1f6bf848b6",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.06687475772441244,
+   "off_pass": true
+  },
+  {
+   "probe": "5ff291a80bda11eba7f7acde48001122",
+   "rank_margin": 6,
+   "neg_hop": -1,
+   "ppr_mass": 0.01629285640979529,
+   "off_pass": false
+  },
+  {
+   "probe": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "rank_margin": 6,
+   "neg_hop": 0,
+   "ppr_mass": 0.02634206721629538,
+   "off_pass": true
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "rank_margin": -16,
+   "neg_hop": -1,
+   "ppr_mass": 0.00790740246426978,
+   "off_pass": true
+  },
+  {
+   "probe": "fde95590089c11ebbd78ac1f6bf848b6",
+   "rank_margin": 8,
+   "neg_hop": 0,
+   "ppr_mass": 0.02545308379676541,
+   "off_pass": true
+  },
+  {
+   "probe": "3bb9c0740bb011ebab90acde48001122",
+   "rank_margin": -23,
+   "neg_hop": -1,
+   "ppr_mass": 0.008042406392130141,
+   "off_pass": false
+  },
+  {
+   "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "rank_margin": -12,
+   "neg_hop": -1,
+   "ppr_mass": 0.00806219937138597,
+   "off_pass": true
+  },
+  {
+   "probe": "e7dc72940baf11ebab90acde48001122",
+   "rank_margin": 10,
+   "neg_hop": -1,
+   "ppr_mass": 0.019975627112985072,
+   "off_pass": false
+  },
+  {
+   "probe": "764446780bde11eba7f7acde48001122",
+   "rank_margin": -6,
+   "neg_hop": -1,
+   "ppr_mass": 0.010155874381066056,
+   "off_pass": false
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "rank_margin": -18,
+   "neg_hop": -1,
+   "ppr_mass": 0.005225797057074691,
+   "off_pass": true
+  },
+  {
+   "probe": "f1a794f20bdc11eba7f7acde48001122",
+   "rank_margin": -9,
+   "neg_hop": -1,
+   "ppr_mass": 0.011199184341542453,
+   "off_pass": false
+  },
+  {
+   "probe": "47bb70600bde11eba7f7acde48001122",
+   "rank_margin": -12,
+   "neg_hop": -1,
+   "ppr_mass": 0.010999594320903227,
+   "off_pass": true
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "rank_margin": -5,
+   "neg_hop": -1,
+   "ppr_mass": 0.006492396526839785,
+   "off_pass": true
+  },
+  {
+   "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+   "rank_margin": 2,
+   "neg_hop": -1,
+   "ppr_mass": 0.01749430175166324,
+   "off_pass": true
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "rank_margin": -15,
+   "neg_hop": -1,
+   "ppr_mass": 0.0075796303135927945,
+   "off_pass": true
+  },
+  {
+   "probe": "421d07aa0bb011ebab90acde48001122",
+   "rank_margin": 14,
+   "neg_hop": -1,
+   "ppr_mass": 0.06290627212231405,
+   "off_pass": true
+  },
+  {
+   "probe": "3f48bc400bb011ebab90acde48001122",
+   "rank_margin": 9,
+   "neg_hop": 0,
+   "ppr_mass": 0.03211385828016798,
+   "off_pass": true
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "rank_margin": -23,
+   "neg_hop": -1,
+   "ppr_mass": 0.004141259346442193,
+   "off_pass": true
+  },
+  {
+   "probe": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "rank_margin": 6,
+   "neg_hop": 0,
+   "ppr_mass": 0.026763641883098533,
+   "off_pass": true
+  },
+  {
+   "probe": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "rank_margin": 4,
+   "neg_hop": 0,
+   "ppr_mass": 0.022288153781890155,
+   "off_pass": true
+  },
+  {
+   "probe": "3ab846860bde11eba7f7acde48001122",
+   "rank_margin": 11,
+   "neg_hop": -1,
+   "ppr_mass": 0.02948658837837431,
+   "off_pass": false
+  },
+  {
+   "probe": "8cd3fe6c0baf11ebab90acde48001122",
+   "rank_margin": 12,
+   "neg_hop": 0,
+   "ppr_mass": 0.045676970993611586,
+   "off_pass": true
+  },
+  {
+   "probe": "0d9251260baf11ebab90acde48001122",
+   "rank_margin": 5,
+   "neg_hop": 0,
+   "ppr_mass": 0.02039918457919073,
+   "off_pass": true
+  },
+  {
+   "probe": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "rank_margin": 1,
+   "neg_hop": 0,
+   "ppr_mass": 0.018628894612609664,
+   "off_pass": true
+  },
+  {
+   "probe": "d73fa07c0bdd11eba7f7acde48001122",
+   "rank_margin": 9,
+   "neg_hop": 0,
+   "ppr_mass": 0.036427058204495544,
+   "off_pass": true
+  },
+  {
+   "probe": "9bc54aba0bdd11eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": 0,
+   "ppr_mass": 0.08991600682284842,
+   "off_pass": true
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "rank_margin": -20,
+   "neg_hop": -1,
+   "ppr_mass": 0.005730640581864521,
+   "off_pass": true
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "rank_margin": -14,
+   "neg_hop": -1,
+   "ppr_mass": 0.007176930743545981,
+   "off_pass": true
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "rank_margin": -12,
+   "neg_hop": -1,
+   "ppr_mass": 0.01023547693567512,
+   "off_pass": true
+  },
+  {
+   "probe": "0016373a0bda11eba7f7acde48001122",
+   "rank_margin": -4,
+   "neg_hop": 0,
+   "ppr_mass": 0.013357345945095151,
+   "off_pass": true
+  },
+  {
+   "probe": "ccd086f80bdb11eba7f7acde48001122",
+   "rank_margin": -7,
+   "neg_hop": -1,
+   "ppr_mass": 0.00339505642857145,
+   "off_pass": false
+  },
+  {
+   "probe": "965e667e0bdd11eba7f7acde48001122",
+   "rank_margin": -4,
+   "neg_hop": 0,
+   "ppr_mass": 0.015253044460743725,
+   "off_pass": false
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "rank_margin": 3,
+   "neg_hop": 0,
+   "ppr_mass": 0.02980325420844991,
+   "off_pass": true
+  },
+  {
+   "probe": "43eb7b380bde11eba7f7acde48001122",
+   "rank_margin": -7,
+   "neg_hop": -1,
+   "ppr_mass": 0.010606399742268012,
+   "off_pass": false
+  },
+  {
+   "probe": "f48667b80bda11eba7f7acde48001122",
+   "rank_margin": 3,
+   "neg_hop": -1,
+   "ppr_mass": 0.016677432707415372,
+   "off_pass": false
+  },
+  {
+   "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "rank_margin": -2,
+   "neg_hop": -1,
+   "ppr_mass": 0.013229337720192875,
+   "off_pass": true
+  },
+  {
+   "probe": "bd9609880bdb11eba7f7acde48001122",
+   "rank_margin": 10,
+   "neg_hop": 0,
+   "ppr_mass": 0.028382731169674064,
+   "off_pass": false
+  },
+  {
+   "probe": "748446060bdb11eba7f7acde48001122",
+   "rank_margin": -1832,
+   "neg_hop": -99,
+   "ppr_mass": 7.558859407295582e-09,
+   "off_pass": false
+  },
+  {
+   "probe": "e2de58500bd911eba7f7acde48001122",
+   "rank_margin": 15,
+   "neg_hop": 0,
+   "ppr_mass": 0.1295170417600261,
+   "off_pass": true
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "rank_margin": -1,
+   "neg_hop": -1,
+   "ppr_mass": 0.012042821911161107,
+   "off_pass": true
+  },
+  {
+   "probe": "5c7842780baf11ebab90acde48001122",
+   "rank_margin": 6,
+   "neg_hop": 0,
+   "ppr_mass": 0.02148341740648263,
+   "off_pass": true
+  },
+  {
+   "probe": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "rank_margin": 8,
+   "neg_hop": 0,
+   "ppr_mass": 0.02501552417169694,
+   "off_pass": true
+  },
+  {
+   "probe": "84c99c760bb011ebab90acde48001122",
+   "rank_margin": 9,
+   "neg_hop": -1,
+   "ppr_mass": 0.029900737424958277,
+   "off_pass": false
+  },
+  {
+   "probe": "f253a3040bdd11eba7f7acde48001122",
+   "rank_margin": 2,
+   "neg_hop": -1,
+   "ppr_mass": 0.017749105610535703,
+   "off_pass": false
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "rank_margin": -14,
+   "neg_hop": -1,
+   "ppr_mass": 0.007176930743545981,
+   "off_pass": true
+  },
+  {
+   "probe": "2b9528860bde11eba7f7acde48001122",
+   "rank_margin": 14,
+   "neg_hop": -1,
+   "ppr_mass": 0.07098560827629759,
+   "off_pass": false
+  }
+ ],
+ "carrier_rows": [
+  {
+   "probe": "83bf3b5a0bd911eba7f7acde48001122",
+   "carrier": "Lothair II",
+   "rank_margin": 15,
+   "ppr_mass": 0.061576650047834997,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "83bf3b5a0bd911eba7f7acde48001122",
+   "carrier": "Ermengarde of Tours",
+   "rank_margin": 12,
+   "ppr_mass": 0.04570400930090774,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "carrier": "Aas Ka Panchhi",
+   "rank_margin": 10,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "carrier": "Phoolwari",
+   "rank_margin": 8,
+   "ppr_mass": 0.03187725072452259,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "2dc690ba0bdc11eba7f7acde48001122",
+   "carrier": "Changed It",
+   "rank_margin": 15,
+   "ppr_mass": 0.12555099538993758,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "2dc690ba0bdc11eba7f7acde48001122",
+   "carrier": "Nicki Minaj",
+   "rank_margin": 13,
+   "ppr_mass": 0.04559436906501252,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "462bb642099211ebbdb0ac1f6bf848b6",
+   "carrier": "Marufabad",
+   "rank_margin": 10,
+   "ppr_mass": 0.029176617180315847,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "462bb642099211ebbdb0ac1f6bf848b6",
+   "carrier": "Nasamkhrali",
+   "rank_margin": 2,
+   "ppr_mass": 0.021583638512908038,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "God's Gift to Women",
+   "rank_margin": 15,
+   "ppr_mass": 0.09095874777355903,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Aldri annet enn br\u00e5k",
+   "rank_margin": 10,
+   "ppr_mass": 0.030952880160919766,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Michael Curtiz",
+   "rank_margin": 12,
+   "ppr_mass": 0.03645112738781189,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Edith Carlmar",
+   "rank_margin": 14,
+   "ppr_mass": 0.052648216834993655,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "El Tonto",
+   "rank_margin": 12,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "The Heart of Doreon",
+   "rank_margin": 15,
+   "ppr_mass": 0.08873227837561032,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Charlie Day",
+   "rank_margin": 10,
+   "ppr_mass": 0.028707722974183923,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Robert North Bradbury",
+   "rank_margin": -1,
+   "ppr_mass": 0.0196893568547959,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "carrier": "Aivar Kuusmaa",
+   "rank_margin": 15,
+   "ppr_mass": 0.0975065410374305,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "carrier": "Andy Summers",
+   "rank_margin": 3,
+   "ppr_mass": 0.017110260221751578,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "9fe6a6760baf11ebab90acde48001122",
+   "carrier": "Raghnall Mac Ruaidhr\u00ed",
+   "rank_margin": 12,
+   "ppr_mass": 0.04831484141957675,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "9fe6a6760baf11ebab90acde48001122",
+   "carrier": "Ruaidhr\u00ed Mac Ruaidhr\u00ed",
+   "rank_margin": 15,
+   "ppr_mass": 0.1408994863309822,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Interview with a Hitman",
+   "rank_margin": 15,
+   "ppr_mass": 0.19091690035015424,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "The Last Coupon",
+   "rank_margin": 13,
+   "ppr_mass": 0.04099827807604674,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Perry Bhandal",
+   "rank_margin": 12,
+   "ppr_mass": 0.0400860102305617,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Frank Launder",
+   "rank_margin": -5,
+   "ppr_mass": 0.012827308970620826,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "33f51d7e0bde11eba7f7acde48001122",
+   "carrier": "Blood Street",
+   "rank_margin": 11,
+   "ppr_mass": 0.031265733344305165,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "33f51d7e0bde11eba7f7acde48001122",
+   "carrier": "Leo Fong",
+   "rank_margin": -21,
+   "ppr_mass": 0.005940187339511034,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "914b452c0bdc11eba7f7acde48001122",
+   "carrier": "Gaby: A True Story",
+   "rank_margin": 13,
+   "ppr_mass": 0.023021199510466647,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "914b452c0bdc11eba7f7acde48001122",
+   "carrier": "Luis Mandoki",
+   "rank_margin": -24,
+   "ppr_mass": 0.004574064658933364,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "d6898f78089511ebbd75ac1f6bf848b6",
+   "carrier": "Vasilyevsky Island",
+   "rank_margin": 15,
+   "ppr_mass": 0.03465476139502259,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "d6898f78089511ebbd75ac1f6bf848b6",
+   "carrier": "Preobrazheniya Island",
+   "rank_margin": 10,
+   "ppr_mass": 0.021884506781458,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "006d81bc0bde11eba7f7acde48001122",
+   "carrier": "When the Stars Go Blue",
+   "rank_margin": 12,
+   "ppr_mass": 0.0209761465303746,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "006d81bc0bde11eba7f7acde48001122",
+   "carrier": "Ryan Adams",
+   "rank_margin": -2,
+   "ppr_mass": 0.012889634756855716,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "carrier": "Me and Bobby McGee",
+   "rank_margin": 15,
+   "ppr_mass": 0.27701880102645376,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "carrier": "Roger Miller",
+   "rank_margin": 14,
+   "ppr_mass": 0.0464282371287711,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "265daf200bdc11eba7f7acde48001122",
+   "carrier": "Maurice, Prince of Orange",
+   "rank_margin": 12,
+   "ppr_mass": 0.021836174905012145,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "265daf200bdc11eba7f7acde48001122",
+   "carrier": "William the Silent",
+   "rank_margin": -77,
+   "ppr_mass": 0.0017395377808904302,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "1c0dd3b00bdc11eba7f7acde48001122",
+   "carrier": "Stanis\u0142aw Koniecpolski",
+   "rank_margin": 15,
+   "ppr_mass": 0.19630870089569027,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "bab3b6d00bda11eba7f7acde48001122",
+   "carrier": "Madame la Presidente",
+   "rank_margin": 14,
+   "ppr_mass": 0.08857226542616556,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "bab3b6d00bda11eba7f7acde48001122",
+   "carrier": "Frank Lloyd",
+   "rank_margin": 7,
+   "ppr_mass": 0.024432524090738105,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Wrong Turn 5: Bloodlines",
+   "rank_margin": 6,
+   "ppr_mass": 0.0360870187109009,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Dark River (2017 film)",
+   "rank_margin": 3,
+   "ppr_mass": 0.02302640231904,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Declan O'Brien",
+   "rank_margin": 13,
+   "ppr_mass": 0.06191816153515139,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Clio Barnard",
+   "rank_margin": -16,
+   "ppr_mass": 0.00328981139842177,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "The Goose Woman",
+   "rank_margin": 14,
+   "ppr_mass": 0.10504586683478676,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "You Can No Longer Remain Silent",
+   "rank_margin": -6,
+   "ppr_mass": 0.011534586033626197,
+   "hop_distance": 2,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "Clarence Brown",
+   "rank_margin": 2,
+   "ppr_mass": 0.02213065116388479,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "Robert A. Stemmle",
+   "rank_margin": -34,
+   "ppr_mass": 0.0017773032910317296,
+   "hop_distance": 3,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "2d8f3ebe0bda11eba7f7acde48001122",
+   "carrier": "The Private Life of Cinema",
+   "rank_margin": -5,
+   "ppr_mass": 0.01696391371228164,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "2d8f3ebe0bda11eba7f7acde48001122",
+   "carrier": "Denys Desjardins",
+   "rank_margin": -4,
+   "ppr_mass": 0.017854379131460586,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "e6e38bc40bdd11eba7f7acde48001122",
+   "carrier": "Coulson Wallop",
+   "rank_margin": 15,
+   "ppr_mass": 0.13401160366846948,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "e6e38bc40bdd11eba7f7acde48001122",
+   "carrier": "John Wallop, 2nd Earl of Portsmouth",
+   "rank_margin": 14,
+   "ppr_mass": 0.09018592219345448,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "0bedb7e80bdc11eba7f7acde48001122",
+   "carrier": "John Middleton Murry",
+   "rank_margin": 14,
+   "ppr_mass": 0.05309582154536387,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0bedb7e80bdc11eba7f7acde48001122",
+   "carrier": "Katherine Mansfield",
+   "rank_margin": 11,
+   "ppr_mass": 0.04363452538403972,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "86508dc60bdc11eba7f7acde48001122",
+   "carrier": "Billy Elliot",
+   "rank_margin": 15,
+   "ppr_mass": 0.20359581053084022,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "86508dc60bdc11eba7f7acde48001122",
+   "carrier": "Stephen Warbeck",
+   "rank_margin": 7,
+   "ppr_mass": 0.021260850580124824,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "e311a3ba0bdc11eba7f7acde48001122",
+   "carrier": "Lisbeth Palme",
+   "rank_margin": 12,
+   "ppr_mass": 0.03130612296341876,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "e311a3ba0bdc11eba7f7acde48001122",
+   "carrier": "Olof Palme",
+   "rank_margin": 15,
+   "ppr_mass": 0.10320110568522808,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "carrier": "3 Dots",
+   "rank_margin": 13,
+   "ppr_mass": 0.03379227702581607,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "carrier": "Dying God",
+   "rank_margin": 14,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "435f65fa0baf11ebab90acde48001122",
+   "carrier": "Sisowath Kossamak",
+   "rank_margin": 14,
+   "ppr_mass": 0.0835970559394498,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "435f65fa0baf11ebab90acde48001122",
+   "carrier": "Norodom Suramarit",
+   "rank_margin": 12,
+   "ppr_mass": 0.07419496682323998,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "5cc01ab60bb011ebab90acde48001122",
+   "carrier": "Mugain",
+   "rank_margin": 15,
+   "ppr_mass": 0.10362591168627941,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "5cc01ab60bb011ebab90acde48001122",
+   "carrier": "Conchobar mac Nessa",
+   "rank_margin": 13,
+   "ppr_mass": 0.03723079746345262,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "2084260e0bde11eba7f7acde48001122",
+   "carrier": "Theodore Salisbury Woolsey",
+   "rank_margin": 15,
+   "ppr_mass": 0.1129055861828239,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "2084260e0bde11eba7f7acde48001122",
+   "carrier": "Theodore Dwight Woolsey",
+   "rank_margin": 11,
+   "ppr_mass": 0.02623468025806006,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "7cb81afc0bd911eba7f7acde48001122",
+   "carrier": "The Return of Swamp Thing",
+   "rank_margin": 15,
+   "ppr_mass": 0.139348739104935,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "7cb81afc0bd911eba7f7acde48001122",
+   "carrier": "Jim Wynorski",
+   "rank_margin": 5,
+   "ppr_mass": 0.030172028922633147,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "a1d9a65c0bd911eba7f7acde48001122",
+   "carrier": "I Can't See Myself Leaving You",
+   "rank_margin": 15,
+   "ppr_mass": 0.08842483369729359,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "a1d9a65c0bd911eba7f7acde48001122",
+   "carrier": "Aretha Franklin",
+   "rank_margin": 14,
+   "ppr_mass": 0.05602553780665684,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Playing It Wild",
+   "rank_margin": 9,
+   "ppr_mass": 0.0214421115005703,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "I'll Be Going Now",
+   "rank_margin": -12,
+   "ppr_mass": 0.009375000000000001,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Dino Risi",
+   "rank_margin": -4856,
+   "ppr_mass": 0.0,
+   "hop_distance": 99,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "Christ Walking on the Water",
+   "rank_margin": -3,
+   "ppr_mass": 0.01178506098938754,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "45 Fathers",
+   "rank_margin": 11,
+   "ppr_mass": 0.025364708116291493,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "Georges M\u00e9li\u00e8s",
+   "rank_margin": 12,
+   "ppr_mass": 0.025503168499414364,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "James Tinling",
+   "rank_margin": -27,
+   "ppr_mass": 0.00384474616785735,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "0dfe41f60bdc11eba7f7acde48001122",
+   "carrier": "Frank Sinatra",
+   "rank_margin": 12,
+   "ppr_mass": 0.03358365881910882,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "Talk About a Stranger",
+   "rank_margin": 14,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "David Bradley (director)",
+   "rank_margin": -4660,
+   "ppr_mass": 0.0,
+   "hop_distance": 99,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "carrier": "Gideon Johnson Pillow",
+   "rank_margin": 3,
+   "ppr_mass": 0.02309101495808614,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "b672c1ee0bdd11eba7f7acde48001122",
+   "carrier": "Jonny Greenwood",
+   "rank_margin": 14,
+   "ppr_mass": 0.043208828090012585,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Dangerously They Live",
+   "rank_margin": 15,
+   "ppr_mass": 0.08225552770274253,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Salad by the Roots",
+   "rank_margin": 14,
+   "ppr_mass": 0.05117230362574234,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Robert Florey",
+   "rank_margin": 12,
+   "ppr_mass": 0.03765743506303111,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Georges Lautner",
+   "rank_margin": 13,
+   "ppr_mass": 0.046886198942169416,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "c5a00e860bda11eba7f7acde48001122",
+   "carrier": "Sylvia Burka",
+   "rank_margin": 15,
+   "ppr_mass": 0.03700725967721341,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "c5a00e860bda11eba7f7acde48001122",
+   "carrier": "Jocelyn Lovell",
+   "rank_margin": -14,
+   "ppr_mass": 0.009483876717387379,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "434dea7708d211ebbd95ac1f6bf848b6",
+   "carrier": "Ludwig Elsbett",
+   "rank_margin": 15,
+   "ppr_mass": 0.15121813948886814,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "434dea7708d211ebbd95ac1f6bf848b6",
+   "carrier": "Pamela Ann Rymer",
+   "rank_margin": 12,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Phalitamsha",
+   "rank_margin": 15,
+   "ppr_mass": 0.1773308918967357,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Gladiators Seven",
+   "rank_margin": -2,
+   "ppr_mass": 0.01763211469864494,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Puttanna Kanagal",
+   "rank_margin": -4273,
+   "ppr_mass": 0.0,
+   "hop_distance": 99,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Alberto De Martino",
+   "rank_margin": -10,
+   "ppr_mass": 0.008882270801158262,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Henry Goes Arizona",
+   "rank_margin": -1,
+   "ppr_mass": 0.015677708234242624,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "The Blue Collar Worker and the Hairdresser in a Whirl of Sex and Politics",
+   "rank_margin": -6,
+   "ppr_mass": 0.011205516180174615,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Edwin L. Marin",
+   "rank_margin": -3,
+   "ppr_mass": 0.015037561305816117,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Lina Wertm\u00fcller",
+   "rank_margin": -5,
+   "ppr_mass": 0.011743871489256838,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "c9a769c608be11ebbd8aac1f6bf848b6",
+   "carrier": "Hywel Teifi Edwards",
+   "rank_margin": 15,
+   "ppr_mass": 0.3273411490048157,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Tombstone Rashomon",
+   "rank_margin": 15,
+   "ppr_mass": 0.0981363217023209,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Waiting for the Clouds",
+   "rank_margin": 5,
+   "ppr_mass": 0.025665058754083387,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Alex Cox",
+   "rank_margin": 9,
+   "ppr_mass": 0.0342240327146661,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Ye\u015fim Ustao\u011flu",
+   "rank_margin": -28,
+   "ppr_mass": 0.003116148545752161,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "50e4a65c0bde11eba7f7acde48001122",
+   "carrier": "Meek Mill",
+   "rank_margin": 12,
+   "ppr_mass": 0.023214192100927514,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "It's a Wonderful Afterlife",
+   "rank_margin": 14,
+   "ppr_mass": 0.04243858463315903,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "Julie Dash",
+   "rank_margin": -6,
+   "ppr_mass": 0.011219675184039614,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "Gurinder Chadha",
+   "rank_margin": 0,
+   "ppr_mass": 0.012678975030546583,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "carrier": "Naked Tango",
+   "rank_margin": 12,
+   "ppr_mass": 0.03379227702581607,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "carrier": "Algiers (film)",
+   "rank_margin": 15,
+   "ppr_mass": 0.07852395951997843,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "38da155f087511ebbd67ac1f6bf848b6",
+   "carrier": "Sir Thomas Wheate, 1st Baronet",
+   "rank_margin": 11,
+   "ppr_mass": 0.028805755754948825,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "38da155f087511ebbd67ac1f6bf848b6",
+   "carrier": "Albert \u00c9douard Le Brethon de Caligny",
+   "rank_margin": 14,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "49b22d0a0bde11eba7f7acde48001122",
+   "carrier": "The Straw Hat",
+   "rank_margin": 11,
+   "ppr_mass": 0.02522069824888717,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "49b22d0a0bde11eba7f7acde48001122",
+   "carrier": "Isaac Schwartz",
+   "rank_margin": 14,
+   "ppr_mass": 0.038455469693582364,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "78b10fb00bdc11eba7f7acde48001122",
+   "carrier": "A Nest of Noblemen",
+   "rank_margin": -1,
+   "ppr_mass": 0.011685994100968496,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "78b10fb00bdc11eba7f7acde48001122",
+   "carrier": "Vladimir Gardin",
+   "rank_margin": 14,
+   "ppr_mass": 0.027171361083300774,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "879d21e208fc11ebbdadac1f6bf848b6",
+   "carrier": "Pietro Salini",
+   "rank_margin": 14,
+   "ppr_mass": 0.04848199251899201,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "879d21e208fc11ebbdadac1f6bf848b6",
+   "carrier": "Domenico Ravenna",
+   "rank_margin": 13,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "cda459160bda11eba7f7acde48001122",
+   "carrier": "Palo Alto (2013 film)",
+   "rank_margin": 14,
+   "ppr_mass": 0.03241609233348887,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "cda459160bda11eba7f7acde48001122",
+   "carrier": "Gia Coppola",
+   "rank_margin": -20,
+   "ppr_mass": 0.004902501844055015,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "1dfaa6200bdd11eba7f7acde48001122",
+   "carrier": "Los Pagares de Mendieta",
+   "rank_margin": 13,
+   "ppr_mass": 0.034744588788290336,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "1dfaa6200bdd11eba7f7acde48001122",
+   "carrier": "Leopoldo Torres R\u00edos",
+   "rank_margin": 15,
+   "ppr_mass": 0.04786761320604885,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "carrier": "Hubert Mordek",
+   "rank_margin": 7,
+   "ppr_mass": 0.024307388971398898,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "carrier": "Levon Ashotovich Grigorian",
+   "rank_margin": 15,
+   "ppr_mass": 0.052903774448968995,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "8e07f1f00bda11eba7f7acde48001122",
+   "carrier": "My Three Merry Widows",
+   "rank_margin": 7,
+   "ppr_mass": 0.020421433370283258,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "8e07f1f00bda11eba7f7acde48001122",
+   "carrier": "Fernando Cort\u00e9s",
+   "rank_margin": -23,
+   "ppr_mass": 0.005841046267820653,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "b7f5f7200bdd11eba7f7acde48001122",
+   "carrier": "Thunder on the Hill",
+   "rank_margin": 12,
+   "ppr_mass": 0.026709152736500444,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "b7f5f7200bdd11eba7f7acde48001122",
+   "carrier": "Hans J. Salter",
+   "rank_margin": -28,
+   "ppr_mass": 0.002494719073612102,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Arr\u00eate ton cin\u00e9ma",
+   "rank_margin": 10,
+   "ppr_mass": 0.022859643307962793,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Diane Kurys",
+   "rank_margin": 13,
+   "ppr_mass": 0.03172856204497729,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Swapan Saha",
+   "rank_margin": -23,
+   "ppr_mass": 0.005741544594836784,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "carrier": "Werner Mensching",
+   "rank_margin": 13,
+   "ppr_mass": 0.02914546123845238,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "carrier": "Karel Zich",
+   "rank_margin": 15,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0083038e0bde11eba7f7acde48001122",
+   "carrier": "Prince Ferdinand of Bavaria",
+   "rank_margin": 12,
+   "ppr_mass": 0.022087437018027435,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "0083038e0bde11eba7f7acde48001122",
+   "carrier": "Infanta Mar\u00eda de la Paz of Spain",
+   "rank_margin": -11,
+   "ppr_mass": 0.013565691551712512,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "6b8402c40bdd11eba7f7acde48001122",
+   "carrier": "An Event",
+   "rank_margin": 4,
+   "ppr_mass": 0.01590976701307019,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "6b8402c40bdd11eba7f7acde48001122",
+   "carrier": "Vatroslav Mimica",
+   "rank_margin": 3,
+   "ppr_mass": 0.01574503046334581,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "d9c894ec0bd911eba7f7acde48001122",
+   "carrier": "Good People (film)",
+   "rank_margin": 15,
+   "ppr_mass": 0.14374243074208046,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "d9c894ec0bd911eba7f7acde48001122",
+   "carrier": "Henrik Ruben Genz",
+   "rank_margin": 14,
+   "ppr_mass": 0.04576492578839689,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "carrier": "Gare de La Roche-sur-Yon",
+   "rank_margin": -1,
+   "ppr_mass": 0.021777818843512438,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "carrier": "Gare de Namps-Quevauvillers",
+   "rank_margin": 15,
+   "ppr_mass": 0.060080215573463026,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a9e322b20bdc11eba7f7acde48001122",
+   "carrier": "Eduardo De Filippo",
+   "rank_margin": -12,
+   "ppr_mass": 0.009682136250078516,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "8f783c7a0bda11eba7f7acde48001122",
+   "carrier": "Christian August, Prince of Anhalt-Zerbst",
+   "rank_margin": 11,
+   "ppr_mass": 0.0363399318436545,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "b642318c0bdd11eba7f7acde48001122",
+   "carrier": "Muhammad bin Saud",
+   "rank_margin": 13,
+   "ppr_mass": 0.03570100432005731,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "Love, Honor and Oh-Baby!",
+   "rank_margin": 5,
+   "ppr_mass": 0.023511689706939412,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "I Cover the Underworld",
+   "rank_margin": 9,
+   "ppr_mass": 0.02951835301502426,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "Charles Lamont",
+   "rank_margin": -63,
+   "ppr_mass": 0.0025602991523650254,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "R. G. Springsteen",
+   "rank_margin": -48,
+   "ppr_mass": 0.0027871524305535665,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "fcdafe320bdb11eba7f7acde48001122",
+   "carrier": "The Circus Cyclone",
+   "rank_margin": 8,
+   "ppr_mass": 0.02332177564327433,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "fcdafe320bdb11eba7f7acde48001122",
+   "carrier": "Albert S. Rogell",
+   "rank_margin": -42,
+   "ppr_mass": 0.0035376993208522008,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "7d87730c087211ebbd66ac1f6bf848b6",
+   "carrier": "Wizards of the Lost Kingdom",
+   "rank_margin": 15,
+   "ppr_mass": 0.06047154939572965,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "7d87730c087211ebbd66ac1f6bf848b6",
+   "carrier": "Final Exam (1981 film)",
+   "rank_margin": 14,
+   "ppr_mass": 0.03179398222012707,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "carrier": "Museum of Croatian Archaeological Monuments",
+   "rank_margin": 15,
+   "ppr_mass": 0.0625,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "carrier": "Bayernhof Music Museum",
+   "rank_margin": 9,
+   "ppr_mass": 0.035332693461022205,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "e15d99380bdd11eba7f7acde48001122",
+   "carrier": "Bo\u0161tjan Hladnik",
+   "rank_margin": 5,
+   "ppr_mass": 0.02078790184810331,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Saw Thanda",
+   "rank_margin": -18,
+   "ppr_mass": 0.009375000000000001,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Min Dikkha",
+   "rank_margin": -3838,
+   "ppr_mass": 0.0,
+   "hop_distance": 99,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "carrier": "Inside the Room",
+   "rank_margin": 14,
+   "ppr_mass": 0.031265733344305165,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "carrier": "Crude Set Drama",
+   "rank_margin": 15,
+   "ppr_mass": 0.09120772297418392,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "The Marriage of Princess Demidoff",
+   "rank_margin": 15,
+   "ppr_mass": 0.0480524781512758,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "The Pocket-knife",
+   "rank_margin": 14,
+   "ppr_mass": 0.03898330433979215,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "Frederic Zelnik",
+   "rank_margin": -5,
+   "ppr_mass": 0.011257258970605994,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "Ben Sombogaart",
+   "rank_margin": 3,
+   "ppr_mass": 0.015605420422438315,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Airheads",
+   "rank_margin": 15,
+   "ppr_mass": 0.048686419375535604,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Return to Cabin by the Lake",
+   "rank_margin": 14,
+   "ppr_mass": 0.04760585765028046,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Michael Lehmann",
+   "rank_margin": -33,
+   "ppr_mass": 0.0037610085162211025,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Po-Chih Leong",
+   "rank_margin": -5,
+   "ppr_mass": 0.013487209765250602,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "63c16246095211ebbdaeac1f6bf848b6",
+   "carrier": "A Romance of Seville",
+   "rank_margin": 12,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "63c16246095211ebbdaeac1f6bf848b6",
+   "carrier": "Pirates of the Sky",
+   "rank_margin": 10,
+   "ppr_mass": 0.027421801401721416,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Lost in the Stratosphere",
+   "rank_margin": 4,
+   "ppr_mass": 0.02237928533561294,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Blind Man's Eyes",
+   "rank_margin": 10,
+   "ppr_mass": 0.02742055259008443,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Melville W. Brown",
+   "rank_margin": -22,
+   "ppr_mass": 0.004963432799159944,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "d18fc6640bda11eba7f7acde48001122",
+   "carrier": "\u00c9tienne de Cr\u00e9cy",
+   "rank_margin": 2,
+   "ppr_mass": 0.024039736602596687,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "carrier": "Marjatta Raita",
+   "rank_margin": 15,
+   "ppr_mass": 0.17733089189673568,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "carrier": "Bruce Coulter",
+   "rank_margin": 9,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a457e11c0bdb11eba7f7acde48001122",
+   "carrier": "Oskar Roehler",
+   "rank_margin": -57,
+   "ppr_mass": 0.003303880756421094,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "632fcc82085611ebbd59ac1f6bf848b6",
+   "carrier": "Angus Wagner",
+   "rank_margin": -1,
+   "ppr_mass": 0.014523834764458728,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "632fcc82085611ebbd59ac1f6bf848b6",
+   "carrier": "Juan Carlos Falc\u00f3n",
+   "rank_margin": -17,
+   "ppr_mass": 0.009375000000000001,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "076288460bde11eba7f7acde48001122",
+   "carrier": "Henry I of Zi\u0119bice",
+   "rank_margin": 14,
+   "ppr_mass": 0.05714085745071129,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "076288460bde11eba7f7acde48001122",
+   "carrier": "Nicholas the Small",
+   "rank_margin": 15,
+   "ppr_mass": 0.1073987088964489,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "carrier": "Sammy Hagar",
+   "rank_margin": 15,
+   "ppr_mass": 0.23498870030428914,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "carrier": "Renaud Garcia-Fons",
+   "rank_margin": -8,
+   "ppr_mass": 0.013268577265044292,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "9523a3df088911ebbd6eac1f6bf848b6",
+   "carrier": "Eustace William Ferguson",
+   "rank_margin": 14,
+   "ppr_mass": 0.06687475772441244,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "5ff291a80bda11eba7f7acde48001122",
+   "carrier": "Back in the U.S.A.",
+   "rank_margin": 7,
+   "ppr_mass": 0.016483961386282345,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "5ff291a80bda11eba7f7acde48001122",
+   "carrier": "Chuck Berry",
+   "rank_margin": 6,
+   "ppr_mass": 0.01629285640979529,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "carrier": "Cheryl Saban",
+   "rank_margin": 15,
+   "ppr_mass": 0.10321932019855412,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "carrier": "Dmitry Grigorieff",
+   "rank_margin": 6,
+   "ppr_mass": 0.02634206721629538,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "The First Day of Freedom",
+   "rank_margin": -8,
+   "ppr_mass": 0.011080425139479187,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Malabimba \u2013 The Malicious Whore",
+   "rank_margin": 14,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Aleksander Ford",
+   "rank_margin": -16,
+   "ppr_mass": 0.00790740246426978,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Andrea Bianchi",
+   "rank_margin": 11,
+   "ppr_mass": 0.028707722974183923,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "fde95590089c11ebbd78ac1f6bf848b6",
+   "carrier": "Yuliya Baraley",
+   "rank_margin": 8,
+   "ppr_mass": 0.02545308379676541,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "3bb9c0740bb011ebab90acde48001122",
+   "carrier": "Sibyl Hathaway",
+   "rank_margin": 15,
+   "ppr_mass": 0.07569309686325626,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "3bb9c0740bb011ebab90acde48001122",
+   "carrier": "Francis William Beaumont",
+   "rank_margin": -23,
+   "ppr_mass": 0.008042406392130141,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Sins of Madeleine",
+   "rank_margin": 11,
+   "ppr_mass": 0.027969209749292186,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Captain Apache",
+   "rank_margin": 10,
+   "ppr_mass": 0.021723569199279716,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Alexander Singer",
+   "rank_margin": -12,
+   "ppr_mass": 0.00806219937138597,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "e7dc72940baf11ebab90acde48001122",
+   "carrier": "Godomar II",
+   "rank_margin": 14,
+   "ppr_mass": 0.02989790507842635,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "e7dc72940baf11ebab90acde48001122",
+   "carrier": "Gundobad",
+   "rank_margin": 10,
+   "ppr_mass": 0.019975627112985072,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "764446780bde11eba7f7acde48001122",
+   "carrier": "The Outlaw Express",
+   "rank_margin": 11,
+   "ppr_mass": 0.022251431238071537,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "764446780bde11eba7f7acde48001122",
+   "carrier": "Leo D. Maloney",
+   "rank_margin": -6,
+   "ppr_mass": 0.010155874381066056,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "45 Calibre Echo",
+   "rank_margin": 11,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Bons Baisers de Hong Kong",
+   "rank_margin": 7,
+   "ppr_mass": 0.028166104222856057,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Bruce M. Mitchell",
+   "rank_margin": -13,
+   "ppr_mass": 0.007176930743545981,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Yvan Chiffre",
+   "rank_margin": -18,
+   "ppr_mass": 0.005225797057074691,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "f1a794f20bdc11eba7f7acde48001122",
+   "carrier": "Lamprocles",
+   "rank_margin": 6,
+   "ppr_mass": 0.02124722242388441,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "f1a794f20bdc11eba7f7acde48001122",
+   "carrier": "Socrates",
+   "rank_margin": -9,
+   "ppr_mass": 0.011199184341542453,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "47bb70600bde11eba7f7acde48001122",
+   "carrier": "I Like Control",
+   "rank_margin": 15,
+   "ppr_mass": 0.04959481564473229,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "47bb70600bde11eba7f7acde48001122",
+   "carrier": "DJ Clue",
+   "rank_margin": -12,
+   "ppr_mass": 0.010999594320903227,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Romance on the Run",
+   "rank_margin": 13,
+   "ppr_mass": 0.01570673162285584,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "The Palace of Angels",
+   "rank_margin": 12,
+   "ppr_mass": 0.014322891789253993,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Gus Meins",
+   "rank_margin": -5,
+   "ppr_mass": 0.006492396526839785,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Walter Hugo Khouri",
+   "rank_margin": -3,
+   "ppr_mass": 0.008313306425572228,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "Mord Em'ly",
+   "rank_margin": 2,
+   "ppr_mass": 0.01749430175166324,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "Vijay Bhatt",
+   "rank_margin": 6,
+   "ppr_mass": 0.023965589365048497,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "The Korean Wedding Chest",
+   "rank_margin": 14,
+   "ppr_mass": 0.0625,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "True to the Navy",
+   "rank_margin": 7,
+   "ppr_mass": 0.02310985856623903,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "Ulrike Ottinger",
+   "rank_margin": -5,
+   "ppr_mass": 0.01328125,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "Frank Tuttle",
+   "rank_margin": -15,
+   "ppr_mass": 0.0075796303135927945,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "421d07aa0bb011ebab90acde48001122",
+   "carrier": "Marianus V of Arborea",
+   "rank_margin": 15,
+   "ppr_mass": 0.07015415452357546,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "421d07aa0bb011ebab90acde48001122",
+   "carrier": "Brancaleone Doria",
+   "rank_margin": 14,
+   "ppr_mass": 0.06290627212231405,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "3f48bc400bb011ebab90acde48001122",
+   "carrier": "Albert III, Duke of Bavaria",
+   "rank_margin": 9,
+   "ppr_mass": 0.03211385828016798,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Felices 140",
+   "rank_margin": 1,
+   "ppr_mass": 0.01948850826837032,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Dr. Who and the Daleks",
+   "rank_margin": 15,
+   "ppr_mass": 0.09063202078552504,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Gracia Querejeta",
+   "rank_margin": -23,
+   "ppr_mass": 0.004141259346442193,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Gordon Flemyng",
+   "rank_margin": -7,
+   "ppr_mass": 0.012678578436548849,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "carrier": "Mama's Little Pirate",
+   "rank_margin": 6,
+   "ppr_mass": 0.026763641883098533,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "carrier": "Beauties on Motor Scooters",
+   "rank_margin": 15,
+   "ppr_mass": 0.05622797616627641,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "carrier": "Two Brides and a Baby",
+   "rank_margin": 7,
+   "ppr_mass": 0.027890436592987643,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "carrier": "Dinner at the Ritz",
+   "rank_margin": 4,
+   "ppr_mass": 0.022288153781890155,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "3ab846860bde11eba7f7acde48001122",
+   "carrier": "William Axt",
+   "rank_margin": 11,
+   "ppr_mass": 0.02948658837837431,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "8cd3fe6c0baf11ebab90acde48001122",
+   "carrier": "Colg\u00fa mac Fa\u00edlbe Flaind",
+   "rank_margin": 14,
+   "ppr_mass": 0.05891173565242949,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "8cd3fe6c0baf11ebab90acde48001122",
+   "carrier": "Fa\u00edlbe Flann mac \u00c1edo Duib",
+   "rank_margin": 12,
+   "ppr_mass": 0.045676970993611586,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0d9251260baf11ebab90acde48001122",
+   "carrier": "Jean Tangye",
+   "rank_margin": 5,
+   "ppr_mass": 0.02039918457919073,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0d9251260baf11ebab90acde48001122",
+   "carrier": "Derek Tangye",
+   "rank_margin": 15,
+   "ppr_mass": 0.08323466912063154,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "carrier": "Shahanuddin Choudhury",
+   "rank_margin": 6,
+   "ppr_mass": 0.022200851365765772,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "carrier": "Domenico Distilo",
+   "rank_margin": 1,
+   "ppr_mass": 0.018628894612609664,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "d73fa07c0bdd11eba7f7acde48001122",
+   "carrier": "Alfonso P\u00e9rez de Guzm\u00e1n, 5th Duke of Medina Sidonia",
+   "rank_margin": 9,
+   "ppr_mass": 0.036427058204495544,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "d73fa07c0bdd11eba7f7acde48001122",
+   "carrier": "Juan Alfonso P\u00e9rez de Guzm\u00e1n, 3rd Duke of Medina Sidonia",
+   "rank_margin": 12,
+   "ppr_mass": 0.04699361340124784,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "9bc54aba0bdd11eba7f7acde48001122",
+   "carrier": "Ayumi Hamasaki",
+   "rank_margin": 14,
+   "ppr_mass": 0.08991600682284842,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "The Lone Prairie",
+   "rank_margin": 3,
+   "ppr_mass": 0.02090555110670311,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "Buckaroo from Powder River",
+   "rank_margin": 14,
+   "ppr_mass": 0.03447142929202751,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "William Berke",
+   "rank_margin": -13,
+   "ppr_mass": 0.008883014963930139,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "Ray Nazarro",
+   "rank_margin": -20,
+   "ppr_mass": 0.005730640581864521,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "C\u00e9sar and Rosalie",
+   "rank_margin": 11,
+   "ppr_mass": 0.03379227702581607,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Beatrice (1987 film)",
+   "rank_margin": 14,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Claude Sautet",
+   "rank_margin": -4,
+   "ppr_mass": 0.009569240991394641,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Bertrand Tavernier",
+   "rank_margin": -14,
+   "ppr_mass": 0.007176930743545981,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "The Glass Wall",
+   "rank_margin": 15,
+   "ppr_mass": 0.07461192242029868,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Where Does It Hurt?",
+   "rank_margin": 11,
+   "ppr_mass": 0.025125255297036787,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Maxwell Shane",
+   "rank_margin": -6,
+   "ppr_mass": 0.012685932658612948,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Rod Amateau",
+   "rank_margin": -12,
+   "ppr_mass": 0.01023547693567512,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "0016373a0bda11eba7f7acde48001122",
+   "carrier": "Hermann II, Landgrave of Hesse",
+   "rank_margin": -4,
+   "ppr_mass": 0.013357345945095151,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0016373a0bda11eba7f7acde48001122",
+   "carrier": "Louis the Junker",
+   "rank_margin": 4,
+   "ppr_mass": 0.019118966824690775,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "ccd086f80bdb11eba7f7acde48001122",
+   "carrier": "Do You Believe? (film)",
+   "rank_margin": 5,
+   "ppr_mass": 0.009375000000000001,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "ccd086f80bdb11eba7f7acde48001122",
+   "carrier": "Jon Gunn",
+   "rank_margin": -7,
+   "ppr_mass": 0.00339505642857145,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "965e667e0bdd11eba7f7acde48001122",
+   "carrier": "Napier Sturt, 3rd Baron Alington",
+   "rank_margin": 10,
+   "ppr_mass": 0.04149201576168331,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "965e667e0bdd11eba7f7acde48001122",
+   "carrier": "Humphrey Sturt, 2nd Baron Alington",
+   "rank_margin": -4,
+   "ppr_mass": 0.015253044460743725,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Amira & Sam",
+   "rank_margin": 15,
+   "ppr_mass": 0.2643405237363722,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Fat Man and Little Boy",
+   "rank_margin": 13,
+   "ppr_mass": 0.045801703011167,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Sean Mullin",
+   "rank_margin": 3,
+   "ppr_mass": 0.02980325420844991,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Roland Joff\u00e9",
+   "rank_margin": 10,
+   "ppr_mass": 0.0325250965094308,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "43eb7b380bde11eba7f7acde48001122",
+   "carrier": "Peter's Friends",
+   "rank_margin": 3,
+   "ppr_mass": 0.016934472553669803,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "43eb7b380bde11eba7f7acde48001122",
+   "carrier": "Kenneth Branagh",
+   "rank_margin": -7,
+   "ppr_mass": 0.010606399742268012,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "f48667b80bda11eba7f7acde48001122",
+   "carrier": "The Miscellany News",
+   "rank_margin": 5,
+   "ppr_mass": 0.01689725778443274,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "f48667b80bda11eba7f7acde48001122",
+   "carrier": "Vassar College",
+   "rank_margin": 3,
+   "ppr_mass": 0.016677432707415372,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "My Wife's Best Friend",
+   "rank_margin": 6,
+   "ppr_mass": 0.023871115307619078,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "Dinu Cocea",
+   "rank_margin": -2,
+   "ppr_mass": 0.013229337720192875,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "bd9609880bdb11eba7f7acde48001122",
+   "carrier": "Battle in Seattle",
+   "rank_margin": 15,
+   "ppr_mass": 0.06708541902498576,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "bd9609880bdb11eba7f7acde48001122",
+   "carrier": "Stuart Townsend",
+   "rank_margin": 10,
+   "ppr_mass": 0.028382731169674064,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "748446060bdb11eba7f7acde48001122",
+   "carrier": "Make the World Move",
+   "rank_margin": 15,
+   "ppr_mass": 0.3931002258120291,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "748446060bdb11eba7f7acde48001122",
+   "carrier": "Alex da Kid",
+   "rank_margin": -1832,
+   "ppr_mass": 7.558859407295582e-09,
+   "hop_distance": 99,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "e2de58500bd911eba7f7acde48001122",
+   "carrier": "The Notorious Miss Lisle",
+   "rank_margin": 15,
+   "ppr_mass": 0.1295170417600261,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Last Tango in Paris",
+   "rank_margin": 12,
+   "ppr_mass": 0.0260922921602966,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Beasts of Prey",
+   "rank_margin": -1,
+   "ppr_mass": 0.012042821911161107,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Bernardo Bertolucci",
+   "rank_margin": 10,
+   "ppr_mass": 0.023628498404697055,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Kim Ki-young",
+   "rank_margin": 1,
+   "ppr_mass": 0.014324998244952576,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "5c7842780baf11ebab90acde48001122",
+   "carrier": "Dui Finn",
+   "rank_margin": 6,
+   "ppr_mass": 0.02148341740648263,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "5c7842780baf11ebab90acde48001122",
+   "carrier": "S\u00e9tna Innarraid",
+   "rank_margin": 10,
+   "ppr_mass": 0.02936583056659825,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "carrier": "The Tender Years",
+   "rank_margin": 8,
+   "ppr_mass": 0.02501552417169694,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "carrier": "Range War",
+   "rank_margin": 9,
+   "ppr_mass": 0.0287403502879789,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "84c99c760bb011ebab90acde48001122",
+   "carrier": "Marie Leszczy\u0144ska",
+   "rank_margin": 9,
+   "ppr_mass": 0.029900737424958277,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "f253a3040bdd11eba7f7acde48001122",
+   "carrier": "Princess Maria of Greece and Denmark",
+   "rank_margin": 15,
+   "ppr_mass": 0.05259683458912187,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "f253a3040bdd11eba7f7acde48001122",
+   "carrier": "Olga Constantinovna of Russia",
+   "rank_margin": 2,
+   "ppr_mass": 0.017749105610535703,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "I Like Only You",
+   "rank_margin": 5,
+   "ppr_mass": 0.03379227702581608,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "Brother Rat",
+   "rank_margin": 13,
+   "ppr_mass": 0.05426825091109914,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": true
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "Pierre Montazel",
+   "rank_margin": -14,
+   "ppr_mass": 0.007176930743545981,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "William Keighley",
+   "rank_margin": -7,
+   "ppr_mass": 0.008930262358750439,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": true
+  },
+  {
+   "probe": "2b9528860bde11eba7f7acde48001122",
+   "carrier": "Marianus V of Arborea",
+   "rank_margin": 15,
+   "ppr_mass": 0.07101716954625802,
+   "hop_distance": 0,
+   "dense_hit": true,
+   "off_pass": false
+  },
+  {
+   "probe": "2b9528860bde11eba7f7acde48001122",
+   "carrier": "Brancaleone Doria",
+   "rank_margin": 14,
+   "ppr_mass": 0.07098560827629759,
+   "hop_distance": 1,
+   "dense_hit": false,
+   "off_pass": false
+  }
+ ]
+}

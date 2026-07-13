@@ -1,0 +1,508 @@
+{
+ "audits": [
+  {
+   "auditor": "sota-doc",
+   "summary": "Audited the KGF canonical design surface (docs/kgf-sota.md, docs/sota-promotions.md, docs/recall-failure-modes.md, docs/defects/defects.md) against the R45/R46/R49 current-state brief, confirming every re-pricing against the experiments log. The SOTA doc predates the four R49 contrarian kills and the carrier bakeoff (all 2026-07-13) and is still written on the abandoned CPAP substrate. Three HIGH structural problems: (1) the \"size-invariant indicator panel\" - Forman-Ricci \"most sensitive instrument\" plus the five-metric health panel - is the headline of the Reference-corpus-verification section, and H544+H545 killed both (FR is a pure degree statistic with exact 0.0% rewiring move; the panel predicts probe outcomes at chance, AUC<=0.551); (2) two proven winners from the carrier bakeoff are absent while the doc still names \"largest-carrier selector\" as the repair weak link - H568 (LLM attacher 11/11) is the carrier function, H565/H569 proved the degree/largest heuristic anti-predictive; (3) the H371 question channel is wired default-on at ingest (7.98 KGFQuestion/chunk + embeddings + edges) yet H499 REFUTED any held-out retrieval value at powered n=132, and the SOTA doc does not mention it at all - pure ingest cost the doc cannot see. The whole Retrieval section (composed frontier 0.9583, 24-probe saturation, escalation theta 0.7644, H366/H367 channels) is CPAP-only and never re-validated on bench, with H367 proposition seeds additionally dead on the bench pile (DEF-16). Measurement discipline omits the now-mandated H540/H541 paired-frozen-probe gates and still cites the H540-retired +-2% certificate bar. The promotions register is stale, frozen at 2026-07-10 (H382), so it records none of the R44/R45/R46/R49 findings the SOTA doc now carries, nor the four kills. Leiden communities + 82 summaries are computed at optimize time (graph/graphrag.py:52) but unread (H68 provenance-artifact) and unpriced in the doc.",
+   "findings": [
+    {
+     "component": "Size-invariant indicator panel - Forman-Ricci mean curvature named \"the most sensitive structural instrument across both differentials\"",
+     "where": "docs/kgf-sota.md:110-117 (Reference-corpus verification)",
+     "status": "doc-only (R45 screen tool, not engine-wired)",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H544 (KILLED 2026-07-13), re-prices R45 H486",
+     "rationale": "H544 proved the shipped Forman-Ricci carries no triangle term, so mean-AFRC = 4 - sum(deg^2)/E, a pure degree statistic: exact 0.0% move under degree-preserving rewiring (5 seeds x 73,480 swaps), R^2 0.9987 reconstruction from degree stats. The R45 \"-15.77% most sensitive instrument\" was degree arithmetic riding the +237%/+294% inflation; the 4.49% sampled move was 500-edge estimator noise. Any claim treating FR/curvature as an independent structural signal is dead.",
+     "action": "Strike FR from the panel or relabel it a degree-summary alias (per H553 re-pricing); remove \"most sensitive structural instrument\".",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Structural indicator panel as decision instrument (assortativity, hub condensation, desc length, rel-type vocab, FR) \"screened against a hand-repaired reference graph\"",
+     "where": "docs/kgf-sota.md:110-117",
+     "status": "doc-only",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H545 (KILLED-panel 2026-07-13)",
+     "rationale": "H545 measured the five per-region structural metrics at CHANCE for predicting probe pass/fail (oriented AUC <= 0.551 on the powered n=132 rung, zero partial signal over the certificate). The doc frames sensitivity-to-repair as decision-relevance; H545 is exactly the demonstration that sensitivity is NOT relevance. Even the certificate reads only AUC 0.609 (under its own 0.70 prediction).",
+     "action": "Rewrite the section: the panel is a repair-sensitivity screen with no measured probe-prediction value; certificate is the only (weak) decision instrument.",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Carrier selection named \"the automation weak link (12/47 repairs fell back to the largest-carrier selector)\"; H568 LLM attacher and H567 abstain gate absent",
+     "where": "docs/kgf-sota.md:115 (Repair is mechanizable); H568/H567 absent from doc",
+     "status": "doc-only weak-link claim; winner (H568) absent from shipped/doc",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "H568 (CONFIRMED, carrier function), H567 (CONFIRMED abstain gate), H565/H569 (largest-carrier heuristic anti-predictive/KILLED)",
+     "rationale": "The bakeoff settled carrier selection: H568 gpt-oss LLM attacher scored 11/11 (vs largest-carrier 2/11, feature scorer 5/11) and abstained correctly 4/4; H567 regex+LLM artifact gate flagged 4/4 artifacts with 0 false-abstains; H565 proved true carriers are prominent-but-not-hub (argmax-degree never picks them) and H569 KILLED the deterministic anchor rule. The doc's \"weak link\" and implicit reliance on the largest-carrier selector are stale and contradicted.",
+     "action": "Record H568 as the shipped carrier function + H567 as the abstain gate; delete the largest-carrier weak-link framing.",
+     "severity": "HIGH"
+    },
+    {
+     "component": "H371 question channel (KGFQuestion generation + ANSWERABLE_FROM/ABOUT edges + kgf_question_embeddings)",
+     "where": "absent from docs/kgf-sota.md entirely; wired via shipped _question_channel, default-on at ingest",
+     "status": "wired-default (ingest generation active; ~7.98 KGFQuestion/chunk)",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "H499 (REFUTED at powered n=132)",
+     "rationale": "H499 measured held-out question-channel retrieval lift at +0.0076 (86/132 vs 85/132, one up-flip, 0 regressions) - statistically zero, the H371 in-distribution 24/24 CPAP result does not transfer. The channel is default-on at ingest (Phase3 run-2 had to explicitly set questions.enabled=false), paying real generation+embedding+edge cost, yet the SOTA doc does not mention it and cannot see the cost. Residual value re-routed to R48 (H528-H531) which is registered-not-executed.",
+     "action": "Add the channel to the doc and gate generation off at ingest (or price it) until R48 re-purposes it as audit seeds/cache keys.",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Measurement discipline - noise floors and verdict gating",
+     "where": "docs/kgf-sota.md:38-43 (Measurement discipline, Resolution roadmap)",
+     "status": "doc-only (methodology)",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "H540/H541 (CONFIRMED), partly supersedes H351",
+     "rationale": "H540/H541 now MANDATE paired frozen-probe gates (pairing cuts SE(delta) 98.4%, rho 0.984) and RETIRE unpaired resampled A/B; per-rung binomial band tables govern. The doc's discipline section leads on H351 run-to-run sigma bands but never states freeze-the-probes + pair-the-arms, which the brief calls the live lever (17.9pp same-graph spread is ~99% query sampling, collapses to ~1% frozen).",
+     "action": "Add the paired-frozen-probe mandate and per-rung binomial bands as the governing verdict discipline (supersede/annotate H351).",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Retrieval section numeric claims - composed frontier 0.9583 (23/24), 24-probe saturation, escalation gate theta 0.7644, H366 window channel (P21/P22), 2-hops-is-the-whole-game",
+     "where": "docs/kgf-sota.md:83-95, 43",
+     "status": "wired-default read path; evidence CPAP-only",
+     "evidence_verdict": "UNEVIDENCED",
+     "priced_by": "brief C (CPAP abandoned 2026-07-12); H157 (calibration constants corpus-class-bound, ECE 5.18x); H382 gate mechanism validated",
+     "rationale": "Every retrieval number rests on the CPAP 24-probe harness (P08/P09/P15/P16/P21/P22 are apnea-device probes) and its HC230/SleepStyle graph; the substrate is retired and none of these were re-validated on the 2wiki bench (medium: n=132 powered, dense@16=0.854 pure-seed). H157 already proved the escalation threshold is corpus-class-bound, so theta 0.7644 does not transfer. The escalation-gate mechanism (H382) is validated, but its stated numbers are substrate-stale.",
+     "action": "Flag the Retrieval section numbers as CPAP-substrate pending bench re-validation; keep only the H382 mechanism as corpus-independent.",
+     "severity": "MED"
+    },
+    {
+     "component": "Proposition seeds channel (H367) presented as shipped retrieval component",
+     "where": "docs/kgf-sota.md:91",
+     "status": "wired-default but non-functional on bench",
+     "evidence_verdict": "DEFECT",
+     "priced_by": "DEF-16 (open); H367, H180",
+     "rationale": "DEF-16 records that kgf_proposition_embeddings / KGFPassage are ABSENT on the bench piles (optimize() never materialized them), so H367 proposition seeds and the H366 passage/window channel cannot replay on bench; H180's proposition render-pricing likewise cannot replay. The doc states H367 as a live shipped seed source with no absence caveat.",
+     "action": "Caveat H367/H366 as DEF-16-blocked on bench until passages+proposition index materialize.",
+     "severity": "MED"
+    },
+    {
+     "component": "Coverage certificate reproducibility bar (+-2%)",
+     "where": "docs/kgf-sota.md:24, 112",
+     "status": "doc-only (instrument bar)",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H540 (bands), H542 (H484 delta -> INCONCLUSIVE, REG-1 demoted)",
+     "rationale": "The doc twice cites the certificate's +-2% reproducibility bar with \"registered adjudication pending\", noting only that it \"understates observed spread.\" H540 resolved this: the +-2% bar is UNMEETABLE below ~n=2400 unpaired and per-rung binomial bands now govern; H542 already used this to reclassify the H484 pass-2 +4.1pp delta INCONCLUSIVE (inside +-19.3pp band) and demote REG-1. The bar is retired, not pending.",
+     "action": "Replace the +-2% bar with per-rung binomial bands; drop \"adjudication pending\".",
+     "severity": "MED"
+    },
+    {
+     "component": "SOTA promotions register vs SOTA doc content",
+     "where": "docs/sota-promotions.md (last entry 2026-07-10 H382)",
+     "status": "doc-only; stale",
+     "evidence_verdict": "UNEVIDENCED",
+     "priced_by": "H389/H448/H497/H498 (in SOTA doc, not register); H544-H547/H568/H499 (kills/wins, in neither register nor doc)",
+     "rationale": "The register is frozen at H382 (2026-07-10), so it records none of the R44/R45 findings the SOTA doc now promotes (coverage certificate H389, miss decomposition H448, repair templates H497/H498) - those SOTA claims are unevidenced in the ledger the doc points to - and it records neither the four R49 kills (H544-H547) nor the H568 carrier win nor the H499 refutation. The two canonical docs have diverged.",
+     "action": "Either append R44-R49 promotions and the four kills to the register or mark it superseded by the experiments log.",
+     "severity": "MED"
+    },
+    {
+     "component": "Leiden community detection + 82 community summaries (modularity 0.830)",
+     "where": "absent from docs/kgf-sota.md; computed at graph/graphrag.py:52 (writes communityId), summaries generated",
+     "status": "wired-default at optimize time; unread at query time",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "H68 (CONFIRMED provenance artifact, NMI 0.614), H69/H70 (REFUTED downstream)",
+     "rationale": "Leiden runs at optimize and writes communityId to every entity plus 82 summaries, but nothing reads communityId at query time and H68 proved communities are documents rediscovered (provenance), not topics, carrying no retrieval signal (H69/H70 failed). The SOTA doc neither lists this as an excluded lever nor prices the optimize-time compute; the summaries are a maintained-but-dead asset.",
+     "action": "Add communities-as-provenance to \"Excluded by adjudication\" and price/gate the summary generation, or note R48 owns the re-test.",
+     "severity": "MED"
+    },
+    {
+     "component": "RFM-4 fix direction \"repair-from-source primacy at ingest\" (R49 vector c)",
+     "where": "docs/recall-failure-modes.md:37-39 (RFM-4)",
+     "status": "doc-only (planned direction)",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H546 (KILLED-RAI 2026-07-13)",
+     "rationale": "RFM-4 plans repair-from-source with primacy AT INGEST. H546 proved repair-at-ingest has ZERO recall advantage over post-hoc batch repair-from-source (48/48 facts batch-recoverable; ingest re-emission recovers only 25% vs batch 100%; 0 of 1,802 merged-away entities destroyed an attachment point) - ingest timing is a latency/cost choice, not a recall lever.",
+     "action": "Re-price RFM-4's ingest-primacy as latency/cost only; batch repair-from-source keeps the recall claim.",
+     "severity": "MED"
+    }
+   ]
+  },
+  {
+   "auditor": "ingest-side",
+   "summary": "WHAT ACTUALLY RUNS PER DOCUMENT AT INGEST under config-bench-medium (2wiki passage \u2248 1 chunk; extraction engine = local gpt-oss-120b): (1) chunk_document \u2014 deterministic, 0 LLM; (2) extract_document with recipe=enumerate + gleaning_rounds=1 + union_k=1 \u2192 3 LLM calls/chunk (enumerate-names, extract-with-candidates, one gleaning pass); (3) _load_provenance (Chunk+Document) \u2014 deterministic; (4) _generate_questions (questions.enabled=True, per_chunk=8) \u2192 1 LLM call/chunk; (5) _embed entities (Titan); (6) _stable_load resolve+vector-top3-Bayesian+load \u2014 NO LLM in the v1 default stack (identity_stack=v1, llm_defer_judge=False). Net \u2248 4 extraction-engine LLM calls per chunk, ~1,000 chunks on medium \u2248 ~4,000 gpt-oss calls; resolution/load are deterministic. cluster_types (1 LLM) fires once at cure. optimize() is a SEPARATE command (build() default optimize=False) and never fully ran on the bench piles (DEF-16). The single largest evidence-killed ingest cost is question generation (~25% of per-chunk LLM budget) on a channel H499 refuted at powered n=132. The dominant quality gap is identity: same-normalized-name entities DO unify (loader MERGE-on-id) but extraction-variant surface forms produce distinct ids that per-doc top-3 Bayesian misses, and there is NO batch reconciliation tier \u2014 H547 found live unmerged duplicate carrier nodes. The proven carrier function (H568 LLM-attacher + H567 abstain gate) is absent from the engine; so is the killed largest-carrier heuristic. Several default-on channels write graph structure nothing reads (SIMILAR_TO soft links + kNN edges; community summaries). Findings ranked most-severe first.",
+   "findings": [
+    {
+     "component": "Question-node generation (ingest channel, R35-H371)",
+     "where": "pipeline.py:582-591 + 692-741 (_generate_questions); graph/questions.py; settings.py:151-152 (QuestionSettings.enabled=True, per_chunk=8); active under config-bench-medium (no override)",
+     "status": "wired-default (enabled=True)",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H499 REFUTED (powered n=132: delta +0.0076, 1 up-flip, 0 regressions; bar needs >=4 net up-flips) supersedes H371 CONFIRMED (CPAP 24/24, does not transfer)",
+     "rationale": "Costs 1 extraction-engine LLM call per chunk (~25% of the ~4 per-chunk ingest calls; ~1,000 generation calls + ~7.5k question embeddings on medium) plus a per-query render block, for zero measured held-out retrieval transfer at any rung (n=5/22/132). The channel is harmless but valueless on bench; its only residual use is R48 audit-seed reuse (H528-H531), which needs no generation gains.",
+     "action": "Default questions.enabled=False for bench/general regime; keep the 7.5k existing nodes only if R48 audit-seed work is pursued.",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Entity resolver cross-document dedup (no batch reconciliation tier)",
+     "where": "resolution/resolver.py (per-batch pairwise); pipeline.py:873-919 (_stable_load: per-doc vector top-3 Bayesian only); loader.py:29 (MERGE on id). No global re-resolution pass exists anywhere.",
+     "status": "wired-default (per-doc online ER); batch reconciliation tier absent",
+     "evidence_verdict": "DEFECT",
+     "priced_by": "H547 (live unmerged 'Wrong Turn (franchise)' x2 on pilot pile), H107 (extraction variance = dominant identity root cause), H546 (batch repair-from-source recovers 100%, 0 of 1,802 merged-away entities destroyed an attachment point)",
+     "rationale": "STABLE-mode dedup compares each new entity only to vector top-3 candidates via Bayesian; same normalized name \u2192 same id merges, but extraction-variant surface forms yield distinct ids the top-3 pass misses, so order-dependent near-duplicates persist with no global sweep (the R49-cited HoloClean/SAGA/FAMER 'streaming needs a batch tier' precedent). Identity is the dominant quality root cause and a live duplicate defect exists.",
+     "action": "Add a post-ingest batch reconciliation pass over same-/near-name clusters (H546 shape) instead of relying on per-doc online ER; primary lever is upstream extraction canonicalization (H119 class).",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Community detection + KGFCommunity summaries (optimize path)",
+     "where": "pipeline.py:971-976 (optimize \u2192 detect_communities + summarize_communities); graph/graphrag.py:31-115; sole query-time reader global_summaries at pipeline.py:1162 gated by ppr_enabled(False) AND is_global_query",
+     "status": "wired-default inside optimize() (community_min_size=3); reader path wired-off (ppr_enabled=False)",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "H68 CONFIRMED (communities are provenance artifacts, NMI 0.614 vs dominant source doc, purity 0.904; nothing reads communityId), H37 (ppr refuted \u2192 global branch unreachable)",
+     "rationale": "82 summary LLM calls + GDS Leiden on medium produce artifacts no query path can consult: communityId is never read at query time, and the only summary reader (global_summaries) is double-dead \u2014 gated behind ppr_enabled=False and 2wiki entity/multi-hop questions never match is_global_query markers.",
+     "action": "Drop summarize_communities from the default optimize() path (or gate it behind an explicitly enabled global-sensemaking regime).",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Carrier attachment function (H568 LLM-attacher + H567 abstain gate)",
+     "where": "ABSENT from shipped src: repair() at pipeline.py:624-669 re-extracts+loads via _stable_load with NO attach-time carrier decision; H568/H567 live only in scripts/experiments/r49_carrier_bakeoff.py; largest-carrier heuristic lived only in the R45 repair script; graph/hoist.py spec_hoist is the only carrier-ish shipped mechanism, default OFF (settings.py:108)",
+     "status": "absent (H568/H567); wired-off (spec_hoist=False)",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "H568 CONFIRMED (winning carrier function, 11/11, correct abstain 4/4), H567 CONFIRMED (regex+LLM abstain gate, 0 false-abstains), H565 (argmax-degree never picks true carriers), H547 (carrier correctness = hygiene + narrow drift-guard)",
+     "rationale": "The proven carrier function is not in the engine; neither the killed largest-carrier heuristic nor the H568 winner ships. Shipped repair() does re-extract-and-load with no attach-time carrier selection, and spec_hoist (CPAP-verified only) is off. Name-match handles 35/47 trivially; only the 12 ambiguous fallbacks need the LLM call.",
+     "action": "Wire the H568 attacher (name-match fast path + LLM for ambiguous) and H567 abstain gate into the source-repair path; leave spec_hoist off until bench-verified.",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Proposition retrieval channel (R02-H11/H14)",
+     "where": "settings.py:185 (propositions_enabled=True); generated ONLY in optimize() pipeline.py:987-996 and repair() pipeline.py:659-666, NOT in ingest(); query path proposition_query wrapped in try/except (pipeline.py:1341-1352)",
+     "status": "wired-default (True) but never materialized at ingest; optimize() never ran on bench",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "DEF-16 (kgf_proposition_embeddings / KGFPassage ABSENT on bench piles), H11/H14 (CPAP-only), H367 proposition seeds now DEF-16-blocked, H382 (composed frontier's proposition-seed rung cannot replay on bench)",
+     "rationale": "Ingest never generates propositions; only optimize()/repair() do, and optimize() never fully ran on the bench substrate. So the default-on flag does nothing on bench except a caught index-miss per query, and the H382 gated-context lever's proposition rung is inert. Not broken and not default-off \u2014 default-on-but-unmaterialized.",
+     "action": "Either wire proposition generation into ingest close (like questions) or make optimize() a standard post-ingest step; otherwise set propositions_enabled=False on bench and document the optimize() dependency.",
+     "severity": "MED"
+    },
+    {
+     "component": "SIMILAR_TO soft links (ingest) + kNN similarity edges (optimize)",
+     "where": "settings.py:106 (resolution.soft_links=True) \u2192 pipeline.py:156-171/835/935 (_materialize_soft_links); settings.py:193 (similarity_edges_enabled=True) \u2192 pipeline.py:1015-1024 (optimize add_similarity_edges); densify.py:42/75 write SIMILAR_TO; render EXCLUDES SIMILAR_TO at pipeline.py:1450 and 1463",
+     "status": "wired-default (both True)",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "H288 (a soft link carries a merge's entire render-recall value = +0.0 pts delta), H37 (PPR off, the only other consumer), H268",
+     "rationale": "Every SIMILAR_TO edge \u2014 defer-zone soft links materialized at INGEST plus kNN edges at optimize \u2014 is written but never read: the render query explicitly filters SIMILAR_TO and PPR (the reach consumer) is disabled. soft_links is an ingest-side write cost that H288 already priced at +0.0.",
+     "action": "Default soft_links=False and similarity_edges_enabled=False while ppr_enabled=False and SIMILAR_TO stays render-excluded.",
+     "severity": "MED"
+    },
+    {
+     "component": "Per-chunk gleaning re-extraction pass",
+     "where": "extraction/extractor.py:156-162 (_gather_wire gleaning loop); settings.py:75 (gleaning_rounds=1); union_k=1 at settings.py:74; config-bench-medium recipe=enumerate does not override gleaning",
+     "status": "wired-default (gleaning_rounds=1 adds a 3rd LLM call/chunk); union_k=1 single-pass is correct",
+     "evidence_verdict": "UNEVIDENCED",
+     "priced_by": "H450 REFUTED (one re-extraction pass recovers only 25% < 30% bar; single-pass + batch source-repair is the evidenced shape), H541 (paired frozen-probe gate mandated for any A/B)",
+     "rationale": "union_k=1 correctly matches the H450-evidenced single-pass shape, but gleaning_rounds=1 layers an extra 'what did we miss' LLM call per chunk (~33% of the extraction budget) whose bench value was never A/B'd; H450 shows one re-roll recovers little and batch source-repair is the evidenced recovery path, casting doubt on paying gleaning per chunk.",
+     "action": "Run a paired frozen-probe A/B of gleaning_rounds=0 vs 1 on bench; drop if no recall gain.",
+     "severity": "MED"
+    },
+    {
+     "component": "spec_hoist series-fragment bridge + unanimous-spec hoist (H365)",
+     "where": "graph/hoist.py; settings.py:108 (resolution.spec_hoist=False); invoked only in optimize() pipeline.py:978-985",
+     "status": "wired-off (spec_hoist=False)",
+     "evidence_verdict": "UNEVIDENCED",
+     "priced_by": "H365 verified offline on the CPAP pile only (P09 0.0\u21921.0, P16 0.5\u21921.0, 22 probes); substrate abandoned 2026-07-12; never re-validated on 2wiki bench",
+     "rationale": "The only shipped carrier-ish spec repair is CPAP-substrate-stale and default-off; its markers (series/range/family/line) and P-code stem regex are tuned to the abandoned corpus and have no bench evidence. Correctly off, but the doc comment still cites CPAP verification as its warrant.",
+     "action": "Leave off; re-price on bench before any promotion, and mark the CPAP verification note as substrate-stale.",
+     "severity": "LOW"
+    }
+   ]
+  },
+  {
+   "auditor": "instrumentation",
+   "summary": "The five structural panel metrics never really entered the engine: only relationship_type_entropy is wired (graphrag.py:445 scorecard, one-shot at optimize, no decision consumer); Forman-Ricci, assortativity, hub-condensation and desc-length are script/notebook-only, so H544/H545 cost the engine almost nothing. The drift/self-heal channel (drift.py) IS wired default-on (cusum_enabled=True) and its only live output, recure, drives an ontology-mutating RECURING loop that H306/H308 show fires on nothing decision-relevant. The coverage certificate - the lone surviving instrument - is NOT in src at all; it is an offline audit script (r39_h389_coverage_audit.py). The H541-mandated paired-frozen-probe gate does NOT exist as reusable tooling; bench harnesses resample, and pairing lives only as post-hoc McNemar analysis in one R49 script. The per-fact reachability column (H571-575, REG-2 fix) is absent (registered, not built). The event log captures rich merge events (resolver.py:255, full decision dump - exactly what H546 needed) but is default-OFF. A certificate-only + degree-counter + reachability stack would replace the drift channel and the scorecard entropy; of it, only avg_degree is already wired, the certificate must be promoted from script into src, and the reachability leg must be built.",
+   "findings": [
+    {
+     "id": "INS-1",
+     "component": "relationship_type_entropy in graph scorecard",
+     "where": "graph/graphrag.py:435-448, persisted via pipeline.py:1114-1123",
+     "status": "wired-default",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "H545",
+     "rationale": "only H545 panel metric that entered the engine; no decision consumer; predicts pass/fail at chance",
+     "action": "drop from scorecard or mark display-only",
+     "severity": "MED"
+    },
+    {
+     "id": "INS-2",
+     "component": "Forman-Ricci / assortativity / hub-condensation / desc-length",
+     "where": "ABSENT from src; scripts/experiments only",
+     "status": "script-only",
+     "evidence_verdict": "STILL-VALID",
+     "priced_by": "H544/H545",
+     "rationale": "never wired - the kills cost the engine nothing",
+     "action": "keep out of src",
+     "severity": "LOW"
+    },
+    {
+     "id": "INS-3",
+     "component": "Drift self-heal: CUSUM -> recure -> RECURING FSM -> adopt_drifted_types",
+     "where": "drift.py:94-119,203-221; pipeline.py:457-473; settings.py:135 cusum_enabled=True",
+     "status": "wired-default",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H306/H308",
+     "rationale": "fires on nothing decision-relevant (oracle TP=0); noise-triggered recure can adopt spurious types into the cured ontology",
+     "action": "gate recure/RECURING/adopt off by default pending a signal H306 did not kill",
+     "severity": "HIGH"
+    },
+    {
+     "id": "INS-4",
+     "component": "Drift warn/rebuild verdict branches",
+     "where": "drift.py:153-161; pipeline.py:459 only consumes recure",
+     "status": "wired-off",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "R28/H306",
+     "rationale": "unreachable under CUSUM path, unconsumed under boolean path",
+     "action": "delete or wire a consumer",
+     "severity": "LOW"
+    },
+    {
+     "id": "INS-5",
+     "component": "Fact-drift contradiction channel",
+     "where": "drift.py:59-76; pipeline.py:458",
+     "status": "wired-default",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H306/H308",
+     "rationale": "observation-only alarm, drives no decision",
+     "action": "downgrade to opt-in forensic emit or retire",
+     "severity": "MED"
+    },
+    {
+     "id": "INS-6",
+     "component": "Coverage certificate (lone surviving instrument)",
+     "where": "ABSENT from src; scripts/experiments/r39_h389_coverage_audit.py:114-160",
+     "status": "script-only",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "H540/H548, AUC 0.609",
+     "rationale": "the recommended stack keystone is not in the pipeline",
+     "action": "promote H389 certificate into src as the primary optimize()/audit instrument under H540 bands",
+     "severity": "HIGH"
+    },
+    {
+     "id": "INS-7",
+     "component": "Paired frozen-probe gate (H541 MANDATED)",
+     "where": "ABSENT as tooling; bench_progressive_probe.py:41 resamples 15-of-162; pairing only post-hoc in r49_meta_variance.py:46",
+     "status": "absent",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "H541/H539",
+     "rationale": "every A/B through the resampling harness is underpowered vs the mandate",
+     "action": "build paired frozen-probe harness (fixed manifest, McNemar) as default bench gate",
+     "severity": "HIGH"
+    },
+    {
+     "id": "INS-8",
+     "component": "Per-fact reachability column (REG-2 fix)",
+     "where": "ABSENT (H571-H575 registered)",
+     "status": "absent",
+     "evidence_verdict": "UNEVIDENCED",
+     "priced_by": "REG-2",
+     "rationale": "third leg of recommended stack unbuilt; coverage != retrievability",
+     "action": "expected absent; build with H571-H575",
+     "severity": "MED"
+    },
+    {
+     "id": "INS-9",
+     "component": "Degree counter leg",
+     "where": "graph/graphrag.py:446 avg_degree + duplicate_name_density + orphan_rate",
+     "status": "wired-default",
+     "evidence_verdict": "STILL-VALID",
+     "priced_by": "H544",
+     "rationale": "honest degree signal already wired",
+     "action": "keep; add degree variance",
+     "severity": "LOW"
+    },
+    {
+     "id": "INS-10",
+     "component": "Event-log merge forensics",
+     "where": "resolution/resolver.py:255 full decision dump; settings.py:235 event_log default None",
+     "status": "wired-off",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "H546",
+     "rationale": "the re-audit substrate H546 relied on is opt-in; default ingest records no merge history",
+     "action": "default event log ON for resolution.* signals",
+     "severity": "MED"
+    },
+    {
+     "id": "INS-11",
+     "component": "Curing stability entropy / Chao1 (ontology gate)",
+     "where": "ontology/metrics.py:57-91; curing.py:68",
+     "status": "wired-default",
+     "evidence_verdict": "VALIDATED",
+     "priced_by": "not H545 (ontology type-distribution gate, not graph panel)",
+     "rationale": "load-bearing CURING gate, distinct from killed panel",
+     "action": "leave wired; do not conflate",
+     "severity": "LOW"
+    }
+   ]
+  },
+  {
+   "auditor": "query-side",
+   "summary": "Under config-bench-medium every query-side lever comes from settings.py defaults. A bench query executes: dense@16 vector seed (overfetch x4) -> miss gate (0.668, CPAP-fit) -> proposition_query (throws on bench, DEF-16, swallowed) -> 1-hop fanout render (cap 5, SIMILAR_TO excluded) -> render_budget=0.6 truncation -> question channel (H371, default-on) -> abstention gate (0.75 on the H17-refuted top-score signal). PPR, community/global path, escalation gate, passages: default-off or DEF-16-absent. The ONLY live augmentation beyond seeds+fanout is the question channel H499 refuted; the proven H382 escalation lever is unwired AND un-replayable on bench. All three query-side thresholds (0.668/0.75/0.765) are CPAP-fit constants unrecalibrated on 2wiki.",
+   "findings": [
+    {
+     "component": "Question channel query reader",
+     "where": "settings.py:151 enabled=True; pipeline.py:1540-1572",
+     "status": "wired-default",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H499",
+     "rationale": "only live augmentation on bench; zero held-out retrieval value at n=132; query-time embedding match + fetch + render blocks spent on a killed lever",
+     "action": "questions.channel_m=0 or enabled=False in bench query config",
+     "severity": "HIGH"
+    },
+    {
+     "component": "H382 escalation gate + rung payloads",
+     "where": "settings.py:167 escalation_gate=False, 174 passages_enabled=False; pipeline.py:1331-1390,1519-1533",
+     "status": "wired-off",
+     "evidence_verdict": "MISSED-IMPLICATION",
+     "priced_by": "H382/H383, DEF-16",
+     "rationale": "the incumbent context lever is default-off AND both rungs (propositions, passages) are DEF-16-absent on bench - the 0.9583 composed frontier cannot replay; bench runs at parity rung only",
+     "action": "optimize() (proposition+passage build) on bench is a precondition for any H382 claim",
+     "severity": "HIGH"
+    },
+    {
+     "component": "Structural abstention gate",
+     "where": "settings.py:190-191 (0.75); pipeline.py:1214-1226",
+     "status": "wired-default",
+     "evidence_verdict": "CONTRADICTED",
+     "priced_by": "H17 REFUTED, H157",
+     "rationale": "aborts generation on the refuted top-score signal with a CPAP-fit cut - answer suppression hazard on 2wiki",
+     "action": "disable on bench or recalibrate on a 2wiki label set",
+     "severity": "MED"
+    },
+    {
+     "component": "Proposition query under DEF-16",
+     "where": "settings.py:185-188; pipeline.py:1341-1354 broad except",
+     "status": "wired-default",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "DEF-16, H182",
+     "rationale": "fires a failing Neo4j vector call every probe, swallowed to hits=[]; inert-but-attempted",
+     "action": "gate on index presence or disable in bench config",
+     "severity": "LOW"
+    },
+    {
+     "component": "render_budget=0.6 truncation",
+     "where": "settings.py:178; graphrag.py:228-242; pipeline.py:1501-1504",
+     "status": "wired-default",
+     "evidence_verdict": "DEFECT",
+     "priced_by": "H547, H107",
+     "rationale": "greedy top-60% similarity cut drops the answer-carrying block when an unmerged twin outranks the repaired copy (demonstrated in H547: presence 9->11 flip)",
+     "action": "render_budget=1.0 until identity dedup lands, or alias-aware truncation",
+     "severity": "MED"
+    },
+    {
+     "component": "SIMILAR_TO soft links query reader",
+     "where": "written densify.py:42/75 + court.py; EXCLUDED pipeline.py:1450,1463; only reader is PPR (off)",
+     "status": "wired-off",
+     "evidence_verdict": "MISSING-WIRE",
+     "priced_by": "H268/H288 vs H37",
+     "rationale": "the demotion court's zero-true-loss guarantee relies on soft-hop render reachability that no default query path realizes - densification paid at optimize with no consumer",
+     "action": "surface a bounded soft-hop in render OR record H268/H288 value as inert while PPR is off",
+     "severity": "MED"
+    },
+    {
+     "component": "prop_val_linkage full-entity scan",
+     "where": "settings.py:180 True; pipeline.py:1415-1442",
+     "status": "wired-default",
+     "evidence_verdict": "SUBSTRATE-STALE",
+     "priced_by": "H211 PARTIAL (CPAP SKU surface)",
+     "rationale": "per-query full scan over ~6.6k entities for a CPAP catalogue phenomenon likely near-empty on 2wiki",
+     "action": "disable on bench or gate on prop_* value density",
+     "severity": "MED"
+    },
+    {
+     "component": "Community/global-summary branch + communityId",
+     "where": "pipeline.py:1161-1180 gated by ppr_enabled=False; graphrag.py:343,52,76-115",
+     "status": "wired-off",
+     "evidence_verdict": "DEAD-WEIGHT",
+     "priced_by": "H37, H68",
+     "rationale": "whole branch unreachable under defaults; communityId never read at query time - H68 confirmed at code level",
+     "action": "bookkeeping; pairs with dropping Leiden+summaries at optimize",
+     "severity": "MED"
+    },
+    {
+     "component": "Miss detector + escalation prior thresholds",
+     "where": "settings.py:165-166 (0.668), 170 (0.765); pipeline.py:1314-1324",
+     "status": "wired-default",
+     "evidence_verdict": "SUBSTRATE-STALE",
+     "priced_by": "H181, H383, H157",
+     "rationale": "CPAP-index-score-fit constants applied verbatim to 2wiki; H157 explicitly forbids cross-corpus transfer of this operating-point family",
+     "action": "recalibrate or disable miss_detector on bench",
+     "severity": "MED"
+    },
+    {
+     "component": "H274 answer cache",
+     "where": "settings.py:210 enabled=False; answer_cache.py",
+     "status": "wired-off",
+     "evidence_verdict": "VALIDATED",
+     "priced_by": "H274",
+     "rationale": "correctly off for the repair-heavy regime: fingerprint = processed-docs list, so repairs without new docs would serve stale answers",
+     "action": "keep off during repair rounds; enable only on frozen graphs",
+     "severity": "LOW"
+    },
+    {
+     "component": "Structural panel at query time",
+     "where": "scorecard only in optimize(); no query reader",
+     "status": "absent",
+     "evidence_verdict": "VALIDATED",
+     "priced_by": "H544/H545",
+     "rationale": "query surface already clean of the panel fallacy - kills confined to optimize/harness",
+     "action": "none",
+     "severity": "LOW"
+    },
+    {
+     "component": "Dense@16 seeding + overfetch",
+     "where": "graphrag.py:118,134; settings.py:161-162",
+     "status": "wired-default",
+     "evidence_verdict": "VALIDATED",
+     "priced_by": "H53, H195a, dense@16=0.854",
+     "rationale": "the load-bearing incumbent; effectively the entire live bench retrieval with fanout",
+     "action": "future levers fuse with it, never seed-compete (R47 doctrine)",
+     "severity": "LOW"
+    }
+   ]
+  }
+ ],
+ "synthesis": {
+  "construction_verdict": "The engine is carrying three default-on ingest cost sinks that no evidence supports and no query path reads, while the two proven winners of the day (H568 carrier attacher, batch reconciliation) are absent from source, and the canonical SOTA doc is blind to all of it. The dominant pattern: the design surface (docs/kgf-sota.md, docs/sota-promotions.md) systematically under-prices ingest - it does not mention the question channel, Leiden communities, or SIMILAR_TO soft links at all, so it cannot see that ~25% of per-chunk LLM budget plus 82 summary calls plus every soft-link write are dead. Quality-per-token is dominated by REMOVAL (gate off the evidence-killed channels) far more than addition, with one high-value addition (H568 + batch ER on the identity root cause H107). Substrate reality: optimize() never ran on bench (DEF-16), silently disabling propositions/communities/similarity-edges there, so several default-on flags are inert on the 2wiki ladder while their CPAP numbers still headline the doc. CAVEAT: the instrumentation auditor returned a stub only (\"test\", one placeholder finding); the query-side / instrumentation surface beyond measurement-discipline (H540/H541) is effectively un-audited and should be re-run before this synthesis is treated as complete.",
+  "keep": [
+   "Extraction engine core - enumerate recipe + union_k=1 single-pass (settings.py:74, extraction/extractor.py) = 3 LLM calls/chunk; union_k=1 correctly matches the H450-evidenced single-pass shape (re-extraction recovers only 25% < 30% bar). STILL-VALID.",
+   "Deterministic resolve+load with MERGE-on-id (loader.py:29, pipeline.py:873-919 _stable_load) - same-normalized-name entities unify correctly with 0 LLM in the v1 default stack; the gap is the MISSING batch tier, not this per-doc pass.",
+   "H382 CRC-fitted escalation-gate MECHANISM - the incumbent context lever (full composed recall at ~1/4 static cost); mechanism is corpus-independent and validated. Keep the mechanism; its numeric theta 0.7644 is substrate-stale (see defer).",
+   "dense@16 = 0.854 pure-seed recall on bench as the fusion baseline - R47 doctrine (fuse, never seed-compete) is the correct construction rule for every retrieval channel.",
+   "Paired-frozen-probe + per-rung binomial bands as the measurement substrate (H539/H540/H541 CONFIRMED) - already the mandated discipline; keep and enforce it as the gate for every change below."
+  ],
+  "kill_or_gate_off": [
+   "Question channel (H371) - GATE OFF at ingest. settings.py:151-152 QuestionSettings.enabled=True/per_chunk=8; pipeline.py:582-591,692-741 _generate_questions. H499 REFUTED at powered n=132 (delta +0.0076, 1 up-flip, 0 regressions vs >=4 needed). Costs ~1 LLM call/chunk (~25% of per-chunk ingest budget, ~1,000 gen calls + ~7.5k embeddings on medium). Set questions.enabled=False for bench/general regime; keep existing nodes only if R48 audit-seed work (H528-H531) is pursued.",
+   "KGFCommunity summaries + Leiden (H68 provenance artifact) - DROP from default optimize(). pipeline.py:971-976, graph/graphrag.py:31-115. communityId is never read at query time; the only summary reader global_summaries (pipeline.py:1162) is double-dead (gated behind ppr_enabled=False AND is_global_query never matches 2wiki questions). 82 summary LLM calls + GDS Leiden per run for zero readable output. Gate behind an explicitly-enabled global-sensemaking regime only.",
+   "SIMILAR_TO soft links (ingest) + kNN similarity edges (optimize) - GATE OFF. settings.py:106 resolution.soft_links=True, settings.py:193 similarity_edges_enabled=True. H288 priced a soft link at +0.0; render explicitly EXCLUDES SIMILAR_TO (pipeline.py:1450,1463) and PPR (the only other consumer, H37) is off. Every SIMILAR_TO edge is a write nothing reads. Default both False while ppr_enabled=False.",
+   "Forman-Ricci + five-metric structural panel as a DECISION instrument (doc-only, docs/kgf-sota.md:110-117) - STRIKE. H544 KILLED (shipped FR carries no triangle term, mean-AFRC = 4 - sum(deg^2)/E, exact 0.0% rewiring move); H545 KILLED-panel (metrics predict probe pass/fail at chance, AUC<=0.551). Not engine-wired so no runtime cost, but it is the headline of the doc's verification section and must be relabelled a degree-summary screen with no probe-prediction value.",
+   "The +-2% certificate reproducibility bar (docs/kgf-sota.md:24,112) - RETIRE, not 'pending'. H540 proved it UNMEETABLE below ~n=2400 unpaired; H542 already used per-rung binomial bands to reclassify H484 pass-2 (+4.1pp inside +-19.3pp band) INCONCLUSIVE and demote REG-1. Replace with per-rung binomial bands; drop 'adjudication pending'."
+  ],
+  "wire_now": [
+   "H568 gpt-oss LLM carrier attacher + H567 regex+LLM abstain gate - WIRE into the source-repair path. Currently ABSENT from src (lives only in scripts/experiments/r49_carrier_bakeoff.py); shipped repair() (pipeline.py:624-669) re-extracts+loads via _stable_load with NO attach-time carrier decision. H568 CONFIRMED 11/11 (vs largest-carrier 2/11, feature scorer 5/11) + correct abstain 4/4; H567 flagged 4/4 artifacts, 0 false-abstains. Name-match fast path handles 35/47; only the 12 ambiguous fallbacks (7/12 anaphora, H566) need the LLM call. Cheap and settled.",
+   "Batch reconciliation tier - ADD a post-ingest global sweep over same-/near-name clusters (H546 shape). No global re-resolution pass exists anywhere; per-doc vector top-3 Bayesian (pipeline.py:873-919) misses extraction-variant surface forms, leaving order-dependent near-duplicates. Identity is the dominant quality root cause (H107); a live duplicate defect exists (H547 'Wrong Turn (franchise)' x2); H546 proved batch repair-from-source recovers 100% (0 of 1,802 merged-away entities destroyed an attachment point). Primary upstream lever remains extraction canonicalization (H119 class).",
+   "Paired-frozen-probe verdict discipline (H540/H541) - WIRE into the SOTA doc's Measurement discipline section (docs/kgf-sota.md:38-43) as the governing gate, superseding/annotating the H351 sigma-band lead. Freezing probes + pairing arms collapses the 17.9pp same-graph spread (~99% query sampling) to ~1% (2/162 flip) and cuts SE(delta) 98.4%. Without it, none of the A/Bs below can distinguish a win from noise."
+  ],
+  "defer_or_retest": [
+   "Retrieval section numbers - composed frontier 0.9583 (23/24), 24-probe saturation, escalation theta 0.7644 (docs/kgf-sota.md:83-95,43) are ALL CPAP-substrate (SUBSTRATE-STALE); corpus abandoned 2026-07-12 and H157 already proved the threshold corpus-class-bound (ECE 5.18x). Re-validate on the 2wiki bench (n=132 powered); keep only the H382 mechanism as corpus-independent.",
+   "Proposition channel (settings.py:185 propositions_enabled=True) - default-on-but-unmaterialized on bench. Generated ONLY in optimize()/repair() (pipeline.py:987-996,659-666), never in ingest(), and optimize() never fully ran on bench (DEF-16: kgf_proposition_embeddings/KGFPassage absent). Either wire generation into ingest close (like questions) or make optimize() a standard post-ingest step, else set propositions_enabled=False on bench and document the optimize() dependency. Blocks H367 seeds and H366 window channel on bench.",
+   "Gleaning re-extraction pass (settings.py:75 gleaning_rounds=1, extractor.py:156-162) - adds a 3rd LLM call/chunk (~33% of extraction budget) never A/B'd on bench; H450 shows one re-roll recovers little. Run a PAIRED frozen-probe A/B of gleaning_rounds=0 vs 1; drop if no recall gain.",
+   "spec_hoist (H365, graph/hoist.py, settings.py:108=False) - correctly off but CPAP-verified only (P09 0.0->1.0, P16 0.5->1.0, 22 probes); markers tuned to abandoned corpus. Leave off; re-price on bench before any promotion and mark the doc's CPAP verification note substrate-stale.",
+   "RFM-4 ingest-primacy (docs/recall-failure-modes.md:37-39) - H546 KILLED-RAI: repair-at-ingest has ZERO recall advantage over batch (ingest re-emission 25% vs batch 100%). Re-price ingest-primacy as a latency/cost choice only; batch repair-from-source keeps the recall claim.",
+   "sota-promotions.md - frozen at H382 (2026-07-10); records none of R44-R49 (H389/H448/H497/H498 carried by the SOTA doc but unevidenced in the register), nor the four R49 kills (H544-H547), H568 win, or H499 refutation. Append R44-R49 or mark it superseded by the experiments log."
+  ],
+  "missed_implications": [
+   "The canonical design surface is BLIND to ingest cost. docs/kgf-sota.md mentions NONE of the three default-on cost sinks (question channel, Leiden communities/summaries, SIMILAR_TO soft links). Two auditors independently found the same three components burning ingest LLM/embedding/write cost that the doc cannot see or price - the doc is a retrieval-only surface with no ingest ledger, so every 'harmless' default-on channel accumulates invisibly.",
+   "The carrier question is fully settled yet propagated to NEITHER canonical artifact. The bakeoff resolved it (H568 winner, H565/H569 killed the degree/anchor heuristics) but the engine still has no attach-time carrier function AND docs/kgf-sota.md:115 still names 'largest-carrier selector' as the automation weak link. A closed experiment left both the code and the doc stale - a process gap, not just a wiring gap.",
+   "Everything points at a batch identity sweep and nothing owns it. H107 (extraction variance = dominant identity root cause) + H547 (live unmerged duplicate) + H546 (batch recovers 100%) + the absent global re-resolution tier jointly demand a post-ingest batch ER pass, but R49 fan-out aimed at repair/reachability/certificate-noise, not the batch tier itself, and the named upstream lever (H119 extraction canonicalization) is not being pursued.",
+   "optimize() being a separate command (build() default optimize=False, DEF-16 shows it never fully ran on bench) silently makes propositions_enabled/similarity_edges_enabled/community summaries INERT on the 2wiki substrate - so the bench pile is missing a whole materialization tier the CPAP results assumed present, which means CPAP-era retrieval numbers were measured on a richer graph than any bench run has ever built.",
+   "H540/H541 retroactively make every past small-n unpaired verdict suspect (RE-GRADE-NOISE), and the SOTA doc still promotes some of them - H484 already fell to INCONCLUSIVE and REG-1 was demoted; the doc's Measurement-discipline section leading on H351 sigma bands rather than freeze-and-pair is itself the missed correction.",
+   "The instrumentation auditor produced no real findings (stub 'test'); combined with DEF-16 blocking proposition/passage replay on bench, the query-side instrumentation of the construction is effectively unverified - the synthesis is load-bearing on ingest-side + sota-doc only and should not be treated as a complete engine audit until instrumentation is re-run."
+  ],
+  "top_findings": [
+   "#1 Gate off the question channel (questions.enabled=False, settings.py:151-152). Single largest quality-per-token move: removes ~25% of per-chunk ingest LLM budget (~1,000 generation calls + ~7.5k embeddings on medium) at ZERO measured recall cost (H499 REFUTED at n=132). One config flag, pure cost deletion.",
+   "#2 Add a batch reconciliation tier (H546 shape). Largest quality LEVER: attacks the dominant quality root cause (identity, H107), fixes a live defect (H547), and per-doc online ER structurally cannot catch extraction-variant duplicates. Costs a global sweep but batch recovers 100% where ingest recovers 25%.",
+   "#3 Wire H568 attacher + H567 abstain gate into repair (pipeline.py:624-669). The proven carrier function is absent from the engine; only 12/47 ambiguous cases invoke the LLM (name-match handles 35/47), so it is a cheap, settled fix for the repair weak-link the doc still flags.",
+   "#4 Drop Leiden community summaries from default optimize() and gate soft_links/similarity_edges False (settings.py:106,193; pipeline.py:971-976). Three dead writes with no reader (H68, H288, H37) - removes 82 summary LLM calls + GDS Leiden + all SIMILAR_TO writes per run for no readable output.",
+   "#5 Adopt paired-frozen-probe gates (H540/H541) as the governing discipline. Not a graph change but the measurement change that collapses 17.9pp same-graph noise to ~1% - the precondition that makes findings #1-#4 A/B-able and trustworthy; without it, every quality-per-token judgment sits inside the noise band."
+  ]
+ },
+ "amendments": [
+  "2026-07-13: instrumentation audit replaced (original was a stub); query-side audit re-run pending merge",
+  "2026-07-13: query-side audit merged (re-run after StructuredOutput failure); headline: bench query stack is dense@16+fanout+0.6-truncation+CPAP-fit gates, only live augmentation is the H499-killed question channel; H382 lever default-off and DEF-16-starved"
+ ]
+}

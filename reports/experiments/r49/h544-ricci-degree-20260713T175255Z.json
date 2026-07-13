@@ -1,0 +1,724 @@
+{
+  "hypothesis": "R49-H544",
+  "generated_utc": "20260713T175255Z",
+  "uri": "bolt://172.19.0.101:7687",
+  "fr_method": "R45-verbatim: sample 500 edges seed 43, frc=4-deg(u)-deg(v); fr_full is deterministic all-edge mean of same formula",
+  "base": {
+    "nodes": 7575,
+    "edges": 7348,
+    "deg_mean": 1.9401,
+    "deg_var": 7.5813,
+    "fr_sampled": -8.098,
+    "fr_full": -7.6946
+  },
+  "perturbations": [
+    {
+      "kind": "del",
+      "param": 0.005,
+      "seed": 0,
+      "edges": 7312,
+      "nodes": 7575,
+      "d_edges": -36,
+      "d_deg_mean": -0.00954,
+      "d_deg_var": -0.04453,
+      "d_fr_sampled": 0.452,
+      "d_fr_full": 0.0267
+    },
+    {
+      "kind": "del",
+      "param": 0.005,
+      "seed": 1,
+      "edges": 7312,
+      "nodes": 7575,
+      "d_edges": -36,
+      "d_deg_mean": -0.00954,
+      "d_deg_var": -0.05615,
+      "d_fr_sampled": 0.19,
+      "d_fr_full": 0.0387
+    },
+    {
+      "kind": "del",
+      "param": 0.005,
+      "seed": 2,
+      "edges": 7312,
+      "nodes": 7575,
+      "d_edges": -36,
+      "d_deg_mean": -0.00954,
+      "d_deg_var": -0.07596,
+      "d_fr_sampled": 0.326,
+      "d_fr_full": 0.0592
+    },
+    {
+      "kind": "del",
+      "param": 0.01,
+      "seed": 0,
+      "edges": 7275,
+      "nodes": 7575,
+      "d_edges": -73,
+      "d_deg_mean": -0.01931,
+      "d_deg_var": -0.10804,
+      "d_fr_sampled": 0.02,
+      "d_fr_full": 0.0726
+    },
+    {
+      "kind": "del",
+      "param": 0.01,
+      "seed": 1,
+      "edges": 7275,
+      "nodes": 7575,
+      "d_edges": -73,
+      "d_deg_mean": -0.01931,
+      "d_deg_var": -0.1421,
+      "d_fr_sampled": 0.648,
+      "d_fr_full": 0.1081
+    },
+    {
+      "kind": "del",
+      "param": 0.01,
+      "seed": 2,
+      "edges": 7275,
+      "nodes": 7575,
+      "d_edges": -73,
+      "d_deg_mean": -0.01931,
+      "d_deg_var": -0.13286,
+      "d_fr_sampled": 0.364,
+      "d_fr_full": 0.0984
+    },
+    {
+      "kind": "del",
+      "param": 0.02,
+      "seed": 0,
+      "edges": 7202,
+      "nodes": 7575,
+      "d_edges": -146,
+      "d_deg_mean": -0.03858,
+      "d_deg_var": -0.25934,
+      "d_fr_sampled": 0.482,
+      "d_fr_full": 0.1914
+    },
+    {
+      "kind": "del",
+      "param": 0.02,
+      "seed": 1,
+      "edges": 7202,
+      "nodes": 7575,
+      "d_edges": -146,
+      "d_deg_mean": -0.03858,
+      "d_deg_var": -0.24904,
+      "d_fr_sampled": 0.542,
+      "d_fr_full": 0.1806
+    },
+    {
+      "kind": "del",
+      "param": 0.02,
+      "seed": 2,
+      "edges": 7202,
+      "nodes": 7575,
+      "d_edges": -146,
+      "d_deg_mean": -0.03858,
+      "d_deg_var": -0.25538,
+      "d_fr_sampled": 0.368,
+      "d_fr_full": 0.1872
+    },
+    {
+      "kind": "del",
+      "param": 0.05,
+      "seed": 0,
+      "edges": 6981,
+      "nodes": 7575,
+      "d_edges": -367,
+      "d_deg_mean": -0.09693,
+      "d_deg_var": -0.63231,
+      "d_fr_sampled": 1.224,
+      "d_fr_full": 0.469
+    },
+    {
+      "kind": "del",
+      "param": 0.05,
+      "seed": 1,
+      "edges": 6981,
+      "nodes": 7575,
+      "d_edges": -367,
+      "d_deg_mean": -0.09693,
+      "d_deg_var": -0.67957,
+      "d_fr_sampled": 1.416,
+      "d_fr_full": 0.5203
+    },
+    {
+      "kind": "del",
+      "param": 0.05,
+      "seed": 2,
+      "edges": 6981,
+      "nodes": 7575,
+      "d_edges": -367,
+      "d_deg_mean": -0.09693,
+      "d_deg_var": -0.73582,
+      "d_fr_sampled": 1.126,
+      "d_fr_full": 0.5813
+    },
+    {
+      "kind": "del",
+      "param": 0.1,
+      "seed": 0,
+      "edges": 6614,
+      "nodes": 7575,
+      "d_edges": -734,
+      "d_deg_mean": -0.19383,
+      "d_deg_var": -1.26676,
+      "d_fr_sampled": 1.46,
+      "d_fr_full": 0.971
+    },
+    {
+      "kind": "del",
+      "param": 0.1,
+      "seed": 1,
+      "edges": 6614,
+      "nodes": 7575,
+      "d_edges": -734,
+      "d_deg_mean": -0.19383,
+      "d_deg_var": -1.38981,
+      "d_fr_sampled": 1.45,
+      "d_fr_full": 1.1119
+    },
+    {
+      "kind": "del",
+      "param": 0.1,
+      "seed": 2,
+      "edges": 6614,
+      "nodes": 7575,
+      "d_edges": -734,
+      "d_deg_mean": -0.19383,
+      "d_deg_var": -1.32089,
+      "d_fr_sampled": 1.73,
+      "d_fr_full": 1.033
+    },
+    {
+      "kind": "del",
+      "param": 0.2,
+      "seed": 0,
+      "edges": 5879,
+      "nodes": 7575,
+      "d_edges": -1469,
+      "d_deg_mean": -0.38789,
+      "d_deg_var": -2.34218,
+      "d_fr_sampled": 2.042,
+      "d_fr_full": 1.8405
+    },
+    {
+      "kind": "del",
+      "param": 0.2,
+      "seed": 1,
+      "edges": 5879,
+      "nodes": 7575,
+      "d_edges": -1469,
+      "d_deg_mean": -0.38789,
+      "d_deg_var": -2.49982,
+      "d_fr_sampled": 2.644,
+      "d_fr_full": 2.0436
+    },
+    {
+      "kind": "del",
+      "param": 0.2,
+      "seed": 2,
+      "edges": 5879,
+      "nodes": 7575,
+      "d_edges": -1469,
+      "d_deg_mean": -0.38789,
+      "d_deg_var": -2.36806,
+      "d_fr_sampled": 1.846,
+      "d_fr_full": 1.8739
+    },
+    {
+      "kind": "add",
+      "param": 0.005,
+      "seed": 0,
+      "edges": 7384,
+      "nodes": 7575,
+      "d_edges": 36,
+      "d_deg_mean": 0.00947,
+      "d_deg_var": 0.00633,
+      "d_fr_sampled": -0.204,
+      "d_fr_full": 0.0126
+    },
+    {
+      "kind": "add",
+      "param": 0.005,
+      "seed": 1,
+      "edges": 7384,
+      "nodes": 7575,
+      "d_edges": 36,
+      "d_deg_mean": 0.00947,
+      "d_deg_var": 0.00818,
+      "d_fr_sampled": -0.074,
+      "d_fr_full": 0.0107
+    },
+    {
+      "kind": "add",
+      "param": 0.01,
+      "seed": 0,
+      "edges": 7421,
+      "nodes": 7575,
+      "d_edges": 73,
+      "d_deg_mean": 0.01924,
+      "d_deg_var": 0.0331,
+      "d_fr_sampled": -0.452,
+      "d_fr_full": 0.0045
+    },
+    {
+      "kind": "add",
+      "param": 0.01,
+      "seed": 1,
+      "edges": 7421,
+      "nodes": 7575,
+      "d_edges": 73,
+      "d_deg_mean": 0.01924,
+      "d_deg_var": 0.01884,
+      "d_fr_sampled": 0.014,
+      "d_fr_full": 0.0191
+    },
+    {
+      "kind": "add",
+      "param": 0.02,
+      "seed": 0,
+      "edges": 7494,
+      "nodes": 7575,
+      "d_edges": 146,
+      "d_deg_mean": 0.03851,
+      "d_deg_var": 0.04143,
+      "d_fr_sampled": -0.026,
+      "d_fr_full": 0.0333
+    },
+    {
+      "kind": "add",
+      "param": 0.02,
+      "seed": 1,
+      "edges": 7494,
+      "nodes": 7575,
+      "d_edges": 146,
+      "d_deg_mean": 0.03851,
+      "d_deg_var": 0.0541,
+      "d_fr_sampled": 0.048,
+      "d_fr_full": 0.0205
+    },
+    {
+      "kind": "add",
+      "param": 0.05,
+      "seed": 0,
+      "edges": 7715,
+      "nodes": 7575,
+      "d_edges": 367,
+      "d_deg_mean": 0.09686,
+      "d_deg_var": 0.12132,
+      "d_fr_sampled": 0.47,
+      "d_fr_full": 0.0588
+    },
+    {
+      "kind": "add",
+      "param": 0.05,
+      "seed": 1,
+      "edges": 7715,
+      "nodes": 7575,
+      "d_edges": 367,
+      "d_deg_mean": 0.09686,
+      "d_deg_var": 0.11366,
+      "d_fr_sampled": 0.242,
+      "d_fr_full": 0.0663
+    },
+    {
+      "kind": "add",
+      "param": 0.1,
+      "seed": 0,
+      "edges": 8082,
+      "nodes": 7575,
+      "d_edges": 734,
+      "d_deg_mean": 0.19376,
+      "d_deg_var": 0.23336,
+      "d_fr_sampled": 0.266,
+      "d_fr_full": 0.1034
+    },
+    {
+      "kind": "add",
+      "param": 0.1,
+      "seed": 1,
+      "edges": 8082,
+      "nodes": 7575,
+      "d_edges": 734,
+      "d_deg_mean": 0.19376,
+      "d_deg_var": 0.18478,
+      "d_fr_sampled": 0.356,
+      "d_fr_full": 0.1489
+    },
+    {
+      "kind": "ingest",
+      "param": 5,
+      "seed": 0,
+      "edges": 7378,
+      "nodes": 7605,
+      "d_edges": 30,
+      "d_deg_mean": 0.0002,
+      "d_deg_var": -0.01464,
+      "d_fr_sampled": 0.058,
+      "d_fr_full": 0.0156
+    },
+    {
+      "kind": "ingest",
+      "param": 5,
+      "seed": 1,
+      "edges": 7378,
+      "nodes": 7605,
+      "d_edges": 30,
+      "d_deg_mean": 0.0002,
+      "d_deg_var": -0.01595,
+      "d_fr_sampled": -0.07,
+      "d_fr_full": 0.0169
+    },
+    {
+      "kind": "ingest",
+      "param": 20,
+      "seed": 0,
+      "edges": 7468,
+      "nodes": 7695,
+      "d_edges": 120,
+      "d_deg_mean": 0.0009,
+      "d_deg_var": -0.06152,
+      "d_fr_sampled": -0.038,
+      "d_fr_full": 0.0652
+    },
+    {
+      "kind": "ingest",
+      "param": 20,
+      "seed": 1,
+      "edges": 7468,
+      "nodes": 7695,
+      "d_edges": 120,
+      "d_deg_mean": 0.0009,
+      "d_deg_var": -0.0623,
+      "d_fr_sampled": 0.092,
+      "d_fr_full": 0.0661
+    },
+    {
+      "kind": "ingest",
+      "param": 50,
+      "seed": 0,
+      "edges": 7648,
+      "nodes": 7875,
+      "d_edges": 300,
+      "d_deg_mean": 0.00225,
+      "d_deg_var": -0.15181,
+      "d_fr_sampled": -0.078,
+      "d_fr_full": 0.1609
+    },
+    {
+      "kind": "ingest",
+      "param": 50,
+      "seed": 1,
+      "edges": 7648,
+      "nodes": 7875,
+      "d_edges": 300,
+      "d_deg_mean": 0.00225,
+      "d_deg_var": -0.15206,
+      "d_fr_sampled": 0.174,
+      "d_fr_full": 0.1611
+    },
+    {
+      "kind": "mixed",
+      "param": 0.02,
+      "seed": 0,
+      "edges": 7346,
+      "nodes": 7575,
+      "d_edges": -2,
+      "d_deg_mean": -0.00056,
+      "d_deg_var": -0.22689,
+      "d_fr_sampled": 0.178,
+      "d_fr_full": 0.2329
+    },
+    {
+      "kind": "mixed",
+      "param": 0.05,
+      "seed": 0,
+      "edges": 7330,
+      "nodes": 7575,
+      "d_edges": -18,
+      "d_deg_mean": -0.00479,
+      "d_deg_var": -0.55802,
+      "d_fr_sampled": 0.694,
+      "d_fr_full": 0.5669
+    },
+    {
+      "kind": "mixed",
+      "param": 0.1,
+      "seed": 0,
+      "edges": 7275,
+      "nodes": 7575,
+      "d_edges": -73,
+      "d_deg_mean": -0.01931,
+      "d_deg_var": -1.11834,
+      "d_fr_sampled": 1.274,
+      "d_fr_full": 1.1244
+    }
+  ],
+  "regression": {
+    "target_fr_sampled": {
+      "n": 37,
+      "coef": {
+        "intercept": 0.148498,
+        "d_edges": -0.001134,
+        "d_deg_mean": 6.1615,
+        "d_deg_var": -1.219
+      },
+      "r2": 0.87545
+    },
+    "target_fr_full": {
+      "n": 37,
+      "coef": {
+        "intercept": -0.006997,
+        "d_edges": 1e-05,
+        "d_deg_mean": 1.7347,
+        "d_deg_var": -1.0728
+      },
+      "r2": 0.99869
+    },
+    "target_fr_sampled_with_stages": {
+      "n": 39,
+      "coef": {
+        "intercept": 0.168673,
+        "d_edges": -0.00193,
+        "d_deg_mean": 9.1459,
+        "d_deg_var": -1.2057
+      },
+      "r2": 0.88187
+    }
+  },
+  "stage_points": {
+    "stages": [
+      {
+        "label": "pre-repair",
+        "nodes": 7020,
+        "edges": 6789,
+        "deg_mean": 1.934,
+        "deg_var": 7.539,
+        "fr_sampled": -7.24
+      },
+      {
+        "label": "post-repair",
+        "nodes": 7542,
+        "edges": 7309,
+        "deg_mean": 1.938,
+        "deg_var": 7.582,
+        "fr_sampled": -8.382
+      },
+      {
+        "label": "post-pass2",
+        "nodes": 7575,
+        "edges": 7348,
+        "deg_mean": 1.94,
+        "deg_var": 7.581,
+        "fr_sampled": -8.098
+      }
+    ],
+    "consecutive_deltas": [
+      {
+        "from": "pre-repair",
+        "to": "post-repair",
+        "d_edges": 520,
+        "d_deg_mean": 0.004,
+        "d_deg_var": 0.043,
+        "d_fr_sampled": -1.142
+      },
+      {
+        "from": "post-repair",
+        "to": "post-pass2",
+        "d_edges": 39,
+        "d_deg_mean": 0.002,
+        "d_deg_var": -0.001,
+        "d_fr_sampled": 0.284
+      }
+    ],
+    "note": "only 3 sweeps exist -> 2 consecutive deltas; registered text says 4 dump stages (3 deltas) - DEVIATION"
+  },
+  "rewiring": {
+    "per_seed": [
+      {
+        "seed": 1,
+        "swaps_target": 73480,
+        "swaps_result": 73480,
+        "degree_seq_preserved": true,
+        "fr_sampled_before": -8.098,
+        "fr_sampled_after": -7.734,
+        "fr_full_before": -7.6946,
+        "fr_full_after": -7.6946,
+        "pct_move_sampled": 4.4949,
+        "pct_move_full": 0.0
+      },
+      {
+        "seed": 2,
+        "swaps_target": 73480,
+        "swaps_result": 73480,
+        "degree_seq_preserved": true,
+        "fr_sampled_before": -8.098,
+        "fr_sampled_after": -7.856,
+        "fr_full_before": -7.6946,
+        "fr_full_after": -7.6946,
+        "pct_move_sampled": 2.9884,
+        "pct_move_full": 0.0
+      },
+      {
+        "seed": 3,
+        "swaps_target": 73480,
+        "swaps_result": 73480,
+        "degree_seq_preserved": true,
+        "fr_sampled_before": -8.098,
+        "fr_sampled_after": -7.936,
+        "fr_full_before": -7.6946,
+        "fr_full_after": -7.6946,
+        "pct_move_sampled": 2.0005,
+        "pct_move_full": 0.0
+      },
+      {
+        "seed": 4,
+        "swaps_target": 73480,
+        "swaps_result": 73480,
+        "degree_seq_preserved": true,
+        "fr_sampled_before": -8.098,
+        "fr_sampled_after": -7.442,
+        "fr_full_before": -7.6946,
+        "fr_full_after": -7.6946,
+        "pct_move_sampled": 8.1008,
+        "pct_move_full": 0.0
+      },
+      {
+        "seed": 5,
+        "swaps_target": 73480,
+        "swaps_result": 73480,
+        "degree_seq_preserved": true,
+        "fr_sampled_before": -8.098,
+        "fr_sampled_after": -7.704,
+        "fr_full_before": -7.6946,
+        "fr_full_after": -7.6946,
+        "pct_move_sampled": 4.8654,
+        "pct_move_full": 0.0
+      }
+    ],
+    "mean_pct_move_sampled": 4.49,
+    "mean_pct_move_full": 0.0,
+    "note": "full-graph FR is provably invariant under degree-preserving rewiring (sum over edges of deg(u)+deg(v) = sum deg^2, wiring-independent); sampled shows only 500-edge sampling noise"
+  },
+  "sampling_noise_diagnostic": {
+    "full_fr_distribution_pstd": 10.093,
+    "se_of_500_edge_mean": 0.4514,
+    "rewire_move_vs_sample_size": [
+      {
+        "sample_edges": 500,
+        "mean_pct_move": 3.1613
+      },
+      {
+        "sample_edges": 1000,
+        "mean_pct_move": 6.2853
+      },
+      {
+        "sample_edges": 2000,
+        "mean_pct_move": 2.8911
+      },
+      {
+        "sample_edges": 4000,
+        "mean_pct_move": 1.5221
+      },
+      {
+        "sample_edges": 7348,
+        "mean_pct_move": 0.0
+      }
+    ],
+    "interpretation": "sampled-500 rewiring move is ~1 SE of the 500-edge estimator and decays to 0.0 as the sample reaches all edges; it is measurement noise, not a real curvature move"
+  },
+  "certificate_clause": {
+    "status": "UNDER-DETERMINED",
+    "reason": "certificate coverage exists only at a handful of stage timestamps; H484 is absent from the R45 sweep JSONs; cannot fit 3 predictors on 2-3 aggregate points -> no meaningful R^2 (a 3-point fit is exactly determined, R^2=1 trivially). Best-effort aggregates below.",
+    "coverage_points": [
+      {
+        "file": "h389-coverage-20260712T063432Z.jsonl",
+        "ts": "20260712T063432Z",
+        "n_docs": 25,
+        "mean_coverage": 0.63533
+      },
+      {
+        "file": "h389-coverage-20260712T063619Z.jsonl",
+        "ts": "20260712T063619Z",
+        "n_docs": 25,
+        "mean_coverage": 0.62734
+      },
+      {
+        "file": "h389-coverage-20260712T073744Z.jsonl",
+        "ts": "20260712T073744Z",
+        "n_docs": 25,
+        "mean_coverage": 0.84067
+      },
+      {
+        "file": "h389-coverage-20260712T074740Z.jsonl",
+        "ts": "20260712T074740Z",
+        "n_docs": 25,
+        "mean_coverage": 0.86
+      },
+      {
+        "file": "h389-coverage-20260712T075819Z.jsonl",
+        "ts": "20260712T075819Z",
+        "n_docs": 25,
+        "mean_coverage": 0.874
+      },
+      {
+        "file": "h389-coverage-20260712T080957Z.jsonl",
+        "ts": "20260712T080957Z",
+        "n_docs": 25,
+        "mean_coverage": 0.902
+      },
+      {
+        "file": "h389-coverage-20260712T082222Z.jsonl",
+        "ts": "20260712T082222Z",
+        "n_docs": 25,
+        "mean_coverage": 0.85867
+      },
+      {
+        "file": "h389-coverage-20260712T095215Z.jsonl",
+        "ts": "20260712T095215Z",
+        "n_docs": 25,
+        "mean_coverage": 0.86
+      },
+      {
+        "file": "h389-coverage-20260712T103146Z.jsonl",
+        "ts": "20260712T103146Z",
+        "n_docs": 25,
+        "mean_coverage": 0.902
+      }
+    ],
+    "coverage_spread": 0.27466
+  },
+  "clauses": [
+    {
+      "clause": "R^2(FR-mean delta ~ {dE,d-mean-deg,d-deg-var}) > 0.90",
+      "predicted": "> 0.90",
+      "measured_fr_full": 0.99869,
+      "measured_fr_sampled": 0.87545,
+      "holds": true
+    },
+    {
+      "clause": "|d mean-AFRC| < 2% under degree-preserving rewiring",
+      "predicted": "< 2%",
+      "measured_pct_full": 0.0,
+      "measured_pct_sampled": 4.49,
+      "holds": true
+    },
+    {
+      "clause": "certificate coverage NOT reconstructable (R^2 < 0.5)",
+      "predicted": "< 0.5",
+      "measured": "UNDER-DETERMINED",
+      "holds": null
+    }
+  ],
+  "proposed_verdict": "KILLED",
+  "verdict_basis": {
+    "r2_fr_full": 0.99869,
+    "r2_fr_sampled": 0.87545,
+    "rewire_pct_full": 0.0,
+    "rewire_pct_sampled": 4.49,
+    "rule": "KILLED if r2>0.90 and rewire<2%; SURVIVES if r2<0.70 or rewire>=2%; else INCONCLUSIVE"
+  }
+}

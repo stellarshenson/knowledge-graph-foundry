@@ -261,3 +261,111 @@ User pivot mid-night: "hypothesise with a wide fanout about sparse graph coding 
 - **Push carried the 15-commit backlog** (bfa40e5 -> f4940e2) incl. f910a1a - remote current with main
 - **Discipline note for future sessions**: results/, scripts/, logs/ are now INVISIBLE to git status - brace checkpoints must NOT rely on `git status` to enumerate run artifacts; the dirs persist on disk only, dumps rule unchanged (data/interim/dumps/ was always untracked)
 - Still uncommitted (awaiting approval): R48 log block + H499 verdict, RFM register, README rewrite, benchmark-selection section, journal 236-238, 23 new papers
+
+## R49 Wave 0 closed + Wave 1 contrarian battery launched (2026-07-13 ~19:55 CEST, post-limit resume)
+
+Sessions since the 10:05 section (see git log): `efdac7f` R48 registration + H499 verdict committed, `9853093` R49 registered (H539-H580, 42 hypotheses), `5c52c0f` R49 Wave 0 (carrier gold + H542 + bakeoff runner). Board sections for those sessions were not written (limit); this section reconciles.
+
+### DONE (on disk; verdicts recorded in canonical log)
+- **META H539-H543 all CONFIRMED** - bands published (`reports/experiments/r49/meta-variance-20260713T102430Z.json`); paired frozen-probe gates MANDATED (H541); spread is ~99% query sampling
+- **Carrier bakeoff adjudicated** (`carrier-bakeoff-20260713T140353Z.json`, n=11 effective): **H568 CONFIRMED - LLM attacher = the carrier function** (11/11, correct ABSTAIN on 4/4 artifacts); H567 CONFIRMED (abstain gate ships); H569 KILLED (alias rule picks object not subject); H565 REFUTED-as-stated (carriers are prominent-not-hub, degree rank 2-3); H564 INCONCLUSIVE-at-bar; H566 BLOCKED-DEP (no coref lib). Six verdicts + journal 246 + token-ledger snapshot are UNCOMMITTED on top of `5c52c0f`
+- H554 UN-GATED (its gate = working audit function = H568)
+
+### RUNNING (launched ~19:50 CEST)
+- **vLLM gpt-oss-120b :8010** relaunched (sid 39828, `logs/vllm-server.log`) - UP
+- **Wave 1 = contrarian gate battery H544-H548**, five Opus executors (harnesses to `scripts/experiments/r49_h544..h548_*.py`, results to `reports/experiments/r49/h54X-*.json`, logs `logs/r49-h54X*.log`): H544 Ricci-degree ablation (neo4j3 :101 read-only + perturbation/rewiring), H545 panel-vs-H37 (medium .9 + H499 screen labels 20260713T072044Z), H546 RAI class kill (ledger + adjudication + dedup-collision), H547 carrier swap-recheck (pilot pile, in-memory swap, NEVER graph writes), H548 cert SNR (N=10 recomputes, frozen scout). Verdicts recorded ONLY by main session on collection
+- Medium ingest COMPLETE (1,000 docs / 6,626 ents / 35,637 rels); no ingest in flight
+
+### NEXT after battery collection
+1. Record H544-H548 verdicts in canonical log; gate outcomes re-scope H549-H558 (panel/Ricci domains), H559-H563 (RAI), H570 (render transfer - UNAFFECTED by H547 either way)
+2. Then per registered order: surviving domains; H554 audit-not-rebuild now un-gated; reachability H571-H576 (H572 CRUX)
+3. R48 execution (task #87) + R47 (task #85) queued - relative priority = user call at greenlight
+
+### AWAITING USER
+- **Commit approval**: uncommitted batch on top of `5c52c0f` = six bakeoff verdict recordings in canonical log, journal 246, carrier-gold-12.json corrections, token-ledger snapshot, prober trajectory rows, this board section (+ Wave 1 artifacts as they land)
+- R47/R48 execution greenlight + relative priority vs R49 waves
+
+## Wave 1 verdicts + verdict re-audit sweep + construction audit (2026-07-13 ~20:45 CEST)
+
+### Battery verdicts RECORDED in canonical log (4/5; H548 recompute 8/10 in flight, `logs/r49-h548.log`)
+- **H544 KILLED** - FR = degree alias (no triangle term; mean-AFRC = 4 - sum-deg^2/E; exact 0% rewiring; R^2 0.9987); H553/H555-H558 re-priced to degree instruments; memory corrected
+- **H545 KILLED-panel** - five structural metrics at chance (oriented AUC <= 0.551, n=132); certificate lone survivor at AUC 0.609; H549 re-scoped; R45 panel note added; memory corrected
+- **H546 KILLED-RAI** - zero ingest-timing recall advantage (48/48 batch-recoverable, 0/1802 collision losses, 25% vs 100%); H559-H563 latency/cost only
+- **H547 INCONCLUSIVE leaning KILLED** - net +2 shipped / +1 full render (SURVIVES bar missed both arms); truncation-of-duplicate artifact + 1 genuine drift case; render_budget=0.6 flagged; H570 UNAFFECTED
+
+### Verdict re-audit sweep (user-directed) - RECORDED as log section "Verdict re-audit sweep (2026-07-13 evening)"
+- 13 Opus agents (wf_92466fd9-386, 2.12M tok), 573 hypotheses, 150 flags (21 HIGH adjudicated + recorded; 92 MED / 37 LOW advisory); harvest `reports/experiments/audit/verdict-regrade-sweep-20260713T192500Z.json`
+- In-place supersede notes added at H67, H91, H100, H371, R45 panel block
+- Headline: H544/H545 were re-derivations of R10's H91/H100 - process rule recorded (instrument-class verdicts promote to doctrine)
+- DISCOVERED during sweep: R47-H501 + R48-H514/H515/H528/H529/H530 were EXECUTED pre-limit (commits efdac7f/9853093); tasks #85/#87 corrected
+
+### Construction audit (user-directed) - COMPLETE, 4 auditors + synthesis
+- Harvest `reports/experiments/audit/construction-audit-20260713T194500Z.json` (workflow wf_7ee42696-d50 + 2 re-run agents after a stub/failure)
+- KILL/GATE-OFF: question channel at ingest (H499; ~25% per-chunk LLM budget), Leiden+82 summaries (H68, no reader), SIMILAR_TO writes (no default query reader - H288 value inert while PPR off), drift self-heal recure (H306/H308; RISKY - noise-triggered ontology mutation), rel-entropy scorecard metric (H545)
+- WIRE NOW: H568 attacher + H567 abstain gate into repair(); batch reconciliation tier (H546/H107/H547); paired frozen-probe harness (H541 - exists nowhere as tooling); certificate promoted from script to src (H540 bands)
+- QUERY-SIDE HEADLINE: bench query = dense@16 + 1-hop fanout + 0.6 truncation + CPAP-fit gates (0.668/0.75/0.765 unrecalibrated; abstention rides the H17-refuted signal); only live augmentation = the H499-killed question channel; H382 lever default-off AND DEF-16-starved (optimize() never ran on bench) - the composed frontier cannot even replay
+- DEFECT flagged: render_budget=0.6 drops answer-carrying blocks under unmerged-duplicate identity defects (H547 mechanism)
+
+### NEXT (in order)
+1. H548 verdict on collection -> battery closed
+2. Journal entries via /journal:update (battery; sweep+audit) + this board
+3. R49 remaining spend re-concentrated: H571-H576 reachability (crux H572) + H577-H580 source-repair; H570 un-gated (H568 attacher)
+4. AWAITING USER: engine rewiring greenlight (gate-offs + wire-nows above = shipped-engine surgery); DEF-16 repair (optimize() on bench) decision; commit approval for the whole post-5c52c0f batch
+
+## R49 Wave 2 adjudicated + Wave-1 battery CLOSED (2026-07-13 ~21:40)
+
+### All Wave-2 verdicts RECORDED in canonical log (status lines at each registration)
+- **H570 SPLIT** - transfer clause CONFIRMED (H568 scorer +14.5pts over degree at 0.5x budget, one implementation ships to attach AND render); 0.85 oracle bar missed structurally (multi-gold probes cannot fit single-pass 0.5x; oracle 0.909 needs decomposition)
+- **H571 CONFIRMED** - reachability column: 27.1pts below coverage, IQR 0.5, isolates REG-2 (carrier Torres Rios unreachable from other-gold-doc seeds); ships as audit/forensics column, NOT fate predictor
+- **H572 INCONCLUSIVE leaning KILLED (CRUX)** - kappa 0.268 all aggregations; ingest-time reachability framing does NOT proceed (collapses toward R40). REG-2 REVERSAL: answer target Torre Nilsson reachable (dense #16, PPR 14/15), fails at render trimming
+- **H573 KILLED** - seed-rank margin WEAKEST proxy (0.537; H479 falsified); hop-distance 0.681 only signal; 5 hop-unreachable carriers identified
+- **H574 KILLED** - membership over-reports (~83% vs PPR ~52%), misses the weak tail; PPR required in audit
+- **H575 KILLED** - graded r(f) at chance (0.486 vs binary 0.558); Gini clause HELD (0.103->0.185->0.237 monotone = H468 dilution; scale-health candidate, unregistered)
+- **H577 BLOCKED-DEPENDENCY** - signals on disjoint corpora (2wiki/CPAP/CPAP-aggregate), no doc key; proxy rho 0.086 leans killed
+- **H578 KILLED** - triage at chance (AUC 0.477); all 17 residue facts source-span-PRESENT = attachment/dedup gap (corroborates H546); NOT-ENTAILED false-abstains = cross-doc REG edges (single-span blind spot)
+- **H579 PARTIAL** - narrow ledgered repair 47/48 (97.9%) vs blind 25% at 19.3% exact cost - MECHANISM CONFIRMED; probe-flip 43.3% dead zone (17/47 already surfaced pre-repair; visibility is the render layer's problem)
+- **H580 KILLED** - demand VoI +7.7pts over fact-count (<10 bar); H493 generalizes; nuance: top-30% capture 0.769, head polluted by 4 carrier-less ARTIFACT gaps (artifact-gated variant = new hypothesis, noted not registered)
+- **H548 SURVIVES (battery CLOSED)** - per-doc SNR 3.75 / corpus 5.4; noise claim refuted, per-doc cert gating stands, H552 does not re-price; empirical median repair delta 0.00 is the VISIBILITY layer, not noise. Detached loop outlived executor; collected via tmp/scripts/r49_h548_analyze.py -> reports/experiments/r49/h548-cert-snr-20260713T193838Z.json
+- Wave-1 battery final: H544 KILLED, H545 KILLED-panel, H546 KILLED-RAI, H547 INCONCLUSIVE-lean-KILLED, H548 SURVIVES
+
+### Cross-cutting convergence (three independent results, same culprit)
+- H570 budget ceiling + H572 REG-2 re-classification + construction-audit DEFECT flag all indict render_budget=0.6 trimming as where probes die - NOT graph structure
+
+### H576 (Wave 2b, sole graph-write experiment)
+- Re-priced per H572 (note in registration): must instrument WHERE flips happen (reachability vs render survival); tail clause targets H573's 5 hop-unreachable carriers, not REG-2's class
+- Launch DENIED by permission classifier (writes to shared medium graph need explicit user naming) - PARKED AWAITING USER; primed spec preserved in session transcript; keeper dump 20260713-neo4j-medium-2wiki-1000.dump exists; revert-discipline design (pre-state snapshot + restore + verify) ready
+
+### Journal + board state
+- Journal entry 249 appended via /journal:update, journal-tools check exit 0 / 0 errors
+- R49 remaining unexecuted: H549-H563 (panel/Ricci/RAI domains - most re-priced to degree/latency instruments by H544/H546 kills), H564/H566 (carrier leftovers: inconclusive-at-bar / coref-blocked), H576 (awaiting user)
+
+### AWAITING USER (unchanged + one new)
+1. Commit approval for the whole post-5c52c0f batch; push approval
+2. Engine rewiring greenlight (gate-offs + wire-nows per construction audit)
+3. DEF-16 repair decision (optimize() on bench pile)
+4. **NEW: H576 graph-write approval** (anchor replication on medium; revert-discipline + dump fallback in place)
+5. R47/R48 relative priority
+
+## User orders 2026-07-13 ~23:55 + autonomous-mode state (2026-07-14 ~00:05)
+
+### User approvals / directives (verbatim intent)
+- **H576 GRAPH-WRITE APPROVAL GRANTED** ("Graph right approval granted") - anchor replication on medium may run; QUEUED behind H582 completion (H582 reads medium entity embeddings; H576 writes them - writer-reader isolation). Launch with the primed spec incl. revert discipline (pre-state snapshot + restore + verify; keeper dump 20260713-neo4j-medium-2wiki-1000.dump fallback)
+- **Full autonomy**: "work autonomously up to your best. Concept and prediction." + standing authorization to open new territories via subagent hypothesis fanouts as I see fit
+- **Vetting mechanism mandated** -> CREATED: docs/hypothesis-vetting.md (V1 ledger-dedup / V2 power-band / V3 oracle-algebraic kill / V4 cheapest-rung / V5 fence+confound; outcomes VET-PASS/KILL/REPRICE; run as read-only vet subagent, coordinator adjudicates). First applied inside the R50 fanout synthesis stage
+
+### New registrations (recorded in canonical log, end-of-log section)
+- **R47-H581** concept vocabulary (LLM-proposed per-chunk concepts as dynamic GLiNER labels, shared ingest/query) - REGISTERED-GATED behind H508/H509 per user "sequence it"
+- **R47-H582** retrieval-embedder swap (re-embed same nodes, replay dense@16+PPR; carried arms R07-H40 answer-form + R07-H41 split-channel) - RUNNING (executor launched, pure-offline numpy replay, no containers)
+
+### In flight (2026-07-14 ~00:05)
+- H582 embedder-swap executor (medium read-only + idle-GPU embedders; must reproduce Titan 0.598 sanity first)
+- R50 fanout workflow wf_3c86a7b4-de6 (7 Opus research vectors + vetting synthesis; two-step meta-matching / speculative-topology concept, user-directed; fences R40/R41/R47/H581/H582/R35 primed)
+- QUEUED: H576 (on H582 completion); R50 registration + papers batch (on fanout return)
+
+### Verdicts recorded since last section (all in canonical log)
+- H555 CONFIRMED-as-degree-bottleneck (AUC 0.6833, razor over bar; Spearman 0.91 with hop)
+- H556 KILLED-retired-redundant-with-hop (honest control: delta-AUC 0.0031 over hop alone; literal registered bar diverges - both readings recorded; registered min-deg control was itself broken)
+- H557 CONFIRMED-per-bar, seat NOT awarded (orthogonal to certificate r=-0.343, collapses given hop) -> domain synthesis: {certificate, seed-hop-distance} = the complete cheap-column pair
+- H558 GATED-DEAD note added (H556 killed)
+- H560 CONFIRMED (100% carrier-bearing repairs have carrier present-at-ingest; zero need later docs)
+- H561 INCONCLUSIVE lean-negative (strict same-doc name-match 7/12) with kill-rationale REVERSAL: same-doc recall 12/12 - candidate pool suffices, selection needs H568 attacher

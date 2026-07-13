@@ -1,0 +1,93 @@
+{
+ "run_id": "20260713T223812Z",
+ "hypothesis": "R50-H584",
+ "scoring_fence": "retrieval-level only",
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "target": 0.6012,
+  "h501_reference": 0.5982,
+  "region_hit_ppr": 0.6994,
+  "reproduced_within_2pts": true
+ },
+ "answer_type_convention": "resolved gold answer entity cured type; literal -> deepest resolvable gold-evidence entity type; first non-Entity label",
+ "answer_type_dist": {
+  "Person": 49,
+  "Film": 34,
+  "Location": 29,
+  "EthnicGroup": 5,
+  "Kingdom": 8,
+  "Organization": 6,
+  "Book": 1
+ },
+ "n_carriers": 326,
+ "hard_type_restricted": {
+  "iso_recall16": 0.6012,
+  "typed_recall16": 0.3896,
+  "delta_pp": -21.16,
+  "mcnemar": {
+   "b_iso_only": 69,
+   "c_typed_only": 0,
+   "p": 0.0
+  }
+ },
+ "recoverable_fraction": {
+  "value": 0.05,
+  "num": 1,
+  "den": 20,
+  "note": "of dense-missed in-graph carriers whose type==answer-type, fraction sitting at full-cosine rank 17-50"
+ },
+ "answer_type_carrier_subset": {
+  "iso": 0.8639,
+  "typed": 0.8639,
+  "n": 147,
+  "note": "recall restricted to carriers whose type==answer-type (the subset hard-restriction can help)"
+ },
+ "by_class": {
+  "compositional": {
+   "n_carriers": 118,
+   "iso": 0.5424,
+   "typed": 0.1441,
+   "delta_pp": -39.83
+  },
+  "comparison": {
+   "n_carriers": 60,
+   "iso": 0.8667,
+   "typed": 0.6833,
+   "delta_pp": -18.33
+  },
+  "bridge_comparison": {
+   "n_carriers": 124,
+   "iso": 0.5242,
+   "typed": 0.4355,
+   "delta_pp": -8.87
+  },
+  "inference": {
+   "n_carriers": 24,
+   "iso": 0.625,
+   "typed": 0.625,
+   "delta_pp": 0.0
+  }
+ },
+ "clauses": [
+  {
+   "clause": "oracle type-restricted recall@16 delta >= +3.0pp (DOMAIN-OPEN)",
+   "predicted": "+2 to +6pp",
+   "measured": "-21.16pp (iso 0.6012 -> typed 0.3896), p=0.0",
+   "holds": false
+  },
+  {
+   "clause": "DOMAIN-CLOSED/KILL: delta < +2.0pp (type already priced into dense, H174 generalizes)",
+   "predicted": "kill if < +2pp",
+   "measured": "-21.16pp",
+   "holds": true
+  },
+  {
+   "clause": "recoverable fraction (dense-missed in-graph carriers type-matched at rank 17-50) in 0.3-0.5",
+   "predicted": "0.3-0.5",
+   "measured": "0.05 (1/20)",
+   "holds": false
+  }
+ ],
+ "acceptance_bar": "DOMAIN-OPEN if delta>=+3.0pp; DOMAIN-CLOSED/KILL if <+2.0pp",
+ "proposed_verdict": "DOMAIN-CLOSED (KILL)"
+}

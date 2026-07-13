@@ -1,0 +1,16 @@
+{
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "h501_reference": 0.5982,
+  "delta_pts": 0.3,
+  "reproduced_within_2pts": true
+ },
+ "titan": {
+  "arm": "titan",
+  "carrier_recall@16": 0.6012,
+  "region_hit_1hop": 0.8681,
+  "region_hit_ppr": 0.6994,
+  "region_hit_1hop_ingraph": 0.9826,
+  "region_hit_ppr_ingraph": 0.7917
+ }
+}

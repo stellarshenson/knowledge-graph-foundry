@@ -1,0 +1,37 @@
+{
+ "arm": "e5-large-v2",
+ "carrier_recall@16": 0.6104,
+ "region_hit_1hop": 0.8712,
+ "region_hit_ppr": 0.7055,
+ "region_hit_1hop_ingraph": 0.9861,
+ "region_hit_ppr_ingraph": 0.7986,
+ "carrier_recall@16_delta_vs_titan": 0.0092,
+ "carrier_recall@16_mcnemar_b_titanonly": 10,
+ "carrier_recall@16_mcnemar_c_candonly": 13,
+ "carrier_recall@16_mcnemar_p": 0.67764,
+ "carrier_recall@16_boot95": [
+  -0.0184,
+  0.0399
+ ],
+ "region_hit_1hop_delta_vs_titan": 0.0031,
+ "region_hit_1hop_mcnemar_b_titanonly": 0,
+ "region_hit_1hop_mcnemar_c_candonly": 1,
+ "region_hit_1hop_mcnemar_p": 1.0,
+ "region_hit_1hop_boot95": [
+  0.0,
+  0.0092
+ ],
+ "region_hit_ppr_delta_vs_titan": 0.0061,
+ "region_hit_ppr_mcnemar_b_titanonly": 8,
+ "region_hit_ppr_mcnemar_c_candonly": 10,
+ "region_hit_ppr_mcnemar_p": 0.81453,
+ "region_hit_ppr_boot95": [
+  -0.0184,
+  0.0307
+ ],
+ "note": "retrieval-trained (contrastive), primary-run cache",
+ "n_params": null,
+ "embed_wall_clock_s": null,
+ "tokens_per_sec": null,
+ "throughput_note": "carried from primary run; throughput unmeasured"
+}

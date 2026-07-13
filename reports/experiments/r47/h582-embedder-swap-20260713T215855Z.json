@@ -1,0 +1,191 @@
+{
+ "run_id": "20260713T215855Z",
+ "hypothesis": "R47-H582",
+ "config": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/config/experiments/config-bench-medium.yml",
+ "scoring_fence": "retrieval-level only (carrier/seed/region); never end-to-end probe pass",
+ "cutoffs": {
+  "top_k": 16,
+  "ppr_top_n": 15,
+  "damping": 0.85,
+  "iters": 50
+ },
+ "node_text_convention": "'{type}: {name} - {description[:200]}' (embeddings.py:48); probe='Query: {q[:80]} - {q[:200]}' (H501/r47 path); type=first non-Entity label",
+ "n_probes": 132,
+ "n_carriers": 326,
+ "n_carriers_in_graph": 288,
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "h501_reference": 0.5982,
+  "delta_pts": 0.3,
+  "reproduced_within_2pts": true
+ },
+ "per_arm": [
+  {
+   "arm": "titan",
+   "carrier_recall@16": 0.6012,
+   "region_hit_1hop": 0.8681,
+   "region_hit_ppr": 0.6994,
+   "region_hit_1hop_ingraph": 0.9826,
+   "region_hit_ppr_ingraph": 0.7917
+  },
+  {
+   "arm": "bge-m3",
+   "carrier_recall@16": 0.5982,
+   "region_hit_1hop": 0.862,
+   "region_hit_ppr": 0.7117,
+   "region_hit_1hop_ingraph": 0.9757,
+   "region_hit_ppr_ingraph": 0.8056,
+   "carrier_recall@16_delta_vs_titan": -0.003,
+   "carrier_recall@16_mcnemar_b_titanonly": 14,
+   "carrier_recall@16_mcnemar_c_candonly": 13,
+   "carrier_recall@16_mcnemar_p": 1.0,
+   "carrier_recall@16_boot95": [
+    -0.0337,
+    0.0276
+   ],
+   "region_hit_1hop_delta_vs_titan": -0.0061,
+   "region_hit_1hop_mcnemar_b_titanonly": 2,
+   "region_hit_1hop_mcnemar_c_candonly": 0,
+   "region_hit_1hop_mcnemar_p": 0.5,
+   "region_hit_1hop_boot95": [
+    -0.0153,
+    0.0
+   ],
+   "region_hit_ppr_delta_vs_titan": 0.0123,
+   "region_hit_ppr_mcnemar_b_titanonly": 7,
+   "region_hit_ppr_mcnemar_c_candonly": 11,
+   "region_hit_ppr_mcnemar_p": 0.48068,
+   "region_hit_ppr_boot95": [
+    -0.0123,
+    0.0368
+   ]
+  },
+  {
+   "arm": "e5-large-v2",
+   "carrier_recall@16": 0.6104,
+   "region_hit_1hop": 0.8712,
+   "region_hit_ppr": 0.7055,
+   "region_hit_1hop_ingraph": 0.9861,
+   "region_hit_ppr_ingraph": 0.7986,
+   "carrier_recall@16_delta_vs_titan": 0.0092,
+   "carrier_recall@16_mcnemar_b_titanonly": 10,
+   "carrier_recall@16_mcnemar_c_candonly": 13,
+   "carrier_recall@16_mcnemar_p": 0.67764,
+   "carrier_recall@16_boot95": [
+    -0.0184,
+    0.0399
+   ],
+   "region_hit_1hop_delta_vs_titan": 0.0031,
+   "region_hit_1hop_mcnemar_b_titanonly": 0,
+   "region_hit_1hop_mcnemar_c_candonly": 1,
+   "region_hit_1hop_mcnemar_p": 1.0,
+   "region_hit_1hop_boot95": [
+    0.0,
+    0.0092
+   ],
+   "region_hit_ppr_delta_vs_titan": 0.0061,
+   "region_hit_ppr_mcnemar_b_titanonly": 8,
+   "region_hit_ppr_mcnemar_c_candonly": 10,
+   "region_hit_ppr_mcnemar_p": 0.81453,
+   "region_hit_ppr_boot95": [
+    -0.0184,
+    0.0307
+   ]
+  },
+  {
+   "arm": "gte-large-en-v1.5",
+   "DROPPED": true
+  }
+ ],
+ "best_candidate": "e5-large-v2",
+ "best_recall_delta_pts": 0.92,
+ "best_region_ppr_delta_pts": 0.61,
+ "best_region_1hop_delta_pts": 0.31,
+ "carried_arms": {
+  "h40": {
+   "note": "declarative answer-form draft (gpt-oss-120b temp0, max_tokens512) embedded instead of the question",
+   "n_drafts_fallback_to_question": 21,
+   "titan_question": {
+    "arm": "titan",
+    "carrier_recall@16": 0.6012,
+    "region_hit_1hop": 0.8681,
+    "region_hit_ppr": 0.6994,
+    "region_hit_1hop_ingraph": 0.9826,
+    "region_hit_ppr_ingraph": 0.7917
+   },
+   "titan_answer_form": {
+    "arm": "titan+h40",
+    "carrier_recall@16": 0.6043,
+    "region_hit_1hop": 0.8282,
+    "region_hit_ppr": 0.6748,
+    "region_hit_1hop_ingraph": 0.9375,
+    "region_hit_ppr_ingraph": 0.7639,
+    "carrier_recall@16_delta_vs_titan_q": 0.0031
+   },
+   "best_cand_question": {
+    "arm": "e5-large-v2",
+    "carrier_recall@16": 0.6104,
+    "region_hit_1hop": 0.8712,
+    "region_hit_ppr": 0.7055,
+    "region_hit_1hop_ingraph": 0.9861,
+    "region_hit_ppr_ingraph": 0.7986
+   },
+   "best_cand_answer_form": {
+    "arm": "e5-large-v2+h40",
+    "carrier_recall@16": 0.589,
+    "region_hit_1hop": 0.8006,
+    "region_hit_ppr": 0.6687,
+    "region_hit_1hop_ingraph": 0.9062,
+    "region_hit_ppr_ingraph": 0.7569,
+    "carrier_recall@16_delta_vs_cand_q": -0.0214
+   }
+  },
+  "h41": {
+   "note": "union top-8 name-channel + top-8 desc-channel vs mixed top-16 (budget 16), same embedder",
+   "best_cand_mixed16": {
+    "arm": "e5-large-v2",
+    "carrier_recall@16": 0.6104,
+    "region_hit_1hop": 0.8712,
+    "region_hit_ppr": 0.7055,
+    "region_hit_1hop_ingraph": 0.9861,
+    "region_hit_ppr_ingraph": 0.7986
+   },
+   "best_cand_split8+8": {
+    "arm": "e5-large-v2+split8+8",
+    "carrier_recall@16": 0.6043,
+    "region_hit_1hop": 0.8589,
+    "region_hit_ppr": 0.6871,
+    "region_hit_1hop_ingraph": 0.9722,
+    "region_hit_ppr_ingraph": 0.7778,
+    "carrier_recall@16_delta_vs_mixed16": -0.0061
+   },
+   "mcnemar_mixed_vs_split": {
+    "b_mixedonly": 7,
+    "c_splitonly": 5,
+    "p": 0.77441
+   }
+  }
+ },
+ "clauses": [
+  {
+   "clause": "best candidate carrier recall@16 >= +5 pts over Titan 0.598",
+   "predicted": ">= +5.0 pts",
+   "measured": "0.92 pts",
+   "holds": false
+  },
+  {
+   "clause": "best candidate region-hit >= +5 pts over Titan (paired)",
+   "predicted": ">= +5.0 pts",
+   "measured": "ppr 0.61 / 1hop 0.31 pts",
+   "holds": false
+  },
+  {
+   "clause": "KILL: best candidate < +2 pts carrier recall (Titan not the binding constraint)",
+   "predicted": "kill if < +2.0 pts",
+   "measured": "0.92 pts",
+   "holds": true
+  }
+ ],
+ "proposed_verdict": "KILLED",
+ "h40_note": "H40 re-run after gpt-oss max_tokens fix (first pass had 132/132 empty-content fallbacks)"
+}

@@ -1,0 +1,40 @@
+{
+ "arm": "bge-base-en-v1.5",
+ "carrier_recall@16": 0.5644,
+ "region_hit_1hop": 0.8282,
+ "region_hit_ppr": 0.6779,
+ "region_hit_1hop_ingraph": 0.9375,
+ "region_hit_ppr_ingraph": 0.7674,
+ "carrier_recall@16_delta_vs_titan": -0.0368,
+ "carrier_recall@16_mcnemar_b_titanonly": 26,
+ "carrier_recall@16_mcnemar_c_candonly": 14,
+ "carrier_recall@16_mcnemar_p": 0.08069,
+ "carrier_recall@16_boot95": [
+  -0.0736,
+  0.0
+ ],
+ "region_hit_1hop_delta_vs_titan": -0.0399,
+ "region_hit_1hop_mcnemar_b_titanonly": 13,
+ "region_hit_1hop_mcnemar_c_candonly": 0,
+ "region_hit_1hop_mcnemar_p": 0.00024,
+ "region_hit_1hop_boot95": [
+  -0.0613,
+  -0.0214
+ ],
+ "region_hit_ppr_delta_vs_titan": -0.0215,
+ "region_hit_ppr_mcnemar_b_titanonly": 19,
+ "region_hit_ppr_mcnemar_c_candonly": 12,
+ "region_hit_ppr_mcnemar_p": 0.28104,
+ "region_hit_ppr_boot95": [
+  -0.0552,
+  0.0123
+ ],
+ "note": "retrieval-trained (contrastive)",
+ "n_params": 109482240,
+ "emb_dim": 768,
+ "embed_wall_clock_s": 1.825,
+ "tokens_per_sec": 58310.9,
+ "texts_per_sec": 3631.5,
+ "n_tokens": 106394,
+ "device_name": "NVIDIA RTX 5000 Ada Generation"
+}

@@ -1,0 +1,897 @@
+{
+ "summary": {
+  "hypothesis": "R49-H576",
+  "run_id": "20260713T223149Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "neo4j_uri": "bolt://172.19.0.9:7687",
+  "pile": "medium 2wiki-1000 (172.19.0.9), WRITE+RESTORE",
+  "baseline": "reports/experiments/bench/r46-h499-screen-20260713T072044Z.jsonl",
+  "baseline_off": "85 pass / 47 fail",
+  "target_set": {
+   "n": 11,
+   "reg2": 1,
+   "tail": 10,
+   "tail_sources": {
+    "h573_hop_unreach": 3,
+    "h571_weak_member": 7
+   }
+  },
+  "mechanism": "append true 2-hop bridge fact (graph-derived) to the anchor's description + re-embed (Titan) + SET description/embedding; no query-time change; restore in finally",
+  "clauses": [
+   {
+    "clause": "REG-2 probe flips OFF-arm fail -> pass",
+    "predicted": true,
+    "measured": false,
+    "holds": false
+   },
+   {
+    "clause": ">= 60% of the unreachable/weak tail recovers (answer becomes reachable-and-rendered)",
+    "predicted": ">= 0.60",
+    "measured": 1.0,
+    "n_recovered": 10,
+    "n_tail": 10,
+    "holds": true
+   },
+   {
+    "clause": "ZERO pass->fail regressions on the 85 passing panel",
+    "predicted": 0,
+    "measured": 0,
+    "holds": true
+   }
+  ],
+  "recovery_rate": 1.0,
+  "reg2_flip": false,
+  "regression": {
+   "panel_size": 85,
+   "checked": 85,
+   "coverage": "full probe path (dense top-16 seeds + render + h158 _present pass) re-run on all passing probes pre and post; 'changed' = seed set or render text differs pre->post",
+   "changed": 20,
+   "changed_ids": [
+    "a80d84e7096d11ebbdb0ac1f6bf848b6",
+    "7f7046d308f711ebbdaaac1f6bf848b6",
+    "d6898f78089511ebbd75ac1f6bf848b6",
+    "006d81bc0bde11eba7f7acde48001122",
+    "f34d188608cb11ebbd93ac1f6bf848b6",
+    "3f04140e08c311ebbd8dac1f6bf848b6",
+    "b64f541e088d11ebbd70ac1f6bf848b6",
+    "ea151f3908e011ebbda2ac1f6bf848b6",
+    "90c8793c087411ebbd67ac1f6bf848b6",
+    "63c16246095211ebbdaeac1f6bf848b6",
+    "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "47bb70600bde11eba7f7acde48001122",
+    "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+    "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+    "81e0d683087c11ebbd6aac1f6bf848b6",
+    "5cbb015f087511ebbd67ac1f6bf848b6",
+    "0016373a0bda11eba7f7acde48001122",
+    "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "8dcaaf24089811ebbd77ac1f6bf848b6"
+   ],
+   "pass_to_fail": 0,
+   "pass_to_fail_ids": []
+  },
+  "restoration_ok": true,
+  "proposed_verdict": "KILLED",
+  "deviations": [
+   "offline scipy PPR over Entity-only symmetrized adjacency (valid_to IS NULL always-true on medium; h515/h572 convention); dense seeds via vector_query top_k=16; PPR top_n=15"
+  ],
+  "runtime_notes": [
+   "panel reproduction: 85/85 passing probes re-pass on the unmodified graph (baseline says 85 pass)",
+   "vector index freshness after write: 9/11 anchors self-retrieve at top-3 (index reflects the re-embed)"
+  ],
+  "artifact": "reports/experiments/r49/h576-reach-replicate-20260713T223149Z.json",
+  "script": "scripts/experiments/r49_h576_reach_replicate.py",
+  "prestate": "reports/experiments/r49/h576-prestate-20260713T223149Z.jsonl"
+ },
+ "clauses": [
+  {
+   "clause": "REG-2 probe flips OFF-arm fail -> pass",
+   "predicted": true,
+   "measured": false,
+   "holds": false
+  },
+  {
+   "clause": ">= 60% of the unreachable/weak tail recovers (answer becomes reachable-and-rendered)",
+   "predicted": ">= 0.60",
+   "measured": 1.0,
+   "n_recovered": 10,
+   "n_tail": 10,
+   "holds": true
+  },
+  {
+   "clause": "ZERO pass->fail regressions on the 85 passing panel",
+   "predicted": 0,
+   "measured": 0,
+   "holds": true
+  }
+ ],
+ "per_target": [
+  {
+   "probe": "1dfaa6200bdd11eba7f7acde48001122",
+   "tag": "reg2",
+   "question": "Who is the child of the director of film Los Pagares De Mendieta?",
+   "answer": "Leopoldo Torre Nilsson",
+   "anchor": "Los Pagares de Mendieta",
+   "anchor_id": "e_d8472d845f17bf29",
+   "carrier": "Leopoldo Torres Ríos",
+   "answer_node": "Leopoldo Torre Nilsson",
+   "appended_fact": "Los Pagares de Mendieta: director Leopoldo Torres Ríos. Leopoldo Torres Ríos's child is Leopoldo Torre Nilsson.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": true,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": true,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": false,
+    "answer_present": false
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": false,
+   "flip_mechanism": "no_flip",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "tag": "h573_hop_unreach",
+   "question": "Where does the director of film Talk About A Stranger work at?",
+   "answer": "UCLA",
+   "anchor": "Talk About a Stranger",
+   "anchor_id": "e_124f59551392c7e0",
+   "carrier": "David Bradley",
+   "answer_node": "UCLA",
+   "appended_fact": "Talk About a Stranger: director David Bradley. David Bradley's employer is UCLA.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "tag": "h573_hop_unreach",
+   "question": "Where did Saw Thanda's husband die?",
+   "answer": "Mrauk U",
+   "anchor": "Saw Thanda",
+   "anchor_id": "e_6af83deef5a5459e",
+   "carrier": "Dikkha",
+   "answer_node": "Mrauk U",
+   "appended_fact": "Saw Thanda: spouse Dikkha. Dikkha's place of death is Mrauk U.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": null,
+     "seeds_1hop": null,
+     "ppr_top": null,
+     "in_graph": false
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": null,
+     "seeds_1hop": null,
+     "ppr_top": null,
+     "in_graph": false
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "748446060bdb11eba7f7acde48001122",
+   "tag": "h573_hop_unreach",
+   "question": "What nationality is the composer of song Make The World Move?",
+   "answer": "British",
+   "anchor": "Make the World Move",
+   "anchor_id": "e_7fc3cac328f9d087",
+   "carrier": "Alexander Grant",
+   "answer_node": "British",
+   "appended_fact": "Make the World Move: composer Alexander Grant. Alexander Grant's country of citizenship is British.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": true,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": true,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "2d8f3ebe0bda11eba7f7acde48001122",
+   "tag": "h571_weak_member",
+   "question": "Where was the director of film The Private Life Of Cinema born?",
+   "answer": "Montreal, Quebec",
+   "anchor": "The Private Life of Cinema",
+   "anchor_id": "e_8fa1cd0bb7242f35",
+   "carrier": "Denys Desjardins",
+   "answer_node": "Montreal, Quebec",
+   "appended_fact": "The Private Life of Cinema: director Denys Desjardins. Denys Desjardins's place of birth is Montreal, Quebec.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": null,
+     "seeds_1hop": null,
+     "ppr_top": null,
+     "in_graph": false
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": null,
+     "seeds_1hop": null,
+     "ppr_top": null,
+     "in_graph": false
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "7cb81afc0bd911eba7f7acde48001122",
+   "tag": "h571_weak_member",
+   "question": "What is the place of birth of the director of film The Return Of Swamp Thing?",
+   "answer": "New York",
+   "anchor": "The Return of Swamp Thing",
+   "anchor_id": "e_6719186b4a67c747",
+   "carrier": "Jim Wynorski",
+   "answer_node": "New York",
+   "appended_fact": "The Return of Swamp Thing: director Jim Wynorski. Jim Wynorski's place of birth is New York.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "914b452c0bdc11eba7f7acde48001122",
+   "tag": "h571_weak_member",
+   "question": "What is the place of birth of the director of film Gaby: A True Story?",
+   "answer": "Mexico City",
+   "anchor": "Gaby: A True Story",
+   "anchor_id": "e_e334b416b147674c",
+   "carrier": "Luis Mandoki",
+   "answer_node": "Mexico City",
+   "appended_fact": "Gaby: A True Story: director Luis Mandoki. Luis Mandoki's place of birth is Mexico City.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival + reachability_shift",
+   "reach_changed_signals": [
+    "carrier_reach.seeds_1hop:True->False"
+   ]
+  },
+  {
+   "probe": "49b22d0a0bde11eba7f7acde48001122",
+   "tag": "h571_weak_member",
+   "question": "Where did the composer of film The Straw Hat die?",
+   "answer": "Siversky",
+   "anchor": "The Straw Hat",
+   "anchor_id": "e_45dfe48d7ef4d8a0",
+   "carrier": "Isaac Schwartz",
+   "answer_node": "Siversky",
+   "appended_fact": "The Straw Hat: composer Isaac Schwartz. Isaac Schwartz's place of death is Siversky.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": true,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": true,
+     "seeds_1hop": true,
+     "ppr_top": true,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "cda459160bda11eba7f7acde48001122",
+   "tag": "h571_weak_member",
+   "question": "Who is the father of the director of film Palo Alto (2013 Film)?",
+   "answer": "Gian-Carlo Coppola",
+   "anchor": "Palo Alto",
+   "anchor_id": "e_d3a00cd1d54e45ff",
+   "carrier": "Gia Coppola",
+   "answer_node": "Gian-Carlo Coppola",
+   "appended_fact": "Palo Alto: director Gia Coppola. Gia Coppola's father is Gian-Carlo Coppola.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "8e07f1f00bda11eba7f7acde48001122",
+   "tag": "h571_weak_member",
+   "question": "Who is the spouse of the director of film My Three Merry Widows?",
+   "answer": "Mapy Cortés",
+   "anchor": "My Three Merry Widows",
+   "anchor_id": "e_9cdf147d16773c73",
+   "carrier": "Fernando Cortés",
+   "answer_node": "Mapy Cortés",
+   "appended_fact": "My Three Merry Widows: director Fernando Cortés. Fernando Cortés's spouse is Mapy Cortés.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": false,
+     "seeds_1hop": false,
+     "ppr_top": false,
+     "in_graph": true
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  },
+  {
+   "probe": "b7f5f7200bdd11eba7f7acde48001122",
+   "tag": "h571_weak_member",
+   "question": "Which country the composer of film Thunder On The Hill is from?",
+   "answer": "Austrian",
+   "anchor": "Thunder on the Hill",
+   "anchor_id": "e_d5625460e0a16d97",
+   "carrier": "Hans J. Salter",
+   "answer_node": "Austrian",
+   "appended_fact": "Thunder on the Hill: composer Hans J. Salter. Hans J. Salter's country of citizenship is Austrian.",
+   "pre_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": null,
+     "seeds_1hop": null,
+     "ppr_top": null,
+     "in_graph": false
+    }
+   },
+   "post_reach": {
+    "carrier": {
+     "dense_seed": false,
+     "seeds_1hop": true,
+     "ppr_top": false,
+     "in_graph": true
+    },
+    "answer": {
+     "dense_seed": null,
+     "seeds_1hop": null,
+     "ppr_top": null,
+     "in_graph": false
+    }
+   },
+   "pre_render_survival": {
+    "anchor_block": true,
+    "answer_present": false
+   },
+   "post_render_survival": {
+    "anchor_block": true,
+    "answer_present": true
+   },
+   "pre_probe_pass": false,
+   "post_probe_pass": true,
+   "flip_mechanism": "render_survival (answer replicated onto pre-reachable anchor; carrier/answer graph reachability UNCHANGED)",
+   "reach_changed_signals": []
+  }
+ ],
+ "regression": {
+  "panel_size": 85,
+  "checked": 85,
+  "coverage": "full probe path (dense top-16 seeds + render + h158 _present pass) re-run on all passing probes pre and post; 'changed' = seed set or render text differs pre->post",
+  "changed": 20,
+  "changed_ids": [
+   "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "7f7046d308f711ebbdaaac1f6bf848b6",
+   "d6898f78089511ebbd75ac1f6bf848b6",
+   "006d81bc0bde11eba7f7acde48001122",
+   "f34d188608cb11ebbd93ac1f6bf848b6",
+   "3f04140e08c311ebbd8dac1f6bf848b6",
+   "b64f541e088d11ebbd70ac1f6bf848b6",
+   "ea151f3908e011ebbda2ac1f6bf848b6",
+   "90c8793c087411ebbd67ac1f6bf848b6",
+   "63c16246095211ebbdaeac1f6bf848b6",
+   "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "47bb70600bde11eba7f7acde48001122",
+   "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "81e0d683087c11ebbd6aac1f6bf848b6",
+   "5cbb015f087511ebbd67ac1f6bf848b6",
+   "0016373a0bda11eba7f7acde48001122",
+   "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "8dcaaf24089811ebbd77ac1f6bf848b6"
+  ],
+  "pass_to_fail": 0,
+  "pass_to_fail_ids": []
+ },
+ "restoration_verification": [
+  {
+   "anchor_id": "e_d8472d845f17bf29",
+   "name": "Los pagares de Mendieta",
+   "desc_hash_pre": "8634025d4ea6ca20",
+   "desc_hash_post_restore": "8634025d4ea6ca20",
+   "emb_cksum_pre": "fae93dc9b9fed045",
+   "emb_cksum_post_restore": "fae93dc9b9fed045",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_124f59551392c7e0",
+   "name": "Talk About a Stranger",
+   "desc_hash_pre": "e3b0c44298fc1c14",
+   "desc_hash_post_restore": "e3b0c44298fc1c14",
+   "emb_cksum_pre": "2bdb34a3bcee9fba",
+   "emb_cksum_post_restore": "2bdb34a3bcee9fba",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_6af83deef5a5459e",
+   "name": "Saw Thanda",
+   "desc_hash_pre": "e3b0c44298fc1c14",
+   "desc_hash_post_restore": "e3b0c44298fc1c14",
+   "emb_cksum_pre": "7c98324c513ffebe",
+   "emb_cksum_post_restore": "7c98324c513ffebe",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_7fc3cac328f9d087",
+   "name": "Make the World Move",
+   "desc_hash_pre": "da4e1b09b2d4a5e9",
+   "desc_hash_post_restore": "da4e1b09b2d4a5e9",
+   "emb_cksum_pre": "6fb3cf465bb7b2bf",
+   "emb_cksum_post_restore": "6fb3cf465bb7b2bf",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_8fa1cd0bb7242f35",
+   "name": "The Private Life of Cinema",
+   "desc_hash_pre": "01b9bdfd46af96a6",
+   "desc_hash_post_restore": "01b9bdfd46af96a6",
+   "emb_cksum_pre": "d5ecdc7f6e0b390f",
+   "emb_cksum_post_restore": "d5ecdc7f6e0b390f",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_6719186b4a67c747",
+   "name": "The Return of Swamp Thing",
+   "desc_hash_pre": "42ac6171da2378ce",
+   "desc_hash_post_restore": "42ac6171da2378ce",
+   "emb_cksum_pre": "067fae072dea826b",
+   "emb_cksum_post_restore": "067fae072dea826b",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_e334b416b147674c",
+   "name": "Gaby: A True Story",
+   "desc_hash_pre": "8fa6773e732062ae",
+   "desc_hash_post_restore": "8fa6773e732062ae",
+   "emb_cksum_pre": "24c17f0038fa8813",
+   "emb_cksum_post_restore": "24c17f0038fa8813",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_45dfe48d7ef4d8a0",
+   "name": "The Straw Hat",
+   "desc_hash_pre": "06f8667cb8187006",
+   "desc_hash_post_restore": "06f8667cb8187006",
+   "emb_cksum_pre": "7709b58f31f09866",
+   "emb_cksum_post_restore": "7709b58f31f09866",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_d3a00cd1d54e45ff",
+   "name": "Palo Alto",
+   "desc_hash_pre": "4b35e02d6c45d9d6",
+   "desc_hash_post_restore": "4b35e02d6c45d9d6",
+   "emb_cksum_pre": "1dcc7208b70dc89d",
+   "emb_cksum_post_restore": "1dcc7208b70dc89d",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_9cdf147d16773c73",
+   "name": "My Three Merry Widows",
+   "desc_hash_pre": "e3b0c44298fc1c14",
+   "desc_hash_post_restore": "e3b0c44298fc1c14",
+   "emb_cksum_pre": "4f8ad60911d4bb01",
+   "emb_cksum_post_restore": "4f8ad60911d4bb01",
+   "restored_ok": true
+  },
+  {
+   "anchor_id": "e_d5625460e0a16d97",
+   "name": "Thunder on the Hill",
+   "desc_hash_pre": "f68ca87ef2207ab1",
+   "desc_hash_post_restore": "f68ca87ef2207ab1",
+   "emb_cksum_pre": "c4390154b7f275e3",
+   "emb_cksum_post_restore": "c4390154b7f275e3",
+   "restored_ok": true
+  }
+ ],
+ "edit_meta": {
+  "Los pagares de Mendieta": {
+   "new_desc": "b&w Argentine comedy film Los Pagares de Mendieta: director Leopoldo Torres Ríos. Leopoldo Torres Ríos's child is Leopoldo Torre Nilsson.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "a3ae40a9a415645f",
+   "old_desc_len": 25
+  },
+  "Talk About a Stranger": {
+   "new_desc": "Talk About a Stranger: director David Bradley. David Bradley's employer is UCLA.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "378a39a930c5584e",
+   "old_desc_len": 0
+  },
+  "Saw Thanda": {
+   "new_desc": "Saw Thanda: spouse Dikkha. Dikkha's place of death is Mrauk U.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "e58bc531620a30c0",
+   "old_desc_len": 0
+  },
+  "Make the World Move": {
+   "new_desc": "Song recorded by American singer Christina Aguilera for her seventh studio album Lotus (2012). Features guest vocals from Cee Lo Green. Make the World Move: composer Alexander Grant. Alexander Grant's country of citizenship is British.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "ce25645003bf8807",
+   "old_desc_len": 135
+  },
+  "The Private Life of Cinema": {
+   "new_desc": "2011 documentary The Private Life of Cinema: director Denys Desjardins. Denys Desjardins's place of birth is Montreal, Quebec.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "f440cc0762f729a8",
+   "old_desc_len": 16
+  },
+  "The Return of Swamp Thing": {
+   "new_desc": "1989 sequel to the 1982 film Swamp Thing. The Return of Swamp Thing: director Jim Wynorski. Jim Wynorski's place of birth is New York.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "1264b25c3c4bc6e2",
+   "old_desc_len": 41
+  },
+  "Gaby: A True Story": {
+   "new_desc": "1987 American-Mexican drama biographical film Gaby: A True Story: director Luis Mandoki. Luis Mandoki's place of birth is Mexico City.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "1b135e2d22a5090f",
+   "old_desc_len": 45
+  },
+  "The Straw Hat": {
+   "new_desc": "1974 Soviet musical comedy television film The Straw Hat: composer Isaac Schwartz. Isaac Schwartz's place of death is Siversky.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "cacf9febb78d7e8a",
+   "old_desc_len": 42
+  },
+  "Palo Alto": {
+   "new_desc": "2013 film in which Zoe Levin played Emily Palo Alto: director Gia Coppola. Gia Coppola's father is Gian-Carlo Coppola.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "9e81b7b2c48d528a",
+   "old_desc_len": 41
+  },
+  "My Three Merry Widows": {
+   "new_desc": "My Three Merry Widows: director Fernando Cortés. Fernando Cortés's spouse is Mapy Cortés.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "b40586ff5b2620e4",
+   "old_desc_len": 0
+  },
+  "Thunder on the Hill": {
+   "new_desc": "1951 American film noir crime film Thunder on the Hill: composer Hans J. Salter. Hans J. Salter's country of citizenship is Austrian.",
+   "fact_within_200": true,
+   "emb_changed": true,
+   "new_cksum": "f93e13d5b0172a3f",
+   "old_desc_len": 34
+  }
+ },
+ "index_fresh": {
+  "Los pagares de Mendieta": true,
+  "Talk About a Stranger": true,
+  "Saw Thanda": false,
+  "Make the World Move": true,
+  "The Private Life of Cinema": true,
+  "The Return of Swamp Thing": false,
+  "Gaby: A True Story": true,
+  "The Straw Hat": true,
+  "Palo Alto": true,
+  "My Three Merry Widows": true,
+  "Thunder on the Hill": true
+ }
+}

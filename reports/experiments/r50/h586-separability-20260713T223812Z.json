@@ -1,0 +1,185 @@
+{
+ "run_id": "20260713T223812Z",
+ "hypothesis": "R50-H586",
+ "scoring_fence": "retrieval-level only",
+ "subset": "single-entity-answer (gold answer resolves to a graph entity)",
+ "n_single_entity_probes": 97,
+ "answer_type_dist_subset": {
+  "Film": 34,
+  "Location": 24,
+  "Person": 26,
+  "EthnicGroup": 2,
+  "Kingdom": 5,
+  "Organization": 5,
+  "Book": 1
+ },
+ "recall_horn": {
+  "off_type_carrier_frac": 0.5045,
+  "off_type": 113,
+  "total_carriers": 224,
+  "holds": true,
+  "clears_below_5pct": false
+ },
+ "informativeness_horn": {
+  "median_answer_type_pool_frac": 0.1349,
+  "holds_ge_60pct": false,
+  "clears_below_30pct": true
+ },
+ "separability_horn": {
+  "value": 0.7595,
+  "num": 60,
+  "den": 79,
+  "holds_ge_70pct": true,
+  "below_50pct": false
+ },
+ "clauses": [
+  {
+   "clause": "recall horn: >=10% of gold carriers carry a type disagreeing with the query answer-type",
+   "predicted": ">=10% off-type",
+   "measured": "0.5045 (113/224)",
+   "holds": true
+  },
+  {
+   "clause": "informativeness horn: query-answer-type sub-pool >=60% of entities (median)",
+   "predicted": ">=60%",
+   "measured": "median 0.1349",
+   "holds": false
+  },
+  {
+   "clause": "separability horn: >=70% of dense-missed in-graph carriers share answer-type with >=3 top-16 distractors",
+   "predicted": ">=70%",
+   "measured": "0.7595 (60/79)",
+   "holds": true
+  },
+  {
+   "clause": "FALSIFIED-OPEN gate: separability <50% AND recall horn clears (<5% off-type) AND matched-pool <30%",
+   "predicted": "open if all three",
+   "measured": "sep 0.7595 / off-type 0.5045 / pool 0.1349",
+   "holds": false
+  }
+ ],
+ "acceptance_bar": "NULL CONFIRMED if separability>=70% OR either horn holds; FALSIFIED-OPEN if separability<50% AND both horns clear (off-type<5% AND pool<30%)",
+ "proposed_verdict": "NULL CONFIRMED",
+ "separability_detail_sample": [
+  {
+   "probe": "2dc690ba0bdc11eba7f7acde48001122",
+   "carrier": "Nicki Minaj",
+   "answer_type": "Location",
+   "shared_distractors": 0
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Michael Curtiz",
+   "answer_type": "Film",
+   "shared_distractors": 6
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Charlie Day",
+   "answer_type": "Film",
+   "shared_distractors": 6
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Robert North Bradbury",
+   "answer_type": "Film",
+   "shared_distractors": 6
+  },
+  {
+   "probe": "33f51d7e0bde11eba7f7acde48001122",
+   "carrier": "Leo Fong",
+   "answer_type": "EthnicGroup",
+   "shared_distractors": 0
+  },
+  {
+   "probe": "914b452c0bdc11eba7f7acde48001122",
+   "carrier": "Luis Mandoki",
+   "answer_type": "Location",
+   "shared_distractors": 0
+  },
+  {
+   "probe": "006d81bc0bde11eba7f7acde48001122",
+   "carrier": "Ryan Adams",
+   "answer_type": "Location",
+   "shared_distractors": 0
+  },
+  {
+   "probe": "265daf200bdc11eba7f7acde48001122",
+   "carrier": "William the Silent",
+   "answer_type": "Location",
+   "shared_distractors": 2
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "Robert A. Stemmle",
+   "answer_type": "Film",
+   "shared_distractors": 4
+  },
+  {
+   "probe": "5cc01ab60bb011ebab90acde48001122",
+   "carrier": "Conchobar mac Nessa",
+   "answer_type": "Person",
+   "shared_distractors": 16
+  },
+  {
+   "probe": "7cb81afc0bd911eba7f7acde48001122",
+   "carrier": "Jim Wynorski",
+   "answer_type": "Location",
+   "shared_distractors": 0
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Dino Risi",
+   "answer_type": "Film",
+   "shared_distractors": 10
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "Georges M\u00e9li\u00e8s",
+   "answer_type": "Film",
+   "shared_distractors": 11
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "James Tinling",
+   "answer_type": "Film",
+   "shared_distractors": 11
+  },
+  {
+   "probe": "0dfe41f60bdc11eba7f7acde48001122",
+   "carrier": "Frank Sinatra",
+   "answer_type": "Location",
+   "shared_distractors": 1
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "David Bradley (director)",
+   "answer_type": "Organization",
+   "shared_distractors": 10
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Georges Lautner",
+   "answer_type": "Film",
+   "shared_distractors": 9
+  },
+  {
+   "probe": "c5a00e860bda11eba7f7acde48001122",
+   "carrier": "Jocelyn Lovell",
+   "answer_type": "Location",
+   "shared_distractors": 2
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Puttanna Kanagal",
+   "answer_type": "Film",
+   "shared_distractors": 9
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Alberto De Martino",
+   "answer_type": "Film",
+   "shared_distractors": 9
+  }
+ ]
+}

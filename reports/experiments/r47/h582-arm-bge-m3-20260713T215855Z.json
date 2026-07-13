@@ -1,0 +1,32 @@
+{
+ "arm": "bge-m3",
+ "carrier_recall@16": 0.5982,
+ "region_hit_1hop": 0.862,
+ "region_hit_ppr": 0.7117,
+ "region_hit_1hop_ingraph": 0.9757,
+ "region_hit_ppr_ingraph": 0.8056,
+ "carrier_recall@16_delta_vs_titan": -0.003,
+ "carrier_recall@16_mcnemar_b_titanonly": 14,
+ "carrier_recall@16_mcnemar_c_candonly": 13,
+ "carrier_recall@16_mcnemar_p": 1.0,
+ "carrier_recall@16_boot95": [
+  -0.0337,
+  0.0276
+ ],
+ "region_hit_1hop_delta_vs_titan": -0.0061,
+ "region_hit_1hop_mcnemar_b_titanonly": 2,
+ "region_hit_1hop_mcnemar_c_candonly": 0,
+ "region_hit_1hop_mcnemar_p": 0.5,
+ "region_hit_1hop_boot95": [
+  -0.0153,
+  0.0
+ ],
+ "region_hit_ppr_delta_vs_titan": 0.0123,
+ "region_hit_ppr_mcnemar_b_titanonly": 7,
+ "region_hit_ppr_mcnemar_c_candonly": 11,
+ "region_hit_ppr_mcnemar_p": 0.48068,
+ "region_hit_ppr_boot95": [
+  -0.0123,
+  0.0368
+ ]
+}

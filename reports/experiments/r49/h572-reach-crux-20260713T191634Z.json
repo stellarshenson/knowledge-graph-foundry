@@ -1,0 +1,4406 @@
+{
+ "summary": {
+  "run_id": "20260713T191634Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "n_facts": 288,
+  "primary_aggregation": "majority",
+  "agreement": 0.7396,
+  "kappa": 0.2678,
+  "aggregations": {
+   "any": {
+    "n": 288,
+    "agreement": 0.7951,
+    "kappa": 0.1499,
+    "real_pos": 226,
+    "antic_pos": 275
+   },
+   "majority": {
+    "n": 288,
+    "agreement": 0.7396,
+    "kappa": 0.2678,
+    "real_pos": 226,
+    "antic_pos": 217
+   },
+   "all": {
+    "n": 288,
+    "agreement": 0.4306,
+    "kappa": 0.1243,
+    "real_pos": 226,
+    "antic_pos": 68
+   },
+   "attr_majority": {
+    "n": 275,
+    "agreement": 0.64,
+    "kappa": 0.2815,
+    "real_pos": 214,
+    "antic_pos": 137
+   }
+  },
+  "reg2": {
+   "real_unreachable": false,
+   "antic_unreachable_majority": false,
+   "antic_unreachable_any": false,
+   "both_sources_flag": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  "clauses": {
+   "agreement_ge_0.80": false,
+   "kappa_ge_0.50": false,
+   "reg2_unreachable_both": false
+  },
+  "proposed_verdict": "INDETERMINATE",
+  "deviation": "offline scipy PPR over Entity-only live-rel adjacency (h515 convention); anticipated seeds from stored KGFQuestion embeddings; fact set = gold supporting-title carriers + explicit REG-2 answer edge; graph edge is CHILD_OF (registration writes CHILD)",
+  "bars": {
+   "confirmed_ge": 0.8,
+   "kappa_ge": 0.5,
+   "killed_lt": 0.65
+  }
+ },
+ "facts": [
+  {
+   "probe": "83bf3b5a0bd911eba7f7acde48001122",
+   "carrier": "Lothair II",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "83bf3b5a0bd911eba7f7acde48001122",
+   "carrier": "Ermengarde of Tours",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "carrier": "Aas Ka Panchhi",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "carrier": "Phoolwari",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "2dc690ba0bdc11eba7f7acde48001122",
+   "carrier": "Changed It",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "2dc690ba0bdc11eba7f7acde48001122",
+   "carrier": "Nicki Minaj",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "462bb642099211ebbdb0ac1f6bf848b6",
+   "carrier": "Marufabad",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "462bb642099211ebbdb0ac1f6bf848b6",
+   "carrier": "Nasamkhrali",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "God's Gift to Women",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Aldri annet enn br\u00e5k",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Michael Curtiz",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Edith Carlmar",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "El Tonto",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "The Heart of Doreon",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Charlie Day",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Robert North Bradbury",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "carrier": "Aivar Kuusmaa",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "carrier": "Andy Summers",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "9fe6a6760baf11ebab90acde48001122",
+   "carrier": "Raghnall Mac Ruaidhr\u00ed",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "9fe6a6760baf11ebab90acde48001122",
+   "carrier": "Ruaidhr\u00ed Mac Ruaidhr\u00ed",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Interview with a Hitman",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "The Last Coupon",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Perry Bhandal",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Frank Launder",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "33f51d7e0bde11eba7f7acde48001122",
+   "carrier": "Blood Street",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "33f51d7e0bde11eba7f7acde48001122",
+   "carrier": "Leo Fong",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "914b452c0bdc11eba7f7acde48001122",
+   "carrier": "Gaby: A True Story",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "914b452c0bdc11eba7f7acde48001122",
+   "carrier": "Luis Mandoki",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "d6898f78089511ebbd75ac1f6bf848b6",
+   "carrier": "Vasilyevsky Island",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "d6898f78089511ebbd75ac1f6bf848b6",
+   "carrier": "Preobrazheniya Island",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "006d81bc0bde11eba7f7acde48001122",
+   "carrier": "When the Stars Go Blue",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "006d81bc0bde11eba7f7acde48001122",
+   "carrier": "Ryan Adams",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "carrier": "Me and Bobby McGee",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "carrier": "Roger Miller",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "265daf200bdc11eba7f7acde48001122",
+   "carrier": "Maurice, Prince of Orange",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "265daf200bdc11eba7f7acde48001122",
+   "carrier": "William the Silent",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "1c0dd3b00bdc11eba7f7acde48001122",
+   "carrier": "Stanis\u0142aw Koniecpolski",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 11,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "bab3b6d00bda11eba7f7acde48001122",
+   "carrier": "Madame la Presidente",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "bab3b6d00bda11eba7f7acde48001122",
+   "carrier": "Frank Lloyd",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Wrong Turn 5: Bloodlines",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Dark River (2017 film)",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Declan O'Brien",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Clio Barnard",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": false,
+    "reach_rate": 0.333
+   }
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "The Goose Woman",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "You Can No Longer Remain Silent",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.375
+   }
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "Clarence Brown",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "Robert A. Stemmle",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": false,
+    "reach_rate": 0.083
+   }
+  },
+  {
+   "probe": "2d8f3ebe0bda11eba7f7acde48001122",
+   "carrier": "The Private Life of Cinema",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "2d8f3ebe0bda11eba7f7acde48001122",
+   "carrier": "Denys Desjardins",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "e6e38bc40bdd11eba7f7acde48001122",
+   "carrier": "Coulson Wallop",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "e6e38bc40bdd11eba7f7acde48001122",
+   "carrier": "John Wallop, 2nd Earl of Portsmouth",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "0bedb7e80bdc11eba7f7acde48001122",
+   "carrier": "John Middleton Murry",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "0bedb7e80bdc11eba7f7acde48001122",
+   "carrier": "Katherine Mansfield",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "86508dc60bdc11eba7f7acde48001122",
+   "carrier": "Billy Elliot",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "86508dc60bdc11eba7f7acde48001122",
+   "carrier": "Stephen Warbeck",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "e311a3ba0bdc11eba7f7acde48001122",
+   "carrier": "Lisbeth Palme",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "e311a3ba0bdc11eba7f7acde48001122",
+   "carrier": "Olof Palme",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "carrier": "3 Dots",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "carrier": "Dying God",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "435f65fa0baf11ebab90acde48001122",
+   "carrier": "Sisowath Kossamak",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "435f65fa0baf11ebab90acde48001122",
+   "carrier": "Norodom Suramarit",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 3,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "5cc01ab60bb011ebab90acde48001122",
+   "carrier": "Mugain",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "5cc01ab60bb011ebab90acde48001122",
+   "carrier": "Conchobar mac Nessa",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "2084260e0bde11eba7f7acde48001122",
+   "carrier": "Theodore Salisbury Woolsey",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 3,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "2084260e0bde11eba7f7acde48001122",
+   "carrier": "Theodore Dwight Woolsey",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "7cb81afc0bd911eba7f7acde48001122",
+   "carrier": "The Return of Swamp Thing",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "7cb81afc0bd911eba7f7acde48001122",
+   "carrier": "Jim Wynorski",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "a1d9a65c0bd911eba7f7acde48001122",
+   "carrier": "I Can't See Myself Leaving You",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "a1d9a65c0bd911eba7f7acde48001122",
+   "carrier": "Aretha Franklin",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Playing It Wild",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "I'll Be Going Now",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Dino Risi",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "Christ Walking on the Water",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "45 Fathers",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "Georges M\u00e9li\u00e8s",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "James Tinling",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "0dfe41f60bdc11eba7f7acde48001122",
+   "carrier": "Frank Sinatra",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "Talk About a Stranger",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "David Bradley (director)",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "carrier": "Gideon Johnson Pillow",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "b672c1ee0bdd11eba7f7acde48001122",
+   "carrier": "Jonny Greenwood",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Dangerously They Live",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Salad by the Roots",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Robert Florey",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Georges Lautner",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "c5a00e860bda11eba7f7acde48001122",
+   "carrier": "Sylvia Burka",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "c5a00e860bda11eba7f7acde48001122",
+   "carrier": "Jocelyn Lovell",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "434dea7708d211ebbd95ac1f6bf848b6",
+   "carrier": "Ludwig Elsbett",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "434dea7708d211ebbd95ac1f6bf848b6",
+   "carrier": "Pamela Ann Rymer",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Phalitamsha",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Gladiators Seven",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Puttanna Kanagal",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Alberto De Martino",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Henry Goes Arizona",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": false,
+    "reach_rate": 0.375
+   }
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "The Blue Collar Worker and the Hairdresser in a Whirl of Sex and Politics",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Edwin L. Marin",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Lina Wertm\u00fcller",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "c9a769c608be11ebbd8aac1f6bf848b6",
+   "carrier": "Hywel Teifi Edwards",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Tombstone Rashomon",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Waiting for the Clouds",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Alex Cox",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Ye\u015fim Ustao\u011flu",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "50e4a65c0bde11eba7f7acde48001122",
+   "carrier": "Meek Mill",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "It's a Wonderful Afterlife",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "Julie Dash",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "Gurinder Chadha",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "carrier": "Naked Tango",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "carrier": "Algiers (film)",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "38da155f087511ebbd67ac1f6bf848b6",
+   "carrier": "Sir Thomas Wheate, 1st Baronet",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.375
+   }
+  },
+  {
+   "probe": "38da155f087511ebbd67ac1f6bf848b6",
+   "carrier": "Albert \u00c9douard Le Brethon de Caligny",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "49b22d0a0bde11eba7f7acde48001122",
+   "carrier": "The Straw Hat",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "49b22d0a0bde11eba7f7acde48001122",
+   "carrier": "Isaac Schwartz",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "78b10fb00bdc11eba7f7acde48001122",
+   "carrier": "A Nest of Noblemen",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "78b10fb00bdc11eba7f7acde48001122",
+   "carrier": "Vladimir Gardin",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "879d21e208fc11ebbdadac1f6bf848b6",
+   "carrier": "Pietro Salini",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "879d21e208fc11ebbdadac1f6bf848b6",
+   "carrier": "Domenico Ravenna",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "cda459160bda11eba7f7acde48001122",
+   "carrier": "Palo Alto (2013 film)",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "cda459160bda11eba7f7acde48001122",
+   "carrier": "Gia Coppola",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "1dfaa6200bdd11eba7f7acde48001122",
+   "carrier": "Los Pagares de Mendieta",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "1dfaa6200bdd11eba7f7acde48001122",
+   "carrier": "Leopoldo Torres R\u00edos",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.333
+   }
+  },
+  {
+   "probe": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "carrier": "Hubert Mordek",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "carrier": "Levon Ashotovich Grigorian",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "8e07f1f00bda11eba7f7acde48001122",
+   "carrier": "My Three Merry Widows",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "8e07f1f00bda11eba7f7acde48001122",
+   "carrier": "Fernando Cort\u00e9s",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "b7f5f7200bdd11eba7f7acde48001122",
+   "carrier": "Thunder on the Hill",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "b7f5f7200bdd11eba7f7acde48001122",
+   "carrier": "Hans J. Salter",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Arr\u00eate ton cin\u00e9ma",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Diane Kurys",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Swapan Saha",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.333
+   }
+  },
+  {
+   "probe": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "carrier": "Werner Mensching",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "carrier": "Karel Zich",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "0083038e0bde11eba7f7acde48001122",
+   "carrier": "Prince Ferdinand of Bavaria",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "0083038e0bde11eba7f7acde48001122",
+   "carrier": "Infanta Mar\u00eda de la Paz of Spain",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "6b8402c40bdd11eba7f7acde48001122",
+   "carrier": "An Event",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "6b8402c40bdd11eba7f7acde48001122",
+   "carrier": "Vatroslav Mimica",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "d9c894ec0bd911eba7f7acde48001122",
+   "carrier": "Good People (film)",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "d9c894ec0bd911eba7f7acde48001122",
+   "carrier": "Henrik Ruben Genz",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "carrier": "Gare de La Roche-sur-Yon",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "carrier": "Gare de Namps-Quevauvillers",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 7,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.429
+   }
+  },
+  {
+   "probe": "a9e322b20bdc11eba7f7acde48001122",
+   "carrier": "Eduardo De Filippo",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "8f783c7a0bda11eba7f7acde48001122",
+   "carrier": "Christian August, Prince of Anhalt-Zerbst",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "b642318c0bdd11eba7f7acde48001122",
+   "carrier": "Muhammad bin Saud",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "Love, Honor and Oh-Baby!",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "I Cover the Underworld",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "Charles Lamont",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": false,
+    "reach_rate": 0.167
+   }
+  },
+  {
+   "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "R. G. Springsteen",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "fcdafe320bdb11eba7f7acde48001122",
+   "carrier": "The Circus Cyclone",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "fcdafe320bdb11eba7f7acde48001122",
+   "carrier": "Albert S. Rogell",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "7d87730c087211ebbd66ac1f6bf848b6",
+   "carrier": "Wizards of the Lost Kingdom",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "7d87730c087211ebbd66ac1f6bf848b6",
+   "carrier": "Final Exam (1981 film)",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "carrier": "Museum of Croatian Archaeological Monuments",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "carrier": "Bayernhof Music Museum",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "e15d99380bdd11eba7f7acde48001122",
+   "carrier": "Bo\u0161tjan Hladnik",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Saw Thanda",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Min Dikkha",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "carrier": "Inside the Room",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "carrier": "Crude Set Drama",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "The Marriage of Princess Demidoff",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.375
+   }
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "The Pocket-knife",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "Frederic Zelnik",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "Ben Sombogaart",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Airheads",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Return to Cabin by the Lake",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Michael Lehmann",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Po-Chih Leong",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "63c16246095211ebbdaeac1f6bf848b6",
+   "carrier": "A Romance of Seville",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "63c16246095211ebbdaeac1f6bf848b6",
+   "carrier": "Pirates of the Sky",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Lost in the Stratosphere",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Blind Man's Eyes",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.375
+   }
+  },
+  {
+   "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Melville W. Brown",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "d18fc6640bda11eba7f7acde48001122",
+   "carrier": "\u00c9tienne de Cr\u00e9cy",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "carrier": "Marjatta Raita",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "carrier": "Bruce Coulter",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "a457e11c0bdb11eba7f7acde48001122",
+   "carrier": "Oskar Roehler",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "632fcc82085611ebbd59ac1f6bf848b6",
+   "carrier": "Angus Wagner",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "632fcc82085611ebbd59ac1f6bf848b6",
+   "carrier": "Juan Carlos Falc\u00f3n",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "076288460bde11eba7f7acde48001122",
+   "carrier": "Henry I of Zi\u0119bice",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "076288460bde11eba7f7acde48001122",
+   "carrier": "Nicholas the Small",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "carrier": "Sammy Hagar",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 3,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "carrier": "Renaud Garcia-Fons",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "9523a3df088911ebbd6eac1f6bf848b6",
+   "carrier": "Eustace William Ferguson",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "5ff291a80bda11eba7f7acde48001122",
+   "carrier": "Back in the U.S.A.",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "5ff291a80bda11eba7f7acde48001122",
+   "carrier": "Chuck Berry",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "carrier": "Cheryl Saban",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "carrier": "Dmitry Grigorieff",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "The First Day of Freedom",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Malabimba \u2013 The Malicious Whore",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Aleksander Ford",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Andrea Bianchi",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "fde95590089c11ebbd78ac1f6bf848b6",
+   "carrier": "Yuliya Baraley",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "3bb9c0740bb011ebab90acde48001122",
+   "carrier": "Sibyl Hathaway",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "3bb9c0740bb011ebab90acde48001122",
+   "carrier": "Francis William Beaumont",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Sins of Madeleine",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Captain Apache",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Alexander Singer",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "e7dc72940baf11ebab90acde48001122",
+   "carrier": "Godomar II",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "e7dc72940baf11ebab90acde48001122",
+   "carrier": "Gundobad",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "764446780bde11eba7f7acde48001122",
+   "carrier": "The Outlaw Express",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "764446780bde11eba7f7acde48001122",
+   "carrier": "Leo D. Maloney",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "45 Calibre Echo",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Bons Baisers de Hong Kong",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Bruce M. Mitchell",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.333
+   }
+  },
+  {
+   "probe": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Yvan Chiffre",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "f1a794f20bdc11eba7f7acde48001122",
+   "carrier": "Lamprocles",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "f1a794f20bdc11eba7f7acde48001122",
+   "carrier": "Socrates",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": false,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "47bb70600bde11eba7f7acde48001122",
+   "carrier": "I Like Control",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "47bb70600bde11eba7f7acde48001122",
+   "carrier": "DJ Clue",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Romance on the Run",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "The Palace of Angels",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Gus Meins",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Walter Hugo Khouri",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "Mord Em'ly",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "Vijay Bhatt",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "The Korean Wedding Chest",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "True to the Navy",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "Ulrike Ottinger",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "Frank Tuttle",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "421d07aa0bb011ebab90acde48001122",
+   "carrier": "Marianus V of Arborea",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "421d07aa0bb011ebab90acde48001122",
+   "carrier": "Brancaleone Doria",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "3f48bc400bb011ebab90acde48001122",
+   "carrier": "Albert III, Duke of Bavaria",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Felices 140",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": false,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Dr. Who and the Daleks",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 11,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Gracia Querejeta",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Gordon Flemyng",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "carrier": "Mama's Little Pirate",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "carrier": "Beauties on Motor Scooters",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.625
+   }
+  },
+  {
+   "probe": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "carrier": "Two Brides and a Baby",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "carrier": "Dinner at the Ritz",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "3ab846860bde11eba7f7acde48001122",
+   "carrier": "William Axt",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "8cd3fe6c0baf11ebab90acde48001122",
+   "carrier": "Colg\u00fa mac Fa\u00edlbe Flaind",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 0.833
+   }
+  },
+  {
+   "probe": "8cd3fe6c0baf11ebab90acde48001122",
+   "carrier": "Fa\u00edlbe Flann mac \u00c1edo Duib",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "0d9251260baf11ebab90acde48001122",
+   "carrier": "Jean Tangye",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "0d9251260baf11ebab90acde48001122",
+   "carrier": "Derek Tangye",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "carrier": "Shahanuddin Choudhury",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "carrier": "Domenico Distilo",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "d73fa07c0bdd11eba7f7acde48001122",
+   "carrier": "Alfonso P\u00e9rez de Guzm\u00e1n, 5th Duke of Medina Sidonia",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "d73fa07c0bdd11eba7f7acde48001122",
+   "carrier": "Juan Alfonso P\u00e9rez de Guzm\u00e1n, 3rd Duke of Medina Sidonia",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "9bc54aba0bdd11eba7f7acde48001122",
+   "carrier": "Ayumi Hamasaki",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "The Lone Prairie",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "Buckaroo from Powder River",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "William Berke",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "Ray Nazarro",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "C\u00e9sar and Rosalie",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Beatrice (1987 film)",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.375
+   }
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Claude Sautet",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Bertrand Tavernier",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "The Glass Wall",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Where Does It Hurt?",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Maxwell Shane",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Rod Amateau",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "0016373a0bda11eba7f7acde48001122",
+   "carrier": "Hermann II, Landgrave of Hesse",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "0016373a0bda11eba7f7acde48001122",
+   "carrier": "Louis the Junker",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "ccd086f80bdb11eba7f7acde48001122",
+   "carrier": "Do You Believe? (film)",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": false,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.0
+   }
+  },
+  {
+   "probe": "ccd086f80bdb11eba7f7acde48001122",
+   "carrier": "Jon Gunn",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "965e667e0bdd11eba7f7acde48001122",
+   "carrier": "Napier Sturt, 3rd Baron Alington",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 4,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "965e667e0bdd11eba7f7acde48001122",
+   "carrier": "Humphrey Sturt, 2nd Baron Alington",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Amira & Sam",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Fat Man and Little Boy",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Sean Mullin",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Roland Joff\u00e9",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "43eb7b380bde11eba7f7acde48001122",
+   "carrier": "Peter's Friends",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "43eb7b380bde11eba7f7acde48001122",
+   "carrier": "Kenneth Branagh",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 10,
+    "attr_majority": true,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "f48667b80bda11eba7f7acde48001122",
+   "carrier": "The Miscellany News",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 5,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "f48667b80bda11eba7f7acde48001122",
+   "carrier": "Vassar College",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": true,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "My Wife's Best Friend",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "Dinu Cocea",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.667
+   }
+  },
+  {
+   "probe": "bd9609880bdb11eba7f7acde48001122",
+   "carrier": "Battle in Seattle",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.125
+   }
+  },
+  {
+   "probe": "bd9609880bdb11eba7f7acde48001122",
+   "carrier": "Stuart Townsend",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 9,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "748446060bdb11eba7f7acde48001122",
+   "carrier": "Make the World Move",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "748446060bdb11eba7f7acde48001122",
+   "carrier": "Alex da Kid",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "e2de58500bd911eba7f7acde48001122",
+   "carrier": "The Notorious Miss Lisle",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 3,
+    "attr_majority": false,
+    "reach_rate": 0.75
+   }
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Last Tango in Paris",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 11,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Beasts of Prey",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.25
+   }
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Bernardo Bertolucci",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Kim Ki-young",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.583
+   }
+  },
+  {
+   "probe": "5c7842780baf11ebab90acde48001122",
+   "carrier": "Dui Finn",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "5c7842780baf11ebab90acde48001122",
+   "carrier": "S\u00e9tna Innarraid",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 5,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "carrier": "The Tender Years",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 1,
+    "attr_majority": false,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "carrier": "Range War",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "84c99c760bb011ebab90acde48001122",
+   "carrier": "Marie Leszczy\u0144ska",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 0,
+    "attr_majority": null,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "f253a3040bdd11eba7f7acde48001122",
+   "carrier": "Princess Maria of Greece and Denmark",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 7,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "f253a3040bdd11eba7f7acde48001122",
+   "carrier": "Olga Constantinovna of Russia",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "I Like Only You",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": true,
+    "attr_n": 1,
+    "attr_majority": true,
+    "reach_rate": 1.0
+   }
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "Brother Rat",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 2,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "Pierre Montazel",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": false,
+    "all": false,
+    "attr_n": 7,
+    "attr_majority": false,
+    "reach_rate": 0.417
+   }
+  },
+  {
+   "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "William Keighley",
+   "reg2": false,
+   "reach_real": false,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 6,
+    "attr_majority": false,
+    "reach_rate": 0.5
+   }
+  },
+  {
+   "probe": "2b9528860bde11eba7f7acde48001122",
+   "carrier": "Marianus V of Arborea",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 8,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 8,
+    "attr_majority": true,
+    "reach_rate": 0.875
+   }
+  },
+  {
+   "probe": "2b9528860bde11eba7f7acde48001122",
+   "carrier": "Brancaleone Doria",
+   "reg2": false,
+   "reach_real": true,
+   "antic": {
+    "n_antic": 12,
+    "any": true,
+    "majority": true,
+    "all": false,
+    "attr_n": 12,
+    "attr_majority": true,
+    "reach_rate": 0.917
+   }
+  }
+ ],
+ "reg2_row": {
+  "probe": "1dfaa6200bdd11eba7f7acde48001122",
+  "carrier": "Leopoldo Torre Nilsson",
+  "reg2": true,
+  "carrier_in_graph": true,
+  "reach_real": true,
+  "antic": {
+   "n_antic": 8,
+   "any": true,
+   "majority": true,
+   "all": true,
+   "attr_n": 8,
+   "attr_majority": true,
+   "reach_rate": 1.0
+  }
+ }
+}

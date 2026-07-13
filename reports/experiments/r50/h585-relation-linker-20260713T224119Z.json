@@ -1,0 +1,2415 @@
+{
+ "run_id": "20260713T224119Z",
+ "hypothesis": "R50-H585 relation-linker feasibility gate",
+ "native_vocab_stats": {
+  "full_query": "MATCH ()-[r]->() WHERE type(r) <> 'SIMILAR_TO'",
+  "full_distinct_types": 599,
+  "full_total_edges": 35473,
+  "full_entropy_bits": 3.162,
+  "entity_entity_distinct_types": 597,
+  "entity_entity_total_edges": 5857,
+  "entity_entity_entropy_bits": 6.321,
+  "h395_reference": {
+   "native_types": 334,
+   "entropy_bits": 6.22
+  },
+  "reconciliation": "Full registered query yields 599 types but entropy only 3.16 bits - dominated by 3 provenance mega-types (ABOUT 11853, MENTIONED_IN 8299, ANSWERABLE_FROM 7995) that are entity<->chunk/question edges, not semantic relations. Restricting to entity-entity endpoints gives 597 types at entropy 6.32 bits, matching H395's 6.22-bit regime. The type COUNT grew (334->597) with the graph state (H395 predates the full 1000-doc medium); the entropy match confirms the same proliferating open-vocabulary regime. Alignment runs over the full registered vocab; provenance mega-types can only depress precision, never inflate coverage."
+ },
+ "gold_vocab": {
+  "eligible_relations": 23,
+  "eligible_probes": 132,
+  "eligible_slots": 233,
+  "all_relations": 27,
+  "per_relation_eligible": {
+   "date of death": {
+    "q_count": 15,
+    "example": [
+     "Ermengarde of Tours",
+     "date of death",
+     "20 March 851"
+    ]
+   },
+   "mother": {
+    "q_count": 6,
+    "example": [
+     "Lothair II",
+     "mother",
+     "Ermengarde of Tours"
+    ]
+   },
+   "publication date": {
+    "q_count": 6,
+    "example": [
+     "Aas Ka Panchhi",
+     "publication date",
+     "1961"
+    ]
+   },
+   "place of birth": {
+    "q_count": 20,
+    "example": [
+     "Nicki Minaj",
+     "place of birth",
+     "Port of Spain"
+    ]
+   },
+   "performer": {
+    "q_count": 9,
+    "example": [
+     "Changed It",
+     "performer",
+     "Nicki Minaj"
+    ]
+   },
+   "country": {
+    "q_count": 4,
+    "example": [
+     "Marufabad",
+     "country",
+     "Iran"
+    ]
+   },
+   "director": {
+    "q_count": 52,
+    "example": [
+     "God's Gift to Women",
+     "director",
+     "Michael Curtiz"
+    ]
+   },
+   "date of birth": {
+    "q_count": 36,
+    "example": [
+     "Michael Curtiz",
+     "date of birth",
+     "December 24, 1886"
+    ]
+   },
+   "father": {
+    "q_count": 21,
+    "example": [
+     "Raghnall Mac Ruaidhr\u00ed",
+     "father",
+     "Ruaidhr\u00ed Mac Ruaidhr\u00ed"
+    ]
+   },
+   "country of citizenship": {
+    "q_count": 14,
+    "example": [
+     "Perry Bhandal",
+     "country of citizenship",
+     "British"
+    ]
+   },
+   "child": {
+    "q_count": 4,
+    "example": [
+     "Roger Miller",
+     "child",
+     "Dean Miller"
+    ]
+   },
+   "place of death": {
+    "q_count": 10,
+    "example": [
+     "William the Silent",
+     "place of death",
+     "Delft"
+    ]
+   },
+   "educated at": {
+    "q_count": 2,
+    "example": [
+     "John Wallop, 2nd Earl of Portsmouth",
+     "educated at",
+     "Oxford"
+    ]
+   },
+   "cause of death": {
+    "q_count": 1,
+    "example": [
+     "Katherine Mansfield",
+     "cause of death",
+     "tuberculosis"
+    ]
+   },
+   "spouse": {
+    "q_count": 14,
+    "example": [
+     "John Middleton Murry",
+     "spouse",
+     "Katherine Mansfield"
+    ]
+   },
+   "composer": {
+    "q_count": 7,
+    "example": [
+     "Billy Elliot",
+     "composer",
+     "Stephen Warbeck"
+    ]
+   },
+   "employer": {
+    "q_count": 2,
+    "example": [
+     "David Bradley",
+     "employer",
+     "UCLA"
+    ]
+   },
+   "place of detention": {
+    "q_count": 1,
+    "example": [
+     "Meek Mill",
+     "place of detention",
+     "State Correctional Institution \u2013 Chester"
+    ]
+   },
+   "country of origin": {
+    "q_count": 3,
+    "example": [
+     "Naked Tango",
+     "country of origin",
+     "American"
+    ]
+   },
+   "inception": {
+    "q_count": 2,
+    "example": [
+     "Museum of Croatian Archaeological Monuments",
+     "inception",
+     "1893"
+    ]
+   },
+   "sibling": {
+    "q_count": 2,
+    "example": [
+     "Fa\u00edlbe Flann mac \u00c1edo Duib",
+     "sibling",
+     "F\u00edngen mac \u00c1edo Duib"
+    ]
+   },
+   "founded by": {
+    "q_count": 1,
+    "example": [
+     "Track & Field News",
+     "founded by",
+     "Bert Nelson"
+    ]
+   },
+   "publisher": {
+    "q_count": 1,
+    "example": [
+     "The Miscellany News",
+     "publisher",
+     "Vassar College"
+    ]
+   }
+  }
+ },
+ "coverage_curve": {
+  "name_arm": [
+   {
+    "threshold": 0.4,
+    "n_aligned": 19,
+    "coverage_unweighted": 0.8261,
+    "coverage_qweighted": 0.9571
+   },
+   {
+    "threshold": 0.45,
+    "n_aligned": 16,
+    "coverage_unweighted": 0.6957,
+    "coverage_qweighted": 0.7167
+   },
+   {
+    "threshold": 0.5,
+    "n_aligned": 15,
+    "coverage_unweighted": 0.6522,
+    "coverage_qweighted": 0.6524
+   },
+   {
+    "threshold": 0.55,
+    "n_aligned": 12,
+    "coverage_unweighted": 0.5217,
+    "coverage_qweighted": 0.5021
+   },
+   {
+    "threshold": 0.6,
+    "n_aligned": 9,
+    "coverage_unweighted": 0.3913,
+    "coverage_qweighted": 0.3906
+   },
+   {
+    "threshold": 0.65,
+    "n_aligned": 6,
+    "coverage_unweighted": 0.2609,
+    "coverage_qweighted": 0.2532
+   },
+   {
+    "threshold": 0.7,
+    "n_aligned": 5,
+    "coverage_unweighted": 0.2174,
+    "coverage_qweighted": 0.2446
+   },
+   {
+    "threshold": 0.75,
+    "n_aligned": 5,
+    "coverage_unweighted": 0.2174,
+    "coverage_qweighted": 0.2446
+   },
+   {
+    "threshold": 0.8,
+    "n_aligned": 3,
+    "coverage_unweighted": 0.1304,
+    "coverage_qweighted": 0.0172
+   },
+   {
+    "threshold": 0.85,
+    "n_aligned": 2,
+    "coverage_unweighted": 0.087,
+    "coverage_qweighted": 0.0129
+   },
+   {
+    "threshold": 0.9,
+    "n_aligned": 1,
+    "coverage_unweighted": 0.0435,
+    "coverage_qweighted": 0.0043
+   }
+  ],
+  "context_arm": [
+   {
+    "threshold": 0.4,
+    "n_aligned": 11,
+    "coverage_unweighted": 0.4783,
+    "coverage_qweighted": 0.279
+   },
+   {
+    "threshold": 0.45,
+    "n_aligned": 11,
+    "coverage_unweighted": 0.4783,
+    "coverage_qweighted": 0.279
+   },
+   {
+    "threshold": 0.5,
+    "n_aligned": 8,
+    "coverage_unweighted": 0.3478,
+    "coverage_qweighted": 0.133
+   },
+   {
+    "threshold": 0.55,
+    "n_aligned": 5,
+    "coverage_unweighted": 0.2174,
+    "coverage_qweighted": 0.1159
+   },
+   {
+    "threshold": 0.6,
+    "n_aligned": 3,
+    "coverage_unweighted": 0.1304,
+    "coverage_qweighted": 0.0515
+   },
+   {
+    "threshold": 0.65,
+    "n_aligned": 2,
+    "coverage_unweighted": 0.087,
+    "coverage_qweighted": 0.0129
+   },
+   {
+    "threshold": 0.7,
+    "n_aligned": 2,
+    "coverage_unweighted": 0.087,
+    "coverage_qweighted": 0.0129
+   },
+   {
+    "threshold": 0.75,
+    "n_aligned": 1,
+    "coverage_unweighted": 0.0435,
+    "coverage_qweighted": 0.0086
+   },
+   {
+    "threshold": 0.8,
+    "n_aligned": 1,
+    "coverage_unweighted": 0.0435,
+    "coverage_qweighted": 0.0086
+   },
+   {
+    "threshold": 0.85,
+    "n_aligned": 0,
+    "coverage_unweighted": 0.0,
+    "coverage_qweighted": 0.0
+   },
+   {
+    "threshold": 0.9,
+    "n_aligned": 0,
+    "coverage_unweighted": 0.0,
+    "coverage_qweighted": 0.0
+   }
+  ]
+ },
+ "coverage_at_0.6": {
+  "name_arm": {
+   "threshold": 0.6,
+   "n_aligned": 9,
+   "coverage_unweighted": 0.3913,
+   "coverage_qweighted": 0.3906
+  },
+  "context_arm": {
+   "threshold": 0.6,
+   "n_aligned": 3,
+   "coverage_unweighted": 0.1304,
+   "coverage_qweighted": 0.0515
+  }
+ },
+ "exact_match_baseline": {
+  "exact_coverage_unweighted": 0.0435,
+  "exact_coverage_qweighted": 0.0043,
+  "token_containment_unweighted": 0.3478,
+  "token_containment_qweighted": 0.3906,
+  "rows": [
+   {
+    "gold": "date of death",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "mother",
+    "exact_match": null,
+    "token_containment": "MOTHER_IN_LAW_OF"
+   },
+   {
+    "gold": "publication date",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "place of birth",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "performer",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "country",
+    "exact_match": null,
+    "token_containment": "RELEASED_IN_COUNTRY"
+   },
+   {
+    "gold": "director",
+    "exact_match": null,
+    "token_containment": "DIRECTOR_OF"
+   },
+   {
+    "gold": "date of birth",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "father",
+    "exact_match": null,
+    "token_containment": "FATHER_IN_LAW_OF"
+   },
+   {
+    "gold": "country of citizenship",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "child",
+    "exact_match": null,
+    "token_containment": "CHILD_OF"
+   },
+   {
+    "gold": "place of death",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "educated at",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "cause of death",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "spouse",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "composer",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "employer",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "place of detention",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "country of origin",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "inception",
+    "exact_match": null,
+    "token_containment": null
+   },
+   {
+    "gold": "sibling",
+    "exact_match": null,
+    "token_containment": "SIBLING_OF"
+   },
+   {
+    "gold": "founded by",
+    "exact_match": "FOUNDED_BY",
+    "token_containment": "FOUNDED_BY"
+   },
+   {
+    "gold": "publisher",
+    "exact_match": null,
+    "token_containment": "PUBLISHER_OF"
+   }
+  ]
+ },
+ "per_gold": [
+  {
+   "gold": "date of death",
+   "q_count": 15,
+   "gold_example": [
+    "Ermengarde of Tours",
+    "date of death",
+    "20 March 851"
+   ],
+   "best_name_type": "DIED_AT",
+   "best_name_cos": 0.4537,
+   "best_ctx_type": "DIED_OF",
+   "best_ctx_cos": 0.3796,
+   "ctx_top2": [
+    {
+     "type": "DIED_OF",
+     "cos": 0.3796,
+     "native_example": [
+      "Johann Georg II, Duke of Saxe-Eisenach",
+      "smallpox"
+     ]
+    },
+    {
+     "type": "CAUSES_DEATH_OF",
+     "cos": 0.2732,
+     "native_example": [
+      "\u00c1ed",
+      "L\u00f3egaire B\u00faadach"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "mother",
+   "q_count": 6,
+   "gold_example": [
+    "Lothair II",
+    "mother",
+    "Ermengarde of Tours"
+   ],
+   "best_name_type": "MOTHER_IN_LAW",
+   "best_name_cos": 0.4211,
+   "best_ctx_type": "MOTHER_IN_LAW_OF",
+   "best_ctx_cos": 0.4887,
+   "ctx_top2": [
+    {
+     "type": "MOTHER_IN_LAW_OF",
+     "cos": 0.4887,
+     "native_example": [
+      "Doria Ragland",
+      "Prince Harry"
+     ]
+    },
+    {
+     "type": "MOTHER_IN_LAW",
+     "cos": 0.4773,
+     "native_example": [
+      "Maria Thins",
+      "Johannes Vermeer"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "publication date",
+   "q_count": 6,
+   "gold_example": [
+    "Aas Ka Panchhi",
+    "publication date",
+    "1961"
+   ],
+   "best_name_type": "PUBLISHED_BY",
+   "best_name_cos": 0.5458,
+   "best_ctx_type": "COMPOSED_MUSIC_FOR",
+   "best_ctx_cos": 0.1745,
+   "ctx_top2": [
+    {
+     "type": "COMPOSED_MUSIC_FOR",
+     "cos": 0.1745,
+     "native_example": [
+      "Shankar Jaikishan",
+      "Aas Ka Panchhi"
+     ]
+    },
+    {
+     "type": "DISTRIBUTED",
+     "cos": 0.1506,
+     "native_example": [
+      "Metro Pictures",
+      "The Marriage of William Ashe (1921 film)"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "place of birth",
+   "q_count": 20,
+   "gold_example": [
+    "Nicki Minaj",
+    "place of birth",
+    "Port of Spain"
+   ],
+   "best_name_type": "BORN_IN",
+   "best_name_cos": 0.5221,
+   "best_ctx_type": "BORN_IN",
+   "best_ctx_cos": 0.3086,
+   "ctx_top2": [
+    {
+     "type": "BORN_IN",
+     "cos": 0.3086,
+     "native_example": [
+      "Billy Milano",
+      "Bronx"
+     ]
+    },
+    {
+     "type": "RAISED_IN",
+     "cos": 0.2799,
+     "native_example": [
+      "Kim Ki-young",
+      "Pyongyang"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "performer",
+   "q_count": 9,
+   "gold_example": [
+    "Changed It",
+    "performer",
+    "Nicki Minaj"
+   ],
+   "best_name_type": "PERFORMED",
+   "best_name_cos": 0.5099,
+   "best_ctx_type": "RELEASED_BY",
+   "best_ctx_cos": 0.6307,
+   "ctx_top2": [
+    {
+     "type": "RELEASED_BY",
+     "cos": 0.6307,
+     "native_example": [
+      "Changed It",
+      "Young Money Entertainment"
+     ]
+    },
+    {
+     "type": "PERFORMED_SONG",
+     "cos": 0.3548,
+     "native_example": [
+      "Lee Van Cleef",
+      "Captain Apache"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "country",
+   "q_count": 4,
+   "gold_example": [
+    "Marufabad",
+    "country",
+    "Iran"
+   ],
+   "best_name_type": "NATIONALITY",
+   "best_name_cos": 0.3722,
+   "best_ctx_type": "NEAR_BORDER_WITH",
+   "best_ctx_cos": 0.1568,
+   "ctx_top2": [
+    {
+     "type": "NEAR_BORDER_WITH",
+     "cos": 0.1568,
+     "native_example": [
+      "Qillqa",
+      "Cusco Region"
+     ]
+    },
+    {
+     "type": "SOUTHWEST_OF",
+     "cos": 0.149,
+     "native_example": [
+      "Wiqu",
+      "Paryaqaqa"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "director",
+   "q_count": 52,
+   "gold_example": [
+    "God's Gift to Women",
+    "director",
+    "Michael Curtiz"
+   ],
+   "best_name_type": "DIRECTOR_OF",
+   "best_name_cos": 0.7881,
+   "best_ctx_type": "BASED_ON",
+   "best_ctx_cos": 0.397,
+   "ctx_top2": [
+    {
+     "type": "BASED_ON",
+     "cos": 0.397,
+     "native_example": [
+      "God's Gift to Women",
+      "The Devil Was Sick"
+     ]
+    },
+    {
+     "type": "INVITED_BY",
+     "cos": 0.2853,
+     "native_example": [
+      "Michael Curtiz",
+      "Warner Bros."
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "date of birth",
+   "q_count": 36,
+   "gold_example": [
+    "Michael Curtiz",
+    "date of birth",
+    "December 24, 1886"
+   ],
+   "best_name_type": "BORN_ON",
+   "best_name_cos": 0.4392,
+   "best_ctx_type": "BORN_IN",
+   "best_ctx_cos": 0.2158,
+   "ctx_top2": [
+    {
+     "type": "BORN_IN",
+     "cos": 0.2158,
+     "native_example": [
+      "Billy Milano",
+      "Bronx"
+     ]
+    },
+    {
+     "type": "BORN_AT",
+     "cos": 0.197,
+     "native_example": [
+      "Child",
+      "Sea"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "father",
+   "q_count": 21,
+   "gold_example": [
+    "Raghnall Mac Ruaidhr\u00ed",
+    "father",
+    "Ruaidhr\u00ed Mac Ruaidhr\u00ed"
+   ],
+   "best_name_type": "FATHER_OF",
+   "best_name_cos": 0.6405,
+   "best_ctx_type": "FATHER_OF",
+   "best_ctx_cos": 0.4884,
+   "ctx_top2": [
+    {
+     "type": "FATHER_OF",
+     "cos": 0.4884,
+     "native_example": [
+      "Dennis",
+      "Martin Teale"
+     ]
+    },
+    {
+     "type": "FATHER_IN_LAW_OF",
+     "cos": 0.445,
+     "native_example": [
+      "Ragnhild Butensch\u00f8n",
+      "Hans Barthold Andresen Butensch\u00f8n"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "country of citizenship",
+   "q_count": 14,
+   "gold_example": [
+    "Perry Bhandal",
+    "country of citizenship",
+    "British"
+   ],
+   "best_name_type": "HAS_CITIZENSHIP",
+   "best_name_cos": 0.5809,
+   "best_ctx_type": "PRODUCER_OF",
+   "best_ctx_cos": 0.3453,
+   "ctx_top2": [
+    {
+     "type": "PRODUCER_OF",
+     "cos": 0.3453,
+     "native_example": [
+      "Perry Bhandal",
+      "Interview with a Hitman"
+     ]
+    },
+    {
+     "type": "SCREENWRITER_OF",
+     "cos": 0.3084,
+     "native_example": [
+      "Perry Bhandal",
+      "Interview with a Hitman"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "child",
+   "q_count": 4,
+   "gold_example": [
+    "Roger Miller",
+    "child",
+    "Dean Miller"
+   ],
+   "best_name_type": "CHILD_OF",
+   "best_name_cos": 0.6075,
+   "best_ctx_type": "CHILD_OF",
+   "best_ctx_cos": 0.3427,
+   "ctx_top2": [
+    {
+     "type": "CHILD_OF",
+     "cos": 0.3427,
+     "native_example": [
+      "Teutberga",
+      "Bosonid Boso the Elder"
+     ]
+    },
+    {
+     "type": "STEPCHILD_OF",
+     "cos": 0.2828,
+     "native_example": [
+      "Crown Princess Mary of Denmark",
+      "Susan Moody"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "place of death",
+   "q_count": 10,
+   "gold_example": [
+    "William the Silent",
+    "place of death",
+    "Delft"
+   ],
+   "best_name_type": "DIED_AT",
+   "best_name_cos": 0.5873,
+   "best_ctx_type": "MARTYRED_NEAR",
+   "best_ctx_cos": 0.3729,
+   "ctx_top2": [
+    {
+     "type": "MARTYRED_NEAR",
+     "cos": 0.3729,
+     "native_example": [
+      "Rumbold of Mechelen",
+      "Mechelen"
+     ]
+    },
+    {
+     "type": "CREMATED_AT",
+     "cos": 0.3681,
+     "native_example": [
+      "William Pett Ridge",
+      "West Norwood"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "educated at",
+   "q_count": 2,
+   "gold_example": [
+    "John Wallop, 2nd Earl of Portsmouth",
+    "educated at",
+    "Oxford"
+   ],
+   "best_name_type": "TAUGHT_AT",
+   "best_name_cos": 0.5964,
+   "best_ctx_type": "GRADUATED_FROM",
+   "best_ctx_cos": 0.2627,
+   "ctx_top2": [
+    {
+     "type": "GRADUATED_FROM",
+     "cos": 0.2627,
+     "native_example": [
+      "David Shedd Bradley",
+      "School of Speech"
+     ]
+    },
+    {
+     "type": "HAS_DEGREE",
+     "cos": 0.258,
+     "native_example": [
+      "Baglan Mailybayev",
+      "Doctor of Law"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "cause of death",
+   "q_count": 1,
+   "gold_example": [
+    "Katherine Mansfield",
+    "cause of death",
+    "tuberculosis"
+   ],
+   "best_name_type": "CAUSES_DEATH_OF",
+   "best_name_cos": 0.7697,
+   "best_ctx_type": "CAUSES_DEATH_OF",
+   "best_ctx_cos": 0.5035,
+   "ctx_top2": [
+    {
+     "type": "CAUSES_DEATH_OF",
+     "cos": 0.5035,
+     "native_example": [
+      "\u00c1ed",
+      "L\u00f3egaire B\u00faadach"
+     ]
+    },
+    {
+     "type": "DIAGNOSED_WITH",
+     "cos": 0.4567,
+     "native_example": [
+      "Katherine Mansfield",
+      "extrapulmonary tuberculosis"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "spouse",
+   "q_count": 14,
+   "gold_example": [
+    "John Middleton Murry",
+    "spouse",
+    "Katherine Mansfield"
+   ],
+   "best_name_type": "MARRIED_TO",
+   "best_name_cos": 0.4429,
+   "best_ctx_type": "AFFAIR_WITH",
+   "best_ctx_cos": 0.5957,
+   "ctx_top2": [
+    {
+     "type": "AFFAIR_WITH",
+     "cos": 0.5957,
+     "native_example": [
+      "John Middleton Murry",
+      "Frieda Lawrence"
+     ]
+    },
+    {
+     "type": "EDITED",
+     "cos": 0.3771,
+     "native_example": [
+      "John Middleton Murry",
+      "Katherine Mansfield"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "composer",
+   "q_count": 7,
+   "gold_example": [
+    "Billy Elliot",
+    "composer",
+    "Stephen Warbeck"
+   ],
+   "best_name_type": "COMPOSED",
+   "best_name_cos": 0.6314,
+   "best_ctx_type": "COMPOSED",
+   "best_ctx_cos": 0.4877,
+   "ctx_top2": [
+    {
+     "type": "COMPOSED",
+     "cos": 0.4877,
+     "native_example": [
+      "Ryan Shore",
+      "Coney Island Baby"
+     ]
+    },
+    {
+     "type": "COMPOSED_MUSIC",
+     "cos": 0.456,
+     "native_example": [
+      "Phoolwari",
+      "Hansraj Behl"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "employer",
+   "q_count": 2,
+   "gold_example": [
+    "David Bradley",
+    "employer",
+    "UCLA"
+   ],
+   "best_name_type": "EMPLOYED_BY",
+   "best_name_cos": 0.6609,
+   "best_ctx_type": "WORKED_FOR",
+   "best_ctx_cos": 0.373,
+   "ctx_top2": [
+    {
+     "type": "WORKED_FOR",
+     "cos": 0.373,
+     "native_example": [
+      "William Duncan",
+      "Selig Polyscope Company"
+     ]
+    },
+    {
+     "type": "GRADUATED_FROM",
+     "cos": 0.2833,
+     "native_example": [
+      "David Shedd Bradley",
+      "School of Speech"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "place of detention",
+   "q_count": 1,
+   "gold_example": [
+    "Meek Mill",
+    "place of detention",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "best_name_type": "SEIZED_IN",
+   "best_name_cos": 0.3237,
+   "best_ctx_type": "SERVED_AT",
+   "best_ctx_cos": 0.7012,
+   "ctx_top2": [
+    {
+     "type": "SERVED_AT",
+     "cos": 0.7012,
+     "native_example": [
+      "Meek Mill",
+      "State Correctional Institution \u2013 Chester"
+     ]
+    },
+    {
+     "type": "APPEARED_ON",
+     "cos": 0.2024,
+     "native_example": [
+      "Meek Mill",
+      "Self Made"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "country of origin",
+   "q_count": 3,
+   "gold_example": [
+    "Naked Tango",
+    "country of origin",
+    "American"
+   ],
+   "best_name_type": "NATIONALITY_OF",
+   "best_name_cos": 0.3116,
+   "best_ctx_type": "RELEASED_IN_COUNTRY",
+   "best_ctx_cos": 0.27,
+   "ctx_top2": [
+    {
+     "type": "RELEASED_IN_COUNTRY",
+     "cos": 0.27,
+     "native_example": [
+      "Inherent Vice",
+      "United States"
+     ]
+    },
+    {
+     "type": "BORN_IN",
+     "cos": 0.2088,
+     "native_example": [
+      "Billy Milano",
+      "Bronx"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "inception",
+   "q_count": 2,
+   "gold_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "inception",
+    "1893"
+   ],
+   "best_name_type": "INTRODUCED",
+   "best_name_cos": 0.3465,
+   "best_ctx_type": "FOUNDED_IN",
+   "best_ctx_cos": 0.8309,
+   "ctx_top2": [
+    {
+     "type": "FOUNDED_IN",
+     "cos": 0.8309,
+     "native_example": [
+      "Museum of Croatian Archaeological Monuments",
+      "Knin"
+     ]
+    },
+    {
+     "type": "RESTORED_BY",
+     "cos": 0.2617,
+     "native_example": [
+      "Ulucanlar Prison Museum",
+      "Alt\u0131nda\u011f Municipality"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "sibling",
+   "q_count": 2,
+   "gold_example": [
+    "Fa\u00edlbe Flann mac \u00c1edo Duib",
+    "sibling",
+    "F\u00edngen mac \u00c1edo Duib"
+   ],
+   "best_name_type": "SIBLING_OF",
+   "best_name_cos": 0.8807,
+   "best_ctx_type": "SIBLING_OF",
+   "best_ctx_cos": 0.5398,
+   "ctx_top2": [
+    {
+     "type": "SIBLING_OF",
+     "cos": 0.5398,
+     "native_example": [
+      "Teutberga",
+      "Hucbert"
+     ]
+    },
+    {
+     "type": "DESCENDANT_OF",
+     "cos": 0.4712,
+     "native_example": [
+      "Tn\u00fathgal mac Donngaile",
+      "Colg\u00fa mac Fa\u00edlbe Flaind"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "founded by",
+   "q_count": 1,
+   "gold_example": [
+    "Track & Field News",
+    "founded by",
+    "Bert Nelson"
+   ],
+   "best_name_type": "FOUNDED_BY",
+   "best_name_cos": 1.0,
+   "best_ctx_type": "PUBLISHER_OF",
+   "best_ctx_cos": 0.5634,
+   "ctx_top2": [
+    {
+     "type": "PUBLISHER_OF",
+     "cos": 0.5634,
+     "native_example": [
+      "Janet Vitu",
+      "Track and Field News"
+     ]
+    },
+    {
+     "type": "PUBLISHER_EMERITUS_OF",
+     "cos": 0.3547,
+     "native_example": [
+      "Ed Fox",
+      "Track and Field News"
+     ]
+    }
+   ]
+  },
+  {
+   "gold": "publisher",
+   "q_count": 1,
+   "gold_example": [
+    "The Miscellany News",
+    "publisher",
+    "Vassar College"
+   ],
+   "best_name_type": "PUBLISHER_OF",
+   "best_name_cos": 0.8195,
+   "best_ctx_type": "PUBLISHER_OF",
+   "best_ctx_cos": 0.5011,
+   "ctx_top2": [
+    {
+     "type": "PUBLISHER_OF",
+     "cos": 0.5011,
+     "native_example": [
+      "Janet Vitu",
+      "Track and Field News"
+     ]
+    },
+    {
+     "type": "PUBLISHER_EMERITUS_OF",
+     "cos": 0.3789,
+     "native_example": [
+      "Ed Fox",
+      "Track and Field News"
+     ]
+    }
+   ]
+  }
+ ],
+ "handcheck_candidates": [
+  {
+   "gold": "date of death",
+   "native": "DIED_AT",
+   "arm": "name",
+   "name_cos": 0.4537,
+   "ctx_cos": 0.1363,
+   "gold_example": [
+    "Ermengarde of Tours",
+    "date of death",
+    "20 March 851"
+   ],
+   "native_example": [
+    "William Pett Ridge",
+    "Ampthill"
+   ],
+   "pair_id": 0
+  },
+  {
+   "gold": "mother",
+   "native": "MOTHER_IN_LAW",
+   "arm": "name",
+   "name_cos": 0.4211,
+   "ctx_cos": 0.4773,
+   "gold_example": [
+    "Lothair II",
+    "mother",
+    "Ermengarde of Tours"
+   ],
+   "native_example": [
+    "Maria Thins",
+    "Johannes Vermeer"
+   ],
+   "pair_id": 1
+  },
+  {
+   "gold": "publication date",
+   "native": "PUBLISHED_BY",
+   "arm": "name",
+   "name_cos": 0.5458,
+   "ctx_cos": 0.1351,
+   "gold_example": [
+    "Aas Ka Panchhi",
+    "publication date",
+    "1961"
+   ],
+   "native_example": [
+    "Historia eclesi\u00e1stica indiana",
+    "Joaqu\u00edn Garc\u00eda Icazbalceta"
+   ],
+   "pair_id": 2
+  },
+  {
+   "gold": "place of birth",
+   "native": "BORN_IN",
+   "arm": "name",
+   "name_cos": 0.5221,
+   "ctx_cos": 0.3086,
+   "gold_example": [
+    "Nicki Minaj",
+    "place of birth",
+    "Port of Spain"
+   ],
+   "native_example": [
+    "Billy Milano",
+    "Bronx"
+   ],
+   "pair_id": 3
+  },
+  {
+   "gold": "performer",
+   "native": "PERFORMED",
+   "arm": "name",
+   "name_cos": 0.5099,
+   "ctx_cos": 0.3213,
+   "gold_example": [
+    "Changed It",
+    "performer",
+    "Nicki Minaj"
+   ],
+   "native_example": [
+    "Sammy Hagar",
+    "I Can't Drive 55"
+   ],
+   "pair_id": 4
+  },
+  {
+   "gold": "country",
+   "native": "NATIONALITY",
+   "arm": "name",
+   "name_cos": 0.3722,
+   "ctx_cos": 0.1013,
+   "gold_example": [
+    "Marufabad",
+    "country",
+    "Iran"
+   ],
+   "native_example": [
+    "Khalid al-Habib",
+    "Egyptian"
+   ],
+   "pair_id": 5
+  },
+  {
+   "gold": "director",
+   "native": "DIRECTOR_OF",
+   "arm": "name",
+   "name_cos": 0.7881,
+   "ctx_cos": 0.2288,
+   "gold_example": [
+    "God's Gift to Women",
+    "director",
+    "Michael Curtiz"
+   ],
+   "native_example": [
+    "Logan Sandler",
+    "Live Cargo"
+   ],
+   "pair_id": 6
+  },
+  {
+   "gold": "date of birth",
+   "native": "BORN_ON",
+   "arm": "name",
+   "name_cos": 0.4392,
+   "ctx_cos": 0.1371,
+   "gold_example": [
+    "Michael Curtiz",
+    "date of birth",
+    "December 24, 1886"
+   ],
+   "native_example": [
+    "Child",
+    "Plane"
+   ],
+   "pair_id": 7
+  },
+  {
+   "gold": "father",
+   "native": "FATHER_OF",
+   "arm": "name",
+   "name_cos": 0.6405,
+   "ctx_cos": 0.4884,
+   "gold_example": [
+    "Raghnall Mac Ruaidhr\u00ed",
+    "father",
+    "Ruaidhr\u00ed Mac Ruaidhr\u00ed"
+   ],
+   "native_example": [
+    "Dennis",
+    "Martin Teale"
+   ],
+   "pair_id": 8
+  },
+  {
+   "gold": "country of citizenship",
+   "native": "HAS_CITIZENSHIP",
+   "arm": "name",
+   "name_cos": 0.5809,
+   "ctx_cos": 0.292,
+   "gold_example": [
+    "Perry Bhandal",
+    "country of citizenship",
+    "British"
+   ],
+   "native_example": [
+    "Aivar Kuusmaa",
+    "Greece"
+   ],
+   "pair_id": 9
+  },
+  {
+   "gold": "child",
+   "native": "CHILD_OF",
+   "arm": "name",
+   "name_cos": 0.6075,
+   "ctx_cos": 0.3427,
+   "gold_example": [
+    "Roger Miller",
+    "child",
+    "Dean Miller"
+   ],
+   "native_example": [
+    "Teutberga",
+    "Bosonid Boso the Elder"
+   ],
+   "pair_id": 10
+  },
+  {
+   "gold": "place of death",
+   "native": "DIED_AT",
+   "arm": "name",
+   "name_cos": 0.5873,
+   "ctx_cos": 0.3613,
+   "gold_example": [
+    "William the Silent",
+    "place of death",
+    "Delft"
+   ],
+   "native_example": [
+    "William Pett Ridge",
+    "Ampthill"
+   ],
+   "pair_id": 11
+  },
+  {
+   "gold": "educated at",
+   "native": "TAUGHT_AT",
+   "arm": "name",
+   "name_cos": 0.5964,
+   "ctx_cos": 0.2057,
+   "gold_example": [
+    "John Wallop, 2nd Earl of Portsmouth",
+    "educated at",
+    "Oxford"
+   ],
+   "native_example": [
+    "Karl von Czyhlarz",
+    "Charles University"
+   ],
+   "pair_id": 12
+  },
+  {
+   "gold": "cause of death",
+   "native": "CAUSES_DEATH_OF",
+   "arm": "name",
+   "name_cos": 0.7697,
+   "ctx_cos": 0.5035,
+   "gold_example": [
+    "Katherine Mansfield",
+    "cause of death",
+    "tuberculosis"
+   ],
+   "native_example": [
+    "\u00c1ed",
+    "L\u00f3egaire B\u00faadach"
+   ],
+   "pair_id": 13
+  },
+  {
+   "gold": "spouse",
+   "native": "MARRIED_TO",
+   "arm": "name",
+   "name_cos": 0.4429,
+   "ctx_cos": 0.3555,
+   "gold_example": [
+    "John Middleton Murry",
+    "spouse",
+    "Katherine Mansfield"
+   ],
+   "native_example": [
+    "Teutberga",
+    "Lothair II"
+   ],
+   "pair_id": 14
+  },
+  {
+   "gold": "composer",
+   "native": "COMPOSED",
+   "arm": "name",
+   "name_cos": 0.6314,
+   "ctx_cos": 0.4877,
+   "gold_example": [
+    "Billy Elliot",
+    "composer",
+    "Stephen Warbeck"
+   ],
+   "native_example": [
+    "Ryan Shore",
+    "Coney Island Baby"
+   ],
+   "pair_id": 15
+  },
+  {
+   "gold": "employer",
+   "native": "EMPLOYED_BY",
+   "arm": "name",
+   "name_cos": 0.6609,
+   "ctx_cos": 0.2766,
+   "gold_example": [
+    "David Bradley",
+    "employer",
+    "UCLA"
+   ],
+   "native_example": [
+    "Kurt Schr\u00f6der",
+    "London Film Productions"
+   ],
+   "pair_id": 16
+  },
+  {
+   "gold": "place of detention",
+   "native": "SEIZED_IN",
+   "arm": "name",
+   "name_cos": 0.3237,
+   "ctx_cos": 0.063,
+   "gold_example": [
+    "Meek Mill",
+    "place of detention",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "native_example": [
+    "Final Exam (1981 film)",
+    "UK"
+   ],
+   "pair_id": 17
+  },
+  {
+   "gold": "country of origin",
+   "native": "NATIONALITY_OF",
+   "arm": "name",
+   "name_cos": 0.3116,
+   "ctx_cos": 0.1806,
+   "gold_example": [
+    "Naked Tango",
+    "country of origin",
+    "American"
+   ],
+   "native_example": [
+    "Lyon Cohen",
+    "Polish"
+   ],
+   "pair_id": 18
+  },
+  {
+   "gold": "inception",
+   "native": "INTRODUCED",
+   "arm": "name",
+   "name_cos": 0.3465,
+   "ctx_cos": 0.0979,
+   "gold_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "inception",
+    "1893"
+   ],
+   "native_example": [
+    "Ung flukt",
+    "Liv Ullmann"
+   ],
+   "pair_id": 19
+  },
+  {
+   "gold": "sibling",
+   "native": "SIBLING_OF",
+   "arm": "name",
+   "name_cos": 0.8807,
+   "ctx_cos": 0.5398,
+   "gold_example": [
+    "Fa\u00edlbe Flann mac \u00c1edo Duib",
+    "sibling",
+    "F\u00edngen mac \u00c1edo Duib"
+   ],
+   "native_example": [
+    "Teutberga",
+    "Hucbert"
+   ],
+   "pair_id": 20
+  },
+  {
+   "gold": "founded by",
+   "native": "FOUNDED_BY",
+   "arm": "name",
+   "name_cos": 1.0,
+   "ctx_cos": 0.2772,
+   "gold_example": [
+    "Track & Field News",
+    "founded by",
+    "Bert Nelson"
+   ],
+   "native_example": [
+    "GlobalPost",
+    "Philip S. Balboni"
+   ],
+   "pair_id": 21
+  },
+  {
+   "gold": "publisher",
+   "native": "PUBLISHER_OF",
+   "arm": "name",
+   "name_cos": 0.8195,
+   "ctx_cos": 0.5011,
+   "gold_example": [
+    "The Miscellany News",
+    "publisher",
+    "Vassar College"
+   ],
+   "native_example": [
+    "Janet Vitu",
+    "Track and Field News"
+   ],
+   "pair_id": 22
+  },
+  {
+   "gold": "inception",
+   "native": "FOUNDED_IN",
+   "arm": "context",
+   "name_cos": 0.2165,
+   "ctx_cos": 0.8309,
+   "gold_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "inception",
+    "1893"
+   ],
+   "native_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "Knin"
+   ],
+   "pair_id": 23
+  },
+  {
+   "gold": "place of detention",
+   "native": "SERVED_AT",
+   "arm": "context",
+   "name_cos": 0.1941,
+   "ctx_cos": 0.7012,
+   "gold_example": [
+    "Meek Mill",
+    "place of detention",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "native_example": [
+    "Meek Mill",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "pair_id": 24
+  },
+  {
+   "gold": "performer",
+   "native": "RELEASED_BY",
+   "arm": "context",
+   "name_cos": 0.1667,
+   "ctx_cos": 0.6307,
+   "gold_example": [
+    "Changed It",
+    "performer",
+    "Nicki Minaj"
+   ],
+   "native_example": [
+    "Changed It",
+    "Young Money Entertainment"
+   ],
+   "pair_id": 25
+  },
+  {
+   "gold": "spouse",
+   "native": "AFFAIR_WITH",
+   "arm": "context",
+   "name_cos": 0.1332,
+   "ctx_cos": 0.5957,
+   "gold_example": [
+    "John Middleton Murry",
+    "spouse",
+    "Katherine Mansfield"
+   ],
+   "native_example": [
+    "John Middleton Murry",
+    "Frieda Lawrence"
+   ],
+   "pair_id": 26
+  },
+  {
+   "gold": "founded by",
+   "native": "PUBLISHER_OF",
+   "arm": "context",
+   "name_cos": 0.2323,
+   "ctx_cos": 0.5634,
+   "gold_example": [
+    "Track & Field News",
+    "founded by",
+    "Bert Nelson"
+   ],
+   "native_example": [
+    "Janet Vitu",
+    "Track and Field News"
+   ],
+   "pair_id": 27
+  },
+  {
+   "gold": "mother",
+   "native": "MOTHER_IN_LAW_OF",
+   "arm": "context",
+   "name_cos": 0.3796,
+   "ctx_cos": 0.4887,
+   "gold_example": [
+    "Lothair II",
+    "mother",
+    "Ermengarde of Tours"
+   ],
+   "native_example": [
+    "Doria Ragland",
+    "Prince Harry"
+   ],
+   "pair_id": 28
+  },
+  {
+   "gold": "director",
+   "native": "BASED_ON",
+   "arm": "context",
+   "name_cos": 0.1867,
+   "ctx_cos": 0.397,
+   "gold_example": [
+    "God's Gift to Women",
+    "director",
+    "Michael Curtiz"
+   ],
+   "native_example": [
+    "God's Gift to Women",
+    "The Devil Was Sick"
+   ],
+   "pair_id": 29
+  }
+ ],
+ "handcheck_judged": [
+  {
+   "gold": "date of death",
+   "native": "DIED_AT",
+   "arm": "name",
+   "name_cos": 0.4537,
+   "ctx_cos": 0.1363,
+   "gold_example": [
+    "Ermengarde of Tours",
+    "date of death",
+    "20 March 851"
+   ],
+   "native_example": [
+    "William Pett Ridge",
+    "Ampthill"
+   ],
+   "pair_id": 0,
+   "expresses_gold": false,
+   "judge_note": "DIED_AT expresses PLACE of death (Ampthill); gold wants the DATE (20 March 851). Dates are not modeled as edges."
+  },
+  {
+   "gold": "mother",
+   "native": "MOTHER_IN_LAW",
+   "arm": "name",
+   "name_cos": 0.4211,
+   "ctx_cos": 0.4773,
+   "gold_example": [
+    "Lothair II",
+    "mother",
+    "Ermengarde of Tours"
+   ],
+   "native_example": [
+    "Maria Thins",
+    "Johannes Vermeer"
+   ],
+   "pair_id": 1,
+   "expresses_gold": false,
+   "judge_note": "mother-in-law != mother; different kinship relation."
+  },
+  {
+   "gold": "publication date",
+   "native": "PUBLISHED_BY",
+   "arm": "name",
+   "name_cos": 0.5458,
+   "ctx_cos": 0.1351,
+   "gold_example": [
+    "Aas Ka Panchhi",
+    "publication date",
+    "1961"
+   ],
+   "native_example": [
+    "Historia eclesi\u00e1stica indiana",
+    "Joaqu\u00edn Garc\u00eda Icazbalceta"
+   ],
+   "pair_id": 2,
+   "expresses_gold": false,
+   "judge_note": "PUBLISHED_BY is the publisher (person/org); gold wants the DATE (1961)."
+  },
+  {
+   "gold": "place of birth",
+   "native": "BORN_IN",
+   "arm": "name",
+   "name_cos": 0.5221,
+   "ctx_cos": 0.3086,
+   "gold_example": [
+    "Nicki Minaj",
+    "place of birth",
+    "Port of Spain"
+   ],
+   "native_example": [
+    "Billy Milano",
+    "Bronx"
+   ],
+   "pair_id": 3,
+   "expresses_gold": true,
+   "judge_note": "BORN_IN expresses place of birth (Bronx); correct."
+  },
+  {
+   "gold": "performer",
+   "native": "PERFORMED",
+   "arm": "name",
+   "name_cos": 0.5099,
+   "ctx_cos": 0.3213,
+   "gold_example": [
+    "Changed It",
+    "performer",
+    "Nicki Minaj"
+   ],
+   "native_example": [
+    "Sammy Hagar",
+    "I Can't Drive 55"
+   ],
+   "pair_id": 4,
+   "expresses_gold": true,
+   "judge_note": "PERFORMED = performer-of a song (inverse direction); correct relation."
+  },
+  {
+   "gold": "country",
+   "native": "NATIONALITY",
+   "arm": "name",
+   "name_cos": 0.3722,
+   "ctx_cos": 0.1013,
+   "gold_example": [
+    "Marufabad",
+    "country",
+    "Iran"
+   ],
+   "native_example": [
+    "Khalid al-Habib",
+    "Egyptian"
+   ],
+   "pair_id": 5,
+   "expresses_gold": false,
+   "judge_note": "NATIONALITY is a person's nationality; gold wants a place's country (Marufabad->Iran). LOCATED_IN would be correct."
+  },
+  {
+   "gold": "director",
+   "native": "DIRECTOR_OF",
+   "arm": "name",
+   "name_cos": 0.7881,
+   "ctx_cos": 0.2288,
+   "gold_example": [
+    "God's Gift to Women",
+    "director",
+    "Michael Curtiz"
+   ],
+   "native_example": [
+    "Logan Sandler",
+    "Live Cargo"
+   ],
+   "pair_id": 6,
+   "expresses_gold": true,
+   "judge_note": "DIRECTOR_OF = director of a film (inverse direction); correct."
+  },
+  {
+   "gold": "date of birth",
+   "native": "BORN_ON",
+   "arm": "name",
+   "name_cos": 0.4392,
+   "ctx_cos": 0.1371,
+   "gold_example": [
+    "Michael Curtiz",
+    "date of birth",
+    "December 24, 1886"
+   ],
+   "native_example": [
+    "Child",
+    "Plane"
+   ],
+   "pair_id": 7,
+   "expresses_gold": false,
+   "judge_note": "BORN_ON example is garbage (Child->Plane); dates not modeled as edges; not a date-of-birth relation."
+  },
+  {
+   "gold": "father",
+   "native": "FATHER_OF",
+   "arm": "name",
+   "name_cos": 0.6405,
+   "ctx_cos": 0.4884,
+   "gold_example": [
+    "Raghnall Mac Ruaidhr\u00ed",
+    "father",
+    "Ruaidhr\u00ed Mac Ruaidhr\u00ed"
+   ],
+   "native_example": [
+    "Dennis",
+    "Martin Teale"
+   ],
+   "pair_id": 8,
+   "expresses_gold": true,
+   "judge_note": "FATHER_OF = fatherhood (inverse direction); correct relation."
+  },
+  {
+   "gold": "country of citizenship",
+   "native": "HAS_CITIZENSHIP",
+   "arm": "name",
+   "name_cos": 0.5809,
+   "ctx_cos": 0.292,
+   "gold_example": [
+    "Perry Bhandal",
+    "country of citizenship",
+    "British"
+   ],
+   "native_example": [
+    "Aivar Kuusmaa",
+    "Greece"
+   ],
+   "pair_id": 9,
+   "expresses_gold": true,
+   "judge_note": "HAS_CITIZENSHIP = citizenship; correct."
+  },
+  {
+   "gold": "child",
+   "native": "CHILD_OF",
+   "arm": "name",
+   "name_cos": 0.6075,
+   "ctx_cos": 0.3427,
+   "gold_example": [
+    "Roger Miller",
+    "child",
+    "Dean Miller"
+   ],
+   "native_example": [
+    "Teutberga",
+    "Bosonid Boso the Elder"
+   ],
+   "pair_id": 10,
+   "expresses_gold": true,
+   "judge_note": "CHILD_OF = parent-child (inverse of gold child); correct relation (loses direction/gender only)."
+  },
+  {
+   "gold": "place of death",
+   "native": "DIED_AT",
+   "arm": "name",
+   "name_cos": 0.5873,
+   "ctx_cos": 0.3613,
+   "gold_example": [
+    "William the Silent",
+    "place of death",
+    "Delft"
+   ],
+   "native_example": [
+    "William Pett Ridge",
+    "Ampthill"
+   ],
+   "pair_id": 11,
+   "expresses_gold": true,
+   "judge_note": "DIED_AT expresses place of death (Delft/Ampthill); correct."
+  },
+  {
+   "gold": "educated at",
+   "native": "TAUGHT_AT",
+   "arm": "name",
+   "name_cos": 0.5964,
+   "ctx_cos": 0.2057,
+   "gold_example": [
+    "John Wallop, 2nd Earl of Portsmouth",
+    "educated at",
+    "Oxford"
+   ],
+   "native_example": [
+    "Karl von Czyhlarz",
+    "Charles University"
+   ],
+   "pair_id": 12,
+   "expresses_gold": false,
+   "judge_note": "TAUGHT_AT = teacher role (taught at an institution); gold educated_at = student role. Opposite role; ATTENDED/GRADUATED_FROM/STUDIED_UNDER would be correct."
+  },
+  {
+   "gold": "cause of death",
+   "native": "CAUSES_DEATH_OF",
+   "arm": "name",
+   "name_cos": 0.7697,
+   "ctx_cos": 0.5035,
+   "gold_example": [
+    "Katherine Mansfield",
+    "cause of death",
+    "tuberculosis"
+   ],
+   "native_example": [
+    "\u00c1ed",
+    "L\u00f3egaire B\u00faadach"
+   ],
+   "pair_id": 13,
+   "expresses_gold": false,
+   "judge_note": "CAUSES_DEATH_OF example is person-kills-person (Aed->Loegaire, homicide); gold cause_of_death = disease (tuberculosis). DIED_OF is the correct native type (not the argmax)."
+  },
+  {
+   "gold": "spouse",
+   "native": "MARRIED_TO",
+   "arm": "name",
+   "name_cos": 0.4429,
+   "ctx_cos": 0.3555,
+   "gold_example": [
+    "John Middleton Murry",
+    "spouse",
+    "Katherine Mansfield"
+   ],
+   "native_example": [
+    "Teutberga",
+    "Lothair II"
+   ],
+   "pair_id": 14,
+   "expresses_gold": true,
+   "judge_note": "MARRIED_TO = marriage/spouse; correct despite low cosine 0.443."
+  },
+  {
+   "gold": "composer",
+   "native": "COMPOSED",
+   "arm": "name",
+   "name_cos": 0.6314,
+   "ctx_cos": 0.4877,
+   "gold_example": [
+    "Billy Elliot",
+    "composer",
+    "Stephen Warbeck"
+   ],
+   "native_example": [
+    "Ryan Shore",
+    "Coney Island Baby"
+   ],
+   "pair_id": 15,
+   "expresses_gold": true,
+   "judge_note": "COMPOSED = composer-of (inverse direction); correct."
+  },
+  {
+   "gold": "employer",
+   "native": "EMPLOYED_BY",
+   "arm": "name",
+   "name_cos": 0.6609,
+   "ctx_cos": 0.2766,
+   "gold_example": [
+    "David Bradley",
+    "employer",
+    "UCLA"
+   ],
+   "native_example": [
+    "Kurt Schr\u00f6der",
+    "London Film Productions"
+   ],
+   "pair_id": 16,
+   "expresses_gold": true,
+   "judge_note": "EMPLOYED_BY = employer; correct."
+  },
+  {
+   "gold": "place of detention",
+   "native": "SEIZED_IN",
+   "arm": "name",
+   "name_cos": 0.3237,
+   "ctx_cos": 0.063,
+   "gold_example": [
+    "Meek Mill",
+    "place of detention",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "native_example": [
+    "Final Exam (1981 film)",
+    "UK"
+   ],
+   "pair_id": 17,
+   "expresses_gold": false,
+   "judge_note": "SEIZED_IN example is a film banned/seized in a country; not a person's place of detention. SERVED_AT (context arm) is the correct type."
+  },
+  {
+   "gold": "country of origin",
+   "native": "NATIONALITY_OF",
+   "arm": "name",
+   "name_cos": 0.3116,
+   "ctx_cos": 0.1806,
+   "gold_example": [
+    "Naked Tango",
+    "country of origin",
+    "American"
+   ],
+   "native_example": [
+    "Lyon Cohen",
+    "Polish"
+   ],
+   "pair_id": 18,
+   "expresses_gold": false,
+   "judge_note": "NATIONALITY_OF is a person's nationality; gold = a work's country of origin."
+  },
+  {
+   "gold": "inception",
+   "native": "INTRODUCED",
+   "arm": "name",
+   "name_cos": 0.3465,
+   "ctx_cos": 0.0979,
+   "gold_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "inception",
+    "1893"
+   ],
+   "native_example": [
+    "Ung flukt",
+    "Liv Ullmann"
+   ],
+   "pair_id": 19,
+   "expresses_gold": false,
+   "judge_note": "INTRODUCED = debut/introduced a person; gold inception = founding DATE (1893); dates not modeled."
+  },
+  {
+   "gold": "sibling",
+   "native": "SIBLING_OF",
+   "arm": "name",
+   "name_cos": 0.8807,
+   "ctx_cos": 0.5398,
+   "gold_example": [
+    "Fa\u00edlbe Flann mac \u00c1edo Duib",
+    "sibling",
+    "F\u00edngen mac \u00c1edo Duib"
+   ],
+   "native_example": [
+    "Teutberga",
+    "Hucbert"
+   ],
+   "pair_id": 20,
+   "expresses_gold": true,
+   "judge_note": "SIBLING_OF = sibling; correct."
+  },
+  {
+   "gold": "founded by",
+   "native": "FOUNDED_BY",
+   "arm": "name",
+   "name_cos": 1.0,
+   "ctx_cos": 0.2772,
+   "gold_example": [
+    "Track & Field News",
+    "founded by",
+    "Bert Nelson"
+   ],
+   "native_example": [
+    "GlobalPost",
+    "Philip S. Balboni"
+   ],
+   "pair_id": 21,
+   "expresses_gold": true,
+   "judge_note": "FOUNDED_BY = founder; exact match, correct."
+  },
+  {
+   "gold": "publisher",
+   "native": "PUBLISHER_OF",
+   "arm": "name",
+   "name_cos": 0.8195,
+   "ctx_cos": 0.5011,
+   "gold_example": [
+    "The Miscellany News",
+    "publisher",
+    "Vassar College"
+   ],
+   "native_example": [
+    "Janet Vitu",
+    "Track and Field News"
+   ],
+   "pair_id": 22,
+   "expresses_gold": true,
+   "judge_note": "PUBLISHER_OF = publisher (inverse direction); correct."
+  },
+  {
+   "gold": "inception",
+   "native": "FOUNDED_IN",
+   "arm": "context",
+   "name_cos": 0.2165,
+   "ctx_cos": 0.8309,
+   "gold_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "inception",
+    "1893"
+   ],
+   "native_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "Knin"
+   ],
+   "pair_id": 23,
+   "expresses_gold": false,
+   "judge_note": "FOUNDED_IN example object is a PLACE (Knin); gold inception is a DATE (1893). Cosine 0.831 is spurious - both example triples share the identical subject entity."
+  },
+  {
+   "gold": "place of detention",
+   "native": "SERVED_AT",
+   "arm": "context",
+   "name_cos": 0.1941,
+   "ctx_cos": 0.7012,
+   "gold_example": [
+    "Meek Mill",
+    "place of detention",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "native_example": [
+    "Meek Mill",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "pair_id": 24,
+   "expresses_gold": true,
+   "judge_note": "SERVED_AT example (Meek Mill served at the correctional institution) does express place of detention; correct - same entity pair as gold."
+  },
+  {
+   "gold": "performer",
+   "native": "RELEASED_BY",
+   "arm": "context",
+   "name_cos": 0.1667,
+   "ctx_cos": 0.6307,
+   "gold_example": [
+    "Changed It",
+    "performer",
+    "Nicki Minaj"
+   ],
+   "native_example": [
+    "Changed It",
+    "Young Money Entertainment"
+   ],
+   "pair_id": 25,
+   "expresses_gold": false,
+   "judge_note": "RELEASED_BY = record label; gold performer = artist. Spurious high cosine from shared subject 'Changed It'."
+  },
+  {
+   "gold": "spouse",
+   "native": "AFFAIR_WITH",
+   "arm": "context",
+   "name_cos": 0.1332,
+   "ctx_cos": 0.5957,
+   "gold_example": [
+    "John Middleton Murry",
+    "spouse",
+    "Katherine Mansfield"
+   ],
+   "native_example": [
+    "John Middleton Murry",
+    "Frieda Lawrence"
+   ],
+   "pair_id": 26,
+   "expresses_gold": false,
+   "judge_note": "AFFAIR_WITH != spouse; spurious from shared subject entity."
+  },
+  {
+   "gold": "founded by",
+   "native": "PUBLISHER_OF",
+   "arm": "context",
+   "name_cos": 0.2323,
+   "ctx_cos": 0.5634,
+   "gold_example": [
+    "Track & Field News",
+    "founded by",
+    "Bert Nelson"
+   ],
+   "native_example": [
+    "Janet Vitu",
+    "Track and Field News"
+   ],
+   "pair_id": 27,
+   "expresses_gold": false,
+   "judge_note": "PUBLISHER_OF != founder; spurious from shared object 'Track and Field News'."
+  },
+  {
+   "gold": "mother",
+   "native": "MOTHER_IN_LAW_OF",
+   "arm": "context",
+   "name_cos": 0.3796,
+   "ctx_cos": 0.4887,
+   "gold_example": [
+    "Lothair II",
+    "mother",
+    "Ermengarde of Tours"
+   ],
+   "native_example": [
+    "Doria Ragland",
+    "Prince Harry"
+   ],
+   "pair_id": 28,
+   "expresses_gold": false,
+   "judge_note": "mother-in-law != mother."
+  },
+  {
+   "gold": "director",
+   "native": "BASED_ON",
+   "arm": "context",
+   "name_cos": 0.1867,
+   "ctx_cos": 0.397,
+   "gold_example": [
+    "God's Gift to Women",
+    "director",
+    "Michael Curtiz"
+   ],
+   "native_example": [
+    "God's Gift to Women",
+    "The Devil Was Sick"
+   ],
+   "pair_id": 29,
+   "expresses_gold": false,
+   "judge_note": "BASED_ON = source material; != director. Spurious from shared subject."
+  }
+ ],
+ "handcheck_unjudged": [],
+ "name_arm_precision_sweep": [
+  {
+   "threshold": 0.4,
+   "n_aligned": 19,
+   "false_alignments": 6,
+   "false_alignment_rate": 0.3158,
+   "coverage_raw_unweighted": 0.8261,
+   "coverage_true_unweighted": 0.5652,
+   "coverage_true_qweighted": 0.6738,
+   "precision_ok_le20pct": false
+  },
+  {
+   "threshold": 0.45,
+   "n_aligned": 16,
+   "false_alignments": 4,
+   "false_alignment_rate": 0.25,
+   "coverage_raw_unweighted": 0.6957,
+   "coverage_true_unweighted": 0.5217,
+   "coverage_true_qweighted": 0.6137,
+   "precision_ok_le20pct": false
+  },
+  {
+   "threshold": 0.5,
+   "n_aligned": 15,
+   "false_alignments": 3,
+   "false_alignment_rate": 0.2,
+   "coverage_raw_unweighted": 0.6522,
+   "coverage_true_unweighted": 0.5217,
+   "coverage_true_qweighted": 0.6137,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.55,
+   "n_aligned": 12,
+   "false_alignments": 2,
+   "false_alignment_rate": 0.1667,
+   "coverage_raw_unweighted": 0.5217,
+   "coverage_true_unweighted": 0.4348,
+   "coverage_true_qweighted": 0.4893,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.6,
+   "n_aligned": 9,
+   "false_alignments": 1,
+   "false_alignment_rate": 0.1111,
+   "coverage_raw_unweighted": 0.3913,
+   "coverage_true_unweighted": 0.3478,
+   "coverage_true_qweighted": 0.3863,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.65,
+   "n_aligned": 6,
+   "false_alignments": 1,
+   "false_alignment_rate": 0.1667,
+   "coverage_raw_unweighted": 0.2609,
+   "coverage_true_unweighted": 0.2174,
+   "coverage_true_qweighted": 0.2489,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.7,
+   "n_aligned": 5,
+   "false_alignments": 1,
+   "false_alignment_rate": 0.2,
+   "coverage_raw_unweighted": 0.2174,
+   "coverage_true_unweighted": 0.1739,
+   "coverage_true_qweighted": 0.2403,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.75,
+   "n_aligned": 5,
+   "false_alignments": 1,
+   "false_alignment_rate": 0.2,
+   "coverage_raw_unweighted": 0.2174,
+   "coverage_true_unweighted": 0.1739,
+   "coverage_true_qweighted": 0.2403,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.8,
+   "n_aligned": 3,
+   "false_alignments": 0,
+   "false_alignment_rate": 0.0,
+   "coverage_raw_unweighted": 0.1304,
+   "coverage_true_unweighted": 0.1304,
+   "coverage_true_qweighted": 0.0172,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.85,
+   "n_aligned": 2,
+   "false_alignments": 0,
+   "false_alignment_rate": 0.0,
+   "coverage_raw_unweighted": 0.087,
+   "coverage_true_unweighted": 0.087,
+   "coverage_true_qweighted": 0.0129,
+   "precision_ok_le20pct": true
+  },
+  {
+   "threshold": 0.9,
+   "n_aligned": 1,
+   "false_alignments": 0,
+   "false_alignment_rate": 0.0,
+   "coverage_raw_unweighted": 0.0435,
+   "coverage_true_unweighted": 0.0435,
+   "coverage_true_qweighted": 0.0043,
+   "precision_ok_le20pct": true
+  }
+ ],
+ "false_alignment_summary": {
+  "sample_size": 30,
+  "true": 14,
+  "false": 16,
+  "sample_false_rate": 0.5333,
+  "counted_alignments_name_arm_0.6": 9,
+  "false_among_counted_0.6": 1,
+  "false_rate_at_0.6": 0.1111,
+  "note": "30-pair sample = 23 name-arm best picks + 7 highest-cosine context-arm best picks that differ from the name arm. Judge = executor, deterministic: does the native type's example triple express the gold relation? Per-threshold false-alignment in name_arm_precision_sweep."
+ },
+ "decision": {
+  "anchor_0.6_name_coverage": 0.3913,
+  "anchor_0.6_context_coverage": 0.1304,
+  "best_true_coverage_at_le20pct_false": 0.5217,
+  "best_usable_threshold": 0.5,
+  "best_usable_qweighted": 0.6137,
+  "correct_coverage_ceiling_any_threshold": 0.5652
+ }
+}

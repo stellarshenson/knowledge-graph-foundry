@@ -1,0 +1,4008 @@
+{
+ "summary": {
+  "run_id": "20260713T191353Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "n_eligible": 132,
+  "n_scorable": 86,
+  "budget_fraction": 0.5,
+  "recall_at_budget_per_arm": {
+   "llm": 0.687,
+   "degree": 0.5422,
+   "pagerank": 0.5646,
+   "random": 0.5023
+  },
+  "llm_minus_degree": 0.1448,
+  "llm_minus_pagerank": 0.1224,
+  "llm_minus_random": 0.1847,
+  "mean_shipped_token_fraction_per_arm": {
+   "llm": 0.4832,
+   "degree": 0.4831,
+   "pagerank": 0.4829,
+   "random": 0.4792
+  },
+  "token_accounting_note": "all arms SHIP <= 0.5x render tokens (budget); the LLM arm additionally READS the full render (~1.0x) to produce its ranking, so render-time it saves the shipped/downstream cost, not the read cost. degree/pagerank rankings are precomputed offline (0 marginal LLM tokens).",
+  "oracle_reference": {
+   "source": "reports/experiments/r48/h530-decomp-20260713T094447Z.json",
+   "oracle_decomposed_context": 0.909,
+   "at_token_fraction": 0.52,
+   "subq_coverage_top1": 0.3343
+  },
+  "clauses": [
+   {
+    "clause": "LLM carrier recall-at-budget >= 0.85",
+    "predicted": ">=0.85",
+    "measured": 0.687,
+    "holds": false
+   },
+   {
+    "clause": "LLM beats degree ranking by >= 8 pts",
+    "predicted": ">=0.08",
+    "measured": 0.1448,
+    "holds": true
+   },
+   {
+    "clause": "LLM beats PageRank ranking by >= 8 pts",
+    "predicted": ">=0.08",
+    "measured": 0.1224,
+    "holds": true
+   },
+   {
+    "clause": "KILL guard: LLM > degree AND LLM > random",
+    "predicted": ">0",
+    "measured": {
+     "vs_degree": 0.1448,
+     "vs_random": 0.1847
+    },
+    "holds": true
+   }
+  ],
+  "proposed_verdict": "INCONCLUSIVE",
+  "bars": {
+   "CONFIRMED": "LLM recall-at-budget >= 0.85 AND beats degree AND pagerank by >= 8 pts",
+   "KILLED": "LLM <= degree OR LLM <= random"
+  }
+ },
+ "rows": [
+  {
+   "id": "83bf3b5a0bd911eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 688,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 344,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 337,
+    "degree": 323,
+    "pagerank": 339,
+    "random": 337
+   },
+   "llm_order": [
+    0,
+    6,
+    3,
+    1,
+    2,
+    4,
+    5,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0
+   ]
+  },
+  {
+   "id": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 665,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 332,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 328,
+    "degree": 307,
+    "pagerank": 307,
+    "random": 317
+   },
+   "llm_order": [
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    8
+   ]
+  },
+  {
+   "id": "2dc690ba0bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 494,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "462bb642099211ebbdb0ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 10,
+   "total_tokens": 430,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 215,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.0,
+    "pagerank": 0.3333,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 214,
+    "degree": 210,
+    "pagerank": 187,
+    "random": 212
+   },
+   "llm_order": [
+    0,
+    8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9
+   ],
+   "gold_blocks": [
+    0,
+    8,
+    9
+   ]
+  },
+  {
+   "id": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 649,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 324,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.3333,
+    "random": 0.6667
+   },
+   "shipped_tokens": {
+    "llm": 305,
+    "degree": 323,
+    "pagerank": 313,
+    "random": 293
+   },
+   "llm_order": [
+    3,
+    0,
+    1,
+    8,
+    2,
+    5,
+    6,
+    4,
+    7
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "6718770a087311ebbd66ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 659,
+   "base_pass": true,
+   "n_gold": 7,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 329,
+   "recall": {
+    "llm": 0.2857,
+    "degree": 0.4286,
+    "pagerank": 0.2857,
+    "random": 0.5714
+   },
+   "shipped_tokens": {
+    "llm": 327,
+    "degree": 319,
+    "pagerank": 325,
+    "random": 320
+   },
+   "llm_order": [
+    10,
+    1,
+    0,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    3,
+    7,
+    8,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 696,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 348,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 315,
+    "degree": 337,
+    "pagerank": 343,
+    "random": 291
+   },
+   "llm_order": [
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    7
+   ]
+  },
+  {
+   "id": "9fe6a6760baf11ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 894,
+   "base_pass": true,
+   "n_gold": 8,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 447,
+   "recall": {
+    "llm": 0.75,
+    "degree": 0.625,
+    "pagerank": 0.625,
+    "random": 0.625
+   },
+   "shipped_tokens": {
+    "llm": 443,
+    "degree": 445,
+    "pagerank": 445,
+    "random": 431
+   },
+   "llm_order": [
+    5,
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "551e024408a611ebbd7fac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 11,
+   "total_tokens": 637,
+   "base_pass": true,
+   "n_gold": 11,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 318,
+   "recall": {
+    "llm": 0.2727,
+    "degree": 0.4545,
+    "pagerank": 0.4545,
+    "random": 0.6364
+   },
+   "shipped_tokens": {
+    "llm": 298,
+    "degree": 312,
+    "pagerank": 312,
+    "random": 318
+   },
+   "llm_order": [
+    3,
+    0,
+    9,
+    10,
+    1,
+    2,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "33f51d7e0bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 517,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "914b452c0bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 577,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "d6898f78089511ebbd75ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 11,
+   "total_tokens": 611,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 305,
+   "recall": {
+    "llm": 0.8333,
+    "degree": 0.8333,
+    "pagerank": 0.8333,
+    "random": 0.8333
+   },
+   "shipped_tokens": {
+    "llm": 303,
+    "degree": 305,
+    "pagerank": 305,
+    "random": 305
+   },
+   "llm_order": [
+    0,
+    9,
+    6,
+    5,
+    8,
+    7,
+    1,
+    2,
+    3,
+    4,
+    10
+   ],
+   "gold_blocks": [
+    0,
+    5,
+    6,
+    7,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "006d81bc0bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 714,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 357,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 355,
+    "degree": 357,
+    "pagerank": 357,
+    "random": 357
+   },
+   "llm_order": [
+    0,
+    10,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "gold_blocks": [
+    1,
+    3
+   ]
+  },
+  {
+   "id": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 733,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "265daf200bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 922,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 461,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 457,
+    "degree": 444,
+    "pagerank": 424,
+    "random": 454
+   },
+   "llm_order": [
+    7,
+    6,
+    2,
+    0,
+    1,
+    3,
+    4,
+    5,
+    8
+   ],
+   "gold_blocks": [
+    2,
+    6,
+    7
+   ]
+  },
+  {
+   "id": "1c0dd3b00bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 758,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "bab3b6d00bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 662,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 331,
+   "recall": {
+    "llm": 0.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 303,
+    "degree": 325,
+    "pagerank": 311,
+    "random": 303
+   },
+   "llm_order": [
+    1,
+    0,
+    10,
+    2,
+    7,
+    8,
+    9,
+    3,
+    4,
+    5,
+    6
+   ],
+   "gold_blocks": [
+    3
+   ]
+  },
+  {
+   "id": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 11,
+   "total_tokens": 847,
+   "base_pass": true,
+   "n_gold": 8,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 423,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.375,
+    "pagerank": 0.375,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 403,
+    "degree": 403,
+    "pagerank": 403,
+    "random": 402
+   },
+   "llm_order": [
+    9,
+    1,
+    6,
+    0,
+    2,
+    3,
+    4,
+    5,
+    7,
+    8,
+    10
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 704,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 352,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 331,
+    "degree": 331,
+    "pagerank": 327,
+    "random": 339
+   },
+   "llm_order": [
+    0,
+    2,
+    7,
+    8,
+    1,
+    3,
+    5,
+    6,
+    4
+   ],
+   "gold_blocks": [
+    7
+   ]
+  },
+  {
+   "id": "2d8f3ebe0bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 534,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "e6e38bc40bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 933,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "0bedb7e80bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 733,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 366,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 361,
+    "degree": 361,
+    "pagerank": 355,
+    "random": 335
+   },
+   "llm_order": [
+    1,
+    0,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "gold_blocks": [
+    1
+   ]
+  },
+  {
+   "id": "86508dc60bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 768,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "e311a3ba0bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 627,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 313,
+   "recall": {
+    "llm": 0.5,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 313,
+    "degree": 313,
+    "pagerank": 313,
+    "random": 303
+   },
+   "llm_order": [
+    2,
+    0,
+    1,
+    8,
+    9,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "gold_blocks": [
+    2,
+    5
+   ]
+  },
+  {
+   "id": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 527,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 263,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 262,
+    "degree": 259,
+    "pagerank": 259,
+    "random": 253
+   },
+   "llm_order": [
+    0,
+    8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9
+   ],
+   "gold_blocks": [
+    8
+   ]
+  },
+  {
+   "id": "435f65fa0baf11ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 912,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 456,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.5,
+    "pagerank": 1.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 445,
+    "degree": 450,
+    "pagerank": 449,
+    "random": 446
+   },
+   "llm_order": [
+    5,
+    6,
+    8,
+    0,
+    1,
+    2,
+    3,
+    7,
+    9,
+    4
+   ],
+   "gold_blocks": [
+    5,
+    6
+   ]
+  },
+  {
+   "id": "5cc01ab60bb011ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 816,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 408,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 389,
+    "degree": 397,
+    "pagerank": 402,
+    "random": 394
+   },
+   "llm_order": [
+    0,
+    8,
+    1,
+    9,
+    2,
+    10,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "gold_blocks": [
+    0,
+    10
+   ]
+  },
+  {
+   "id": "2084260e0bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 8,
+   "total_tokens": 682,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 341,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 317,
+    "degree": 323,
+    "pagerank": 323,
+    "random": 324
+   },
+   "llm_order": [
+    5,
+    0,
+    7,
+    1,
+    6,
+    2,
+    3,
+    4
+   ],
+   "gold_blocks": [
+    5
+   ]
+  },
+  {
+   "id": "7cb81afc0bd911eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 604,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "a1d9a65c0bd911eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 8,
+   "total_tokens": 525,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 687,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 343,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 322,
+    "degree": 327,
+    "pagerank": 327,
+    "random": 317
+   },
+   "llm_order": [
+    0,
+    9,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    10
+   ],
+   "gold_blocks": [
+    9
+   ]
+  },
+  {
+   "id": "3a3c2efe0bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 701,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 490,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 245,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 244,
+    "degree": 219,
+    "pagerank": 238,
+    "random": 243
+   },
+   "llm_order": [
+    8,
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    8
+   ]
+  },
+  {
+   "id": "0dfe41f60bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 505,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "3ce92df80bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 445,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 1115,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 557,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 531,
+    "degree": 531,
+    "pagerank": 531,
+    "random": 531
+   },
+   "llm_order": [
+    8,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    3
+   ]
+  },
+  {
+   "id": "b672c1ee0bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 8,
+   "total_tokens": 877,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 503,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 251,
+   "recall": {
+    "llm": 0.3333,
+    "degree": 0.3333,
+    "pagerank": 0.3333,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 247,
+    "degree": 223,
+    "pagerank": 223,
+    "random": 237
+   },
+   "llm_order": [
+    1,
+    7,
+    0,
+    8,
+    5,
+    4,
+    3,
+    2,
+    6
+   ],
+   "gold_blocks": [
+    4,
+    5,
+    7
+   ]
+  },
+  {
+   "id": "c5a00e860bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 727,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "434dea7708d211ebbd95ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 13,
+   "total_tokens": 691,
+   "base_pass": true,
+   "n_gold": 9,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 345,
+   "recall": {
+    "llm": 0.4444,
+    "degree": 0.3333,
+    "pagerank": 0.3333,
+    "random": 0.4444
+   },
+   "shipped_tokens": {
+    "llm": 340,
+    "degree": 335,
+    "pagerank": 335,
+    "random": 344
+   },
+   "llm_order": [
+    11,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    12
+   ],
+   "gold_blocks": [
+    1,
+    2,
+    3,
+    5,
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  },
+  {
+   "id": "02b62fce087211ebbd64ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 678,
+   "base_pass": true,
+   "n_gold": 7,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 339,
+   "recall": {
+    "llm": 0.5714,
+    "degree": 0.5714,
+    "pagerank": 0.5714,
+    "random": 0.7143
+   },
+   "shipped_tokens": {
+    "llm": 328,
+    "degree": 328,
+    "pagerank": 328,
+    "random": 322
+   },
+   "llm_order": [
+    7,
+    0,
+    1,
+    8,
+    2,
+    3,
+    5,
+    6,
+    4
+   ],
+   "gold_blocks": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 13,
+   "total_tokens": 546,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 273,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 255,
+    "degree": 270,
+    "pagerank": 266,
+    "random": 253
+   },
+   "llm_order": [
+    11,
+    0,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "gold_blocks": [
+    10,
+    11
+   ]
+  },
+  {
+   "id": "c9a769c608be11ebbd8aac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 744,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 372,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 365,
+    "degree": 348,
+    "pagerank": 348,
+    "random": 368
+   },
+   "llm_order": [
+    8,
+    9,
+    0,
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    2
+   ],
+   "gold_blocks": [
+    0
+   ]
+  },
+  {
+   "id": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 562,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 281,
+   "recall": {
+    "llm": 0.3333,
+    "degree": 0.3333,
+    "pagerank": 0.1667,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 279,
+    "degree": 279,
+    "pagerank": 274,
+    "random": 274
+   },
+   "llm_order": [
+    0,
+    7,
+    8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    5,
+    6,
+    8
+   ]
+  },
+  {
+   "id": "50e4a65c0bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 400,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 200,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 190,
+    "degree": 198,
+    "pagerank": 198,
+    "random": 196
+   },
+   "llm_order": [
+    9,
+    6,
+    0,
+    2,
+    5,
+    1,
+    3,
+    4,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    6
+   ]
+  },
+  {
+   "id": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 556,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 278,
+   "recall": {
+    "llm": 0.3333,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 267,
+    "degree": 269,
+    "pagerank": 269,
+    "random": 277
+   },
+   "llm_order": [
+    0,
+    8,
+    6,
+    5,
+    4,
+    1,
+    2,
+    3,
+    7,
+    9
+   ],
+   "gold_blocks": [
+    1,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 9,
+   "total_tokens": 602,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 301,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.3333,
+    "pagerank": 0.3333,
+    "random": 0.6667
+   },
+   "shipped_tokens": {
+    "llm": 297,
+    "degree": 298,
+    "pagerank": 298,
+    "random": 273
+   },
+   "llm_order": [
+    0,
+    7,
+    8,
+    5,
+    1,
+    2,
+    3,
+    6,
+    4
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "38da155f087511ebbd67ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 667,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 333,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 320,
+    "degree": 326,
+    "pagerank": 326,
+    "random": 323
+   },
+   "llm_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "gold_blocks": [
+    0,
+    4
+   ]
+  },
+  {
+   "id": "49b22d0a0bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 508,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "78b10fb00bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 408,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "879d21e208fc11ebbdadac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 11,
+   "total_tokens": 608,
+   "base_pass": true,
+   "n_gold": 4,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 304,
+   "recall": {
+    "llm": 0.75,
+    "degree": 0.25,
+    "pagerank": 0.5,
+    "random": 0.75
+   },
+   "shipped_tokens": {
+    "llm": 302,
+    "degree": 299,
+    "pagerank": 282,
+    "random": 281
+   },
+   "llm_order": [
+    9,
+    10,
+    0,
+    7,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    7,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "62a9cd640bb011ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 1810,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "cda459160bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 488,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "1dfaa6200bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 577,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 630,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 315,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 309,
+    "degree": 310,
+    "pagerank": 310,
+    "random": 310
+   },
+   "llm_order": [
+    0,
+    7,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    8
+   ]
+  },
+  {
+   "id": "8e07f1f00bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 563,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "b7f5f7200bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 637,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 618,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 309,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.3333,
+    "pagerank": 0.3333,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 309,
+    "degree": 299,
+    "pagerank": 299,
+    "random": 306
+   },
+   "llm_order": [
+    10,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11
+   ],
+   "gold_blocks": [
+    1,
+    10,
+    11
+   ]
+  },
+  {
+   "id": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 546,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 273,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 253,
+    "degree": 265,
+    "pagerank": 270,
+    "random": 257
+   },
+   "llm_order": [
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    1,
+    7
+   ]
+  },
+  {
+   "id": "0083038e0bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 8,
+   "total_tokens": 780,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "6b8402c40bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 481,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "d9c894ec0bd911eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 8,
+   "total_tokens": 568,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 284,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 268,
+    "degree": 234,
+    "pagerank": 234,
+    "random": 257
+   },
+   "llm_order": [
+    1,
+    0,
+    7,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "gold_blocks": [
+    1
+   ]
+  },
+  {
+   "id": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 10,
+   "total_tokens": 642,
+   "base_pass": true,
+   "n_gold": 9,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 321,
+   "recall": {
+    "llm": 0.4444,
+    "degree": 0.4444,
+    "pagerank": 0.4444,
+    "random": 0.5556
+   },
+   "shipped_tokens": {
+    "llm": 291,
+    "degree": 305,
+    "pagerank": 305,
+    "random": 317
+   },
+   "llm_order": [
+    0,
+    9,
+    8,
+    1,
+    2,
+    6,
+    3,
+    5,
+    7,
+    4
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": "a9e322b20bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 653,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "8f783c7a0bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 696,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "b642318c0bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 533,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 767,
+   "base_pass": true,
+   "n_gold": 5,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 383,
+   "recall": {
+    "llm": 0.4,
+    "degree": 0.4,
+    "pagerank": 0.6,
+    "random": 0.4
+   },
+   "shipped_tokens": {
+    "llm": 379,
+    "degree": 363,
+    "pagerank": 382,
+    "random": 348
+   },
+   "llm_order": [
+    8,
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "gold_blocks": [
+    1,
+    2,
+    5,
+    6,
+    7
+   ]
+  },
+  {
+   "id": "fcdafe320bdb11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 621,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "7d87730c087211ebbd66ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 11,
+   "total_tokens": 719,
+   "base_pass": true,
+   "n_gold": 7,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 359,
+   "recall": {
+    "llm": 0.5714,
+    "degree": 0.7143,
+    "pagerank": 0.7143,
+    "random": 0.4286
+   },
+   "shipped_tokens": {
+    "llm": 359,
+    "degree": 352,
+    "pagerank": 352,
+    "random": 359
+   },
+   "llm_order": [
+    9,
+    0,
+    10,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    6,
+    7,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 771,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 385,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 357,
+    "degree": 374,
+    "pagerank": 383,
+    "random": 374
+   },
+   "llm_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "gold_blocks": [
+    0
+   ]
+  },
+  {
+   "id": "037da85d08c611ebbd90ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 10,
+   "total_tokens": 618,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 309,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.6667
+   },
+   "shipped_tokens": {
+    "llm": 299,
+    "degree": 305,
+    "pagerank": 306,
+    "random": 307
+   },
+   "llm_order": [
+    0,
+    7,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    9
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    3,
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": "e15d99380bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 757,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "f05423560bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 587,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 9,
+   "total_tokens": 486,
+   "base_pass": true,
+   "n_gold": 9,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 243,
+   "recall": {
+    "llm": 0.3333,
+    "degree": 0.4444,
+    "pagerank": 0.4444,
+    "random": 0.2222
+   },
+   "shipped_tokens": {
+    "llm": 234,
+    "degree": 238,
+    "pagerank": 238,
+    "random": 241
+   },
+   "llm_order": [
+    0,
+    7,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 709,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 354,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 347,
+    "degree": 347,
+    "pagerank": 347,
+    "random": 296
+   },
+   "llm_order": [
+    0,
+    8,
+    9,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    9
+   ]
+  },
+  {
+   "id": "90c8793c087411ebbd67ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 551,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 275,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 272,
+    "degree": 255,
+    "pagerank": 255,
+    "random": 258
+   },
+   "llm_order": [
+    8,
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "gold_blocks": [
+    1,
+    7
+   ]
+  },
+  {
+   "id": "63c16246095211ebbdaeac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 620,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 310,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.1667,
+    "pagerank": 0.1667,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 295,
+    "degree": 307,
+    "pagerank": 307,
+    "random": 295
+   },
+   "llm_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    3,
+    5,
+    6,
+    8
+   ]
+  },
+  {
+   "id": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 602,
+   "base_pass": true,
+   "n_gold": 8,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 301,
+   "recall": {
+    "llm": 0.375,
+    "degree": 0.375,
+    "pagerank": 0.375,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 293,
+    "degree": 295,
+    "pagerank": 295,
+    "random": 298
+   },
+   "llm_order": [
+    10,
+    0,
+    9,
+    3,
+    4,
+    7,
+    5,
+    6,
+    8,
+    1,
+    2,
+    11
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    7,
+    9,
+    11
+   ]
+  },
+  {
+   "id": "d18fc6640bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 774,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 581,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 290,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 282,
+    "degree": 289,
+    "pagerank": 283,
+    "random": 271
+   },
+   "llm_order": [
+    9,
+    0,
+    10,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    9,
+    10
+   ]
+  },
+  {
+   "id": "a457e11c0bdb11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 699,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "632fcc82085611ebbd59ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 483,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 241,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 234,
+    "degree": 224,
+    "pagerank": 224,
+    "random": 224
+   },
+   "llm_order": [
+    0,
+    8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9
+   ],
+   "gold_blocks": [
+    0,
+    3,
+    5
+   ]
+  },
+  {
+   "id": "076288460bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 781,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 390,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 367,
+    "degree": 372,
+    "pagerank": 383,
+    "random": 375
+   },
+   "llm_order": [
+    1,
+    0,
+    9,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    1
+   ]
+  },
+  {
+   "id": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 689,
+   "base_pass": true,
+   "n_gold": 8,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 344,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.625,
+    "random": 0.75
+   },
+   "shipped_tokens": {
+    "llm": 319,
+    "degree": 319,
+    "pagerank": 344,
+    "random": 314
+   },
+   "llm_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "9523a3df088911ebbd6eac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 9,
+   "total_tokens": 827,
+   "base_pass": true,
+   "n_gold": 9,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 413,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.4444,
+    "pagerank": 0.4444,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 408,
+    "degree": 380,
+    "pagerank": 380,
+    "random": 402
+   },
+   "llm_order": [
+    0,
+    7,
+    1,
+    5,
+    2,
+    3,
+    4,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "id": "5ff291a80bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 412,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 13,
+   "total_tokens": 564,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 282,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 280,
+    "degree": 272,
+    "pagerank": 274,
+    "random": 263
+   },
+   "llm_order": [
+    0,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "gold_blocks": [
+    0,
+    12
+   ]
+  },
+  {
+   "id": "63240f22089d11ebbd78ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 499,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 249,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 237,
+    "degree": 245,
+    "pagerank": 230,
+    "random": 246
+   },
+   "llm_order": [
+    0,
+    10,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11
+   ],
+   "gold_blocks": [
+    0
+   ]
+  },
+  {
+   "id": "fde95590089c11ebbd78ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 716,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 358,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.3333,
+    "pagerank": 0.3333,
+    "random": 0.6667
+   },
+   "shipped_tokens": {
+    "llm": 340,
+    "degree": 341,
+    "pagerank": 341,
+    "random": 334
+   },
+   "llm_order": [
+    1,
+    0,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "id": "3bb9c0740bb011ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 963,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 480,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 240,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 240,
+    "degree": 240,
+    "pagerank": 228,
+    "random": 228
+   },
+   "llm_order": [
+    9,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    10
+   ],
+   "gold_blocks": [
+    9
+   ]
+  },
+  {
+   "id": "e7dc72940baf11ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 768,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "764446780bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 528,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 748,
+   "base_pass": true,
+   "n_gold": 4,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 374,
+   "recall": {
+    "llm": 0.25,
+    "degree": 0.25,
+    "pagerank": 0.25,
+    "random": 0.75
+   },
+   "shipped_tokens": {
+    "llm": 369,
+    "degree": 358,
+    "pagerank": 368,
+    "random": 366
+   },
+   "llm_order": [
+    0,
+    10,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11
+   ],
+   "gold_blocks": [
+    8,
+    9,
+    10,
+    11
+   ]
+  },
+  {
+   "id": "f1a794f20bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 635,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "47bb70600bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 532,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 266,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 259,
+    "degree": 266,
+    "pagerank": 259,
+    "random": 260
+   },
+   "llm_order": [
+    0,
+    9,
+    2,
+    1,
+    8,
+    7,
+    6,
+    5,
+    4,
+    3,
+    10
+   ],
+   "gold_blocks": [
+    1,
+    8
+   ]
+  },
+  {
+   "id": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 306,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 153,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 142,
+    "degree": 142,
+    "pagerank": 142,
+    "random": 150
+   },
+   "llm_order": [
+    0,
+    7,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8
+   ],
+   "gold_blocks": [
+    7
+   ]
+  },
+  {
+   "id": "594ca25608df11ebbda0ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 806,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 403,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 364,
+    "degree": 386,
+    "pagerank": 386,
+    "random": 397
+   },
+   "llm_order": [
+    7,
+    0,
+    8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "gold_blocks": [
+    1,
+    6,
+    7
+   ]
+  },
+  {
+   "id": "a431a93808d511ebbd98ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 614,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 307,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 291,
+    "degree": 306,
+    "pagerank": 306,
+    "random": 279
+   },
+   "llm_order": [
+    9,
+    0,
+    10,
+    8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "gold_blocks": [
+    0,
+    10
+   ]
+  },
+  {
+   "id": "421d07aa0bb011ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 914,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 457,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.6667
+   },
+   "shipped_tokens": {
+    "llm": 433,
+    "degree": 447,
+    "pagerank": 447,
+    "random": 457
+   },
+   "llm_order": [
+    0,
+    7,
+    9,
+    10,
+    6,
+    1,
+    2,
+    3,
+    4,
+    5,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    5,
+    6,
+    7,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "3f48bc400bb011ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 918,
+   "base_pass": true,
+   "n_gold": 4,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 459,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.25
+   },
+   "shipped_tokens": {
+    "llm": 455,
+    "degree": 457,
+    "pagerank": 457,
+    "random": 449
+   },
+   "llm_order": [
+    0,
+    9,
+    5,
+    4,
+    6,
+    2,
+    3,
+    1,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    6,
+    9
+   ]
+  },
+  {
+   "id": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 686,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 343,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 341,
+    "degree": 341,
+    "pagerank": 341,
+    "random": 320
+   },
+   "llm_order": [
+    0,
+    9,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    10
+   ],
+   "gold_blocks": [
+    0,
+    10
+   ]
+  },
+  {
+   "id": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 643,
+   "base_pass": true,
+   "n_gold": 4,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 321,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.25,
+    "pagerank": 0.25,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 317,
+    "degree": 303,
+    "pagerank": 303,
+    "random": 309
+   },
+   "llm_order": [
+    8,
+    0,
+    1,
+    6,
+    2,
+    7,
+    5,
+    4,
+    3,
+    9
+   ],
+   "gold_blocks": [
+    2,
+    6,
+    8,
+    9
+   ]
+  },
+  {
+   "id": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 721,
+   "base_pass": true,
+   "n_gold": 4,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 360,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 356,
+    "degree": 347,
+    "pagerank": 347,
+    "random": 326
+   },
+   "llm_order": [
+    7,
+    0,
+    6,
+    1,
+    2,
+    3,
+    4,
+    5,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    3,
+    5
+   ]
+  },
+  {
+   "id": "3ab846860bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 592,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "8cd3fe6c0baf11ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 774,
+   "base_pass": true,
+   "n_gold": 5,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 387,
+   "recall": {
+    "llm": 0.8,
+    "degree": 0.6,
+    "pagerank": 0.6,
+    "random": 0.6
+   },
+   "shipped_tokens": {
+    "llm": 379,
+    "degree": 379,
+    "pagerank": 379,
+    "random": 385
+   },
+   "llm_order": [
+    7,
+    6,
+    0,
+    9,
+    1,
+    2,
+    3,
+    4,
+    5,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    1,
+    6,
+    7,
+    9
+   ]
+  },
+  {
+   "id": "0d9251260baf11ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 601,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 300,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 293,
+    "degree": 293,
+    "pagerank": 293,
+    "random": 275
+   },
+   "llm_order": [
+    6,
+    1,
+    8,
+    0,
+    2,
+    3,
+    4,
+    5,
+    7,
+    9
+   ],
+   "gold_blocks": [
+    1,
+    6,
+    8
+   ]
+  },
+  {
+   "id": "8cdc97de0bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 710,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 355,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 347,
+    "degree": 354,
+    "pagerank": 354,
+    "random": 354
+   },
+   "llm_order": [
+    7,
+    0,
+    2,
+    1,
+    3,
+    5,
+    6,
+    8,
+    4,
+    9
+   ],
+   "gold_blocks": [
+    7
+   ]
+  },
+  {
+   "id": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 544,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 272,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 263,
+    "degree": 272,
+    "pagerank": 272,
+    "random": 262
+   },
+   "llm_order": [
+    9,
+    0,
+    6,
+    4,
+    2,
+    1,
+    3,
+    5,
+    7,
+    8,
+    10
+   ],
+   "gold_blocks": [
+    9,
+    10
+   ]
+  },
+  {
+   "id": "d73fa07c0bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 1039,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 519,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 494,
+    "degree": 505,
+    "pagerank": 493,
+    "random": 515
+   },
+   "llm_order": [
+    7,
+    0,
+    2,
+    8,
+    1,
+    9,
+    3,
+    5,
+    6,
+    4
+   ],
+   "gold_blocks": [
+    7
+   ]
+  },
+  {
+   "id": "9bc54aba0bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 964,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 482,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 449,
+    "degree": 480,
+    "pagerank": 480,
+    "random": 462
+   },
+   "llm_order": [
+    6,
+    7,
+    0,
+    1,
+    5,
+    8,
+    2,
+    3,
+    4
+   ],
+   "gold_blocks": [
+    6
+   ]
+  },
+  {
+   "id": "36b8644508af11ebbd83ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 567,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 283,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.3333
+   },
+   "shipped_tokens": {
+    "llm": 281,
+    "degree": 280,
+    "pagerank": 275,
+    "random": 270
+   },
+   "llm_order": [
+    0,
+    9,
+    10,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    1,
+    3,
+    9
+   ]
+  },
+  {
+   "id": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 603,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 301,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 285,
+    "degree": 274,
+    "pagerank": 274,
+    "random": 296
+   },
+   "llm_order": [
+    1,
+    0,
+    9,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    1,
+    9
+   ]
+  },
+  {
+   "id": "689d225009b411ebbdb0ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 10,
+   "total_tokens": 532,
+   "base_pass": true,
+   "n_gold": 6,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 266,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 264,
+    "degree": 253,
+    "pagerank": 253,
+    "random": 265
+   },
+   "llm_order": [
+    0,
+    8,
+    7,
+    3,
+    6,
+    9,
+    1,
+    2,
+    4,
+    5
+   ],
+   "gold_blocks": [
+    0,
+    3,
+    6,
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 507,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 253,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 250,
+    "degree": 246,
+    "pagerank": 248,
+    "random": 240
+   },
+   "llm_order": [
+    8,
+    1,
+    0,
+    2,
+    6,
+    3,
+    4,
+    5,
+    7
+   ],
+   "gold_blocks": [
+    1
+   ]
+  },
+  {
+   "id": "0016373a0bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 792,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 396,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.6667
+   },
+   "shipped_tokens": {
+    "llm": 390,
+    "degree": 386,
+    "pagerank": 387,
+    "random": 391
+   },
+   "llm_order": [
+    3,
+    0,
+    2,
+    10,
+    1,
+    5,
+    4,
+    6,
+    7,
+    8,
+    9,
+    11
+   ],
+   "gold_blocks": [
+    2,
+    10,
+    11
+   ]
+  },
+  {
+   "id": "ccd086f80bdb11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 405,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "965e667e0bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 1017,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 508,
+   "recall": {
+    "llm": 0.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 455,
+    "degree": 508,
+    "pagerank": 508,
+    "random": 496
+   },
+   "llm_order": [
+    9,
+    0,
+    4,
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    8,
+    10
+   ],
+   "gold_blocks": [
+    10
+   ]
+  },
+  {
+   "id": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 597,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 298,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 291,
+    "degree": 283,
+    "pagerank": 283,
+    "random": 281
+   },
+   "llm_order": [
+    7,
+    8,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    9
+   ],
+   "gold_blocks": [
+    8,
+    9
+   ]
+  },
+  {
+   "id": "43eb7b380bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 467,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "f48667b80bda11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 608,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 606,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 303,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 293,
+    "degree": 292,
+    "pagerank": 303,
+    "random": 301
+   },
+   "llm_order": [
+    0,
+    10,
+    11,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "gold_blocks": [
+    10
+   ]
+  },
+  {
+   "id": "bd9609880bdb11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 1048,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "748446060bdb11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 647,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "e2de58500bd911eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 550,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 275,
+   "recall": {
+    "llm": 1.0,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.0
+   },
+   "shipped_tokens": {
+    "llm": 271,
+    "degree": 269,
+    "pagerank": 269,
+    "random": 271
+   },
+   "llm_order": [
+    1,
+    0,
+    3,
+    2,
+    5,
+    6,
+    7,
+    8,
+    9,
+    4
+   ],
+   "gold_blocks": [
+    1,
+    3
+   ]
+  },
+  {
+   "id": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 749,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 374,
+   "recall": {
+    "llm": 0.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 359,
+    "degree": 359,
+    "pagerank": 359,
+    "random": 371
+   },
+   "llm_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "gold_blocks": [
+    9
+   ]
+  },
+  {
+   "id": "5c7842780baf11ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 709,
+   "base_pass": true,
+   "n_gold": 1,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 354,
+   "recall": {
+    "llm": 1.0,
+    "degree": 1.0,
+    "pagerank": 1.0,
+    "random": 1.0
+   },
+   "shipped_tokens": {
+    "llm": 337,
+    "degree": 331,
+    "pagerank": 352,
+    "random": 334
+   },
+   "llm_order": [
+    0,
+    10,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11
+   ],
+   "gold_blocks": [
+    0
+   ]
+  },
+  {
+   "id": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 610,
+   "base_pass": true,
+   "n_gold": 3,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 305,
+   "recall": {
+    "llm": 0.6667,
+    "degree": 0.6667,
+    "pagerank": 0.6667,
+    "random": 0.6667
+   },
+   "shipped_tokens": {
+    "llm": 300,
+    "degree": 296,
+    "pagerank": 297,
+    "random": 297
+   },
+   "llm_order": [
+    8,
+    0,
+    9,
+    1,
+    5,
+    2,
+    6,
+    3,
+    4,
+    7
+   ],
+   "gold_blocks": [
+    1,
+    3,
+    8
+   ]
+  },
+  {
+   "id": "84c99c760bb011ebab90acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 838,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "f253a3040bdd11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 10,
+   "total_tokens": 1277,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  },
+  {
+   "id": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 588,
+   "base_pass": true,
+   "n_gold": 2,
+   "escalated": false,
+   "scorable": true,
+   "budget_tokens": 294,
+   "recall": {
+    "llm": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "shipped_tokens": {
+    "llm": 284,
+    "degree": 283,
+    "pagerank": 283,
+    "random": 261
+   },
+   "llm_order": [
+    0,
+    7,
+    1,
+    2,
+    3,
+    5,
+    6,
+    4,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    8
+   ]
+  },
+  {
+   "id": "2b9528860bde11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 806,
+   "base_pass": false,
+   "n_gold": 0,
+   "escalated": false,
+   "scorable": false
+  }
+ ]
+}

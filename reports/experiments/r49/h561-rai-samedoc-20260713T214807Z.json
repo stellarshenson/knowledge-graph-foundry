@@ -1,0 +1,213 @@
+{
+ "hypothesis": "R49-H561",
+ "ts": "20260713T214807Z",
+ "graph": "bolt://172.19.0.101:7687",
+ "name_match_convention": "name_in_win = entity_name.lower() in window.lower(); window = '<doc_title>. <span>' (r49_carrier_bakeoff.py)",
+ "resolve_definition": "strict: unique name-match == gold (or zero matches for gold=null artifact)",
+ "counts": {
+  "n_cases": 12
+ },
+ "clause": {
+  "predicted": ">= 8/12 resolve correctly under same-doc name-match",
+  "strict_resolves": 7,
+  "denominator": 12,
+  "anchor_longest_tiebreak_resolves": 10,
+  "gold_present_in_matched_set": 12
+ },
+ "rows": [
+  {
+   "fact": "This is a list.",
+   "doc": "d_00f5195e87edfab1",
+   "doc_title": "List of Croatian inventors",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "n_samedoc_ents": 16,
+   "name_matches": [],
+   "n_matches": 0,
+   "strict_resolves": true,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": null,
+   "anchor_resolves": true
+  },
+  {
+   "fact": "This is a list of inventors.",
+   "doc": "d_00f5195e87edfab1",
+   "doc_title": "List of Croatian inventors",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "n_samedoc_ents": 16,
+   "name_matches": [],
+   "n_matches": 0,
+   "strict_resolves": true,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": null,
+   "anchor_resolves": true
+  },
+  {
+   "fact": "This is a list of Croatian inventors.",
+   "doc": "d_00f5195e87edfab1",
+   "doc_title": "List of Croatian inventors",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "n_samedoc_ents": 16,
+   "name_matches": [],
+   "n_matches": 0,
+   "strict_resolves": true,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": null,
+   "anchor_resolves": true
+  },
+  {
+   "fact": "In the Room may refer to",
+   "doc": "d_032ff697ea46c456",
+   "doc_title": "In the Room",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "n_samedoc_ents": 15,
+   "name_matches": [],
+   "n_matches": 0,
+   "strict_resolves": true,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": null,
+   "anchor_resolves": true
+  },
+  {
+   "fact": "It is a sequel to 2011",
+   "doc": "d_02b1acd7031134e7",
+   "doc_title": "Wrong Turn 5: Bloodlines",
+   "gold_carrier": "Wrong Turn 5: Bloodlines",
+   "gold_class": "ANAPHORA",
+   "n_samedoc_ents": 7,
+   "name_matches": [
+    "Wrong Turn 5: Bloodlines"
+   ],
+   "n_matches": 1,
+   "strict_resolves": true,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "Wrong Turn 5: Bloodlines",
+   "anchor_resolves": true
+  },
+  {
+   "fact": "sequel to 2011, leading the events of the 2003 film Wrong Turn",
+   "doc": "d_02b1acd7031134e7",
+   "doc_title": "Wrong Turn 5: Bloodlines",
+   "gold_carrier": "Wrong Turn 5: Bloodlines",
+   "gold_class": "ANAPHORA",
+   "n_samedoc_ents": 7,
+   "name_matches": [
+    "Wrong Turn 5: Bloodlines"
+   ],
+   "n_matches": 1,
+   "strict_resolves": true,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "Wrong Turn 5: Bloodlines",
+   "anchor_resolves": true
+  },
+  {
+   "fact": "It is the fifth installment in the Wrong Turn franchise",
+   "doc": "d_02b1acd7031134e7",
+   "doc_title": "Wrong Turn 5: Bloodlines",
+   "gold_carrier": "Wrong Turn 5: Bloodlines",
+   "gold_class": "ANAPHORA",
+   "n_samedoc_ents": 7,
+   "name_matches": [
+    "Wrong Turn 5: Bloodlines"
+   ],
+   "n_matches": 1,
+   "strict_resolves": true,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "Wrong Turn 5: Bloodlines",
+   "anchor_resolves": true
+  },
+  {
+   "fact": "One of which was a varsity match.",
+   "doc": "d_064c901089566d88",
+   "doc_title": "John Allen (Oxford University cricketer)",
+   "gold_carrier": "John Allen",
+   "gold_class": "ANAPHORA",
+   "n_samedoc_ents": 8,
+   "name_matches": [
+    "Cricketer",
+    "John Allen",
+    "Oxford University"
+   ],
+   "n_matches": 3,
+   "strict_resolves": false,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "Oxford University",
+   "anchor_resolves": false
+  },
+  {
+   "fact": "One of which was a varsity match",
+   "doc": "d_064c901089566d88",
+   "doc_title": "John Allen (Oxford University cricketer)",
+   "gold_carrier": "John Allen",
+   "gold_class": "ANAPHORA",
+   "n_samedoc_ents": 8,
+   "name_matches": [
+    "Cricketer",
+    "John Allen",
+    "Oxford University"
+   ],
+   "n_matches": 3,
+   "strict_resolves": false,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "Oxford University",
+   "anchor_resolves": false
+  },
+  {
+   "fact": "The movie has no relation to the use of the phrase \"Night of Nights\" f",
+   "doc": "d_057c758da90b75fd",
+   "doc_title": "The Night of Nights",
+   "gold_carrier": "The Night of Nights",
+   "gold_class": "ANAPHORA_DOCTITLE",
+   "n_samedoc_ents": 15,
+   "name_matches": [
+    "Academy Awards",
+    "The Night of Nights"
+   ],
+   "n_matches": 2,
+   "strict_resolves": false,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "The Night of Nights",
+   "anchor_resolves": true
+  },
+  {
+   "fact": "The film was not intended to form part of the ongoing story lines of t",
+   "doc": "d_06355c7e239866de",
+   "doc_title": "Dr. Who and the Daleks",
+   "gold_carrier": "Dr. Who and the Daleks",
+   "gold_class": "ANAPHORA_DOCTITLE",
+   "n_samedoc_ents": 18,
+   "name_matches": [
+    "Daleks",
+    "Dr. Who",
+    "Dr. Who and the Daleks",
+    "The Daleks"
+   ],
+   "n_matches": 4,
+   "strict_resolves": false,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "Dr. Who and the Daleks",
+   "anchor_resolves": true
+  },
+  {
+   "fact": "The Duan says that Domnall reigned for twenty‑ four years.",
+   "doc": "d_0377fb42b840d78c",
+   "doc_title": "Domnall mac Caustantín",
+   "gold_carrier": "Domnall mac Caustantín",
+   "gold_class": "PARTIAL_NAME",
+   "n_samedoc_ents": 18,
+   "name_matches": [
+    "Aodh",
+    "Domnall mac Caustantín",
+    "Áed Find"
+   ],
+   "n_matches": 3,
+   "strict_resolves": false,
+   "gold_in_matched_set": true,
+   "anchor_longest_pick": "Domnall mac Caustantín",
+   "anchor_resolves": true
+  }
+ ]
+}

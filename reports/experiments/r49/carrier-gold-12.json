@@ -91,22 +91,24 @@
    "doc": "d_064c901089566d88",
    "doc_title": "John Allen (Oxford University cricketer)",
    "labeled_carrier": "Oxford University",
-   "gold_carrier": "John Allen (Oxford University cricketer)",
+   "gold_carrier": "John Allen",
    "gold_class": "ANAPHORA",
    "labeled_correct": false,
    "span": "Both his first- class games were for Oxford University, one of which was a varsity match.",
-   "rationale": "'one of which' = one of Allen's first-class games; the fact describes Allen's career, not the university"
+   "rationale": "'one of which' = one of Allen's first-class games; the fact describes Allen's career, not the university",
+   "correction_20260713": "gold normalized to the graph entity name 'John Allen' (medium pile has no parenthetical variant)"
   },
   {
    "fact": "One of which was a varsity match",
    "doc": "d_064c901089566d88",
    "doc_title": "John Allen (Oxford University cricketer)",
    "labeled_carrier": "Oxford University",
-   "gold_carrier": "John Allen (Oxford University cricketer)",
+   "gold_carrier": "John Allen",
    "gold_class": "ANAPHORA",
    "labeled_correct": false,
    "span": "Both his first- class games were for Oxford University, one of which was a varsity match.",
-   "rationale": "duplicate wording of the previous case"
+   "rationale": "duplicate wording of the previous case",
+   "correction_20260713": "gold normalized to the graph entity name 'John Allen' (medium pile has no parenthetical variant)"
   },
   {
    "fact": "The movie has no relation to the use of the phrase \"Night of Nights\" for the night of the Academy Awards",
@@ -139,7 +141,9 @@
    "gold_class": "PARTIAL_NAME",
    "labeled_correct": true,
    "span": "The Duan says that Domnall reigned for twenty- four years and places him between\" Aodh\", \u00c1ed Find, and the two Conalls...",
-   "rationale": "'Domnall' is a prefix variant of the full entity name; source doc 2wiki-full-rows1000-6118.json#row164"
+   "rationale": "'Domnall' is a prefix variant of the full entity name; source doc 2wiki-full-rows1000-6118.json#row164",
+   "eval_scope_20260713": "OUT-OF-PILE for medium-graph evals: doc from the 1000-6118 slice, zero entities in the medium graph - exclude from attachment-arm scoring"
   }
- ]
+ ],
+ "corrections": "2026-07-13: John Allen gold normalized to graph naming (2 cases); Domnall case marked out-of-pile (n=11 effective for medium-graph arms)"
 }

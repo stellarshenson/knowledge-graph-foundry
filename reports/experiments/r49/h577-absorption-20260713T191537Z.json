@@ -1,0 +1,132 @@
+{
+ "hypothesis": "R49-H577",
+ "ts": "20260713T191537Z",
+ "read_only": true,
+ "corpus_reality": {
+  "absorption_corpus": "2wiki-medium (R45 pass2, d_* doc ids)",
+  "gliner_residue_corpus": "CPAP 10 PDFs (H260) - DISJOINT from absorption docs",
+  "union_k_carrier": "CPAP aggregate (R22/H231, R23 union-of-5) - no per-doc, no per-pass breakdown",
+  "join_key_exists": false,
+  "conclusion": "registered per-doc cross-corpus Spearman and tercile clause are BLOCKED-DEPENDENCY"
+ },
+ "signal_absorption_2wiki": {
+  "n_docs": 20,
+  "n_facts": 48,
+  "mean_absorption_rate": 0.2625,
+  "per_doc": {
+   "d_00181e304c6cf2d8": {
+    "rate": 1.0,
+    "n": 2
+   },
+   "d_00c768f88cbcc663": {
+    "rate": 0.5,
+    "n": 2
+   },
+   "d_00f5195e87edfab1": {
+    "rate": 0.0,
+    "n": 3
+   },
+   "d_014580adc4b3f0fc": {
+    "rate": 0.0,
+    "n": 1
+   },
+   "d_0190e1df306cf4fa": {
+    "rate": 0.0,
+    "n": 3
+   },
+   "d_02b1acd7031134e7": {
+    "rate": 0.5,
+    "n": 6
+   },
+   "d_032ff697ea46c456": {
+    "rate": 0.0,
+    "n": 1
+   },
+   "d_0377fb42b840d78c": {
+    "rate": 0.25,
+    "n": 4
+   },
+   "d_03934faef0bbe122": {
+    "rate": 0.0,
+    "n": 1
+   },
+   "d_039684d478847309": {
+    "rate": 0.5,
+    "n": 2
+   },
+   "d_04b6bec1ecba97de": {
+    "rate": 0.0,
+    "n": 1
+   },
+   "d_0523fb3b4b64e35b": {
+    "rate": 0.0,
+    "n": 3
+   },
+   "d_0531ef7114099a31": {
+    "rate": 1.0,
+    "n": 1
+   },
+   "d_057c758da90b75fd": {
+    "rate": 0.0,
+    "n": 2
+   },
+   "d_06355c7e239866de": {
+    "rate": 0.0,
+    "n": 2
+   },
+   "d_064c901089566d88": {
+    "rate": 0.0,
+    "n": 3
+   },
+   "d_068cb6d514e7ede8": {
+    "rate": 0.5,
+    "n": 2
+   },
+   "d_06a042ca81bc85ee": {
+    "rate": 0.0,
+    "n": 3
+   },
+   "d_06a845cca4fd4d44": {
+    "rate": 1.0,
+    "n": 2
+   },
+   "d_08218c5d8e0b627e": {
+    "rate": 0.0,
+    "n": 4
+   }
+  }
+ },
+ "saturation_proxy_2wiki": {
+  "n_docs": 25,
+  "mean_coverage": 0.86,
+  "mean_residue_proxy": 0.14
+ },
+ "within_2wiki_proxy_spearman": {
+  "n_shared_docs": 19,
+  "rho_absorption_vs_coverage": 0.0858,
+  "p_value": 0.7269,
+  "note": "coverage == (1 - residue_proxy) monotone; this proxy stands in for the registered (1 - GLiNER residue) which is not available per-doc on this corpus"
+ },
+ "cpap_aggregate_context": {
+  "gliner_residue_aggregate": 0.0476,
+  "gliner_recall": 0.9524,
+  "union_k_union_coverage_pct": 100.0,
+  "union_k_mean_single_run_pct": 55.42857142857143,
+  "union_k_marginal_gain_pts": 44.57142857142857,
+  "union_k_run_swing_pts": 54.285714285714285,
+  "note": "CPAP corpus is FAR from saturated (44.6pt union-minus-single-run marginal carrier gain, 54.3pt run swing) yet GLiNER residue is only ~4.8%; these are aggregate and cannot be joined per-doc to the 2wiki absorption vector"
+ },
+ "clauses": {
+  "spearman_ge_0.5_vs_1_minus_residue": {
+   "registered": "Spearman >= 0.5 (per-doc, absorption vs 1 - normalized GLiNER residue)",
+   "status": "BLOCKED-DEPENDENCY (no per-doc GLiNER residue on absorption corpus)",
+   "proxy_rho": 0.0858,
+   "proxy_bar": 0.5,
+   "proxy_holds": false
+  },
+  "top_tercile_lt_15pct_marginal_carriers": {
+   "registered": "top-absorption tercile < 15% of pass-2-to-5 marginal carriers",
+   "status": "BLOCKED-DEPENDENCY (R22 5-pass carriers are CPAP aggregate, no per-doc/per-pass)"
+  }
+ }
+}

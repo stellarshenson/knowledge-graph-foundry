@@ -1,0 +1,22 @@
+# Dogfood Phase 1 (2026-07-14): ingest the KGF hypothesis ledger
+# (docs/experiments/kgf-redesign-experiments.md, ~5,626 lines / 1.17 MB) into a
+# DEDICATED throwaway Neo4j (user-konrad.jelen-kgf-ledger-neo4j, 172.19.0.10) to
+# prove KGF answers prior-information queries over its own experiments log.
+# SHIPPED DEFAULTS DELIBERATELY: question channel, SIMILAR_TO, propositions,
+# communities all default-on and left on. Copied from config-bench-scout.yml;
+# only neo4j.uri and event_log changed. Embeddings inherit the shipped default
+# (Bedrock Titan v2, 1024-dim); LLM is the local vLLM gpt-oss-120b at :8010.
+neo4j:
+  uri: bolt://172.19.0.10:7687
+  user: neo4j
+  password: kgfoundry
+llm:
+  engine: local-gpu
+  model: gpt-oss-120b
+  base_url: http://localhost:8010/v1
+  temperature: 0.0
+  timeout: 3600
+extraction:
+  recipe: enumerate
+  auto_calibrate: true
+event_log: logs/ledger-events.jsonl
