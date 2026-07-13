@@ -1,5 +1,10 @@
 """Graph: loading, control metanode and GraphRAG optimization."""
 
+from knowledge_graph_foundry.graph.attacher import (
+    FactSpan,
+    attach,
+    stage_fact_on_anchor,
+)
 from knowledge_graph_foundry.graph.graphrag import (
     CommunitySummary,
     detect_communities,
@@ -24,6 +29,9 @@ from knowledge_graph_foundry.graph.temporal import (
 
 __all__ = [
     "CommunitySummary",
+    "FactSpan",
+    "attach",
+    "stage_fact_on_anchor",
     "current_relationships",
     "detect_communities",
     "ensure_indexes",

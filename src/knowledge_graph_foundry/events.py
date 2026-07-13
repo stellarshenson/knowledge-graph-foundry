@@ -46,6 +46,7 @@ SIGNALS = [
     "graphrag.scorecard",
     "propositions.generated",
     "densify.completed",
+    "repair.staged",
     # query
     "query.abstained",
     "query.miss",
