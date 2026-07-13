@@ -1,6 +1,8 @@
-# Logs and temporary working directories
+# Run artifacts and scratch - not version-controlled (kept on disk)
 /logs/
 /tmp/
+/results/
+/scripts/
 
 # Data - ignore contents but keep directory structure via .gitkeep
 /data/*
@@ -214,8 +216,7 @@ cython_debug/
 .ruff_cache/
 
 # PyPI configuration file
-.pypirclogs/*.log
-logs/*.jsonl
+.pypirc
 
 # external corpora - large binaries kept out of git, annotations tracked
 data/external/cpap-datasheets-and-manuals/
