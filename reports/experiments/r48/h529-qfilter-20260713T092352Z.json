@@ -1,0 +1,56 @@
+{
+ "run_id": "20260713T092352Z",
+ "config": "config/experiments/config-bench-medium.yml",
+ "n_questions": 7534,
+ "n_probes": 132,
+ "deviation": "retrieval-contribution term skipped (match history never persisted); fidelity = max cosine(question, own chunk); channel emulated at M=1 by replacing the shipped render's question block",
+ "results": [
+  {
+   "prune_fraction": 0.0,
+   "pass": 86,
+   "pass_rate": 0.6515,
+   "top_match_changed": 0,
+   "qblock_tokens_p50": 124
+  },
+  {
+   "prune_fraction": 0.1,
+   "pass": 86,
+   "pass_rate": 0.6515,
+   "top_match_changed": 0,
+   "qblock_tokens_p50": 124
+  },
+  {
+   "prune_fraction": 0.2,
+   "pass": 86,
+   "pass_rate": 0.6515,
+   "top_match_changed": 1,
+   "qblock_tokens_p50": 124
+  },
+  {
+   "prune_fraction": 0.3,
+   "pass": 86,
+   "pass_rate": 0.6515,
+   "top_match_changed": 1,
+   "qblock_tokens_p50": 124
+  },
+  {
+   "prune_fraction": 0.4,
+   "pass": 86,
+   "pass_rate": 0.6515,
+   "top_match_changed": 2,
+   "qblock_tokens_p50": 124
+  },
+  {
+   "prune_fraction": 0.5,
+   "pass": 86,
+   "pass_rate": 0.6515,
+   "top_match_changed": 8,
+   "qblock_tokens_p50": 124
+  }
+ ],
+ "bars": {
+  "confirmed_prune_ge": 0.25,
+  "killed_lt": 0.1,
+  "recall_within_probes": 1
+ }
+}

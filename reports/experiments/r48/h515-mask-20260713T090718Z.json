@@ -1,0 +1,1182 @@
+{
+ "summary": {
+  "run_id": "20260713T090718Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "n": 127,
+  "n_skipped": 5,
+  "cross_community_gold_fraction": 0.4803,
+  "full_ppr_gold_recall": 0.622,
+  "masked_ppr_gold_recall": 0.5118,
+  "dense_seed_gold_recall": 0.4331,
+  "deviation": "offline scipy PPR over Entity-only live-rel adjacency; engine projection also carries Chunk nodes (no communityId)",
+  "bars": {
+   "cross_gt": 0.15,
+   "negligible_lt": 0.05
+  }
+ },
+ "rows": [
+  {
+   "id": "83bf3b5a0bd911eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 619,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 298,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "2dc690ba0bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 737,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "462bb642099211ebbdb0ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1329,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 650,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "6718770a087311ebbd66ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 685,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 133,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "9fe6a6760baf11ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 650,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "551e024408a611ebbd7fac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1097,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "33f51d7e0bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1098,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "914b452c0bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 471,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "d6898f78089511ebbd75ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 133,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "006d81bc0bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 341,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1532,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "265daf200bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 302,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "1c0dd3b00bdc11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 345,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "bab3b6d00bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 650,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1536,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 553,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "2d8f3ebe0bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 480,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "e6e38bc40bdd11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 498,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "0bedb7e80bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1377,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "86508dc60bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 294,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "e311a3ba0bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 345,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1264,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "435f65fa0baf11ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1241,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "5cc01ab60bb011ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1337,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "2084260e0bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 384,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "7cb81afc0bd911eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1346,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "a1d9a65c0bd911eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 652,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "gold_carriers": 3,
+   "top_seed_cid": 650,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "3a3c2efe0bdc11eba7f7acde48001122",
+   "skipped": "no gold carrier entity matched"
+  },
+  {
+   "id": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 135,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "0dfe41f60bdc11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 652,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "3ce92df80bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 571,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "gold_carriers": 1,
+   "top_seed_cid": 575,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "b672c1ee0bdd11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 1233,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 673,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "c5a00e860bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 480,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "434dea7708d211ebbd95ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 520,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "02b62fce087211ebbd64ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1277,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 685,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "c9a769c608be11ebbd8aac1f6bf848b6",
+   "gold_carriers": 1,
+   "top_seed_cid": 633,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 640,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "50e4a65c0bde11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 1561,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "gold_carriers": 3,
+   "top_seed_cid": 1408,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1425,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "38da155f087511ebbd67ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1329,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "49b22d0a0bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 23,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "78b10fb00bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1563,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "879d21e208fc11ebbdadac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1583,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "62a9cd640bb011ebab90acde48001122",
+   "skipped": "no gold carrier entity matched"
+  },
+  {
+   "id": "cda459160bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 589,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "1dfaa6200bdd11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 259,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 260,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "8e07f1f00bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 471,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "b7f5f7200bdd11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1209,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "gold_carriers": 3,
+   "top_seed_cid": 1214,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1473,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "0083038e0bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 781,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "6b8402c40bdd11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1275,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "d9c894ec0bd911eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 294,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 498,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "a9e322b20bdc11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 1277,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "8f783c7a0bda11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 345,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "b642318c0bdd11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 86,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1209,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "fcdafe320bdb11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1209,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "7d87730c087211ebbd66ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1081,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1082,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "037da85d08c611ebbd90ac1f6bf848b6",
+   "skipped": "no gold carrier entity matched"
+  },
+  {
+   "id": "e15d99380bdd11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 1462,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "f05423560bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 214,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 14,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1238,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "90c8793c087411ebbd67ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 25,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "63c16246095211ebbdaeac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 685,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "gold_carriers": 3,
+   "top_seed_cid": 159,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "d18fc6640bda11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 428,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 179,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "a457e11c0bdb11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 781,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "632fcc82085611ebbd59ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 829,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "076288460bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 834,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 309,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "9523a3df088911ebbd6eac1f6bf848b6",
+   "gold_carriers": 1,
+   "top_seed_cid": 1377,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "5ff291a80bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 640,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 424,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "63240f22089d11ebbd78ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 439,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "fde95590089c11ebbd78ac1f6bf848b6",
+   "gold_carriers": 1,
+   "top_seed_cid": 1238,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "3bb9c0740bb011ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 453,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "gold_carriers": 3,
+   "top_seed_cid": 1209,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "e7dc72940baf11ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 619,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "764446780bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 640,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1314,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "f1a794f20bdc11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 330,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "47bb70600bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1532,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1209,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "594ca25608df11ebbda0ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 298,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "a431a93808d511ebbd98ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 755,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "421d07aa0bb011ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 756,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "3f48bc400bb011ebab90acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 781,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 817,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1277,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 135,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "3ab846860bde11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 640,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "8cd3fe6c0baf11ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 717,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "0d9251260baf11ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1536,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "8cdc97de0bdc11eba7f7acde48001122",
+   "skipped": "no gold carrier entity matched"
+  },
+  {
+   "id": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1238,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "d73fa07c0bdd11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 817,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "9bc54aba0bdd11eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 1622,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "36b8644508af11ebbd83ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 978,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 985,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "689d225009b411ebbdb0ac1f6bf848b6",
+   "skipped": "no gold carrier entity matched"
+  },
+  {
+   "id": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 978,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "0016373a0bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1145,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "ccd086f80bdb11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1154,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "965e667e0bdd11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 294,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 737,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "43eb7b380bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 552,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "f48667b80bda11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1650,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 1536,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "bd9609880bdb11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 135,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "748446060bdb11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 1776,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "e2de58500bd911eba7f7acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 36,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 552,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "5c7842780baf11ebab90acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 341,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "gold_carriers": 2,
+   "top_seed_cid": 135,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": true
+  },
+  {
+   "id": "84c99c760bb011ebab90acde48001122",
+   "gold_carriers": 1,
+   "top_seed_cid": 498,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "f253a3040bdd11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 133,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "gold_carriers": 4,
+   "top_seed_cid": 1738,
+   "cross_community_gold": true,
+   "gold_in_full_ppr": false,
+   "gold_in_masked_ppr": false,
+   "gold_in_dense_seeds": false
+  },
+  {
+   "id": "2b9528860bde11eba7f7acde48001122",
+   "gold_carriers": 2,
+   "top_seed_cid": 756,
+   "cross_community_gold": false,
+   "gold_in_full_ppr": true,
+   "gold_in_masked_ppr": true,
+   "gold_in_dense_seeds": false
+  }
+ ]
+}

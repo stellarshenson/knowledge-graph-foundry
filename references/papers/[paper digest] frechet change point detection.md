@@ -1,0 +1,13 @@
+**Frechet Statistics Based Change Point Detection in Dynamic Social Networks**
+
+Luo and Krishnamurthy detect structural change points in a sequence of graph snapshots using the **Frechet mean and variance of graph Laplacians** under the Log-Euclidean metric, extended to multiple change points via binary segmentation, and validated on the UCI message network (**1,899 users, 59,835 messages, 196 days**) and the Enron email network (**184 nodes, 184 weekly snapshots**), where it locates a change point on **week 89 (August 23, 2000)** just before Enron's stock hit its all-time high - a point the LAD baseline misses.
+
+**Key mechanism**: graph Laplacians are treated as points in the space of symmetric positive-definite (SPD) matrices; the Log-Euclidean metric gives closed-form expressions for the Frechet mean and variance of a set of Laplacians, avoiding the iterative optimization that general Frechet-mean computation normally requires. A CUSUM-style hypothesis test on the Frechet variance sequence flags a change point when the test statistic crosses a significance-level threshold; binary segmentation recursively applies the single-change-point test to locate multiple change points while controlling the overall significance level. An incremental update scheme recomputes the running Frechet mean/variance as new snapshots arrive, rather than recomputing from scratch.
+
+**Main findings**: on simulated networks, the method outperforms the LAD (Laplacian Anomaly Detection) baseline in detection accuracy; on UCI messages, both algorithms agree closely, correctly flagging day 65 (end of spring term) as a change point and showing low activity through the summer break; on Enron, only the proposed method - not LAD - detects the pre-collapse change point tied to a real corporate event.
+
+**Key takeaways for KGF**: this is a direct structural-channel analogue to KGF's existing JSD-CUSUM drift detector, but operating on graph-Laplacian geometry rather than a scalar distribution - validating the design direction of extending online change-point detection from content/embedding drift to topology drift. The incremental Frechet mean/variance update is the same computational shape as KGF's own incremental signals (e.g., the Newman assortativity update): O(1)-per-snapshot maintenance of a running statistic, with a CUSUM-style significance test layered on top, rather than batch recomputation at ingest checkpoints.
+
+Tags: change-point-detection, frechet-statistics, graph-laplacian, cusum, incremental-computation, dynamic-networks
+
+Source: https://arxiv.org/abs/2303.10753 (Rui Luo, Vikram Krishnamurthy, 2023)

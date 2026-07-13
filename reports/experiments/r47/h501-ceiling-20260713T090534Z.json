@@ -1,0 +1,2630 @@
+{
+ "summary": {
+  "run_id": "20260713T090534Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "n_questions": 132,
+  "n_carriers": 326,
+  "n_spec": 21,
+  "n_prose": 305,
+  "dense16_carrier_recall": 0.5982,
+  "dense16_spec_recall": 0.7143,
+  "dense16_prose_recall": 0.5902,
+  "gliner_spec_in_dense16": 0.7222,
+  "gliner_reachable_fraction": 0.5736,
+  "fused_lift_bound": 0.1012,
+  "bars": {
+   "null_confirmed_lift_lt": 0.02,
+   "domain_opens_spec_recall_lt": 0.85
+  }
+ },
+ "rows": [
+  {
+   "id": "83bf3b5a0bd911eba7f7acde48001122",
+   "carrier": "Lothair II",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "83bf3b5a0bd911eba7f7acde48001122",
+   "carrier": "Ermengarde of Tours",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "carrier": "Aas Ka Panchhi",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "carrier": "Phoolwari",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "2dc690ba0bdc11eba7f7acde48001122",
+   "carrier": "Changed It",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "2dc690ba0bdc11eba7f7acde48001122",
+   "carrier": "Nicki Minaj",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "462bb642099211ebbdb0ac1f6bf848b6",
+   "carrier": "Marufabad",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "462bb642099211ebbdb0ac1f6bf848b6",
+   "carrier": "Nasamkhrali",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "God's Gift to Women",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Aldri annet enn br\u00e5k",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Michael Curtiz",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "carrier": "Edith Carlmar",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "El Tonto",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "The Heart of Doreon",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Charlie Day",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "6718770a087311ebbd66ac1f6bf848b6",
+   "carrier": "Robert North Bradbury",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "carrier": "Aivar Kuusmaa",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "7f7046d308f711ebbdaaac1f6bf848b6",
+   "carrier": "Andy Summers",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9fe6a6760baf11ebab90acde48001122",
+   "carrier": "Raghnall Mac Ruaidhr\u00ed",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9fe6a6760baf11ebab90acde48001122",
+   "carrier": "Ruaidhr\u00ed Mac Ruaidhr\u00ed",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Interview with a Hitman",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "The Last Coupon",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Perry Bhandal",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "551e024408a611ebbd7fac1f6bf848b6",
+   "carrier": "Frank Launder",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "33f51d7e0bde11eba7f7acde48001122",
+   "carrier": "Blood Street",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "33f51d7e0bde11eba7f7acde48001122",
+   "carrier": "Leo Fong",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "914b452c0bdc11eba7f7acde48001122",
+   "carrier": "Gaby: A True Story",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "914b452c0bdc11eba7f7acde48001122",
+   "carrier": "Luis Mandoki",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "d6898f78089511ebbd75ac1f6bf848b6",
+   "carrier": "Vasilyevsky Island",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "d6898f78089511ebbd75ac1f6bf848b6",
+   "carrier": "Preobrazheniya Island",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "006d81bc0bde11eba7f7acde48001122",
+   "carrier": "When the Stars Go Blue",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "006d81bc0bde11eba7f7acde48001122",
+   "carrier": "Ryan Adams",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "carrier": "Me and Bobby McGee",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f5e3b9ca0bdb11eba7f7acde48001122",
+   "carrier": "Roger Miller",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "265daf200bdc11eba7f7acde48001122",
+   "carrier": "Maurice, Prince of Orange",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "265daf200bdc11eba7f7acde48001122",
+   "carrier": "William the Silent",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "1c0dd3b00bdc11eba7f7acde48001122",
+   "carrier": "Aleksander Koniecpolski (1620\u20131659)",
+   "in_graph": false,
+   "spec": true,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "1c0dd3b00bdc11eba7f7acde48001122",
+   "carrier": "Stanis\u0142aw Koniecpolski",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "bab3b6d00bda11eba7f7acde48001122",
+   "carrier": "Madame la Presidente",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "bab3b6d00bda11eba7f7acde48001122",
+   "carrier": "Frank Lloyd",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Wrong Turn 5: Bloodlines",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Dark River (2017 film)",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Declan O'Brien",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "84b691d8086a11ebbd5fac1f6bf848b6",
+   "carrier": "Clio Barnard",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "The Goose Woman",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "You Can No Longer Remain Silent",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "Clarence Brown",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "carrier": "Robert A. Stemmle",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "2d8f3ebe0bda11eba7f7acde48001122",
+   "carrier": "The Private Life of Cinema",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "2d8f3ebe0bda11eba7f7acde48001122",
+   "carrier": "Denys Desjardins",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "e6e38bc40bdd11eba7f7acde48001122",
+   "carrier": "Coulson Wallop",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "e6e38bc40bdd11eba7f7acde48001122",
+   "carrier": "John Wallop, 2nd Earl of Portsmouth",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0bedb7e80bdc11eba7f7acde48001122",
+   "carrier": "John Middleton Murry",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0bedb7e80bdc11eba7f7acde48001122",
+   "carrier": "Katherine Mansfield",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "86508dc60bdc11eba7f7acde48001122",
+   "carrier": "Billy Elliot",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "86508dc60bdc11eba7f7acde48001122",
+   "carrier": "Stephen Warbeck",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "e311a3ba0bdc11eba7f7acde48001122",
+   "carrier": "Lisbeth Palme",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "e311a3ba0bdc11eba7f7acde48001122",
+   "carrier": "Olof Palme",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "carrier": "3 Dots",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "bdd526c4091811ebbdaeac1f6bf848b6",
+   "carrier": "Dying God",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "435f65fa0baf11ebab90acde48001122",
+   "carrier": "Sisowath Kossamak",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "435f65fa0baf11ebab90acde48001122",
+   "carrier": "Norodom Suramarit",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "5cc01ab60bb011ebab90acde48001122",
+   "carrier": "Mugain",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "5cc01ab60bb011ebab90acde48001122",
+   "carrier": "Conchobar mac Nessa",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "2084260e0bde11eba7f7acde48001122",
+   "carrier": "Theodore Salisbury Woolsey",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "2084260e0bde11eba7f7acde48001122",
+   "carrier": "Theodore Dwight Woolsey",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "7cb81afc0bd911eba7f7acde48001122",
+   "carrier": "The Return of Swamp Thing",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "7cb81afc0bd911eba7f7acde48001122",
+   "carrier": "Jim Wynorski",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a1d9a65c0bd911eba7f7acde48001122",
+   "carrier": "I Can't See Myself Leaving You",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a1d9a65c0bd911eba7f7acde48001122",
+   "carrier": "Aretha Franklin",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Playing It Wild",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "I'll Be Going Now",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "William Duncan (actor)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Dino Risi",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "3a3c2efe0bdc11eba7f7acde48001122",
+   "carrier": "Beatrice I, Countess of Burgundy",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3a3c2efe0bdc11eba7f7acde48001122",
+   "carrier": "Frederick I, Holy Roman Emperor",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "Christ Walking on the Water",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "45 Fathers",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "Georges M\u00e9li\u00e8s",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "9aa8008408de11ebbd9eac1f6bf848b6",
+   "carrier": "James Tinling",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0dfe41f60bdc11eba7f7acde48001122",
+   "carrier": "Come Dance with Me (song)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0dfe41f60bdc11eba7f7acde48001122",
+   "carrier": "Frank Sinatra",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "Talk About a Stranger",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "David Bradley (director)",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "carrier": "Gideon Johnson Pillow",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "carrier": "Holm J\u00f8lsen",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "b672c1ee0bdd11eba7f7acde48001122",
+   "carrier": "Inherent Vice (film)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "b672c1ee0bdd11eba7f7acde48001122",
+   "carrier": "Jonny Greenwood",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Dangerously They Live",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Salad by the Roots",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Robert Florey",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "01309e5008bd11ebbd89ac1f6bf848b6",
+   "carrier": "Georges Lautner",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "c5a00e860bda11eba7f7acde48001122",
+   "carrier": "Sylvia Burka",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "c5a00e860bda11eba7f7acde48001122",
+   "carrier": "Jocelyn Lovell",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "434dea7708d211ebbd95ac1f6bf848b6",
+   "carrier": "Ludwig Elsbett",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "434dea7708d211ebbd95ac1f6bf848b6",
+   "carrier": "Pamela Ann Rymer",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Phalitamsha",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Gladiators Seven",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Puttanna Kanagal",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Alberto De Martino",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Henry Goes Arizona",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "The Blue Collar Worker and the Hairdresser in a Whirl of Sex and Politics",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Edwin L. Marin",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "carrier": "Lina Wertm\u00fcller",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "c9a769c608be11ebbd8aac1f6bf848b6",
+   "carrier": "Hywel Teifi Edwards",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "c9a769c608be11ebbd8aac1f6bf848b6",
+   "carrier": "Felix Schuster",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Tombstone Rashomon",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Waiting for the Clouds",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Alex Cox",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "3f04140e08c311ebbd8dac1f6bf848b6",
+   "carrier": "Ye\u015fim Ustao\u011flu",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "50e4a65c0bde11eba7f7acde48001122",
+   "carrier": "B Boy (song)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "50e4a65c0bde11eba7f7acde48001122",
+   "carrier": "Meek Mill",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "Illusions (1982 film)",
+   "in_graph": false,
+   "spec": true,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "It's a Wonderful Afterlife",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "Julie Dash",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "b64f541e088d11ebbd70ac1f6bf848b6",
+   "carrier": "Gurinder Chadha",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "carrier": "Naked Tango",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f998c58c091b11ebbdaeac1f6bf848b6",
+   "carrier": "Algiers (film)",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "38da155f087511ebbd67ac1f6bf848b6",
+   "carrier": "Sir Thomas Wheate, 1st Baronet",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "38da155f087511ebbd67ac1f6bf848b6",
+   "carrier": "Albert \u00c9douard Le Brethon de Caligny",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "49b22d0a0bde11eba7f7acde48001122",
+   "carrier": "The Straw Hat",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "49b22d0a0bde11eba7f7acde48001122",
+   "carrier": "Isaac Schwartz",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "78b10fb00bdc11eba7f7acde48001122",
+   "carrier": "A Nest of Noblemen",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "78b10fb00bdc11eba7f7acde48001122",
+   "carrier": "Vladimir Gardin",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "879d21e208fc11ebbdadac1f6bf848b6",
+   "carrier": "Pietro Salini",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "879d21e208fc11ebbdadac1f6bf848b6",
+   "carrier": "Domenico Ravenna",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "62a9cd640bb011ebab90acde48001122",
+   "carrier": "John Ernest, Duke of Saxe-Eisenach",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "62a9cd640bb011ebab90acde48001122",
+   "carrier": "Christine of Hesse-Kassel (1578\u20131658)",
+   "in_graph": false,
+   "spec": true,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "cda459160bda11eba7f7acde48001122",
+   "carrier": "Palo Alto (2013 film)",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "cda459160bda11eba7f7acde48001122",
+   "carrier": "Gia Coppola",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "1dfaa6200bdd11eba7f7acde48001122",
+   "carrier": "Los Pagares de Mendieta",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "1dfaa6200bdd11eba7f7acde48001122",
+   "carrier": "Leopoldo Torres R\u00edos",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "carrier": "Hubert Mordek",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "ea151f3908e011ebbda2ac1f6bf848b6",
+   "carrier": "Levon Ashotovich Grigorian",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "8e07f1f00bda11eba7f7acde48001122",
+   "carrier": "My Three Merry Widows",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "8e07f1f00bda11eba7f7acde48001122",
+   "carrier": "Fernando Cort\u00e9s",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "b7f5f7200bdd11eba7f7acde48001122",
+   "carrier": "Thunder on the Hill",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "b7f5f7200bdd11eba7f7acde48001122",
+   "carrier": "Hans J. Salter",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Arr\u00eate ton cin\u00e9ma",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Agni (2004 film)",
+   "in_graph": false,
+   "spec": true,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Diane Kurys",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0dc9691b087911ebbd67ac1f6bf848b6",
+   "carrier": "Swapan Saha",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "carrier": "Werner Mensching",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "ec70a8a208a311ebbd7cac1f6bf848b6",
+   "carrier": "Karel Zich",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0083038e0bde11eba7f7acde48001122",
+   "carrier": "Prince Ferdinand of Bavaria",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0083038e0bde11eba7f7acde48001122",
+   "carrier": "Infanta Mar\u00eda de la Paz of Spain",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "6b8402c40bdd11eba7f7acde48001122",
+   "carrier": "An Event",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "6b8402c40bdd11eba7f7acde48001122",
+   "carrier": "Vatroslav Mimica",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "d9c894ec0bd911eba7f7acde48001122",
+   "carrier": "Good People (film)",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "d9c894ec0bd911eba7f7acde48001122",
+   "carrier": "Henrik Ruben Genz",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "carrier": "Gare de La Roche-sur-Yon",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+   "carrier": "Gare de Namps-Quevauvillers",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a9e322b20bdc11eba7f7acde48001122",
+   "carrier": "Fortunella (film)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a9e322b20bdc11eba7f7acde48001122",
+   "carrier": "Eduardo De Filippo",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "8f783c7a0bda11eba7f7acde48001122",
+   "carrier": "Joanna Elisabeth of Holstein-Gottorp",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "8f783c7a0bda11eba7f7acde48001122",
+   "carrier": "Christian August, Prince of Anhalt-Zerbst",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "b642318c0bdd11eba7f7acde48001122",
+   "carrier": "Abdul-Aziz bin Muhammad",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "b642318c0bdd11eba7f7acde48001122",
+   "carrier": "Muhammad bin Saud",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "Love, Honor and Oh-Baby!",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "I Cover the Underworld",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "Charles Lamont",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "carrier": "R. G. Springsteen",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "fcdafe320bdb11eba7f7acde48001122",
+   "carrier": "The Circus Cyclone",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "fcdafe320bdb11eba7f7acde48001122",
+   "carrier": "Albert S. Rogell",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "7d87730c087211ebbd66ac1f6bf848b6",
+   "carrier": "Wizards of the Lost Kingdom",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "7d87730c087211ebbd66ac1f6bf848b6",
+   "carrier": "Final Exam (1981 film)",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "carrier": "Museum of Croatian Archaeological Monuments",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+   "carrier": "Bayernhof Music Museum",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "037da85d08c611ebbd90ac1f6bf848b6",
+   "carrier": "Christopher Newton (criminal)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "037da85d08c611ebbd90ac1f6bf848b6",
+   "carrier": "Frances M. Vega",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "e15d99380bdd11eba7f7acde48001122",
+   "carrier": "Dancing in the Rain (film)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "e15d99380bdd11eba7f7acde48001122",
+   "carrier": "Bo\u0161tjan Hladnik",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Saw Thanda",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Min Dikkha",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "carrier": "Inside the Room",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+   "carrier": "Crude Set Drama",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "The Marriage of Princess Demidoff",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "The Pocket-knife",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "Frederic Zelnik",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "7d7237ac08a011ebbd78ac1f6bf848b6",
+   "carrier": "Ben Sombogaart",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Airheads",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Return to Cabin by the Lake",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Michael Lehmann",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "90c8793c087411ebbd67ac1f6bf848b6",
+   "carrier": "Po-Chih Leong",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "63c16246095211ebbdaeac1f6bf848b6",
+   "carrier": "A Romance of Seville",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "63c16246095211ebbdaeac1f6bf848b6",
+   "carrier": "Pirates of the Sky",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Lost in the Stratosphere",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Blind Man's Eyes",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "Melville W. Brown",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "48e6d06e086f11ebbd62ac1f6bf848b6",
+   "carrier": "John Ince (actor)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "d18fc6640bda11eba7f7acde48001122",
+   "carrier": "Am I Wrong (\u00c9tienne de Cr\u00e9cy song)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "d18fc6640bda11eba7f7acde48001122",
+   "carrier": "\u00c9tienne de Cr\u00e9cy",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "carrier": "Marjatta Raita",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "4a11106f08ea11ebbda7ac1f6bf848b6",
+   "carrier": "Bruce Coulter",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a457e11c0bdb11eba7f7acde48001122",
+   "carrier": "Atomised (film)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a457e11c0bdb11eba7f7acde48001122",
+   "carrier": "Oskar Roehler",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "632fcc82085611ebbd59ac1f6bf848b6",
+   "carrier": "Angus Wagner",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "632fcc82085611ebbd59ac1f6bf848b6",
+   "carrier": "Juan Carlos Falc\u00f3n",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "076288460bde11eba7f7acde48001122",
+   "carrier": "Henry I of Zi\u0119bice",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "076288460bde11eba7f7acde48001122",
+   "carrier": "Nicholas the Small",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "carrier": "Sammy Hagar",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "402c6e0008c611ebbd90ac1f6bf848b6",
+   "carrier": "Renaud Garcia-Fons",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9523a3df088911ebbd6eac1f6bf848b6",
+   "carrier": "David Elliot (illustrator)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9523a3df088911ebbd6eac1f6bf848b6",
+   "carrier": "Eustace William Ferguson",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "5ff291a80bda11eba7f7acde48001122",
+   "carrier": "Back in the U.S.A.",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "5ff291a80bda11eba7f7acde48001122",
+   "carrier": "Chuck Berry",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "carrier": "Cheryl Saban",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a08aa2a9089111ebbd73ac1f6bf848b6",
+   "carrier": "Dmitry Grigorieff",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "The First Day of Freedom",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Malabimba \u2013 The Malicious Whore",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Aleksander Ford",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "63240f22089d11ebbd78ac1f6bf848b6",
+   "carrier": "Andrea Bianchi",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "fde95590089c11ebbd78ac1f6bf848b6",
+   "carrier": "Jorge Ledezma",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "fde95590089c11ebbd78ac1f6bf848b6",
+   "carrier": "Yuliya Baraley",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3bb9c0740bb011ebab90acde48001122",
+   "carrier": "Sibyl Hathaway",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3bb9c0740bb011ebab90acde48001122",
+   "carrier": "Francis William Beaumont",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Sins of Madeleine",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Captain Apache",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Henri Lepage (director)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+   "carrier": "Alexander Singer",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "e7dc72940baf11ebab90acde48001122",
+   "carrier": "Godomar II",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "e7dc72940baf11ebab90acde48001122",
+   "carrier": "Gundobad",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "764446780bde11eba7f7acde48001122",
+   "carrier": "The Outlaw Express",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "764446780bde11eba7f7acde48001122",
+   "carrier": "Leo D. Maloney",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "45 Calibre Echo",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Bons Baisers de Hong Kong",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Bruce M. Mitchell",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "bb97d66208ba11ebbd88ac1f6bf848b6",
+   "carrier": "Yvan Chiffre",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f1a794f20bdc11eba7f7acde48001122",
+   "carrier": "Lamprocles",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f1a794f20bdc11eba7f7acde48001122",
+   "carrier": "Socrates",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "47bb70600bde11eba7f7acde48001122",
+   "carrier": "I Like Control",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "47bb70600bde11eba7f7acde48001122",
+   "carrier": "DJ Clue",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Romance on the Run",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "The Palace of Angels",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Gus Meins",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+   "carrier": "Walter Hugo Khouri",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "Mord Em'ly",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "Ek Hi Bhool (1940 film)",
+   "in_graph": false,
+   "spec": true,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "George Pearson (filmmaker)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "594ca25608df11ebbda0ac1f6bf848b6",
+   "carrier": "Vijay Bhatt",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "The Korean Wedding Chest",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "True to the Navy",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "Ulrike Ottinger",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "a431a93808d511ebbd98ac1f6bf848b6",
+   "carrier": "Frank Tuttle",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "421d07aa0bb011ebab90acde48001122",
+   "carrier": "Marianus V of Arborea",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "421d07aa0bb011ebab90acde48001122",
+   "carrier": "Brancaleone Doria",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "3f48bc400bb011ebab90acde48001122",
+   "carrier": "Margaret of Bavaria, Marchioness of Mantua",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3f48bc400bb011ebab90acde48001122",
+   "carrier": "Albert III, Duke of Bavaria",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Felices 140",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Dr. Who and the Daleks",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Gracia Querejeta",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "c68eb0be08e611ebbda5ac1f6bf848b6",
+   "carrier": "Gordon Flemyng",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "carrier": "Mama's Little Pirate",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+   "carrier": "Beauties on Motor Scooters",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "carrier": "Two Brides and a Baby",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+   "carrier": "Dinner at the Ritz",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3ab846860bde11eba7f7acde48001122",
+   "carrier": "Camille (1926 feature film)",
+   "in_graph": false,
+   "spec": true,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "3ab846860bde11eba7f7acde48001122",
+   "carrier": "William Axt",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "8cd3fe6c0baf11ebab90acde48001122",
+   "carrier": "Colg\u00fa mac Fa\u00edlbe Flaind",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "8cd3fe6c0baf11ebab90acde48001122",
+   "carrier": "Fa\u00edlbe Flann mac \u00c1edo Duib",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0d9251260baf11ebab90acde48001122",
+   "carrier": "Jean Tangye",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0d9251260baf11ebab90acde48001122",
+   "carrier": "Derek Tangye",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "8cdc97de0bdc11eba7f7acde48001122",
+   "carrier": "Track & Field News",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "8cdc97de0bdc11eba7f7acde48001122",
+   "carrier": "Bert Nelson (publisher)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "carrier": "Shahanuddin Choudhury",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "178a2b9408d611ebbd98ac1f6bf848b6",
+   "carrier": "Domenico Distilo",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "d73fa07c0bdd11eba7f7acde48001122",
+   "carrier": "Alfonso P\u00e9rez de Guzm\u00e1n, 5th Duke of Medina Sidonia",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "d73fa07c0bdd11eba7f7acde48001122",
+   "carrier": "Juan Alfonso P\u00e9rez de Guzm\u00e1n, 3rd Duke of Medina Sidonia",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9bc54aba0bdd11eba7f7acde48001122",
+   "carrier": "Merry-Go-Round (Ayumi Hamasaki song)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "9bc54aba0bdd11eba7f7acde48001122",
+   "carrier": "Ayumi Hamasaki",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "The Lone Prairie",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "Buckaroo from Powder River",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "William Berke",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "36b8644508af11ebbd83ac1f6bf848b6",
+   "carrier": "Ray Nazarro",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "C\u00e9sar and Rosalie",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Beatrice (1987 film)",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Claude Sautet",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "81e0d683087c11ebbd6aac1f6bf848b6",
+   "carrier": "Bertrand Tavernier",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "689d225009b411ebbdb0ac1f6bf848b6",
+   "carrier": "Wiqu (Lima)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "689d225009b411ebbdb0ac1f6bf848b6",
+   "carrier": "Qillqa (Melgar)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "The Glass Wall",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Where Does It Hurt?",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Maxwell Shane",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "5cbb015f087511ebbd67ac1f6bf848b6",
+   "carrier": "Rod Amateau",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0016373a0bda11eba7f7acde48001122",
+   "carrier": "Hermann II, Landgrave of Hesse",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0016373a0bda11eba7f7acde48001122",
+   "carrier": "Louis the Junker",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "ccd086f80bdb11eba7f7acde48001122",
+   "carrier": "Do You Believe? (film)",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "ccd086f80bdb11eba7f7acde48001122",
+   "carrier": "Jon Gunn",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "965e667e0bdd11eba7f7acde48001122",
+   "carrier": "Napier Sturt, 3rd Baron Alington",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "965e667e0bdd11eba7f7acde48001122",
+   "carrier": "Humphrey Sturt, 2nd Baron Alington",
+   "in_graph": true,
+   "spec": true,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Amira & Sam",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Fat Man and Little Boy",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Sean Mullin",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+   "carrier": "Roland Joff\u00e9",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "43eb7b380bde11eba7f7acde48001122",
+   "carrier": "Peter's Friends",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "43eb7b380bde11eba7f7acde48001122",
+   "carrier": "Kenneth Branagh",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f48667b80bda11eba7f7acde48001122",
+   "carrier": "The Miscellany News",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f48667b80bda11eba7f7acde48001122",
+   "carrier": "Vassar College",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "Haiducii (film)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "My Wife's Best Friend",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "Dinu Cocea",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "d6e9771908dd11ebbd9eac1f6bf848b6",
+   "carrier": "Richard Sale (director)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "bd9609880bdb11eba7f7acde48001122",
+   "carrier": "Battle in Seattle",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "bd9609880bdb11eba7f7acde48001122",
+   "carrier": "Stuart Townsend",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "748446060bdb11eba7f7acde48001122",
+   "carrier": "Make the World Move",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "748446060bdb11eba7f7acde48001122",
+   "carrier": "Alex da Kid",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "e2de58500bd911eba7f7acde48001122",
+   "carrier": "The Notorious Miss Lisle",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "e2de58500bd911eba7f7acde48001122",
+   "carrier": "James Young (director)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Last Tango in Paris",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Beasts of Prey",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Bernardo Bertolucci",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f04cc9b408d611ebbd99ac1f6bf848b6",
+   "carrier": "Kim Ki-young",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "5c7842780baf11ebab90acde48001122",
+   "carrier": "Dui Finn",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "5c7842780baf11ebab90acde48001122",
+   "carrier": "S\u00e9tna Innarraid",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "carrier": "The Tender Years",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "0c24f02e08c711ebbd91ac1f6bf848b6",
+   "carrier": "Range War",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "84c99c760bb011ebab90acde48001122",
+   "carrier": "Louis, Dauphin of France (son of Louis XV)",
+   "in_graph": false,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": true
+  },
+  {
+   "id": "84c99c760bb011ebab90acde48001122",
+   "carrier": "Marie Leszczy\u0144ska",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "f253a3040bdd11eba7f7acde48001122",
+   "carrier": "Princess Maria of Greece and Denmark",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "f253a3040bdd11eba7f7acde48001122",
+   "carrier": "Olga Constantinovna of Russia",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "I Like Only You",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "Brother Rat",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": false
+  },
+  {
+   "id": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "Pierre Montazel",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "8dcaaf24089811ebbd77ac1f6bf848b6",
+   "carrier": "William Keighley",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  },
+  {
+   "id": "2b9528860bde11eba7f7acde48001122",
+   "carrier": "Marianus V of Arborea",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": true,
+   "gliner_reachable": true
+  },
+  {
+   "id": "2b9528860bde11eba7f7acde48001122",
+   "carrier": "Brancaleone Doria",
+   "in_graph": true,
+   "spec": false,
+   "dense_hit": false,
+   "gliner_reachable": false
+  }
+ ]
+}

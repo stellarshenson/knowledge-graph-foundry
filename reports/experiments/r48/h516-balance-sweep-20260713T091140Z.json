@@ -1,0 +1,104 @@
+{
+ "run_id": "20260713T091140Z",
+ "config": "config/experiments/config-bench-medium.yml",
+ "community_stats": [
+  {
+   "gamma": 1.0,
+   "communities": 1801,
+   "modularity": 0.9643,
+   "size_gini": 0.6781,
+   "max_size": 133,
+   "median_size": 1,
+   "p95_size": 10
+  },
+  {
+   "gamma": 2.0,
+   "communities": 1821,
+   "modularity": 0.9542,
+   "size_gini": 0.6666,
+   "max_size": 110,
+   "median_size": 1,
+   "p95_size": 13
+  },
+  {
+   "gamma": 4.0,
+   "communities": 1847,
+   "modularity": 0.939,
+   "size_gini": 0.652,
+   "max_size": 75,
+   "median_size": 1,
+   "p95_size": 19
+  },
+  {
+   "gamma": 8.0,
+   "communities": 1889,
+   "modularity": 0.9174,
+   "size_gini": 0.6294,
+   "max_size": 53,
+   "median_size": 1,
+   "p95_size": 20
+  }
+ ],
+ "arms": [
+  {
+   "arm": "baseline",
+   "n": 132,
+   "pass_rate": 0.6515,
+   "passes": 86,
+   "tokens_p50": 642,
+   "tokens_p95": 963,
+   "tokens_p99": 1277
+  },
+  {
+   "arm": "cap_g10",
+   "n": 132,
+   "pass_rate": 0.4545,
+   "passes": 60,
+   "tokens_p50": 313,
+   "tokens_p95": 816,
+   "tokens_p99": 1113
+  },
+  {
+   "arm": "cap_g20",
+   "n": 132,
+   "pass_rate": 0.4545,
+   "passes": 60,
+   "tokens_p50": 310,
+   "tokens_p95": 806,
+   "tokens_p99": 1113
+  },
+  {
+   "arm": "cap_g40",
+   "n": 132,
+   "pass_rate": 0.447,
+   "passes": 59,
+   "tokens_p50": 310,
+   "tokens_p95": 795,
+   "tokens_p99": 1113
+  },
+  {
+   "arm": "cap_g80",
+   "n": 132,
+   "pass_rate": 0.447,
+   "passes": 59,
+   "tokens_p50": 310,
+   "tokens_p95": 781,
+   "tokens_p99": 926
+  },
+  {
+   "arm": "doc_cap",
+   "n": 132,
+   "pass_rate": 0.4091,
+   "passes": 54,
+   "tokens_p50": 289,
+   "tokens_p95": 781,
+   "tokens_p99": 1095
+  }
+ ],
+ "notes": [
+  "EM/F1 absent by design: no reader in the loop; criterion = prober answer_in_context instrument",
+  "size-constrained Leiden arm SKIPPED: GDS build rejects maxCommunitySize on gds.leiden",
+  "arms are render caps only (H515: propagation masking falsified)",
+  "recall@16 seed-level reference: dense_seed_gold_recall 0.433 (h515 report), arm-independent"
+ ]
+}

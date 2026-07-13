@@ -1,0 +1,162 @@
+{
+ "run_id": "20260713T092044Z",
+ "config": "config/experiments/config-bench-medium.yml",
+ "n_questions": 7534,
+ "n_probes": 132,
+ "results": [
+  {
+   "k": 40,
+   "nmi_cluster_doc": 0.4346,
+   "curve": [
+    {
+     "coverage": 0.25,
+     "threshold": 0.4015,
+     "hot_recall": 0.7273,
+     "hot_base_recall": 0.5758,
+     "token_fraction": 16.506
+    },
+    {
+     "coverage": 0.348,
+     "threshold": 0.3892,
+     "hot_recall": 0.6957,
+     "hot_base_recall": 0.587,
+     "token_fraction": 18.741
+    },
+    {
+     "coverage": 0.447,
+     "threshold": 0.3737,
+     "hot_recall": 0.7119,
+     "hot_base_recall": 0.5593,
+     "token_fraction": 20.591
+    },
+    {
+     "coverage": 0.545,
+     "threshold": 0.3618,
+     "hot_recall": 0.7639,
+     "hot_base_recall": 0.5694,
+     "token_fraction": 22.458
+    },
+    {
+     "coverage": 0.75,
+     "threshold": 0.3285,
+     "hot_recall": 0.7475,
+     "hot_base_recall": 0.5859,
+     "token_fraction": 25.803
+    },
+    {
+     "coverage": 1.0,
+     "threshold": 0.1718,
+     "hot_recall": 0.7879,
+     "hot_base_recall": 0.6515,
+     "token_fraction": 28.906
+    }
+   ],
+   "all_recall": 0.7879,
+   "base_recall": 0.6515
+  },
+  {
+   "k": 100,
+   "nmi_cluster_doc": 0.5454,
+   "curve": [
+    {
+     "coverage": 0.25,
+     "threshold": 0.4944,
+     "hot_recall": 0.5455,
+     "hot_base_recall": 0.7273,
+     "token_fraction": 2.881
+    },
+    {
+     "coverage": 0.348,
+     "threshold": 0.4534,
+     "hot_recall": 0.5435,
+     "hot_base_recall": 0.6957,
+     "token_fraction": 4.846
+    },
+    {
+     "coverage": 0.447,
+     "threshold": 0.4142,
+     "hot_recall": 0.5593,
+     "hot_base_recall": 0.661,
+     "token_fraction": 7.531
+    },
+    {
+     "coverage": 0.545,
+     "threshold": 0.3942,
+     "hot_recall": 0.5694,
+     "hot_base_recall": 0.5972,
+     "token_fraction": 10.419
+    },
+    {
+     "coverage": 0.75,
+     "threshold": 0.3547,
+     "hot_recall": 0.5859,
+     "hot_base_recall": 0.5657,
+     "token_fraction": 13.207
+    },
+    {
+     "coverage": 1.0,
+     "threshold": 0.2638,
+     "hot_recall": 0.6288,
+     "hot_base_recall": 0.6515,
+     "token_fraction": 16.51
+    }
+   ],
+   "all_recall": 0.6288,
+   "base_recall": 0.6515
+  },
+  {
+   "k": 200,
+   "nmi_cluster_doc": 0.6522,
+   "curve": [
+    {
+     "coverage": 0.25,
+     "threshold": 0.5735,
+     "hot_recall": 0.4545,
+     "hot_base_recall": 0.7879,
+     "token_fraction": 1.048
+    },
+    {
+     "coverage": 0.348,
+     "threshold": 0.5324,
+     "hot_recall": 0.5217,
+     "hot_base_recall": 0.8261,
+     "token_fraction": 1.111
+    },
+    {
+     "coverage": 0.447,
+     "threshold": 0.4818,
+     "hot_recall": 0.5254,
+     "hot_base_recall": 0.7797,
+     "token_fraction": 1.731
+    },
+    {
+     "coverage": 0.545,
+     "threshold": 0.442,
+     "hot_recall": 0.5278,
+     "hot_base_recall": 0.7361,
+     "token_fraction": 3.162
+    },
+    {
+     "coverage": 0.75,
+     "threshold": 0.3874,
+     "hot_recall": 0.5253,
+     "hot_base_recall": 0.6364,
+     "token_fraction": 5.658
+    },
+    {
+     "coverage": 1.0,
+     "threshold": 0.2631,
+     "hot_recall": 0.5758,
+     "hot_base_recall": 0.6515,
+     "token_fraction": 8.269
+    }
+   ],
+   "all_recall": 0.5758,
+   "base_recall": 0.6515
+  }
+ ],
+ "bars": {
+  "confirmed": "hot recall >= 0.95 at <= 0.25 tokens AND NMI < 0.4",
+  "killed": "NMI >= 0.5 OR hot recall < 0.90"
+ }
+}

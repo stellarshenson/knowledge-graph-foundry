@@ -4686,7 +4686,7 @@ Fence: R40 owns the retrieval bridge (the promoted RETRIEVAL hypotheses feed it)
 - **Prediction** - NULL: dense@16 spec-slice recall >= 0.90 AND > 90% of GLiNER spec carriers in dense top-16 AND |dense-miss AND GLiNER-reachable| / |gold| bounds fused lift < +2.0 pts. The retrieval domain (H506-H511, H513) is alive ONLY if this null is falsified (dense spec-slice recall < ~0.85 = a real opening)
 - **Acceptance bar** - NULL CONFIRMED if bounded achievable lift < +2.0 pts over 0.854; retrieval domain FALSIFIED-OPEN (proceed) if dense spec-slice recall < 0.85. Pure set arithmetic, no LLM
 - **Experiment** - FREE offline: GLiNER-pass the ingested slice, join spans against the dense-seed logs and gold carriers, report the three quantities; `reports/experiments/r47/h501-ceiling-*.json`. Go / no-go for the retrieval domain
-- **Status** - REGISTERED (run first)
+- **Status** - **EXECUTED 2026-07-13** (`reports/experiments/r47/h501-ceiling-20260713T090534Z.json`, `scripts/experiments/r47_h501_ceiling.py`, GLiNER multi-v2.1 spans on the questions, 132 questions / 326 gold carriers). Dense@16 carrier-level recall **0.598** overall; spec slice is a corpus artifact on prose-heavy 2wiki (n=21, reported not hidden) at 0.714, prose 0.590; GLiNER-reachable 0.574; **fused lift bound = +10.1 pts** (|dense-miss AND GLiNER-reachable| / |gold|). **VERDICT: NULL FALSIFIED - the retrieval domain OPENS** (bound is 5x the +2.0-pt closure bar; spec-slice recall 0.714 < 0.85 trips the open condition independently). Framing caveat: carrier-name-in-top-16-seeds is stricter than the 0.854 answer_in_context incumbent - +10.1 pts bounds carrier visibility, not end recall; H506-H511/H513 inherit exactly this gap to close
 
 **IDENTITY (the strong bet - weak incumbent 76.8%, targets H107; mostly FREE)**
 
@@ -4840,7 +4840,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - median recall-neutral prunable fraction P in 5-12%; an oracle hierarchy-aligned prune captures < 5 pts of it
 - **Acceptance bar** - reduction domains (H521-H527) stay OPEN only if median P >= 30% AND a hierarchy-aligned oracle prune captures >= half of it; NULL/KILL if median P < 15% - the axis is declared a non-lever and closed
 - **Experiment** - FREE offline: reconstruct post-H382 gated renders for the medium probe set from cached logs + trajectory jsonl, greedy proposition-removal recall check, compare against an idealized community/document-hierarchy prune; `reports/experiments/r48/h514-gate-*.json`
-- **Status** - REGISTERED (run first)
+- **Status** - **EXECUTED 2026-07-13** (`reports/experiments/r48/h514-gate-20260713T090623Z.json`, `scripts/experiments/r48_h514_gate.py`, medium pile, 132 probes / 86 passing; renders regenerated live via `Foundry.probe` - the H382 gate is in that path - rather than from cached logs, which carry no render text). Median recall-neutral prunable fraction **0.898** (mean 0.889), oracle whole-community capture median **0.566**. **VERDICT: REFUTED** - the contrarian floor collapsed: the post-H382 gated render still carries ~90% criterion-neutral mass, 6x the 15% kill bar, and BOTH open conditions hold (median P >= 30%, oracle capture >= half). Reduction domains H521-H527 stay OPEN with enormous headroom. Honesty note: criterion = the prober's answer_in_context instrument, so P is criterion-neutral mass (greedy pruning converges toward the block carrying the gold string) - an upper bound on quality-neutral prunable mass; H524's waste audit refines it. Leiden substrate written same day: 320 communities / modularity 0.964 on 6,626 entities
 
 ### R48-H515 Safety gate - partition-restricted PPR severs multi-hop gold
 
@@ -4850,7 +4850,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - cross-community gold fraction > 15%; community-masked PPR recall < 0.80
 - **Acceptance bar** - community-scoped retrieval FALSIFIED if cross-community gold > 15% AND masked recall < 0.854; if gold fraction < 5% AND masked recall >= 0.854, dilution is negligible - but then bounded segments also yield no traversal savings, so the lever closes either way (both branches are deliverables)
 - **Experiment** - FREE offline: label gold passages + top seeds with communityId on the medium graph, compute the cross-community fraction, re-run PPR with the transition matrix masked to the seed community; `reports/experiments/r48/h515-mask-*.json`
-- **Status** - REGISTERED (run first)
+- **Status** - **EXECUTED 2026-07-13** (`reports/experiments/r48/h515-mask-20260713T090718Z.json`, `scripts/experiments/r48_h515_mask.py`, offline scipy power-iteration PPR, 127 scored / 5 skipped no-carrier-match). Cross-community gold fraction **0.480** (3.2x the 15% bar); gold-carrier reachability: full PPR **0.622**, community-masked **0.512** (-11.0 pts), dense seeds alone 0.433. **VERDICT: CONFIRMED** - community-scoped retrieval is FALSIFIED: nearly half the questions hold a gold carrier outside the top seed's community and the masked walk severs it. Corroboration: full PPR adds +18.9 pts over bare dense seeds (fuse-inside-PPR earning its keep at this rung). Deviation recorded: Entity-only adjacency (the engine projection also diffuses through Chunk nodes, no communityId there). Consequence for the balance domain: H516-H519 verdicts may only consider community-bounded RENDERING - propagation masking is dead
 
 **BALANCE (the user's core axis - one shared FREE sweep adjudicates H516-H519; every verdict carries the mandatory metrics table)**
 
@@ -4862,7 +4862,25 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - p99 render tokens -20 to -35% at the halving gamma; recall >= 23/24 preserved
 - **Acceptance bar** - CONFIRMED if p99 -20% AND recall within 1 probe AND modularity drop < 15%; REFUTED if every gamma hitting the span target loses >= 2 probes or > 15% modularity. Verdict MUST ship the full metrics table: per setting {gamma/cap, community count, modularity, size Gini, max/median, p95 size} x {recall@16, answer_in_context, EM/F1 where answers exist, render tokens p50/p95/p99}
 - **Experiment** - FREE offline: sweep gds.leiden gamma {1.0, 2, 4, 8} + one size-constrained run on the medium graph; replay cached retrieval logs, compute the render span under a community-boundary cap per probe, check answer_in_context; `reports/experiments/r48/h516-balance-sweep-*.json` + the curve table in the report
-- **Status** - REGISTERED
+- **Status** - **EXECUTED 2026-07-13**. **VERDICT: REFUTED** on the explicit refutation branch - EVERY gamma hitting a span target loses >= 2 probes: community-boundary capping collapses the pass rate from 0.652 to 0.447-0.455 (-26 to -27 probes) at every gamma, while buying p50 -51% / p99 -13% (g<=4) to -27% (g=8). Modularity cost is mild (-4.9% at g=8) but irrelevant: there is NO recall-neutral community-capped operating point. Coheres with H515 (48% cross-community gold - the capped render amputates the same cross-community evidence the masked walk did) and sharpens H514: the ~90% prunable mass is NOT community-aligned at the seed (oracle whole-community capture only 0.566); the reduction axis routes to non-partition levers (H524-H527) and answer-carrier-aware pruning, not segmentation.
+  Mandatory metrics table (`reports/experiments/r48/h516-balance-sweep-20260713T091140Z.json`, `scripts/experiments/r48_h516_balance_sweep.py`, 132 probes, prober criterion; EM/F1 absent - no reader in the loop; size-constrained Leiden arm SKIPPED - this GDS build rejects maxCommunitySize):
+
+  | setting | communities | modularity | size Gini | max/median | p95 |
+  |---|---|---|---|---|---|
+  | gamma=1.0 | 1,801 | 0.9643 | 0.678 | 133/1 | 10 |
+  | gamma=2.0 | 1,821 | 0.9542 | 0.667 | 110/1 | 13 |
+  | gamma=4.0 | 1,847 | 0.9390 | 0.652 | 75/1 | 19 |
+  | gamma=8.0 | 1,889 | 0.9174 | 0.629 | 53/1 | 20 |
+
+  | arm | pass rate | tokens p50 | p95 | p99 |
+  |---|---|---|---|---|
+  | baseline (shipped) | **0.652** (86/132) | 642 | 963 | 1,277 |
+  | community cap g=1 | 0.455 (60/132) | 313 | 816 | 1,113 |
+  | community cap g=2 | 0.455 (60/132) | 310 | 806 | 1,113 |
+  | community cap g=4 | 0.447 (59/132) | 310 | 795 | 1,113 |
+  | community cap g=8 | 0.447 (59/132) | 310 | 781 | 926 |
+  | doc cap (H518) | 0.409 (54/132) | 289 | 781 | 1,095 |
+
 
 ### R48-H517 Render span is PPR-frontier-bounded, not community-bounded (balancing is cosmetic)
 
@@ -4872,7 +4890,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - p99 span delta < 5%; |Spearman rho(span, max touched community size)| < 0.2
 - **Acceptance bar** - CONFIRMED (balancing cosmetic) if span < 5% AND modularity -10% AND |rho| < 0.2; KILLED if p99 span drops >= 20% with modularity held (< 10% drop) - then balancing IS a real lever and H516 wins. Shares H516's mandatory metrics table
 - **Experiment** - FREE - same sweep as H516 plus the span-vs-community-size regression
-- **Status** - REGISTERED
+- **Status** - **EXECUTED 2026-07-13** (same sweep artifact as H516). **INCONCLUSIVE AT BAR** - the measured point sits between the branches: capped-arm p99 moves -16.8% across the gamma sweep (1,113 -> 926; CONFIRMED branch needed < 5%) while modularity falls only 4.9% (CONFIRMED needed >= 10%; KILLED needed p99 >= -20%, measured -16.8%). Spearman rho(span, touched community size) NOT computed - per-probe rows were not persisted by the sweep runner. Substantively subsumed by H516: with no recall-neutral capped operating point, span-vs-balance comparisons happen inside a 20-pt recall collapse - 'balancing is cosmetic' UNDERSTATES the finding (capping is destructive, not cosmetic)
 
 ### R48-H518 A document-boundary token cap is the free equivalent of any community size cap
 
@@ -4882,7 +4900,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - doc-cap matches community-cap p99 reduction within 5 pts at equal recall
 - **Acceptance bar** - CONFIRMED if >= 90% of the community-cap reduction at recall within 1 probe (Leiden re-segmentation unnecessary for the size objective on the unbraided graph); REFUTED if community-cap beats doc-cap by > 10 pts p99 at equal recall - segmentation then adds value beyond document identity, re-test after cross-doc braiding
 - **Experiment** - FREE - third arm of the H516 sweep: per-document span-token cap in the offline render reconstruction, head-to-head vs the best community-cap gamma
-- **Status** - REGISTERED
+- **Status** - **EXECUTED 2026-07-13** (doc_cap arm of the H516 sweep: keep blocks sharing >= 1 source document with the top seed). **VERDICT: REFUTED** - the doc cap is DOMINATED, not equivalent: pass 0.409 (54/132) vs the best community cap 0.455-0.447, p99 reduction -14.3% vs -27.5% (g=8) = 52% of the community-cap reduction (bar demanded >= 90% at recall within 1 probe). The heretic's premise half-holds (NMI 0.846 - communities ARE document-shaped) but community caps still beat document caps on both axes, and BOTH collapse recall vs baseline - neither is viable; re-test after cross-doc braiding per the registered escape hatch
 
 ### R48-H519 Balance is a null response-size lever until cross-document resolution braids the corpus
 
@@ -4893,7 +4911,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Acceptance bar** - null CONFIRMED (drop any balanced-segmentation feature) if |partial r| < 0.15 AND R^2 > 0.70; KILLED if community entropy retains |partial r| >= 0.25 - balance carries independent signal and balanced re-segmentation becomes worth pursuing. If NMI < 0.5 on the bench graph, H68 does not transfer and ALL R48 community verdicts must be re-read
 - **Acceptance metrics** - inherits the H516 table plus the NMI row
 - **Experiment** - FREE: regression over cached medium renders + one NMI census on the medium graph
-- **Status** - REGISTERED
+- **Status** - **PARTIALLY EXECUTED 2026-07-13**. NMI census (sklearn NMI over 6,626 entities, dominant source doc via MENTIONED_IN->PART_OF): **NMI(community, dominant doc) = 0.846** on the medium bench graph - H68 transfers STRONGLY (>= 0.6 bar met; purity 0.582, lower than CPAP's 0.904 because the 1,801-community partition is finer) - ALL R48 community verdicts stand. The partial-correlation regression is BLOCKED on this substrate: the bench pile has no proposition index (`kgf_proposition_embeddings` absent), proposition-block size is identically zero, R^2 undefined - the H180 cost-center premise does not transfer to this pile (response size here is entity-block-driven). Verdict at the registered bar NOT declared; supporting evidence for the null recorded: the balance knob is gamma-INVARIANT in the sweep (cap arms differ by <= 1 probe and <= 3 p50 tokens across an 8x gamma range) - balance moves nothing the render can see. Regression re-runs on a propositions-enabled pile
 
 ### R48-H520 Community-summary payoff is query-class-gated: null on multi-hop factoid
 
@@ -4947,7 +4965,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - waste fraction 25-40%; dedup recovers >= 25% recall-neutral
 - **Acceptance bar** - CONFIRMED if >= 25% median reduction on escalated renders at answer_in_context within +/-0.5 pp (23/24 preserved); DOMAIN KILL if the audit measures < 10% total waste - the render-compression thesis is empty, H525-H527 close
 - **Experiment** - FREE offline: tokenize per channel over cached medium renders (escalation forced on the frontier set), shingle-match cross-channel overlap + boilerplate fraction, then one dedup A/B; `reports/experiments/r48/h524-waste-audit-*.json`
-- **Status** - REGISTERED (render-domain gate)
+- **Status** - **EXECUTED 2026-07-13, SUBSTRATE-LIMITED** (`reports/experiments/r48/h524-waste-audit-20260713T091751Z.json`, `scripts/experiments/r48_h524_waste_audit.py`, 132 probes). On this pile only TWO of the four channels render (entity + question match; escalation inert - gate off, passages off, proposition index absent), so the audit measures the render the bench campaign actually ships. Median waste fraction **0.038** (dup 0.000, cross-channel 0.000, boilerplate 0.029); >= 0.9-Jaccard dedup cuts a median 4.0% of tokens with pass EXACTLY unchanged (86/132 -> 86/132). **VERDICT: DOMAIN KILL, scoped to the bench substrate** - textual waste is far under the 10% bar; H525-H527 close for this campaign configuration (H525 is independently blocked - no propositions to margin-prune). The 4-channel escalated audit re-runs if a propositions+passages pile is built. Sharp tension with H514 recorded: 90% criterion-prunable mass vs 3.8% textual waste means the prunable mass is RELEVANCE waste (whole blocks that never carried the answer), not redundancy - compression-by-dedup is empty, the live lever is carrier-aware block selection (question-space H528-H530 + the H382 gate family)
 
 ### R48-H525 Confidence-margin proposition pruning - the DOWN complement to the H382 gate
 
@@ -4989,7 +5007,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - hot-subset coverage 35-55%; recall >= 0.95 at <= 25% tokens; NMI < 0.4
 - **Acceptance bar** - CONFIRMED if hot-subset recall >= 0.95 at <= 25% static tokens AND NMI < 0.4; KILLED in one offline pass if NMI >= 0.5 (clusters are documents rediscovered - the H68 failure transfers to the question space) or hot recall < 0.90 at any budget
 - **Experiment** - FREE offline: embed + cluster the 7.3k KGFQuestions (k swept 40-200), build per-cluster support sets from H371 provenance + H499 logs, replay held-out probes; `reports/experiments/r48/h528-qcluster-*.json`
-- **Status** - REGISTERED
+- **Status** - **EXECUTED 2026-07-13** (`reports/experiments/r48/h528-qcluster-20260713T092044Z.json`, `scripts/experiments/r48_h528_qcluster.py`, KMeans over 7,534 question embeddings, k {40,100,200}, 132 paired-baseline probes). **VERDICT: KILLED - both kill conditions trip.** (1) The H68 guard fires: NMI(cluster, dominant source doc) = 0.435 / 0.545 / 0.652 at k = 40/100/200 - clusters ARE documents rediscovered, and the finer the clustering the more document-like (k >= 100 crosses the 0.5 kill line; even k=40 misses the < 0.4 CONFIRMED bar). (2) Hot recall < 0.90 at every budget (best 0.788). The economics invert the premise outright: cluster chunk-unions are 16.5-28.9x baseline render tokens at k=40 and ~1.0-8.3x at k=200 - never NEAR the <= 25% target. Sharpest secondary finding: k=40 routing lifts all-probe recall to 0.788 vs the 0.652 shipped baseline (+13.6 pts) purely by dumping ~29x the context - recall-via-mass, confirming the answer is IN the chunk store and retrieval selection, not coverage, loses the 34% (feeds RFM-1/RFM-8 reading and the carrier-aware-selection thesis from H524). Pre-shaped cluster context is dead; the question index's value stays per-question (H529/H531), not per-cluster
 
 ### R48-H529 doc2query-- filtering of the question channel shrinks the seed block recall-neutrally
 
@@ -4999,7 +5017,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - largest recall-neutral prune fraction 25-40%
 - **Acceptance bar** - CONFIRMED if >= 25% pruned at recall >= 0.854 with measurable seed-block token reduction; KILLED if the largest neutral prune is < 10% (channel already tight - itself a useful H371 health verdict)
 - **Experiment** - FREE offline sweep of prune fractions 10-50% over cached H499/H367 seed logs; `reports/experiments/r48/h529-qfilter-*.json`
-- **Status** - REGISTERED
+- **Status** - **EXECUTED 2026-07-13** (`reports/experiments/r48/h529-qfilter-20260713T092352Z.json`, `scripts/experiments/r48_h529_qfilter.py`; fidelity = max cosine(question, own chunk) over the 1,000 chunks embedded through the shipped channel; retrieval-contribution term skipped - match history was never persisted). **VERDICT: SPLIT - the index-prune claim over-delivers, the render-shrink claim is VOID at the shipped operating point.** Pruning the bottom **50%** of the 7,534-question index is exactly recall-neutral (pass 86/132 at EVERY fraction 10-50%, double the predicted 25-40% ceiling) and the top-1 match changes for only 8/132 probes even at half the index gone - the channel is massively over-provisioned, a strong H371 health datum (the fidelity tail is real: p10 cosine 0.122 vs median 0.584). But the registered token-reduction condition CANNOT fire at M=1: the render carries ONE question block (p50 124 tokens) regardless of index size - render shrink is proportional to M, not to index size, and M=1 already. Consequences: (a) question-index build/storage cost can halve for free (doc2query-- transfers as an INDEX diet, not a render diet); (b) neither registered branch fires cleanly - CONFIRMED lacks its token reduction, KILLED needs neutral prune < 10% (measured 50%). Recorded as the doc2query-- health verdict for H371, not a response-size lever
 
 ### R48-H530 Sub-question decomposition matched to single-hop question nodes beats whole-query routing on multi-hop
 
@@ -5009,7 +5027,7 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Prediction** - sub-question match coverage >= 70%; multi-hop recall >= composed frontier at <= 50% tokens
 - **Acceptance bar** - CONFIRMED if decomposed matching beats H528 whole-query routing on the multi-hop subset at <= 50% of PPR context tokens; KILLED directly from the match step if sub-question coverage < 60% (the anticipated-question index does not span the sub-question space)
 - **Experiment** - FREE offline with gold decompositions; `reports/experiments/r48/h530-decomp-*.json`
-- **Status** - REGISTERED
+- **Status** - **EXECUTED 2026-07-13, KILLED at the match step** (`reports/experiments/r48/h530-decomp-20260713T094447Z.json`, `scripts/experiments/r48_h530_decomp.py`, 132 probes / 332 gold hops). Sub-question -> KGFQuestion match coverage top-1 **0.334**, top-3 0.343 - far under the 0.60 kill bar; the anticipated-question index does NOT span the single-hop sub-question space (prediction was >= 0.70). Deviation as pre-noted: comparator H528 was KILLED same day, so the context arm is reported vs the shipped baseline; sub-questions proxied from gold evidence triples (oracle decomposition - real decomposition would be weaker). LOUD SECONDARY: the oracle-decomposed context (union of top-1 matched questions' chunks) passes **0.909** (120/132) at tokens p50 **334** vs baseline 0.652 at 642 - +25.8 pts at 0.52x tokens, by type compositional 0.966 / inference 1.000 / comparison 0.833 / bridge_comparison 0.839. Read with H528's recall-via-mass datum: per-hop question matching is a WEAK aligner (0.334), yet the small union it produces still contains the answers - the chunk store's answer coverage is dense enough that even misaligned single-hop neighborhoods capture the gold. The lever this points at is decomposition-aware carrier selection (a future round needs REAL decomposition, not oracle evidences, and a coverage fix for the question index - e.g. generating sub-question-style questions at ingest), not whole-query routing. Question-space domain closes for R48: H528 KILLED, H529 SPLIT, H530 KILLED-with-signal
 
 ### R48-H531 Pre-warmed semantic answer cache over the anticipated questions
 
@@ -5094,3 +5112,455 @@ Fence: R40 owns the retrieval bridge; R35/R46 own the question channel (H528-H53
 - **Acceptance bar** - segmentation ruled NET-NEGATIVE if break-even > 10k; a real prototype becomes warranted only if break-even < 1k
 - **Experiment** - FREE cost model over measured constants + ONE small GPU probe pricing a single community re-summary on local vLLM; `reports/experiments/r48/h538-amortization-*.json`
 - **Status** - REGISTERED-GATED (on H536 churn rate)
+
+## R49 - Ingestion reconciliation of the R45 conclusions: instrument bands, the panel at ingest, the repair loop, carrier selection, reachability (user-directed, registered 2026-07-13)
+
+User strategic direction (standing, recorded 2026-07-13): fanout the R45 load-bearing conclusions into INGESTION - wire the six-metric panel + Forman-Ricci as ingest-time instruments, move H394 template repair into the ingest loop, fix carrier selection, test whether Ricci predicts probe outcomes earlier/cheaper than the certificate (the H37 bar), plus three sharp observations: seed-reachability audit for the REG-2 class, certificate-noise re-pricing, source-repair primacy with a gap ledger. An eight-vector research star (dynamic workflow `wf_096f7526-043`, 8 Opus agents, 756k subagent tokens, zero session tokens) grounded the axes in external SOTA; 61 papers cited; papers rule executed same day (workflow `wf_b1b48d33-249`, 14 Sonnet batches): 49 new PDFs + digests to `references/papers/`, all %PDF-verified; 3 SKIPPED-EXISTS; 2 digest-only deviations (Azzopardi retrievability CIKM 2008 and Wilkie/Azzopardi ECIR 2015 - paywalled, no open-access PDF found; digests written from accessible sources).
+
+The fanout resolved into a meta-domain + a contrarian gate battery + six execution domains, ordered FREE-kills-first:
+
+- **META FIRST (H539-H543)** - the free variance harvest already decided the headline: the medium-rung same-graph spread (17.9pp sd at n=15, `progressive-probe-trajectory.jsonl`, 136 fixed-graph cycles) is ~99% QUERY SAMPLING, not instrument noise (2/162 pooled questions ever flip, ~1%); the registered +-2% certificate bar is unmeetable below ~n=2400 unpaired; H499's dual-arm logs show pairing cuts SE(delta) 98.4% (rho=0.984, 1/132 discordant). Bands must publish before sibling verdicts are graded. Partly supersedes R31-H351 (N>=3 runs fights the ~1% instrument component; the live lever is freeze-the-probes + pair-the-arms)
+- **Contrarian battery (H544-H548) runs before any pro-vector spends** - Ricci-as-degree-counter ablation (KGF is a triangle-poor star-forest per H87/H97; Forman F(e)=4-deg(u)-deg(v) may collapse to degree arithmetic; H91/R10-H1167 precedent: incident AFRC z-score already found degree-confounded), panel decision-relevance kill (R45 screened SENSITIVITY, never the H37 bar), repair-at-ingest recall-class kill (R45's ~85% WAS post-hoc batch repair-from-source), carrier attach-irrelevance (H530: 0.909 pass at 0.334 alignment - neighborhoods may be carrier-tolerant), per-doc certificate SNR
+- **Carrier asymmetry to keep straight** - carrier-at-ATTACH (H547) and carrier-at-RENDER (H570, the H524/H530 live lever) are different stages; H547 dying does not kill H570
+- **Likely repair shape per SOTA (HoloClean/SAGA): HYBRID** - grounded at-ingest repair for prefix-present carriers + thin repair-after reconciliation; the RAI domain scores WHERE the split sits, not an at-ingest-vs-after binary
+- **REG-2 governs every recovery bar** - coverage wins score as PROBE-FLIP, never coverage-percent
+
+External precedents (key subset of the 61): Weber/Jost/Saucan 1604.06634 (Forman-Ricci as change detection on evolving networks; O(delta) incident-edge updates); Newman cond-mat/0209450 (assortativity closed-form over power-sums, exactly streamable); Topping 2111.14522 (negative curvature = information bottleneck - the REG-2 mechanism candidate) + edgewise envelopes 2603.13535 (Ollivier-grade signal from Forman at O(max-deg^1.5)); Sreejith 1603.00386 + Samal 1712.07600 (Forman ~ degree except the triangle term - the kill mechanism on a triangle-poor graph); Frechet-CUSUM 2303.10753 + Matrix-CUSUM 2106.14470 (change-point detection robust to growing graphs); HoloClean 1702.00820 + SAGA 2204.07309 + FAMER (streaming systems keep a batch reconciliation tier; online ER is order-dependent); Huang 2310.01798 + Kamoi 2406.01297 + CRITIC 2305.11738 (self-correction works ONLY grounded on an external verifier - the RAI license is conditional and testable); ReFinED 2207.04108 + EntQA 2110.02369 + ChatEL 2402.14858 + discourse salience 2508.16464 (carrier scoring is multifactorial; the degree prior is suspect); Azzopardi retrievability CIKM 2008 + PageRank-retrievability 2311.10348 (Spearman 0.07-0.22: structural centrality is a weak retrievability proxy) + Gini retrieval bias ECIR 2015 + T-Retrievability 2508.21704; Sanderson-Zobel SIGIR 2005 + Webber CIKM 2008 + Smucker CIKM 2007 + Urbano gt4ireval SIGIR 2013 + paired bootstrap 2511.19794 (topic-set sizing, G-theory, paired gates); AEVS MDPI Computers 15(3):178 + LEC-KG 2602.02090 + Structured Ignorance Certificates 2606.08571 + RAC 2410.15667 + Sufficient Context 2411.06037 (anchor-grounded targeted repair; the gap-ledger record schema); HippoRAG 2405.14831 (neighborhood-tolerant retrieval - the H547 mechanism); vLLM APC docs (the H562 economics).
+
+Fence: R40 owns the query-time retrieval bridge - H576 deliberately contests the REG-2 boundary from the ingest side (CONFIRMED moves REG-2 repair to ingest; KILLED vindicates the R40 filing). R47 owns the GLiNER reachability layers (H506/H513); H571's reachability column is the shared instrument that will adjudicate them. H274 owns the answer cache. The question channel is REUSED here strictly as an audit seed population (H499/H528/H530 retrieval nulls fenced by H572). Considered and deferred, NOT registered: sequential early-stopping paired gates (an optimization of H541; revisit if gate volume warrants). FREE = offline replay over on-disk artifacts: R45 repair ledger (`reports/experiments/r45/repair-ledger.jsonl`, 51 rows / 47 write_property, carrier_selection field: 35 name_match / 12 fallback_largest), h389 miss lists + source spans, R22 5-pass logs, H260 GLiNER residue scalars, H501 seed logs + H515 PPR harness, `reports/experiments/bench/progressive-probe-trajectory.jsonl` (3,763 rows incl. 136 same-graph cycles at the frozen 1173-title graph), four R45 dumps. Naive baselines: largest-carrier heuristic 35/47 correct; blind re-extraction ABSENT recovery 25% (H450); claimed certificate bar +-2% vs measured 4.6pp spread; binomial band sqrt(p(1-p)/n). Numbering H539-H580.
+
+**META DOMAIN - instrument re-pricing (resolve FIRST; defines the bands every sibling verdict cites)**
+
+### R49-H539 Freeze-the-probes collapses same-graph spread to the instrument floor
+
+- **Persona** - conformist (the operator assumes noise is LLM/graph nondeterminism; the harvest says it is sampling)
+- **Grounding** - 136 fixed-graph cycles at 15-of-162 resampled probes: pass_rate sd 17.9pp, range 0.20-0.93; per-question outcomes near-deterministic (2/162 flip)
+- **Hypothesis** - the same-graph spread is >90% query-resampling; replaying the fixed-graph cycles on a FROZEN 15-probe manifest collapses sd to the instrument floor
+- **Prediction** - frozen-manifest same-graph sd <= 3pp (vs 17.9pp resampled); pooled flip share <= 3%
+- **Acceptance bar** - CONFIRMED if frozen sd <= 5pp AND flip share <= 5%; KILLED if frozen sd > 8pp OR flip share > 10% (instrument noise is the driver, N-run averaging stays mandatory per H351)
+- **Experiment** - FREE offline replay of `progressive-probe-trajectory.jsonl`; cross-check the scout slice; `reports/experiments/r49/h539-freeze-*.json`
+- **Status** - **EXECUTED 2026-07-13, CONFIRMED** (`reports/experiments/r49/meta-variance-20260713T102430Z.json`, `scripts/experiments/r49_meta_variance.py`; 139 fixed-graph cycles at 1173 titles, 162 pooled questions). Resampled same-graph sd **17.8pp**; frozen-manifest band **0.7pp** (bar <= 5pp); flip share **1.23%** (2/162, bar <= 5%). The entire same-graph spread is query sampling; the instrument floor is ~0.7pp. Deviation: frozen band estimated from within-question outcome variance (cycles sample 15-of-pool, no literal shared manifest exists to replay) - conservative, since it includes the residual instrument flips. Doctrine consequence: freeze the probe manifest; N-run averaging (R31-H351) demoted to fallback
+
+### R49-H540 Per-rung binomial band table + minimum-detectable-effect power curve
+
+- **Persona** - conformist/methodologist (Sanderson-Zobel, Webber: 15-25 probes sits an order of magnitude under the IR reliability floor)
+- **Grounding** - binomial half-widths at p=0.59: n=15 +-24.9pp, n=25 +-19.3pp, n=50 +-13.6pp, n=100 +-9.6pp, n=200 +-6.8pp
+- **Hypothesis** - resampled-probe bands follow sqrt(p(1-p)/n) within instrument tolerance at every rung, so a closed-form per-rung band + MDE table publishes from existing logs; the historical +-2% certificate bar is unmeetable below ~n=2400 unpaired
+- **Prediction** - bootstrapped empirical band matches analytic binomial within 3pp at n=15/25/50; MDE at 80% power >= 0.07 at n=15; n-for-2%-bar >= ~2400
+- **Acceptance bar** - CONFIRMED if empirical-vs-analytic gap <= 5pp across rungs AND derived n-for-2% >= 1000; KILLED if empirical exceeds binomial by >5pp (heterogeneity inflates it - the closed form is wrong, H543's G-theory components become mandatory)
+- **Experiment** - FREE bootstrap over logged per-probe vectors, all three rungs in the trajectory log; deliverable = the per-rung band table every future bar must cite; `reports/experiments/r49/h540-bands-*.json`
+- **Status** - **EXECUTED 2026-07-13, CONFIRMED** (same artifact as H539). Empirical bootstrap matches analytic binomial within **0.1pp** at every n (bar <= 5pp): n=15 sd 12.63% vs 12.69% analytic, n=200 3.53% vs 3.48%. THE BAND TABLE (95% CI half-width, resampled, p=0.59): n=15 +-24.9pp, n=25 +-19.3pp, n=50 +-13.6pp, n=100 +-9.6pp, n=200 +-6.8pp. MDE at 80% power (unpaired delta): n=15 50.3pp, n=100 19.5pp, n=200 13.8pp; **n for a +-2pp unpaired delta = 9,484** (the fanout's ~2,400 was the one-arm band; the two-arm delta is 4x worse). Every unpaired small-delta bar in campaign history was un-powered at rung scale; the paired design (H541) is the only route to small-delta verdicts
+
+### R49-H541 Paired frozen-probe A/B gates mandated; unpaired resampled A/B retired
+
+- **Persona** - contrarian (the adopted N>=3-run remedy fights the wrong variance component)
+- **Grounding** - H499 dual-arm screen: rho=0.984, paired SE 0.8pp vs unpaired 5.9pp (98.4% cut), 1/132 discordant
+- **Hypothesis** - arm scores on a shared frozen probe set are near-perfectly correlated, so paired designs (McNemar/paired-bootstrap on discordant pairs) cut delta-variance >= 90%, dominating run-averaging
+- **Prediction** - across all logged dual-arm screens rho >= 0.95 and paired SE <= 0.3x unpaired
+- **Acceptance bar** - CONFIRMED (mandate ships into the dataset skill / acc-crit) if median rho >= 0.90 AND paired variance reduction >= 75%; KILLED if median rho < 0.70 (arms decorrelate, unpaired sizing stands)
+- **Experiment** - FREE replay of `r46-h499-screen-*.jsonl` + other dual-arm adjudicated logs; `reports/experiments/r49/h541-paired-*.json`
+- **Status** - **EXECUTED 2026-07-13, CONFIRMED - MANDATE ADOPTED** (same artifact; 2 qualifying dual-arm screens). Median rho **0.9918** (bar >= 0.90), median paired variance reduction **93.9%** (bar >= 75%): the 132-pair screen rho 0.9835, 1 discordant, SE 5.88pp unpaired -> 0.76pp paired (98.3% cut); the 22-pair screen rho 1.0, 0 discordant, 89.5% cut. STANDING RULE from this verdict: every A/B gate runs paired on a frozen probe manifest, scored on discordant pairs (McNemar/paired-bootstrap); unpaired resampled A/B retired for verdict-bearing gates
+
+### R49-H542 Re-price past small-delta verdicts against the proper bands
+
+- **Persona** - heretic (some recorded verdicts were gated on instrument variance, not effects)
+- **Grounding** - H484's pass-2 certificate delta already flagged inconclusive at 4.6pp spread
+- **Hypothesis** - applying H540 bands + H541 paired MDEs retroactively, a nonzero fraction of recorded small-delta verdicts (R45/R47/R48) fall INSIDE their rung's reproducibility band
+- **Prediction** - >= 2 logged small-delta verdicts (|delta| < band half-width) re-classify to INCONCLUSIVE
+- **Acceptance bar** - CONFIRMED if >= 2 re-classify (each superseded by one-line back-reference, append-only); KILLED if zero change (informal bars were adequate; re-pricing is cosmetic)
+- **Experiment** - FREE audit over the experiments log + adjudicated JSONs; `reports/experiments/r49/h542-reprice-*.json`
+- **Status** - REGISTERED
+
+### R49-H543 G-theory variance decomposition + D-study probe sizing per rung
+
+- **Persona** - methodologist (Urbano gt4ireval: query/system/interaction components, then size for target dependability)
+- **Grounding** - the 136-cycle fixed-graph matrix is a ready-made G-study
+- **Hypothesis** - ANOVA decomposes probe variance into query >= 80%, instrument <= 5%, interaction <= 15%; the D-study prescribes a frozen manifest size reaching dependability Phi >= 0.9 at 1 run
+- **Prediction** - ~120-probe frozen manifest reaches Phi >= 0.9 at 1 run while resampled n=15 gives Phi < 0.5
+- **Acceptance bar** - CONFIRMED if query component >= 70% AND D-study n-for-Phi-0.9 < the naive binomial n; KILLED if instrument component > 20% (freezing cannot reach dependability; multi-run averaging unavoidable)
+- **Experiment** - FREE ANOVA over the 136-cycle matrix; resolves the frozen-manifest-overfit tension by sizing a frozen-but-LARGE manifest; `reports/experiments/r49/h543-gtheory-*.json`
+- **Status** - **EXECUTED 2026-07-13, CONFIRMED (degenerate-strong)** (same artifact; method-of-moments components on the 139-cycle unbalanced binary matrix, not gt4ireval ANOVA - deviation recorded). Query component ~**100%**, run/instrument component **~0**, residual **~0** (bar: query >= 70%, kill at instrument > 20%): with 160/162 questions fully deterministic at fixed graph, within-question variance is genuinely ~0, so dependability Phi ~= 1.0 at ANY frozen manifest size - the D-study degenerates to "manifest size is set by MDE (H540 table), not by dependability". Practical sizing: freeze the full 162-question pool at medium (Phi ~1, paired MDE per H540); the overfit concern is governed by manifest SIZE via H540's table, not by Phi
+
+**CONTRARIAN GATE BATTERY (run before any pro-vector spends; each gates a domain below)**
+
+### R49-H544 Forman-Ricci is a rebranded degree counter on the KGF substrate
+
+- **Persona** - contrarian (Sreejith 1603.00386: F(e)=4-deg(u)-deg(v); Samal 1712.07600: the only non-degree signal is the triangle term; KGF is triangle-poor per H87/H97 - "the triangle bonus has nothing to work with"; H91/R10-H1167 already found incident-AFRC degree-confounded; the -15.77% R45 move rode +237% entity / +294% edge inflation)
+- **Grounding** - the size-invariance claim for H486 was never tested against a degree-only predictor
+- **Hypothesis** - mean AFRC delta is reconstructable from simple degree/edge statistics; degree-preserving (configuration-model) rewiring leaves it unmoved
+- **Prediction** - R^2 of FR-mean delta on {dE, d-mean-degree, d-degree-variance} > 0.90 across a perturbation series + the four R45 dump stages; |d mean-AFRC| < 2% under degree-preserving rewiring; certificate coverage NOT reconstructable (R^2 < 0.5)
+- **Acceptance bar** - KILLED (H486 demoted to a degree-summary alias; H553/H555-H558 re-price to degree instruments) if R^2 > 0.90 AND rewiring move < 2%; Ricci SURVIVES as independent if R^2 < 0.70 OR rewiring moves >= 2%
+- **Experiment** - FREE networkx replay over the four R45 dumps + synthetic perturbation sweep; GATES the Ricci domain - runs FIRST; `reports/experiments/r49/h544-ricci-degree-*.json`
+- **Status** - REGISTERED
+
+### R49-H545 Five of six panel metrics fail the H37 decision-relevance bar
+
+- **Persona** - heretic (sensitivity-to-repair is not decision-relevance; the panel may collapse to the certificate)
+- **Grounding** - H37/R08 doctrine verbatim: a metric earns a place ONLY if it predicts probe outcomes, triggers maintenance earlier/cheaper, or improves a decision at matched budget
+- **Hypothesis** - per-doc/per-region values of the five structural metrics do not predict probe pass/fail above chance nor add signal over the certificate
+- **Prediction** - none of the five reaches AUC >= 0.65 on the 132 medium probes; none retains partial |r| >= 0.15 conditioned on certificate coverage; certificate alone >= 0.70
+- **Acceptance bar** - KILLED-panel (retires to certificate-only; H549-H554 re-scope) if <= 1 structural metric clears AUC 0.65 AND none adds incremental signal; panel SURVIVES if >= 3 clear 0.65 with partial |r| >= 0.15
+- **Experiment** - FREE offline: per-region metrics over the medium graph + trajectory/H389 labels, ROC + partial correlation; `reports/experiments/r49/h545-panel-h37-*.json`
+- **Status** - REGISTERED
+
+### R49-H546 Repair-at-ingest recovers no fact class post-hoc batch repair-from-source cannot
+
+- **Persona** - contrarian (R45's ~85% WAS a post-hoc batch operation over immutable source pointers; ingest timing buys latency, not recall - and R49 was justified on recall)
+- **Grounding** - H450 REFUTED re-extraction, but repair-from-SOURCE is equally available post-hoc
+- **Hypothesis** - classifying every R45-recovered fact and every H495 residual miss shows zero fact classes whose recovery strictly requires in-flight ingest context
+- **Prediction** - 100% of R45-recovered facts batch-recoverable; net recall advantage of ingest timing = 0 facts
+- **Acceptance bar** - KILLED-RAI (reconciliation ships as post-hoc batch audit; H559-H563 re-price to latency/cost claims only) if no class with recovery strictly greater than batch; RAI SURVIVES if >= 1 class exists (e.g. recoverable only from in-memory speculative context and destroyed by later dedup)
+- **Experiment** - FREE classification over R45 miss lists + source text + dedup-collision check; `reports/experiments/r49/h546-rai-class-*.json`
+- **Status** - REGISTERED
+
+### R49-H547 Carrier selection is retrieval-irrelevant at attach time under neighborhood-tolerant retrieval
+
+- **Persona** - contrarian (H530: 0.909 pass at 0.334 alignment; H528 recall-via-mass; HippoRAG retrieves docs containing none of the query words - the neighborhood, not the carrier, surfaces the fact)
+- **Grounding** - counter-tension kept live by robust-GraphRAG 2603.14828 (KG defects can cause retrieval drift) - a real test, not a foregone null
+- **Hypothesis** - attaching a repaired fact to the fallback-largest carrier vs the correct carrier does not change probe outcomes
+- **Prediction** - re-rendering the 12 fallback-carrier repairs with the carrier SWAPPED changes answer-presence by <= 1 probe net; >= 11/12 identical
+- **Acceptance bar** - KILLED-attach-carrier (H394 automation may keep the cheap heuristic; H564-H569 re-price to graph-hygiene value only, H570 render-side UNAFFECTED) if |delta presence| <= 1 probe; carrier SURVIVES load-bearing if correct attachment lifts >= 3 net probes
+- **Experiment** - FREE swap-and-recheck on cached renders (GPU evening only if live re-render needed); `reports/experiments/r49/h547-carrier-swap-*.json`
+- **Status** - REGISTERED
+
+### R49-H548 Per-doc certificate noise exceeds the per-doc repair signal
+
+- **Persona** - contrarian (an ingest gate keyed on the certificate cannot distinguish needs-repair from measurement noise at per-doc granularity)
+- **Grounding** - 4.6pp same-graph spread at 25-doc scale (H484); a single repair's per-doc coverage lift is small
+- **Hypothesis** - per-doc certificate std >= the median per-doc repair lift (SNR < 1 per doc) while corpus-mean SNR > 3 - gating belongs at batch scale
+- **Prediction** - N=10 certificate recomputes on a frozen scout graph: per-doc SNR < 1, corpus SNR > 3
+- **Acceptance bar** - KILLED-per-doc-gate (ingest gate moves to batch/corpus scale; H552 re-prices) if median per-doc SNR < 1; per-doc gating SURVIVES if per-doc std < 0.5x repair lift
+- **Experiment** - GPU evening (N certificate regenerations, judge/probe replay only, no re-ingest); `reports/experiments/r49/h548-cert-snr-*.json`
+- **Status** - REGISTERED
+
+**PANEL-AT-INGEST DOMAIN (gated by H545; H544 gates the Ricci channel)**
+
+### R49-H549 All six panel metrics stream at O(delta) reproducing batch values
+
+- **Persona** - conformist (1604.06634 + cond-mat/0209450: post-hoc is an implementation accident)
+- **Grounding** - assortativity exact via Newman power-sums S1/S2/S3/Se; FR-mean exact via incident-edge recompute (kappa bounds on add/delete); hub-condensation/rel-vocab/desc-length/cert-coverage are running counters
+- **Hypothesis** - incremental per-doc values match full batch recompute at negligible cost
+- **Prediction** - match within 1e-6 (assortativity, FR-mean) / exact (counters) at < 5% of full-recompute wall per doc
+- **Acceptance bar** - CONFIRMED if all six reproduce within tolerance at < 5% cost; KILLED per-metric if it diverges > 1% OR costs > O(sqrt(E)) per doc
+- **Experiment** - FREE r43-style offline replay over the bench graph; `reports/experiments/r49/h549-stream-*.json`
+- **Status** - REGISTERED
+
+### R49-H550 At least one size-invariant metric clears a 3x EWMA band-to-shift ratio
+
+- **Persona** - conformist (EWMA/SPC prior: noisy per-step signals become triggers under standard smoothing; FR-mean the leading candidate at -15.77% repair shift)
+- **Grounding** - sensitive == noisy: the R45 movers need calibrated bands before they trigger anything
+- **Hypothesis** - under EWMA (lambda ~0.2) at least one metric's same-graph band is > 3x narrower than its smallest actionable defect shift
+- **Prediction** - EWMA FR-mean 95% band <= 1/3 of the repair shift; cert-coverage EWMA band <= +-2% after windowing past the 4.6pp raw spread
+- **Acceptance bar** - CONFIRMED if >= 1 metric clears 3x; KILLED if EWMA band >= 1/3 of smallest actionable shift for ALL six (no per-doc trigger survives; panel stays post-hoc)
+- **Experiment** - FREE offline over per-doc metric series from H549's harness; `reports/experiments/r49/h550-ewma-*.json`
+- **Status** - REGISTERED
+
+### R49-H551 Assortativity is a band alarm, never a directional per-doc trigger
+
+- **Persona** - contrarian (channels KGF's own H09: non-monotonic, wrong sign at 10% injection)
+- **Grounding** - r is exactly streamable (H549) but sign-unreliable under resolution leaks
+- **Hypothesis** - per-doc delta-r sign is unreliable on injected merge-undo leaks; the healthy-band alarm (r outside its measured disassortative band) is the only safe use
+- **Prediction** - EWMA delta-r sign correct < 60% of injection steps; band alarm 0 false alarms on a clean wave
+- **Acceptance bar** - CONFIRMED (demoted to band alarm) if sign accuracy < 60%; KILLED (survives as directional) if EWMA lifts sign accuracy >= 80%
+- **Experiment** - FREE merge-undo leak replay; `reports/experiments/r49/h551-assort-band-*.json`
+- **Status** - REGISTERED
+
+### R49-H552 Certificate coverage dominates: structural deltas add < 2pp over cert-alone on REG-1 lead time
+
+- **Persona** - heretic (denies the structural five any live seat; pairs with H545's AUC form - this is the LEAD-TIME form)
+- **Grounding** - REG-1 retrieval-regression window (pass <= 135 docs, fail >= 154) sits in the trajectory log
+- **Hypothesis** - a per-doc cert-coverage drop below rolling-median-minus-2*MAD flags REG-1 with lead >= the structural composite, and structural deltas add < 2pp precision
+- **Prediction** - cert-alone leads; structural adds < 2pp
+- **Acceptance bar** - CONFIRMED (structural five demoted to post-hoc) if cert-alone leads and structural adds < 2pp; KILLED if any structural metric fires earlier or cheaper on REG-1 (that metric earns an ingest seat)
+- **Experiment** - FREE replay aligned to `progressive-probe-trajectory.jsonl`; `reports/experiments/r49/h552-cert-lead-*.json`
+- **Status** - REGISTERED
+
+### R49-H553 The shipped CUSUM transfers to the Forman-Ricci channel and catches topology-only drift
+
+- **Persona** - conformist (drift.py JSD-CUSUM generalizes channel-for-channel; 2303.10753/2106.14470)
+- **Grounding** - JSD is topology-blind by construction; FR-mean is the strongest size-invariant mover
+- **Hypothesis** - a one-sided CUSUM on per-doc FR-mean fires on a merge-leak ramp at <= JSD-CUSUM delay, 0 clean-wave false alarms, and catches >= 1 leak the JSD channel misses
+- **Prediction** - delay <= JSD delay; 0 false alarms; >= 1 topology-only catch
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if it false-alarms on clean ingest OR delay exceeds JSD (no added value); GATED on H544 (a degree-counter verdict re-prices this to a degree-CUSUM)
+- **Experiment** - FREE offline replay; `reports/experiments/r49/h553-ricci-cusum-*.json`
+- **Status** - REGISTERED-GATED (on H544)
+
+### R49-H554 A panel trigger routes to a touched-carrier AUDIT, not a rebuild
+
+- **Persona** - contrarian (the ACTION question; REG-2 says rebuild cannot fix a retrieval-hop failure, so rebuild stays recommendation-with-evidence)
+- **Grounding** - drift.py already ships the none/warn/recure/rebuild taxonomy; the panel should feed the same engine with metric-semantic routing
+- **Hypothesis** - an FR/certificate composite trigger routed to a per-doc audit of the TOUCHED carrier set catches the largest-carrier fallback repairs at ingest, beating a rebuild action
+- **Prediction** - >= 50% of the 12/47 fallback repairs caught at ingest, audit cost < deferred-repair cost
+- **Acceptance bar** - CONFIRMED if >= 50% caught AND audit cheaper than deferred repair; KILLED if < 25% caught OR audit cost exceeds deferred (no economic case)
+- **Experiment** - GPU evening (repair-census replay + carrier audit; shares the H564-H569 carrier harness - build ONE); `reports/experiments/r49/h554-trigger-audit-*.json`
+- **Status** - REGISTERED-GATED (on the carrier bakeoff H564-H569 producing a working audit function)
+
+**RICCI PER-NEIGHBORHOOD DOMAIN (gated by H544; graph-mean sensitivity is not prediction - the niche is the REG-2 retrieval class)**
+
+### R49-H555 Local min-Forman on the seed-to-carrier path separates FAIL from PASS probes
+
+- **Persona** - conformist (Topping 2111.14522: negative-curvature edge on the retrieval path = bottleneck = failure)
+- **Grounding** - medium dump + H499 pass/fail logs on disk; Forman O(E) closed-form; n=132 is the powered rung
+- **Hypothesis** - per-probe minimum Forman curvature over shortest-path edges from seed entity to answer-carrier separates the ~47 FAIL from ~85 PASS probes
+- **Prediction** - AUC >= 0.68; fail-set median min-curvature >= 0.5 pooled-SD more negative (Mann-Whitney p < 0.05)
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if AUC <= 0.60 OR distributions overlap at p > 0.10 (curvature carries no per-neighborhood retrieval signal)
+- **Experiment** - FREE offline replay; shares seed-to-carrier attribution machinery with R45 carrier selection - sequence that tooling first; `reports/experiments/r49/h555-ricci-path-*.json`
+- **Status** - REGISTERED
+
+### R49-H556 Curvature must beat the degree+hop baseline (attribution control)
+
+- **Persona** - contrarian (Forman is endpoint-degrees + triangles; the win may be degree in a geometry costume - the per-probe twin of H544's graph-level ablation)
+- **Grounding** - co-runs with H555 on the same 132 probes
+- **Hypothesis** - a logistic fail-model with min-Forman does NOT out-predict {shortest-path hop-count, min node-degree on path}
+- **Prediction** - nested LR test: Forman adds delta-AUC < 0.03, n.s.
+- **Acceptance bar** - curvature EARNS its place only if delta-AUC >= 0.05 at p < 0.05; KILLED (retired as redundant) if delta-AUC < 0.03 - hop+degree is the cheaper instrument
+- **Experiment** - FREE, joint with H555; `reports/experiments/r49/h556-ricci-control-*.json`
+- **Status** - REGISTERED
+
+### R49-H557 Curvature predicts the retrieval-failure class the certificate is blind to (orthogonality)
+
+- **Persona** - heretic (the certificate owns COVERAGE; curvature's defensible niche is the disjoint REG-2 class)
+- **Grounding** - restricting to certificate-covered probes isolates the covered-but-unreachable class
+- **Hypothesis** - among covered probes, min-Forman separates FAIL from PASS AND survives conditioning on certificate coverage
+- **Prediction** - covered-subset separation >= 0.5 SD (p < 0.05); partial Spearman(min-Forman, fail | cert) <= -0.25, p < 0.05
+- **Acceptance bar** - CONFIRMED (curvature earns the retrieval-hop panel seat) if both hold; KILLED if partial correlation n.s. (curvature re-encodes coverage); ESCALATE to large rung if covered-and-failing n < 15
+- **Experiment** - FREE offline replay; the referee between the Ricci and certificate axes; `reports/experiments/r49/h557-ricci-ortho-*.json`
+- **Status** - REGISTERED
+
+### R49-H558 Per-doc Ricci delta rank-predicts that doc's probe-failure rate BEFORE any probe
+
+- **Persona** - heretic (the literal early-warning claim: the H37 "earlier" clause)
+- **Grounding** - requires per-doc FR-mean snapshots during incremental ingest
+- **Hypothesis** - |per-doc Forman-mean delta| from doc N's new edges rank-predicts the probe-failure rate among doc N's facts
+- **Prediction** - Spearman >= 0.35 (p < 0.05) across the 1000 docs, binned to docs with >= 2 held-in probes
+- **Acceptance bar** - CONFIRMED (pre-probe ingest alarm, H37 satisfied) if Spearman >= 0.35; KILLED if <= 0.20 (whole-graph averaging artifact, no per-doc attribution)
+- **Experiment** - GPU evening (incremental re-ingest with snapshots, or deterministic resolution-replay); `reports/experiments/r49/h558-ricci-early-*.json`
+- **Status** - REGISTERED-GATED (on H555 CONFIRMED and H556 surviving)
+
+**REPAIR-AT-INGEST DOMAIN (gated by H546; likely landing is the HYBRID split)**
+
+### R49-H559 Ingest-order replay of the R45 repairs loses <= 2pp coverage vs batch-order (premature-repair cost)
+
+- **Persona** - conformist (HoloClean/SAGA prior: local streaming repair loses to holistic batch)
+- **Grounding** - h389 25-doc miss lists + graph + source + doc order on disk; PAIRED replay mandatory (the 2pp bar sits inside the 4.6pp unpaired noise floor - H541 discipline applies)
+- **Hypothesis** - strict ingest-order template repair (prefix-graph only) reaches final certificate coverage within 2pp of batch-order
+- **Prediction** - ingest-order >= batch-order minus 2pp (~>= 84% vs ~86%)
+- **Acceptance bar** - CONFIRMED if within 2pp paired; KILLED if > 2pp below (premature repair destroys recoverable coverage; repair stays after-batch)
+- **Experiment** - FREE offline replay; `reports/experiments/r49/h559-rai-order-*.json`
+- **Status** - REGISTERED
+
+### R49-H560 The correct carrier is already present in the prefix-graph at ingest time
+
+- **Persona** - contrarian (Wikipedia-style corpora introduce an entity in its own doc before referencing it elsewhere)
+- **Grounding** - entity first-appearance vs repair doc index, computed offline; the 12 fallback cases are the stress subset
+- **Hypothesis** - >= 85% of the 47 repairs have their correct carrier present-at-ingest; >= 6/12 of the fallback cases do
+- **Prediction** - per hypothesis
+- **Acceptance bar** - CONFIRMED at >= 85%; KILLED if < 85% (a material fraction needs a later-doc carrier - reframes the domain toward the deferred/hybrid design)
+- **Experiment** - FREE offline replay; `reports/experiments/r49/h560-rai-avail-*.json`
+- **Status** - REGISTERED
+
+### R49-H561 Same-doc restriction solves the fallback carrier cases (the in-flight graph advantage)
+
+- **Persona** - heretic (the R45 weak link is an artifact of matching against the WHOLE graph; the source chunk names the carrier against a tiny same-doc set)
+- **Grounding** - directly tests the one candidate recall-class for H546's survival clause
+- **Hypothesis** - restricting carrier selection to the just-extracted same-doc entity set resolves the 12 fallback cases
+- **Prediction** - >= 8/12 resolve correctly under same-doc name-match
+- **Acceptance bar** - CONFIRMED at >= 8/12; KILLED if < 6/12 (the correct carrier is genuinely cross-doc; carrier selection is a global ER problem best done after-batch)
+- **Experiment** - FREE offline replay; synergy: same mechanism as speculative-ingest pinning (H107/H41 lineage) - if pinning lands this comes free; `reports/experiments/r49/h561-rai-samedoc-*.json`
+- **Status** - REGISTERED
+
+### R49-H562 The critique pass reuses the extraction prompt's APC prefix at <= 0.4x cold re-read cost
+
+- **Persona** - contrarian (the caching economics decide at-ingest vs cold repair-after re-read - IF the prompt layout preserves the prefix)
+- **Grounding** - vLLM APC skips prefill only on exact shared token prefix; graph-state must append as SUFFIX after [system + chunk + extraction-output], never mid-prompt
+- **Hypothesis** - the critique prompt laid out prefix-preserving shares >= 60% cacheable tokens, making incremental prefill <= 0.4x the repair-after cold re-read
+- **Prediction** - shared prefix >= 60% of critique tokens; incremental cost <= 0.4x
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if layout constraints drive overlap < 30% (caching advantage evaporates)
+- **Experiment** - FREE static token-overlap accounting on the real templates; optional GPU-evening APC on/off TTFT confirmation; `reports/experiments/r49/h562-rai-cache-*.json`
+- **Status** - REGISTERED
+
+### R49-H563 Grounded critique escapes self-refine degradation; ungrounded does not
+
+- **Persona** - conformist (Huang 2310.01798 / Kamoi 2406.01297: self-correction helps ONLY with an external verifier; the source chunk + certificate IS one - but the license must be demonstrated)
+- **Grounding** - the load-bearing ablation for the whole domain's theoretical license
+- **Hypothesis** - a grounded critique (chunk + extracted + attached facts) recovers far more of the R45 hand-repaired facts than an ungrounded self-critique
+- **Prediction** - grounded recall >= 60%; ungrounded <= 30% (>= 25pp gap)
+- **Acceptance bar** - CONFIRMED if grounded >= 60% AND gap >= 25pp; KILLED if grounded <= 40% OR gap < 10pp (the chunk is not a load-bearing verifier - RAI falls back to deterministic templates or repair-after)
+- **Experiment** - GPU evening (~50 local-vLLM critique calls on the R45 repair facts); `reports/experiments/r49/h563-rai-ground-*.json`
+- **Status** - REGISTERED
+
+**CARRIER-SELECTION DOMAIN (gated by H547 for attach-time value; H570 render-side stands regardless; prerequisite artifact: a one-time hand-adjudication of the true carrier for the 12 fallback cases - the ledger's labeled carrier IS the suspect largest-carrier guess; produce before scoring any arm)**
+
+### R49-H564 A ReFinED-style feature scorer beats largest-carrier on the fallback set
+
+- **Persona** - conformist (ReFinED 2207.04108: mention-embedding sim x type-compat x prior as one score; salience 2508.16464: multifactorial, no single feature dominates)
+- **Grounding** - `reports/experiments/r45/repair-ledger.jsonl`: 35 name_match trivial, the whole problem lives in ~12 cases (anaphora / artifact / partial-name mechanisms)
+- **Hypothesis** - span-overlap + embedding-sim + type-compat + prior, argmax-or-ABSTAIN, beats name-match-then-largest-carrier
+- **Prediction** - scorer >= 9/12 on adjudicated fallback gold, baseline <= 5/12; census total >= 44/47 vs <= 40/47
+- **Acceptance bar** - CONFIRMED if >= 9/12 AND beats baseline by >= 3; KILLED if <= baseline + 1 (features add nothing over the degree heuristic)
+- **Experiment** - FREE census replay with precomputed embeddings; `reports/experiments/r49/h564-carrier-feat-*.json`
+- **Status** - REGISTERED
+
+### R49-H565 The degree prior is ANTI-predictive of the true carrier
+
+- **Persona** - contrarian (mirrors H493 - hubs carry 38.8% of facts - and the R48 hub relevance-waste reading)
+- **Grounding** - salience literature predicts the correct carrier is a specific, often low-degree entity
+- **Hypothesis** - the true carrier is systematically not the highest-degree candidate
+- **Prediction** - true carrier in the lower-degree half in >= 8/12 fallback cases; strict highest-degree in <= 3/12
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if highest-degree in >= 6/12 (degree prior vindicated as the fallback)
+- **Experiment** - FREE census + degree lookup; if CONFIRMED, correct-carrier repair should move Forman-Ricci differently than hub attachment - a structural signature feeding H544/H553; `reports/experiments/r49/h565-carrier-degree-*.json`
+- **Status** - REGISTERED
+
+### R49-H566 Anaphoric subjects dominate the fallback failures and coreference recovers them
+
+- **Persona** - conformist (census reading: "It is a sequel to 2011", "One of which...", "The film was not intended..." - pronoun/definite-anaphor subjects with no name string)
+- **Grounding** - fastcoref/spaCy over source sentence + preceding context; same coref pass speculative-ingest pinning needs
+- **Hypothesis** - a majority of fallback cases are anaphoric and off-the-shelf coreference recovers the antecedent carrier
+- **Prediction** - >= 5/12 anaphoric; coref recovers >= 4 of those
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if < 3/12 anaphoric (reallocate to artifact/partial-name levers)
+- **Experiment** - FREE CPU coref over 12 spans; `reports/experiments/r49/h566-carrier-coref-*.json`
+- **Status** - REGISTERED
+
+### R49-H567 A subset of fallback facts have NO valid carrier and must route to ABSTAIN
+
+- **Persona** - heretic (forcing attachment IS the error; operationalizes the H495 ARTIFACT residue as an abstention signal for the self-auditing foundry)
+- **Grounding** - census artifacts: "This is a list.", "In the Room may refer to" - disambiguation/list boilerplate
+- **Hypothesis** - a cheap artifact gate (regex + short LLM) routes them out of the carrier pipeline with zero false abstains on the clean 35
+- **Prediction** - >= 3/12 are artifacts; gate flags >= 3/3 obvious ones, 0 false-abstains on the 35 name_match golds
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if < 2/12 artifacts OR >= 2 false-abstains (gate too blunt to ship)
+- **Experiment** - FREE (<= 47 short local-LLM calls); `reports/experiments/r49/h567-carrier-abstain-*.json`
+- **Status** - REGISTERED
+
+### R49-H568 LLM-as-attacher with the source span beats every feature combination and abstains correctly
+
+- **Persona** - heretic (ChatEL 2402.14858 / EntGPT 2402.06738: one call handles anaphora + partial-name + abstention)
+- **Grounding** - local gpt-oss-120b, fact + candidate carriers + source sentence, pick-or-ABSTAIN
+- **Hypothesis** - the LLM attacher outperforms the best feature scorer on the fallback set
+- **Prediction** - >= 11/12 (correct ABSTAIN counts) vs <= 9/12 for H564's scorer
+- **Acceptance bar** - CONFIRMED if >= 11/12 AND >= scorer + 2; KILLED if <= scorer (generation cost buys nothing - ship features)
+- **Experiment** - FREE (<= 47 local-vLLM calls); `reports/experiments/r49/h568-carrier-llm-*.json`
+- **Status** - REGISTERED
+
+### R49-H569 Deterministic anchor-co-occurrence rule resolves the fallbacks with no LLM at all
+
+- **Persona** - conformist (LEC-KG 2602.02090: the carrier is the in-graph entity whose alias co-occurs with the fact in the retrieved source span; ties by span proximity, never degree)
+- **Grounding** - the zero-cost competitor in the same bakeoff as H564/H568; also the V7 repair-side carrier rule
+- **Hypothesis** - alias-anchored exact match lifts correct-carrier rate from 35/47 to >= 90% and resolves >= 10/12 fallbacks
+- **Prediction** - >= 43/47; >= 10/12 with a unique alias-anchored carrier
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if < 85% OR it regresses any repair largest-carrier got right OR > 4/12 fallbacks have NO alias in their span (carrier genuinely underdetermined, not a rule gap)
+- **Experiment** - FREE census + span replay; `reports/experiments/r49/h569-carrier-anchor-*.json`
+- **Status** - REGISTERED
+
+### R49-H570 The winning carrier scorer transfers to render-time block selection
+
+- **Persona** - contrarian (attach-time and render-time carrier selection are ONE function; the H524 relevance waste and H530 oracle datum are the render face of the same scorer)
+- **Grounding** - the strongest same-day evidence in the log: H530 oracle-decomposed context 0.909 at 0.52x tokens
+- **Hypothesis** - the bakeoff-winning scorer, scoring rendered blocks by carrier-relevance to the probe, selects answer-bearing blocks at a budget approaching the H530 oracle
+- **Prediction** - >= 0.85 gold-block recall in top-k at <= 0.5x render tokens; beats degree/PageRank block ranking by >= 8 pts recall-at-budget
+- **Acceptance bar** - CONFIRMED per prediction (one implementation ships to BOTH attach and render); KILLED if <= degree/random ranking (no transfer; the stages are separate problems)
+- **Experiment** - FREE replay of R48 probe artifacts (GPU evening only if block embeddings need recompute); UNAFFECTED by an H547 kill; `reports/experiments/r49/h570-carrier-render-*.json`
+- **Status** - REGISTERED
+
+**SEED-REACHABILITY DOMAIN (the REG-2 instrument; H572 is the crux - if it dies the ingest-time framing collapses to R40)**
+
+### R49-H571 A per-fact reachability column is constructible and isolates the REG-2 residue
+
+- **Persona** - conformist (ports Azzopardi retrievability from document to fact-carrier; the H389 certificate gains a second column)
+- **Grounding** - H515 PPR harness + H501 seed logs + 132 cached probes; canonical target = the (Torres Rios)-[:CHILD]->(Torre Nilsson) REG-2 fact - coverage green, seeds hit the film, never the director
+- **Hypothesis** - carrier-reached-by-seeds+PPR, seeded from the fact's anticipated questions, computes offline; its low tail contains the known REG-2 residue
+- **Prediction** - reachability reads >= 10 pts below coverage (the retrieval residue); REG-2 lands unreachable-while-covered; per-doc IQR > 0.2
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if reachability tracks coverage within 3 pts everywhere (no distinct class; column redundant)
+- **Experiment** - FREE offline (scout smoke first); the shared instrument that adjudicates R47's H506/H513 reachability layers; `reports/experiments/r49/h571-reach-col-*.json`
+- **Status** - REGISTERED
+
+### R49-H572 CRUX - the query-free ingest-time audit predicts query-time reachability
+
+- **Persona** - heretic (attacks the vector's own premise; H499 zero-transfer + H530's 0.334 alignment say the anticipated-question seed proxy may be too misaligned)
+- **Grounding** - the channel is reused as an INSTRUMENT seed population, not a retrieval channel - the nulls do not kill it a priori, this test decides
+- **Hypothesis** - per-fact reachability from anticipated questions agrees with reachability from real gold questions
+- **Prediction** - agreement >= 0.80 (kappa >= 0.5); REG-2 flagged unreachable under BOTH seed sources
+- **Acceptance bar** - CONFIRMED (vector proceeds) at >= 0.80; KILLED at < 0.65 - the audit cannot foresee query-time failure, reachability moves to query-time (R40 territory) and the ingest-time thesis collapses
+- **Experiment** - FREE (H501 embeddings for both question sources); `reports/experiments/r49/h572-reach-crux-*.json`
+- **Status** - REGISTERED
+
+### R49-H573 Seed-rank margin beats PPR-mass as the cheap reachability proxy (executes the H479 carry-forward)
+
+- **Persona** - conformist (2311.10348: global structural centrality is a weak retrievability proxy, Spearman 0.07-0.22; retrieval is seed-conditioned)
+- **Grounding** - H479 (seed-rank margin) was predicted STRONG-MOVE but left NOT-COMPUTED in R45 - this closes it
+- **Hypothesis** - of {seed-rank margin, seed-hop-distance, PPR-mass floor}, the query-personalized seed-rank margin best predicts actual probe reachability
+- **Prediction** - seed-rank AUC >= 0.80; PPR-mass lower by >= 0.10 or near-degenerate (H37: PPR-mass ~ seeds+1-hop membership)
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if PPR-mass AUC >= seed-rank (the cheaper structural column ships instead)
+- **Experiment** - FREE over cached H501/H515 logs vs the 132-probe outcomes; `reports/experiments/r49/h573-reach-proxy-*.json`
+- **Status** - REGISTERED
+
+### R49-H574 O(1) set-membership (carrier in seeds+1-hop) replaces the PPR walk in the audit
+
+- **Persona** - contrarian (H37: PPR is theater at < 5k entities, 99.4% of recalled evidence in seeds+1-hop; H34: two hops close the game)
+- **Grounding** - a per-fact PPR probe is certificate-expensive; membership is near-free
+- **Hypothesis** - the membership test reproduces the full-PPR reachability verdict
+- **Prediction** - agreement >= 0.95 on the 132-probe carriers; disagreements are exactly the H530 weak-reachable graded tail
+- **Acceptance bar** - CONFIRMED at >= 0.95 (ship the cheap column, drop PPR from the audit); KILLED at < 0.90 (PPR mass materially reshuffles - the graded column is required)
+- **Experiment** - FREE (both from the H515 adjacency + seed logs); scout smoke, medium powered; `reports/experiments/r49/h574-reach-member-*.json`
+- **Status** - REGISTERED
+
+### R49-H575 Graded retrievability r(f) + Gini retrieval-bias beats a binary certificate column
+
+- **Persona** - contrarian vs a binary column (H530: misaligned neighborhoods still pass 0.909 - reachability is graded; Azzopardi Gini = corpus retrieval-bias health scalar)
+- **Grounding** - REG-2 is scale-induced dilution (H468): the bias should RISE with corpus growth
+- **Hypothesis** - graded r(f) (fraction of the fact's anticipated questions surfacing the carrier at cutoff c) predicts probe outcomes better than binary hop-distance; Gini(r(f)) rises monotonically across rungs, qualifying for the panel
+- **Prediction** - graded AUC >= binary + 0.05; Gini monotone scout -> small -> medium
+- **Acceptance bar** - CONFIRMED per prediction (Gini screened for the panel per the R45 protocol: >= 2% sick/repaired move, monotone across rungs); KILLED if binary >= graded (ship the cheap binary) OR Gini flat (not a scale indicator)
+- **Experiment** - FREE over cached embeddings + ladder dumps; `reports/experiments/r49/h575-reach-graded-*.json`
+- **Status** - REGISTERED
+
+### R49-H576 Ingest-time fact replication onto the reachable anchor pre-stages REG-2 (contests the R40 boundary)
+
+- **Persona** - exploit (the ingest-time answer to a failure R45 filed as a query-time lever; H489/H490 property-write precedent)
+- **Grounding** - write the director-fact onto the film node that IS a seed; re-embed; no query-time change
+- **Hypothesis** - anchor replication flips low-reachability facts to reachable
+- **Prediction** - the REG-2 probe flips to pass; >= 60% of the unreachable tail recovers; ZERO pass->fail regressions on the passing panel
+- **Acceptance bar** - CONFIRMED per prediction (REG-2 becomes an ingest-stageable repair); KILLED if the REG-2 probe does not flip (reachability repair is irreducibly query-time - R40 filing vindicated)
+- **Experiment** - FREE to kill (graph edit + re-probe on the 132 set); ingest run only to confirm generalization; `reports/experiments/r49/h576-reach-replicate-*.json`
+- **Status** - REGISTERED
+
+**SOURCE-REPAIR LEDGER DOMAIN (doctrine: ledger-then-target, never blind-schedule; every bar is probe-flip)**
+
+### R49-H577 Resolver-absorption rate is a free saturation health signal
+
+- **Persona** - contrarian (capture-recapture/dedup prior: high dedup rate = stopping signal, against the always-re-extract reflex; unifies H240-vs-H450 - union-K wins CARRIER recall, absorption tells the scheduler when it saturated)
+- **Grounding** - R22 5-pass logs + R45 Stage-B ~85% absorption + H260 residue scalars on disk
+- **Hypothesis** - per-doc absorption rate is a monotone proxy for extraction saturation, rank-correlating with (1 - GLiNER residue) and inversely with union-K marginal-carrier gain
+- **Prediction** - Spearman >= 0.5 vs (1 - normalized residue); top-absorption tercile contributes < 15% of pass-2-to-5 marginal carriers
+- **Acceptance bar** - CONFIRMED per prediction (absorption becomes a scheduler input); KILLED if |rho| < 0.3 (noise) OR top tercile still > 30% marginal carriers (signal inverted/useless)
+- **Experiment** - FREE offline replay; `reports/experiments/r49/h577-absorption-*.json`
+- **Status** - REGISTERED
+
+### R49-H578 A span-entailment triage classifier prices out ARTIFACT/ELSEWHERE before scheduling
+
+- **Persona** - heretic (the gap CLASS is predictable from the span BEFORE any repair attempt - selective prediction applied to the repair queue)
+- **Grounding** - AEVS/Sufficient-Context pattern: does the exact retrieved span entail the missing fact (NLI + alias presence, no generation); the H495 ~14% residue is the target
+- **Hypothesis** - the classifier predicts repair success and captures the irreducible residue as predicted-unrepairable
+- **Prediction** - AUC >= 0.75 over the census + miss lists; >= 80% of the ~14% residue lands predicted-unrepairable
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if AUC < 0.65 (class not span-predictable) OR > 25% of genuinely-repaired facts flagged ARTIFACT (false abstention exceeds the H17 10% bar)
+- **Experiment** - FREE (NLI on idle GPU per the H363 pattern); `reports/experiments/r49/h578-triage-*.json`
+- **Status** - REGISTERED
+
+### R49-H579 Ledgered narrow-question source repair beats blind re-extraction on ABSENT facts at a fraction of cost
+
+- **Persona** - conformist (the vector's central thesis: retrieve the ledgered exact span, ask ONE narrow question, KEEP/REVISE-write to the anchor-chosen carrier - bypasses generation-selection loss, the H243/H248 mechanism behind H450's 25%)
+- **Grounding** - gap-ledger record schema per Structured Ignorance Certificates: (gap_class, source_pointer, repair_template, unlock_query, priority)
+- **Hypothesis** - targeted repair recovers far more ABSENT facts than the blind second pass, touching only gap spans
+- **Prediction** - >= 60% ABSENT recovery (vs 25% blind) at <= 20% of one full re-extraction pass's tokens; probe-flip >= 50% of flippable gaps
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if recovery < 40% OR cost > 50% of a full pass OR probe-flip < 25% despite coverage recovery (REG-2 dominates - repair is the wrong layer)
+- **Experiment** - GPU evening (~40-47 local narrow-question calls, detached per doctrine); `reports/experiments/r49/h579-narrow-repair-*.json`
+- **Status** - REGISTERED
+
+### R49-H580 Demand-weighted value-of-information scheduling concentrates probe value even though facts do not
+
+- **Persona** - contrarian (concedes H493 - facts near-uniform - but argues PROBE-relevant value still concentrates; a flat cover-everything scheduler wastes what a demand-ranked one saves)
+- **Grounding** - abstention-triggered gaps (H272) + per-type prevalence deficit as the priority key; unlock_query field enables the ranking
+- **Hypothesis** - ranking ledger entries by probe-demand repairs most probe-flippable gaps within a small queue head
+- **Prediction** - demand-ranked top-20% captures >= 70% of probe-flips vs <= 40% fact-count ranking, <= 25% random
+- **Acceptance bar** - CONFIRMED per prediction; KILLED if demand top-20% < 40% (probe value as flat as fact value - H493 generalizes, no scheduling shortcut) OR demand beats fact-count by < 10 pts
+- **Experiment** - FREE over forensics golds + abstention events + the R45 probe-flip ledger; `reports/experiments/r49/h580-voi-*.json`
+- **Status** - REGISTERED
