@@ -1,0 +1,65 @@
+{
+ "run_id": "20260713T231816Z",
+ "hypothesis": "R52-H599",
+ "scoring_fence": "retrieval-level only",
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "titan_target": 0.6012,
+  "iso_ppr_all_golds_reach": 0.622,
+  "iso_reach_target": 0.622,
+  "n_reach_probes": 127,
+  "reproduced": true,
+  "n_components": 1830,
+  "lcc_size": 3162
+ },
+ "heat_time_ladder": [
+  3.0,
+  10.0,
+  30.0
+ ],
+ "eigen_k_primary": 128,
+ "candidate_set": "union of top-200 by heat-kernel proximity or PPR mass, seeds excluded",
+ "seed_source": "dense@16 (realizable single source)",
+ "spearman_curve_by_time": {
+  "3.0": {
+   "median": 0.8542,
+   "mean": 0.8408,
+   "p25": 0.8048,
+   "p75": 0.8936,
+   "n": 132
+  },
+  "10.0": {
+   "median": 0.8686,
+   "mean": 0.8595,
+   "p25": 0.8209,
+   "p75": 0.9122,
+   "n": 132
+  },
+  "30.0": {
+   "median": 0.6893,
+   "mean": 0.6926,
+   "p25": 0.5796,
+   "p75": 0.8333,
+   "n": 132
+  }
+ },
+ "best_time_for_reexpression": 10.0,
+ "median_spearman_at_best_time": 0.8686,
+ "median_of_per_probe_best_over_ladder": 0.8842,
+ "clauses": [
+  {
+   "clause": "median per-query Spearman(heat, PPR mass) >= 0.95 at best-matched time (re-expression)",
+   "predicted": ">= 0.95",
+   "measured": "median 0.8686 @ t=10.0",
+   "holds": false
+  },
+  {
+   "clause": "FALSIFY: median < 0.85 even at best-matched time (independent signal)",
+   "predicted": "falsify if < 0.85",
+   "measured": "0.8686",
+   "holds": false
+  }
+ ],
+ "acceptance_bar": "CONFIRMED >= 0.95; FALSIFIED < 0.85",
+ "proposed_verdict": "INDETERMINATE"
+}

@@ -1,0 +1,6688 @@
+{
+ "run_id": "20260713T231406Z",
+ "hypothesis": "R53-H602 embedding+co-occurrence relation consolidation",
+ "universe": {
+  "n_semantic_types": 595,
+  "total_semantic_edges": 5846,
+  "excluded_provenance": [
+   "ABOUT",
+   "ANSWERABLE_FROM",
+   "MENTIONED_IN",
+   "SIMILAR_TO"
+  ],
+  "cooc_pair_vocab_size": 140,
+  "singletons_count1": 304
+ },
+ "weights": {
+  "name": 0.5,
+  "context": 0.3,
+  "cooccurrence": 0.2
+ },
+ "size_coverage_curve": [
+  {
+   "dist_threshold": 0.1,
+   "merge_sim_ge": 0.9,
+   "n_clusters": 595,
+   "n_multi_member_clusters": 0,
+   "k95_clusters_to_95pct_mass": 303,
+   "mass_in_top80_clusters_pct": 83.0,
+   "mass_in_multi_member_pct": 0.0,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.15,
+   "merge_sim_ge": 0.85,
+   "n_clusters": 595,
+   "n_multi_member_clusters": 0,
+   "k95_clusters_to_95pct_mass": 303,
+   "mass_in_top80_clusters_pct": 83.0,
+   "mass_in_multi_member_pct": 0.0,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.2,
+   "merge_sim_ge": 0.8,
+   "n_clusters": 585,
+   "n_multi_member_clusters": 10,
+   "k95_clusters_to_95pct_mass": 293,
+   "mass_in_top80_clusters_pct": 83.24,
+   "mass_in_multi_member_pct": 1.78,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.25,
+   "merge_sim_ge": 0.75,
+   "n_clusters": 577,
+   "n_multi_member_clusters": 18,
+   "k95_clusters_to_95pct_mass": 287,
+   "mass_in_top80_clusters_pct": 83.41,
+   "mass_in_multi_member_pct": 5.63,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.3,
+   "merge_sim_ge": 0.7,
+   "n_clusters": 555,
+   "n_multi_member_clusters": 34,
+   "k95_clusters_to_95pct_mass": 275,
+   "mass_in_top80_clusters_pct": 83.66,
+   "mass_in_multi_member_pct": 16.47,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.35,
+   "merge_sim_ge": 0.65,
+   "n_clusters": 536,
+   "n_multi_member_clusters": 46,
+   "k95_clusters_to_95pct_mass": 261,
+   "mass_in_top80_clusters_pct": 84.4,
+   "mass_in_multi_member_pct": 20.6,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.4,
+   "merge_sim_ge": 0.6,
+   "n_clusters": 504,
+   "n_multi_member_clusters": 71,
+   "k95_clusters_to_95pct_mass": 242,
+   "mass_in_top80_clusters_pct": 85.14,
+   "mass_in_multi_member_pct": 25.09,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.45,
+   "merge_sim_ge": 0.55,
+   "n_clusters": 476,
+   "n_multi_member_clusters": 85,
+   "k95_clusters_to_95pct_mass": 225,
+   "mass_in_top80_clusters_pct": 85.97,
+   "mass_in_multi_member_pct": 38.66,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.5,
+   "merge_sim_ge": 0.5,
+   "n_clusters": 437,
+   "n_multi_member_clusters": 99,
+   "k95_clusters_to_95pct_mass": 195,
+   "mass_in_top80_clusters_pct": 87.14,
+   "mass_in_multi_member_pct": 44.9,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.55,
+   "merge_sim_ge": 0.45,
+   "n_clusters": 389,
+   "n_multi_member_clusters": 121,
+   "k95_clusters_to_95pct_mass": 167,
+   "mass_in_top80_clusters_pct": 88.69,
+   "mass_in_multi_member_pct": 59.32,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.6,
+   "merge_sim_ge": 0.4,
+   "n_clusters": 333,
+   "n_multi_member_clusters": 130,
+   "k95_clusters_to_95pct_mass": 132,
+   "mass_in_top80_clusters_pct": 90.75,
+   "mass_in_multi_member_pct": 64.39,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.65,
+   "merge_sim_ge": 0.35,
+   "n_clusters": 262,
+   "n_multi_member_clusters": 135,
+   "k95_clusters_to_95pct_mass": 102,
+   "mass_in_top80_clusters_pct": 92.87,
+   "mass_in_multi_member_pct": 78.12,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.7,
+   "merge_sim_ge": 0.3,
+   "n_clusters": 190,
+   "n_multi_member_clusters": 123,
+   "k95_clusters_to_95pct_mass": 71,
+   "mass_in_top80_clusters_pct": 95.98,
+   "mass_in_multi_member_pct": 97.96,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.75,
+   "merge_sim_ge": 0.25,
+   "n_clusters": 112,
+   "n_multi_member_clusters": 85,
+   "k95_clusters_to_95pct_mass": 40,
+   "mass_in_top80_clusters_pct": 99.21,
+   "mass_in_multi_member_pct": 99.2,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.8,
+   "merge_sim_ge": 0.2,
+   "n_clusters": 85,
+   "n_multi_member_clusters": 69,
+   "k95_clusters_to_95pct_mass": 29,
+   "mass_in_top80_clusters_pct": 99.91,
+   "mass_in_multi_member_pct": 99.61,
+   "meets_le80_and_95pct": false
+  },
+  {
+   "dist_threshold": 0.85,
+   "merge_sim_ge": 0.15,
+   "n_clusters": 49,
+   "n_multi_member_clusters": 42,
+   "k95_clusters_to_95pct_mass": 17,
+   "mass_in_top80_clusters_pct": 100.0,
+   "mass_in_multi_member_pct": 99.88,
+   "meets_le80_and_95pct": true
+  },
+  {
+   "dist_threshold": 0.9,
+   "merge_sim_ge": 0.1,
+   "n_clusters": 24,
+   "n_multi_member_clusters": 20,
+   "k95_clusters_to_95pct_mass": 9,
+   "mass_in_top80_clusters_pct": 100.0,
+   "mass_in_multi_member_pct": 99.93,
+   "meets_le80_and_95pct": true
+  }
+ ],
+ "operating_threshold": {
+  "dist_threshold": 0.85,
+  "merge_sim_ge": 0.15,
+  "n_clusters": 49,
+  "k95_clusters_to_95pct_mass": 17,
+  "mass_in_top80_clusters_pct": 100.0,
+  "mass_in_multi_member_pct": 99.88
+ },
+ "confusable_pair_assignments": [
+  {
+   "a": "DIED_OF",
+   "b": "CAUSES_DEATH_OF",
+   "role_distinction": "cause-of-death, direction inverse",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": true,
+    "0.65": true,
+    "0.7": true,
+    "0.75": true,
+    "0.8": true,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "DIED_OF",
+   "b": "DIED_IN",
+   "role_distinction": "cause vs place of death",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": false,
+    "0.8": false,
+    "0.85": false,
+    "0.9": false
+   }
+  },
+  {
+   "a": "DIED_IN",
+   "b": "BORN_IN",
+   "role_distinction": "place of death vs place of birth",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": true,
+    "0.8": true,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "ATTENDED",
+   "b": "TAUGHT_AT",
+   "role_distinction": "student (educated-at) vs teacher role",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": true,
+    "0.8": true,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "ATTENDED",
+   "b": "TEACHES_AT",
+   "role_distinction": "student vs teacher role",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": true,
+    "0.8": true,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "ATTENDED",
+   "b": "PROFESSOR_AT",
+   "role_distinction": "student vs professor role",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": true,
+    "0.8": true,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "DIRECTED",
+   "b": "DIRECTED_BY",
+   "role_distinction": "director relation, direction inverse",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": false,
+    "0.8": false,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "CHILD_OF",
+   "b": "FATHER_OF",
+   "role_distinction": "child vs parent, X_OF direction",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": false,
+    "0.8": false,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "CHILD_OF",
+   "b": "DAUGHTER_OF",
+   "role_distinction": "child vs parent, X_OF direction",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": true,
+    "0.35": true,
+    "0.4": true,
+    "0.45": true,
+    "0.5": true,
+    "0.55": true,
+    "0.6": true,
+    "0.65": true,
+    "0.7": true,
+    "0.75": true,
+    "0.8": true,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "MARRIED_TO",
+   "b": "MARRIED_IN",
+   "role_distinction": "spouse vs place/date of marriage",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": true,
+    "0.6": true,
+    "0.65": true,
+    "0.7": true,
+    "0.75": true,
+    "0.8": true,
+    "0.85": true,
+    "0.9": true
+   }
+  },
+  {
+   "a": "BORN_IN",
+   "b": "BORN_ON",
+   "role_distinction": "place vs date of birth",
+   "both_present": true,
+   "same_cluster_at": {
+    "0.1": false,
+    "0.15": false,
+    "0.2": false,
+    "0.25": false,
+    "0.3": false,
+    "0.35": false,
+    "0.4": false,
+    "0.45": false,
+    "0.5": false,
+    "0.55": false,
+    "0.6": false,
+    "0.65": false,
+    "0.7": false,
+    "0.75": false,
+    "0.8": false,
+    "0.85": false,
+    "0.9": false
+   }
+  }
+ ],
+ "h585_rerun": {
+  "baseline_h585_name_cov_unweighted": 0.3913,
+  "baseline_h585_name_cov_qweighted": 0.3906,
+  "baseline_best_true_at_le20pct_false": 0.5217,
+  "post_consolidation_name_arm_centroid": {
+   "threshold": 0.6,
+   "n_aligned": 0,
+   "coverage_unweighted": 0.0,
+   "coverage_qweighted": 0.0
+  },
+  "post_consolidation_context_arm_centroid": {
+   "threshold": 0.6,
+   "n_aligned": 0,
+   "coverage_unweighted": 0.0,
+   "coverage_qweighted": 0.0
+  },
+  "best_member_arm_at_op_threshold": {
+   "n_aligned": 9,
+   "coverage_unweighted": 0.3913,
+   "coverage_qweighted": 0.3906
+  },
+  "best_member_note": "best-member cluster representation reproduces h585 raw type-level coverage exactly; centroid representation dilutes it",
+  "centroid_alignment_sweep_all_thresholds": [
+   {
+    "dist_threshold": 0.1,
+    "n_clusters": 595,
+    "centroid_name_cov_unweighted": 0.3913,
+    "centroid_name_cov_qweighted": 0.3906,
+    "centroid_ctx_cov_unweighted": 0.1304
+   },
+   {
+    "dist_threshold": 0.15,
+    "n_clusters": 595,
+    "centroid_name_cov_unweighted": 0.3913,
+    "centroid_name_cov_qweighted": 0.3906,
+    "centroid_ctx_cov_unweighted": 0.1304
+   },
+   {
+    "dist_threshold": 0.2,
+    "n_clusters": 585,
+    "centroid_name_cov_unweighted": 0.3913,
+    "centroid_name_cov_qweighted": 0.3906,
+    "centroid_ctx_cov_unweighted": 0.1304
+   },
+   {
+    "dist_threshold": 0.25,
+    "n_clusters": 577,
+    "centroid_name_cov_unweighted": 0.3913,
+    "centroid_name_cov_qweighted": 0.3906,
+    "centroid_ctx_cov_unweighted": 0.1304
+   },
+   {
+    "dist_threshold": 0.3,
+    "n_clusters": 555,
+    "centroid_name_cov_unweighted": 0.3478,
+    "centroid_name_cov_qweighted": 0.3734,
+    "centroid_ctx_cov_unweighted": 0.1304
+   },
+   {
+    "dist_threshold": 0.35,
+    "n_clusters": 536,
+    "centroid_name_cov_unweighted": 0.3478,
+    "centroid_name_cov_qweighted": 0.3734,
+    "centroid_ctx_cov_unweighted": 0.1304
+   },
+   {
+    "dist_threshold": 0.4,
+    "n_clusters": 504,
+    "centroid_name_cov_unweighted": 0.3478,
+    "centroid_name_cov_qweighted": 0.3734,
+    "centroid_ctx_cov_unweighted": 0.087
+   },
+   {
+    "dist_threshold": 0.45,
+    "n_clusters": 476,
+    "centroid_name_cov_unweighted": 0.3478,
+    "centroid_name_cov_qweighted": 0.3734,
+    "centroid_ctx_cov_unweighted": 0.087
+   },
+   {
+    "dist_threshold": 0.5,
+    "n_clusters": 437,
+    "centroid_name_cov_unweighted": 0.3478,
+    "centroid_name_cov_qweighted": 0.3734,
+    "centroid_ctx_cov_unweighted": 0.087
+   },
+   {
+    "dist_threshold": 0.55,
+    "n_clusters": 389,
+    "centroid_name_cov_unweighted": 0.3043,
+    "centroid_name_cov_qweighted": 0.3648,
+    "centroid_ctx_cov_unweighted": 0.087
+   },
+   {
+    "dist_threshold": 0.6,
+    "n_clusters": 333,
+    "centroid_name_cov_unweighted": 0.3043,
+    "centroid_name_cov_qweighted": 0.3648,
+    "centroid_ctx_cov_unweighted": 0.0435
+   },
+   {
+    "dist_threshold": 0.65,
+    "n_clusters": 262,
+    "centroid_name_cov_unweighted": 0.2609,
+    "centroid_name_cov_qweighted": 0.3562,
+    "centroid_ctx_cov_unweighted": 0.0435
+   },
+   {
+    "dist_threshold": 0.7,
+    "n_clusters": 190,
+    "centroid_name_cov_unweighted": 0.3043,
+    "centroid_name_cov_qweighted": 0.3648,
+    "centroid_ctx_cov_unweighted": 0.0435
+   },
+   {
+    "dist_threshold": 0.75,
+    "n_clusters": 112,
+    "centroid_name_cov_unweighted": 0.1739,
+    "centroid_name_cov_qweighted": 0.1288,
+    "centroid_ctx_cov_unweighted": 0.0
+   },
+   {
+    "dist_threshold": 0.8,
+    "n_clusters": 85,
+    "centroid_name_cov_unweighted": 0.1739,
+    "centroid_name_cov_qweighted": 0.1288,
+    "centroid_ctx_cov_unweighted": 0.0
+   },
+   {
+    "dist_threshold": 0.85,
+    "n_clusters": 49,
+    "centroid_name_cov_unweighted": 0.0,
+    "centroid_name_cov_qweighted": 0.0,
+    "centroid_ctx_cov_unweighted": 0.0
+   },
+   {
+    "dist_threshold": 0.9,
+    "n_clusters": 24,
+    "centroid_name_cov_unweighted": 0.0,
+    "centroid_name_cov_qweighted": 0.0,
+    "centroid_ctx_cov_unweighted": 0.0
+   }
+  ],
+  "operating_threshold": 0.85,
+  "per_gold": [
+   {
+    "gold": "date of death",
+    "q_count": 15,
+    "gold_example": [
+     "Ermengarde of Tours",
+     "date of death",
+     "20 March 851"
+    ],
+    "best_native_type": "DIED_AT",
+    "best_native_cos": 0.4537,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 16,
+     "size": 45,
+     "members_top": [
+      [
+       "RESIDES_IN",
+       278
+      ],
+      [
+       "MARRIED_TO",
+       184
+      ],
+      [
+       "BORN_IN",
+       70
+      ],
+      [
+       "DIED_IN",
+       31
+      ],
+      [
+       "BISHOP_OF",
+       10
+      ],
+      [
+       "REPRESENTED",
+       8
+      ],
+      [
+       "REPRESENTS",
+       7
+      ],
+      [
+       "STADTHOLDER_OF",
+       6
+      ],
+      [
+       "BURIED_IN",
+       3
+      ],
+      [
+       "DEFEATED",
+       3
+      ],
+      [
+       "ANNEXED",
+       2
+      ],
+      [
+       "BODY_FOUND_IN",
+       2
+      ],
+      [
+       "CANDIDATE_IN",
+       2
+      ],
+      [
+       "DEFENDED",
+       2
+      ],
+      [
+       "DIED_AT",
+       2
+      ]
+     ],
+     "total_members": 45
+    }
+   },
+   {
+    "gold": "mother",
+    "q_count": 6,
+    "gold_example": [
+     "Lothair II",
+     "mother",
+     "Ermengarde of Tours"
+    ],
+    "best_native_type": "MOTHER_IN_LAW",
+    "best_native_cos": 0.4211,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 46,
+     "size": 97,
+     "members_top": [
+      [
+       "CHILD_OF",
+       386
+      ],
+      [
+       "SIBLING_OF",
+       95
+      ],
+      [
+       "DAUGHTER_OF",
+       86
+      ],
+      [
+       "ALIAS_OF",
+       29
+      ],
+      [
+       "SISTER_OF",
+       16
+      ],
+      [
+       "GRANDFATHER_OF",
+       12
+      ],
+      [
+       "FATHER_IN_LAW_OF",
+       10
+      ],
+      [
+       "SON_IN_LAW_OF",
+       9
+      ],
+      [
+       "ALSO_KNOWN_AS",
+       7
+      ],
+      [
+       "COUSIN_OF",
+       7
+      ],
+      [
+       "FRIEND_OF",
+       6
+      ],
+      [
+       "UNCLE_OF",
+       6
+      ],
+      [
+       "BROTHER_IN_LAW_OF",
+       5
+      ],
+      [
+       "GRANDCHILD_OF",
+       5
+      ],
+      [
+       "GRANDPARENT_OF",
+       5
+      ]
+     ],
+     "total_members": 97
+    }
+   },
+   {
+    "gold": "publication date",
+    "q_count": 6,
+    "gold_example": [
+     "Aas Ka Panchhi",
+     "publication date",
+     "1961"
+    ],
+    "best_native_type": "PUBLISHED_BY",
+    "best_native_cos": 0.5458,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 40,
+     "size": 6,
+     "members_top": [
+      [
+       "EDITED",
+       5
+      ],
+      [
+       "EDITED_BY",
+       4
+      ],
+      [
+       "ILLUSTRATED",
+       2
+      ],
+      [
+       "PUBLISHED_BY",
+       2
+      ],
+      [
+       "SYNCHRONISED_WITH",
+       2
+      ],
+      [
+       "SCRIPTED_BY",
+       1
+      ]
+     ],
+     "total_members": 6
+    }
+   },
+   {
+    "gold": "place of birth",
+    "q_count": 20,
+    "gold_example": [
+     "Nicki Minaj",
+     "place of birth",
+     "Port of Spain"
+    ],
+    "best_native_type": "BORN_IN",
+    "best_native_cos": 0.5221,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 16,
+     "size": 45,
+     "members_top": [
+      [
+       "RESIDES_IN",
+       278
+      ],
+      [
+       "MARRIED_TO",
+       184
+      ],
+      [
+       "BORN_IN",
+       70
+      ],
+      [
+       "DIED_IN",
+       31
+      ],
+      [
+       "BISHOP_OF",
+       10
+      ],
+      [
+       "REPRESENTED",
+       8
+      ],
+      [
+       "REPRESENTS",
+       7
+      ],
+      [
+       "STADTHOLDER_OF",
+       6
+      ],
+      [
+       "BURIED_IN",
+       3
+      ],
+      [
+       "DEFEATED",
+       3
+      ],
+      [
+       "ANNEXED",
+       2
+      ],
+      [
+       "BODY_FOUND_IN",
+       2
+      ],
+      [
+       "CANDIDATE_IN",
+       2
+      ],
+      [
+       "DEFENDED",
+       2
+      ],
+      [
+       "DIED_AT",
+       2
+      ]
+     ],
+     "total_members": 45
+    }
+   },
+   {
+    "gold": "performer",
+    "q_count": 9,
+    "gold_example": [
+     "Changed It",
+     "performer",
+     "Nicki Minaj"
+    ],
+    "best_native_type": "PERFORMED",
+    "best_native_cos": 0.5099,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 39,
+     "size": 13,
+     "members_top": [
+      [
+       "PERFORMED_BY",
+       55
+      ],
+      [
+       "PERFORMED_AT",
+       11
+      ],
+      [
+       "COVERED_BY",
+       7
+      ],
+      [
+       "FEATURED",
+       7
+      ],
+      [
+       "FEATURED_ARTIST",
+       4
+      ],
+      [
+       "FEATURED_IN",
+       4
+      ],
+      [
+       "PERFORMED_FOR",
+       4
+      ],
+      [
+       "PERFORMED_IN",
+       4
+      ],
+      [
+       "PERFORMED",
+       3
+      ],
+      [
+       "RECORDED_BY",
+       2
+      ],
+      [
+       "DEDICATED_TO",
+       1
+      ],
+      [
+       "PERFORMED_ON",
+       1
+      ],
+      [
+       "PERFORMED_SONG",
+       1
+      ]
+     ],
+     "total_members": 13
+    }
+   },
+   {
+    "gold": "country",
+    "q_count": 4,
+    "gold_example": [
+     "Marufabad",
+     "country",
+     "Iran"
+    ],
+    "best_native_type": "NATIONALITY",
+    "best_native_cos": 0.3722,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 17,
+     "size": 8,
+     "members_top": [
+      [
+       "NATIONALITY",
+       5
+      ],
+      [
+       "HAS_NATIONALITY",
+       3
+      ],
+      [
+       "NATIONALITY_OF",
+       3
+      ],
+      [
+       "CITIZEN_OF",
+       2
+      ],
+      [
+       "HAS_DEGREE",
+       2
+      ],
+      [
+       "ETHNICITY",
+       1
+      ],
+      [
+       "HAS_CITIZENSHIP",
+       1
+      ],
+      [
+       "RESEARCHED",
+       1
+      ]
+     ],
+     "total_members": 8
+    }
+   },
+   {
+    "gold": "director",
+    "q_count": 52,
+    "gold_example": [
+     "God's Gift to Women",
+     "director",
+     "Michael Curtiz"
+    ],
+    "best_native_type": "DIRECTOR_OF",
+    "best_native_cos": 0.7881,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 24,
+     "size": 91,
+     "members_top": [
+      [
+       "ATTENDED",
+       80
+      ],
+      [
+       "MEMBER_OF",
+       59
+      ],
+      [
+       "PLAYED_FOR",
+       40
+      ],
+      [
+       "FOUNDER_OF",
+       26
+      ],
+      [
+       "DIRECTOR_OF",
+       24
+      ],
+      [
+       "FOUNDED",
+       21
+      ],
+      [
+       "HELD_POSITION",
+       21
+      ],
+      [
+       "PLAYS_FOR",
+       16
+      ],
+      [
+       "INDUCTED_INTO",
+       14
+      ],
+      [
+       "EMPLOYED_BY",
+       13
+      ],
+      [
+       "PRESIDENT_OF",
+       12
+      ],
+      [
+       "CEO_OF",
+       8
+      ],
+      [
+       "CO_FOUNDER_OF",
+       8
+      ],
+      [
+       "SINGER_OF",
+       8
+      ],
+      [
+       "LEADER_OF",
+       6
+      ]
+     ],
+     "total_members": 91
+    }
+   },
+   {
+    "gold": "date of birth",
+    "q_count": 36,
+    "gold_example": [
+     "Michael Curtiz",
+     "date of birth",
+     "December 24, 1886"
+    ],
+    "best_native_type": "BORN_ON",
+    "best_native_cos": 0.4392,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 46,
+     "size": 97,
+     "members_top": [
+      [
+       "CHILD_OF",
+       386
+      ],
+      [
+       "SIBLING_OF",
+       95
+      ],
+      [
+       "DAUGHTER_OF",
+       86
+      ],
+      [
+       "ALIAS_OF",
+       29
+      ],
+      [
+       "SISTER_OF",
+       16
+      ],
+      [
+       "GRANDFATHER_OF",
+       12
+      ],
+      [
+       "FATHER_IN_LAW_OF",
+       10
+      ],
+      [
+       "SON_IN_LAW_OF",
+       9
+      ],
+      [
+       "ALSO_KNOWN_AS",
+       7
+      ],
+      [
+       "COUSIN_OF",
+       7
+      ],
+      [
+       "FRIEND_OF",
+       6
+      ],
+      [
+       "UNCLE_OF",
+       6
+      ],
+      [
+       "BROTHER_IN_LAW_OF",
+       5
+      ],
+      [
+       "GRANDCHILD_OF",
+       5
+      ],
+      [
+       "GRANDPARENT_OF",
+       5
+      ]
+     ],
+     "total_members": 97
+    }
+   },
+   {
+    "gold": "father",
+    "q_count": 21,
+    "gold_example": [
+     "Raghnall Mac Ruaidhr\u00ed",
+     "father",
+     "Ruaidhr\u00ed Mac Ruaidhr\u00ed"
+    ],
+    "best_native_type": "FATHER_OF",
+    "best_native_cos": 0.6405,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 46,
+     "size": 97,
+     "members_top": [
+      [
+       "CHILD_OF",
+       386
+      ],
+      [
+       "SIBLING_OF",
+       95
+      ],
+      [
+       "DAUGHTER_OF",
+       86
+      ],
+      [
+       "ALIAS_OF",
+       29
+      ],
+      [
+       "SISTER_OF",
+       16
+      ],
+      [
+       "GRANDFATHER_OF",
+       12
+      ],
+      [
+       "FATHER_IN_LAW_OF",
+       10
+      ],
+      [
+       "SON_IN_LAW_OF",
+       9
+      ],
+      [
+       "ALSO_KNOWN_AS",
+       7
+      ],
+      [
+       "COUSIN_OF",
+       7
+      ],
+      [
+       "FRIEND_OF",
+       6
+      ],
+      [
+       "UNCLE_OF",
+       6
+      ],
+      [
+       "BROTHER_IN_LAW_OF",
+       5
+      ],
+      [
+       "GRANDCHILD_OF",
+       5
+      ],
+      [
+       "GRANDPARENT_OF",
+       5
+      ]
+     ],
+     "total_members": 97
+    }
+   },
+   {
+    "gold": "country of citizenship",
+    "q_count": 14,
+    "gold_example": [
+     "Perry Bhandal",
+     "country of citizenship",
+     "British"
+    ],
+    "best_native_type": "HAS_CITIZENSHIP",
+    "best_native_cos": 0.5809,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 17,
+     "size": 8,
+     "members_top": [
+      [
+       "NATIONALITY",
+       5
+      ],
+      [
+       "HAS_NATIONALITY",
+       3
+      ],
+      [
+       "NATIONALITY_OF",
+       3
+      ],
+      [
+       "CITIZEN_OF",
+       2
+      ],
+      [
+       "HAS_DEGREE",
+       2
+      ],
+      [
+       "ETHNICITY",
+       1
+      ],
+      [
+       "HAS_CITIZENSHIP",
+       1
+      ],
+      [
+       "RESEARCHED",
+       1
+      ]
+     ],
+     "total_members": 8
+    }
+   },
+   {
+    "gold": "child",
+    "q_count": 4,
+    "gold_example": [
+     "Roger Miller",
+     "child",
+     "Dean Miller"
+    ],
+    "best_native_type": "CHILD_OF",
+    "best_native_cos": 0.6075,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 46,
+     "size": 97,
+     "members_top": [
+      [
+       "CHILD_OF",
+       386
+      ],
+      [
+       "SIBLING_OF",
+       95
+      ],
+      [
+       "DAUGHTER_OF",
+       86
+      ],
+      [
+       "ALIAS_OF",
+       29
+      ],
+      [
+       "SISTER_OF",
+       16
+      ],
+      [
+       "GRANDFATHER_OF",
+       12
+      ],
+      [
+       "FATHER_IN_LAW_OF",
+       10
+      ],
+      [
+       "SON_IN_LAW_OF",
+       9
+      ],
+      [
+       "ALSO_KNOWN_AS",
+       7
+      ],
+      [
+       "COUSIN_OF",
+       7
+      ],
+      [
+       "FRIEND_OF",
+       6
+      ],
+      [
+       "UNCLE_OF",
+       6
+      ],
+      [
+       "BROTHER_IN_LAW_OF",
+       5
+      ],
+      [
+       "GRANDCHILD_OF",
+       5
+      ],
+      [
+       "GRANDPARENT_OF",
+       5
+      ]
+     ],
+     "total_members": 97
+    }
+   },
+   {
+    "gold": "place of death",
+    "q_count": 10,
+    "gold_example": [
+     "William the Silent",
+     "place of death",
+     "Delft"
+    ],
+    "best_native_type": "DIED_AT",
+    "best_native_cos": 0.5873,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 16,
+     "size": 45,
+     "members_top": [
+      [
+       "RESIDES_IN",
+       278
+      ],
+      [
+       "MARRIED_TO",
+       184
+      ],
+      [
+       "BORN_IN",
+       70
+      ],
+      [
+       "DIED_IN",
+       31
+      ],
+      [
+       "BISHOP_OF",
+       10
+      ],
+      [
+       "REPRESENTED",
+       8
+      ],
+      [
+       "REPRESENTS",
+       7
+      ],
+      [
+       "STADTHOLDER_OF",
+       6
+      ],
+      [
+       "BURIED_IN",
+       3
+      ],
+      [
+       "DEFEATED",
+       3
+      ],
+      [
+       "ANNEXED",
+       2
+      ],
+      [
+       "BODY_FOUND_IN",
+       2
+      ],
+      [
+       "CANDIDATE_IN",
+       2
+      ],
+      [
+       "DEFENDED",
+       2
+      ],
+      [
+       "DIED_AT",
+       2
+      ]
+     ],
+     "total_members": 45
+    }
+   },
+   {
+    "gold": "educated at",
+    "q_count": 2,
+    "gold_example": [
+     "John Wallop, 2nd Earl of Portsmouth",
+     "educated at",
+     "Oxford"
+    ],
+    "best_native_type": "TAUGHT_AT",
+    "best_native_cos": 0.5964,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 24,
+     "size": 91,
+     "members_top": [
+      [
+       "ATTENDED",
+       80
+      ],
+      [
+       "MEMBER_OF",
+       59
+      ],
+      [
+       "PLAYED_FOR",
+       40
+      ],
+      [
+       "FOUNDER_OF",
+       26
+      ],
+      [
+       "DIRECTOR_OF",
+       24
+      ],
+      [
+       "FOUNDED",
+       21
+      ],
+      [
+       "HELD_POSITION",
+       21
+      ],
+      [
+       "PLAYS_FOR",
+       16
+      ],
+      [
+       "INDUCTED_INTO",
+       14
+      ],
+      [
+       "EMPLOYED_BY",
+       13
+      ],
+      [
+       "PRESIDENT_OF",
+       12
+      ],
+      [
+       "CEO_OF",
+       8
+      ],
+      [
+       "CO_FOUNDER_OF",
+       8
+      ],
+      [
+       "SINGER_OF",
+       8
+      ],
+      [
+       "LEADER_OF",
+       6
+      ]
+     ],
+     "total_members": 91
+    }
+   },
+   {
+    "gold": "cause of death",
+    "q_count": 1,
+    "gold_example": [
+     "Katherine Mansfield",
+     "cause of death",
+     "tuberculosis"
+    ],
+    "best_native_type": "CAUSES_DEATH_OF",
+    "best_native_cos": 0.7697,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 46,
+     "size": 97,
+     "members_top": [
+      [
+       "CHILD_OF",
+       386
+      ],
+      [
+       "SIBLING_OF",
+       95
+      ],
+      [
+       "DAUGHTER_OF",
+       86
+      ],
+      [
+       "ALIAS_OF",
+       29
+      ],
+      [
+       "SISTER_OF",
+       16
+      ],
+      [
+       "GRANDFATHER_OF",
+       12
+      ],
+      [
+       "FATHER_IN_LAW_OF",
+       10
+      ],
+      [
+       "SON_IN_LAW_OF",
+       9
+      ],
+      [
+       "ALSO_KNOWN_AS",
+       7
+      ],
+      [
+       "COUSIN_OF",
+       7
+      ],
+      [
+       "FRIEND_OF",
+       6
+      ],
+      [
+       "UNCLE_OF",
+       6
+      ],
+      [
+       "BROTHER_IN_LAW_OF",
+       5
+      ],
+      [
+       "GRANDCHILD_OF",
+       5
+      ],
+      [
+       "GRANDPARENT_OF",
+       5
+      ]
+     ],
+     "total_members": 97
+    }
+   },
+   {
+    "gold": "spouse",
+    "q_count": 14,
+    "gold_example": [
+     "John Middleton Murry",
+     "spouse",
+     "Katherine Mansfield"
+    ],
+    "best_native_type": "MARRIED_TO",
+    "best_native_cos": 0.4429,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 16,
+     "size": 45,
+     "members_top": [
+      [
+       "RESIDES_IN",
+       278
+      ],
+      [
+       "MARRIED_TO",
+       184
+      ],
+      [
+       "BORN_IN",
+       70
+      ],
+      [
+       "DIED_IN",
+       31
+      ],
+      [
+       "BISHOP_OF",
+       10
+      ],
+      [
+       "REPRESENTED",
+       8
+      ],
+      [
+       "REPRESENTS",
+       7
+      ],
+      [
+       "STADTHOLDER_OF",
+       6
+      ],
+      [
+       "BURIED_IN",
+       3
+      ],
+      [
+       "DEFEATED",
+       3
+      ],
+      [
+       "ANNEXED",
+       2
+      ],
+      [
+       "BODY_FOUND_IN",
+       2
+      ],
+      [
+       "CANDIDATE_IN",
+       2
+      ],
+      [
+       "DEFENDED",
+       2
+      ],
+      [
+       "DIED_AT",
+       2
+      ]
+     ],
+     "total_members": 45
+    }
+   },
+   {
+    "gold": "composer",
+    "q_count": 7,
+    "gold_example": [
+     "Billy Elliot",
+     "composer",
+     "Stephen Warbeck"
+    ],
+    "best_native_type": "COMPOSED",
+    "best_native_cos": 0.6314,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 41,
+     "size": 67,
+     "members_top": [
+      [
+       "ACTED_IN",
+       405
+      ],
+      [
+       "DIRECTED",
+       319
+      ],
+      [
+       "AUTHOR_OF",
+       285
+      ],
+      [
+       "STARRED_IN",
+       156
+      ],
+      [
+       "DIRECTED_BY",
+       77
+      ],
+      [
+       "WRITTEN_BY",
+       46
+      ],
+      [
+       "STARS",
+       36
+      ],
+      [
+       "PRODUCED",
+       26
+      ],
+      [
+       "STARRING",
+       22
+      ],
+      [
+       "STARRED",
+       11
+      ],
+      [
+       "STARS_IN",
+       11
+      ],
+      [
+       "FEATURES",
+       8
+      ],
+      [
+       "COMPOSED_BY",
+       7
+      ],
+      [
+       "DESIGNED_BY",
+       7
+      ],
+      [
+       "STARRED_BY",
+       7
+      ]
+     ],
+     "total_members": 67
+    }
+   },
+   {
+    "gold": "employer",
+    "q_count": 2,
+    "gold_example": [
+     "David Bradley",
+     "employer",
+     "UCLA"
+    ],
+    "best_native_type": "EMPLOYED_BY",
+    "best_native_cos": 0.6609,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 24,
+     "size": 91,
+     "members_top": [
+      [
+       "ATTENDED",
+       80
+      ],
+      [
+       "MEMBER_OF",
+       59
+      ],
+      [
+       "PLAYED_FOR",
+       40
+      ],
+      [
+       "FOUNDER_OF",
+       26
+      ],
+      [
+       "DIRECTOR_OF",
+       24
+      ],
+      [
+       "FOUNDED",
+       21
+      ],
+      [
+       "HELD_POSITION",
+       21
+      ],
+      [
+       "PLAYS_FOR",
+       16
+      ],
+      [
+       "INDUCTED_INTO",
+       14
+      ],
+      [
+       "EMPLOYED_BY",
+       13
+      ],
+      [
+       "PRESIDENT_OF",
+       12
+      ],
+      [
+       "CEO_OF",
+       8
+      ],
+      [
+       "CO_FOUNDER_OF",
+       8
+      ],
+      [
+       "SINGER_OF",
+       8
+      ],
+      [
+       "LEADER_OF",
+       6
+      ]
+     ],
+     "total_members": 91
+    }
+   },
+   {
+    "gold": "place of detention",
+    "q_count": 1,
+    "gold_example": [
+     "Meek Mill",
+     "place of detention",
+     "State Correctional Institution \u2013 Chester"
+    ],
+    "best_native_type": "SEIZED_IN",
+    "best_native_cos": 0.3237,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 14,
+     "size": 4,
+     "members_top": [
+      [
+       "CAPTURED_BY",
+       1
+      ],
+      [
+       "CAPTURED_IN",
+       1
+      ],
+      [
+       "SEIZED_IN",
+       1
+      ],
+      [
+       "SEIZED_UNDER",
+       1
+      ]
+     ],
+     "total_members": 4
+    }
+   },
+   {
+    "gold": "country of origin",
+    "q_count": 3,
+    "gold_example": [
+     "Naked Tango",
+     "country of origin",
+     "American"
+    ],
+    "best_native_type": "NATIONALITY_OF",
+    "best_native_cos": 0.3116,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 17,
+     "size": 8,
+     "members_top": [
+      [
+       "NATIONALITY",
+       5
+      ],
+      [
+       "HAS_NATIONALITY",
+       3
+      ],
+      [
+       "NATIONALITY_OF",
+       3
+      ],
+      [
+       "CITIZEN_OF",
+       2
+      ],
+      [
+       "HAS_DEGREE",
+       2
+      ],
+      [
+       "ETHNICITY",
+       1
+      ],
+      [
+       "HAS_CITIZENSHIP",
+       1
+      ],
+      [
+       "RESEARCHED",
+       1
+      ]
+     ],
+     "total_members": 8
+    }
+   },
+   {
+    "gold": "inception",
+    "q_count": 2,
+    "gold_example": [
+     "Museum of Croatian Archaeological Monuments",
+     "inception",
+     "1893"
+    ],
+    "best_native_type": "INTRODUCED",
+    "best_native_cos": 0.3465,
+    "aligned_at_0.6": false,
+    "canonical_cluster": {
+     "cluster_id": 41,
+     "size": 67,
+     "members_top": [
+      [
+       "ACTED_IN",
+       405
+      ],
+      [
+       "DIRECTED",
+       319
+      ],
+      [
+       "AUTHOR_OF",
+       285
+      ],
+      [
+       "STARRED_IN",
+       156
+      ],
+      [
+       "DIRECTED_BY",
+       77
+      ],
+      [
+       "WRITTEN_BY",
+       46
+      ],
+      [
+       "STARS",
+       36
+      ],
+      [
+       "PRODUCED",
+       26
+      ],
+      [
+       "STARRING",
+       22
+      ],
+      [
+       "STARRED",
+       11
+      ],
+      [
+       "STARS_IN",
+       11
+      ],
+      [
+       "FEATURES",
+       8
+      ],
+      [
+       "COMPOSED_BY",
+       7
+      ],
+      [
+       "DESIGNED_BY",
+       7
+      ],
+      [
+       "STARRED_BY",
+       7
+      ]
+     ],
+     "total_members": 67
+    }
+   },
+   {
+    "gold": "sibling",
+    "q_count": 2,
+    "gold_example": [
+     "Fa\u00edlbe Flann mac \u00c1edo Duib",
+     "sibling",
+     "F\u00edngen mac \u00c1edo Duib"
+    ],
+    "best_native_type": "SIBLING_OF",
+    "best_native_cos": 0.8807,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 46,
+     "size": 97,
+     "members_top": [
+      [
+       "CHILD_OF",
+       386
+      ],
+      [
+       "SIBLING_OF",
+       95
+      ],
+      [
+       "DAUGHTER_OF",
+       86
+      ],
+      [
+       "ALIAS_OF",
+       29
+      ],
+      [
+       "SISTER_OF",
+       16
+      ],
+      [
+       "GRANDFATHER_OF",
+       12
+      ],
+      [
+       "FATHER_IN_LAW_OF",
+       10
+      ],
+      [
+       "SON_IN_LAW_OF",
+       9
+      ],
+      [
+       "ALSO_KNOWN_AS",
+       7
+      ],
+      [
+       "COUSIN_OF",
+       7
+      ],
+      [
+       "FRIEND_OF",
+       6
+      ],
+      [
+       "UNCLE_OF",
+       6
+      ],
+      [
+       "BROTHER_IN_LAW_OF",
+       5
+      ],
+      [
+       "GRANDCHILD_OF",
+       5
+      ],
+      [
+       "GRANDPARENT_OF",
+       5
+      ]
+     ],
+     "total_members": 97
+    }
+   },
+   {
+    "gold": "founded by",
+    "q_count": 1,
+    "gold_example": [
+     "Track & Field News",
+     "founded by",
+     "Bert Nelson"
+    ],
+    "best_native_type": "FOUNDED_BY",
+    "best_native_cos": 1.0,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 24,
+     "size": 91,
+     "members_top": [
+      [
+       "ATTENDED",
+       80
+      ],
+      [
+       "MEMBER_OF",
+       59
+      ],
+      [
+       "PLAYED_FOR",
+       40
+      ],
+      [
+       "FOUNDER_OF",
+       26
+      ],
+      [
+       "DIRECTOR_OF",
+       24
+      ],
+      [
+       "FOUNDED",
+       21
+      ],
+      [
+       "HELD_POSITION",
+       21
+      ],
+      [
+       "PLAYS_FOR",
+       16
+      ],
+      [
+       "INDUCTED_INTO",
+       14
+      ],
+      [
+       "EMPLOYED_BY",
+       13
+      ],
+      [
+       "PRESIDENT_OF",
+       12
+      ],
+      [
+       "CEO_OF",
+       8
+      ],
+      [
+       "CO_FOUNDER_OF",
+       8
+      ],
+      [
+       "SINGER_OF",
+       8
+      ],
+      [
+       "LEADER_OF",
+       6
+      ]
+     ],
+     "total_members": 91
+    }
+   },
+   {
+    "gold": "publisher",
+    "q_count": 1,
+    "gold_example": [
+     "The Miscellany News",
+     "publisher",
+     "Vassar College"
+    ],
+    "best_native_type": "PUBLISHER_OF",
+    "best_native_cos": 0.8195,
+    "aligned_at_0.6": true,
+    "canonical_cluster": {
+     "cluster_id": 24,
+     "size": 91,
+     "members_top": [
+      [
+       "ATTENDED",
+       80
+      ],
+      [
+       "MEMBER_OF",
+       59
+      ],
+      [
+       "PLAYED_FOR",
+       40
+      ],
+      [
+       "FOUNDER_OF",
+       26
+      ],
+      [
+       "DIRECTOR_OF",
+       24
+      ],
+      [
+       "FOUNDED",
+       21
+      ],
+      [
+       "HELD_POSITION",
+       21
+      ],
+      [
+       "PLAYS_FOR",
+       16
+      ],
+      [
+       "INDUCTED_INTO",
+       14
+      ],
+      [
+       "EMPLOYED_BY",
+       13
+      ],
+      [
+       "PRESIDENT_OF",
+       12
+      ],
+      [
+       "CEO_OF",
+       8
+      ],
+      [
+       "CO_FOUNDER_OF",
+       8
+      ],
+      [
+       "SINGER_OF",
+       8
+      ],
+      [
+       "LEADER_OF",
+       6
+      ]
+     ],
+     "total_members": 91
+    }
+   }
+  ]
+ },
+ "handcheck_candidates": [
+  {
+   "arm": "name",
+   "gold": "date of death",
+   "best_native_type": "DIED_AT",
+   "name_cos": 0.4537,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "Ermengarde of Tours",
+    "date of death",
+    "20 March 851"
+   ],
+   "pair_id": 0
+  },
+  {
+   "arm": "name",
+   "gold": "mother",
+   "best_native_type": "MOTHER_IN_LAW",
+   "name_cos": 0.4211,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Lothair II",
+    "mother",
+    "Ermengarde of Tours"
+   ],
+   "pair_id": 1
+  },
+  {
+   "arm": "name",
+   "gold": "publication date",
+   "best_native_type": "PUBLISHED_BY",
+   "name_cos": 0.5458,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 40,
+    "size": 6,
+    "members_top": [
+     [
+      "EDITED",
+      5
+     ],
+     [
+      "EDITED_BY",
+      4
+     ],
+     [
+      "ILLUSTRATED",
+      2
+     ],
+     [
+      "PUBLISHED_BY",
+      2
+     ],
+     [
+      "SYNCHRONISED_WITH",
+      2
+     ],
+     [
+      "SCRIPTED_BY",
+      1
+     ]
+    ],
+    "total_members": 6
+   },
+   "gold_example": [
+    "Aas Ka Panchhi",
+    "publication date",
+    "1961"
+   ],
+   "pair_id": 2
+  },
+  {
+   "arm": "name",
+   "gold": "place of birth",
+   "best_native_type": "BORN_IN",
+   "name_cos": 0.5221,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "Nicki Minaj",
+    "place of birth",
+    "Port of Spain"
+   ],
+   "pair_id": 3
+  },
+  {
+   "arm": "name",
+   "gold": "performer",
+   "best_native_type": "PERFORMED",
+   "name_cos": 0.5099,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 39,
+    "size": 13,
+    "members_top": [
+     [
+      "PERFORMED_BY",
+      55
+     ],
+     [
+      "PERFORMED_AT",
+      11
+     ],
+     [
+      "COVERED_BY",
+      7
+     ],
+     [
+      "FEATURED",
+      7
+     ],
+     [
+      "FEATURED_ARTIST",
+      4
+     ],
+     [
+      "FEATURED_IN",
+      4
+     ],
+     [
+      "PERFORMED_FOR",
+      4
+     ],
+     [
+      "PERFORMED_IN",
+      4
+     ],
+     [
+      "PERFORMED",
+      3
+     ],
+     [
+      "RECORDED_BY",
+      2
+     ],
+     [
+      "DEDICATED_TO",
+      1
+     ],
+     [
+      "PERFORMED_ON",
+      1
+     ],
+     [
+      "PERFORMED_SONG",
+      1
+     ]
+    ],
+    "total_members": 13
+   },
+   "gold_example": [
+    "Changed It",
+    "performer",
+    "Nicki Minaj"
+   ],
+   "pair_id": 4
+  },
+  {
+   "arm": "name",
+   "gold": "country",
+   "best_native_type": "NATIONALITY",
+   "name_cos": 0.3722,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 17,
+    "size": 8,
+    "members_top": [
+     [
+      "NATIONALITY",
+      5
+     ],
+     [
+      "HAS_NATIONALITY",
+      3
+     ],
+     [
+      "NATIONALITY_OF",
+      3
+     ],
+     [
+      "CITIZEN_OF",
+      2
+     ],
+     [
+      "HAS_DEGREE",
+      2
+     ],
+     [
+      "ETHNICITY",
+      1
+     ],
+     [
+      "HAS_CITIZENSHIP",
+      1
+     ],
+     [
+      "RESEARCHED",
+      1
+     ]
+    ],
+    "total_members": 8
+   },
+   "gold_example": [
+    "Marufabad",
+    "country",
+    "Iran"
+   ],
+   "pair_id": 5
+  },
+  {
+   "arm": "name",
+   "gold": "director",
+   "best_native_type": "DIRECTOR_OF",
+   "name_cos": 0.7881,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "God's Gift to Women",
+    "director",
+    "Michael Curtiz"
+   ],
+   "pair_id": 6
+  },
+  {
+   "arm": "name",
+   "gold": "date of birth",
+   "best_native_type": "BORN_ON",
+   "name_cos": 0.4392,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Michael Curtiz",
+    "date of birth",
+    "December 24, 1886"
+   ],
+   "pair_id": 7
+  },
+  {
+   "arm": "name",
+   "gold": "father",
+   "best_native_type": "FATHER_OF",
+   "name_cos": 0.6405,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Raghnall Mac Ruaidhr\u00ed",
+    "father",
+    "Ruaidhr\u00ed Mac Ruaidhr\u00ed"
+   ],
+   "pair_id": 8
+  },
+  {
+   "arm": "name",
+   "gold": "country of citizenship",
+   "best_native_type": "HAS_CITIZENSHIP",
+   "name_cos": 0.5809,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 17,
+    "size": 8,
+    "members_top": [
+     [
+      "NATIONALITY",
+      5
+     ],
+     [
+      "HAS_NATIONALITY",
+      3
+     ],
+     [
+      "NATIONALITY_OF",
+      3
+     ],
+     [
+      "CITIZEN_OF",
+      2
+     ],
+     [
+      "HAS_DEGREE",
+      2
+     ],
+     [
+      "ETHNICITY",
+      1
+     ],
+     [
+      "HAS_CITIZENSHIP",
+      1
+     ],
+     [
+      "RESEARCHED",
+      1
+     ]
+    ],
+    "total_members": 8
+   },
+   "gold_example": [
+    "Perry Bhandal",
+    "country of citizenship",
+    "British"
+   ],
+   "pair_id": 9
+  },
+  {
+   "arm": "name",
+   "gold": "child",
+   "best_native_type": "CHILD_OF",
+   "name_cos": 0.6075,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Roger Miller",
+    "child",
+    "Dean Miller"
+   ],
+   "pair_id": 10
+  },
+  {
+   "arm": "name",
+   "gold": "place of death",
+   "best_native_type": "DIED_AT",
+   "name_cos": 0.5873,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "William the Silent",
+    "place of death",
+    "Delft"
+   ],
+   "pair_id": 11
+  },
+  {
+   "arm": "name",
+   "gold": "educated at",
+   "best_native_type": "TAUGHT_AT",
+   "name_cos": 0.5964,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "John Wallop, 2nd Earl of Portsmouth",
+    "educated at",
+    "Oxford"
+   ],
+   "pair_id": 12
+  },
+  {
+   "arm": "name",
+   "gold": "cause of death",
+   "best_native_type": "CAUSES_DEATH_OF",
+   "name_cos": 0.7697,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Katherine Mansfield",
+    "cause of death",
+    "tuberculosis"
+   ],
+   "pair_id": 13
+  },
+  {
+   "arm": "name",
+   "gold": "spouse",
+   "best_native_type": "MARRIED_TO",
+   "name_cos": 0.4429,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "John Middleton Murry",
+    "spouse",
+    "Katherine Mansfield"
+   ],
+   "pair_id": 14
+  },
+  {
+   "arm": "name",
+   "gold": "composer",
+   "best_native_type": "COMPOSED",
+   "name_cos": 0.6314,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 41,
+    "size": 67,
+    "members_top": [
+     [
+      "ACTED_IN",
+      405
+     ],
+     [
+      "DIRECTED",
+      319
+     ],
+     [
+      "AUTHOR_OF",
+      285
+     ],
+     [
+      "STARRED_IN",
+      156
+     ],
+     [
+      "DIRECTED_BY",
+      77
+     ],
+     [
+      "WRITTEN_BY",
+      46
+     ],
+     [
+      "STARS",
+      36
+     ],
+     [
+      "PRODUCED",
+      26
+     ],
+     [
+      "STARRING",
+      22
+     ],
+     [
+      "STARRED",
+      11
+     ],
+     [
+      "STARS_IN",
+      11
+     ],
+     [
+      "FEATURES",
+      8
+     ],
+     [
+      "COMPOSED_BY",
+      7
+     ],
+     [
+      "DESIGNED_BY",
+      7
+     ],
+     [
+      "STARRED_BY",
+      7
+     ]
+    ],
+    "total_members": 67
+   },
+   "gold_example": [
+    "Billy Elliot",
+    "composer",
+    "Stephen Warbeck"
+   ],
+   "pair_id": 15
+  },
+  {
+   "arm": "name",
+   "gold": "employer",
+   "best_native_type": "EMPLOYED_BY",
+   "name_cos": 0.6609,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "David Bradley",
+    "employer",
+    "UCLA"
+   ],
+   "pair_id": 16
+  },
+  {
+   "arm": "name",
+   "gold": "place of detention",
+   "best_native_type": "SEIZED_IN",
+   "name_cos": 0.3237,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 14,
+    "size": 4,
+    "members_top": [
+     [
+      "CAPTURED_BY",
+      1
+     ],
+     [
+      "CAPTURED_IN",
+      1
+     ],
+     [
+      "SEIZED_IN",
+      1
+     ],
+     [
+      "SEIZED_UNDER",
+      1
+     ]
+    ],
+    "total_members": 4
+   },
+   "gold_example": [
+    "Meek Mill",
+    "place of detention",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "pair_id": 17
+  },
+  {
+   "arm": "name",
+   "gold": "country of origin",
+   "best_native_type": "NATIONALITY_OF",
+   "name_cos": 0.3116,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 17,
+    "size": 8,
+    "members_top": [
+     [
+      "NATIONALITY",
+      5
+     ],
+     [
+      "HAS_NATIONALITY",
+      3
+     ],
+     [
+      "NATIONALITY_OF",
+      3
+     ],
+     [
+      "CITIZEN_OF",
+      2
+     ],
+     [
+      "HAS_DEGREE",
+      2
+     ],
+     [
+      "ETHNICITY",
+      1
+     ],
+     [
+      "HAS_CITIZENSHIP",
+      1
+     ],
+     [
+      "RESEARCHED",
+      1
+     ]
+    ],
+    "total_members": 8
+   },
+   "gold_example": [
+    "Naked Tango",
+    "country of origin",
+    "American"
+   ],
+   "pair_id": 18
+  },
+  {
+   "arm": "name",
+   "gold": "inception",
+   "best_native_type": "INTRODUCED",
+   "name_cos": 0.3465,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 41,
+    "size": 67,
+    "members_top": [
+     [
+      "ACTED_IN",
+      405
+     ],
+     [
+      "DIRECTED",
+      319
+     ],
+     [
+      "AUTHOR_OF",
+      285
+     ],
+     [
+      "STARRED_IN",
+      156
+     ],
+     [
+      "DIRECTED_BY",
+      77
+     ],
+     [
+      "WRITTEN_BY",
+      46
+     ],
+     [
+      "STARS",
+      36
+     ],
+     [
+      "PRODUCED",
+      26
+     ],
+     [
+      "STARRING",
+      22
+     ],
+     [
+      "STARRED",
+      11
+     ],
+     [
+      "STARS_IN",
+      11
+     ],
+     [
+      "FEATURES",
+      8
+     ],
+     [
+      "COMPOSED_BY",
+      7
+     ],
+     [
+      "DESIGNED_BY",
+      7
+     ],
+     [
+      "STARRED_BY",
+      7
+     ]
+    ],
+    "total_members": 67
+   },
+   "gold_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "inception",
+    "1893"
+   ],
+   "pair_id": 19
+  },
+  {
+   "arm": "name",
+   "gold": "sibling",
+   "best_native_type": "SIBLING_OF",
+   "name_cos": 0.8807,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Fa\u00edlbe Flann mac \u00c1edo Duib",
+    "sibling",
+    "F\u00edngen mac \u00c1edo Duib"
+   ],
+   "pair_id": 20
+  },
+  {
+   "arm": "name",
+   "gold": "founded by",
+   "best_native_type": "FOUNDED_BY",
+   "name_cos": 1.0,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "Track & Field News",
+    "founded by",
+    "Bert Nelson"
+   ],
+   "pair_id": 21
+  },
+  {
+   "arm": "name",
+   "gold": "publisher",
+   "best_native_type": "PUBLISHER_OF",
+   "name_cos": 0.8195,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "The Miscellany News",
+    "publisher",
+    "Vassar College"
+   ],
+   "pair_id": 22
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "pair_id": 23
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "pair_id": 24
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 41,
+    "size": 67,
+    "members_top": [
+     [
+      "ACTED_IN",
+      405
+     ],
+     [
+      "DIRECTED",
+      319
+     ],
+     [
+      "AUTHOR_OF",
+      285
+     ],
+     [
+      "STARRED_IN",
+      156
+     ],
+     [
+      "DIRECTED_BY",
+      77
+     ],
+     [
+      "WRITTEN_BY",
+      46
+     ],
+     [
+      "STARS",
+      36
+     ],
+     [
+      "PRODUCED",
+      26
+     ],
+     [
+      "STARRING",
+      22
+     ],
+     [
+      "STARRED",
+      11
+     ],
+     [
+      "STARS_IN",
+      11
+     ],
+     [
+      "FEATURES",
+      8
+     ],
+     [
+      "COMPOSED_BY",
+      7
+     ],
+     [
+      "DESIGNED_BY",
+      7
+     ],
+     [
+      "STARRED_BY",
+      7
+     ]
+    ],
+    "total_members": 67
+   },
+   "pair_id": 25
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "pair_id": 26
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 13,
+    "size": 26,
+    "members_top": [
+     [
+      "PARTICIPATED_IN",
+      25
+     ],
+     [
+      "COMPETED_IN",
+      12
+     ],
+     [
+      "WON",
+      11
+     ],
+     [
+      "FINISHED_AT",
+      6
+     ],
+     [
+      "FIGHTED_IN",
+      4
+     ],
+     [
+      "COMPETED_FOR",
+      3
+     ],
+     [
+      "WON_GOLD_MEDAL",
+      3
+     ],
+     [
+      "OVERTHROWN_IN",
+      2
+     ],
+     [
+      "RESULTED_IN",
+      2
+     ],
+     [
+      "RETROSPECTIVE_AT",
+      2
+     ],
+     [
+      "WON_EVENT",
+      2
+     ],
+     [
+      "WON_GOLD_MEDAL_AT",
+      2
+     ],
+     [
+      "WON_MEDAL_AT",
+      2
+     ],
+     [
+      "WON_SILVER_MEDAL_AT",
+      2
+     ],
+     [
+      "ACTIVE_DURING",
+      1
+     ]
+    ],
+    "total_members": 26
+   },
+   "pair_id": 27
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 32,
+    "size": 18,
+    "members_top": [
+     [
+      "NOMINATED_FOR",
+      27
+     ],
+     [
+      "SCREENED_AT",
+      6
+     ],
+     [
+      "PREMIERED_AT",
+      5
+     ],
+     [
+      "ENTERED_IN",
+      4
+     ],
+     [
+      "ABOUT_EVENT",
+      2
+     ],
+     [
+      "OFFICIAL_SELECTION_AT",
+      2
+     ],
+     [
+      "PREMIERED_IN",
+      2
+     ],
+     [
+      "PREMIERED_ON",
+      2
+     ],
+     [
+      "WON_AWARD_AT",
+      2
+     ],
+     [
+      "DEPICTS",
+      1
+     ],
+     [
+      "ENTERED_INTO",
+      1
+     ],
+     [
+      "NOMINATED_IN",
+      1
+     ],
+     [
+      "PART_OF_EVENT",
+      1
+     ],
+     [
+      "SET_DURING",
+      1
+     ],
+     [
+      "SHORTLISTED_FOR",
+      1
+     ]
+    ],
+    "total_members": 18
+   },
+   "pair_id": 28
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 22,
+    "size": 17,
+    "members_top": [
+     [
+      "SERVED_BY",
+      5
+     ],
+     [
+      "ACQUIRED_BY",
+      2
+     ],
+     [
+      "LISTED_ON",
+      2
+     ],
+     [
+      "OPERATED_BY",
+      2
+     ],
+     [
+      "ACQUIRED",
+      1
+     ],
+     [
+      "FORMERLY_KNOWN_AS",
+      1
+     ],
+     [
+      "HAS_TEAM",
+      1
+     ],
+     [
+      "HISTORIC_RELATIONSHIP_WITH",
+      1
+     ],
+     [
+      "MANAGED_BY",
+      1
+     ],
+     [
+      "MERGED_WITH",
+      1
+     ],
+     [
+      "PLANNED_BY",
+      1
+     ],
+     [
+      "PURCHASED_BY",
+      1
+     ],
+     [
+      "PURCHASED_FROM",
+      1
+     ],
+     [
+      "RENAMED_TO",
+      1
+     ],
+     [
+      "RESTORED_BY",
+      1
+     ]
+    ],
+    "total_members": 17
+   },
+   "pair_id": 29
+  }
+ ],
+ "handcheck_judged": [
+  {
+   "arm": "name",
+   "gold": "date of death",
+   "best_native_type": "DIED_AT",
+   "name_cos": 0.4537,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "Ermengarde of Tours",
+    "date of death",
+    "20 March 851"
+   ],
+   "pair_id": 0,
+   "expresses_gold": false,
+   "judge_note": "gold date-of-death -> cluster#16, a person<->location/association blob (residence/marriage/birthplace/deathplace); no date semantics, DIED_IN is place not date"
+  },
+  {
+   "arm": "name",
+   "gold": "mother",
+   "best_native_type": "MOTHER_IN_LAW",
+   "name_cos": 0.4211,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Lothair II",
+    "mother",
+    "Ermengarde of Tours"
+   ],
+   "pair_id": 1,
+   "expresses_gold": false,
+   "judge_note": "mother -> cluster#46, 97-member kinship blob (child/sibling/daughter/alias); conflates mother with all other kin, no mother-specific canonical relation"
+  },
+  {
+   "arm": "name",
+   "gold": "publication date",
+   "best_native_type": "PUBLISHED_BY",
+   "name_cos": 0.5458,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 40,
+    "size": 6,
+    "members_top": [
+     [
+      "EDITED",
+      5
+     ],
+     [
+      "EDITED_BY",
+      4
+     ],
+     [
+      "ILLUSTRATED",
+      2
+     ],
+     [
+      "PUBLISHED_BY",
+      2
+     ],
+     [
+      "SYNCHRONISED_WITH",
+      2
+     ],
+     [
+      "SCRIPTED_BY",
+      1
+     ]
+    ],
+    "total_members": 6
+   },
+   "gold_example": [
+    "Aas Ka Panchhi",
+    "publication date",
+    "1961"
+   ],
+   "pair_id": 2,
+   "expresses_gold": false,
+   "judge_note": "publication-date -> cluster#40 editorial-credit (edited/illustrated/published_by); no date, publication-DATE has no native edge"
+  },
+  {
+   "arm": "name",
+   "gold": "place of birth",
+   "best_native_type": "BORN_IN",
+   "name_cos": 0.5221,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "Nicki Minaj",
+    "place of birth",
+    "Port of Spain"
+   ],
+   "pair_id": 3,
+   "expresses_gold": false,
+   "judge_note": "place-of-birth -> cluster#16; BORN_IN merged with DIED_IN (deathplace)/RESIDES_IN/MARRIED_TO - birthplace not separable"
+  },
+  {
+   "arm": "name",
+   "gold": "performer",
+   "best_native_type": "PERFORMED",
+   "name_cos": 0.5099,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 39,
+    "size": 13,
+    "members_top": [
+     [
+      "PERFORMED_BY",
+      55
+     ],
+     [
+      "PERFORMED_AT",
+      11
+     ],
+     [
+      "COVERED_BY",
+      7
+     ],
+     [
+      "FEATURED",
+      7
+     ],
+     [
+      "FEATURED_ARTIST",
+      4
+     ],
+     [
+      "FEATURED_IN",
+      4
+     ],
+     [
+      "PERFORMED_FOR",
+      4
+     ],
+     [
+      "PERFORMED_IN",
+      4
+     ],
+     [
+      "PERFORMED",
+      3
+     ],
+     [
+      "RECORDED_BY",
+      2
+     ],
+     [
+      "DEDICATED_TO",
+      1
+     ],
+     [
+      "PERFORMED_ON",
+      1
+     ],
+     [
+      "PERFORMED_SONG",
+      1
+     ]
+    ],
+    "total_members": 13
+   },
+   "gold_example": [
+    "Changed It",
+    "performer",
+    "Nicki Minaj"
+   ],
+   "pair_id": 4,
+   "expresses_gold": true,
+   "judge_note": "performer -> cluster#39 (performed_by/featured_artist/covered_by); coherent performance cluster, minor venue noise (performed_at); NOT counted (cos 0.510 < 0.6)"
+  },
+  {
+   "arm": "name",
+   "gold": "country",
+   "best_native_type": "NATIONALITY",
+   "name_cos": 0.3722,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 17,
+    "size": 8,
+    "members_top": [
+     [
+      "NATIONALITY",
+      5
+     ],
+     [
+      "HAS_NATIONALITY",
+      3
+     ],
+     [
+      "NATIONALITY_OF",
+      3
+     ],
+     [
+      "CITIZEN_OF",
+      2
+     ],
+     [
+      "HAS_DEGREE",
+      2
+     ],
+     [
+      "ETHNICITY",
+      1
+     ],
+     [
+      "HAS_CITIZENSHIP",
+      1
+     ],
+     [
+      "RESEARCHED",
+      1
+     ]
+    ],
+    "total_members": 8
+   },
+   "gold_example": [
+    "Marufabad",
+    "country",
+    "Iran"
+   ],
+   "pair_id": 5,
+   "expresses_gold": false,
+   "judge_note": "gold 'country' is geographic containment (place->country); cluster#17 expresses person nationality/citizenship - a distinct relation"
+  },
+  {
+   "arm": "name",
+   "gold": "director",
+   "best_native_type": "DIRECTOR_OF",
+   "name_cos": 0.7881,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "God's Gift to Women",
+    "director",
+    "Michael Curtiz"
+   ],
+   "pair_id": 6,
+   "expresses_gold": false,
+   "judge_note": "director -> cluster#24 person<->org affiliation blob (attended/member/founder/employed); DIRECTOR_OF buried, does not express film-director. COUNTED (0.788)"
+  },
+  {
+   "arm": "name",
+   "gold": "date of birth",
+   "best_native_type": "BORN_ON",
+   "name_cos": 0.4392,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Michael Curtiz",
+    "date of birth",
+    "December 24, 1886"
+   ],
+   "pair_id": 7,
+   "expresses_gold": false,
+   "judge_note": "date-of-birth -> cluster#46 kinship blob; BORN_ON absorbed into family relations, no date semantics"
+  },
+  {
+   "arm": "name",
+   "gold": "father",
+   "best_native_type": "FATHER_OF",
+   "name_cos": 0.6405,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Raghnall Mac Ruaidhr\u00ed",
+    "father",
+    "Ruaidhr\u00ed Mac Ruaidhr\u00ed"
+   ],
+   "pair_id": 8,
+   "expresses_gold": false,
+   "judge_note": "father -> cluster#46 kinship blob; conflated with CHILD_OF (inverse X_OF direction), SIBLING_OF, DAUGHTER_OF. COUNTED (0.640)"
+  },
+  {
+   "arm": "name",
+   "gold": "country of citizenship",
+   "best_native_type": "HAS_CITIZENSHIP",
+   "name_cos": 0.5809,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 17,
+    "size": 8,
+    "members_top": [
+     [
+      "NATIONALITY",
+      5
+     ],
+     [
+      "HAS_NATIONALITY",
+      3
+     ],
+     [
+      "NATIONALITY_OF",
+      3
+     ],
+     [
+      "CITIZEN_OF",
+      2
+     ],
+     [
+      "HAS_DEGREE",
+      2
+     ],
+     [
+      "ETHNICITY",
+      1
+     ],
+     [
+      "HAS_CITIZENSHIP",
+      1
+     ],
+     [
+      "RESEARCHED",
+      1
+     ]
+    ],
+    "total_members": 8
+   },
+   "gold_example": [
+    "Perry Bhandal",
+    "country of citizenship",
+    "British"
+   ],
+   "pair_id": 9,
+   "expresses_gold": true,
+   "judge_note": "country-of-citizenship -> cluster#17 (has_citizenship/citizen_of/nationality); coherently expresses citizenship; NOT counted (cos 0.581 < 0.6)"
+  },
+  {
+   "arm": "name",
+   "gold": "child",
+   "best_native_type": "CHILD_OF",
+   "name_cos": 0.6075,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Roger Miller",
+    "child",
+    "Dean Miller"
+   ],
+   "pair_id": 10,
+   "expresses_gold": false,
+   "judge_note": "child -> cluster#46 kinship blob; CHILD_OF merged with FATHER_OF (inverse direction) and SIBLING_OF. COUNTED (0.608)"
+  },
+  {
+   "arm": "name",
+   "gold": "place of death",
+   "best_native_type": "DIED_AT",
+   "name_cos": 0.5873,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "William the Silent",
+    "place of death",
+    "Delft"
+   ],
+   "pair_id": 11,
+   "expresses_gold": false,
+   "judge_note": "place-of-death -> cluster#16; DIED_IN/DIED_AT merged with BORN_IN (birthplace)/RESIDES_IN - deathplace not separable from birthplace"
+  },
+  {
+   "arm": "name",
+   "gold": "educated at",
+   "best_native_type": "TAUGHT_AT",
+   "name_cos": 0.5964,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "John Wallop, 2nd Earl of Portsmouth",
+    "educated at",
+    "Oxford"
+   ],
+   "pair_id": 12,
+   "expresses_gold": false,
+   "judge_note": "educated-at -> cluster#24; ATTENDED (student) merged with TAUGHT_AT (teacher) plus member/director/founder - the student/teacher role confusion"
+  },
+  {
+   "arm": "name",
+   "gold": "cause of death",
+   "best_native_type": "CAUSES_DEATH_OF",
+   "name_cos": 0.7697,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Katherine Mansfield",
+    "cause of death",
+    "tuberculosis"
+   ],
+   "pair_id": 13,
+   "expresses_gold": false,
+   "judge_note": "cause-of-death -> cluster#46 KINSHIP blob; CAUSES_DEATH_OF absorbed into family relations - nonsensical canonical bucket. COUNTED (0.770)"
+  },
+  {
+   "arm": "name",
+   "gold": "spouse",
+   "best_native_type": "MARRIED_TO",
+   "name_cos": 0.4429,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "gold_example": [
+    "John Middleton Murry",
+    "spouse",
+    "Katherine Mansfield"
+   ],
+   "pair_id": 14,
+   "expresses_gold": false,
+   "judge_note": "spouse -> cluster#16; MARRIED_TO merged with residence/birthplace/deathplace; spouse not separable from location relations"
+  },
+  {
+   "arm": "name",
+   "gold": "composer",
+   "best_native_type": "COMPOSED",
+   "name_cos": 0.6314,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 41,
+    "size": 67,
+    "members_top": [
+     [
+      "ACTED_IN",
+      405
+     ],
+     [
+      "DIRECTED",
+      319
+     ],
+     [
+      "AUTHOR_OF",
+      285
+     ],
+     [
+      "STARRED_IN",
+      156
+     ],
+     [
+      "DIRECTED_BY",
+      77
+     ],
+     [
+      "WRITTEN_BY",
+      46
+     ],
+     [
+      "STARS",
+      36
+     ],
+     [
+      "PRODUCED",
+      26
+     ],
+     [
+      "STARRING",
+      22
+     ],
+     [
+      "STARRED",
+      11
+     ],
+     [
+      "STARS_IN",
+      11
+     ],
+     [
+      "FEATURES",
+      8
+     ],
+     [
+      "COMPOSED_BY",
+      7
+     ],
+     [
+      "DESIGNED_BY",
+      7
+     ],
+     [
+      "STARRED_BY",
+      7
+     ]
+    ],
+    "total_members": 67
+   },
+   "gold_example": [
+    "Billy Elliot",
+    "composer",
+    "Stephen Warbeck"
+   ],
+   "pair_id": 15,
+   "expresses_gold": false,
+   "judge_note": "composer -> cluster#41 creative-credit blob (acted_in/directed/author_of/written_by/produced); distinct creative roles conflated. COUNTED (0.631)"
+  },
+  {
+   "arm": "name",
+   "gold": "employer",
+   "best_native_type": "EMPLOYED_BY",
+   "name_cos": 0.6609,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "David Bradley",
+    "employer",
+    "UCLA"
+   ],
+   "pair_id": 16,
+   "expresses_gold": false,
+   "judge_note": "employer -> cluster#24 affiliation blob; EMPLOYED_BY merged with attended/member/director/founder - distinct affiliation roles. COUNTED (0.661)"
+  },
+  {
+   "arm": "name",
+   "gold": "place of detention",
+   "best_native_type": "SEIZED_IN",
+   "name_cos": 0.3237,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 14,
+    "size": 4,
+    "members_top": [
+     [
+      "CAPTURED_BY",
+      1
+     ],
+     [
+      "CAPTURED_IN",
+      1
+     ],
+     [
+      "SEIZED_IN",
+      1
+     ],
+     [
+      "SEIZED_UNDER",
+      1
+     ]
+    ],
+    "total_members": 4
+   },
+   "gold_example": [
+    "Meek Mill",
+    "place of detention",
+    "State Correctional Institution \u2013 Chester"
+   ],
+   "pair_id": 17,
+   "expresses_gold": false,
+   "judge_note": "place-of-detention -> cluster#14 capture/seizure (captured_by/seized_in); does not express imprisonment-location"
+  },
+  {
+   "arm": "name",
+   "gold": "country of origin",
+   "best_native_type": "NATIONALITY_OF",
+   "name_cos": 0.3116,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 17,
+    "size": 8,
+    "members_top": [
+     [
+      "NATIONALITY",
+      5
+     ],
+     [
+      "HAS_NATIONALITY",
+      3
+     ],
+     [
+      "NATIONALITY_OF",
+      3
+     ],
+     [
+      "CITIZEN_OF",
+      2
+     ],
+     [
+      "HAS_DEGREE",
+      2
+     ],
+     [
+      "ETHNICITY",
+      1
+     ],
+     [
+      "HAS_CITIZENSHIP",
+      1
+     ],
+     [
+      "RESEARCHED",
+      1
+     ]
+    ],
+    "total_members": 8
+   },
+   "gold_example": [
+    "Naked Tango",
+    "country of origin",
+    "American"
+   ],
+   "pair_id": 18,
+   "expresses_gold": false,
+   "judge_note": "country-of-origin (of a work) -> cluster#17 person-citizenship cluster; distinct relation conflated"
+  },
+  {
+   "arm": "name",
+   "gold": "inception",
+   "best_native_type": "INTRODUCED",
+   "name_cos": 0.3465,
+   "aligned_at_0.6": false,
+   "cluster": {
+    "cluster_id": 41,
+    "size": 67,
+    "members_top": [
+     [
+      "ACTED_IN",
+      405
+     ],
+     [
+      "DIRECTED",
+      319
+     ],
+     [
+      "AUTHOR_OF",
+      285
+     ],
+     [
+      "STARRED_IN",
+      156
+     ],
+     [
+      "DIRECTED_BY",
+      77
+     ],
+     [
+      "WRITTEN_BY",
+      46
+     ],
+     [
+      "STARS",
+      36
+     ],
+     [
+      "PRODUCED",
+      26
+     ],
+     [
+      "STARRING",
+      22
+     ],
+     [
+      "STARRED",
+      11
+     ],
+     [
+      "STARS_IN",
+      11
+     ],
+     [
+      "FEATURES",
+      8
+     ],
+     [
+      "COMPOSED_BY",
+      7
+     ],
+     [
+      "DESIGNED_BY",
+      7
+     ],
+     [
+      "STARRED_BY",
+      7
+     ]
+    ],
+    "total_members": 67
+   },
+   "gold_example": [
+    "Museum of Croatian Archaeological Monuments",
+    "inception",
+    "1893"
+   ],
+   "pair_id": 19,
+   "expresses_gold": false,
+   "judge_note": "inception (founding date) -> cluster#41 creative-credit blob; no date, wrong relation entirely"
+  },
+  {
+   "arm": "name",
+   "gold": "sibling",
+   "best_native_type": "SIBLING_OF",
+   "name_cos": 0.8807,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "gold_example": [
+    "Fa\u00edlbe Flann mac \u00c1edo Duib",
+    "sibling",
+    "F\u00edngen mac \u00c1edo Duib"
+   ],
+   "pair_id": 20,
+   "expresses_gold": false,
+   "judge_note": "sibling -> cluster#46 kinship blob; SIBLING_OF conflated with parent/child (CHILD_OF/FATHER_OF) - sibling not a separable canonical relation. COUNTED (0.881)"
+  },
+  {
+   "arm": "name",
+   "gold": "founded by",
+   "best_native_type": "FOUNDED_BY",
+   "name_cos": 1.0,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "Track & Field News",
+    "founded by",
+    "Bert Nelson"
+   ],
+   "pair_id": 21,
+   "expresses_gold": false,
+   "judge_note": "founded-by -> cluster#24 affiliation blob; FOUNDED_BY merged with attended/member/director/employed. COUNTED (1.000)"
+  },
+  {
+   "arm": "name",
+   "gold": "publisher",
+   "best_native_type": "PUBLISHER_OF",
+   "name_cos": 0.8195,
+   "aligned_at_0.6": true,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "gold_example": [
+    "The Miscellany News",
+    "publisher",
+    "Vassar College"
+   ],
+   "pair_id": 22,
+   "expresses_gold": false,
+   "judge_note": "publisher -> cluster#24 affiliation blob; PUBLISHER_OF merged into person<->org affiliation, not separable. COUNTED (0.820)"
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 46,
+    "size": 97,
+    "members_top": [
+     [
+      "CHILD_OF",
+      386
+     ],
+     [
+      "SIBLING_OF",
+      95
+     ],
+     [
+      "DAUGHTER_OF",
+      86
+     ],
+     [
+      "ALIAS_OF",
+      29
+     ],
+     [
+      "SISTER_OF",
+      16
+     ],
+     [
+      "GRANDFATHER_OF",
+      12
+     ],
+     [
+      "FATHER_IN_LAW_OF",
+      10
+     ],
+     [
+      "SON_IN_LAW_OF",
+      9
+     ],
+     [
+      "ALSO_KNOWN_AS",
+      7
+     ],
+     [
+      "COUSIN_OF",
+      7
+     ],
+     [
+      "FRIEND_OF",
+      6
+     ],
+     [
+      "UNCLE_OF",
+      6
+     ],
+     [
+      "BROTHER_IN_LAW_OF",
+      5
+     ],
+     [
+      "GRANDCHILD_OF",
+      5
+     ],
+     [
+      "GRANDPARENT_OF",
+      5
+     ]
+    ],
+    "total_members": 97
+   },
+   "pair_id": 23,
+   "expresses_gold": false,
+   "judge_note": "cluster#46 coherence: kinship blob (child/sibling/daughter/alias/friend/cousin/grandfather) - not one canonical relation"
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 24,
+    "size": 91,
+    "members_top": [
+     [
+      "ATTENDED",
+      80
+     ],
+     [
+      "MEMBER_OF",
+      59
+     ],
+     [
+      "PLAYED_FOR",
+      40
+     ],
+     [
+      "FOUNDER_OF",
+      26
+     ],
+     [
+      "DIRECTOR_OF",
+      24
+     ],
+     [
+      "FOUNDED",
+      21
+     ],
+     [
+      "HELD_POSITION",
+      21
+     ],
+     [
+      "PLAYS_FOR",
+      16
+     ],
+     [
+      "INDUCTED_INTO",
+      14
+     ],
+     [
+      "EMPLOYED_BY",
+      13
+     ],
+     [
+      "PRESIDENT_OF",
+      12
+     ],
+     [
+      "CEO_OF",
+      8
+     ],
+     [
+      "CO_FOUNDER_OF",
+      8
+     ],
+     [
+      "SINGER_OF",
+      8
+     ],
+     [
+      "LEADER_OF",
+      6
+     ]
+    ],
+    "total_members": 91
+   },
+   "pair_id": 24,
+   "expresses_gold": false,
+   "judge_note": "cluster#24 coherence: affiliation blob (attended/member/founder/director/employed/president/ceo) - many distinct roles"
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 41,
+    "size": 67,
+    "members_top": [
+     [
+      "ACTED_IN",
+      405
+     ],
+     [
+      "DIRECTED",
+      319
+     ],
+     [
+      "AUTHOR_OF",
+      285
+     ],
+     [
+      "STARRED_IN",
+      156
+     ],
+     [
+      "DIRECTED_BY",
+      77
+     ],
+     [
+      "WRITTEN_BY",
+      46
+     ],
+     [
+      "STARS",
+      36
+     ],
+     [
+      "PRODUCED",
+      26
+     ],
+     [
+      "STARRING",
+      22
+     ],
+     [
+      "STARRED",
+      11
+     ],
+     [
+      "STARS_IN",
+      11
+     ],
+     [
+      "FEATURES",
+      8
+     ],
+     [
+      "COMPOSED_BY",
+      7
+     ],
+     [
+      "DESIGNED_BY",
+      7
+     ],
+     [
+      "STARRED_BY",
+      7
+     ]
+    ],
+    "total_members": 67
+   },
+   "pair_id": 25,
+   "expresses_gold": false,
+   "judge_note": "cluster#41 coherence: creative-credit blob (acted_in/directed/author_of/written_by) with DIRECTED and DIRECTED_BY (inverse) both inside"
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 16,
+    "size": 45,
+    "members_top": [
+     [
+      "RESIDES_IN",
+      278
+     ],
+     [
+      "MARRIED_TO",
+      184
+     ],
+     [
+      "BORN_IN",
+      70
+     ],
+     [
+      "DIED_IN",
+      31
+     ],
+     [
+      "BISHOP_OF",
+      10
+     ],
+     [
+      "REPRESENTED",
+      8
+     ],
+     [
+      "REPRESENTS",
+      7
+     ],
+     [
+      "STADTHOLDER_OF",
+      6
+     ],
+     [
+      "BURIED_IN",
+      3
+     ],
+     [
+      "DEFEATED",
+      3
+     ],
+     [
+      "ANNEXED",
+      2
+     ],
+     [
+      "BODY_FOUND_IN",
+      2
+     ],
+     [
+      "CANDIDATE_IN",
+      2
+     ],
+     [
+      "DEFENDED",
+      2
+     ],
+     [
+      "DIED_AT",
+      2
+     ]
+    ],
+    "total_members": 45
+   },
+   "pair_id": 26,
+   "expresses_gold": false,
+   "judge_note": "cluster#16 coherence: location-association blob (residence/marriage/birthplace/deathplace/burial/bishopric)"
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 13,
+    "size": 26,
+    "members_top": [
+     [
+      "PARTICIPATED_IN",
+      25
+     ],
+     [
+      "COMPETED_IN",
+      12
+     ],
+     [
+      "WON",
+      11
+     ],
+     [
+      "FINISHED_AT",
+      6
+     ],
+     [
+      "FIGHTED_IN",
+      4
+     ],
+     [
+      "COMPETED_FOR",
+      3
+     ],
+     [
+      "WON_GOLD_MEDAL",
+      3
+     ],
+     [
+      "OVERTHROWN_IN",
+      2
+     ],
+     [
+      "RESULTED_IN",
+      2
+     ],
+     [
+      "RETROSPECTIVE_AT",
+      2
+     ],
+     [
+      "WON_EVENT",
+      2
+     ],
+     [
+      "WON_GOLD_MEDAL_AT",
+      2
+     ],
+     [
+      "WON_MEDAL_AT",
+      2
+     ],
+     [
+      "WON_SILVER_MEDAL_AT",
+      2
+     ],
+     [
+      "ACTIVE_DURING",
+      1
+     ]
+    ],
+    "total_members": 26
+   },
+   "pair_id": 27,
+   "expresses_gold": false,
+   "judge_note": "cluster#13 coherence: competition blob conflates participation (participated_in/competed_in) with victory (won/won_gold_medal)"
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 32,
+    "size": 18,
+    "members_top": [
+     [
+      "NOMINATED_FOR",
+      27
+     ],
+     [
+      "SCREENED_AT",
+      6
+     ],
+     [
+      "PREMIERED_AT",
+      5
+     ],
+     [
+      "ENTERED_IN",
+      4
+     ],
+     [
+      "ABOUT_EVENT",
+      2
+     ],
+     [
+      "OFFICIAL_SELECTION_AT",
+      2
+     ],
+     [
+      "PREMIERED_IN",
+      2
+     ],
+     [
+      "PREMIERED_ON",
+      2
+     ],
+     [
+      "WON_AWARD_AT",
+      2
+     ],
+     [
+      "DEPICTS",
+      1
+     ],
+     [
+      "ENTERED_INTO",
+      1
+     ],
+     [
+      "NOMINATED_IN",
+      1
+     ],
+     [
+      "PART_OF_EVENT",
+      1
+     ],
+     [
+      "SET_DURING",
+      1
+     ],
+     [
+      "SHORTLISTED_FOR",
+      1
+     ]
+    ],
+    "total_members": 18
+   },
+   "pair_id": 28,
+   "expresses_gold": false,
+   "judge_note": "cluster#32 coherence: festival blob conflates nomination/screening/premiere/award-win"
+  },
+  {
+   "arm": "cluster_coherence",
+   "gold": null,
+   "cluster": {
+    "cluster_id": 22,
+    "size": 17,
+    "members_top": [
+     [
+      "SERVED_BY",
+      5
+     ],
+     [
+      "ACQUIRED_BY",
+      2
+     ],
+     [
+      "LISTED_ON",
+      2
+     ],
+     [
+      "OPERATED_BY",
+      2
+     ],
+     [
+      "ACQUIRED",
+      1
+     ],
+     [
+      "FORMERLY_KNOWN_AS",
+      1
+     ],
+     [
+      "HAS_TEAM",
+      1
+     ],
+     [
+      "HISTORIC_RELATIONSHIP_WITH",
+      1
+     ],
+     [
+      "MANAGED_BY",
+      1
+     ],
+     [
+      "MERGED_WITH",
+      1
+     ],
+     [
+      "PLANNED_BY",
+      1
+     ],
+     [
+      "PURCHASED_BY",
+      1
+     ],
+     [
+      "PURCHASED_FROM",
+      1
+     ],
+     [
+      "RENAMED_TO",
+      1
+     ],
+     [
+      "RESTORED_BY",
+      1
+     ]
+    ],
+    "total_members": 17
+   },
+   "pair_id": 29,
+   "expresses_gold": false,
+   "judge_note": "cluster#22 coherence: corporate grab-bag (served_by/acquired_by/operated_by/merged_with/purchased_by)"
+  }
+ ],
+ "handcheck_summary": {
+  "sample_size": 30,
+  "unjudged": 0,
+  "true": 2,
+  "false": 28,
+  "sample_false_rate": 0.9333,
+  "counted_name_arm_at_0.6": 9,
+  "false_among_counted_0.6": 9,
+  "false_rate_at_0.6": 1.0
+ }
+}

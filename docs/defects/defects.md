@@ -21,6 +21,7 @@
 - [DEF-15: kgf ingest process hangs after completion](#def-15-kgf-ingest-process-hangs-after-completion) - open
 - [DEF-16: certificate span column dead - KGFPassage label absent](#def-16-certificate-span-column-dead---kgfpassage-label-absent) - open
 - [DEF-17: fact-drift alarm threshold form unreachable for single-doc supersession events](#def-17-fact-drift-alarm-threshold-form-unreachable-for-single-doc-supersession-events) - open
+- [DEF-18: relation vocabulary ungoverned - proliferates with corpus while entity types are cured](#def-18-relation-vocabulary-ungoverned---proliferates-with-corpus-while-entity-types-are-cured) - open
 
 ### DEF-1: Per-mention re-embedding on every document
 
@@ -132,3 +133,9 @@
 
 - [ ] MEDIUM the R8 fact-drift alarm's `contradiction_rate_threshold=0.2` is a window-mean entity-mass share, so a faithful single-doc supersession event (SleepStyle two-version replay, every manufacturer changed) yields rate 8/148 = 0.054 - ~11x below the single-doc form (0.6) and never sustained over 3 docs; with functional types resurrected (R36-H379 mechanics CONFIRMED: `valid_to`/`expired_at` set, `fact_supersession` fires) the alarm still structurally cannot fire - same anatomy as DEF-9; fix pending: per-event supersession alarm (the `fact_supersession` emission already exists) or an events-per-window threshold; `src/knowledge_graph_foundry/drift.py`
   - 2026-07-12 reported: R36-H379 replay arm (`reports/experiments/adjudicated/r36-h379-replay-20260712T104736Z.json`) - invalidation machinery and gold safety passed, the "alarm fires" clause failed on threshold form alone
+
+### DEF-18: relation vocabulary ungoverned - proliferates with corpus while entity types are cured
+
+- [ ] HIGH the curing lifecycle governs ENTITY types (fluid -> cured, ~12 labels) but relation types were left open-vocabulary and grow without bound: 65 (R01, 26 docs) -> 334 (H395, CPAP) -> 597 semantic types at 1,000 bench docs (entropy 6.32 bits, same proliferating regime - R50-H585); measured consequences: gold query relations align to native types at only 39-57% with no precision-separable threshold (H585 killed the relation linker; H583's topology axis died partly on 0% exact sequence alignment), and role-confusable near-duplicates accumulate (DIED_OF vs CAUSES_DEATH_OF, ATTENDED vs TAUGHT_AT, DIRECTED/DIRECTED_BY/DIRECTOR_OF); this violates the R02 pre-registration which flagged the ungoverned type surface as the retrieval-first problem; cause: relation governance was never designed into curing - only entity types cure; fix: relation-consolidation mechanism (R53-H602/H603 registered 2026-07-14: alias-based canonical schema, never destructive) + a curing-stage extension for relation vocabulary; `src/knowledge_graph_foundry/ontology/`
+  - 2026-07-14 reported: surfaced by R50-H585 (`reports/experiments/r50/h585-relation-linker-20260713T224119Z.json`); remedy hypotheses registered as R53, acceptance = post-consolidation H585 re-run clears >= 60% alignment at <= 20% false-alignment with zero probe regressions
+  - 2026-07-14 update: R53-H602 KILLED embedding-automatic consolidation (bars jointly impossible; 9/11 confusable role-pairs merge at any <= 80-cluster threshold) - fix path narrows to LLM-adjudicated schema authoring; R53-H605 CONFIRMED the growth law (V = 2.8 * n^0.79, R^2 0.997) forecasting ~2,672 types at 6,118 docs - the count query ships as the governance gauge

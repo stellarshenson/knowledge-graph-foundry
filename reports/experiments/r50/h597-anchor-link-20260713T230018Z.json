@@ -1,0 +1,557 @@
+{
+ "run_id": "20260713T230018Z",
+ "hypothesis": "R40x-H597",
+ "scoring_fence": "retrieval-level only (reachability / carrier seed-landing)",
+ "cutoffs": {
+  "top_k": 16,
+  "ppr_top_n": 15,
+  "damping": 0.85,
+  "iters": 50,
+  "gliner_threshold": 0.3,
+  "gliner_labels": [
+   "person",
+   "organization",
+   "location",
+   "creative work",
+   "date",
+   "event"
+  ]
+ },
+ "fusion_definitions": {
+  "union": "seeds = dense16 UNION linked-anchors (|seeds|=16+k); PPR reset over union",
+  "budget": "anchors take priority slots, bump lowest-cosine dense seeds; |seeds| capped at 16",
+  "anchors_only": "DIAGNOSTIC: seeds = linked-anchors alone (dense fallback if zero); realizable parallel to H583 oracle_seed_all=0.898"
+ },
+ "references": {
+  "iso_reach_h515": 0.622,
+  "oracle_seed_reach_h583": 0.898,
+  "iso_bridge_h583": 0.521,
+  "oracle_bridge_h583": 0.862,
+  "titan_recall16": 0.6012
+ },
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "target": 0.6012,
+  "reproduced_within_2pts": true,
+  "baseline_reach_all": 0.622,
+  "baseline_reach_all_n": 127,
+  "baseline_reach_bridge": 0.5213,
+  "baseline_reach_bridge_n": 94,
+  "reproduces_iso_0622": true
+ },
+ "n_probes": 132,
+ "n_reach_probes": 127,
+ "n_carriers": 326,
+ "n_carriers_in_graph": 288,
+ "linker_ladder": {
+  "gliner_span_cache": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/tmp/results/r50/h597_gliner_spans.json",
+  "gliner_total_spans": 282,
+  "probes_with_any_span": 132,
+  "exact_probes_resolved": 124,
+  "alias_probes_resolved": 131,
+  "llm_calls": 1,
+  "llm_probes_resolved_after": 132,
+  "llm_detail": [
+   {
+    "probe": "a1d9a65c0bd911eba7f7acde48001122",
+    "q": "Where was the place of death of the performer of song I Can'T See Myself Leaving You?",
+    "picks": [
+     "I Can't See Myself Leaving You",
+     "Aretha Franklin"
+    ],
+    "resolved_n": 2
+   }
+  ]
+ },
+ "baseline": {
+  "reach_all": 0.622,
+  "reach_bridge": 0.5213,
+  "carrier_recall16": 0.6012
+ },
+ "per_rung": [
+  {
+   "rung": "exact",
+   "cumulative": true,
+   "probes_with_anchor": 124,
+   "total_anchors_linked": 222,
+   "variants": {
+    "union": {
+     "reach_all": 0.6063,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": -1.57,
+     "reach_all_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "reach_bridge": 0.5,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": -2.13,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "carrier_recall16": 0.6012,
+     "carrier_recall16_delta_pp": 0.0,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 0,
+      "c_variant_only": 0,
+      "p": 1.0
+     },
+     "fraction_oracle_gap_recovered": -0.0569
+    },
+    "budget": {
+     "reach_all": 0.6063,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": -1.57,
+     "reach_all_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "reach_bridge": 0.5,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": -2.13,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "carrier_recall16": 0.6012,
+     "carrier_recall16_delta_pp": 0.0,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 0,
+      "c_variant_only": 0,
+      "p": 1.0
+     },
+     "fraction_oracle_gap_recovered": -0.0569
+    },
+    "anchors_only": {
+     "reach_all": 0.748,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": 12.6,
+     "reach_all_mcnemar": {
+      "b_base_only": 13,
+      "c_variant_only": 29,
+      "p": 0.01952
+     },
+     "reach_bridge": 0.7872,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": 26.59,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 6,
+      "c_variant_only": 31,
+      "p": 4e-05
+     },
+     "carrier_recall16": 0.4448,
+     "carrier_recall16_delta_pp": -15.64,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 51,
+      "c_variant_only": 0,
+      "p": 0.0
+     },
+     "fraction_oracle_gap_recovered": 0.4565
+    }
+   }
+  },
+  {
+   "rung": "alias",
+   "cumulative": true,
+   "probes_with_anchor": 131,
+   "total_anchors_linked": 267,
+   "variants": {
+    "union": {
+     "reach_all": 0.6063,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": -1.57,
+     "reach_all_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "reach_bridge": 0.5,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": -2.13,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "carrier_recall16": 0.6012,
+     "carrier_recall16_delta_pp": 0.0,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 0,
+      "c_variant_only": 0,
+      "p": 1.0
+     },
+     "fraction_oracle_gap_recovered": -0.0569
+    },
+    "budget": {
+     "reach_all": 0.6063,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": -1.57,
+     "reach_all_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "reach_bridge": 0.5,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": -2.13,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "carrier_recall16": 0.6012,
+     "carrier_recall16_delta_pp": 0.0,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 0,
+      "c_variant_only": 0,
+      "p": 1.0
+     },
+     "fraction_oracle_gap_recovered": -0.0569
+    },
+    "anchors_only": {
+     "reach_all": 0.7874,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": 16.54,
+     "reach_all_mcnemar": {
+      "b_base_only": 10,
+      "c_variant_only": 31,
+      "p": 0.00145
+     },
+     "reach_bridge": 0.8191,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": 29.78,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 5,
+      "c_variant_only": 33,
+      "p": 0.0
+     },
+     "carrier_recall16": 0.4417,
+     "carrier_recall16_delta_pp": -15.95,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 52,
+      "c_variant_only": 0,
+      "p": 0.0
+     },
+     "fraction_oracle_gap_recovered": 0.5993
+    }
+   }
+  },
+  {
+   "rung": "llm",
+   "cumulative": true,
+   "probes_with_anchor": 132,
+   "total_anchors_linked": 269,
+   "variants": {
+    "union": {
+     "reach_all": 0.6063,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": -1.57,
+     "reach_all_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "reach_bridge": 0.5,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": -2.13,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "carrier_recall16": 0.6012,
+     "carrier_recall16_delta_pp": 0.0,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 0,
+      "c_variant_only": 0,
+      "p": 1.0
+     },
+     "fraction_oracle_gap_recovered": -0.0569
+    },
+    "budget": {
+     "reach_all": 0.6063,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": -1.57,
+     "reach_all_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "reach_bridge": 0.5,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": -2.13,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 2,
+      "c_variant_only": 0,
+      "p": 0.5
+     },
+     "carrier_recall16": 0.6012,
+     "carrier_recall16_delta_pp": 0.0,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 0,
+      "c_variant_only": 0,
+      "p": 1.0
+     },
+     "fraction_oracle_gap_recovered": -0.0569
+    },
+    "anchors_only": {
+     "reach_all": 0.7874,
+     "reach_all_n": 127,
+     "reach_all_delta_pp": 16.54,
+     "reach_all_mcnemar": {
+      "b_base_only": 10,
+      "c_variant_only": 31,
+      "p": 0.00145
+     },
+     "reach_bridge": 0.8191,
+     "reach_bridge_n": 94,
+     "reach_bridge_delta_pp": 29.78,
+     "reach_bridge_mcnemar": {
+      "b_base_only": 5,
+      "c_variant_only": 33,
+      "p": 0.0
+     },
+     "carrier_recall16": 0.4417,
+     "carrier_recall16_delta_pp": -15.95,
+     "carrier_recall16_mcnemar": {
+      "b_base_only": 52,
+      "c_variant_only": 0,
+      "p": 0.0
+     },
+     "fraction_oracle_gap_recovered": 0.5993
+    }
+   }
+  }
+ ],
+ "per_class_strata_final_rung": {
+  "union": {
+   "compositional": {
+    "n_probes": 57,
+    "n_carriers": 118,
+    "reach_all_base": 0.6316,
+    "reach_all_variant": 0.614,
+    "reach_all_delta_pp": -1.76,
+    "carrier_recall_base": 0.5424,
+    "carrier_recall_variant": 0.5424,
+    "carrier_recall_delta_pp": 0.0
+   },
+   "comparison": {
+    "n_probes": 28,
+    "n_carriers": 60,
+    "reach_all_base": 1.0,
+    "reach_all_variant": 1.0,
+    "reach_all_delta_pp": 0.0,
+    "carrier_recall_base": 0.8667,
+    "carrier_recall_variant": 0.8667,
+    "carrier_recall_delta_pp": 0.0
+   },
+   "bridge_comparison": {
+    "n_probes": 31,
+    "n_carriers": 124,
+    "reach_all_base": 0.1613,
+    "reach_all_variant": 0.129,
+    "reach_all_delta_pp": -3.23,
+    "carrier_recall_base": 0.5242,
+    "carrier_recall_variant": 0.5242,
+    "carrier_recall_delta_pp": 0.0
+   },
+   "inference": {
+    "n_probes": 11,
+    "n_carriers": 24,
+    "reach_all_base": 0.9091,
+    "reach_all_variant": 0.9091,
+    "reach_all_delta_pp": 0.0,
+    "carrier_recall_base": 0.625,
+    "carrier_recall_variant": 0.625,
+    "carrier_recall_delta_pp": 0.0
+   }
+  },
+  "budget": {
+   "compositional": {
+    "n_probes": 57,
+    "n_carriers": 118,
+    "reach_all_base": 0.6316,
+    "reach_all_variant": 0.614,
+    "reach_all_delta_pp": -1.76,
+    "carrier_recall_base": 0.5424,
+    "carrier_recall_variant": 0.5424,
+    "carrier_recall_delta_pp": 0.0
+   },
+   "comparison": {
+    "n_probes": 28,
+    "n_carriers": 60,
+    "reach_all_base": 1.0,
+    "reach_all_variant": 1.0,
+    "reach_all_delta_pp": 0.0,
+    "carrier_recall_base": 0.8667,
+    "carrier_recall_variant": 0.8667,
+    "carrier_recall_delta_pp": 0.0
+   },
+   "bridge_comparison": {
+    "n_probes": 31,
+    "n_carriers": 124,
+    "reach_all_base": 0.1613,
+    "reach_all_variant": 0.129,
+    "reach_all_delta_pp": -3.23,
+    "carrier_recall_base": 0.5242,
+    "carrier_recall_variant": 0.5242,
+    "carrier_recall_delta_pp": 0.0
+   },
+   "inference": {
+    "n_probes": 11,
+    "n_carriers": 24,
+    "reach_all_base": 0.9091,
+    "reach_all_variant": 0.9091,
+    "reach_all_delta_pp": 0.0,
+    "carrier_recall_base": 0.625,
+    "carrier_recall_variant": 0.625,
+    "carrier_recall_delta_pp": 0.0
+   }
+  }
+ },
+ "wrong_pick_census": {
+  "note": "classification of every linked anchor vs the probe's gold entities; gold_bridge_object = H569 subject-vs-object risk; off_gold_wrongpick = distractor seed",
+  "by_provenance": {
+   "exact": {
+    "gold_source": 134,
+    "off_gold_wrongpick": 86,
+    "gold_bridge_object": 2
+   },
+   "alias": {
+    "off_gold_wrongpick": 39,
+    "gold_source": 6
+   },
+   "llm": {
+    "gold_source": 1,
+    "gold_bridge_object": 1
+   }
+  },
+  "wrong_examples": {
+   "alias": [
+    {
+     "probe": "551e024408a611ebbd7fac1f6bf848b6",
+     "linked_name": "Director",
+     "q": "Do both films Interview With A Hitman and The Last Coupon have the directors fro"
+    },
+    {
+     "probe": "551e024408a611ebbd7fac1f6bf848b6",
+     "linked_name": "Cross Country",
+     "q": "Do both films Interview With A Hitman and The Last Coupon have the directors fro"
+    },
+    {
+     "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+     "linked_name": "Director",
+     "q": "Do both directors of films Wrong Turn 5: Bloodlines and Dark River (2017 Film) h"
+    },
+    {
+     "probe": "5cc01ab60bb011ebab90acde48001122",
+     "linked_name": "Mother",
+     "q": "Who is Mugain's mother-in-law?"
+    },
+    {
+     "probe": "0dfe41f60bdc11eba7f7acde48001122",
+     "linked_name": "Where Was I",
+     "q": "Where was the performer of song Come Dance With Me (Song) born?"
+    },
+    {
+     "probe": "0dfe41f60bdc11eba7f7acde48001122",
+     "linked_name": "Bodysong",
+     "q": "Where was the performer of song Come Dance With Me (Song) born?"
+    },
+    {
+     "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+     "linked_name": "Blue collar worker",
+     "q": "Which film has the director who was born later, Henry Goes Arizona or The Blue C"
+    },
+    {
+     "probe": "c9a769c608be11ebbd8aac1f6bf848b6",
+     "linked_name": "TER",
+     "q": "Who was born first, Hywel Teifi Edwards or Felix Schuster?"
+    },
+    {
+     "probe": "50e4a65c0bde11eba7f7acde48001122",
+     "linked_name": "Bodysong",
+     "q": "Where was the performer of song B Boy (Song) detained?"
+    },
+    {
+     "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+     "linked_name": "Swamp Thing (1982 film)",
+     "q": "Which film has the director who was born later, Illusions (1982 Film) or It'S A "
+    },
+    {
+     "probe": "38da155f087511ebbd67ac1f6bf848b6",
+     "linked_name": "Sir Thomas Wheate, 2nd Baronet",
+     "q": "Who lived longer, Sir Thomas Wheate, 1St Baronet or Albert \u00c9douard Le Brethon De"
+    },
+    {
+     "probe": "62a9cd640bb011ebab90acde48001122",
+     "linked_name": "Ernest",
+     "q": "Who is the father-in-law of John Ernest, Duke Of Saxe-Eisenach?"
+    },
+    {
+     "probe": "cda459160bda11eba7f7acde48001122",
+     "linked_name": "45 Fathers",
+     "q": "Who is the father of the director of film Palo Alto (2013 Film)?"
+    },
+    {
+     "probe": "b7f5f7200bdd11eba7f7acde48001122",
+     "linked_name": "Cross Country",
+     "q": "Which country the composer of film Thunder On The Hill is from?"
+    },
+    {
+     "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+     "linked_name": "Run (2004 film)",
+     "q": "Which film has the director born later, Arr\u00eate Ton Cin\u00e9ma or Agni (2004 Film)?"
+    }
+   ],
+   "llm": []
+  }
+ },
+ "clauses": [
+  {
+   "clause": "all-golds reachability >= 0.75 (union fusion, final rung)",
+   "predicted": ">= 0.75 (>= ~48% of the 0.622->0.898 oracle gap)",
+   "measured": "0.6063 (base 0.622); gap recovered -0.0569",
+   "holds": false
+  },
+  {
+   "clause": "carrier recall@16 lift >= +5pp (union fusion, final rung, paired)",
+   "predicted": ">= +5pp",
+   "measured": "0.0pp (base 0.6012 -> 0.6012), McNemar p=1.0",
+   "holds": false
+  },
+  {
+   "clause": "reachability lift (union) paired McNemar p<0.05",
+   "predicted": "significant",
+   "measured": "-1.57pp, p=0.5",
+   "holds": false
+  },
+  {
+   "clause": "KILL: reachability lift < +5pp over dense seeding (union)",
+   "predicted": "kill if < +5pp",
+   "measured": "-1.57pp",
+   "holds": true
+  }
+ ],
+ "acceptance_bar": "CONFIRMED reach>=0.75 AND recall +>=5pp (union, final rung); KILLED if reach lift < +5pp",
+ "proposed_verdict": "KILLED",
+ "headline_final_rung": {
+  "union": {
+   "reach_all": 0.6063,
+   "reach_all_delta_pp": -1.57,
+   "recall_delta_pp": 0.0,
+   "gap_recovered": -0.0569
+  },
+  "budget": {
+   "reach_all": 0.6063,
+   "reach_all_delta_pp": -1.57,
+   "recall_delta_pp": 0.0,
+   "gap_recovered": -0.0569
+  }
+ }
+}

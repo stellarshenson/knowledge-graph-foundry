@@ -369,3 +369,25 @@ Sessions since the 10:05 section (see git log): `efdac7f` R48 registration + H49
 - H558 GATED-DEAD note added (H556 killed)
 - H560 CONFIRMED (100% carrier-bearing repairs have carrier present-at-ingest; zero need later docs)
 - H561 INCONCLUSIVE lean-negative (strict same-doc name-match 7/12) with kill-rationale REVERSAL: same-doc recall 12/12 - candidate pool suffices, selection needs H568 attacher
+
+## Approval window + full autonomous execution (2026-07-14 ~01:00)
+
+### USER STANDING APPROVAL until 2026-07-14 NOON (verbatim: "You don't have to ask me again. You have my explicit approval until tomorrow noon.")
+Covers exactly the list quoted back to the user: (1) git COMMITS of the session batch (checkpoint commit MADE on main; push NOT named -> still held), (2) ENGINE-REWIRING greenlight, (3) DEF-16 repair (optimize() on bench pile), (4) R47/R48 priority = my call.
+
+### Executed under the window
+- Checkpoint commit on main: "feat: R49 closed, R50 registered and closed at gates, R52+H597 registered, vetting protocol live" (116 files)
+- Engine-rewiring implementation agent launched in ISOLATED WORKTREE (packages: A1-A5 gate-offs incl render_budget 0.6->1.0 defect fix; B1-B6 wire-ins: H568 attacher, H576 staging primitive, e5 local embedder option, certificate+hop audit module, H541 frozen-manifest mode); acc-crit doc mandated; agent commits on branch, coordinator merges
+- H597 (crown-jewel realizable linker) + R52 H598-H600 (diffusion trilateration gates) executors launched (both read medium read-only)
+
+### Sequencing decisions (mine, per the window)
+- DEF-16 optimize() on medium: QUEUED behind H597/H598 completion (it WRITES the medium graph; also dump medium first as pre-optimize checkpoint; overnight vLLM job alongside dogfood)
+- R47/R48 priority: R47 IDENTITY domain next (targets H107, the universal root cause), with bench identity gold as its first deliverable; R48 leftovers (H516-H538 remainder) after
+- GNN scout RETURNED: 7 papers + brief (reports/experiments/r50/gnn-scout-brief-20260714.md) + HG1-HG5 gated drafts (zero-training GFM-RAG/ULTRA crux first); registration deferred to R51 synthesis return (fanout wf_4fcf6929-943 running, its GNN-refuter vector reads the scout brief)
+
+### Live inventory (~01:05)
+- R51 fanout wf_4fcf6929-943 (4 vectors + synthesis) - running
+- H597 + H598-H600 executors - running (medium read-only)
+- Engine-rewiring worktree agent - running
+- Dogfood ledger ingest - running detached (container up, c56 knee); Phases 1.5/2/3 queued
+- AWAITING USER (only): git PUSH; release-class decisions

@@ -1,0 +1,276 @@
+{
+ "run_id": "20260713T231316Z",
+ "hypothesis": "R52-H598",
+ "scoring_fence": "retrieval-level only",
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "titan_target": 0.6012,
+  "iso_ppr_all_golds_reach": 0.622,
+  "iso_reach_target": 0.622,
+  "n_reach_probes": 127,
+  "reproduced": true,
+  "n_components": 1830,
+  "lcc_size": 3162
+ },
+ "eigen_k_primary": 128,
+ "diffusion_times": [
+  49.7684,
+  149.3051,
+  447.9152
+ ],
+ "n_2anchor_probes": 30,
+ "n_targets": 54,
+ "n_cocomp_targets": 50,
+ "target_convention": "in-graph gold carriers NOT among the >=2 gold-source anchors (+ resolved answer); anchors excluded from candidate ranking in every arm; heat kernel is block-diagonal over the 1830 components (cross-component proximity = 0)",
+ "single_source_ppr_baseline_rate": 0.9074,
+ "hop_control_rate": 0.9259,
+ "trilateration_vs_ppr_table": {
+  "single_source_ppr_baseline": {
+   "rate": 0.9074,
+   "n_targets": 54,
+   "n_cocomp": 50
+  },
+  "hop_control_within6": {
+   "rate": 0.9259
+  },
+  "trilat-commute": {
+   "rate": 0.5,
+   "ppr_rate": 0.9074,
+   "delta_pp_vs_ppr": -40.74,
+   "mcnemar_b_ppr_only": 23,
+   "mcnemar_c_arm_only": 1,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.5556,
+    -0.2593
+   ]
+  },
+  "trilat-product@t149.3051": {
+   "rate": 0.2037,
+   "ppr_rate": 0.9074,
+   "delta_pp_vs_ppr": -70.37,
+   "mcnemar_b_ppr_only": 38,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.8333,
+    -0.5741
+   ]
+  },
+  "trilat-product@t447.9152": {
+   "rate": 0.1667,
+   "ppr_rate": 0.9074,
+   "delta_pp_vs_ppr": -74.07,
+   "mcnemar_b_ppr_only": 40,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.8519,
+    -0.6292
+   ]
+  },
+  "trilat-product@t49.7684": {
+   "rate": 0.1667,
+   "ppr_rate": 0.9074,
+   "delta_pp_vs_ppr": -74.07,
+   "mcnemar_b_ppr_only": 40,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.8519,
+    -0.6296
+   ]
+  },
+  "trilat-sumdist@t149.3051": {
+   "rate": 0.4074,
+   "ppr_rate": 0.9074,
+   "delta_pp_vs_ppr": -50.0,
+   "mcnemar_b_ppr_only": 27,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.6296,
+    -0.3704
+   ]
+  },
+  "trilat-sumdist@t447.9152": {
+   "rate": 0.4074,
+   "ppr_rate": 0.9074,
+   "delta_pp_vs_ppr": -50.0,
+   "mcnemar_b_ppr_only": 27,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.6296,
+    -0.3704
+   ]
+  },
+  "trilat-sumdist@t49.7684": {
+   "rate": 0.4444,
+   "ppr_rate": 0.9074,
+   "delta_pp_vs_ppr": -46.3,
+   "mcnemar_b_ppr_only": 26,
+   "mcnemar_c_arm_only": 1,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.6111,
+    -0.3148
+   ]
+  }
+ },
+ "trilateration_vs_ppr_table_cocomp_only": {
+  "trilat-commute": {
+   "rate": 0.54,
+   "ppr_rate": 0.98,
+   "delta_pp_vs_ppr": -44.0,
+   "mcnemar_b_ppr_only": 23,
+   "mcnemar_c_arm_only": 1,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.58,
+    -0.3
+   ]
+  },
+  "trilat-product@t149.3051": {
+   "rate": 0.22,
+   "ppr_rate": 0.98,
+   "delta_pp_vs_ppr": -76.0,
+   "mcnemar_b_ppr_only": 38,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.8605,
+    -0.64
+   ]
+  },
+  "trilat-product@t447.9152": {
+   "rate": 0.18,
+   "ppr_rate": 0.98,
+   "delta_pp_vs_ppr": -80.0,
+   "mcnemar_b_ppr_only": 40,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.9,
+    -0.68
+   ]
+  },
+  "trilat-product@t49.7684": {
+   "rate": 0.18,
+   "ppr_rate": 0.98,
+   "delta_pp_vs_ppr": -80.0,
+   "mcnemar_b_ppr_only": 40,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.9,
+    -0.68
+   ]
+  },
+  "trilat-sumdist@t149.3051": {
+   "rate": 0.44,
+   "ppr_rate": 0.98,
+   "delta_pp_vs_ppr": -54.0,
+   "mcnemar_b_ppr_only": 27,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.68,
+    -0.4
+   ]
+  },
+  "trilat-sumdist@t447.9152": {
+   "rate": 0.44,
+   "ppr_rate": 0.98,
+   "delta_pp_vs_ppr": -54.0,
+   "mcnemar_b_ppr_only": 27,
+   "mcnemar_c_arm_only": 0,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.68,
+    -0.4
+   ]
+  },
+  "trilat-sumdist@t49.7684": {
+   "rate": 0.48,
+   "ppr_rate": 0.98,
+   "delta_pp_vs_ppr": -50.0,
+   "mcnemar_b_ppr_only": 26,
+   "mcnemar_c_arm_only": 1,
+   "mcnemar_p": 0.0,
+   "boot95_delta": [
+    -0.64,
+    -0.34
+   ]
+  }
+ },
+ "best_arm": "trilat-commute",
+ "best_delta_pp": -40.74,
+ "by_class_best_arm": {
+  "bridge_comparison": {
+   "n_targets": 51,
+   "n_cocomp": 49,
+   "ppr": 0.9412,
+   "best_arm": 0.5098
+  },
+  "compositional": {
+   "n_targets": 3,
+   "n_cocomp": 1,
+   "ppr": 0.3333,
+   "best_arm": 0.3333
+  }
+ },
+ "clauses": [
+  {
+   "clause": "best trilateration target rank-recall@15 >= +8pp over single-source PPR (paired McNemar p<0.05)",
+   "predicted": ">= +8pp & p<0.05",
+   "measured": "trilat-commute: -40.74pp (ppr 0.9074 -> 0.5), p=0.0",
+   "holds": false
+  },
+  {
+   "clause": "KILL: best arm <= +3pp (joint geometry re-expresses single-source diffusion)",
+   "predicted": "kill if <= +3pp",
+   "measured": "-40.74pp",
+   "holds": true
+  },
+  {
+   "clause": "honest control: trilateration beats hop-distance-from-anchors too",
+   "predicted": "best arm rate > hop control",
+   "measured": "best 0.5 vs hop 0.9259",
+   "holds": false
+  }
+ ],
+ "acceptance_bar": "CONFIRMED >= +8pp & p<0.05; KILLED <= +3pp",
+ "proposed_verdict": "KILLED",
+ "sensitivity": {
+  "note": "H598 trilat rank-recall@15 across eigen-k (mid time) and time (primary k)",
+  "eigen_k": {
+   "64": {
+    "trilat_product_rate": 0.2222,
+    "trilat_sumdist_rate": 0.4259
+   },
+   "128": {
+    "trilat_product_rate": 0.2037,
+    "trilat_sumdist_rate": 0.4074
+   },
+   "256": {
+    "trilat_product_rate": 0.2037,
+    "trilat_sumdist_rate": 0.4074
+   }
+  },
+  "diffusion_time_primary_k": {
+   "49.7684": {
+    "trilat_product_rate": 0.1667,
+    "trilat_sumdist_rate": 0.4444
+   },
+   "149.3051": {
+    "trilat_product_rate": 0.2037,
+    "trilat_sumdist_rate": 0.4074
+   },
+   "447.9152": {
+    "trilat_product_rate": 0.1667,
+    "trilat_sumdist_rate": 0.4074
+   }
+  }
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "run_id": "20260713T231316Z",
+ "hypothesis": "R52-H599",
+ "scoring_fence": "retrieval-level only",
+ "harness_sanity": {
+  "titan_carrier_recall@16": 0.6012,
+  "titan_target": 0.6012,
+  "iso_ppr_all_golds_reach": 0.622,
+  "iso_reach_target": 0.622,
+  "n_reach_probes": 127,
+  "reproduced": true,
+  "n_components": 1830,
+  "lcc_size": 3162
+ },
+ "diffusion_time": 149.3051,
+ "eigen_k_primary": 128,
+ "candidate_set": "union of top-200 by heat-kernel proximity or PPR mass, seeds excluded",
+ "seed_source_primary": "dense@16 (realizable single source)",
+ "spearman_distribution_dense16": {
+  "median": 0.221,
+  "mean": 0.2703,
+  "p10": -0.0259,
+  "p25": 0.0883,
+  "p75": 0.3889,
+  "p90": 0.6481,
+  "min": -0.222,
+  "max": 0.9998,
+  "n_probes": 132
+ },
+ "median_spearman_gold_anchor_seed": 0.5258,
+ "clauses": [
+  {
+   "clause": "median per-query Spearman(heat-kernel, PPR mass) >= 0.95 (re-expression)",
+   "predicted": ">= 0.95",
+   "measured": "median 0.221 (dense@16)",
+   "holds": false
+  },
+  {
+   "clause": "FALSIFY: median < 0.85 (independent signal)",
+   "predicted": "falsify if < 0.85",
+   "measured": "0.221",
+   "holds": true
+  }
+ ],
+ "acceptance_bar": "CONFIRMED >= 0.95; FALSIFIED < 0.85",
+ "proposed_verdict": "FALSIFIED (diffusion carries independent signal)"
+}

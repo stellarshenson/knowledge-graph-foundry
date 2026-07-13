@@ -1,0 +1,122 @@
+{
+ "count_query_instrument": "MATCH (a:Entity)-[r]->(b:Entity) WHERE NOT type(r) IN ['SIMILAR_TO','ABOUT','MENTIONED_IN','ANSWERABLE_FROM'] RETURN count(DISTINCT type(r)) AS V",
+ "doc_query": "MATCH (d:KGFDocument) RETURN count(d) AS n",
+ "live_rungs": {
+  "scout": {
+   "docs": 50,
+   "semantic_types": 61
+  },
+  "medium": {
+   "docs": 1000,
+   "semantic_types": 595
+  },
+  "pilot": {
+   "docs": 1173,
+   "semantic_types": 783
+  }
+ },
+ "historical_points": {
+  "cpap_relation_types_R01H3_eq_H395": {
+   "docs": 26,
+   "V": 334,
+   "note": "same 26-doc CPAP build; entropy 6.22; substrate differs from 2wiki"
+  },
+  "cpap_entity_types_R01": {
+   "docs": 26,
+   "V": 65,
+   "note": "ENTITY-type count, NOT relation - spec's '65 @ 26 docs R01' is this; mixing it into a relation Heaps fit is a category error"
+  }
+ },
+ "fits": {
+  "live_2wiki_only": {
+   "n_points": 3,
+   "beta": 0.7871,
+   "K": 2.795,
+   "r2_loglog": 0.9972,
+   "beta_ci95": [
+    0.2539,
+    1.3203
+   ],
+   "forecast_6118": 2672.1,
+   "points": [
+    [
+     50.0,
+     61.0
+    ],
+    [
+     1000.0,
+     595.0
+    ],
+    [
+     1173.0,
+     783.0
+    ]
+   ]
+  },
+  "live_plus_cpap_relation_334": {
+   "n_points": 4,
+   "beta": 0.4058,
+   "K": 36.526,
+   "r2_loglog": 0.4944,
+   "beta_ci95": [
+    -0.8428,
+    1.6545
+   ],
+   "forecast_6118": 1257.1,
+   "points": [
+    [
+     50.0,
+     61.0
+    ],
+    [
+     1000.0,
+     595.0
+    ],
+    [
+     1173.0,
+     783.0
+    ],
+    [
+     26.0,
+     334.0
+    ]
+   ]
+  },
+  "live_plus_spec_literal_65_and_334": {
+   "n_points": 5,
+   "beta": 0.486,
+   "K": 21.2744,
+   "r2_loglog": 0.6042,
+   "beta_ci95": [
+    -0.2367,
+    1.2087
+   ],
+   "forecast_6118": 1473.1,
+   "points": [
+    [
+     50.0,
+     61.0
+    ],
+    [
+     1000.0,
+     595.0
+    ],
+    [
+     1173.0,
+     783.0
+    ],
+    [
+     26.0,
+     65.0
+    ],
+    [
+     26.0,
+     334.0
+    ]
+   ]
+  }
+ },
+ "primary_fit": "live_2wiki_only",
+ "run_id": "20260713T231406Z",
+ "hypothesis": "R53-H605 relation-vocabulary Heaps-law proliferation"
+}
