@@ -1,8 +1,6 @@
 # Run artifacts and scratch - not version-controlled (kept on disk)
 /logs/
 /tmp/
-/results/
-/scripts/
 
 # Data - ignore contents but keep directory structure via .gitkeep
 /data/*

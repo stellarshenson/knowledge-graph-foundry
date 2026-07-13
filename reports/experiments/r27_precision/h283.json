@@ -1,0 +1,119 @@
+{
+ "per_class": {
+  "clean": {
+   "n": 32,
+   "n_false": 19,
+   "n_true": 13,
+   "false_merge_detection": 0.8947368421052632,
+   "true_merge_preservation": 1.0,
+   "true_merge_losses": [],
+   "n_true_merge_loss": 0,
+   "unresolved": 1
+  },
+  "code_shared": {
+   "n": 34,
+   "n_false": 29,
+   "n_true": 5,
+   "false_merge_detection": 0.6896551724137931,
+   "true_merge_preservation": 0.8,
+   "true_merge_losses": [
+    [
+     "AirFit N20",
+     "AirFit N20 Classic",
+     true
+    ]
+   ],
+   "n_true_merge_loss": 1,
+   "unresolved": 6
+  },
+  "type_conflict": {
+   "n": 31,
+   "n_false": 24,
+   "n_true": 7,
+   "false_merge_detection": 0.9583333333333334,
+   "true_merge_preservation": 0.5714285714285714,
+   "true_merge_losses": [
+    [
+     "MD300W314B4",
+     "Wrist Pulse Oximeter MD300W314B4",
+     false
+    ],
+    [
+     "SleepStyle 200 Series",
+     "HC230-Series",
+     false
+    ],
+    [
+     "Flow Meter",
+     "Flowmeter",
+     false
+    ]
+   ],
+   "n_true_merge_loss": 3,
+   "unresolved": 1
+  },
+  "type_conflict+code_shared": {
+   "n": 30,
+   "n_false": 29,
+   "n_true": 1,
+   "false_merge_detection": 0.896551724137931,
+   "true_merge_preservation": 0.0,
+   "true_merge_losses": [
+    [
+     "AirFit N20",
+     "ResMed AirFit N20 Classic",
+     true
+    ]
+   ],
+   "n_true_merge_loss": 1,
+   "unresolved": 3
+  }
+ },
+ "n": 127,
+ "n_false": 101,
+ "n_true": 26,
+ "false_merge_detection": 0.8514851485148515,
+ "true_merge_preservation": 0.8076923076923077,
+ "true_merge_losses": [
+  [
+   "MD300W314B4",
+   "Wrist Pulse Oximeter MD300W314B4",
+   false
+  ],
+  [
+   "SleepStyle 200 Series",
+   "HC230-Series",
+   false
+  ],
+  [
+   "Flow Meter",
+   "Flowmeter",
+   false
+  ],
+  [
+   "AirFit N20",
+   "AirFit N20 Classic",
+   true
+  ],
+  [
+   "AirFit N20",
+   "ResMed AirFit N20 Classic",
+   true
+  ]
+ ],
+ "n_true_merge_loss": 5,
+ "unresolved": 11,
+ "tokens_per_pair": 2016.8,
+ "mean_rounds": 2.5,
+ "tool_usage": {
+  "neighborhood": 56,
+  "source_span": 118,
+  "string_code": 18
+ },
+ "bar": {
+  "delta_fm_pts": -12.9,
+  "token_ratio": 3.93,
+  "zero_true_loss": false,
+  "pass_bar": false
+ }
+}

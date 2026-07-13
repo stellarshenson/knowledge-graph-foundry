@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, "src")
 from knowledge_graph_foundry.models import entity_id  # noqa: E402
 
-BENCH_PATH = "reports/identity-benchmark-h101-20260707-094448.json"
+BENCH_PATH = "reports/experiments/adjudicated/identity-benchmark-h101-20260707-094448.json"
 
 
 class _UF:

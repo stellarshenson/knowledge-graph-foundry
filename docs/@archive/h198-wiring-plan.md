@@ -15,7 +15,7 @@ Composed every promoted lever into the shipped engine and rebuilt the graph on i
 
 ## Phase 1 - inventory (COMPLETE 2026-07-08)
 
-H198 clause (a) met: 66 promotion entries classified, zero unaccounted - 15 LEVER / 22 DOCTRINE / 18 INSTRUMENT / 9 NEGATIVE / 2 SUPERSEDED. Full machine-readable inventory: `reports/h198-wiring-inventory-20260708T102631Z.json`. Headline: no promoted lever is live in the engine default path - 2 config-only at the wrong default (top_k=8 in `settings.py`, identity_stack=v1), 3 notebook-only, 9-10 not-implemented.
+H198 clause (a) met: 66 promotion entries classified, zero unaccounted - 15 LEVER / 22 DOCTRINE / 18 INSTRUMENT / 9 NEGATIVE / 2 SUPERSEDED. Full machine-readable inventory: `reports/experiments/adjudicated/h198-wiring-inventory-20260708T102631Z.json`. Headline: no promoted lever is live in the engine default path - 2 config-only at the wrong default (top_k=8 in `settings.py`, identity_stack=v1), 3 notebook-only, 9-10 not-implemented.
 
 **Wiring constraint (binding until the experiment chains finish)**: the H241 chain and the R23/R24 batch execute from this working tree - NO engine code or default-config edits until both report, or the running arms are contaminated mid-experiment. Wiring order below starts the moment the tree is free.
 

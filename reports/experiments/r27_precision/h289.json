@@ -1,0 +1,6 @@
+{
+ "status": "UNTESTABLE",
+ "reason": "Strands Agents SDK not installed in the kg-cli .venv and not a declared pyproject dependency (ModuleNotFoundError: No module named 'strands'); per directive, record UNTESTABLE and move on rather than burn hours plumbing a framework the round would price out anyway.",
+ "bare_tokens_per_pair": 2448.6,
+ "bare_loop_ships": "bare loop is the reference harness; H290 prices against it"
+}

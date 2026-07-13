@@ -9,7 +9,7 @@ The calibrated v2 stack (isotonic cosine + NLI veto + logistic) measured strictl
 - **Ships instead** - v1 default + demote-don't-delete court (H290/H282, 98.0% false-merge detection at ingest-close); the court's docket is exactly v1's false-merge surface
 - **Remains available** - `resolution.identity_stack: v2` config key, fully wired
 - **Reopen condition** - a new pre-registered decider (rate-normalized clause or multi-run counts with variance accounting); the H241 bar is not renegotiated post-hoc
-- **Evidence** - [identity-ab-h241-20260708T160009Z.json](../reports/identity-ab-h241-20260708T160009Z.json), ledger R15-H241
+- **Evidence** - [identity-ab-h241-20260708T160009Z.json](../reports/experiments/adjudicated/identity-ab-h241-20260708T160009Z.json), ledger R15-H241
 
 ## GAP-2: image ingestion (R21, H216/H217/H218)
 
@@ -18,7 +18,7 @@ Pixel forensics adjudicated all 32 absent benchmark golds: 0 pixel-only - image 
 - **Measured** - 81.5% of captured images information-bearing, but only 26% of documents carry image text absent from the text layer
 - **Per-class status** - diagrams + rendered tables GO (Qwen2.5-VL 0.98/0.92 and 0.94/1.00 vs 80/90 bars); product photos BLOCKED on brand hallucination pending H291 brand guard
 - **Ships later** - optional describe-then-extract stage behind the H224 filter; not in the default rebuild
-- **Evidence** - ledger R21-H216/H217/H218, [pixel-forensics-h217](../reports/pixel-forensics-h217-20260707T200833Z.json)
+- **Evidence** - ledger R21-H216/H217/H218, [pixel-forensics-h217](../reports/experiments/adjudicated/pixel-forensics-h217-20260707T200833Z.json)
 
 ## GAP-3: web escalation (H286, user-gated)
 

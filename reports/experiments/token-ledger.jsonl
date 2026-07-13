@@ -1,0 +1,5 @@
+{"ts": "2026-07-11 15:42", "instance": "1.78373598779e+09", "prompt": 10813921.0, "generation": 18011898.0, "note": "first snapshot: R30 calibration + H385 replay + 2wiki pilot + medium ingest start (instance since 04:10)"}
+{"ts": "2026-07-11 19:38", "instance": "1.78373598779e+09", "prompt": 11833334.0, "generation": 19397259.0, "note": "adversarial review closed; medium ingest mid-flight"}
+{"ts": "2026-07-12 06:38", "instance": "1.78373598779e+09", "prompt": 12570601.0, "generation": 20448081.0, "note": "medium boundary closed: dump + H389 certificates x2 (64.1/62.1%)"}
+{"ts": "2026-07-12 09:52", "instance": "1.78384981483e+09", "prompt": 0.0, "generation": 0.0, "note": "post-crash vLLM restart (machine failure ~08:25Z) - new instance baseline"}
+{"ts": "2026-07-12 11:18", "instance": "1.78384981483e+09", "prompt": 1232830.0, "generation": 849046.0, "note": "snapshot"}

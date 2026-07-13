@@ -64,10 +64,25 @@ Knowledge Graph Builder CLI (`kg-builder-cli`) - a Python CLI tool for building 
 **MANDATORY for every executor agent running long computations** (LLM sweeps, ingests, gate batches, experiment chains):
 
 - Launch the computation DETACHED from the agent's own process tree: `nohup`/`setsid`, output teed to a `logs/*.log` file
-- Checkpoint results incrementally to `results/` or `reports/` as they land - never hold results only in agent memory
+- Checkpoint results incrementally to `reports/experiments/` (persistent) or `tmp/results/` (throwaway) as they land - never hold results only in agent memory
 - The agent watches the LOG FILE, never its own child process
 - On resume, check caches before recomputing anything
 
 **Why**: session limits or agent death must never kill the compute. The R23/R24 gates executor died mid-run (2026-07-08) and its in-flight computation died with it; the H241 chain, launched detached, survived multiple agent deaths in the same window. Compute must outlive the driver so a resumed agent or the coordinator can collect results from disk.
 
 **Enforcement**: prime every executor spec with this rule verbatim.
+
+## Repository Layout Doctrine (2026-07-13, migration executed same day)
+
+Copier-data-science template is the skeleton (`.copier-answers.yml` present). Persistence directive: **referenced-anywhere (experiments log, board, MANIFEST, reports, memory) = persistent; hypothesis-naming decides `scripts/` vs `scripts/experiments/` within persistent**. Persistent tiers are TRACKED (hypothesis-skill reproducibility rule: a hypothesis must re-run from its own text); throwaway goes to `tmp/`:
+
+- **`scripts/`** (tracked) - infra harnesses (bench_*, token_ledger.py, vllm-serve.sh, ops one-shots the board cites)
+- **`scripts/experiments/`** (tracked) - hypothesis/round-named execution artifacts (`r*`, `h*`, `phase3*`); the experiments log links these paths
+- **`reports/experiments/`** (tracked) - all experiment evidence, internally structured: `adjudicated/` (adjudicated verdict reports - JSON + briefs, the experiments log cites these), `invalid/` (quarantined results kept for the record), `<round>/` per-round persistent result groups (bench/, r45/, ...) + planned output paths of registered rounds; `reports/` root holds ONLY `experiments/` and `figures/`
+- **`tmp/`** (gitignored, template semantics: never anything you need to keep) - `tmp/scripts/`, `tmp/results/` hold unreferenced throwaways; pure scratch elsewhere
+- **`logs/`** (gitignored) - runtime + background-job logs, per template
+- **Dumps** - keeper Neo4j dumps + MANIFEST + sidecars in `data/interim/dumps/` (gitignored; sync to S3 via profile `stellars-tech`); a dump that is only a private experiment cache may stay in `tmp/`
+- **Notebooks** - project-local naming `<topic>_<hypothesisID>.ipynb` (NOT the template's `NN-initials-` scheme; retro-renaming would break append-only experiments-log links); tracked `.py` files in `notebooks/` are PINNED instruments (e.g. `h158_measure.py`) - never move them
+- **config/** - tracked project extension (pinned per-rung experiment configs)
+- **Canonical docs** - experiments log `docs/experiments/kgf-redesign-experiments.md`, SOTA `docs/kgf-sota.md`, defects `docs/defects/`, recall failure modes `docs/recall-failure-modes.md`, acc-crit `docs/acceptance-criteria/`
+- **History** - pre-migration `results/` and `scripts/` paths in journal entries and git history are historical record, never rewritten; living docs were link-rewritten at migration (2026-07-13)

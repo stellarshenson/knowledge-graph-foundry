@@ -1,0 +1,71 @@
+{
+  "label": "pre-repair",
+  "nodes": 7020,
+  "edges": 6789,
+  "H469_degree": {
+    "mean": 1.934,
+    "max": 57,
+    "var": 7.539,
+    "skew": 6.104
+  },
+  "H470_components": {
+    "count": 1264,
+    "giant_share": 0.6244,
+    "isolates": 909
+  },
+  "H471_kcore": {
+    "max_core": 3,
+    "core2_share": 0.2446
+  },
+  "H472_clustering": {
+    "global": 0.04857,
+    "mean_local": 0.07379
+  },
+  "H473_assortativity": -0.1291,
+  "H474_spectrum_top": [
+    1.98721,
+    1.98724,
+    1.98759,
+    1.99063,
+    1.99459,
+    1.99481
+  ],
+  "H475_hub": {
+    "kmax_over_E": 0.0084,
+    "top_hub_share": 0.0042
+  },
+  "H476_pathlen": {
+    "mean_sampled": 9.05,
+    "n": 200
+  },
+  "H477_hubness": "see H479 companion (query-side sweep)",
+  "H480_props": {
+    "mean_props": 7.432,
+    "mean_desc_len": 35.6,
+    "p90_desc_len": 80
+  },
+  "H481_rel_entropy": {
+    "bits": 6.1188,
+    "vocab": 738
+  },
+  "H482_provenance": {
+    "mean_chunks": 1.312
+  },
+  "H483_orphans": {
+    "isolate_share": 0.1295
+  },
+  "H485_heaps": {
+    "type_token": 0.4321,
+    "tokens": 17703
+  },
+  "H486_forman_ricci": {
+    "mean": -7.24,
+    "p10": -17
+  },
+  "H487_vn_entropy_trunc": 6.0,
+  "H488_motifs": {
+    "triangles": 531,
+    "wedges": 32800,
+    "tri_per_wedge": 0.016189
+  }
+}

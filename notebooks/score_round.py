@@ -368,7 +368,7 @@ if __name__ == '__main__':
         pymupdf4llm_recovery=loss_recovery('pymupdf4llm')[0]/dn,
         verdict='CONFIRMED' if dh/dn>=0.60 else 'REFUTED',
         runtime_s_per_page=runtimes.get('docling'))
-    json.dump(h146, open(f'reports/parser-h146-docling-{stamp}.json','w'), indent=2)
+    json.dump(h146, open(f'reports/experiments/adjudicated/parser-h146-docling-{stamp}.json','w'), indent=2)
 
     # ---- H147 ----
     if have_mineru:
@@ -395,7 +395,7 @@ if __name__ == '__main__':
                               'matching - the class is not rendered-but-unencoded text. 69/676 of the whole absent '
                               'set is rescued by sym-stripping alone.'),
             verdict='REFUTED (premise falsified: family is a normalization artifact, vision not necessary)')
-        json.dump(h147, open(f'reports/parser-h147-mineru-absent-{stamp}.json','w'), indent=2)
+        json.dump(h147, open(f'reports/experiments/adjudicated/parser-h147-mineru-absent-{stamp}.json','w'), indent=2)
         print('\nH147 family matrix:', fam_table)
         print('H147 rescued from absent set by sym-strip:', len(rescued), '/', len(absent))
 
@@ -431,7 +431,7 @@ if __name__ == '__main__':
             verdict=('CONFIRMED' if (num_mineru['recall'] or 0) >= (num_mineru['text_recall'] or 0)+0.10
                      and (num_mineru['digit_precision'] or 0) >= (num_mineru['text_digit_precision'] or 0)
                      else 'REFUTED'))
-        json.dump(h148, open(f'reports/parser-h148-numeric-{stamp}.json','w'), indent=2)
+        json.dump(h148, open(f'reports/experiments/adjudicated/parser-h148-numeric-{stamp}.json','w'), indent=2)
         print('\nH148 mineru', num_mineru)
         print('H148 floor residue lifted: mineru', n_mineru_lift, '/16, olmocr_off', n_olm_lift, '/16')
 
@@ -446,7 +446,7 @@ if __name__ == '__main__':
             clause1_anchored_ge_half=ah/an>=0.50, clause2_off_gt_anchored=oh>ah,
             note='anchor-off = empty RAW_TEXT block (image-only signal); anchored = real pypdf anchor via olmocr.get_anchor_text',
             verdict=('CONFIRMED' if ah/an>=0.50 and oh>ah else 'REFUTED'))
-        json.dump(h149, open(f'reports/parser-h149-olmocr-anchor-{stamp}.json','w'), indent=2)
+        json.dump(h149, open(f'reports/experiments/adjudicated/parser-h149-olmocr-anchor-{stamp}.json','w'), indent=2)
         print('\nH149 anchored', f'{ah}/{an}={ah/an:.1%}', 'off', f'{oh}/{on}={oh/on:.1%}')
 
     # ---- H150 ----
@@ -474,7 +474,7 @@ if __name__ == '__main__':
                          'table-TEDS as pipeline-class proxy); olmOCR-2 82.4 olmOCR-bench proxy; H51 trio assigned 0 '
                          '(no table-structure stage). dots.ocr 88.6 / Marker 54.0 not run, excluded.'),
             verdict=('CONFIRMED' if rho is not None and rho<0.5 else ('REFUTED' if rho is not None and rho>=0.8 else 'INCONCLUSIVE')))
-        json.dump(h150, open(f'reports/parser-h150-teds-corr-{stamp}.json','w'), indent=2)
+        json.dump(h150, open(f'reports/experiments/adjudicated/parser-h150-teds-corr-{stamp}.json','w'), indent=2)
         print('\nH150 spearman', rho, '(bench-only', rho_bench, ') over', parsers_for_corr)
 
     # ---- H151 ----
@@ -491,6 +491,6 @@ if __name__ == '__main__':
         ratio_mean=(gr_with['table_mean']/gr_without['table_mean'] if gr_without['table_mean'] else None),
         caveat='loss set is DEFINED as names pypdf/pdfplumber recover but pymupdf4llm drops; the without-table-stage group thus recovers it near-fully by construction (pypdf alone %.1f%%)' % (100*recall_by_parser.get('pypdf',0)),
         verdict='see report')
-    json.dump(h151, open(f'reports/parser-h151-table-partition-{stamp}.json','w'), indent=2)
+    json.dump(h151, open(f'reports/experiments/adjudicated/parser-h151-table-partition-{stamp}.json','w'), indent=2)
     print('\nH151 table_frac', f'{ntab/len(LOSS):.1%}', 'with', gr_with, 'without', gr_without)
     print('\nstamp', stamp)

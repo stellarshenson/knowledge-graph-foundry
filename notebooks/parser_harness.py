@@ -1,7 +1,7 @@
 """Shared harness for the R14 SOTA parser round (H146-H150).
 
 Reuses the EXACT H51 normalization / name-presence conventions so results are
-comparable to reports/parse-fidelity-h51-*.json. Do not change norm/nospace/present.
+comparable to reports/experiments/adjudicated/parse-fidelity-h51-*.json. Do not change norm/nospace/present.
 """
 import json, re, hashlib, collections
 from pathlib import Path

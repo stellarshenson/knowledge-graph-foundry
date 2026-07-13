@@ -136,7 +136,7 @@ h216_report = dict(
             "(38-64% > 20%, clause a PASS); pixel-only-text clause (b) below 30% breadth threshold -> round narrows "
             "to the classes present (product photos, diagrams/schematics, rendered/vector tables), justified by "
             "NEW-content capture not hidden-text recovery; NOT refuted-narrow (info-bearing images in 27/27 docs).")
-(ROOT / f"reports/image-census-h216-{STAMP}.json").write_text(json.dumps(h216_report, indent=1))
+(ROOT / f"reports/experiments/adjudicated/image-census-h216-{STAMP}.json").write_text(json.dumps(h216_report, indent=1))
 
 # ---- H217 report ----
 vv = collections.Counter(r["verdict"] for r in verdicts)
@@ -146,8 +146,8 @@ po = vv.get("pixel-only", 0); n = len(verdicts)
 h217_report = dict(
     hypothesis="R21-H217", utc=STAMP, read_only=True, cpu_only=True,
     inputs=dict(h207_absent_golds=len(h207), h191_numeric_residue=len(h191), total=n,
-                h207_source="reports/render-parity-h207-20260707T155614Z.json (miss_detail, cls=absent-from-graph)",
-                h191_source="reports/parser-round-final-20260707-135106.json (H148 floor_residue_detail)"),
+                h207_source="reports/experiments/adjudicated/render-parity-h207-20260707T155614Z.json (miss_detail, cls=absent-from-graph)",
+                h191_source="reports/experiments/adjudicated/parser-round-final-20260707-135106.json (H148 floor_residue_detail)"),
     adjudication=dict(counts=dict(vv), pixel_only=po, pixel_only_share=po / n,
                       threshold_stake=0.25, confirms_coverage_stake=po / n >= 0.25,
                       refute_floor=0.10, refuted=po / n < 0.10),
@@ -163,12 +163,12 @@ h217_report = dict(
     verdict=f"REFUTED (image-ingestion coverage stake): 0/32 absent golds are pixel-only ({po/n:.0%} << 10%). "
             "Every absent gold's text lives in a document's TEXT LAYER (or is a cross-product mispairing), not in pixels. "
             "Image work must stand on NEW-capability value, not on recovering the existing benchmark's missing golds.")
-(ROOT / f"reports/pixel-forensics-h217-{STAMP}.json").write_text(json.dumps(h217_report, indent=1))
+(ROOT / f"reports/experiments/adjudicated/pixel-forensics-h217-{STAMP}.json").write_text(json.dumps(h217_report, indent=1))
 
 print("WROTE:")
 print("  data/processed/image-census-h216.json  records:", len(records))
-print(f"  reports/image-census-h216-{STAMP}.json")
-print(f"  reports/pixel-forensics-h217-{STAMP}.json")
+print(f"  reports/experiments/adjudicated/image-census-h216-{STAMP}.json")
+print(f"  reports/experiments/adjudicated/pixel-forensics-h217-{STAMP}.json")
 print("H216 clause(a) disagreement:", {k: f"{v:.1%}" for k, v in disagree.items()}, "-> PASS")
 print(f"H216 clause(b): info-bearing docs {info_bearing_doc_share:.0%}, pixel-only-text docs {clause_b_share:.0%} (<30% narrow)")
 print(f"H217: {dict(vv)}  pixel-only {po}/{n} = {po/n:.0%} -> REFUTED")
