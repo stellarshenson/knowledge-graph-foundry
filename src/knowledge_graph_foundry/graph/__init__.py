@@ -5,6 +5,11 @@ from knowledge_graph_foundry.graph.attacher import (
     attach,
     stage_fact_on_anchor,
 )
+from knowledge_graph_foundry.graph.audit import (
+    corpus_summary,
+    document_certificate,
+    seed_hop_distance,
+)
 from knowledge_graph_foundry.graph.graphrag import (
     CommunitySummary,
     detect_communities,
@@ -31,6 +36,9 @@ __all__ = [
     "CommunitySummary",
     "FactSpan",
     "attach",
+    "corpus_summary",
+    "document_certificate",
+    "seed_hop_distance",
     "stage_fact_on_anchor",
     "current_relationships",
     "detect_communities",

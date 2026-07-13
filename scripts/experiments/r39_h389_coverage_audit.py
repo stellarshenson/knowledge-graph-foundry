@@ -15,77 +15,35 @@ Per-document audit (KGGen-MINE pattern, ODKE+ Grounder check):
      ledger; the acceptance bar checks reproducibility (+-2%) and that known
      failure classes are rediscovered blind
 
+The deterministic gates and the certificate computation now live in
+`knowledge_graph_foundry.graph.audit`; this script drives them over a live
+graph. The gate names are re-exported for the coverage-audit unit test.
+
 Usage: python scripts/experiments/r39_h389_coverage_audit.py <config.yml> [doc_limit]
 Runs AT SCALE BOUNDARIES (not during ingest - the generator contends for
 the same LLM the extractor saturates).
 """
 
-import json
-import re
-import sys
 from datetime import datetime, timezone
+import json
 from pathlib import Path
+import sys
 
 from knowledge_graph_foundry import load_settings
 from knowledge_graph_foundry.engines import create_engine
+from knowledge_graph_foundry.graph.audit import (  # noqa: F401  (re-exported for tests)
+    PROBES_PER_CHUNK,
+    content_terms,
+    corpus_summary,
+    document_certificate,
+    generate_probes,
+    grounded,
+    supported,
+)
 from knowledge_graph_foundry.pipeline import Foundry
 
 DEFAULT_CONFIG = Path("config/experiments/config-bench-pilot.yml")
-PROBES_PER_CHUNK = 5
 OUT = Path("reports/experiments/r39")
-
-_STOP = frozenset(
-    "a an the of in on at to for with and or is are was were be been has have had by from as its it this that".split()
-)
-
-
-def _norm_terms(s: str) -> str:
-    # NOTE: strips non-alphanumerics (term matching) - deliberately DIFFERENT
-    # from notebooks/h158_measure._norm which only squeezes whitespace
-    return re.sub(r"[^a-z0-9 ]", " ", s.lower())
-
-
-def content_terms(s: str) -> list[str]:
-    # numeric tokens kept regardless of length - spec-value misses (the P08
-    # '9.0W' class) are exactly short numerics (adversarial finding A4/D-minor)
-    return [
-        t for t in _norm_terms(s).split()
-        if t not in _STOP and (len(t) > 2 or any(ch.isdigit() for ch in t))
-    ]
-
-
-def grounded(probe: str, chunk_text: str) -> bool:
-    """Groundedness gate: every content term of the probe appears in the
-    chunk - the probe set cannot claim what the source does not say."""
-    chunk_terms = set(_norm_terms(chunk_text).split())
-    terms = content_terms(probe)
-    return bool(terms) and all(t in chunk_terms for t in terms)
-
-
-def supported(probe: str, graph_text: str, threshold: float = 0.8) -> bool:
-    """Direct support test: share of the probe's content terms present in
-    the document's graph rendering (entities + properties + spans)."""
-    terms = content_terms(probe)
-    if not terms:
-        return False
-    graph_terms = set(_norm_terms(graph_text).split())
-    return sum(t in graph_terms for t in terms) / len(terms) >= threshold
-
-
-GEN_SYSTEM = (
-    "You extract short factual statements from text. Each statement must use ONLY "
-    "words that literally appear in the given text - no paraphrase, no synonyms, no "
-    "inference. One statement per line, no numbering, at most {k} statements."
-)
-
-
-def generate_probes(engine, chunk_text: str, k: int = PROBES_PER_CHUNK) -> list[str]:
-    raw = engine.complete_text(
-        GEN_SYSTEM.format(k=k),
-        f"Text:\n{chunk_text}\n\nStatements (verbatim words only):",
-    )
-    probes = [ln.strip("-* ").strip() for ln in raw.splitlines() if ln.strip()]
-    return [p for p in probes if grounded(p, chunk_text)][:k]
 
 
 def doc_graph_texts(session, doc_id: str) -> tuple[str, str]:
@@ -129,35 +87,39 @@ def main():
             n=doc_limit,
         ).data()
         print(f"auditing {len(docs)} documents from {config}", flush=True)
-        total_probes = total_supported = 0
+        certs = []
         for i, doc in enumerate(docs):
             ent_text, span_text = doc_graph_texts(s, doc["id"])
-            probes, misses = [], []
-            span_supported = 0
+            probes = []
             for chunk in doc["chunks"]:
-                for p in generate_probes(engine, chunk):
-                    probes.append(p)
-                    if supported(p, ent_text):
-                        total_supported += 1
-                    else:
-                        misses.append(p)
-                    if supported(p, span_text):
-                        span_supported += 1
-            total_probes += len(probes)
-            coverage = round(1 - len(misses) / len(probes), 4) if probes else None
+                probes.extend(generate_probes(engine, chunk))
+            # ENTITY/PROPERTY support - the certificate metric
+            cert = document_certificate(probes, ent_text)
+            span_supported = sum(supported(p, span_text) for p in probes)
+            certs.append(cert)
             rec = {
                 "doc": doc["id"],
                 "name": doc["name"],
-                "probes": len(probes),
-                "coverage": coverage,  # ENTITY/PROPERTY support - the certificate metric
-                "span_coverage": round(span_supported / len(probes), 4) if probes else None,
-                "misses": misses,
+                "probes": cert["probes"],
+                "coverage": cert["coverage"],
+                "span_coverage": (
+                    round(span_supported / cert["probes"], 4) if cert["probes"] else None
+                ),
+                "misses": cert["missing_spans"],
             }
             with out_path.open("a") as fh:
                 fh.write(json.dumps(rec) + "\n")
-            print(f"[{i+1}/{len(docs)}] {doc['name']}: coverage={coverage} span_cov={rec['span_coverage']} misses={len(misses)}", flush=True)
-        overall = round(total_supported / total_probes, 4) if total_probes else None
-        print(f"H389 AUDIT COMPLETE: overall coverage {overall} ({total_supported}/{total_probes}) -> {out_path}", flush=True)
+            print(
+                f"[{i + 1}/{len(docs)}] {doc['name']}: coverage={cert['coverage']} "
+                f"span_cov={rec['span_coverage']} misses={len(cert['missing_spans'])}",
+                flush=True,
+            )
+        summary = corpus_summary(certs)
+        print(
+            f"H389 AUDIT COMPLETE: overall coverage {summary['coverage']} "
+            f"({summary['supported']}/{summary['probes']}) -> {out_path}",
+            flush=True,
+        )
 
 
 if __name__ == "__main__":

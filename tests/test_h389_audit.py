@@ -4,7 +4,8 @@ import importlib.util
 from pathlib import Path
 
 spec = importlib.util.spec_from_file_location(
-    "h389", Path(__file__).parent.parent / "scripts" / "r39_h389_coverage_audit.py"
+    "h389",
+    Path(__file__).parent.parent / "scripts" / "experiments" / "r39_h389_coverage_audit.py",
 )
 h389 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(h389)
