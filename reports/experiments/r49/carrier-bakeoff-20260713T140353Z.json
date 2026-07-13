@@ -1,0 +1,455 @@
+{
+ "summary": {
+  "run_id": "20260713T140353Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "n_gold": 12,
+  "baseline_labeled_correct": 3,
+  "h564_featscore_correct": 5,
+  "h569_anchor_correct": 5,
+  "h568_llm_correct": 10,
+  "h565": {
+   "carrier_cases": 8,
+   "gold_in_lower_degree_half": 0,
+   "gold_strict_highest": 0,
+   "deviation": "computed over the 8 carrier-bearing cases; 4 artifact rows have no gold carrier"
+  },
+  "h567": {
+   "artifact_rows_in_gold": 4,
+   "gate_flags_on_fallback": 4,
+   "false_abstains_on_name_match": 0,
+   "false_abstain_facts": []
+  },
+  "h566": "NOT RUN - fastcoref/spacy absent (dependency gap); gold mechanism count: 7/12 anaphora",
+  "bars": {
+   "h564": "CONFIRMED >= 9/12 and >= baseline+3; KILLED <= baseline+1",
+   "h565": "CONFIRMED lower-half >= 8/12 and strict-highest <= 3/12; KILLED highest >= 6/12",
+   "h567": "CONFIRMED >= 3 artifacts flagged, 0 false-abstains; KILLED < 2 or >= 2 false-abstains",
+   "h568": "CONFIRMED >= 11/12 and >= featscore+2; KILLED <= featscore",
+   "h569": "CONFIRMED >= 10/12 anchored; KILLED > 4/12 with no alias in span"
+  }
+ },
+ "cases": [
+  {
+   "fact": "This is a list.",
+   "gold": null,
+   "class": "ARTIFACT_ABSTAIN",
+   "n_candidates": 10,
+   "feat_pick": "List of Croatian inventors",
+   "feat_ok": false,
+   "anchor_pick": "List of Croatian inventors",
+   "anchor_ok": false,
+   "llm_pick": null,
+   "llm_ok": true,
+   "gold_degree_rank": null,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "List of Croatian inventors",
+     "deg": 7,
+     "name_in_win": true,
+     "cos": 0.139,
+     "score": 2.347
+    },
+    {
+     "name": "Rade Kon\u010dar",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.085,
+     "score": 0.155
+    },
+    {
+     "name": "Nikola Tesla",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.082,
+     "score": 0.151
+    }
+   ]
+  },
+  {
+   "fact": "This is a list of inventors.",
+   "gold": null,
+   "class": "ARTIFACT_ABSTAIN",
+   "n_candidates": 10,
+   "feat_pick": "List of Croatian inventors",
+   "feat_ok": false,
+   "anchor_pick": "List of Croatian inventors",
+   "anchor_ok": false,
+   "llm_pick": null,
+   "llm_ok": true,
+   "gold_degree_rank": null,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "List of Croatian inventors",
+     "deg": 7,
+     "name_in_win": true,
+     "cos": 0.407,
+     "score": 2.615
+    },
+    {
+     "name": "Slavoljub Penkala",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.145,
+     "score": 0.215
+    },
+    {
+     "name": "Josip Belu\u0161i\u0107",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.137,
+     "score": 0.206
+    }
+   ]
+  },
+  {
+   "fact": "This is a list of Croatian inventors.",
+   "gold": null,
+   "class": "ARTIFACT_ABSTAIN",
+   "n_candidates": 10,
+   "feat_pick": "List of Croatian inventors",
+   "feat_ok": false,
+   "anchor_pick": "List of Croatian inventors",
+   "anchor_ok": false,
+   "llm_pick": null,
+   "llm_ok": true,
+   "gold_degree_rank": null,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "List of Croatian inventors",
+     "deg": 7,
+     "name_in_win": true,
+     "cos": 0.838,
+     "score": 3.046
+    },
+    {
+     "name": "Andrija Mohorovi\u010di\u0107",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.199,
+     "score": 0.269
+    },
+    {
+     "name": "Josip Belu\u0161i\u0107",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.188,
+     "score": 0.258
+    }
+   ]
+  },
+  {
+   "fact": "In the Room may refer to",
+   "gold": null,
+   "class": "ARTIFACT_ABSTAIN",
+   "n_candidates": 5,
+   "feat_pick": "In the Room (song)",
+   "feat_ok": false,
+   "anchor_pick": null,
+   "anchor_ok": true,
+   "llm_pick": null,
+   "llm_ok": true,
+   "gold_degree_rank": null,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "In the Room (song)",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.789,
+     "score": 0.859
+    },
+    {
+     "name": "In the Room (2015 documentary film)",
+     "deg": 2,
+     "name_in_win": false,
+     "cos": 0.733,
+     "score": 0.843
+    },
+    {
+     "name": "In the Room (novel)",
+     "deg": 1,
+     "name_in_win": false,
+     "cos": 0.748,
+     "score": 0.817
+    }
+   ]
+  },
+  {
+   "fact": "It is a sequel to 2011",
+   "gold": "Wrong Turn 5: Bloodlines",
+   "class": "ANAPHORA",
+   "n_candidates": 7,
+   "feat_pick": "Wrong Turn 5: Bloodlines",
+   "feat_ok": true,
+   "anchor_pick": "Wrong Turn 5: Bloodlines",
+   "anchor_ok": true,
+   "llm_pick": "Wrong Turn 5: Bloodlines",
+   "llm_ok": true,
+   "gold_degree_rank": 1,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "Wrong Turn 5: Bloodlines",
+     "deg": 11,
+     "name_in_win": true,
+     "cos": 0.15,
+     "score": 2.399
+    },
+    {
+     "name": "Declan O'Brien",
+     "deg": 18,
+     "name_in_win": false,
+     "cos": 0.067,
+     "score": 0.361
+    },
+    {
+     "name": "Wrong Turn (franchise)",
+     "deg": 6,
+     "name_in_win": false,
+     "cos": 0.133,
+     "score": 0.328
+    }
+   ]
+  },
+  {
+   "fact": "sequel to 2011, leading the events of the 2003 film Wrong Turn",
+   "gold": "Wrong Turn 5: Bloodlines",
+   "class": "ANAPHORA",
+   "n_candidates": 7,
+   "feat_pick": "Wrong Turn 5: Bloodlines",
+   "feat_ok": true,
+   "anchor_pick": "Wrong Turn 5: Bloodlines",
+   "anchor_ok": true,
+   "llm_pick": "Wrong Turn 5: Bloodlines",
+   "llm_ok": true,
+   "gold_degree_rank": 1,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "Wrong Turn 5: Bloodlines",
+     "deg": 11,
+     "name_in_win": true,
+     "cos": 0.382,
+     "score": 2.631
+    },
+    {
+     "name": "Wrong Turn (2003 film)",
+     "deg": 4,
+     "name_in_win": false,
+     "cos": 0.653,
+     "score": 0.813
+    },
+    {
+     "name": "Wrong Turn (franchise)",
+     "deg": 6,
+     "name_in_win": false,
+     "cos": 0.598,
+     "score": 0.793
+    }
+   ]
+  },
+  {
+   "fact": "It is the fifth installment in the Wrong Turn franchise",
+   "gold": "Wrong Turn 5: Bloodlines",
+   "class": "ANAPHORA",
+   "n_candidates": 7,
+   "feat_pick": "Wrong Turn 5: Bloodlines",
+   "feat_ok": true,
+   "anchor_pick": "Wrong Turn 5: Bloodlines",
+   "anchor_ok": true,
+   "llm_pick": "Wrong Turn 5: Bloodlines",
+   "llm_ok": true,
+   "gold_degree_rank": 1,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "Wrong Turn 5: Bloodlines",
+     "deg": 11,
+     "name_in_win": true,
+     "cos": 0.588,
+     "score": 2.836
+    },
+    {
+     "name": "Wrong Turn (franchise)",
+     "deg": 6,
+     "name_in_win": false,
+     "cos": 0.736,
+     "score": 0.93
+    },
+    {
+     "name": "Wrong Turn (2003 film)",
+     "deg": 4,
+     "name_in_win": false,
+     "cos": 0.723,
+     "score": 0.884
+    }
+   ]
+  },
+  {
+   "fact": "One of which was a varsity match.",
+   "gold": "John Allen (Oxford University cricketer)",
+   "class": "ANAPHORA",
+   "n_candidates": 7,
+   "feat_pick": "Oxford University",
+   "feat_ok": false,
+   "anchor_pick": "Oxford University",
+   "anchor_ok": false,
+   "llm_pick": "John Allen",
+   "llm_ok": false,
+   "gold_degree_rank": null,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "Oxford University",
+     "deg": 5,
+     "name_in_win": true,
+     "cos": 0.099,
+     "score": 2.278
+    },
+    {
+     "name": "John Allen",
+     "deg": 3,
+     "name_in_win": true,
+     "cos": 0.083,
+     "score": 2.222
+    },
+    {
+     "name": "Australia",
+     "deg": 41,
+     "name_in_win": false,
+     "cos": 0.029,
+     "score": 0.402
+    }
+   ]
+  },
+  {
+   "fact": "One of which was a varsity match",
+   "gold": "John Allen (Oxford University cricketer)",
+   "class": "ANAPHORA",
+   "n_candidates": 7,
+   "feat_pick": "Oxford University",
+   "feat_ok": false,
+   "anchor_pick": "Oxford University",
+   "anchor_ok": false,
+   "llm_pick": "John Allen",
+   "llm_ok": false,
+   "gold_degree_rank": null,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "Oxford University",
+     "deg": 5,
+     "name_in_win": true,
+     "cos": 0.095,
+     "score": 2.274
+    },
+    {
+     "name": "John Allen",
+     "deg": 3,
+     "name_in_win": true,
+     "cos": 0.08,
+     "score": 2.219
+    },
+    {
+     "name": "Australia",
+     "deg": 41,
+     "name_in_win": false,
+     "cos": 0.019,
+     "score": 0.392
+    }
+   ]
+  },
+  {
+   "fact": "The movie has no relation to the use of the phrase \"Night of Nights\" for the nig",
+   "gold": "The Night of Nights",
+   "class": "ANAPHORA_DOCTITLE",
+   "n_candidates": 13,
+   "feat_pick": "The Night of Nights",
+   "feat_ok": true,
+   "anchor_pick": "Academy Awards ceremony",
+   "anchor_ok": false,
+   "llm_pick": "The Night of Nights",
+   "llm_ok": true,
+   "gold_degree_rank": 1,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "The Night of Nights",
+     "deg": 14,
+     "name_in_win": true,
+     "cos": 0.428,
+     "score": 2.699
+    },
+    {
+     "name": "Academy Awards ceremony",
+     "deg": 1,
+     "name_in_win": true,
+     "cos": 0.157,
+     "score": 2.226
+    },
+    {
+     "name": "Paramount Pictures",
+     "deg": 16,
+     "name_in_win": false,
+     "cos": 0.108,
+     "score": 0.391
+    }
+   ]
+  },
+  {
+   "fact": "The film was not intended to form part of the ongoing story lines of the televis",
+   "gold": "Dr. Who and the Daleks",
+   "class": "ANAPHORA_DOCTITLE",
+   "n_candidates": 20,
+   "feat_pick": "Dr. Who and the Daleks",
+   "feat_ok": true,
+   "anchor_pick": "Dr. Who and the Daleks",
+   "anchor_ok": true,
+   "llm_pick": "Dr. Who and the Daleks",
+   "llm_ok": true,
+   "gold_degree_rank": 1,
+   "gold_in_lower_half": false,
+   "top3_by_score": [
+    {
+     "name": "Dr. Who and the Daleks",
+     "deg": 27,
+     "name_in_win": true,
+     "cos": 0.115,
+     "score": 2.448
+    },
+    {
+     "name": "The Daleks",
+     "deg": 8,
+     "name_in_win": true,
+     "cos": 0.199,
+     "score": 2.418
+    },
+    {
+     "name": "Daleks",
+     "deg": 16,
+     "name_in_win": true,
+     "cos": 0.074,
+     "score": 2.358
+    }
+   ]
+  },
+  {
+   "fact": "The Duan says that Domnall reigned for twenty\u2011 four years.",
+   "gold": "Domnall mac Caustant\u00edn",
+   "class": "PARTIAL_NAME",
+   "n_candidates": 0,
+   "feat_pick": null,
+   "feat_ok": false,
+   "anchor_pick": null,
+   "anchor_ok": false,
+   "llm_pick": "Domnall mac Caustant\u00edn",
+   "llm_ok": true,
+   "gold_degree_rank": null,
+   "gold_in_lower_half": false,
+   "top3_by_score": []
+  }
+ ]
+}

@@ -1,0 +1,145 @@
+{
+ "created": "20260713T104357Z",
+ "method": "main-session hand-adjudication from source spans (2wiki pile files via h389 doc->row mapping; Domnall doc located by text search - absent from both h389 coverage artifacts)",
+ "summary": {
+  "n": 12,
+  "labeled_correct": 3,
+  "artifacts_abstain": 4,
+  "anaphora": 7,
+  "partial_name": 1
+ },
+ "cases": [
+  {
+   "fact": "This is a list.",
+   "doc": "d_00f5195e87edfab1",
+   "doc_title": "List of Croatian inventors",
+   "labeled_carrier": "Andrija Mohorovi\u010di\u0107",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "labeled_correct": false,
+   "span": "This is a list of Croatian inventors.",
+   "rationale": "page boilerplate describes the list page itself; no domain entity legitimately carries it"
+  },
+  {
+   "fact": "This is a list of inventors.",
+   "doc": "d_00f5195e87edfab1",
+   "doc_title": "List of Croatian inventors",
+   "labeled_carrier": "Andrija Mohorovi\u010di\u0107",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "labeled_correct": false,
+   "span": "This is a list of Croatian inventors.",
+   "rationale": "same boilerplate variant"
+  },
+  {
+   "fact": "This is a list of Croatian inventors.",
+   "doc": "d_00f5195e87edfab1",
+   "doc_title": "List of Croatian inventors",
+   "labeled_carrier": "Andrija Mohorovi\u010di\u0107",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "labeled_correct": false,
+   "span": "This is a list of Croatian inventors.",
+   "rationale": "same boilerplate variant"
+  },
+  {
+   "fact": "In the Room may refer to",
+   "doc": "d_032ff697ea46c456",
+   "doc_title": "In the Room",
+   "labeled_carrier": "In the Room (film)",
+   "gold_carrier": null,
+   "gold_class": "ARTIFACT_ABSTAIN",
+   "labeled_correct": false,
+   "span": "In the Room may refer to:",
+   "rationale": "disambiguation-page boilerplate; attaching it to the film asserts nothing about the film"
+  },
+  {
+   "fact": "It is a sequel to 2011",
+   "doc": "d_02b1acd7031134e7",
+   "doc_title": "Wrong Turn 5: Bloodlines",
+   "labeled_carrier": "Wrong Turn (franchise)",
+   "gold_carrier": "Wrong Turn 5: Bloodlines",
+   "gold_class": "ANAPHORA",
+   "labeled_correct": false,
+   "span": "It is the fifth installment in the\" Wrong Turn\" franchise and a sequel to( 2011), leading the events of the 2003 film\" Wrong Turn\".",
+   "rationale": "'It' = the film the doc describes, not the franchise hub"
+  },
+  {
+   "fact": "sequel to 2011, leading the events of the 2003 film Wrong Turn",
+   "doc": "d_02b1acd7031134e7",
+   "doc_title": "Wrong Turn 5: Bloodlines",
+   "labeled_carrier": "Wrong Turn (franchise)",
+   "gold_carrier": "Wrong Turn 5: Bloodlines",
+   "gold_class": "ANAPHORA",
+   "labeled_correct": false,
+   "span": "It is the fifth installment in the\" Wrong Turn\" franchise and a sequel to( 2011)...",
+   "rationale": "fragment of the same sentence; subject is the film"
+  },
+  {
+   "fact": "It is the fifth installment in the Wrong Turn franchise",
+   "doc": "d_02b1acd7031134e7",
+   "doc_title": "Wrong Turn 5: Bloodlines",
+   "labeled_carrier": "Wrong Turn (franchise)",
+   "gold_carrier": "Wrong Turn 5: Bloodlines",
+   "gold_class": "ANAPHORA",
+   "labeled_correct": false,
+   "span": "It is the fifth installment in the\" Wrong Turn\" franchise...",
+   "rationale": "'It' = the film; the franchise is the object of the relation, not the carrier"
+  },
+  {
+   "fact": "One of which was a varsity match.",
+   "doc": "d_064c901089566d88",
+   "doc_title": "John Allen (Oxford University cricketer)",
+   "labeled_carrier": "Oxford University",
+   "gold_carrier": "John Allen (Oxford University cricketer)",
+   "gold_class": "ANAPHORA",
+   "labeled_correct": false,
+   "span": "Both his first- class games were for Oxford University, one of which was a varsity match.",
+   "rationale": "'one of which' = one of Allen's first-class games; the fact describes Allen's career, not the university"
+  },
+  {
+   "fact": "One of which was a varsity match",
+   "doc": "d_064c901089566d88",
+   "doc_title": "John Allen (Oxford University cricketer)",
+   "labeled_carrier": "Oxford University",
+   "gold_carrier": "John Allen (Oxford University cricketer)",
+   "gold_class": "ANAPHORA",
+   "labeled_correct": false,
+   "span": "Both his first- class games were for Oxford University, one of which was a varsity match.",
+   "rationale": "duplicate wording of the previous case"
+  },
+  {
+   "fact": "The movie has no relation to the use of the phrase \"Night of Nights\" for the night of the Academy Awards",
+   "doc": "d_057c758da90b75fd",
+   "doc_title": "The Night of Nights",
+   "labeled_carrier": "The Night of Nights",
+   "gold_carrier": "The Night of Nights",
+   "gold_class": "ANAPHORA_DOCTITLE",
+   "labeled_correct": true,
+   "span": "The movie has no relation to the use of the phrase\" Night of Nights\" for the night of the Academy Awards ceremony...",
+   "rationale": "'The movie' = doc-title film; heuristic landed right because the doc-title entity was also largest"
+  },
+  {
+   "fact": "The film was not intended to form part of the ongoing story lines of the television series",
+   "doc": "d_06355c7e239866de",
+   "doc_title": "Dr. Who and the Daleks",
+   "labeled_carrier": "Dr. Who and the Daleks",
+   "gold_carrier": "Dr. Who and the Daleks",
+   "gold_class": "ANAPHORA_DOCTITLE",
+   "labeled_correct": true,
+   "span": "The film was not intended to form part of the ongoing story- lines of the television series.",
+   "rationale": "'The film' = doc-title film; correct by coincidence of largest = doc-title"
+  },
+  {
+   "fact": "The Duan says that Domnall reigned for twenty\u2011 four years.",
+   "doc": "d_0377fb42b840d78c",
+   "doc_title": "Domnall mac Caustant\u00edn",
+   "labeled_carrier": "Domnall mac Caustant\u00edn",
+   "gold_carrier": "Domnall mac Caustant\u00edn",
+   "gold_class": "PARTIAL_NAME",
+   "labeled_correct": true,
+   "span": "The Duan says that Domnall reigned for twenty- four years and places him between\" Aodh\", \u00c1ed Find, and the two Conalls...",
+   "rationale": "'Domnall' is a prefix variant of the full entity name; source doc 2wiki-full-rows1000-6118.json#row164"
+  }
+ ]
+}

@@ -5169,7 +5169,7 @@ Fence: R40 owns the query-time retrieval bridge - H576 deliberately contests the
 - **Prediction** - >= 2 logged small-delta verdicts (|delta| < band half-width) re-classify to INCONCLUSIVE
 - **Acceptance bar** - CONFIRMED if >= 2 re-classify (each superseded by one-line back-reference, append-only); KILLED if zero change (informal bars were adequate; re-pricing is cosmetic)
 - **Experiment** - FREE audit over the experiments log + adjudicated JSONs; `reports/experiments/r49/h542-reprice-*.json`
-- **Status** - REGISTERED
+- **Status** - **EXECUTED 2026-07-13, CONFIRMED** (main-session audit against the H540 band table; no new artifact - the re-pricings below ARE the deliverable, append-only back-references). TWO re-classifications: (1) **H484 pass-2 certificate delta (84.0 -> 88.1, +4.1pp) formally INCONCLUSIVE** - certificate probes are regenerated between runs (unpaired) at ~25-probe scale where the H540 band is +-19.3pp; R45's own inconclusive flag is now band-grounded. (2) **R45 repair-loop iteration-level deltas INCONCLUSIVE** - the interior steps of the coverage trajectory (82.2 -> 84.0 -> 85.1 -> 88.9 -> 84.0: +1.8/+1.1/+3.8/-4.9pp) are ALL inside the unpaired band, including the -4.9pp "regression" that fired the stall rule - the loop was paused on noise; only the aggregate baseline-to-plateau delta (62.7 -> ~85-89, +22-26pp) clears the band, so the R45 headline (hand repair reaches ~85%) STANDS while its iteration narrative does not. Third finding, no re-classification needed: REG-1 was already demoted (invalid criterion), and H540 adds that any single 15-probe cycle transition carries +-24.9pp - per-question tracking (the ledger's current form) is the only valid regression instrument at cycle scale. EXECUTION FLAG for H552: its registered REG-1 lead-time target is a demoted event - H552 must re-anchor on a valid per-question regression (REG-2 class) or on injected leaks before running
 
 ### R49-H543 G-theory variance decomposition + D-study probe sizing per rung
 
@@ -5273,7 +5273,7 @@ Fence: R40 owns the query-time retrieval bridge - H576 deliberately contests the
 - **Prediction** - cert-alone leads; structural adds < 2pp
 - **Acceptance bar** - CONFIRMED (structural five demoted to post-hoc) if cert-alone leads and structural adds < 2pp; KILLED if any structural metric fires earlier or cheaper on REG-1 (that metric earns an ingest seat)
 - **Experiment** - FREE replay aligned to `progressive-probe-trajectory.jsonl`; `reports/experiments/r49/h552-cert-lead-*.json`
-- **Status** - REGISTERED
+- **Status** - REGISTERED; re-anchor note (H542, 2026-07-13): REG-1 is a demoted event (invalid criterion) - use a valid per-question regression (REG-2 class) or injected leaks as the lead-time target
 
 ### R49-H553 The shipped CUSUM transfers to the Forman-Ricci channel and catches topology-only drift
 
