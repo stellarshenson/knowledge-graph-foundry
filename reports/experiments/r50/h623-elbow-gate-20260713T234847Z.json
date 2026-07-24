@@ -1,0 +1,659 @@
+{
+ "run_id": "20260713T234847Z",
+ "hypothesis": "R40x-H623",
+ "scoring_fence": "candidate-selection precision/recall (span->entity picks) + reset_region_union reachability, paired",
+ "params": {
+  "cand_floor": 0.6,
+  "cand_cap": 15,
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "alpha": 0.1,
+  "n_boot": 200,
+  "seed": 0,
+  "sigma_noise": 0.0892,
+  "blend": "max(exact1.0, containment, fuzzy_ratio, bm25_minmax); per-query min-max normalized",
+  "spline_smoothing": "s = 0.05*len(scores) (light); k=min(3,m-1); curvature ill-defined at m<=2 -> maxgap"
+ },
+ "n_spans": 282,
+ "n_clean_spans": 131,
+ "n_tie_spans": 151,
+ "n_gold_spans": 157,
+ "candidate_size_dist": {
+  "min": 1,
+  "median": 6.0,
+  "mean": 7.96,
+  "max": 15
+ },
+ "crc_calibration": {
+  "maxgap": {
+   "lambda": 0.0,
+   "alpha": 0.1,
+   "alpha_finite_sample": 0.0886,
+   "cal_recall_risk": 0.1341,
+   "hold_recall_risk": 0.0617,
+   "feasible": false,
+   "n_cal_gold_spans": 78,
+   "n_hold_gold_spans": 79
+  },
+  "kneedle": {
+   "lambda": 0.0,
+   "alpha": 0.1,
+   "alpha_finite_sample": 0.0886,
+   "cal_recall_risk": 0.1341,
+   "hold_recall_risk": 0.0741,
+   "feasible": false,
+   "n_cal_gold_spans": 78,
+   "n_hold_gold_spans": 79
+  },
+  "spline": {
+   "lambda": 0.0,
+   "alpha": 0.1,
+   "alpha_finite_sample": 0.0886,
+   "cal_recall_risk": 0.0976,
+   "hold_recall_risk": 0.0864,
+   "feasible": false,
+   "n_cal_gold_spans": 78,
+   "n_hold_gold_spans": 79
+  }
+ },
+ "detector_bakeoff": {
+  "detector:maxgap": {
+   "all": {
+    "precision": 0.7238,
+    "recall": 0.9383,
+    "tp": 76,
+    "fp": 29,
+    "gold_present": 81,
+    "gold_kept": 76,
+    "n_spans": 79
+   },
+   "clean": {
+    "precision": 0.8816,
+    "recall": 1.0,
+    "tp": 67,
+    "fp": 9,
+    "gold_present": 67,
+    "gold_kept": 67,
+    "n_spans": 67
+   },
+   "tie": {
+    "precision": 0.3103,
+    "recall": 0.6429,
+    "tp": 9,
+    "fp": 20,
+    "gold_present": 14,
+    "gold_kept": 9,
+    "n_spans": 12
+   },
+   "all_fullset": {
+    "all": {
+     "precision": 0.376,
+     "recall": 0.9018,
+     "tp": 147,
+     "fp": 244,
+     "gold_present": 163,
+     "gold_kept": 147,
+     "n_spans": 282
+    },
+    "clean": {
+     "precision": 0.8344,
+     "recall": 1.0,
+     "tp": 131,
+     "fp": 26,
+     "gold_present": 131,
+     "gold_kept": 131,
+     "n_spans": 131
+    },
+    "tie": {
+     "precision": 0.0684,
+     "recall": 0.5,
+     "tp": 16,
+     "fp": 218,
+     "gold_present": 32,
+     "gold_kept": 16,
+     "n_spans": 151
+    }
+   }
+  },
+  "detector:kneedle": {
+   "all": {
+    "precision": 0.7075,
+    "recall": 0.9259,
+    "tp": 75,
+    "fp": 31,
+    "gold_present": 81,
+    "gold_kept": 75,
+    "n_spans": 79
+   },
+   "clean": {
+    "precision": 0.859,
+    "recall": 1.0,
+    "tp": 67,
+    "fp": 11,
+    "gold_present": 67,
+    "gold_kept": 67,
+    "n_spans": 67
+   },
+   "tie": {
+    "precision": 0.2857,
+    "recall": 0.5714,
+    "tp": 8,
+    "fp": 20,
+    "gold_present": 14,
+    "gold_kept": 8,
+    "n_spans": 12
+   },
+   "all_fullset": {
+    "all": {
+     "precision": 0.1661,
+     "recall": 0.8957,
+     "tp": 146,
+     "fp": 733,
+     "gold_present": 163,
+     "gold_kept": 146,
+     "n_spans": 282
+    },
+    "clean": {
+     "precision": 0.8397,
+     "recall": 1.0,
+     "tp": 131,
+     "fp": 25,
+     "gold_present": 131,
+     "gold_kept": 131,
+     "n_spans": 131
+    },
+    "tie": {
+     "precision": 0.0207,
+     "recall": 0.4688,
+     "tp": 15,
+     "fp": 708,
+     "gold_present": 32,
+     "gold_kept": 15,
+     "n_spans": 151
+    }
+   }
+  },
+  "detector:spline": {
+   "all": {
+    "precision": 0.6435,
+    "recall": 0.9136,
+    "tp": 74,
+    "fp": 41,
+    "gold_present": 81,
+    "gold_kept": 74,
+    "n_spans": 79
+   },
+   "clean": {
+    "precision": 0.8072,
+    "recall": 1.0,
+    "tp": 67,
+    "fp": 16,
+    "gold_present": 67,
+    "gold_kept": 67,
+    "n_spans": 67
+   },
+   "tie": {
+    "precision": 0.2188,
+    "recall": 0.5,
+    "tp": 7,
+    "fp": 25,
+    "gold_present": 14,
+    "gold_kept": 7,
+    "n_spans": 12
+   },
+   "all_fullset": {
+    "all": {
+     "precision": 0.1347,
+     "recall": 0.908,
+     "tp": 148,
+     "fp": 951,
+     "gold_present": 163,
+     "gold_kept": 148,
+     "n_spans": 282
+    },
+    "clean": {
+     "precision": 0.7661,
+     "recall": 1.0,
+     "tp": 131,
+     "fp": 40,
+     "gold_present": 131,
+     "gold_kept": 131,
+     "n_spans": 131
+    },
+    "tie": {
+     "precision": 0.0183,
+     "recall": 0.5312,
+     "tp": 17,
+     "fp": 911,
+     "gold_present": 32,
+     "gold_kept": 17,
+     "n_spans": 151
+    }
+   }
+  },
+  "fixed_k1": {
+   "all": {
+    "precision": 0.8987,
+    "recall": 0.8765,
+    "tp": 71,
+    "fp": 8,
+    "gold_present": 81,
+    "gold_kept": 71,
+    "n_spans": 79
+   },
+   "clean": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "tp": 67,
+    "fp": 0,
+    "gold_present": 67,
+    "gold_kept": 67,
+    "n_spans": 67
+   },
+   "tie": {
+    "precision": 0.3333,
+    "recall": 0.2857,
+    "tp": 4,
+    "fp": 8,
+    "gold_present": 14,
+    "gold_kept": 4,
+    "n_spans": 12
+   },
+   "all_fullset": {
+    "all": {
+     "precision": 0.4965,
+     "recall": 0.8589,
+     "tp": 140,
+     "fp": 142,
+     "gold_present": 163,
+     "gold_kept": 140,
+     "n_spans": 282
+    },
+    "clean": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "tp": 131,
+     "fp": 0,
+     "gold_present": 131,
+     "gold_kept": 131,
+     "n_spans": 131
+    },
+    "tie": {
+     "precision": 0.0596,
+     "recall": 0.2812,
+     "tp": 9,
+     "fp": 142,
+     "gold_present": 32,
+     "gold_kept": 9,
+     "n_spans": 151
+    }
+   }
+  },
+  "fixed_k2": {
+   "all": {
+    "precision": 0.5101,
+    "recall": 0.9383,
+    "tp": 76,
+    "fp": 73,
+    "gold_present": 81,
+    "gold_kept": 76,
+    "n_spans": 79
+   },
+   "clean": {
+    "precision": 0.536,
+    "recall": 1.0,
+    "tp": 67,
+    "fp": 58,
+    "gold_present": 67,
+    "gold_kept": 67,
+    "n_spans": 67
+   },
+   "tie": {
+    "precision": 0.375,
+    "recall": 0.6429,
+    "tp": 9,
+    "fp": 15,
+    "gold_present": 14,
+    "gold_kept": 9,
+    "n_spans": 12
+   },
+   "all_fullset": {
+    "all": {
+     "precision": 0.2751,
+     "recall": 0.908,
+     "tp": 148,
+     "fp": 390,
+     "gold_present": 163,
+     "gold_kept": 148,
+     "n_spans": 282
+    },
+    "clean": {
+     "precision": 0.5458,
+     "recall": 1.0,
+     "tp": 131,
+     "fp": 109,
+     "gold_present": 131,
+     "gold_kept": 131,
+     "n_spans": 131
+    },
+    "tie": {
+     "precision": 0.057,
+     "recall": 0.5312,
+     "tp": 17,
+     "fp": 281,
+     "gold_present": 32,
+     "gold_kept": 17,
+     "n_spans": 151
+    }
+   }
+  },
+  "fixed_threshold@0.999": {
+   "all": {
+    "precision": 0.8929,
+    "recall": 0.9259,
+    "tp": 75,
+    "fp": 9,
+    "gold_present": 81,
+    "gold_kept": 75,
+    "n_spans": 79
+   },
+   "clean": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "tp": 67,
+    "fp": 0,
+    "gold_present": 67,
+    "gold_kept": 67,
+    "n_spans": 67
+   },
+   "tie": {
+    "precision": 0.4706,
+    "recall": 0.5714,
+    "tp": 8,
+    "fp": 9,
+    "gold_present": 14,
+    "gold_kept": 8,
+    "n_spans": 12
+   },
+   "all_fullset": {
+    "all": {
+     "precision": 0.4108,
+     "recall": 0.8896,
+     "tp": 145,
+     "fp": 208,
+     "gold_present": 163,
+     "gold_kept": 145,
+     "n_spans": 282
+    },
+    "clean": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "tp": 131,
+     "fp": 0,
+     "gold_present": 131,
+     "gold_kept": 131,
+     "n_spans": 131
+    },
+    "tie": {
+     "precision": 0.0631,
+     "recall": 0.4375,
+     "tp": 14,
+     "fp": 208,
+     "gold_present": 32,
+     "gold_kept": 14,
+     "n_spans": 151
+    }
+   }
+  }
+ },
+ "fixed_threshold_calibrated": 0.999,
+ "stability": {
+  "maxgap": {
+   "mean_cut_index_variance": 6.6883,
+   "median_cut_index_variance": 1.2486,
+   "mean_keptset_flip_rate": 0.3563,
+   "sigma": 0.0892,
+   "n_boot": 200
+  },
+  "kneedle": {
+   "mean_cut_index_variance": 2.693,
+   "median_cut_index_variance": 2.0065,
+   "mean_keptset_flip_rate": 0.6704,
+   "sigma": 0.0892,
+   "n_boot": 200
+  },
+  "spline": {
+   "mean_cut_index_variance": 12.7401,
+   "median_cut_index_variance": 2.8098,
+   "mean_keptset_flip_rate": 0.2314,
+   "sigma": 0.0892,
+   "n_boot": 200
+  }
+ },
+ "reachability_end_to_end": {
+  "detector:maxgap": {
+   "reach_all": 0.874,
+   "reach_bridge": 0.8617,
+   "n_all": 127,
+   "n_bridge": 94,
+   "total_anchors": 376
+  },
+  "detector:kneedle": {
+   "reach_all": 0.6693,
+   "reach_bridge": 0.5851,
+   "n_all": 127,
+   "n_bridge": 94,
+   "total_anchors": 849
+  },
+  "detector:spline": {
+   "reach_all": 0.6693,
+   "reach_bridge": 0.5851,
+   "n_all": 127,
+   "n_bridge": 94,
+   "total_anchors": 1069
+  },
+  "fixed_k1": {
+   "reach_all": 0.8661,
+   "reach_bridge": 0.8511,
+   "n_all": 127,
+   "n_bridge": 94,
+   "total_anchors": 279
+  },
+  "fixed_k2": {
+   "reach_all": 0.8031,
+   "reach_bridge": 0.766,
+   "n_all": 127,
+   "n_bridge": 94,
+   "total_anchors": 532
+  },
+  "all_exact_alias_H597ref": {
+   "reach_all": 0.8661,
+   "reach_bridge": 0.8511,
+   "n_all": 127,
+   "n_bridge": 94,
+   "total_anchors": 314
+  }
+ },
+ "dense16_adaptive_k_secondary": {
+  "adaptive": {
+   "maxgap": {
+    "reach_all": 0.8268,
+    "mean_k": 2.35,
+    "n": 127
+   },
+   "kneedle": {
+    "reach_all": 0.6063,
+    "mean_k": 2.02,
+    "n": 127
+   },
+   "spline": {
+    "reach_all": 0.5276,
+    "mean_k": 2.43,
+    "n": 127
+   }
+  },
+  "fixed16_ref": 0.622
+ },
+ "clauses": [
+  {
+   "clause": "elbow-gated gold-anchor precision >= best fixed-k + 10pp on the tie/collision subset at equal-or-better recall",
+   "predicted": ">= +10pp precision, recall not worse",
+   "measured": "best detector=maxgap: tie precision 0.3103 vs fixed-k best 0.375 (delta -6.47pp); tie recall 0.6429 vs 0.6429",
+   "holds": false
+  },
+  {
+   "clause": "clean-subset recall preserved (reset-purity) - elbow does not cut genuine anchors",
+   "predicted": "clean recall >= fixed-k1 clean recall",
+   "measured": "detector clean recall 1.0 vs fixed-k1 1.0",
+   "holds": true
+  },
+  {
+   "clause": "CRC alpha-feasible threshold exists on gold (else the mechanism dies at calibration - V3)",
+   "predicted": "feasible per detector",
+   "measured": {
+    "maxgap": false,
+    "kneedle": false,
+    "spline": false
+   },
+   "holds": false
+  },
+  {
+   "clause": "clean-subset end-to-end reachability unchanged vs the H597 reference",
+   "predicted": "no regression",
+   "measured": "detector:maxgap reach_all 0.874 vs H597ref 0.8661",
+   "holds": null
+  },
+  {
+   "clause": "STABILITY: elbow cut-index variance under noise - spline identifiable at tiny n?",
+   "predicted": "the arm that manufactures elbows from noise shows high variance",
+   "measured": {
+    "maxgap": 6.6883,
+    "kneedle": 2.693,
+    "spline": 12.7401
+   },
+   "holds": null
+  }
+ ],
+ "proposed_verdict": "KILLED (elbow <= best fixed-k on the tie subset - distributions too clean/chaotic for adaptivity)",
+ "artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h623-elbow-gate-20260713T234847Z.json",
+ "script": "scripts/experiments/r50_h623_elbow_battery.py",
+ "hidden_mechanism": {
+  "question": "Is there ANY score-distribution signal that could make elbow-gating win?",
+  "strength_separability_role_vs_clean": {
+   "maxgap": {
+    "auc_abstain_below_clean": 0.7553,
+    "abstain_strength_median": 0.5959,
+    "clean_strength_median": 0.9158,
+    "n_abstain": 125,
+    "n_clean": 131
+   },
+   "kneedle": {
+    "auc_abstain_below_clean": 0.5099,
+    "abstain_strength_median": 0.0929,
+    "clean_strength_median": 0.0,
+    "n_abstain": 125,
+    "n_clean": 131
+   },
+   "spline": {
+    "auc_abstain_below_clean": 0.8493,
+    "abstain_strength_median": 0.0632,
+    "clean_strength_median": 0.9444,
+    "n_abstain": 125,
+    "n_clean": 131
+   }
+  },
+  "uncertified_maxgap_frontier": [
+   {
+    "lambda": 0.0,
+    "tie_P": 0.0684,
+    "tie_R": 0.5,
+    "clean_R": 1.0,
+    "reach": 0.874,
+    "abstain_rate_tie": 0.0
+   },
+   {
+    "lambda": 0.05,
+    "tie_P": 0.069,
+    "tie_R": 0.5,
+    "clean_R": 1.0,
+    "reach": 0.874,
+    "abstain_rate_tie": 0.013
+   },
+   {
+    "lambda": 0.1,
+    "tie_P": 0.069,
+    "tie_R": 0.5,
+    "clean_R": 1.0,
+    "reach": 0.874,
+    "abstain_rate_tie": 0.013
+   },
+   {
+    "lambda": 0.15,
+    "tie_P": 0.0708,
+    "tie_R": 0.5,
+    "clean_R": 1.0,
+    "reach": 0.874,
+    "abstain_rate_tie": 0.02
+   },
+   {
+    "lambda": 0.2,
+    "tie_P": 0.0708,
+    "tie_R": 0.5,
+    "clean_R": 1.0,
+    "reach": 0.874,
+    "abstain_rate_tie": 0.02
+   },
+   {
+    "lambda": 0.22,
+    "tie_P": 0.0708,
+    "tie_R": 0.5,
+    "clean_R": 1.0,
+    "reach": 0.874,
+    "abstain_rate_tie": 0.02
+   },
+   {
+    "lambda": 0.25,
+    "tie_P": 0.0708,
+    "tie_R": 0.5,
+    "clean_R": 1.0,
+    "reach": 0.874,
+    "abstain_rate_tie": 0.02
+   },
+   {
+    "lambda": 0.3,
+    "tie_P": 0.0708,
+    "tie_R": 0.4688,
+    "clean_R": 0.9924,
+    "reach": 0.8819,
+    "abstain_rate_tie": 0.033
+   },
+   {
+    "lambda": 0.35,
+    "tie_P": 0.069,
+    "tie_R": 0.4375,
+    "clean_R": 0.9924,
+    "reach": 0.8819,
+    "abstain_rate_tie": 0.053
+   },
+   {
+    "lambda": 0.4,
+    "tie_P": 0.0684,
+    "tie_R": 0.4062,
+    "clean_R": 0.9542,
+    "reach": 0.8504,
+    "abstain_rate_tie": 0.099
+   }
+  ],
+  "fixed_k2_tie_ref": {
+   "P": 0.057,
+   "R": 0.5312
+  },
+  "findings": [
+   "SIGNAL EXISTS: role/ambiguous spans have lower elbow-strength than clean spans - spline curvature AUC 0.849 (abstain median 0.063 vs clean 0.944), max-gap AUC 0.755 (0.596 vs 0.916); kneedle does NOT separate (AUC 0.510). Score-shape does encode ambiguity.",
+   "BUT UNCASHABLE ON PRECISION: no uncertified lambda lifts tie-subset precision past fixed-k2 - best max-gap tie precision 0.071 vs fixed-k2 0.057 (+1.4pp, far below the +10pp bar); abstention never exceeds 10% before recall/reach collapse.",
+   "CRC-INFEASIBLE (decisive): the elbow CUT itself drops 13.4% of gold anchors at lambda=0 (cal) > finite-sample alpha 0.0886 - gold sits at rank>=2 behind off-gold exact-match hubs (H569 subject-vs-object) that the elbow keeps at rank 0. No alpha=0.10 operating point exists for ANY detector.",
+   "SPLINE PARADOX: the user's arm is the BEST ambiguity separator (AUC 0.849) yet the LEAST stable cut (cut-index variance 12.74, highest of the three) and catastrophic end-to-end (reach 0.669 - it keeps whole flat shelves). It sees the ambiguity but cannot place the cut; the perturbation variance confirms it manufactures cut locations from noise.",
+   "THE ONE REAL WIN (off-axis): as an adaptive-k SEEDER for the PPR reset (not a precision gate), max-gap reproduces the H619 hand-built role-word stoplist's reachability LEXICON-FREE - reach 0.874 (= H619 exactly), +0.79pp over fixed-k1 (0.8661), up to 0.882 at lambda 0.30 with 3.3% abstention and clean recall 0.992. Elbow-gating's value is adaptive seed-count on the H620 reachability axis, not candidate precision or certified abstention."
+  ]
+ }
+}

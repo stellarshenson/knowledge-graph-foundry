@@ -1,0 +1,901 @@
+{
+ "summary": {
+  "run_id": "20260713T232714Z",
+  "config": "config/experiments/config-bench-medium.yml",
+  "hypothesis": "R51-H606",
+  "render_cache": "tmp/results/r51_render_cache-20260713T231634Z.jsonl",
+  "n_cached": 6,
+  "n_scorable": 5,
+  "n_paired_ner_complete": 4,
+  "n_dropped_incomplete_ner": 1,
+  "gliner": {
+   "model": "urchade/gliner_multi-v2.1",
+   "device": "cuda",
+   "threshold": 0.5,
+   "labels": [
+    "person",
+    "location",
+    "organization",
+    "date",
+    "work of art",
+    "event",
+    "nationality",
+    "facility",
+    "product",
+    "law",
+    "language",
+    "misc"
+   ]
+  },
+  "budget_fraction": 0.5,
+  "natural_recall_all_scorable": 0.6191,
+  "recall_at_budget_all_scorable": {
+   "llm_natural": 0.6191,
+   "llm_anon": 0.6905,
+   "degree": 0.2857,
+   "pagerank": 0.2905,
+   "random": 0.6143
+  },
+  "recall_at_budget_paired": {
+   "llm_natural": 0.6667,
+   "llm_anon": 0.7917,
+   "degree": 0.25,
+   "pagerank": 0.2916,
+   "random": 0.625
+  },
+  "natural_minus_anon_paired": -0.125,
+  "small_model_arm": "DEFERRED_TO_H607 (no text-instruct <=8B cached; only VL/embedding models present -> new serving infra out of scope)",
+  "structural_note": "degree/pagerank/random computed from ORIGINAL entity names and block indices; bijective mask is identity-preserving so these are UNCHANGED natural-vs-anon by construction.",
+  "scoring_fence_note": "V5: LLM returns block INDICES; scored by ORIGINAL gold index and ORIGINAL token/budget costs, never anon surface.",
+  "substrate_note": "blocks from shared R51 render cache (built by r51_h608_oracles.py render-cache with the H570 functions, READ-ONLY Foundry.probe); verified vs H570 artifact: 132/132 ids, scorable 132/132, gold_blocks 86/86 identical.",
+  "clauses": [
+   {
+    "clause": "gpt-oss natural reproduces H570 0.687 (sanity, all scorable)",
+    "predicted": "~0.687",
+    "measured": 0.6191,
+    "holds": false
+   },
+   {
+    "clause": "gpt-oss natural->anon recall drop <= 3pp (CONFIRM bar)",
+    "predicted": "<=0.03",
+    "measured": -0.125,
+    "holds": true
+   },
+   {
+    "clause": "FLIP/KILL guard: drop >= 8pp (world knowledge load-bearing)",
+    "predicted": ">=0.08",
+    "measured": -0.125,
+    "holds": false
+   },
+   {
+    "clause": "structural baselines flat under mask (identity-preserving)",
+    "predicted": "unchanged",
+    "measured": {
+     "degree_paired": 0.25,
+     "pagerank_paired": 0.2916,
+     "random_paired": 0.625
+    },
+    "holds": true
+   }
+  ],
+  "proposed_verdict": "CONFIRMED",
+  "bars": {
+   "CONFIRMED": "gpt-oss natural->anon recall drop <= 3pp",
+   "FLIP_KILL": "gpt-oss drop >= 8pp while structural baselines stay flat"
+  }
+ },
+ "rows": [
+  {
+   "id": "83bf3b5a0bd911eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 688,
+   "base_pass": true,
+   "n_gold": 1,
+   "scorable": true,
+   "budget_tokens": 344,
+   "ner_complete": true,
+   "n_leaked_gold": 0,
+   "n_entities_masked": 26,
+   "recall": {
+    "llm_natural": 1.0,
+    "llm_anon": 1.0,
+    "degree": 0.0,
+    "pagerank": 0.0,
+    "random": 1.0
+   },
+   "llm_order_natural": [
+    0,
+    6,
+    3,
+    1,
+    2,
+    4,
+    5,
+    7,
+    8
+   ],
+   "llm_order_anon": [
+    0,
+    6,
+    1,
+    2,
+    3,
+    4,
+    5,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0
+   ],
+   "anon_map": [
+    {
+     "placeholder": "Person_1",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_2",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_3",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_4",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_1",
+     "label": "date"
+    },
+    {
+     "placeholder": "Place_1",
+     "label": "location"
+    },
+    {
+     "placeholder": "Person_5",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_6",
+     "label": "person"
+    },
+    {
+     "placeholder": "Place_2",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_3",
+     "label": "location"
+    },
+    {
+     "placeholder": "Date_2",
+     "label": "date"
+    },
+    {
+     "placeholder": "Date_3",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_7",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_4",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_8",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_9",
+     "label": "person"
+    },
+    {
+     "placeholder": "Org_1",
+     "label": "organization"
+    },
+    {
+     "placeholder": "Person_10",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_11",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_5",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_12",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_13",
+     "label": "person"
+    },
+    {
+     "placeholder": "Place_4",
+     "label": "location"
+    },
+    {
+     "placeholder": "Date_6",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_14",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_7",
+     "label": "date"
+    }
+   ]
+  },
+  {
+   "id": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 665,
+   "base_pass": true,
+   "n_gold": 2,
+   "scorable": true,
+   "budget_tokens": 332,
+   "ner_complete": true,
+   "n_leaked_gold": 0,
+   "n_entities_masked": 41,
+   "recall": {
+    "llm_natural": 0.5,
+    "llm_anon": 1.0,
+    "degree": 0.5,
+    "pagerank": 0.5,
+    "random": 0.5
+   },
+   "llm_order_natural": [
+    0,
+    7,
+    2,
+    5,
+    1,
+    8,
+    6,
+    3,
+    4
+   ],
+   "llm_order_anon": [
+    0,
+    8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "gold_blocks": [
+    0,
+    8
+   ],
+   "anon_map": [
+    {
+     "placeholder": "Work_1",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Work_2",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Work_3",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Date_1",
+     "label": "date"
+    },
+    {
+     "placeholder": "Org_1",
+     "label": "organization"
+    },
+    {
+     "placeholder": "Person_1",
+     "label": "person"
+    },
+    {
+     "placeholder": "Org_2",
+     "label": "organization"
+    },
+    {
+     "placeholder": "Person_2",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_3",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_4",
+     "label": "person"
+    },
+    {
+     "placeholder": "Work_4",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Person_5",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_2",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_6",
+     "label": "person"
+    },
+    {
+     "placeholder": "Work_5",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Work_6",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Date_3",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_7",
+     "label": "person"
+    },
+    {
+     "placeholder": "Language_1",
+     "label": "language"
+    },
+    {
+     "placeholder": "Work_7",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Language_2",
+     "label": "language"
+    },
+    {
+     "placeholder": "Work_8",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Date_4",
+     "label": "date"
+    },
+    {
+     "placeholder": "Org_3",
+     "label": "organization"
+    },
+    {
+     "placeholder": "Org_4",
+     "label": "organization"
+    },
+    {
+     "placeholder": "Person_8",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_9",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_10",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_11",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_12",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_5",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_13",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_14",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_15",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_16",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_17",
+     "label": "nationality"
+    },
+    {
+     "placeholder": "Person_18",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_19",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_20",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_21",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_22",
+     "label": "person"
+    }
+   ]
+  },
+  {
+   "id": "2dc690ba0bdc11eba7f7acde48001122",
+   "yesno": false,
+   "n_blocks": 12,
+   "total_tokens": 494,
+   "base_pass": false,
+   "n_gold": 0,
+   "scorable": false
+  },
+  {
+   "id": "462bb642099211ebbdb0ac1f6bf848b6",
+   "yesno": true,
+   "n_blocks": 10,
+   "total_tokens": 430,
+   "base_pass": true,
+   "n_gold": 3,
+   "scorable": true,
+   "budget_tokens": 215,
+   "ner_complete": true,
+   "n_leaked_gold": 0,
+   "n_entities_masked": 25,
+   "recall": {
+    "llm_natural": 0.6667,
+    "llm_anon": 0.6667,
+    "degree": 0.0,
+    "pagerank": 0.3333,
+    "random": 0.3333
+   },
+   "llm_order_natural": [
+    0,
+    8,
+    7,
+    2,
+    3,
+    4,
+    5,
+    6,
+    1,
+    9
+   ],
+   "llm_order_anon": [
+    8,
+    9,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "gold_blocks": [
+    0,
+    8,
+    9
+   ],
+   "anon_map": [
+    {
+     "placeholder": "Place_1",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_2",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_3",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_4",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_5",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_6",
+     "label": "location"
+    },
+    {
+     "placeholder": "Date_1",
+     "label": "date"
+    },
+    {
+     "placeholder": "Place_7",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_8",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_9",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_10",
+     "label": "location"
+    },
+    {
+     "placeholder": "Person_1",
+     "label": "person"
+    },
+    {
+     "placeholder": "Place_11",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_12",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_13",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_14",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_15",
+     "label": "location"
+    },
+    {
+     "placeholder": "Person_2",
+     "label": "person"
+    },
+    {
+     "placeholder": "Place_16",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_17",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_18",
+     "label": "location"
+    },
+    {
+     "placeholder": "Person_3",
+     "label": "nationality"
+    },
+    {
+     "placeholder": "Place_19",
+     "label": "location"
+    },
+    {
+     "placeholder": "Place_20",
+     "label": "location"
+    },
+    {
+     "placeholder": "Date_2",
+     "label": "date"
+    }
+   ]
+  },
+  {
+   "id": "a1cdb240085811ebbd5bac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 9,
+   "total_tokens": 649,
+   "base_pass": true,
+   "n_gold": 6,
+   "scorable": true,
+   "budget_tokens": 324,
+   "ner_complete": true,
+   "n_leaked_gold": 0,
+   "n_entities_masked": 22,
+   "recall": {
+    "llm_natural": 0.5,
+    "llm_anon": 0.5,
+    "degree": 0.5,
+    "pagerank": 0.3333,
+    "random": 0.6667
+   },
+   "llm_order_natural": [
+    3,
+    0,
+    1,
+    2,
+    5,
+    6,
+    4,
+    7,
+    8
+   ],
+   "llm_order_anon": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    5,
+    6,
+    7,
+    8
+   ],
+   "anon_map": [
+    {
+     "placeholder": "Person_1",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_2",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_1",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_3",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_4",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_5",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_6",
+     "label": "person"
+    },
+    {
+     "placeholder": "Work_1",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Person_7",
+     "label": "person"
+    },
+    {
+     "placeholder": "Language_1",
+     "label": "language"
+    },
+    {
+     "placeholder": "Person_8",
+     "label": "nationality"
+    },
+    {
+     "placeholder": "Person_9",
+     "label": "person"
+    },
+    {
+     "placeholder": "Language_2",
+     "label": "language"
+    },
+    {
+     "placeholder": "Person_10",
+     "label": "nationality"
+    },
+    {
+     "placeholder": "Place_1",
+     "label": "location"
+    },
+    {
+     "placeholder": "Date_2",
+     "label": "date"
+    },
+    {
+     "placeholder": "Date_3",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_11",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_12",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_13",
+     "label": "person"
+    },
+    {
+     "placeholder": "Work_2",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Person_14",
+     "label": "nationality"
+    }
+   ]
+  },
+  {
+   "id": "6718770a087311ebbd66ac1f6bf848b6",
+   "yesno": false,
+   "n_blocks": 11,
+   "total_tokens": 659,
+   "base_pass": true,
+   "n_gold": 7,
+   "scorable": true,
+   "budget_tokens": 329,
+   "ner_complete": false,
+   "n_leaked_gold": 3,
+   "n_entities_masked": 23,
+   "recall": {
+    "llm_natural": 0.4286,
+    "llm_anon": 0.2857,
+    "degree": 0.4286,
+    "pagerank": 0.2857,
+    "random": 0.5714
+   },
+   "llm_order_natural": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "llm_order_anon": [
+    10,
+    1,
+    0,
+    6,
+    3,
+    4,
+    5,
+    2,
+    9,
+    8,
+    7
+   ],
+   "gold_blocks": [
+    0,
+    2,
+    3,
+    7,
+    8,
+    9,
+    10
+   ],
+   "anon_map": [
+    {
+     "placeholder": "Person_1",
+     "label": "person"
+    },
+    {
+     "placeholder": "Work_1",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Date_1",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_2",
+     "label": "nationality"
+    },
+    {
+     "placeholder": "Person_3",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_4",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_5",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_6",
+     "label": "person"
+    },
+    {
+     "placeholder": "Date_2",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_7",
+     "label": "nationality"
+    },
+    {
+     "placeholder": "Person_8",
+     "label": "person"
+    },
+    {
+     "placeholder": "Place_1",
+     "label": "location"
+    },
+    {
+     "placeholder": "Person_9",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_10",
+     "label": "person"
+    },
+    {
+     "placeholder": "Work_2",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Person_11",
+     "label": "person"
+    },
+    {
+     "placeholder": "Person_12",
+     "label": "person"
+    },
+    {
+     "placeholder": "Work_3",
+     "label": "work of art"
+    },
+    {
+     "placeholder": "Date_3",
+     "label": "date"
+    },
+    {
+     "placeholder": "Person_13",
+     "label": "person"
+    },
+    {
+     "placeholder": "Org_1",
+     "label": "organization"
+    },
+    {
+     "placeholder": "Person_14",
+     "label": "person"
+    },
+    {
+     "placeholder": "Org_2",
+     "label": "organization"
+    }
+   ]
+  }
+ ]
+}

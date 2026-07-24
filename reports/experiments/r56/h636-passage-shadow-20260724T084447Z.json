@@ -1,0 +1,172 @@
+{
+ "hypothesis": "R56-H636",
+ "title": "passage-recall shadow metric (peer-comparability instrument)",
+ "run_id": "20260724T084447Z",
+ "interpreter": "/opt/conda/bin/python",
+ "neo4j_read_only": true,
+ "sanity": {
+  "dense16_carrier_recall": 0.6012,
+  "expected": 0.6012,
+  "reproduced": true,
+  "n_probes": 132,
+  "n_unique_carrier_nodes": 286
+ },
+ "neo4j_identity_verification": {
+  "target_uri": "bolt://172.21.0.6:7687",
+  "config_uri_stale": "bolt://172.19.0.9:7687 (old docker network)",
+  "env_uri_def4": "bolt://user-konrad.jelen-kgf-neo4j:7687",
+  "entity_count": 7575,
+  "entity_count_expected_cache": 6626,
+  "entity_count_matches_cache": false,
+  "reingest_note": "live graph carries 7575 entities vs the frozen r47 cache's 6,626 - a RE-INGEST superset of the same medium slice; node IDs mostly align (see retrieved_union_id_match). Seeds/recall come from the frozen cache; the provenance projection uses the live graph, joined on entity id.",
+  "retrieved_union_id_match": {
+   "union_nodes": 2569,
+   "id_present_with_chunk": 2282,
+   "absent": 287,
+   "frac": 0.8883,
+   "note": "nodes absent from the live re-ingest contribute NO passages -> the shadow recall below is a CONSERVATIVE lower bound"
+  }
+ },
+ "schema": {
+  "entity_count": 7575,
+  "n_labels": 221,
+  "KGFPassage_present_DEF16": false,
+  "provenance_labels_present": [
+   "Chunk",
+   "KGFDocument",
+   "Document"
+  ],
+  "chunk_count": 1173,
+  "kgfdocument_count": 1173,
+  "entity_mentioned_in_chunk_edges": 9958,
+  "provenance_path": "Entity-[:MENTIONED_IN]->Chunk-[:PART_OF]->KGFDocument",
+  "passage_unit": "Chunk (== one 2wiki article; chunk.text first line == article title; PASSAGE granularity)"
+ },
+ "def16_state": "KGFPassage label ABSENT (0 nodes) - confirmed. The Chunk label plays the passage role: Entity-[:MENTIONED_IN]->Chunk, chunk.text first line == 2wiki article title. Provenance IS present and sufficient; no DEF-16 repair blocks the instrument.",
+ "provenance_coverage_carrier_nodes": {
+  "carrier_ids_in_cache": 286,
+  "carrier_ids_present_in_graph": 278,
+  "carrier_ids_absent_from_reingest": 8,
+  "covered_of_present": 278,
+  "coverage_of_present_frac": 1.0,
+  "coverage_of_all_cache_carriers_frac": 0.972,
+  "definition": "carrier node has >=1 Entity-[:MENTIONED_IN]->Chunk provenance edge"
+ },
+ "gold_title_to_chunk_mapping": {
+  "gold_titles_total": 324,
+  "mapped_to_a_chunk": 324,
+  "frac": 1.0
+ },
+ "shadow_metric_peer_form": {
+  "granularity": "PASSAGE (Chunk == one 2wiki article) - directly comparable to HippoRAG passage-recall. NOT document-row granularity.",
+  "gold_passage_definition": "chunks whose first-line title matches a gold supporting_fact title; all gold titles map to exactly one chunk, no collisions",
+  "retrieved_passage_rule": "each retrieved node projected to its MENTIONED_IN chunks; passage score = max mentioning-node score; ranked high->low, deduped",
+  "arms": {
+   "dense": {
+    "n_probes_scored": 132,
+    "passage_recall_at_k_ANY_gold_in_topk": {
+     "5": 1.0,
+     "10": 1.0,
+     "20": 1.0
+    },
+    "passage_recall_at_k_ALL_golds_in_topk": {
+     "5": 0.447,
+     "10": 0.5,
+     "20": 0.5076
+    },
+    "mean_fraction_gold_passages_in_topk": {
+     "5": 0.7311,
+     "10": 0.7576,
+     "20": 0.7633
+    }
+   },
+   "rru": {
+    "n_probes_scored": 132,
+    "passage_recall_at_k_ANY_gold_in_topk": {
+     "5": 1.0,
+     "10": 1.0,
+     "20": 1.0
+    },
+    "passage_recall_at_k_ALL_golds_in_topk": {
+     "5": 0.447,
+     "10": 0.5152,
+     "20": 0.6288
+    },
+    "mean_fraction_gold_passages_in_topk": {
+     "5": 0.7311,
+     "10": 0.767,
+     "20": 0.8295
+    }
+   }
+  }
+ },
+ "shadow_metric_FLOOR_name_identity_prior_run": {
+  "note": "the earlier BLOCKED run (Neo4j down) reported a provenance-free name-identity FLOOR: dense any@5/10/20 = 0.8939, rru = 0.9394. It credited only title-entity nodes. The peer-form metric above uses real MENTIONED_IN provenance and is the deliverable; the floor is kept only as the delta baseline.",
+  "floor_dense_any_at_5_10_20": {
+   "5": 0.8939,
+   "10": 0.8939,
+   "20": 0.8939
+  },
+  "floor_rru_any_at_5_10_20": {
+   "5": 0.9394,
+   "10": 0.9394,
+   "20": 0.9394
+  }
+ },
+ "correlation_2x2_shadow_vs_join": {
+  "definition": {
+   "carrier_join_pass": "ALL gold carrier titles present as nodes inside dense@16 (strict family join)",
+   "shadow_pass": "ANY gold passage (chunk) in top-16 retrieved passages (MENTIONED_IN projection)",
+   "arm": "dense@16",
+   "k": 16
+  },
+  "join_pass__shadow_pass": 45,
+  "join_pass__shadow_fail": 0,
+  "join_fail__shadow_pass": 87,
+  "join_fail__shadow_fail": 0,
+  "shadow_pass_join_fail_pids": [
+   "2dc690ba0bdc11eba7f7acde48001122",
+   "a1cdb240085811ebbd5bac1f6bf848b6",
+   "6718770a087311ebbd66ac1f6bf848b6",
+   "551e024408a611ebbd7fac1f6bf848b6",
+   "33f51d7e0bde11eba7f7acde48001122",
+   "914b452c0bdc11eba7f7acde48001122",
+   "006d81bc0bde11eba7f7acde48001122",
+   "265daf200bdc11eba7f7acde48001122",
+   "1c0dd3b00bdc11eba7f7acde48001122",
+   "84b691d8086a11ebbd5fac1f6bf848b6",
+   "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "2d8f3ebe0bda11eba7f7acde48001122",
+   "86508dc60bdc11eba7f7acde48001122",
+   "5cc01ab60bb011ebab90acde48001122",
+   "7cb81afc0bd911eba7f7acde48001122",
+   "f34d188608cb11ebbd93ac1f6bf848b6",
+   "3a3c2efe0bdc11eba7f7acde48001122",
+   "9aa8008408de11ebbd9eac1f6bf848b6",
+   "0dfe41f60bdc11eba7f7acde48001122",
+   "3ce92df80bde11eba7f7acde48001122",
+   "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "b672c1ee0bdd11eba7f7acde48001122",
+   "01309e5008bd11ebbd89ac1f6bf848b6",
+   "c5a00e860bda11eba7f7acde48001122",
+   "02b62fce087211ebbd64ac1f6bf848b6"
+  ],
+  "join_pass_shadow_fail_pids": [],
+  "reading": "join_fail/shadow_pass counts how much harsher the carrier-join is than peer passage-recall; join_pass/shadow_fail counts mapping loss (a joined carrier whose passage fell outside top-k)"
+ },
+ "peer_form_headline": {
+  "passage_recall_at_5": {
+   "dense": 1.0,
+   "rru": 1.0
+  },
+  "passage_recall_at_10": {
+   "dense": 1.0,
+   "rru": 1.0
+  },
+  "carrier_join_headline_for_contrast": 0.6012,
+  "caveat_block": "GRANULARITY: this is PASSAGE-recall (Chunk == one 2wiki article), the same unit HippoRAG reports - side-by-side comparable. CAVEATS: (1) probe-level ANY-gold-in-top-k; report alongside ALL-golds and mean-fraction in the arms; (2) retrieved passages are a graph projection (node -> its MENTIONED_IN chunks), more generous than direct passage retrieval; (3) ~11% of retrieved nodes are absent from the live re-ingest and contribute no passages, so these figures are a conservative lower bound; (4) the carrier-join headline (0.6012, per-carrier-row) and the shadow (per-probe, passage) are DIFFERENT units - never blend them."
+ },
+ "verdict": "LANDS",
+ "verdict_reason": "carrier node->chunk provenance covers 97.2% of cache carriers (100.0% of those present in the re-ingest); peer-form passage-recall ships beside the join with the 2x2 stated",
+ "script": "scripts/experiments/r56_h636_passage_shadow.py"
+}

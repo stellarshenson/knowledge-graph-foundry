@@ -1,0 +1,837 @@
+{
+ "hypothesis": "R56-H635",
+ "run_id": "20260724T082828Z",
+ "join_version": "goldjoin-v3-20260724",
+ "supersedes": "goldjoin-v2-20260724",
+ "substrate": "medium 2wiki (6,626 entities), frozen H582 offline cache tmp/results/r47 + R50 H597 span cache; FREE numpy/scipy/stdlib",
+ "harness_sanity": {
+  "base_dense16_carrier_recall": {
+   "expected": 0.6012,
+   "measured": 0.6012,
+   "reproduces": true
+  },
+  "carrier_rows_total": {
+   "expected": 326,
+   "measured": 326,
+   "reproduces": true
+  },
+  "carrier_rows_in_graph": {
+   "expected": 288,
+   "measured": 288,
+   "reproduces": true
+  },
+  "carrier_rows_absent": {
+   "expected": 38,
+   "measured": 38,
+   "reproduces": true
+  },
+  "v2_accepted_total": {
+   "expected": 25,
+   "measured": 25,
+   "reproduces": true
+  },
+  "v2_pending_total": {
+   "expected": 4,
+   "measured": 4,
+   "reproduces": true
+  },
+  "v2_unresolved_total": {
+   "expected": 9,
+   "measured": 9,
+   "reproduces": true
+  },
+  "v2_new_recall_326": {
+   "expected": 0.6595,
+   "measured": 0.6595,
+   "reproduces": true
+  }
+ },
+ "harness_sanity_ok": true,
+ "gate_mapping": {
+  "FILM": "qualifier contains 'film' or 'movie' -> node type in {film,title,short}",
+  "SONG": "qualifier contains 'song' or 'single' -> node type in {song,single,album,title}",
+  "ALBUM": "qualifier contains 'album' -> node type in {album,title,song}",
+  "PERSON": "qualifier is a profession noun (actor/director/author/...), OR a noble-title phrase ('Duke of','Countess of','Dauphin ...'), OR a 'son/daughter/wife of ...' relation, OR a bare '(YYYY-YYYY)' lifespan -> node type in {person}",
+  "provenance": "FILM/SONG/ALBUM/profession-PERSON reuse R55-H632 verbatim; H635 adds noble-title, relation-of, and bare-lifespan -> PERSON"
+ },
+ "ladder_v2_gate_off": {
+  "per_rung": {
+   "r1": {
+    "resolved": 27,
+    "accepted": 23,
+    "pending": 4
+   },
+   "r3": {
+    "resolved": 1,
+    "accepted": 1,
+    "pending": 0
+   },
+   "r2": {
+    "resolved": 1,
+    "accepted": 1,
+    "pending": 0
+   }
+  },
+  "accepted_total": 25,
+  "pending_total": 4,
+  "unresolved_total": 9,
+  "pending_titles": [
+   "Aleksander Koniecpolski (1620\u20131659)",
+   "Ek Hi Bhool (1940 film)",
+   "Camille (1926 feature film)",
+   "Louis, Dauphin of France (son of Louis XV)"
+  ]
+ },
+ "ladder_v3_gate_on": {
+  "per_rung": {
+   "r1": {
+    "resolved": 25,
+    "accepted": 24,
+    "pending": 1
+   },
+   "r3": {
+    "resolved": 1,
+    "accepted": 1,
+    "pending": 0
+   },
+   "r2": {
+    "resolved": 1,
+    "accepted": 1,
+    "pending": 0
+   }
+  },
+  "accepted_total": 26,
+  "pending_total": 1,
+  "unresolved_total": 11,
+  "accepted_titles": [
+   "Agni (2004 film)",
+   "Am I Wrong (\u00c9tienne de Cr\u00e9cy song)",
+   "Atomised (film)",
+   "B Boy (song)",
+   "Bert Nelson (publisher)",
+   "Camille (1926 feature film)",
+   "Christine of Hesse-Kassel (1578\u20131658)",
+   "Christopher Newton (criminal)",
+   "Come Dance with Me (song)",
+   "Dancing in the Rain (film)",
+   "David Elliot (illustrator)",
+   "Fortunella (film)",
+   "George Pearson (filmmaker)",
+   "Haiducii (film)",
+   "Henri Lepage (director)",
+   "Illusions (1982 film)",
+   "Inherent Vice (film)",
+   "James Young (director)",
+   "Joanna Elisabeth of Holstein-Gottorp",
+   "John Ince (actor)",
+   "Merry-Go-Round (Ayumi Hamasaki song)",
+   "Qillqa (Melgar)",
+   "Richard Sale (director)",
+   "Track & Field News",
+   "William Duncan (actor)",
+   "Wiqu (Lima)"
+  ],
+  "pending_list": [
+   {
+    "gold_title": "Ek Hi Bhool (1940 film)",
+    "matched_name": "Ek Hi Bhool",
+    "rung": "r1",
+    "adjudication": "auto: year conflict - qualifier year(s) ['1940'] vs node descr year(s) ['1981'] ('Hindi remake of Mouna Geethangal released in the same year ('); likely a different same-name entity"
+   }
+  ],
+  "unresolved_list": [
+   "Aleksander Koniecpolski (1620\u20131659)",
+   "Beatrice I, Countess of Burgundy",
+   "Frederick I, Holy Roman Emperor",
+   "Holm J\u00f8lsen",
+   "Felix Schuster",
+   "John Ernest, Duke of Saxe-Eisenach",
+   "Abdul-Aziz bin Muhammad",
+   "Frances M. Vega",
+   "Jorge Ledezma",
+   "Margaret of Bavaria, Marchioness of Mantua",
+   "Louis, Dauphin of France (son of Louis XV)"
+  ],
+  "all_rows": [
+   {
+    "gold_title": "Aleksander Koniecpolski (1620\u20131659)",
+    "probe": "1c0dd3b00bdc11eba7f7acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [
+     {
+      "rung": "r1",
+      "idx": 895,
+      "name": "Aleksander Koniecpolski",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r2",
+      "idx": 895,
+      "name": "Aleksander Koniecpolski",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r3",
+      "idx": 895,
+      "name": "Aleksander Koniecpolski",
+      "reason": "reviewed_absent"
+     }
+    ],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "William Duncan (actor)",
+    "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 1717,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "William Duncan",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(actor)' resolved to node 'William Duncan' ['Person'] ('Actor, producer, writer, and director of film serials; Holly')"
+   },
+   {
+    "gold_title": "Beatrice I, Countess of Burgundy",
+    "probe": "3a3c2efe0bdc11eba7f7acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Frederick I, Holy Roman Emperor",
+    "probe": "3a3c2efe0bdc11eba7f7acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Come Dance with Me (song)",
+    "probe": "0dfe41f60bdc11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 1882,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Come Dance With Me",
+    "matched_types": [
+     "Album",
+     "Title"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (SONG); disambiguator '(song)' resolved to node 'Come Dance With Me' ['Album', 'Title'] ('Frank Sinatra's 1959 album that features the title track \"Co')"
+   },
+   {
+    "gold_title": "Holm J\u00f8lsen",
+    "probe": "3e3cd62a086211ebbd5dac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Inherent Vice (film)",
+    "probe": "b672c1ee0bdd11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 2109,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Inherent Vice",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(film)' resolved to node 'Inherent Vice' ['Film'] ('2014 American neo-noir period comedy-drama film written and ')"
+   },
+   {
+    "gold_title": "Felix Schuster",
+    "probe": "c9a769c608be11ebbd8aac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "B Boy (song)",
+    "probe": "50e4a65c0bde11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 2513,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "B Boy",
+    "matched_types": [
+     "Song"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (SONG); disambiguator '(song)' resolved to node 'B Boy' ['Song'] ('')"
+   },
+   {
+    "gold_title": "Illusions (1982 film)",
+    "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 2564,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Illusions",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(1982 film)' resolved to node 'Illusions' ['Film'] ('Illusions is a 1982 film written and directed by Julie Dash.')"
+   },
+   {
+    "gold_title": "John Ernest, Duke of Saxe-Eisenach",
+    "probe": "62a9cd640bb011ebab90acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Christine of Hesse-Kassel (1578\u20131658)",
+    "probe": "62a9cd640bb011ebab90acde48001122",
+    "rung": "r1",
+    "matched_idx": 2789,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Christine of Hesse-Kassel",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(1578\u20131658)' resolved to node 'Christine of Hesse-Kassel' ['Person'] ('German noblewoman, member of the House of Hesse, Duchess of ')"
+   },
+   {
+    "gold_title": "Agni (2004 film)",
+    "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 3110,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Agni",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(2004 film)' resolved to node 'Agni' ['Film'] ('2004 Bengali film')"
+   },
+   {
+    "gold_title": "Fortunella (film)",
+    "probe": "a9e322b20bdc11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 3411,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Fortunella",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(film)' resolved to node 'Fortunella' ['Film'] ('1958 Italian film directed by Eduardo De Filippo with script')"
+   },
+   {
+    "gold_title": "Joanna Elisabeth of Holstein-Gottorp",
+    "probe": "8f783c7a0bda11eba7f7acde48001122",
+    "rung": "r3",
+    "matched_idx": 3413,
+    "ratio": 0.986,
+    "reject_trace": [],
+    "matched_name": "Johanna Elisabeth of Holstein-Gottorp",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: difflib ratio 0.986 spelling variant 'Joanna Elisabeth of Holstein-Gottorp' -> 'Johanna Elisabeth of Holstein-Gottorp' (same entity)"
+   },
+   {
+    "gold_title": "Abdul-Aziz bin Muhammad",
+    "probe": "b642318c0bdd11eba7f7acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Christopher Newton (criminal)",
+    "probe": "037da85d08c611ebbd90ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 3724,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Christopher Newton",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(criminal)' resolved to node 'Christopher Newton' ['Person'] ('American murderer executed in Ohio in 2007 for the aggravate')"
+   },
+   {
+    "gold_title": "Frances M. Vega",
+    "probe": "037da85d08c611ebbd90ac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Dancing in the Rain (film)",
+    "probe": "e15d99380bdd11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 3777,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Dancing in the Rain",
+    "matched_types": [
+     "Film",
+     "Title"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(film)' resolved to node 'Dancing in the Rain' ['Film', 'Title'] ('1961 Slovene film directed by Bo\u0161tjan Hladnik, international')"
+   },
+   {
+    "gold_title": "John Ince (actor)",
+    "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4005,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "John Ince",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(actor)' resolved to node 'John Ince' ['Person'] ('American stage and motion pictures actor and film director, ')"
+   },
+   {
+    "gold_title": "Am I Wrong (\u00c9tienne de Cr\u00e9cy song)",
+    "probe": "d18fc6640bda11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 4062,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Am I Wrong",
+    "matched_types": [
+     "Song"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (SONG); disambiguator '(\u00e9tienne de cr\u00e9cy song)' resolved to node 'Am I Wrong' ['Song'] ('\"Am I Wrong\" is a 2000 house song by \u00c9tienne de Cr\u00e9cy, mainl')"
+   },
+   {
+    "gold_title": "Atomised (film)",
+    "probe": "a457e11c0bdb11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 4119,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Atomised",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(film)' resolved to node 'Atomised' ['Film'] ('2006 German film based on the novel \"Les Particules \u00e9l\u00e9menta')"
+   },
+   {
+    "gold_title": "David Elliot (illustrator)",
+    "probe": "9523a3df088911ebbd6eac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4314,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "David Elliot",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(illustrator)' resolved to node 'David Elliot' ['Person'] ('New Zealand illustrator and author')"
+   },
+   {
+    "gold_title": "Jorge Ledezma",
+    "probe": "fde95590089c11ebbd78ac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Henri Lepage (director)",
+    "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4605,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Henri Lepage",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(director)' resolved to node 'Henri Lepage' ['Person'] ('Henri Lepage (12 February 1898 \u2013 31 January 1970) was a Fren')"
+   },
+   {
+    "gold_title": "Ek Hi Bhool (1940 film)",
+    "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4961,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Ek Hi Bhool",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ADJUDICATE-PENDING",
+    "adjudication": "auto: year conflict - qualifier year(s) ['1940'] vs node descr year(s) ['1981'] ('Hindi remake of Mouna Geethangal released in the same year ('); likely a different same-name entity"
+   },
+   {
+    "gold_title": "George Pearson (filmmaker)",
+    "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4929,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "George Pearson",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(filmmaker)' resolved to node 'George Pearson' ['Person'] ('Pioneering English film director, producer and screenwriter,')"
+   },
+   {
+    "gold_title": "Margaret of Bavaria, Marchioness of Mantua",
+    "probe": "3f48bc400bb011ebab90acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [],
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Camille (1926 feature film)",
+    "probe": "3ab846860bde11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 5313,
+    "ratio": null,
+    "reject_trace": [
+     {
+      "rung": "r1",
+      "idx": 611,
+      "name": "Camille",
+      "types": [
+       "Person"
+      ],
+      "reason": "type_conflict",
+      "expected": "FILM"
+     }
+    ],
+    "matched_name": "Camille (1926 film)",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(1926 feature film)' resolved to node 'Camille (1926 film)' ['Film'] ('American silent film released in 1926, based on the novel/pl')"
+   },
+   {
+    "gold_title": "Track & Field News",
+    "probe": "8cdc97de0bdc11eba7f7acde48001122",
+    "rung": "r2",
+    "matched_idx": 5418,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Track& Field News",
+    "matched_types": [
+     "Organization"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: fold match 'Track & Field News' -> 'Track& Field News' (punctuation/spacing variant, same entity)"
+   },
+   {
+    "gold_title": "Bert Nelson (publisher)",
+    "probe": "8cdc97de0bdc11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 5441,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Bert Nelson",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(publisher)' resolved to node 'Bert Nelson' ['Person'] ('Co\u2011founder of Track & Field News and brother of Cordner Nels')"
+   },
+   {
+    "gold_title": "Merry-Go-Round (Ayumi Hamasaki song)",
+    "probe": "9bc54aba0bdd11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 5646,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Merry-Go-Round",
+    "matched_types": [
+     "Song"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (SONG); disambiguator '(ayumi hamasaki song)' resolved to node 'Merry-Go-Round' ['Song'] ('A song recorded by Japanese recording artist Ayumi Hamasaki ')"
+   },
+   {
+    "gold_title": "Wiqu (Lima)",
+    "probe": "689d225009b411ebbdb0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 5743,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Wiqu",
+    "matched_types": [
+     "Location"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (None); disambiguator '(lima)' resolved to node 'Wiqu' ['Location'] ('Mountain in the Paryaqaqa or Waruchiri mountain range in the')"
+   },
+   {
+    "gold_title": "Qillqa (Melgar)",
+    "probe": "689d225009b411ebbdb0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 5765,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Qillqa",
+    "matched_types": [
+     "Location"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (None); disambiguator '(melgar)' resolved to node 'Qillqa' ['Location'] ('Mountain located east of Machu Kunturi.')"
+   },
+   {
+    "gold_title": "Haiducii (film)",
+    "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 6136,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Haiducii",
+    "matched_types": [
+     "Film"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(film)' resolved to node 'Haiducii' ['Film'] ('')"
+   },
+   {
+    "gold_title": "Richard Sale (director)",
+    "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 6143,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "Richard Sale",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(director)' resolved to node 'Richard Sale' ['Person'] ('American screenwriter, pulp writer, and film director.')"
+   },
+   {
+    "gold_title": "James Young (director)",
+    "probe": "e2de58500bd911eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 6250,
+    "ratio": null,
+    "reject_trace": [],
+    "matched_name": "James Young",
+    "matched_types": [
+     "Person"
+    ],
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (PERSON); disambiguator '(director)' resolved to node 'James Young' ['Person'] ('American film director, actor and screenwriter of the silent')"
+   },
+   {
+    "gold_title": "Louis, Dauphin of France (son of Louis XV)",
+    "probe": "84c99c760bb011ebab90acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "reject_trace": [
+     {
+      "rung": "r1",
+      "idx": 6450,
+      "name": "Louis, Dauphin of France",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r2",
+      "idx": 6450,
+      "name": "Louis, Dauphin of France",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r3",
+      "idx": 6450,
+      "name": "Louis, Dauphin of France",
+      "reason": "reviewed_absent"
+     }
+    ],
+    "disposition": "unresolved",
+    "matched_name": null
+   }
+  ]
+ },
+ "pending_adjudication": {
+  "v2_pending_count": 4,
+  "resolved_to_correct_node": [
+   {
+    "gold_title": "Camille (1926 feature film)",
+    "v3_rung": "r1",
+    "v3_matched_name": "Camille (1926 film)",
+    "v3_matched_idx": 5313,
+    "v3_disposition": "ACCEPTED",
+    "adjudication": "accepted: gate kept type-consistent node (FILM); disambiguator '(1926 feature film)' resolved to node 'Camille (1926 film)' ['Film'] ('American silent film released in 1926, based on the novel/pl')",
+    "reject_trace": [
+     {
+      "rung": "r1",
+      "idx": 611,
+      "name": "Camille",
+      "types": [
+       "Person"
+      ],
+      "reason": "type_conflict",
+      "expected": "FILM"
+     }
+    ],
+    "justification": "gate rejected the v2 hit and continued to type-consistent node 'Camille (1926 film)' ['Film']; genuinely the right entity"
+   }
+  ],
+  "reclassified_to_unresolved": [
+   {
+    "gold_title": "Aleksander Koniecpolski (1620\u20131659)",
+    "v3_rung": "unresolved",
+    "v3_matched_name": null,
+    "v3_matched_idx": null,
+    "v3_disposition": "unresolved",
+    "adjudication": null,
+    "reject_trace": [
+     {
+      "rung": "r1",
+      "idx": 895,
+      "name": "Aleksander Koniecpolski",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r2",
+      "idx": 895,
+      "name": "Aleksander Koniecpolski",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r3",
+      "idx": 895,
+      "name": "Aleksander Koniecpolski",
+      "reason": "reviewed_absent"
+     }
+    ],
+    "justification": "reviewed same-name-different-entity: gate rejected the wrong node, no correct candidate exists -> clean UNRESOLVED (gold genuinely absent)"
+   },
+   {
+    "gold_title": "Louis, Dauphin of France (son of Louis XV)",
+    "v3_rung": "unresolved",
+    "v3_matched_name": null,
+    "v3_matched_idx": null,
+    "v3_disposition": "unresolved",
+    "adjudication": null,
+    "reject_trace": [
+     {
+      "rung": "r1",
+      "idx": 6450,
+      "name": "Louis, Dauphin of France",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r2",
+      "idx": 6450,
+      "name": "Louis, Dauphin of France",
+      "reason": "reviewed_absent"
+     },
+     {
+      "rung": "r3",
+      "idx": 6450,
+      "name": "Louis, Dauphin of France",
+      "reason": "reviewed_absent"
+     }
+    ],
+    "justification": "reviewed same-name-different-entity: gate rejected the wrong node, no correct candidate exists -> clean UNRESOLVED (gold genuinely absent)"
+   }
+  ],
+  "still_pending": [
+   {
+    "gold_title": "Ek Hi Bhool (1940 film)",
+    "v3_rung": "r1",
+    "v3_matched_name": "Ek Hi Bhool",
+    "v3_matched_idx": 4961,
+    "v3_disposition": "ADJUDICATE-PENDING",
+    "adjudication": "auto: year conflict - qualifier year(s) ['1940'] vs node descr year(s) ['1981'] ('Hindi remake of Mouna Geethangal released in the same year ('); likely a different same-name entity",
+    "reject_trace": [],
+    "justification": "still pending under v3 (year-conflict auto-rule; the dated variant is genuinely absent from the graph)"
+   }
+  ],
+  "other": [],
+  "counts": {
+   "resolved_to_node": 1,
+   "reclassified_unresolved": 2,
+   "still_pending": 1
+  },
+  "camille_lands_on_film_node": true
+ },
+ "false_merge_guard": {
+  "n_distinct_gold_titles": 324,
+  "baseline_exact_collisions": 0,
+  "v3_collisions": 0,
+  "new_false_merges": 0,
+  "offending_pairs": [],
+  "rejected": false
+ },
+ "accepted_rows_bit_unchanged": {
+  "v2_accepted_total": 25,
+  "unchanged": 25,
+  "changed": [],
+  "all_unchanged": true
+ },
+ "recall_pair": {
+  "base_old_recall_326": 0.6012,
+  "v2_new_recall_326": 0.6595,
+  "v2_new_hits": 215,
+  "v2_joinable": 313,
+  "v2_new_recall_joinable": 0.6869,
+  "v3_new_recall_326": 0.6626,
+  "v3_new_hits": 216,
+  "v3_joinable": 314,
+  "v3_new_recall_joinable": 0.6879
+ },
+ "verdict": "CONFIRMED-SPIRIT",
+ "verdict_reason": "gate is SAFE and strictly improving - the named must-fix 'Camille (1926 feature film)' now lands on Film node 'Camille (1926 film)', 0 new false merges, 25 v2-accepted rows bit-unchanged, 2 correct reclassifications to UNRESOLVED; BUT only 1/4 pending land on a node (literal bar >=2 not met) because 3 of the 4 pending golds are genuinely ABSENT from the graph - the honest disposition for them is UNRESOLVED/PENDING, not a node match",
+ "verdict_flags": {
+  "literal_bar_2_node_resolutions": false,
+  "no_new_false_merge": true,
+  "25_accepted_unchanged": true,
+  "camille_fixed": true,
+  "ship_safe": true
+ },
+ "script": "scripts/experiments/r56_h635_type_gate.py"
+}

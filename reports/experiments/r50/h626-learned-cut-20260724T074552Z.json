@@ -1,0 +1,163 @@
+{
+ "run_id": "20260724T074552Z",
+ "hypothesis": "R40x-H626",
+ "title": "learned cut-point detector (synthetic-trained) vs max-gap adaptive-k anchor seeder",
+ "scoring_fence": "reset_region_union reachability, full-127 per-probe paired; dense@16 adaptive-k axis OUT OF SCOPE",
+ "backend": "torch/cuda:1(PCI_BUS_ID)",
+ "seeds": {
+  "substrate_seed": 0,
+  "synth_seed": 20240724,
+  "torch_seed": 7,
+  "boot_seed": 20260724,
+  "n_synth": 40000
+ },
+ "sanity": {
+  "maxgap_reach_all": {
+   "measured": 0.874,
+   "expected": 0.874,
+   "ok": true
+  },
+  "fixed_k1_reach_all": {
+   "measured": 0.8661,
+   "expected": 0.8661,
+   "ok": true
+  },
+  "maxgap_bootstrap_cut_index_variance": {
+   "measured": 6.6848,
+   "expected": 6.6883,
+   "ok": true
+  }
+ },
+ "sanity_pass": true,
+ "training": {
+  "families": [
+   "sharp_elbow",
+   "double_elbow",
+   "flat",
+   "noisy_decay",
+   "heavy_tie_top"
+  ],
+  "family_counts": {
+   "noisy_decay": 8095,
+   "flat": 7845,
+   "sharp_elbow": 8025,
+   "double_elbow": 8128,
+   "heavy_tie_top": 7907
+  },
+  "n_curves": 40000,
+  "curve_length_range": [
+   1,
+   15
+  ],
+  "noise_range": [
+   0.02,
+   0.18
+  ],
+  "real_sigma": 0.0892,
+  "net": "MLP 20->64->64 + cut head(16 keep-counts, length-masked) + flat head(1); multi-task CE(cut)+BCE(flat); Adam 1e-3, 60 epochs, bs512",
+  "input": "per-query min-max normalized score curve padded to 16 + [len/16, top_gap, mean, std]",
+  "final_train_loss": 1.0061
+ },
+ "primary": {
+  "n_probes": 127,
+  "reach_all_learned": 0.8661,
+  "reach_all_maxgap": 0.874,
+  "discordant_b_learned_only": 1,
+  "discordant_c_maxgap_only": 2,
+  "net_probes": -1,
+  "discordant_learned_only_pids": [
+   "f253a3040bdd11eba7f7acde48001122"
+  ],
+  "discordant_maxgap_only_pids": [
+   "265daf200bdc11eba7f7acde48001122",
+   "b642318c0bdd11eba7f7acde48001122"
+  ],
+  "total_anchors_learned": 322,
+  "total_anchors_maxgap": 376,
+  "legitimacy": "cut head trained on synthetic curves only; calibration touched only the 78-span cal split (flat-line head, datum). Full-127 comparison is legitimate."
+ },
+ "secondary": {
+  "vs_fixed_k1": {
+   "reach_all_learned": 0.8661,
+   "reach_all_fixed_k1": 0.8661,
+   "discordant_b_learned_only": 1,
+   "discordant_c_fixed_k1_only": 1,
+   "net_probes": 0
+  },
+  "vs_maxgap_lambda0.30_frontier": {
+   "reach_all_learned": 0.8661,
+   "reach_all_maxgap_lam0.30_computed": 0.8819,
+   "n_spans_abstained_lam0.30": 6,
+   "discordant_b_learned_only": 0,
+   "discordant_c_frontier_only": 2,
+   "net_probes": -2,
+   "registration_frontier_ref": {
+    "reach_all": 0.8819,
+    "tie_abstention": 0.033,
+    "clean_recall": 0.9924
+   }
+  },
+  "hold_split_only_cut_quality": {
+   "n_hold_gold_spans": 79,
+   "learned": {
+    "precision": 0.8427,
+    "recall": 0.9259,
+    "tp": 75,
+    "fp": 14,
+    "gold_present": 81,
+    "gold_kept": 75,
+    "n_spans": 79
+   },
+   "maxgap": {
+    "precision": 0.7238,
+    "recall": 0.9383,
+    "tp": 76,
+    "fp": 29,
+    "gold_present": 81,
+    "gold_kept": 76,
+    "n_spans": 79
+   },
+   "fixed_k1": {
+    "precision": 0.8987,
+    "recall": 0.8765,
+    "tp": 71,
+    "fp": 8,
+    "gold_present": 81,
+    "gold_kept": 71,
+    "n_spans": 79
+   }
+  },
+  "stability": {
+   "learned_mean_cut_index_variance": 0.2799,
+   "learned_median_cut_index_variance": 0.2022,
+   "maxgap_mean_cut_index_variance": 6.6848,
+   "spline_mean_cut_index_variance_h623ref": 12.7401,
+   "sigma": 0.0892,
+   "n_boot": 200,
+   "boot_seed": 20260724
+  },
+  "flat_line_datum": {
+   "flat_head_auc_role_vs_clean": 0.3912,
+   "h623_ref_auc": {
+    "spline": 0.849,
+    "maxgap": 0.755
+   },
+   "n_ambiguous": 125,
+   "n_clean": 131,
+   "cal_calibrated_threshold": 0.2075,
+   "flat_fires_on_ambiguous_at_tstar": 23,
+   "flat_fires_on_clean_at_tstar": 15,
+   "note": "DATUM ONLY - no abstention claim (H624 alpha=0.10 wall stands). threshold cal on 78-span cal split."
+  }
+ },
+ "bars": {
+  "CONFIRMED": "net >= +2 probes (b-c>=2), zero unoffset regressions, reach >= ~0.890",
+  "KILLED": "net <= 0... (net < 0 here); exact tie treated as INDETERMINATE per registration",
+  "INDETERMINATE-AT-CEILING": "net +1 or exact tie (honestly-expected)",
+  "oracle_ceiling": 0.898
+ },
+ "proposed_verdict": "KILLED",
+ "verdict_reason": "net -1 probes vs max-gap (b=1, c=2) - learned cut regresses reachability",
+ "artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h626-learned-cut-20260724T074552Z.json",
+ "script": "scripts/experiments/r50_h626_learned_cut.py"
+}

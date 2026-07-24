@@ -1,0 +1,160 @@
+{
+ "run_id": "20260713T233256Z",
+ "hypothesis": "R40x-H620",
+ "config": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/config/experiments/config-bench-medium.yml",
+ "anchors": "unfiltered",
+ "h619_verdict": "INDETERMINATE",
+ "injection_method": "monkeypatch graphrag.overfetch_seeds -> append offline reset_region_union nodes (anchors + scipy-PPR-from-anchors, H597 region minus dense@16) BELOW the live dense@16 seeds with sub-dense scores; render + truncate_to_budget run LIVE; ppr_enabled=False so GDS is never invoked; read-only on Neo4j",
+ "harness_sanity": {
+  "base_b06_pass_n": 85,
+  "base_b10_pass_n": 92,
+  "base_b06_matches_screen": 132,
+  "base_b10_matches_screen": 125,
+  "screen_baseline": "85 pass / 47 fail",
+  "reproduced_shipped_arm": "base_b06",
+  "harness_ok": true
+ },
+ "render_budget_note": "shipped screen used render_budget=0.6; current settings default is 1.0 (the H547/H570/H572/H576 DEF-fix). base_b06 validates the 0.6 screen; base_b10 isolates the pure render-defect conversion (budget alone, no reset-region injection).",
+ "n_probes": 132,
+ "n_fails": 47,
+ "n_passes": 85,
+ "flip_table": {
+  "base_b06": {
+   "pass_total": 85,
+   "flips_fail_to_pass": 0,
+   "flip_ids": [],
+   "regressions_pass_to_fail": 0,
+   "regression_ids": [],
+   "nonflip_failure_decomposition": {
+    "rendered_answer_absent": 34,
+    "carrier_not_retrieved": 13
+   }
+  },
+  "base_b10": {
+   "pass_total": 92,
+   "flips_fail_to_pass": 7,
+   "flip_ids": [
+    "e6e38bc40bdd11eba7f7acde48001122",
+    "3ce92df80bde11eba7f7acde48001122",
+    "1dfaa6200bdd11eba7f7acde48001122",
+    "ccd086f80bdb11eba7f7acde48001122",
+    "965e667e0bdd11eba7f7acde48001122",
+    "f48667b80bda11eba7f7acde48001122",
+    "2b9528860bde11eba7f7acde48001122"
+   ],
+   "regressions_pass_to_fail": 0,
+   "regression_ids": [],
+   "nonflip_failure_decomposition": {
+    "rendered_answer_absent": 27,
+    "carrier_not_retrieved": 13
+   }
+  },
+  "rru_b06": {
+   "pass_total": 95,
+   "flips_fail_to_pass": 10,
+   "flip_ids": [
+    "2dc690ba0bdc11eba7f7acde48001122",
+    "2d8f3ebe0bda11eba7f7acde48001122",
+    "e6e38bc40bdd11eba7f7acde48001122",
+    "3ce92df80bde11eba7f7acde48001122",
+    "1dfaa6200bdd11eba7f7acde48001122",
+    "ccd086f80bdb11eba7f7acde48001122",
+    "965e667e0bdd11eba7f7acde48001122",
+    "f48667b80bda11eba7f7acde48001122",
+    "bd9609880bdb11eba7f7acde48001122",
+    "2b9528860bde11eba7f7acde48001122"
+   ],
+   "regressions_pass_to_fail": 0,
+   "regression_ids": [],
+   "nonflip_failure_decomposition": {
+    "rendered_answer_absent": 24,
+    "carrier_not_retrieved": 13
+   }
+  },
+  "rru_b10": {
+   "pass_total": 112,
+   "flips_fail_to_pass": 27,
+   "flip_ids": [
+    "2dc690ba0bdc11eba7f7acde48001122",
+    "33f51d7e0bde11eba7f7acde48001122",
+    "914b452c0bdc11eba7f7acde48001122",
+    "2d8f3ebe0bda11eba7f7acde48001122",
+    "e6e38bc40bdd11eba7f7acde48001122",
+    "7cb81afc0bd911eba7f7acde48001122",
+    "3ce92df80bde11eba7f7acde48001122",
+    "49b22d0a0bde11eba7f7acde48001122",
+    "78b10fb00bdc11eba7f7acde48001122",
+    "1dfaa6200bdd11eba7f7acde48001122",
+    "8e07f1f00bda11eba7f7acde48001122",
+    "b7f5f7200bdd11eba7f7acde48001122",
+    "0083038e0bde11eba7f7acde48001122",
+    "6b8402c40bdd11eba7f7acde48001122",
+    "a9e322b20bdc11eba7f7acde48001122",
+    "fcdafe320bdb11eba7f7acde48001122",
+    "e15d99380bdd11eba7f7acde48001122",
+    "a457e11c0bdb11eba7f7acde48001122",
+    "5ff291a80bda11eba7f7acde48001122",
+    "e7dc72940baf11ebab90acde48001122",
+    "764446780bde11eba7f7acde48001122",
+    "f1a794f20bdc11eba7f7acde48001122",
+    "ccd086f80bdb11eba7f7acde48001122",
+    "965e667e0bdd11eba7f7acde48001122",
+    "f48667b80bda11eba7f7acde48001122",
+    "bd9609880bdb11eba7f7acde48001122",
+    "2b9528860bde11eba7f7acde48001122"
+   ],
+   "regressions_pass_to_fail": 0,
+   "regression_ids": [],
+   "nonflip_failure_decomposition": {
+    "rendered_answer_absent": 10,
+    "carrier_not_retrieved": 10
+   }
+  }
+ },
+ "decomposition_legend": {
+  "carrier_not_retrieved": "gold carrier absent from the reset_region_union node set",
+  "retrieved_not_rendered": "carrier in node set but its block trimmed by render_budget",
+  "rendered_answer_absent": "carrier block rendered but answer string not matched"
+ },
+ "clauses": [
+  {
+   "clause": ">= 12/47 flips at budget 0.6 (reset_region_union)",
+   "predicted": ">= 12",
+   "measured": 10,
+   "holds": false
+  },
+  {
+   "clause": ">= 20/47 flips at budget 1.0 (reset_region_union)",
+   "predicted": ">= 20",
+   "measured": 27,
+   "holds": true
+  },
+  {
+   "clause": "ZERO pass->fail regressions on the 85 panel at budget 0.6",
+   "predicted": 0,
+   "measured": 0,
+   "holds": true
+  },
+  {
+   "clause": "ZERO pass->fail regressions on the 85 panel at budget 1.0",
+   "predicted": 0,
+   "measured": 0,
+   "holds": true
+  },
+  {
+   "clause": "CONFIRMED: >= 10 flips with zero regressions in at least one arm",
+   "predicted": "true",
+   "measured": true,
+   "holds": true
+  },
+  {
+   "clause": "KILL: < 5 flips at BOTH budgets",
+   "predicted": "kill if both<5",
+   "measured": "b06=10 b10=27",
+   "holds": false
+  }
+ ],
+ "proposed_verdict": "CONFIRMED",
+ "script": "scripts/experiments/r50_h619_seedland_digs.py",
+ "artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h620-conversion-20260713T233256Z.json"
+}

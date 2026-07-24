@@ -1,0 +1,99 @@
+{
+ "run_id": "20260713T234847Z",
+ "hypothesis": "R40x-H624",
+ "definitions": {
+  "flat_line": "detector strength < CRC lambda -> abstain",
+  "gold_ambiguous_set": "spans whose gold-structure ideal is ABSTAIN (role-word span OR no gold anchor in candidate pool) = 125 spans; H561 tie rows folded as a cross-check",
+  "clean_set": "single-exact-gold spans = 131"
+ },
+ "per_detector": {
+  "maxgap": {
+   "lambda": 0.0,
+   "flat_line_precision_vs_ambiguous": null,
+   "flat_line_recall_vs_ambiguous": 0.0,
+   "false_flat_rate_on_clean": 0.0,
+   "n_ambiguous": 125,
+   "n_clean": 131,
+   "flat_tp": 0,
+   "flat_fn": 125,
+   "false_flat": 0,
+   "forced_elbow_offgold_picks": 174,
+   "routed_offgold_picks": 174,
+   "forced_elbow_anchor_precision_on_flat": 0.0,
+   "routed_anchor_precision_on_flat": 0.0,
+   "forced_minus_routed_precision_pp": 0,
+   "oracle_attacher_note": "oracle-attacher = gold answer injected on flat-line queries (SIMULATED, no LLM); routed arm falls back to dense status quo when flat-line fires"
+  },
+  "kneedle": {
+   "lambda": 0.0,
+   "flat_line_precision_vs_ambiguous": null,
+   "flat_line_recall_vs_ambiguous": 0.0,
+   "false_flat_rate_on_clean": 0.0,
+   "n_ambiguous": 125,
+   "n_clean": 131,
+   "flat_tp": 0,
+   "flat_fn": 125,
+   "false_flat": 0,
+   "forced_elbow_offgold_picks": 174,
+   "routed_offgold_picks": 669,
+   "forced_elbow_anchor_precision_on_flat": 0.0,
+   "routed_anchor_precision_on_flat": 0.0,
+   "forced_minus_routed_precision_pp": 0,
+   "oracle_attacher_note": "oracle-attacher = gold answer injected on flat-line queries (SIMULATED, no LLM); routed arm falls back to dense status quo when flat-line fires"
+  },
+  "spline": {
+   "lambda": 0.0,
+   "flat_line_precision_vs_ambiguous": null,
+   "flat_line_recall_vs_ambiguous": 0.0,
+   "false_flat_rate_on_clean": 0.0,
+   "n_ambiguous": 125,
+   "n_clean": 131,
+   "flat_tp": 0,
+   "flat_fn": 125,
+   "false_flat": 0,
+   "forced_elbow_offgold_picks": 174,
+   "routed_offgold_picks": 843,
+   "forced_elbow_anchor_precision_on_flat": 0.0,
+   "routed_anchor_precision_on_flat": 0.0,
+   "forced_minus_routed_precision_pp": 0,
+   "oracle_attacher_note": "oracle-attacher = gold answer injected on flat-line queries (SIMULATED, no LLM); routed arm falls back to dense status quo when flat-line fires"
+  }
+ },
+ "h561_crosscheck": {
+  "n_ambiguous_h561": 9,
+  "strict_resolves": 7,
+  "anchor_longest_resolves": 10,
+  "note": "H561 substrate is fact-level (r49 carrier bakeoff), folded as a directional cross-check only"
+ },
+ "clauses": [
+  {
+   "clause": "flat-line precision >= 80% against the gold ambiguous set",
+   "predicted": ">= 0.80",
+   "measured": "maxgap: 0",
+   "holds": false
+  },
+  {
+   "clause": "false-flat rate <= 10% on clean queries",
+   "predicted": "<= 0.10",
+   "measured": "maxgap: 0",
+   "holds": true
+  },
+  {
+   "clause": "forced-elbow loses >= 10pp anchor precision on the flat subset vs the routed arm",
+   "predicted": ">= 10pp loss (routed > forced)",
+   "measured": "maxgap: forced-minus-routed 0pp",
+   "holds": false
+  },
+  {
+   "clause": "KILL: flat-line fires > 25% on clean queries (detector is noise)",
+   "predicted": "kill if > 0.25",
+   "measured": "maxgap: 0",
+   "holds": false
+  }
+ ],
+ "proposed_verdict": "KILLED - the flat-line abstention branch cannot be alpha=0.10-certified (CRC lambda=0 for every detector -> flat-line never fires), so it delivers ZERO certified ambiguity detection: flat-line precision is null/0 < the 0.80 bar. Distinct from the registered noise-KILL (>25% false-flat never fires because it never fires at all) - the failure is UNCERTIFIABILITY, not noise. Directionally the ambiguity signal EXISTS (spline strength AUC 0.849 role-vs-clean) but cannot be turned into a recall-safe abstention at alpha=0.10.",
+ "best_detector": "maxgap",
+ "artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h624-flatline-20260713T234847Z.json",
+ "script": "scripts/experiments/r50_h623_elbow_battery.py",
+ "hidden_mechanism_ref": "see h623 artifact hidden_mechanism block; the spline separates ambiguity best (AUC 0.849) but is uncertifiable and unstable"
+}

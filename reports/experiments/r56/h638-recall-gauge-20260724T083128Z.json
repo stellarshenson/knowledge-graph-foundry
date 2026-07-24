@@ -1,0 +1,193 @@
+{
+ "hypothesis": "R56-H638",
+ "run_id": "20260724T083128Z",
+ "consumes": "R56-H635 goldjoin-v3 (CONFIRMED-SPIRIT: gate ship-safe)",
+ "substrate": "medium 2wiki (6,626 entities), frozen H582 offline cache tmp/results/r47 + R50 H597 span cache; FREE numpy/scipy/stdlib",
+ "join_versions_stamped": [
+  "r0-exact",
+  "goldjoin-v2-20260724",
+  "goldjoin-v3-20260724"
+ ],
+ "gauge_sanity": {
+  "medium_r0": {
+   "measured": 288,
+   "expected": 288,
+   "reproduces": true
+  },
+  "medium_v2": {
+   "measured": 313,
+   "expected": 313,
+   "reproduces": true
+  },
+  "medium_v3": {
+   "measured": 314,
+   "expected": 314,
+   "reproduces": true
+  }
+ },
+ "gauge_sanity_ok": true,
+ "gauge_definition": "per rung: count of the 326 gold carrier rows that RESOLVE to a graph node under a stamped join (r0 = exact in-graph; v2/v3 = exact + ACCEPTED ladder resolution); pairs, never blended",
+ "rung_curve": {
+  "medium": {
+   "n_docs": 1000,
+   "n_entities": 6626,
+   "gauge_r0_326": "288/326",
+   "gauge_v2_326": "313/326",
+   "gauge_v3_326": "314/326",
+   "gauge_r0_frac": 0.8834,
+   "gauge_v2_frac": 0.9601,
+   "gauge_v3_frac": 0.9632
+  },
+  "scout": {
+   "available": false,
+   "reason": "no scout entity cache on disk AND no read-only scout Neo4j reachable (bolt ports ['172.19.0.8:7687', '172.19.0.101:7687'] all timed out); per the FREE-run rule the scout rung is SKIPPED"
+  },
+  "curve_status": "medium-only"
+ },
+ "absent_anchor_flag": {
+  "definition": "a GLiNER span is flagged ABSENT when the plain ladder (r0 exact / r1 paren-strip / r2 fold / r3 fuzzy>=0.92) returns no graph node - the honest NIL case, absent not ambiguous",
+  "n_distinct_span_surfaces": 219,
+  "n_flagged_absent_surfaces": 42,
+  "flagged_surface_rate": 0.1918,
+  "n_span_occurrences": 282,
+  "n_span_occurrences_flagged": 53,
+  "flagged_surfaces": [
+   "1620",
+   "1926",
+   "1940",
+   "1982",
+   "1987",
+   "2004",
+   "3Rd Baron Alington",
+   "Abdul-Aziz Bin Muhammad",
+   "Algiers",
+   "Bobby Mcgee",
+   "Felix Schuster",
+   "Film",
+   "Final Exam",
+   "Frances M. Vega",
+   "Good People",
+   "Holm J\u00f8lsen",
+   "Illustrator",
+   "John Ernest",
+   "Jorge Ledezma",
+   "Louis",
+   "Mama",
+   "Marchioness Of Mantua",
+   "Melgar",
+   "Napier Sturt",
+   "Prince Of Orange",
+   "Sir Thomas Wheate",
+   "Song",
+   "The Blue Collar Worker And The Hairdresser",
+   "Where",
+   "Who is the spouse",
+   "birthday",
+   "country",
+   "date of birth",
+   "date of death",
+   "director of film The Notorious Miss Lisle",
+   "father",
+   "film",
+   "founder",
+   "mother-in-law",
+   "performer",
+   "song",
+   "the composer"
+  ],
+  "known_absent_set": [
+   "Beatrice I, Countess of Burgundy",
+   "John Ernest, Duke of Saxe-Eisenach",
+   "Abdul-Aziz bin Muhammad",
+   "Aleksander Koniecpolski (1620\u20131659)",
+   "Louis, Dauphin of France (son of Louis XV)"
+  ],
+  "known_absent_overlap": [
+   {
+    "gold": "Beatrice I, Countess of Burgundy",
+    "gold_in_graph_exact": false,
+    "naming_spans": [
+     {
+      "span": "Beatrice I",
+      "flagged_absent": false,
+      "resolves_to": "Beatrice I"
+     },
+     {
+      "span": "Countess Of Burgundy",
+      "flagged_absent": false,
+      "resolves_to": "Countess of Burgundy"
+     }
+    ],
+    "any_naming_span_flagged": false
+   },
+   {
+    "gold": "John Ernest, Duke of Saxe-Eisenach",
+    "gold_in_graph_exact": false,
+    "naming_spans": [
+     {
+      "span": "John Ernest",
+      "flagged_absent": true,
+      "resolves_to": null
+     },
+     {
+      "span": "Saxe-Eisenach",
+      "flagged_absent": false,
+      "resolves_to": "Saxe-Eisenach"
+     }
+    ],
+    "any_naming_span_flagged": true
+   },
+   {
+    "gold": "Abdul-Aziz bin Muhammad",
+    "gold_in_graph_exact": false,
+    "naming_spans": [
+     {
+      "span": "Abdul-Aziz Bin Muhammad",
+      "flagged_absent": true,
+      "resolves_to": null
+     }
+    ],
+    "any_naming_span_flagged": true
+   },
+   {
+    "gold": "Aleksander Koniecpolski (1620\u20131659)",
+    "gold_in_graph_exact": false,
+    "naming_spans": [
+     {
+      "span": "1620",
+      "flagged_absent": true,
+      "resolves_to": null
+     },
+     {
+      "span": "Aleksander Koniecpolski",
+      "flagged_absent": false,
+      "resolves_to": "Aleksander Koniecpolski"
+     }
+    ],
+    "any_naming_span_flagged": true
+   },
+   {
+    "gold": "Louis, Dauphin of France (son of Louis XV)",
+    "gold_in_graph_exact": false,
+    "naming_spans": [
+     {
+      "span": "Louis",
+      "flagged_absent": true,
+      "resolves_to": null
+     }
+    ],
+    "any_naming_span_flagged": true
+   }
+  ],
+  "n_known_naming_spans": 8,
+  "flag_precision_on_known": 0.5,
+  "flag_precision_definition": "of the spans that NAME a known-absent gold, the fraction the flag marks absent; a MISS means a wrong same-name node made the surface resolvable even though the specific gold entity is absent (the TITLE-vs-SPAN gap)",
+  "correctly_flagged_surface_absent": 4,
+  "missed_entity_absent_surface_present": 4,
+  "known_golds_with_a_flagged_naming_span": 4,
+  "title_vs_span_note": "gold TITLES and question SPANS are different objects: e.g. the gold 'Aleksander Koniecpolski (1620-1659)' is absent, but the span 'Aleksander Koniecpolski' resolves to a same-name node (the elder namesake) so it is NOT flagged; the flag detects SURFACE absence, not wrong-entity absence"
+ },
+ "verdict": "LANDS",
+ "verdict_reason": "gauge reproduces medium r0 288/326, v2 313/326 and v3 314/326 exactly; rung curve reported medium-only (scout unavailable, reason stated); absent-anchor flag precision on the known-absent set stated",
+ "script": "scripts/experiments/r56_h638_recall_gauge.py"
+}

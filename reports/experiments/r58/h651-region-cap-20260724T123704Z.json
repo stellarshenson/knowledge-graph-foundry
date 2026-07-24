@@ -1,0 +1,1483 @@
+{
+ "hypothesis": "R58-H651",
+ "run_id": "20260724T123704Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, from R57 atlas rows)",
+ "substrate": "medium 2wiki frozen H582 cache tmp/results/r47 (6,626 entities) + R50 H597 span cache; FREE numpy/scipy/rapidfuzz, no GPU/LLM/Neo4j/net",
+ "substrate_caveat": "frozen 6,626-entity cache (NOT the 7,575-entity live re-ingest); matches the R57 atlas substrate exactly for comparability",
+ "pins": {
+  "atlas_region_flag_mismatches": 0,
+  "reach_all_reset_region": 0.874,
+  "reach_all_expected": 0.874,
+  "reach_pins_ok": true
+ },
+ "mechanism": "reset_region_wide = reset_region_union UNION onehop(dense_seeds u maxgap_anchors); strict superset of the PPR-top15-capped baseline",
+ "cap_artifact_premise": {
+  "expected": 15,
+  "reproduced": 15,
+  "premise_holds": true
+ },
+ "recovery": {
+  "recovered": 15,
+  "of": 15,
+  "bar": ">=10/15",
+  "recovered_carriers": [
+   [
+    "84b691d8086a11ebbd5fac1f6bf848b6",
+    "Clio Barnard",
+    "bridge"
+   ],
+   [
+    "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "Edwin L. Marin",
+    "bridge"
+   ],
+   [
+    "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "Lina Wertm\u00fcller",
+    "bridge"
+   ],
+   [
+    "cda459160bda11eba7f7acde48001122",
+    "Gia Coppola",
+    "bridge"
+   ],
+   [
+    "8f783c7a0bda11eba7f7acde48001122",
+    "Christian August, Prince of Anhalt-Zerbst",
+    "terminal-answer"
+   ],
+   [
+    "a52e9e1908b711ebbd88ac1f6bf848b6",
+    "Charles Lamont",
+    "bridge"
+   ],
+   [
+    "a52e9e1908b711ebbd88ac1f6bf848b6",
+    "R. G. Springsteen",
+    "bridge"
+   ],
+   [
+    "90c8793c087411ebbd67ac1f6bf848b6",
+    "Po-Chih Leong",
+    "bridge"
+   ],
+   [
+    "594ca25608df11ebbda0ac1f6bf848b6",
+    "George Pearson (filmmaker)",
+    "first-hop"
+   ],
+   [
+    "c68eb0be08e611ebbda5ac1f6bf848b6",
+    "Gordon Flemyng",
+    "bridge"
+   ],
+   [
+    "81e0d683087c11ebbd6aac1f6bf848b6",
+    "Claude Sautet",
+    "bridge"
+   ],
+   [
+    "5cbb015f087511ebbd67ac1f6bf848b6",
+    "Rod Amateau",
+    "bridge"
+   ],
+   [
+    "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "Richard Sale (director)",
+    "first-hop"
+   ],
+   [
+    "f253a3040bdd11eba7f7acde48001122",
+    "Olga Constantinovna of Russia",
+    "bridge"
+   ],
+   [
+    "8dcaaf24089811ebbd77ac1f6bf848b6",
+    "William Keighley",
+    "bridge"
+   ]
+  ],
+  "not_recovered_carriers": []
+ },
+ "region_growth": {
+  "median_region_base": 27,
+  "median_region_wide": 48,
+  "median_region_ratio": 1.726,
+  "median_ctx_char_ratio": 1.771,
+  "max_region_ratio": 3.483,
+  "note": "ctx proxy = sum(len(name)+len(descr)) over region nodes; per-probe in checkpoint",
+  "per_probe": [
+   {
+    "pid": "83bf3b5a0bd911eba7f7acde48001122",
+    "region_base": 24,
+    "region_wide": 41,
+    "region_ratio": 1.708,
+    "ctx_base_chars": 1769,
+    "ctx_wide_chars": 3267,
+    "ctx_ratio": 1.847,
+    "added_nodes": 17
+   },
+   {
+    "pid": "a80d84e7096d11ebbdb0ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 63,
+    "region_ratio": 2.172,
+    "ctx_base_chars": 1051,
+    "ctx_wide_chars": 2214,
+    "ctx_ratio": 2.107,
+    "added_nodes": 34
+   },
+   {
+    "pid": "2dc690ba0bdc11eba7f7acde48001122",
+    "region_base": 25,
+    "region_wide": 36,
+    "region_ratio": 1.44,
+    "ctx_base_chars": 1500,
+    "ctx_wide_chars": 2192,
+    "ctx_ratio": 1.461,
+    "added_nodes": 11
+   },
+   {
+    "pid": "462bb642099211ebbdb0ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 43,
+    "region_ratio": 1.593,
+    "ctx_base_chars": 1161,
+    "ctx_wide_chars": 2060,
+    "ctx_ratio": 1.774,
+    "added_nodes": 16
+   },
+   {
+    "pid": "a1cdb240085811ebbd5bac1f6bf848b6",
+    "region_base": 24,
+    "region_wide": 39,
+    "region_ratio": 1.625,
+    "ctx_base_chars": 1320,
+    "ctx_wide_chars": 2220,
+    "ctx_ratio": 1.682,
+    "added_nodes": 15
+   },
+   {
+    "pid": "6718770a087311ebbd66ac1f6bf848b6",
+    "region_base": 25,
+    "region_wide": 40,
+    "region_ratio": 1.6,
+    "ctx_base_chars": 1403,
+    "ctx_wide_chars": 2282,
+    "ctx_ratio": 1.627,
+    "added_nodes": 15
+   },
+   {
+    "pid": "7f7046d308f711ebbdaaac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 42,
+    "region_ratio": 1.615,
+    "ctx_base_chars": 1553,
+    "ctx_wide_chars": 2737,
+    "ctx_ratio": 1.762,
+    "added_nodes": 16
+   },
+   {
+    "pid": "9fe6a6760baf11ebab90acde48001122",
+    "region_base": 20,
+    "region_wide": 24,
+    "region_ratio": 1.2,
+    "ctx_base_chars": 1635,
+    "ctx_wide_chars": 1919,
+    "ctx_ratio": 1.174,
+    "added_nodes": 4
+   },
+   {
+    "pid": "551e024408a611ebbd7fac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 54,
+    "region_ratio": 2.077,
+    "ctx_base_chars": 1657,
+    "ctx_wide_chars": 2629,
+    "ctx_ratio": 1.587,
+    "added_nodes": 28
+   },
+   {
+    "pid": "33f51d7e0bde11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 53,
+    "region_ratio": 1.828,
+    "ctx_base_chars": 1184,
+    "ctx_wide_chars": 2496,
+    "ctx_ratio": 2.108,
+    "added_nodes": 24
+   },
+   {
+    "pid": "914b452c0bdc11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 62,
+    "region_ratio": 2.067,
+    "ctx_base_chars": 1211,
+    "ctx_wide_chars": 3699,
+    "ctx_ratio": 3.055,
+    "added_nodes": 32
+   },
+   {
+    "pid": "d6898f78089511ebbd75ac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 33,
+    "region_ratio": 1.269,
+    "ctx_base_chars": 1424,
+    "ctx_wide_chars": 1774,
+    "ctx_ratio": 1.246,
+    "added_nodes": 7
+   },
+   {
+    "pid": "006d81bc0bde11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 70,
+    "region_ratio": 2.414,
+    "ctx_base_chars": 1914,
+    "ctx_wide_chars": 4601,
+    "ctx_ratio": 2.404,
+    "added_nodes": 41
+   },
+   {
+    "pid": "f5e3b9ca0bdb11eba7f7acde48001122",
+    "region_base": 19,
+    "region_wide": 37,
+    "region_ratio": 1.947,
+    "ctx_base_chars": 1681,
+    "ctx_wide_chars": 2935,
+    "ctx_ratio": 1.746,
+    "added_nodes": 18
+   },
+   {
+    "pid": "265daf200bdc11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 50,
+    "region_ratio": 1.724,
+    "ctx_base_chars": 1674,
+    "ctx_wide_chars": 3074,
+    "ctx_ratio": 1.836,
+    "added_nodes": 21
+   },
+   {
+    "pid": "1c0dd3b00bdc11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 48,
+    "region_ratio": 1.655,
+    "ctx_base_chars": 2507,
+    "ctx_wide_chars": 4218,
+    "ctx_ratio": 1.682,
+    "added_nodes": 19
+   },
+   {
+    "pid": "bab3b6d00bda11eba7f7acde48001122",
+    "region_base": 28,
+    "region_wide": 52,
+    "region_ratio": 1.857,
+    "ctx_base_chars": 1859,
+    "ctx_wide_chars": 3874,
+    "ctx_ratio": 2.084,
+    "added_nodes": 24
+   },
+   {
+    "pid": "84b691d8086a11ebbd5fac1f6bf848b6",
+    "region_base": 25,
+    "region_wide": 46,
+    "region_ratio": 1.84,
+    "ctx_base_chars": 1660,
+    "ctx_wide_chars": 2043,
+    "ctx_ratio": 1.231,
+    "added_nodes": 21
+   },
+   {
+    "pid": "dcbee4b608b011ebbd85ac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 34,
+    "region_ratio": 1.308,
+    "ctx_base_chars": 1996,
+    "ctx_wide_chars": 2418,
+    "ctx_ratio": 1.211,
+    "added_nodes": 8
+   },
+   {
+    "pid": "2d8f3ebe0bda11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 48,
+    "region_ratio": 1.6,
+    "ctx_base_chars": 2134,
+    "ctx_wide_chars": 3330,
+    "ctx_ratio": 1.56,
+    "added_nodes": 18
+   },
+   {
+    "pid": "e6e38bc40bdd11eba7f7acde48001122",
+    "region_base": 22,
+    "region_wide": 22,
+    "region_ratio": 1.0,
+    "ctx_base_chars": 1715,
+    "ctx_wide_chars": 1715,
+    "ctx_ratio": 1.0,
+    "added_nodes": 0
+   },
+   {
+    "pid": "0bedb7e80bdc11eba7f7acde48001122",
+    "region_base": 24,
+    "region_wide": 39,
+    "region_ratio": 1.625,
+    "ctx_base_chars": 1676,
+    "ctx_wide_chars": 3138,
+    "ctx_ratio": 1.872,
+    "added_nodes": 15
+   },
+   {
+    "pid": "86508dc60bdc11eba7f7acde48001122",
+    "region_base": 21,
+    "region_wide": 39,
+    "region_ratio": 1.857,
+    "ctx_base_chars": 1355,
+    "ctx_wide_chars": 2199,
+    "ctx_ratio": 1.623,
+    "added_nodes": 18
+   },
+   {
+    "pid": "e311a3ba0bdc11eba7f7acde48001122",
+    "region_base": 24,
+    "region_wide": 51,
+    "region_ratio": 2.125,
+    "ctx_base_chars": 1455,
+    "ctx_wide_chars": 3296,
+    "ctx_ratio": 2.265,
+    "added_nodes": 27
+   },
+   {
+    "pid": "bdd526c4091811ebbdaeac1f6bf848b6",
+    "region_base": 30,
+    "region_wide": 48,
+    "region_ratio": 1.6,
+    "ctx_base_chars": 862,
+    "ctx_wide_chars": 1915,
+    "ctx_ratio": 2.222,
+    "added_nodes": 18
+   },
+   {
+    "pid": "435f65fa0baf11ebab90acde48001122",
+    "region_base": 21,
+    "region_wide": 30,
+    "region_ratio": 1.429,
+    "ctx_base_chars": 1742,
+    "ctx_wide_chars": 2625,
+    "ctx_ratio": 1.507,
+    "added_nodes": 9
+   },
+   {
+    "pid": "5cc01ab60bb011ebab90acde48001122",
+    "region_base": 25,
+    "region_wide": 45,
+    "region_ratio": 1.8,
+    "ctx_base_chars": 1914,
+    "ctx_wide_chars": 3368,
+    "ctx_ratio": 1.76,
+    "added_nodes": 20
+   },
+   {
+    "pid": "2084260e0bde11eba7f7acde48001122",
+    "region_base": 25,
+    "region_wide": 41,
+    "region_ratio": 1.64,
+    "ctx_base_chars": 2041,
+    "ctx_wide_chars": 3062,
+    "ctx_ratio": 1.5,
+    "added_nodes": 16
+   },
+   {
+    "pid": "7cb81afc0bd911eba7f7acde48001122",
+    "region_base": 23,
+    "region_wide": 24,
+    "region_ratio": 1.043,
+    "ctx_base_chars": 1408,
+    "ctx_wide_chars": 1486,
+    "ctx_ratio": 1.055,
+    "added_nodes": 1
+   },
+   {
+    "pid": "a1d9a65c0bd911eba7f7acde48001122",
+    "region_base": 31,
+    "region_wide": 67,
+    "region_ratio": 2.161,
+    "ctx_base_chars": 1156,
+    "ctx_wide_chars": 3918,
+    "ctx_ratio": 3.389,
+    "added_nodes": 36
+   },
+   {
+    "pid": "f34d188608cb11ebbd93ac1f6bf848b6",
+    "region_base": 30,
+    "region_wide": 61,
+    "region_ratio": 2.033,
+    "ctx_base_chars": 1891,
+    "ctx_wide_chars": 3216,
+    "ctx_ratio": 1.701,
+    "added_nodes": 31
+   },
+   {
+    "pid": "3a3c2efe0bdc11eba7f7acde48001122",
+    "region_base": 22,
+    "region_wide": 30,
+    "region_ratio": 1.364,
+    "ctx_base_chars": 2065,
+    "ctx_wide_chars": 2581,
+    "ctx_ratio": 1.25,
+    "added_nodes": 8
+   },
+   {
+    "pid": "9aa8008408de11ebbd9eac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 57,
+    "region_ratio": 1.966,
+    "ctx_base_chars": 1690,
+    "ctx_wide_chars": 3469,
+    "ctx_ratio": 2.053,
+    "added_nodes": 28
+   },
+   {
+    "pid": "0dfe41f60bdc11eba7f7acde48001122",
+    "region_base": 28,
+    "region_wide": 47,
+    "region_ratio": 1.679,
+    "ctx_base_chars": 1564,
+    "ctx_wide_chars": 2391,
+    "ctx_ratio": 1.529,
+    "added_nodes": 19
+   },
+   {
+    "pid": "3ce92df80bde11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 51,
+    "region_ratio": 1.7,
+    "ctx_base_chars": 1145,
+    "ctx_wide_chars": 2466,
+    "ctx_ratio": 2.154,
+    "added_nodes": 21
+   },
+   {
+    "pid": "3e3cd62a086211ebbd5dac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 43,
+    "region_ratio": 1.654,
+    "ctx_base_chars": 1319,
+    "ctx_wide_chars": 2325,
+    "ctx_ratio": 1.763,
+    "added_nodes": 17
+   },
+   {
+    "pid": "b672c1ee0bdd11eba7f7acde48001122",
+    "region_base": 24,
+    "region_wide": 53,
+    "region_ratio": 2.208,
+    "ctx_base_chars": 1632,
+    "ctx_wide_chars": 3514,
+    "ctx_ratio": 2.153,
+    "added_nodes": 29
+   },
+   {
+    "pid": "01309e5008bd11ebbd89ac1f6bf848b6",
+    "region_base": 23,
+    "region_wide": 45,
+    "region_ratio": 1.957,
+    "ctx_base_chars": 1258,
+    "ctx_wide_chars": 2861,
+    "ctx_ratio": 2.274,
+    "added_nodes": 22
+   },
+   {
+    "pid": "c5a00e860bda11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 55,
+    "region_ratio": 1.897,
+    "ctx_base_chars": 1912,
+    "ctx_wide_chars": 3737,
+    "ctx_ratio": 1.954,
+    "added_nodes": 26
+   },
+   {
+    "pid": "434dea7708d211ebbd95ac1f6bf848b6",
+    "region_base": 23,
+    "region_wide": 48,
+    "region_ratio": 2.087,
+    "ctx_base_chars": 1569,
+    "ctx_wide_chars": 3405,
+    "ctx_ratio": 2.17,
+    "added_nodes": 25
+   },
+   {
+    "pid": "02b62fce087211ebbd64ac1f6bf848b6",
+    "region_base": 24,
+    "region_wide": 32,
+    "region_ratio": 1.333,
+    "ctx_base_chars": 1305,
+    "ctx_wide_chars": 1719,
+    "ctx_ratio": 1.317,
+    "added_nodes": 8
+   },
+   {
+    "pid": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "region_base": 30,
+    "region_wide": 66,
+    "region_ratio": 2.2,
+    "ctx_base_chars": 1257,
+    "ctx_wide_chars": 2898,
+    "ctx_ratio": 2.305,
+    "added_nodes": 36
+   },
+   {
+    "pid": "c9a769c608be11ebbd8aac1f6bf848b6",
+    "region_base": 20,
+    "region_wide": 23,
+    "region_ratio": 1.15,
+    "ctx_base_chars": 1563,
+    "ctx_wide_chars": 1683,
+    "ctx_ratio": 1.077,
+    "added_nodes": 3
+   },
+   {
+    "pid": "3f04140e08c311ebbd8dac1f6bf848b6",
+    "region_base": 24,
+    "region_wide": 34,
+    "region_ratio": 1.417,
+    "ctx_base_chars": 1468,
+    "ctx_wide_chars": 2179,
+    "ctx_ratio": 1.484,
+    "added_nodes": 10
+   },
+   {
+    "pid": "50e4a65c0bde11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 45,
+    "region_ratio": 1.5,
+    "ctx_base_chars": 1418,
+    "ctx_wide_chars": 2357,
+    "ctx_ratio": 1.662,
+    "added_nodes": 15
+   },
+   {
+    "pid": "b64f541e088d11ebbd70ac1f6bf848b6",
+    "region_base": 28,
+    "region_wide": 58,
+    "region_ratio": 2.071,
+    "ctx_base_chars": 1560,
+    "ctx_wide_chars": 3430,
+    "ctx_ratio": 2.199,
+    "added_nodes": 30
+   },
+   {
+    "pid": "f998c58c091b11ebbdaeac1f6bf848b6",
+    "region_base": 25,
+    "region_wide": 46,
+    "region_ratio": 1.84,
+    "ctx_base_chars": 984,
+    "ctx_wide_chars": 1912,
+    "ctx_ratio": 1.943,
+    "added_nodes": 21
+   },
+   {
+    "pid": "38da155f087511ebbd67ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 41,
+    "region_ratio": 1.519,
+    "ctx_base_chars": 1710,
+    "ctx_wide_chars": 2779,
+    "ctx_ratio": 1.625,
+    "added_nodes": 14
+   },
+   {
+    "pid": "49b22d0a0bde11eba7f7acde48001122",
+    "region_base": 28,
+    "region_wide": 96,
+    "region_ratio": 3.429,
+    "ctx_base_chars": 1046,
+    "ctx_wide_chars": 3745,
+    "ctx_ratio": 3.58,
+    "added_nodes": 68
+   },
+   {
+    "pid": "78b10fb00bdc11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 52,
+    "region_ratio": 1.733,
+    "ctx_base_chars": 2008,
+    "ctx_wide_chars": 3783,
+    "ctx_ratio": 1.884,
+    "added_nodes": 22
+   },
+   {
+    "pid": "879d21e208fc11ebbdadac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 36,
+    "region_ratio": 1.333,
+    "ctx_base_chars": 1799,
+    "ctx_wide_chars": 2372,
+    "ctx_ratio": 1.319,
+    "added_nodes": 9
+   },
+   {
+    "pid": "62a9cd640bb011ebab90acde48001122",
+    "region_base": 26,
+    "region_wide": 52,
+    "region_ratio": 2.0,
+    "ctx_base_chars": 1792,
+    "ctx_wide_chars": 3740,
+    "ctx_ratio": 2.087,
+    "added_nodes": 26
+   },
+   {
+    "pid": "cda459160bda11eba7f7acde48001122",
+    "region_base": 28,
+    "region_wide": 41,
+    "region_ratio": 1.464,
+    "ctx_base_chars": 1749,
+    "ctx_wide_chars": 2753,
+    "ctx_ratio": 1.574,
+    "added_nodes": 13
+   },
+   {
+    "pid": "1dfaa6200bdd11eba7f7acde48001122",
+    "region_base": 28,
+    "region_wide": 45,
+    "region_ratio": 1.607,
+    "ctx_base_chars": 1689,
+    "ctx_wide_chars": 3157,
+    "ctx_ratio": 1.869,
+    "added_nodes": 17
+   },
+   {
+    "pid": "ea151f3908e011ebbda2ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 58,
+    "region_ratio": 2.148,
+    "ctx_base_chars": 1400,
+    "ctx_wide_chars": 2253,
+    "ctx_ratio": 1.609,
+    "added_nodes": 31
+   },
+   {
+    "pid": "8e07f1f00bda11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 55,
+    "region_ratio": 1.833,
+    "ctx_base_chars": 2109,
+    "ctx_wide_chars": 3403,
+    "ctx_ratio": 1.614,
+    "added_nodes": 25
+   },
+   {
+    "pid": "b7f5f7200bdd11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 70,
+    "region_ratio": 2.333,
+    "ctx_base_chars": 1204,
+    "ctx_wide_chars": 3752,
+    "ctx_ratio": 3.116,
+    "added_nodes": 40
+   },
+   {
+    "pid": "0dc9691b087911ebbd67ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 54,
+    "region_ratio": 2.0,
+    "ctx_base_chars": 1221,
+    "ctx_wide_chars": 2756,
+    "ctx_ratio": 2.257,
+    "added_nodes": 27
+   },
+   {
+    "pid": "ec70a8a208a311ebbd7cac1f6bf848b6",
+    "region_base": 28,
+    "region_wide": 47,
+    "region_ratio": 1.679,
+    "ctx_base_chars": 1559,
+    "ctx_wide_chars": 2524,
+    "ctx_ratio": 1.619,
+    "added_nodes": 19
+   },
+   {
+    "pid": "0083038e0bde11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 52,
+    "region_ratio": 1.793,
+    "ctx_base_chars": 2183,
+    "ctx_wide_chars": 4266,
+    "ctx_ratio": 1.954,
+    "added_nodes": 23
+   },
+   {
+    "pid": "6b8402c40bdd11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 62,
+    "region_ratio": 2.067,
+    "ctx_base_chars": 1687,
+    "ctx_wide_chars": 3866,
+    "ctx_ratio": 2.292,
+    "added_nodes": 32
+   },
+   {
+    "pid": "d9c894ec0bd911eba7f7acde48001122",
+    "region_base": 20,
+    "region_wide": 31,
+    "region_ratio": 1.55,
+    "ctx_base_chars": 1003,
+    "ctx_wide_chars": 1896,
+    "ctx_ratio": 1.89,
+    "added_nodes": 11
+   },
+   {
+    "pid": "4d3ab509099c11ebbdb0ac1f6bf848b6",
+    "region_base": 22,
+    "region_wide": 30,
+    "region_ratio": 1.364,
+    "ctx_base_chars": 1661,
+    "ctx_wide_chars": 2044,
+    "ctx_ratio": 1.231,
+    "added_nodes": 8
+   },
+   {
+    "pid": "a9e322b20bdc11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 66,
+    "region_ratio": 2.276,
+    "ctx_base_chars": 2309,
+    "ctx_wide_chars": 4710,
+    "ctx_ratio": 2.04,
+    "added_nodes": 37
+   },
+   {
+    "pid": "8f783c7a0bda11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 44,
+    "region_ratio": 1.517,
+    "ctx_base_chars": 1761,
+    "ctx_wide_chars": 3113,
+    "ctx_ratio": 1.768,
+    "added_nodes": 15
+   },
+   {
+    "pid": "b642318c0bdd11eba7f7acde48001122",
+    "region_base": 24,
+    "region_wide": 36,
+    "region_ratio": 1.5,
+    "ctx_base_chars": 1447,
+    "ctx_wide_chars": 2273,
+    "ctx_ratio": 1.571,
+    "added_nodes": 12
+   },
+   {
+    "pid": "a52e9e1908b711ebbd88ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 101,
+    "region_ratio": 3.483,
+    "ctx_base_chars": 1574,
+    "ctx_wide_chars": 4388,
+    "ctx_ratio": 2.788,
+    "added_nodes": 72
+   },
+   {
+    "pid": "fcdafe320bdb11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 66,
+    "region_ratio": 2.276,
+    "ctx_base_chars": 1348,
+    "ctx_wide_chars": 2890,
+    "ctx_ratio": 2.144,
+    "added_nodes": 37
+   },
+   {
+    "pid": "7d87730c087211ebbd66ac1f6bf848b6",
+    "region_base": 28,
+    "region_wide": 62,
+    "region_ratio": 2.214,
+    "ctx_base_chars": 1668,
+    "ctx_wide_chars": 3456,
+    "ctx_ratio": 2.072,
+    "added_nodes": 34
+   },
+   {
+    "pid": "ee5cf4a008a711ebbd7fac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 41,
+    "region_ratio": 1.519,
+    "ctx_base_chars": 2021,
+    "ctx_wide_chars": 2689,
+    "ctx_ratio": 1.331,
+    "added_nodes": 14
+   },
+   {
+    "pid": "037da85d08c611ebbd90ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 57,
+    "region_ratio": 2.111,
+    "ctx_base_chars": 1936,
+    "ctx_wide_chars": 3125,
+    "ctx_ratio": 1.614,
+    "added_nodes": 30
+   },
+   {
+    "pid": "e15d99380bdd11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 57,
+    "region_ratio": 1.966,
+    "ctx_base_chars": 1938,
+    "ctx_wide_chars": 4075,
+    "ctx_ratio": 2.103,
+    "added_nodes": 28
+   },
+   {
+    "pid": "f05423560bda11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 52,
+    "region_ratio": 1.733,
+    "ctx_base_chars": 1292,
+    "ctx_wide_chars": 3006,
+    "ctx_ratio": 2.327,
+    "added_nodes": 22
+   },
+   {
+    "pid": "0ce9a92008ed11ebbda7ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 30,
+    "region_ratio": 1.111,
+    "ctx_base_chars": 1163,
+    "ctx_wide_chars": 1204,
+    "ctx_ratio": 1.035,
+    "added_nodes": 3
+   },
+   {
+    "pid": "7d7237ac08a011ebbd78ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 56,
+    "region_ratio": 2.074,
+    "ctx_base_chars": 1674,
+    "ctx_wide_chars": 3291,
+    "ctx_ratio": 1.966,
+    "added_nodes": 29
+   },
+   {
+    "pid": "90c8793c087411ebbd67ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 49,
+    "region_ratio": 1.69,
+    "ctx_base_chars": 927,
+    "ctx_wide_chars": 2245,
+    "ctx_ratio": 2.422,
+    "added_nodes": 20
+   },
+   {
+    "pid": "63c16246095211ebbdaeac1f6bf848b6",
+    "region_base": 30,
+    "region_wide": 57,
+    "region_ratio": 1.9,
+    "ctx_base_chars": 1540,
+    "ctx_wide_chars": 2804,
+    "ctx_ratio": 1.821,
+    "added_nodes": 27
+   },
+   {
+    "pid": "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 50,
+    "region_ratio": 1.724,
+    "ctx_base_chars": 1316,
+    "ctx_wide_chars": 2607,
+    "ctx_ratio": 1.981,
+    "added_nodes": 21
+   },
+   {
+    "pid": "d18fc6640bda11eba7f7acde48001122",
+    "region_base": 26,
+    "region_wide": 88,
+    "region_ratio": 3.385,
+    "ctx_base_chars": 2066,
+    "ctx_wide_chars": 6046,
+    "ctx_ratio": 2.926,
+    "added_nodes": 62
+   },
+   {
+    "pid": "4a11106f08ea11ebbda7ac1f6bf848b6",
+    "region_base": 24,
+    "region_wide": 34,
+    "region_ratio": 1.417,
+    "ctx_base_chars": 1246,
+    "ctx_wide_chars": 1847,
+    "ctx_ratio": 1.482,
+    "added_nodes": 10
+   },
+   {
+    "pid": "a457e11c0bdb11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 58,
+    "region_ratio": 2.0,
+    "ctx_base_chars": 1305,
+    "ctx_wide_chars": 3312,
+    "ctx_ratio": 2.538,
+    "added_nodes": 29
+   },
+   {
+    "pid": "632fcc82085611ebbd59ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 44,
+    "region_ratio": 1.517,
+    "ctx_base_chars": 1635,
+    "ctx_wide_chars": 2947,
+    "ctx_ratio": 1.802,
+    "added_nodes": 15
+   },
+   {
+    "pid": "076288460bde11eba7f7acde48001122",
+    "region_base": 25,
+    "region_wide": 52,
+    "region_ratio": 2.08,
+    "ctx_base_chars": 1556,
+    "ctx_wide_chars": 4056,
+    "ctx_ratio": 2.607,
+    "added_nodes": 27
+   },
+   {
+    "pid": "402c6e0008c611ebbd90ac1f6bf848b6",
+    "region_base": 24,
+    "region_wide": 30,
+    "region_ratio": 1.25,
+    "ctx_base_chars": 1569,
+    "ctx_wide_chars": 1970,
+    "ctx_ratio": 1.256,
+    "added_nodes": 6
+   },
+   {
+    "pid": "9523a3df088911ebbd6eac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 46,
+    "region_ratio": 1.769,
+    "ctx_base_chars": 1307,
+    "ctx_wide_chars": 2465,
+    "ctx_ratio": 1.886,
+    "added_nodes": 20
+   },
+   {
+    "pid": "5ff291a80bda11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 55,
+    "region_ratio": 1.833,
+    "ctx_base_chars": 1552,
+    "ctx_wide_chars": 3918,
+    "ctx_ratio": 2.524,
+    "added_nodes": 25
+   },
+   {
+    "pid": "a08aa2a9089111ebbd73ac1f6bf848b6",
+    "region_base": 25,
+    "region_wide": 38,
+    "region_ratio": 1.52,
+    "ctx_base_chars": 1149,
+    "ctx_wide_chars": 1877,
+    "ctx_ratio": 1.634,
+    "added_nodes": 13
+   },
+   {
+    "pid": "63240f22089d11ebbd78ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 48,
+    "region_ratio": 1.655,
+    "ctx_base_chars": 1214,
+    "ctx_wide_chars": 2218,
+    "ctx_ratio": 1.827,
+    "added_nodes": 19
+   },
+   {
+    "pid": "fde95590089c11ebbd78ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 53,
+    "region_ratio": 1.828,
+    "ctx_base_chars": 2326,
+    "ctx_wide_chars": 4021,
+    "ctx_ratio": 1.729,
+    "added_nodes": 24
+   },
+   {
+    "pid": "3bb9c0740bb011ebab90acde48001122",
+    "region_base": 28,
+    "region_wide": 54,
+    "region_ratio": 1.929,
+    "ctx_base_chars": 1336,
+    "ctx_wide_chars": 3352,
+    "ctx_ratio": 2.509,
+    "added_nodes": 26
+   },
+   {
+    "pid": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 54,
+    "region_ratio": 1.862,
+    "ctx_base_chars": 1179,
+    "ctx_wide_chars": 2808,
+    "ctx_ratio": 2.382,
+    "added_nodes": 25
+   },
+   {
+    "pid": "e7dc72940baf11ebab90acde48001122",
+    "region_base": 29,
+    "region_wide": 60,
+    "region_ratio": 2.069,
+    "ctx_base_chars": 2715,
+    "ctx_wide_chars": 5460,
+    "ctx_ratio": 2.011,
+    "added_nodes": 31
+   },
+   {
+    "pid": "764446780bde11eba7f7acde48001122",
+    "region_base": 28,
+    "region_wide": 59,
+    "region_ratio": 2.107,
+    "ctx_base_chars": 1185,
+    "ctx_wide_chars": 2443,
+    "ctx_ratio": 2.062,
+    "added_nodes": 31
+   },
+   {
+    "pid": "bb97d66208ba11ebbd88ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 73,
+    "region_ratio": 2.517,
+    "ctx_base_chars": 1645,
+    "ctx_wide_chars": 3318,
+    "ctx_ratio": 2.017,
+    "added_nodes": 44
+   },
+   {
+    "pid": "f1a794f20bdc11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 55,
+    "region_ratio": 1.833,
+    "ctx_base_chars": 2049,
+    "ctx_wide_chars": 4183,
+    "ctx_ratio": 2.041,
+    "added_nodes": 25
+   },
+   {
+    "pid": "47bb70600bde11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 50,
+    "region_ratio": 1.724,
+    "ctx_base_chars": 1969,
+    "ctx_wide_chars": 3191,
+    "ctx_ratio": 1.621,
+    "added_nodes": 21
+   },
+   {
+    "pid": "6cbb0ed6089911ebbd77ac1f6bf848b6",
+    "region_base": 28,
+    "region_wide": 31,
+    "region_ratio": 1.107,
+    "ctx_base_chars": 1082,
+    "ctx_wide_chars": 1363,
+    "ctx_ratio": 1.26,
+    "added_nodes": 3
+   },
+   {
+    "pid": "594ca25608df11ebbda0ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 67,
+    "region_ratio": 2.31,
+    "ctx_base_chars": 1477,
+    "ctx_wide_chars": 2367,
+    "ctx_ratio": 1.603,
+    "added_nodes": 38
+   },
+   {
+    "pid": "a431a93808d511ebbd98ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 58,
+    "region_ratio": 2.148,
+    "ctx_base_chars": 1594,
+    "ctx_wide_chars": 3226,
+    "ctx_ratio": 2.024,
+    "added_nodes": 31
+   },
+   {
+    "pid": "421d07aa0bb011ebab90acde48001122",
+    "region_base": 26,
+    "region_wide": 34,
+    "region_ratio": 1.308,
+    "ctx_base_chars": 1805,
+    "ctx_wide_chars": 2275,
+    "ctx_ratio": 1.26,
+    "added_nodes": 8
+   },
+   {
+    "pid": "3f48bc400bb011ebab90acde48001122",
+    "region_base": 26,
+    "region_wide": 38,
+    "region_ratio": 1.462,
+    "ctx_base_chars": 1615,
+    "ctx_wide_chars": 2377,
+    "ctx_ratio": 1.472,
+    "added_nodes": 12
+   },
+   {
+    "pid": "c68eb0be08e611ebbda5ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 40,
+    "region_ratio": 1.481,
+    "ctx_base_chars": 1885,
+    "ctx_wide_chars": 2671,
+    "ctx_ratio": 1.417,
+    "added_nodes": 13
+   },
+   {
+    "pid": "ab28bfb6097d11ebbdb0ac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 60,
+    "region_ratio": 2.308,
+    "ctx_base_chars": 1131,
+    "ctx_wide_chars": 2223,
+    "ctx_ratio": 1.966,
+    "added_nodes": 34
+   },
+   {
+    "pid": "0f97e1f3096f11ebbdb0ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 75,
+    "region_ratio": 2.586,
+    "ctx_base_chars": 1396,
+    "ctx_wide_chars": 2791,
+    "ctx_ratio": 1.999,
+    "added_nodes": 46
+   },
+   {
+    "pid": "3ab846860bde11eba7f7acde48001122",
+    "region_base": 24,
+    "region_wide": 27,
+    "region_ratio": 1.125,
+    "ctx_base_chars": 1514,
+    "ctx_wide_chars": 1759,
+    "ctx_ratio": 1.162,
+    "added_nodes": 3
+   },
+   {
+    "pid": "8cd3fe6c0baf11ebab90acde48001122",
+    "region_base": 26,
+    "region_wide": 34,
+    "region_ratio": 1.308,
+    "ctx_base_chars": 2001,
+    "ctx_wide_chars": 2607,
+    "ctx_ratio": 1.303,
+    "added_nodes": 8
+   },
+   {
+    "pid": "0d9251260baf11ebab90acde48001122",
+    "region_base": 26,
+    "region_wide": 36,
+    "region_ratio": 1.385,
+    "ctx_base_chars": 1563,
+    "ctx_wide_chars": 2629,
+    "ctx_ratio": 1.682,
+    "added_nodes": 10
+   },
+   {
+    "pid": "8cdc97de0bdc11eba7f7acde48001122",
+    "region_base": 24,
+    "region_wide": 29,
+    "region_ratio": 1.208,
+    "ctx_base_chars": 1781,
+    "ctx_wide_chars": 2210,
+    "ctx_ratio": 1.241,
+    "added_nodes": 5
+   },
+   {
+    "pid": "178a2b9408d611ebbd98ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 52,
+    "region_ratio": 1.793,
+    "ctx_base_chars": 1200,
+    "ctx_wide_chars": 2109,
+    "ctx_ratio": 1.758,
+    "added_nodes": 23
+   },
+   {
+    "pid": "d73fa07c0bdd11eba7f7acde48001122",
+    "region_base": 22,
+    "region_wide": 38,
+    "region_ratio": 1.727,
+    "ctx_base_chars": 1316,
+    "ctx_wide_chars": 2137,
+    "ctx_ratio": 1.624,
+    "added_nodes": 16
+   },
+   {
+    "pid": "9bc54aba0bdd11eba7f7acde48001122",
+    "region_base": 22,
+    "region_wide": 39,
+    "region_ratio": 1.773,
+    "ctx_base_chars": 1783,
+    "ctx_wide_chars": 2887,
+    "ctx_ratio": 1.619,
+    "added_nodes": 17
+   },
+   {
+    "pid": "36b8644508af11ebbd83ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 63,
+    "region_ratio": 2.172,
+    "ctx_base_chars": 1122,
+    "ctx_wide_chars": 2865,
+    "ctx_ratio": 2.553,
+    "added_nodes": 34
+   },
+   {
+    "pid": "81e0d683087c11ebbd6aac1f6bf848b6",
+    "region_base": 30,
+    "region_wide": 62,
+    "region_ratio": 2.067,
+    "ctx_base_chars": 1781,
+    "ctx_wide_chars": 3315,
+    "ctx_ratio": 1.861,
+    "added_nodes": 32
+   },
+   {
+    "pid": "689d225009b411ebbdb0ac1f6bf848b6",
+    "region_base": 26,
+    "region_wide": 40,
+    "region_ratio": 1.538,
+    "ctx_base_chars": 1536,
+    "ctx_wide_chars": 2257,
+    "ctx_ratio": 1.469,
+    "added_nodes": 14
+   },
+   {
+    "pid": "5cbb015f087511ebbd67ac1f6bf848b6",
+    "region_base": 27,
+    "region_wide": 47,
+    "region_ratio": 1.741,
+    "ctx_base_chars": 1480,
+    "ctx_wide_chars": 2919,
+    "ctx_ratio": 1.972,
+    "added_nodes": 20
+   },
+   {
+    "pid": "0016373a0bda11eba7f7acde48001122",
+    "region_base": 27,
+    "region_wide": 41,
+    "region_ratio": 1.519,
+    "ctx_base_chars": 2166,
+    "ctx_wide_chars": 3013,
+    "ctx_ratio": 1.391,
+    "added_nodes": 14
+   },
+   {
+    "pid": "ccd086f80bdb11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 36,
+    "region_ratio": 1.2,
+    "ctx_base_chars": 760,
+    "ctx_wide_chars": 1121,
+    "ctx_ratio": 1.475,
+    "added_nodes": 6
+   },
+   {
+    "pid": "965e667e0bdd11eba7f7acde48001122",
+    "region_base": 23,
+    "region_wide": 35,
+    "region_ratio": 1.522,
+    "ctx_base_chars": 1592,
+    "ctx_wide_chars": 2418,
+    "ctx_ratio": 1.519,
+    "added_nodes": 12
+   },
+   {
+    "pid": "49ccfdfa08ce11ebbd94ac1f6bf848b6",
+    "region_base": 25,
+    "region_wide": 33,
+    "region_ratio": 1.32,
+    "ctx_base_chars": 1518,
+    "ctx_wide_chars": 1772,
+    "ctx_ratio": 1.167,
+    "added_nodes": 8
+   },
+   {
+    "pid": "43eb7b380bde11eba7f7acde48001122",
+    "region_base": 29,
+    "region_wide": 44,
+    "region_ratio": 1.517,
+    "ctx_base_chars": 1093,
+    "ctx_wide_chars": 1973,
+    "ctx_ratio": 1.805,
+    "added_nodes": 15
+   },
+   {
+    "pid": "f48667b80bda11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 51,
+    "region_ratio": 1.7,
+    "ctx_base_chars": 2179,
+    "ctx_wide_chars": 3557,
+    "ctx_ratio": 1.632,
+    "added_nodes": 21
+   },
+   {
+    "pid": "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "region_base": 30,
+    "region_wide": 65,
+    "region_ratio": 2.167,
+    "ctx_base_chars": 1497,
+    "ctx_wide_chars": 3593,
+    "ctx_ratio": 2.4,
+    "added_nodes": 35
+   },
+   {
+    "pid": "bd9609880bdb11eba7f7acde48001122",
+    "region_base": 30,
+    "region_wide": 58,
+    "region_ratio": 1.933,
+    "ctx_base_chars": 2119,
+    "ctx_wide_chars": 4286,
+    "ctx_ratio": 2.023,
+    "added_nodes": 28
+   },
+   {
+    "pid": "748446060bdb11eba7f7acde48001122",
+    "region_base": 31,
+    "region_wide": 36,
+    "region_ratio": 1.161,
+    "ctx_base_chars": 1297,
+    "ctx_wide_chars": 1777,
+    "ctx_ratio": 1.37,
+    "added_nodes": 5
+   },
+   {
+    "pid": "e2de58500bd911eba7f7acde48001122",
+    "region_base": 25,
+    "region_wide": 38,
+    "region_ratio": 1.52,
+    "ctx_base_chars": 1433,
+    "ctx_wide_chars": 2660,
+    "ctx_ratio": 1.856,
+    "added_nodes": 13
+   },
+   {
+    "pid": "f04cc9b408d611ebbd99ac1f6bf848b6",
+    "region_base": 28,
+    "region_wide": 68,
+    "region_ratio": 2.429,
+    "ctx_base_chars": 1767,
+    "ctx_wide_chars": 3283,
+    "ctx_ratio": 1.858,
+    "added_nodes": 40
+   },
+   {
+    "pid": "5c7842780baf11ebab90acde48001122",
+    "region_base": 29,
+    "region_wide": 46,
+    "region_ratio": 1.586,
+    "ctx_base_chars": 2536,
+    "ctx_wide_chars": 3715,
+    "ctx_ratio": 1.465,
+    "added_nodes": 17
+   },
+   {
+    "pid": "0c24f02e08c711ebbd91ac1f6bf848b6",
+    "region_base": 29,
+    "region_wide": 55,
+    "region_ratio": 1.897,
+    "ctx_base_chars": 1415,
+    "ctx_wide_chars": 2821,
+    "ctx_ratio": 1.994,
+    "added_nodes": 26
+   },
+   {
+    "pid": "84c99c760bb011ebab90acde48001122",
+    "region_base": 29,
+    "region_wide": 49,
+    "region_ratio": 1.69,
+    "ctx_base_chars": 2310,
+    "ctx_wide_chars": 3647,
+    "ctx_ratio": 1.579,
+    "added_nodes": 20
+   },
+   {
+    "pid": "f253a3040bdd11eba7f7acde48001122",
+    "region_base": 25,
+    "region_wide": 80,
+    "region_ratio": 3.2,
+    "ctx_base_chars": 1729,
+    "ctx_wide_chars": 5488,
+    "ctx_ratio": 3.174,
+    "added_nodes": 55
+   },
+   {
+    "pid": "8dcaaf24089811ebbd77ac1f6bf848b6",
+    "region_base": 30,
+    "region_wide": 43,
+    "region_ratio": 1.433,
+    "ctx_base_chars": 1368,
+    "ctx_wide_chars": 2104,
+    "ctx_ratio": 1.538,
+    "added_nodes": 13
+   },
+   {
+    "pid": "2b9528860bde11eba7f7acde48001122",
+    "region_base": 22,
+    "region_wide": 22,
+    "region_ratio": 1.0,
+    "ctx_base_chars": 1404,
+    "ctx_wide_chars": 1404,
+    "ctx_ratio": 1.0,
+    "added_nodes": 0
+   }
+  ]
+ },
+ "flip_sim": {
+  "render_budget_1.0_JUDGED": {
+   "arm": "rru_b10",
+   "baseline_pass": 112,
+   "baseline_fail": 20,
+   "carrier_not_retrieved_fails": 10,
+   "render_absent_fails": 10,
+   "flips_fail_to_pass": 3,
+   "flip_pids": [
+    "cda459160bda11eba7f7acde48001122",
+    "8f783c7a0bda11eba7f7acde48001122",
+    "f253a3040bdd11eba7f7acde48001122"
+   ],
+   "regressions_pass_to_fail": 0,
+   "regression_pids": []
+  },
+  "render_budget_0.6": {
+   "arm": "rru_b06",
+   "baseline_pass": 95,
+   "baseline_fail": 37,
+   "carrier_not_retrieved_fails": 10,
+   "render_absent_fails": 27,
+   "flips_fail_to_pass": 3,
+   "flip_pids": [
+    "cda459160bda11eba7f7acde48001122",
+    "8f783c7a0bda11eba7f7acde48001122",
+    "f253a3040bdd11eba7f7acde48001122"
+   ],
+   "regressions_pass_to_fail": 0,
+   "regression_pids": []
+  },
+  "model": "H620-pattern deterministic proxy: flip = recorded-arm FAIL that was a carrier-not-retrieved miss (a gold carrier outside baseline reset_region) and is fully retrieved by the widened region. render_budget=1.0 => retrieved carrier renders; the render-absent fail bucket is disjoint and unaffected by the region fix. Regression is structurally impossible at retrieval level (widened is a strict superset); live-render crowd-out at budget 0.6 is NOT simulated offline and is carried as a caveat.",
+  "retrieval_reachability_all132": {
+   "base_fully_retrieved": 104,
+   "wide_fully_retrieved": 116,
+   "delta": 12
+  }
+ },
+ "verdict_recommendation": "CONFIRMED",
+ "bar": "CONFIRMED at >=10/15 recovered AND >=3 flips (budget 1.0) with zero regressions; KILLED if recovery needs region growth >2x median without flips",
+ "caveats": [
+  "render_budget=0.6 crowd-out cannot be simulated offline (no live render node lists in the H620 checkpoint); the +flips at 0.6 assume retrieved=>rendered, an upper bound.",
+  "flip proxy assumes a newly fully-retrieved carrier_not_retrieved probe passes; a fraction could instead land in the render-absent bucket. Reported as retrieval-level flips.",
+  "frozen 6,626-entity substrate, not the 7,575 live re-ingest (97.2% carrier alignment)."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h651-region-cap-20260724T123704Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h651-region-cap-20260724T123704Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h651-region-cap-20260724T123704Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r58_h651_region_cap.py"
+ }
+}

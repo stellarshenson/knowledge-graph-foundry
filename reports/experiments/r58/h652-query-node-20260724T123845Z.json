@@ -1,0 +1,1146 @@
+{
+ "hypothesis": "R58-H652",
+ "run_id": "20260724T123845Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, from R57 atlas rows)",
+ "substrate": "medium 2wiki frozen H582 cache (6,626 entities); FREE numpy/scipy, no GPU/LLM/Neo4j/net; reuses r58_h651 build()",
+ "substrate_caveat": "frozen 6,626-entity cache, not the 7,575 live re-ingest",
+ "h597_fuse_add_guard": "query node index=n receives eps reset mass; ppr_seeds slots are the ORIGINAL anchors/dense-seeds only - the query node is NEVER appended to ppr_seeds. Verified by construction in aug_ppr().",
+ "mechanism": "query pseudo-node (index n) wired to (maxgap anchors u dense seeds); asymmetric reset eps on the query node, (1-eps) on original ppr_seeds; region = PPR-top15 cap (baseline rule) to isolate from H651",
+ "population": {
+  "dense_missed_rows": 110,
+  "with_node_recoverable": 98,
+  "absent_no_node": 12
+ },
+ "baseline_walk_recovers_of_110": 77,
+ "h651_recovers_of_110": 92,
+ "eps_sweep": {
+  "0.02": {
+   "recovered_of_110": 75,
+   "gained_vs_base_walk": [],
+   "lost_vs_base_walk": [
+    [
+     "3ab846860bde11eba7f7acde48001122",
+     "William Axt"
+    ],
+    [
+     "3f04140e08c311ebbd8dac1f6bf848b6",
+     "Ye\u015fim Ustao\u011flu"
+    ]
+   ],
+   "net_vs_base_walk": -2,
+   "nonredundant_vs_h651": [],
+   "n_nonredundant_vs_h651": 0,
+   "hit_set_regressions": [
+    [
+     "3ab846860bde11eba7f7acde48001122",
+     "William Axt"
+    ],
+    [
+     "3f04140e08c311ebbd8dac1f6bf848b6",
+     "Ye\u015fim Ustao\u011flu"
+    ]
+   ],
+   "n_hit_set_regressions": 2
+  },
+  "0.05": {
+   "recovered_of_110": 75,
+   "gained_vs_base_walk": [],
+   "lost_vs_base_walk": [
+    [
+     "3ab846860bde11eba7f7acde48001122",
+     "William Axt"
+    ],
+    [
+     "a431a93808d511ebbd98ac1f6bf848b6",
+     "Ulrike Ottinger"
+    ]
+   ],
+   "net_vs_base_walk": -2,
+   "nonredundant_vs_h651": [],
+   "n_nonredundant_vs_h651": 0,
+   "hit_set_regressions": [
+    [
+     "3ab846860bde11eba7f7acde48001122",
+     "William Axt"
+    ],
+    [
+     "a431a93808d511ebbd98ac1f6bf848b6",
+     "Ulrike Ottinger"
+    ]
+   ],
+   "n_hit_set_regressions": 2
+  },
+  "0.1": {
+   "recovered_of_110": 72,
+   "gained_vs_base_walk": [],
+   "lost_vs_base_walk": [
+    [
+     "265daf200bdc11eba7f7acde48001122",
+     "William the Silent"
+    ],
+    [
+     "3ab846860bde11eba7f7acde48001122",
+     "William Axt"
+    ],
+    [
+     "3f04140e08c311ebbd8dac1f6bf848b6",
+     "Ye\u015fim Ustao\u011flu"
+    ],
+    [
+     "a431a93808d511ebbd98ac1f6bf848b6",
+     "Ulrike Ottinger"
+    ],
+    [
+     "dcbee4b608b011ebbd85ac1f6bf848b6",
+     "Robert A. Stemmle"
+    ]
+   ],
+   "net_vs_base_walk": -5,
+   "nonredundant_vs_h651": [],
+   "n_nonredundant_vs_h651": 0,
+   "hit_set_regressions": [
+    [
+     "265daf200bdc11eba7f7acde48001122",
+     "William the Silent"
+    ],
+    [
+     "3ab846860bde11eba7f7acde48001122",
+     "William Axt"
+    ],
+    [
+     "3f04140e08c311ebbd8dac1f6bf848b6",
+     "Ye\u015fim Ustao\u011flu"
+    ],
+    [
+     "a431a93808d511ebbd98ac1f6bf848b6",
+     "Ulrike Ottinger"
+    ],
+    [
+     "dcbee4b608b011ebbd85ac1f6bf848b6",
+     "Robert A. Stemmle"
+    ]
+   ],
+   "n_hit_set_regressions": 5
+  }
+ },
+ "operating_point": {
+  "eps": 0.05,
+  "recovered_of_110": 75,
+  "gained_vs_base_walk": [],
+  "lost_vs_base_walk": [
+   [
+    "3ab846860bde11eba7f7acde48001122",
+    "William Axt"
+   ],
+   [
+    "a431a93808d511ebbd98ac1f6bf848b6",
+    "Ulrike Ottinger"
+   ]
+  ],
+  "net_vs_base_walk": -2,
+  "nonredundant_vs_h651": [],
+  "n_nonredundant_vs_h651": 0,
+  "hit_set_regressions": [
+   [
+    "3ab846860bde11eba7f7acde48001122",
+    "William Axt"
+   ],
+   [
+    "a431a93808d511ebbd98ac1f6bf848b6",
+    "Ulrike Ottinger"
+   ]
+  ],
+  "n_hit_set_regressions": 2
+ },
+ "composition_vs_h651": {
+  "h651_recovers_of_110": [
+   [
+    "006d81bc0bde11eba7f7acde48001122",
+    "Ryan Adams"
+   ],
+   [
+    "0083038e0bde11eba7f7acde48001122",
+    "Infanta Mar\u00eda de la Paz of Spain"
+   ],
+   [
+    "01309e5008bd11ebbd89ac1f6bf848b6",
+    "Georges Lautner"
+   ],
+   [
+    "02b62fce087211ebbd64ac1f6bf848b6",
+    "Alberto De Martino"
+   ],
+   [
+    "0dc9691b087911ebbd67ac1f6bf848b6",
+    "Swapan Saha"
+   ],
+   [
+    "0dfe41f60bdc11eba7f7acde48001122",
+    "Frank Sinatra"
+   ],
+   [
+    "1dfaa6200bdd11eba7f7acde48001122",
+    "Leopoldo Torres R\u00edos"
+   ],
+   [
+    "265daf200bdc11eba7f7acde48001122",
+    "William the Silent"
+   ],
+   [
+    "2b9528860bde11eba7f7acde48001122",
+    "Brancaleone Doria"
+   ],
+   [
+    "2d8f3ebe0bda11eba7f7acde48001122",
+    "Denys Desjardins"
+   ],
+   [
+    "2dc690ba0bdc11eba7f7acde48001122",
+    "Nicki Minaj"
+   ],
+   [
+    "33f51d7e0bde11eba7f7acde48001122",
+    "Leo Fong"
+   ],
+   [
+    "36b8644508af11ebbd83ac1f6bf848b6",
+    "Ray Nazarro"
+   ],
+   [
+    "36b8644508af11ebbd83ac1f6bf848b6",
+    "William Berke"
+   ],
+   [
+    "3ab846860bde11eba7f7acde48001122",
+    "William Axt"
+   ],
+   [
+    "3bb9c0740bb011ebab90acde48001122",
+    "Francis William Beaumont"
+   ],
+   [
+    "3f04140e08c311ebbd8dac1f6bf848b6",
+    "Alex Cox"
+   ],
+   [
+    "3f04140e08c311ebbd8dac1f6bf848b6",
+    "Ye\u015fim Ustao\u011flu"
+   ],
+   [
+    "421d07aa0bb011ebab90acde48001122",
+    "Brancaleone Doria"
+   ],
+   [
+    "43eb7b380bde11eba7f7acde48001122",
+    "Kenneth Branagh"
+   ],
+   [
+    "47bb70600bde11eba7f7acde48001122",
+    "DJ Clue"
+   ],
+   [
+    "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "John Ince (actor)"
+   ],
+   [
+    "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "Melville W. Brown"
+   ],
+   [
+    "50e4a65c0bde11eba7f7acde48001122",
+    "Meek Mill"
+   ],
+   [
+    "551e024408a611ebbd7fac1f6bf848b6",
+    "Frank Launder"
+   ],
+   [
+    "594ca25608df11ebbda0ac1f6bf848b6",
+    "George Pearson (filmmaker)"
+   ],
+   [
+    "594ca25608df11ebbda0ac1f6bf848b6",
+    "Vijay Bhatt"
+   ],
+   [
+    "5cbb015f087511ebbd67ac1f6bf848b6",
+    "Maxwell Shane"
+   ],
+   [
+    "5cbb015f087511ebbd67ac1f6bf848b6",
+    "Rod Amateau"
+   ],
+   [
+    "5cc01ab60bb011ebab90acde48001122",
+    "Conchobar mac Nessa"
+   ],
+   [
+    "5ff291a80bda11eba7f7acde48001122",
+    "Chuck Berry"
+   ],
+   [
+    "63240f22089d11ebbd78ac1f6bf848b6",
+    "Aleksander Ford"
+   ],
+   [
+    "63240f22089d11ebbd78ac1f6bf848b6",
+    "Andrea Bianchi"
+   ],
+   [
+    "6718770a087311ebbd66ac1f6bf848b6",
+    "Charlie Day"
+   ],
+   [
+    "6718770a087311ebbd66ac1f6bf848b6",
+    "Robert North Bradbury"
+   ],
+   [
+    "6b8402c40bdd11eba7f7acde48001122",
+    "Vatroslav Mimica"
+   ],
+   [
+    "6cbb0ed6089911ebbd77ac1f6bf848b6",
+    "Gus Meins"
+   ],
+   [
+    "6cbb0ed6089911ebbd77ac1f6bf848b6",
+    "Walter Hugo Khouri"
+   ],
+   [
+    "764446780bde11eba7f7acde48001122",
+    "Leo D. Maloney"
+   ],
+   [
+    "78b10fb00bdc11eba7f7acde48001122",
+    "Vladimir Gardin"
+   ],
+   [
+    "7cb81afc0bd911eba7f7acde48001122",
+    "Jim Wynorski"
+   ],
+   [
+    "7d7237ac08a011ebbd78ac1f6bf848b6",
+    "Ben Sombogaart"
+   ],
+   [
+    "7d7237ac08a011ebbd78ac1f6bf848b6",
+    "Frederic Zelnik"
+   ],
+   [
+    "81e0d683087c11ebbd6aac1f6bf848b6",
+    "Bertrand Tavernier"
+   ],
+   [
+    "81e0d683087c11ebbd6aac1f6bf848b6",
+    "Claude Sautet"
+   ],
+   [
+    "84b691d8086a11ebbd5fac1f6bf848b6",
+    "Clio Barnard"
+   ],
+   [
+    "84b691d8086a11ebbd5fac1f6bf848b6",
+    "Declan O'Brien"
+   ],
+   [
+    "84c99c760bb011ebab90acde48001122",
+    "Marie Leszczy\u0144ska"
+   ],
+   [
+    "86508dc60bdc11eba7f7acde48001122",
+    "Stephen Warbeck"
+   ],
+   [
+    "8dcaaf24089811ebbd77ac1f6bf848b6",
+    "Pierre Montazel"
+   ],
+   [
+    "8dcaaf24089811ebbd77ac1f6bf848b6",
+    "William Keighley"
+   ],
+   [
+    "8e07f1f00bda11eba7f7acde48001122",
+    "Fernando Cort\u00e9s"
+   ],
+   [
+    "8f783c7a0bda11eba7f7acde48001122",
+    "Christian August, Prince of Anhalt-Zerbst"
+   ],
+   [
+    "90c8793c087411ebbd67ac1f6bf848b6",
+    "Michael Lehmann"
+   ],
+   [
+    "90c8793c087411ebbd67ac1f6bf848b6",
+    "Po-Chih Leong"
+   ],
+   [
+    "914b452c0bdc11eba7f7acde48001122",
+    "Luis Mandoki"
+   ],
+   [
+    "9aa8008408de11ebbd9eac1f6bf848b6",
+    "Georges M\u00e9li\u00e8s"
+   ],
+   [
+    "9aa8008408de11ebbd9eac1f6bf848b6",
+    "James Tinling"
+   ],
+   [
+    "a1cdb240085811ebbd5bac1f6bf848b6",
+    "Michael Curtiz"
+   ],
+   [
+    "a431a93808d511ebbd98ac1f6bf848b6",
+    "Frank Tuttle"
+   ],
+   [
+    "a431a93808d511ebbd98ac1f6bf848b6",
+    "Ulrike Ottinger"
+   ],
+   [
+    "a457e11c0bdb11eba7f7acde48001122",
+    "Oskar Roehler"
+   ],
+   [
+    "a52e9e1908b711ebbd88ac1f6bf848b6",
+    "Charles Lamont"
+   ],
+   [
+    "a52e9e1908b711ebbd88ac1f6bf848b6",
+    "R. G. Springsteen"
+   ],
+   [
+    "a9e322b20bdc11eba7f7acde48001122",
+    "Eduardo De Filippo"
+   ],
+   [
+    "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "Edwin L. Marin"
+   ],
+   [
+    "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "Lina Wertm\u00fcller"
+   ],
+   [
+    "b642318c0bdd11eba7f7acde48001122",
+    "Muhammad bin Saud"
+   ],
+   [
+    "b64f541e088d11ebbd70ac1f6bf848b6",
+    "Gurinder Chadha"
+   ],
+   [
+    "b64f541e088d11ebbd70ac1f6bf848b6",
+    "Julie Dash"
+   ],
+   [
+    "b7f5f7200bdd11eba7f7acde48001122",
+    "Hans J. Salter"
+   ],
+   [
+    "bb97d66208ba11ebbd88ac1f6bf848b6",
+    "Bruce M. Mitchell"
+   ],
+   [
+    "bb97d66208ba11ebbd88ac1f6bf848b6",
+    "Yvan Chiffre"
+   ],
+   [
+    "c5a00e860bda11eba7f7acde48001122",
+    "Jocelyn Lovell"
+   ],
+   [
+    "c68eb0be08e611ebbda5ac1f6bf848b6",
+    "Gordon Flemyng"
+   ],
+   [
+    "c68eb0be08e611ebbda5ac1f6bf848b6",
+    "Gracia Querejeta"
+   ],
+   [
+    "ccd086f80bdb11eba7f7acde48001122",
+    "Jon Gunn"
+   ],
+   [
+    "cda459160bda11eba7f7acde48001122",
+    "Gia Coppola"
+   ],
+   [
+    "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "Dinu Cocea"
+   ],
+   [
+    "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "Richard Sale (director)"
+   ],
+   [
+    "dcbee4b608b011ebbd85ac1f6bf848b6",
+    "Robert A. Stemmle"
+   ],
+   [
+    "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "Alexander Singer"
+   ],
+   [
+    "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "Henri Lepage (director)"
+   ],
+   [
+    "e15d99380bdd11eba7f7acde48001122",
+    "Bo\u0161tjan Hladnik"
+   ],
+   [
+    "e7dc72940baf11ebab90acde48001122",
+    "Gundobad"
+   ],
+   [
+    "f04cc9b408d611ebbd99ac1f6bf848b6",
+    "Bernardo Bertolucci"
+   ],
+   [
+    "f04cc9b408d611ebbd99ac1f6bf848b6",
+    "Kim Ki-young"
+   ],
+   [
+    "f1a794f20bdc11eba7f7acde48001122",
+    "Socrates"
+   ],
+   [
+    "f253a3040bdd11eba7f7acde48001122",
+    "Olga Constantinovna of Russia"
+   ],
+   [
+    "f34d188608cb11ebbd93ac1f6bf848b6",
+    "William Duncan (actor)"
+   ],
+   [
+    "f48667b80bda11eba7f7acde48001122",
+    "Vassar College"
+   ],
+   [
+    "fcdafe320bdb11eba7f7acde48001122",
+    "Albert S. Rogell"
+   ]
+  ],
+  "n_h651": 92,
+  "h652_op_recovers_of_110": [
+   [
+    "006d81bc0bde11eba7f7acde48001122",
+    "Ryan Adams"
+   ],
+   [
+    "0083038e0bde11eba7f7acde48001122",
+    "Infanta Mar\u00eda de la Paz of Spain"
+   ],
+   [
+    "01309e5008bd11ebbd89ac1f6bf848b6",
+    "Georges Lautner"
+   ],
+   [
+    "02b62fce087211ebbd64ac1f6bf848b6",
+    "Alberto De Martino"
+   ],
+   [
+    "0dc9691b087911ebbd67ac1f6bf848b6",
+    "Swapan Saha"
+   ],
+   [
+    "0dfe41f60bdc11eba7f7acde48001122",
+    "Frank Sinatra"
+   ],
+   [
+    "1dfaa6200bdd11eba7f7acde48001122",
+    "Leopoldo Torres R\u00edos"
+   ],
+   [
+    "265daf200bdc11eba7f7acde48001122",
+    "William the Silent"
+   ],
+   [
+    "2b9528860bde11eba7f7acde48001122",
+    "Brancaleone Doria"
+   ],
+   [
+    "2d8f3ebe0bda11eba7f7acde48001122",
+    "Denys Desjardins"
+   ],
+   [
+    "2dc690ba0bdc11eba7f7acde48001122",
+    "Nicki Minaj"
+   ],
+   [
+    "33f51d7e0bde11eba7f7acde48001122",
+    "Leo Fong"
+   ],
+   [
+    "36b8644508af11ebbd83ac1f6bf848b6",
+    "Ray Nazarro"
+   ],
+   [
+    "36b8644508af11ebbd83ac1f6bf848b6",
+    "William Berke"
+   ],
+   [
+    "3bb9c0740bb011ebab90acde48001122",
+    "Francis William Beaumont"
+   ],
+   [
+    "3f04140e08c311ebbd8dac1f6bf848b6",
+    "Alex Cox"
+   ],
+   [
+    "3f04140e08c311ebbd8dac1f6bf848b6",
+    "Ye\u015fim Ustao\u011flu"
+   ],
+   [
+    "421d07aa0bb011ebab90acde48001122",
+    "Brancaleone Doria"
+   ],
+   [
+    "43eb7b380bde11eba7f7acde48001122",
+    "Kenneth Branagh"
+   ],
+   [
+    "47bb70600bde11eba7f7acde48001122",
+    "DJ Clue"
+   ],
+   [
+    "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "John Ince (actor)"
+   ],
+   [
+    "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "Melville W. Brown"
+   ],
+   [
+    "50e4a65c0bde11eba7f7acde48001122",
+    "Meek Mill"
+   ],
+   [
+    "551e024408a611ebbd7fac1f6bf848b6",
+    "Frank Launder"
+   ],
+   [
+    "594ca25608df11ebbda0ac1f6bf848b6",
+    "Vijay Bhatt"
+   ],
+   [
+    "5cbb015f087511ebbd67ac1f6bf848b6",
+    "Maxwell Shane"
+   ],
+   [
+    "5cc01ab60bb011ebab90acde48001122",
+    "Conchobar mac Nessa"
+   ],
+   [
+    "5ff291a80bda11eba7f7acde48001122",
+    "Chuck Berry"
+   ],
+   [
+    "63240f22089d11ebbd78ac1f6bf848b6",
+    "Aleksander Ford"
+   ],
+   [
+    "63240f22089d11ebbd78ac1f6bf848b6",
+    "Andrea Bianchi"
+   ],
+   [
+    "6718770a087311ebbd66ac1f6bf848b6",
+    "Charlie Day"
+   ],
+   [
+    "6718770a087311ebbd66ac1f6bf848b6",
+    "Robert North Bradbury"
+   ],
+   [
+    "6b8402c40bdd11eba7f7acde48001122",
+    "Vatroslav Mimica"
+   ],
+   [
+    "6cbb0ed6089911ebbd77ac1f6bf848b6",
+    "Gus Meins"
+   ],
+   [
+    "6cbb0ed6089911ebbd77ac1f6bf848b6",
+    "Walter Hugo Khouri"
+   ],
+   [
+    "764446780bde11eba7f7acde48001122",
+    "Leo D. Maloney"
+   ],
+   [
+    "78b10fb00bdc11eba7f7acde48001122",
+    "Vladimir Gardin"
+   ],
+   [
+    "7cb81afc0bd911eba7f7acde48001122",
+    "Jim Wynorski"
+   ],
+   [
+    "7d7237ac08a011ebbd78ac1f6bf848b6",
+    "Ben Sombogaart"
+   ],
+   [
+    "7d7237ac08a011ebbd78ac1f6bf848b6",
+    "Frederic Zelnik"
+   ],
+   [
+    "81e0d683087c11ebbd6aac1f6bf848b6",
+    "Bertrand Tavernier"
+   ],
+   [
+    "84b691d8086a11ebbd5fac1f6bf848b6",
+    "Declan O'Brien"
+   ],
+   [
+    "84c99c760bb011ebab90acde48001122",
+    "Marie Leszczy\u0144ska"
+   ],
+   [
+    "86508dc60bdc11eba7f7acde48001122",
+    "Stephen Warbeck"
+   ],
+   [
+    "8dcaaf24089811ebbd77ac1f6bf848b6",
+    "Pierre Montazel"
+   ],
+   [
+    "8e07f1f00bda11eba7f7acde48001122",
+    "Fernando Cort\u00e9s"
+   ],
+   [
+    "90c8793c087411ebbd67ac1f6bf848b6",
+    "Michael Lehmann"
+   ],
+   [
+    "914b452c0bdc11eba7f7acde48001122",
+    "Luis Mandoki"
+   ],
+   [
+    "9aa8008408de11ebbd9eac1f6bf848b6",
+    "Georges M\u00e9li\u00e8s"
+   ],
+   [
+    "9aa8008408de11ebbd9eac1f6bf848b6",
+    "James Tinling"
+   ],
+   [
+    "a1cdb240085811ebbd5bac1f6bf848b6",
+    "Michael Curtiz"
+   ],
+   [
+    "a431a93808d511ebbd98ac1f6bf848b6",
+    "Frank Tuttle"
+   ],
+   [
+    "a457e11c0bdb11eba7f7acde48001122",
+    "Oskar Roehler"
+   ],
+   [
+    "a9e322b20bdc11eba7f7acde48001122",
+    "Eduardo De Filippo"
+   ],
+   [
+    "b642318c0bdd11eba7f7acde48001122",
+    "Muhammad bin Saud"
+   ],
+   [
+    "b64f541e088d11ebbd70ac1f6bf848b6",
+    "Gurinder Chadha"
+   ],
+   [
+    "b64f541e088d11ebbd70ac1f6bf848b6",
+    "Julie Dash"
+   ],
+   [
+    "b7f5f7200bdd11eba7f7acde48001122",
+    "Hans J. Salter"
+   ],
+   [
+    "bb97d66208ba11ebbd88ac1f6bf848b6",
+    "Bruce M. Mitchell"
+   ],
+   [
+    "bb97d66208ba11ebbd88ac1f6bf848b6",
+    "Yvan Chiffre"
+   ],
+   [
+    "c5a00e860bda11eba7f7acde48001122",
+    "Jocelyn Lovell"
+   ],
+   [
+    "c68eb0be08e611ebbda5ac1f6bf848b6",
+    "Gracia Querejeta"
+   ],
+   [
+    "ccd086f80bdb11eba7f7acde48001122",
+    "Jon Gunn"
+   ],
+   [
+    "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "Dinu Cocea"
+   ],
+   [
+    "dcbee4b608b011ebbd85ac1f6bf848b6",
+    "Robert A. Stemmle"
+   ],
+   [
+    "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "Alexander Singer"
+   ],
+   [
+    "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "Henri Lepage (director)"
+   ],
+   [
+    "e15d99380bdd11eba7f7acde48001122",
+    "Bo\u0161tjan Hladnik"
+   ],
+   [
+    "e7dc72940baf11ebab90acde48001122",
+    "Gundobad"
+   ],
+   [
+    "f04cc9b408d611ebbd99ac1f6bf848b6",
+    "Bernardo Bertolucci"
+   ],
+   [
+    "f04cc9b408d611ebbd99ac1f6bf848b6",
+    "Kim Ki-young"
+   ],
+   [
+    "f1a794f20bdc11eba7f7acde48001122",
+    "Socrates"
+   ],
+   [
+    "f34d188608cb11ebbd93ac1f6bf848b6",
+    "William Duncan (actor)"
+   ],
+   [
+    "f48667b80bda11eba7f7acde48001122",
+    "Vassar College"
+   ],
+   [
+    "fcdafe320bdb11eba7f7acde48001122",
+    "Albert S. Rogell"
+   ]
+  ],
+  "overlap_h651_h652_op": [
+   [
+    "006d81bc0bde11eba7f7acde48001122",
+    "Ryan Adams"
+   ],
+   [
+    "0083038e0bde11eba7f7acde48001122",
+    "Infanta Mar\u00eda de la Paz of Spain"
+   ],
+   [
+    "01309e5008bd11ebbd89ac1f6bf848b6",
+    "Georges Lautner"
+   ],
+   [
+    "02b62fce087211ebbd64ac1f6bf848b6",
+    "Alberto De Martino"
+   ],
+   [
+    "0dc9691b087911ebbd67ac1f6bf848b6",
+    "Swapan Saha"
+   ],
+   [
+    "0dfe41f60bdc11eba7f7acde48001122",
+    "Frank Sinatra"
+   ],
+   [
+    "1dfaa6200bdd11eba7f7acde48001122",
+    "Leopoldo Torres R\u00edos"
+   ],
+   [
+    "265daf200bdc11eba7f7acde48001122",
+    "William the Silent"
+   ],
+   [
+    "2b9528860bde11eba7f7acde48001122",
+    "Brancaleone Doria"
+   ],
+   [
+    "2d8f3ebe0bda11eba7f7acde48001122",
+    "Denys Desjardins"
+   ],
+   [
+    "2dc690ba0bdc11eba7f7acde48001122",
+    "Nicki Minaj"
+   ],
+   [
+    "33f51d7e0bde11eba7f7acde48001122",
+    "Leo Fong"
+   ],
+   [
+    "36b8644508af11ebbd83ac1f6bf848b6",
+    "Ray Nazarro"
+   ],
+   [
+    "36b8644508af11ebbd83ac1f6bf848b6",
+    "William Berke"
+   ],
+   [
+    "3bb9c0740bb011ebab90acde48001122",
+    "Francis William Beaumont"
+   ],
+   [
+    "3f04140e08c311ebbd8dac1f6bf848b6",
+    "Alex Cox"
+   ],
+   [
+    "3f04140e08c311ebbd8dac1f6bf848b6",
+    "Ye\u015fim Ustao\u011flu"
+   ],
+   [
+    "421d07aa0bb011ebab90acde48001122",
+    "Brancaleone Doria"
+   ],
+   [
+    "43eb7b380bde11eba7f7acde48001122",
+    "Kenneth Branagh"
+   ],
+   [
+    "47bb70600bde11eba7f7acde48001122",
+    "DJ Clue"
+   ],
+   [
+    "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "John Ince (actor)"
+   ],
+   [
+    "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "Melville W. Brown"
+   ],
+   [
+    "50e4a65c0bde11eba7f7acde48001122",
+    "Meek Mill"
+   ],
+   [
+    "551e024408a611ebbd7fac1f6bf848b6",
+    "Frank Launder"
+   ],
+   [
+    "594ca25608df11ebbda0ac1f6bf848b6",
+    "Vijay Bhatt"
+   ],
+   [
+    "5cbb015f087511ebbd67ac1f6bf848b6",
+    "Maxwell Shane"
+   ],
+   [
+    "5cc01ab60bb011ebab90acde48001122",
+    "Conchobar mac Nessa"
+   ],
+   [
+    "5ff291a80bda11eba7f7acde48001122",
+    "Chuck Berry"
+   ],
+   [
+    "63240f22089d11ebbd78ac1f6bf848b6",
+    "Aleksander Ford"
+   ],
+   [
+    "63240f22089d11ebbd78ac1f6bf848b6",
+    "Andrea Bianchi"
+   ],
+   [
+    "6718770a087311ebbd66ac1f6bf848b6",
+    "Charlie Day"
+   ],
+   [
+    "6718770a087311ebbd66ac1f6bf848b6",
+    "Robert North Bradbury"
+   ],
+   [
+    "6b8402c40bdd11eba7f7acde48001122",
+    "Vatroslav Mimica"
+   ],
+   [
+    "6cbb0ed6089911ebbd77ac1f6bf848b6",
+    "Gus Meins"
+   ],
+   [
+    "6cbb0ed6089911ebbd77ac1f6bf848b6",
+    "Walter Hugo Khouri"
+   ],
+   [
+    "764446780bde11eba7f7acde48001122",
+    "Leo D. Maloney"
+   ],
+   [
+    "78b10fb00bdc11eba7f7acde48001122",
+    "Vladimir Gardin"
+   ],
+   [
+    "7cb81afc0bd911eba7f7acde48001122",
+    "Jim Wynorski"
+   ],
+   [
+    "7d7237ac08a011ebbd78ac1f6bf848b6",
+    "Ben Sombogaart"
+   ],
+   [
+    "7d7237ac08a011ebbd78ac1f6bf848b6",
+    "Frederic Zelnik"
+   ],
+   [
+    "81e0d683087c11ebbd6aac1f6bf848b6",
+    "Bertrand Tavernier"
+   ],
+   [
+    "84b691d8086a11ebbd5fac1f6bf848b6",
+    "Declan O'Brien"
+   ],
+   [
+    "84c99c760bb011ebab90acde48001122",
+    "Marie Leszczy\u0144ska"
+   ],
+   [
+    "86508dc60bdc11eba7f7acde48001122",
+    "Stephen Warbeck"
+   ],
+   [
+    "8dcaaf24089811ebbd77ac1f6bf848b6",
+    "Pierre Montazel"
+   ],
+   [
+    "8e07f1f00bda11eba7f7acde48001122",
+    "Fernando Cort\u00e9s"
+   ],
+   [
+    "90c8793c087411ebbd67ac1f6bf848b6",
+    "Michael Lehmann"
+   ],
+   [
+    "914b452c0bdc11eba7f7acde48001122",
+    "Luis Mandoki"
+   ],
+   [
+    "9aa8008408de11ebbd9eac1f6bf848b6",
+    "Georges M\u00e9li\u00e8s"
+   ],
+   [
+    "9aa8008408de11ebbd9eac1f6bf848b6",
+    "James Tinling"
+   ],
+   [
+    "a1cdb240085811ebbd5bac1f6bf848b6",
+    "Michael Curtiz"
+   ],
+   [
+    "a431a93808d511ebbd98ac1f6bf848b6",
+    "Frank Tuttle"
+   ],
+   [
+    "a457e11c0bdb11eba7f7acde48001122",
+    "Oskar Roehler"
+   ],
+   [
+    "a9e322b20bdc11eba7f7acde48001122",
+    "Eduardo De Filippo"
+   ],
+   [
+    "b642318c0bdd11eba7f7acde48001122",
+    "Muhammad bin Saud"
+   ],
+   [
+    "b64f541e088d11ebbd70ac1f6bf848b6",
+    "Gurinder Chadha"
+   ],
+   [
+    "b64f541e088d11ebbd70ac1f6bf848b6",
+    "Julie Dash"
+   ],
+   [
+    "b7f5f7200bdd11eba7f7acde48001122",
+    "Hans J. Salter"
+   ],
+   [
+    "bb97d66208ba11ebbd88ac1f6bf848b6",
+    "Bruce M. Mitchell"
+   ],
+   [
+    "bb97d66208ba11ebbd88ac1f6bf848b6",
+    "Yvan Chiffre"
+   ],
+   [
+    "c5a00e860bda11eba7f7acde48001122",
+    "Jocelyn Lovell"
+   ],
+   [
+    "c68eb0be08e611ebbda5ac1f6bf848b6",
+    "Gracia Querejeta"
+   ],
+   [
+    "ccd086f80bdb11eba7f7acde48001122",
+    "Jon Gunn"
+   ],
+   [
+    "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "Dinu Cocea"
+   ],
+   [
+    "dcbee4b608b011ebbd85ac1f6bf848b6",
+    "Robert A. Stemmle"
+   ],
+   [
+    "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "Alexander Singer"
+   ],
+   [
+    "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "Henri Lepage (director)"
+   ],
+   [
+    "e15d99380bdd11eba7f7acde48001122",
+    "Bo\u0161tjan Hladnik"
+   ],
+   [
+    "e7dc72940baf11ebab90acde48001122",
+    "Gundobad"
+   ],
+   [
+    "f04cc9b408d611ebbd99ac1f6bf848b6",
+    "Bernardo Bertolucci"
+   ],
+   [
+    "f04cc9b408d611ebbd99ac1f6bf848b6",
+    "Kim Ki-young"
+   ],
+   [
+    "f1a794f20bdc11eba7f7acde48001122",
+    "Socrates"
+   ],
+   [
+    "f34d188608cb11ebbd93ac1f6bf848b6",
+    "William Duncan (actor)"
+   ],
+   [
+    "f48667b80bda11eba7f7acde48001122",
+    "Vassar College"
+   ],
+   [
+    "fcdafe320bdb11eba7f7acde48001122",
+    "Albert S. Rogell"
+   ]
+  ],
+  "h652_only_op": []
+ },
+ "verdict_recommendation": "KILLED",
+ "bar": "CONFIRMED if net >= +5 carriers paired (vs baseline walk) with zero hit-set regressions AND non-redundant with H651 (adds >=2 carriers H651 does not); KILLED at net <= 0 or full redundancy",
+ "caveats": [
+  "recovery = carrier node inside the region (walk-level reachability); render/EM not simulated (FREE). Paired against baseline-walk recovery on the same 110 rows.",
+  "the 12 absent-no-node carriers are unrecoverable by any walk (extraction defect).",
+  "frozen 6,626-entity substrate, not the 7,575 live re-ingest."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h652-query-node-20260724T123845Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h652-query-node-20260724T123845Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h652-query-node-20260724T123845Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r58_h652_query_node.py"
+ }
+}

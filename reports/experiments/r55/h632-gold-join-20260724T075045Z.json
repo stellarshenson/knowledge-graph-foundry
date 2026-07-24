@@ -1,0 +1,761 @@
+{
+ "hypothesis": "R55-H632",
+ "run_id": "20260724T075045Z",
+ "join_version": "goldjoin-v2-20260724",
+ "substrate": "medium 2wiki (6,626 entities), frozen H582 offline cache tmp/results/r47 + R50 H597 span cache; FREE numpy/scipy/stdlib",
+ "harness_sanity": {
+  "base_dense16_carrier_recall": {
+   "expected": 0.6012,
+   "measured": 0.6012,
+   "reproduces": true
+  },
+  "carrier_rows_total": {
+   "expected": 326,
+   "measured": 326,
+   "reproduces": true
+  },
+  "carrier_rows_in_graph": {
+   "expected": 288,
+   "measured": 288,
+   "reproduces": true
+  },
+  "carrier_rows_absent": {
+   "expected": 38,
+   "measured": 38,
+   "reproduces": true
+  },
+  "meanpool_r1_a0.5_recall": {
+   "expected": 0.6963,
+   "measured": 0.6963,
+   "reproduces": true
+  },
+  "meanpool_r1_a0.6_recall": {
+   "expected": 0.7147,
+   "measured": 0.7147,
+   "reproduces": true
+  },
+  "rru_reach_all": {
+   "expected": 0.8661,
+   "measured": 0.8661,
+   "reproduces": true
+  }
+ },
+ "harness_sanity_ok": true,
+ "ppr_control_old_recall_measured": 0.6564,
+ "norm_semantics": "_norm = re.sub(r'\\s+',' ', casefold(s)) - whitespace-collapse + casefold ONLY; no punctuation/diacritic/paren handling, which is exactly the pessimistic bias r1/r2/r3 repair",
+ "r2_fold_definition": "NFKD diacritic strip + unify dashes to '-' + '&'->'and' + drop commas/periods + collapse ws + casefold",
+ "fold_index_graph_collisions": 10,
+ "part_a_false_merge_guard": {
+  "n_distinct_gold_titles": 324,
+  "per_rung": [
+   {
+    "rung": "r1",
+    "false_merge_count": 0,
+    "offending_pairs": [],
+    "rejected": false
+   },
+   {
+    "rung": "r2",
+    "false_merge_count": 0,
+    "offending_pairs": [],
+    "rejected": false
+   },
+   {
+    "rung": "r3",
+    "false_merge_count": 0,
+    "offending_pairs": [],
+    "rejected": false
+   }
+  ],
+  "any_rung_rejected": false,
+  "exact_rows_remapped": 0,
+  "unconditional_parenstrip_counterfactual": {
+   "note": "what an UNCONDITIONAL paren-strip on ALL gold titles (violating apply-only-to-unresolved) would collapse - the guard's teeth",
+   "colliding_nodes": 0,
+   "examples": []
+  }
+ },
+ "part_b_ladder": {
+  "n_absent_titles": 38,
+  "per_rung": {
+   "r1": {
+    "resolved": 27,
+    "accepted": 23,
+    "pending": 4
+   },
+   "r3": {
+    "resolved": 1,
+    "accepted": 1,
+    "pending": 0
+   },
+   "r2": {
+    "resolved": 1,
+    "accepted": 1,
+    "pending": 0
+   }
+  },
+  "accepted_total": 25,
+  "adjudicate_pending_total": 4,
+  "ambiguous_unresolved_total": 0,
+  "unresolved_total": 9,
+  "pending_list": [
+   {
+    "gold_title": "Aleksander Koniecpolski (1620\u20131659)",
+    "matched_name": "Aleksander Koniecpolski",
+    "rung": "r1",
+    "adjudication": "reviewed: node descr 'Voivode of Sieradz, staunch supporter of Sigismund III Vasa' matches the elder namesake (active under Sigismund III, reign 1587-1632), not the 1620-1659 magnate the gold title names - likely a different person"
+   },
+   {
+    "gold_title": "Ek Hi Bhool (1940 film)",
+    "matched_name": "Ek Hi Bhool",
+    "rung": "r1",
+    "adjudication": "auto: year conflict - qualifier year(s) ['1940'] vs node descr year(s) ['1981'] ('Hindi remake of Mouna Geethangal released in the same year ('); likely a different same-name entity"
+   },
+   {
+    "gold_title": "Camille (1926 feature film)",
+    "matched_name": "Camille",
+    "rung": "r1",
+    "adjudication": "auto: type mismatch - qualifier '(1926 feature film)' expects FILM, node 'Camille' typed ['Person'] ('Child of Luis Mandoki and Olivia.')"
+   },
+   {
+    "gold_title": "Louis, Dauphin of France (son of Louis XV)",
+    "matched_name": "Louis, Dauphin of France",
+    "rung": "r1",
+    "adjudication": "reviewed: node descr 'husband of Margaret Stewart' is the 15th-c. Dauphin (future Louis XI), not the son of Louis XV (this probe's maternal-grandmother answer is Catherine Opalinska); three distinct 'Louis...Dauphin' nodes exist, none is the gold entity"
+   }
+  ],
+  "unresolved_list": [
+   "Beatrice I, Countess of Burgundy",
+   "Frederick I, Holy Roman Emperor",
+   "Holm J\u00f8lsen",
+   "Felix Schuster",
+   "John Ernest, Duke of Saxe-Eisenach",
+   "Abdul-Aziz bin Muhammad",
+   "Frances M. Vega",
+   "Jorge Ledezma",
+   "Margaret of Bavaria, Marchioness of Mantua"
+  ],
+  "all_rows": [
+   {
+    "gold_title": "Aleksander Koniecpolski (1620\u20131659)",
+    "probe": "1c0dd3b00bdc11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 895,
+    "ratio": null,
+    "matched_name": "Aleksander Koniecpolski",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ADJUDICATE-PENDING",
+    "adjudication": "reviewed: node descr 'Voivode of Sieradz, staunch supporter of Sigismund III Vasa' matches the elder namesake (active under Sigismund III, reign 1587-1632), not the 1620-1659 magnate the gold title names - likely a different person"
+   },
+   {
+    "gold_title": "William Duncan (actor)",
+    "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 1717,
+    "ratio": null,
+    "matched_name": "William Duncan",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(actor)' stripped; node 'William Duncan' ['Person'] corroborates ('Actor, producer, writer, and director of film serials; Holly')"
+   },
+   {
+    "gold_title": "Beatrice I, Countess of Burgundy",
+    "probe": "3a3c2efe0bdc11eba7f7acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Frederick I, Holy Roman Emperor",
+    "probe": "3a3c2efe0bdc11eba7f7acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Come Dance with Me (song)",
+    "probe": "0dfe41f60bdc11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 1882,
+    "ratio": null,
+    "matched_name": "Come Dance With Me",
+    "matched_types": [
+     "Album",
+     "Title"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(song)' stripped; node 'Come Dance With Me' ['Album', 'Title'] corroborates ('Frank Sinatra's 1959 album that features the title track \"Co')"
+   },
+   {
+    "gold_title": "Holm J\u00f8lsen",
+    "probe": "3e3cd62a086211ebbd5dac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Inherent Vice (film)",
+    "probe": "b672c1ee0bdd11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 2109,
+    "ratio": null,
+    "matched_name": "Inherent Vice",
+    "matched_types": [
+     "Film"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(film)' stripped; node 'Inherent Vice' ['Film'] corroborates ('2014 American neo-noir period comedy-drama film written and ')"
+   },
+   {
+    "gold_title": "Felix Schuster",
+    "probe": "c9a769c608be11ebbd8aac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "B Boy (song)",
+    "probe": "50e4a65c0bde11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 2513,
+    "ratio": null,
+    "matched_name": "B Boy",
+    "matched_types": [
+     "Song"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(song)' stripped; node 'B Boy' ['Song'] corroborates ('')"
+   },
+   {
+    "gold_title": "Illusions (1982 film)",
+    "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 2564,
+    "ratio": null,
+    "matched_name": "Illusions",
+    "matched_types": [
+     "Film"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(1982 film)' stripped; node 'Illusions' ['Film'] corroborates ('Illusions is a 1982 film written and directed by Julie Dash.')"
+   },
+   {
+    "gold_title": "John Ernest, Duke of Saxe-Eisenach",
+    "probe": "62a9cd640bb011ebab90acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Christine of Hesse-Kassel (1578\u20131658)",
+    "probe": "62a9cd640bb011ebab90acde48001122",
+    "rung": "r1",
+    "matched_idx": 2789,
+    "ratio": null,
+    "matched_name": "Christine of Hesse-Kassel",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(1578\u20131658)' stripped; node 'Christine of Hesse-Kassel' ['Person'] corroborates ('German noblewoman, member of the House of Hesse, Duchess of ')"
+   },
+   {
+    "gold_title": "Agni (2004 film)",
+    "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 3110,
+    "ratio": null,
+    "matched_name": "Agni",
+    "matched_types": [
+     "Film"
+    ],
+    "component_id": 785,
+    "component_size": 6,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(2004 film)' stripped; node 'Agni' ['Film'] corroborates ('2004 Bengali film')"
+   },
+   {
+    "gold_title": "Fortunella (film)",
+    "probe": "a9e322b20bdc11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 3411,
+    "ratio": null,
+    "matched_name": "Fortunella",
+    "matched_types": [
+     "Film"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(film)' stripped; node 'Fortunella' ['Film'] corroborates ('1958 Italian film directed by Eduardo De Filippo with script')"
+   },
+   {
+    "gold_title": "Joanna Elisabeth of Holstein-Gottorp",
+    "probe": "8f783c7a0bda11eba7f7acde48001122",
+    "rung": "r3",
+    "matched_idx": 3413,
+    "ratio": 0.986,
+    "matched_name": "Johanna Elisabeth of Holstein-Gottorp",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: difflib ratio 0.986 spelling variant 'Joanna Elisabeth of Holstein-Gottorp' -> 'Johanna Elisabeth of Holstein-Gottorp' (same entity)"
+   },
+   {
+    "gold_title": "Abdul-Aziz bin Muhammad",
+    "probe": "b642318c0bdd11eba7f7acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Christopher Newton (criminal)",
+    "probe": "037da85d08c611ebbd90ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 3724,
+    "ratio": null,
+    "matched_name": "Christopher Newton",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(criminal)' stripped; node 'Christopher Newton' ['Person'] corroborates ('American murderer executed in Ohio in 2007 for the aggravate')"
+   },
+   {
+    "gold_title": "Frances M. Vega",
+    "probe": "037da85d08c611ebbd90ac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Dancing in the Rain (film)",
+    "probe": "e15d99380bdd11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 3777,
+    "ratio": null,
+    "matched_name": "Dancing in the Rain",
+    "matched_types": [
+     "Film",
+     "Title"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(film)' stripped; node 'Dancing in the Rain' ['Film', 'Title'] corroborates ('1961 Slovene film directed by Bo\u0161tjan Hladnik, international')"
+   },
+   {
+    "gold_title": "John Ince (actor)",
+    "probe": "48e6d06e086f11ebbd62ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4005,
+    "ratio": null,
+    "matched_name": "John Ince",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 1067,
+    "component_size": 7,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(actor)' stripped; node 'John Ince' ['Person'] corroborates ('American stage and motion pictures actor and film director, ')"
+   },
+   {
+    "gold_title": "Am I Wrong (\u00c9tienne de Cr\u00e9cy song)",
+    "probe": "d18fc6640bda11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 4062,
+    "ratio": null,
+    "matched_name": "Am I Wrong",
+    "matched_types": [
+     "Song"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(\u00e9tienne de cr\u00e9cy song)' stripped; node 'Am I Wrong' ['Song'] corroborates ('\"Am I Wrong\" is a 2000 house song by \u00c9tienne de Cr\u00e9cy, mainl')"
+   },
+   {
+    "gold_title": "Atomised (film)",
+    "probe": "a457e11c0bdb11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 4119,
+    "ratio": null,
+    "matched_name": "Atomised",
+    "matched_types": [
+     "Film"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(film)' stripped; node 'Atomised' ['Film'] corroborates ('2006 German film based on the novel \"Les Particules \u00e9l\u00e9menta')"
+   },
+   {
+    "gold_title": "David Elliot (illustrator)",
+    "probe": "9523a3df088911ebbd6eac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4314,
+    "ratio": null,
+    "matched_name": "David Elliot",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(illustrator)' stripped; node 'David Elliot' ['Person'] corroborates ('New Zealand illustrator and author')"
+   },
+   {
+    "gold_title": "Jorge Ledezma",
+    "probe": "fde95590089c11ebbd78ac1f6bf848b6",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Henri Lepage (director)",
+    "probe": "dfb1d2c8085611ebbd59ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4605,
+    "ratio": null,
+    "matched_name": "Henri Lepage",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(director)' stripped; node 'Henri Lepage' ['Person'] corroborates ('Henri Lepage (12 February 1898 \u2013 31 January 1970) was a Fren')"
+   },
+   {
+    "gold_title": "Ek Hi Bhool (1940 film)",
+    "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4961,
+    "ratio": null,
+    "matched_name": "Ek Hi Bhool",
+    "matched_types": [
+     "Film"
+    ],
+    "component_id": 20,
+    "component_size": 57,
+    "disposition": "ADJUDICATE-PENDING",
+    "adjudication": "auto: year conflict - qualifier year(s) ['1940'] vs node descr year(s) ['1981'] ('Hindi remake of Mouna Geethangal released in the same year ('); likely a different same-name entity"
+   },
+   {
+    "gold_title": "George Pearson (filmmaker)",
+    "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 4929,
+    "ratio": null,
+    "matched_name": "George Pearson",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(filmmaker)' stripped; node 'George Pearson' ['Person'] corroborates ('Pioneering English film director, producer and screenwriter,')"
+   },
+   {
+    "gold_title": "Margaret of Bavaria, Marchioness of Mantua",
+    "probe": "3f48bc400bb011ebab90acde48001122",
+    "rung": "unresolved",
+    "matched_idx": null,
+    "ratio": null,
+    "disposition": "unresolved",
+    "matched_name": null
+   },
+   {
+    "gold_title": "Camille (1926 feature film)",
+    "probe": "3ab846860bde11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 611,
+    "ratio": null,
+    "matched_name": "Camille",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ADJUDICATE-PENDING",
+    "adjudication": "auto: type mismatch - qualifier '(1926 feature film)' expects FILM, node 'Camille' typed ['Person'] ('Child of Luis Mandoki and Olivia.')"
+   },
+   {
+    "gold_title": "Track & Field News",
+    "probe": "8cdc97de0bdc11eba7f7acde48001122",
+    "rung": "r2",
+    "matched_idx": 5418,
+    "ratio": null,
+    "matched_name": "Track& Field News",
+    "matched_types": [
+     "Organization"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: fold match 'Track & Field News' -> 'Track& Field News' (punctuation/spacing variant, same entity)"
+   },
+   {
+    "gold_title": "Bert Nelson (publisher)",
+    "probe": "8cdc97de0bdc11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 5441,
+    "ratio": null,
+    "matched_name": "Bert Nelson",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(publisher)' stripped; node 'Bert Nelson' ['Person'] corroborates ('Co\u2011founder of Track & Field News and brother of Cordner Nels')"
+   },
+   {
+    "gold_title": "Merry-Go-Round (Ayumi Hamasaki song)",
+    "probe": "9bc54aba0bdd11eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 5646,
+    "ratio": null,
+    "matched_name": "Merry-Go-Round",
+    "matched_types": [
+     "Song"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(ayumi hamasaki song)' stripped; node 'Merry-Go-Round' ['Song'] corroborates ('A song recorded by Japanese recording artist Ayumi Hamasaki ')"
+   },
+   {
+    "gold_title": "Wiqu (Lima)",
+    "probe": "689d225009b411ebbdb0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 5743,
+    "ratio": null,
+    "matched_name": "Wiqu",
+    "matched_types": [
+     "Location"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(lima)' stripped; node 'Wiqu' ['Location'] corroborates ('Mountain in the Paryaqaqa or Waruchiri mountain range in the')"
+   },
+   {
+    "gold_title": "Qillqa (Melgar)",
+    "probe": "689d225009b411ebbdb0ac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 5765,
+    "ratio": null,
+    "matched_name": "Qillqa",
+    "matched_types": [
+     "Location"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(melgar)' stripped; node 'Qillqa' ['Location'] corroborates ('Mountain located east of Machu Kunturi.')"
+   },
+   {
+    "gold_title": "Haiducii (film)",
+    "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 6136,
+    "ratio": null,
+    "matched_name": "Haiducii",
+    "matched_types": [
+     "Film"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(film)' stripped; node 'Haiducii' ['Film'] corroborates ('')"
+   },
+   {
+    "gold_title": "Richard Sale (director)",
+    "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "rung": "r1",
+    "matched_idx": 6143,
+    "ratio": null,
+    "matched_name": "Richard Sale",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(director)' stripped; node 'Richard Sale' ['Person'] corroborates ('American screenwriter, pulp writer, and film director.')"
+   },
+   {
+    "gold_title": "James Young (director)",
+    "probe": "e2de58500bd911eba7f7acde48001122",
+    "rung": "r1",
+    "matched_idx": 6250,
+    "ratio": null,
+    "matched_name": "James Young",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 1723,
+    "component_size": 10,
+    "disposition": "ACCEPTED",
+    "adjudication": "accepted: disambiguator '(director)' stripped; node 'James Young' ['Person'] corroborates ('American film director, actor and screenwriter of the silent')"
+   },
+   {
+    "gold_title": "Louis, Dauphin of France (son of Louis XV)",
+    "probe": "84c99c760bb011ebab90acde48001122",
+    "rung": "r1",
+    "matched_idx": 6450,
+    "ratio": null,
+    "matched_name": "Louis, Dauphin of France",
+    "matched_types": [
+     "Person"
+    ],
+    "component_id": 0,
+    "component_size": 3162,
+    "disposition": "ADJUDICATE-PENDING",
+    "adjudication": "reviewed: node descr 'husband of Margaret Stewart' is the 15th-c. Dauphin (future Louis XI), not the son of Louis XV (this probe's maternal-grandmother answer is Catherine Opalinska); three distinct 'Louis...Dauphin' nodes exist, none is the gold entity"
+   }
+  ]
+ },
+ "part_c_family_pairs": {
+  "denominators": {
+   "total_rows": 326,
+   "in_graph": 288,
+   "ladder_accepted_rows": 25,
+   "joinable": 313
+  },
+  "arms": {
+   "base": {
+    "old_recall_326": 0.6012,
+    "new_recall_326": 0.6595,
+    "new_recall_joinable": 0.6869,
+    "new_hits": 215
+   },
+   "meanpool_r1_a0.5": {
+    "old_recall_326": 0.6963,
+    "new_recall_326": 0.7607,
+    "new_recall_joinable": 0.7923,
+    "new_hits": 248
+   },
+   "meanpool_r1_a0.6": {
+    "old_recall_326": 0.7147,
+    "new_recall_326": 0.7853,
+    "new_recall_joinable": 0.8179,
+    "new_hits": 256
+   },
+   "ppr_control": {
+    "old_recall_326": 0.6564,
+    "new_recall_326": 0.7117,
+    "new_recall_joinable": 0.7412,
+    "new_hits": 232
+   }
+  },
+  "reachability": {
+   "old_all_reach": 0.8661,
+   "old_num_den": "110/127",
+   "new_all_reach": 0.8473,
+   "new_num_den": "111/131",
+   "note": "regions are anchor-defined and UNCHANGED; the new denominator counts probes made eligible by a resolved absent carrier, and the all-reach test now includes previously-uncounted carriers - so the level can dip even as recall rises (this is honest, not a regression)",
+   "reproduces_0.8661": true
+  },
+  "sign_table": [
+   {
+    "comparison": "meanpool_a0.5 > base",
+    "old_delta": 0.0951,
+    "new_delta_326": 0.1012,
+    "new_delta_joinable": 0.1054,
+    "sign_old": "+",
+    "sign_new_326": "+",
+    "sign_new_joinable": "+",
+    "sign_held": true
+   },
+   {
+    "comparison": "meanpool_a0.6 > base",
+    "old_delta": 0.1135,
+    "new_delta_326": 0.1258,
+    "new_delta_joinable": 0.131,
+    "sign_old": "+",
+    "sign_new_326": "+",
+    "sign_new_joinable": "+",
+    "sign_held": true
+   },
+   {
+    "comparison": "meanpool_a0.6 > meanpool_a0.5",
+    "old_delta": 0.0184,
+    "new_delta_326": 0.0246,
+    "new_delta_joinable": 0.0256,
+    "sign_old": "+",
+    "sign_new_326": "+",
+    "sign_new_joinable": "+",
+    "sign_held": true
+   },
+   {
+    "comparison": "ppr_control > base",
+    "old_delta": 0.0552,
+    "new_delta_326": 0.0522,
+    "new_delta_joinable": 0.0543,
+    "sign_old": "+",
+    "sign_new_326": "+",
+    "sign_new_joinable": "+",
+    "sign_held": true
+   },
+   {
+    "comparison": "meanpool_a0.5 > ppr_control",
+    "old_delta": 0.0399,
+    "new_delta_326": 0.049,
+    "new_delta_joinable": 0.0511,
+    "sign_old": "+",
+    "sign_new_326": "+",
+    "sign_new_joinable": "+",
+    "sign_held": true
+   }
+  ],
+  "all_verdict_signs_held": true,
+  "meanpool_vs_base_delta_relative_growth_pct_joinable": {
+   "meanpool_r1_a0.5": 10.8,
+   "meanpool_r1_a0.6": 15.4
+  }
+ },
+ "verdict": "CONFIRMED",
+ "verdict_reason": "25/38 resolve (accepted, not pending), every re-measured comparison keeps its sign, zero false merges among accepted resolutions",
+ "script": "scripts/experiments/r55_h632_gold_join.py"
+}

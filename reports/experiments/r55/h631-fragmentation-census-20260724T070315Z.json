@@ -1,0 +1,5298 @@
+{
+ "hypothesis": "R55-H631",
+ "run_id": "20260724T070315Z",
+ "substrate": "medium 2wiki (6,626 entities / 11,714 edge rows), frozen H582 offline cache tmp/results/r47 + R50 H597 span cache + H620 checkpoint",
+ "free_run": "pure numpy/scipy, no Neo4j / GPU / LLM / network",
+ "harness_sanity": {
+  "base_dense16_carrier_recall": {
+   "expected": 0.6012,
+   "measured": 0.6012,
+   "reproduces": true
+  },
+  "n_components": {
+   "expected": 1830,
+   "measured": 1830,
+   "reproduces": true
+  },
+  "lcc_size": {
+   "expected": 3162,
+   "measured": 3162,
+   "reproduces": true
+  },
+  "isolated_nodes": {
+   "expected": 1426,
+   "measured": 1426,
+   "reproduces": true
+  }
+ },
+ "harness_sanity_ok": true,
+ "part_a_component_census": {
+  "n_entities": 6626,
+  "n_components": 1830,
+  "lcc_size": 3162,
+  "lcc_share": 0.4772,
+  "isolated_degree0_nodes": 1426,
+  "size_histogram_compsize_to_count": {
+   "1": 1426,
+   "2": 138,
+   "3": 85,
+   "4": 44,
+   "5": 38,
+   "6": 26,
+   "7": 11,
+   "8": 11,
+   "9": 7,
+   "10": 10,
+   "11": 6,
+   "12": 3,
+   "13": 1,
+   "14": 2,
+   "15": 2,
+   "16": 4,
+   "17": 1,
+   "18": 3,
+   "19": 1,
+   "20": 1,
+   "22": 5,
+   "33": 1,
+   "35": 1,
+   "57": 1,
+   "75": 1,
+   "3162": 1
+  },
+  "n_carrier_rows_total": 326,
+  "n_carrier_rows_in_graph": 288,
+  "n_carrier_rows_absent_from_graph": 38,
+  "n_unique_carrier_nodes": 286,
+  "unique_carrier_nodes_in_lcc": 187,
+  "unique_carrier_nodes_outside_lcc": 99,
+  "unique_carrier_outside_lcc_frac": "99/286 = 0.3462",
+  "carrier_rows_outside_lcc_frac": "99/288 = 0.3438",
+  "n_components_holding_a_gold_carrier": 68,
+  "components_holding_a_carrier_size_ge2": [
+   {
+    "comp_id": 0,
+    "size": 3162,
+    "is_lcc": true,
+    "n_gold_carriers": 187,
+    "carrier_names": [
+     "Lothair II",
+     "Ermengarde of Tours",
+     "Changed It",
+     "Nicki Minaj",
+     "Marufabad",
+     "Edith Carlmar",
+     "Aldri annet enn br\u00e5k",
+     "God's Gift to Women"
+    ]
+   },
+   {
+    "comp_id": 17,
+    "size": 8,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Aas Ka Panchhi"
+    ]
+   },
+   {
+    "comp_id": 20,
+    "size": 57,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Phoolwari",
+     "Vijay Bhatt"
+    ]
+   },
+   {
+    "comp_id": 39,
+    "size": 35,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Two Brides and a Baby"
+    ]
+   },
+   {
+    "comp_id": 46,
+    "size": 3,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Nasamkhrali"
+    ]
+   },
+   {
+    "comp_id": 57,
+    "size": 2,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "El Tonto",
+     "Charlie Day"
+    ]
+   },
+   {
+    "comp_id": 65,
+    "size": 75,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "William the Silent",
+     "Maurice, Prince of Orange"
+    ]
+   },
+   {
+    "comp_id": 72,
+    "size": 22,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Muhammad bin Saud"
+    ]
+   },
+   {
+    "comp_id": 98,
+    "size": 9,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Blood Street",
+     "Leo Fong"
+    ]
+   },
+   {
+    "comp_id": 176,
+    "size": 19,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Waiting for the Clouds",
+     "Ye\u015fim Ustao\u011flu"
+    ]
+   },
+   {
+    "comp_id": 191,
+    "size": 22,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Wrong Turn 5: Bloodlines",
+     "Declan O'Brien"
+    ]
+   },
+   {
+    "comp_id": 261,
+    "size": 17,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Sisowath Kossamak",
+     "Norodom Suramarit"
+    ]
+   },
+   {
+    "comp_id": 271,
+    "size": 2,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Dying God"
+    ]
+   },
+   {
+    "comp_id": 287,
+    "size": 11,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "3 Dots"
+    ]
+   },
+   {
+    "comp_id": 321,
+    "size": 16,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Mugain",
+     "Conchobar mac Nessa"
+    ]
+   },
+   {
+    "comp_id": 330,
+    "size": 33,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "The Return of Swamp Thing",
+     "Jim Wynorski"
+    ]
+   },
+   {
+    "comp_id": 363,
+    "size": 7,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Dino Risi"
+    ]
+   },
+   {
+    "comp_id": 399,
+    "size": 11,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Christ Walking on the Water",
+     "Georges M\u00e9li\u00e8s"
+    ]
+   },
+   {
+    "comp_id": 433,
+    "size": 6,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Talk About a Stranger"
+    ]
+   },
+   {
+    "comp_id": 470,
+    "size": 8,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Georges Lautner",
+     "Salad by the Roots"
+    ]
+   },
+   {
+    "comp_id": 510,
+    "size": 16,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Ludwig Elsbett"
+    ]
+   },
+   {
+    "comp_id": 518,
+    "size": 3,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Pamela Ann Rymer"
+    ]
+   },
+   {
+    "comp_id": 542,
+    "size": 6,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Phalitamsha"
+    ]
+   },
+   {
+    "comp_id": 561,
+    "size": 16,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Hywel Teifi Edwards"
+    ]
+   },
+   {
+    "comp_id": 608,
+    "size": 7,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Naked Tango"
+    ]
+   },
+   {
+    "comp_id": 609,
+    "size": 16,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Levon Ashotovich Grigorian"
+    ]
+   },
+   {
+    "comp_id": 630,
+    "size": 3,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Albert \u00c9douard Le Brethon de Caligny"
+    ]
+   },
+   {
+    "comp_id": 651,
+    "size": 12,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "A Nest of Noblemen",
+     "Vladimir Gardin"
+    ]
+   },
+   {
+    "comp_id": 670,
+    "size": 2,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Domenico Ravenna"
+    ]
+   },
+   {
+    "comp_id": 732,
+    "size": 7,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Hubert Mordek"
+    ]
+   },
+   {
+    "comp_id": 785,
+    "size": 6,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Swapan Saha"
+    ]
+   },
+   {
+    "comp_id": 818,
+    "size": 2,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Karel Zich"
+    ]
+   },
+   {
+    "comp_id": 846,
+    "size": 14,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Museum of Croatian Archaeological Monuments"
+    ]
+   },
+   {
+    "comp_id": 936,
+    "size": 11,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Final Exam (1981 film)"
+    ]
+   },
+   {
+    "comp_id": 1000,
+    "size": 10,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Min Dikkha"
+    ]
+   },
+   {
+    "comp_id": 1014,
+    "size": 9,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Inside the Room"
+    ]
+   },
+   {
+    "comp_id": 1035,
+    "size": 5,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Crude Set Drama"
+    ]
+   },
+   {
+    "comp_id": 1049,
+    "size": 15,
+    "is_lcc": false,
+    "n_gold_carriers": 4,
+    "carrier_names": [
+     "Return to Cabin by the Lake",
+     "Po-Chih Leong",
+     "Airheads",
+     "Michael Lehmann"
+    ]
+   },
+   {
+    "comp_id": 1063,
+    "size": 6,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "A Romance of Seville"
+    ]
+   },
+   {
+    "comp_id": 1067,
+    "size": 7,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Blind Man's Eyes"
+    ]
+   },
+   {
+    "comp_id": 1088,
+    "size": 7,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Marjatta Raita"
+    ]
+   },
+   {
+    "comp_id": 1099,
+    "size": 5,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Bruce Coulter"
+    ]
+   },
+   {
+    "comp_id": 1141,
+    "size": 8,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Nicholas the Small",
+     "Henry I of Zi\u0119bice"
+    ]
+   },
+   {
+    "comp_id": 1169,
+    "size": 11,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Eustace William Ferguson"
+    ]
+   },
+   {
+    "comp_id": 1217,
+    "size": 10,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Cheryl Saban"
+    ]
+   },
+   {
+    "comp_id": 1221,
+    "size": 4,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Dmitry Grigorieff"
+    ]
+   },
+   {
+    "comp_id": 1235,
+    "size": 2,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Andrea Bianchi",
+     "Malabimba \u2013 The Malicious Whore"
+    ]
+   },
+   {
+    "comp_id": 1249,
+    "size": 10,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Sibyl Hathaway",
+     "Francis William Beaumont"
+    ]
+   },
+   {
+    "comp_id": 1300,
+    "size": 5,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Bruce M. Mitchell",
+     "45 Calibre Echo"
+    ]
+   },
+   {
+    "comp_id": 1311,
+    "size": 12,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Socrates",
+     "Lamprocles"
+    ]
+   },
+   {
+    "comp_id": 1414,
+    "size": 5,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "The Korean Wedding Chest",
+     "Ulrike Ottinger"
+    ]
+   },
+   {
+    "comp_id": 1415,
+    "size": 22,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Beasts of Prey",
+     "Kim Ki-young"
+    ]
+   },
+   {
+    "comp_id": 1460,
+    "size": 18,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Make the World Move"
+    ]
+   },
+   {
+    "comp_id": 1498,
+    "size": 18,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Colg\u00fa mac Fa\u00edlbe Flaind",
+     "Fa\u00edlbe Flann mac \u00c1edo Duib"
+    ]
+   },
+   {
+    "comp_id": 1595,
+    "size": 18,
+    "is_lcc": false,
+    "n_gold_carriers": 6,
+    "carrier_names": [
+     "Ray Nazarro",
+     "Buckaroo from Powder River",
+     "The Lone Prairie",
+     "William Berke",
+     "The Glass Wall",
+     "Maxwell Shane"
+    ]
+   },
+   {
+    "comp_id": 1602,
+    "size": 5,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Bertrand Tavernier",
+     "Beatrice (1987 film)"
+    ]
+   },
+   {
+    "comp_id": 1608,
+    "size": 4,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "C\u00e9sar and Rosalie",
+     "Claude Sautet"
+    ]
+   },
+   {
+    "comp_id": 1622,
+    "size": 22,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "Where Does It Hurt?",
+     "Rod Amateau"
+    ]
+   },
+   {
+    "comp_id": 1642,
+    "size": 8,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Hermann II, Landgrave of Hesse"
+    ]
+   },
+   {
+    "comp_id": 1659,
+    "size": 14,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "Jon Gunn"
+    ]
+   },
+   {
+    "comp_id": 1723,
+    "size": 10,
+    "is_lcc": false,
+    "n_gold_carriers": 1,
+    "carrier_names": [
+     "The Notorious Miss Lisle"
+    ]
+   },
+   {
+    "comp_id": 1814,
+    "size": 5,
+    "is_lcc": false,
+    "n_gold_carriers": 2,
+    "carrier_names": [
+     "I Like Only You",
+     "Pierre Montazel"
+    ]
+   }
+  ],
+  "n_carrier_components_size1": 6
+ },
+ "part_b_separation_classes": {
+  "n_target_components_nonlcc_with_gold_carrier": 67,
+  "class_counts": {
+   "a_identity_split": 29,
+   "b_coverage_UNDETERMINABLE": 29,
+   "c_singleton_noise": 9
+  },
+  "signal_counts_separate_never_blended": {
+   "NAIVE_containment_not_used": 63,
+   "ii_titan_cos_ge_0.90": 8,
+   "iii_strict_token_containment": 25,
+   "iii_fuzzy_ratio_ge_0.90": 9,
+   "i_identical_name_norm": 1
+  },
+  "n_a_class_where_merge_joins_LCC": 12,
+  "n_a_class_signal_on_carrier_node_itself": 13,
+  "base_rate_controls": {
+   "ii_cos": {
+    "signal": "titan cosine >= 0.90 to a node in a different component",
+    "n_nodes_firing": 75,
+    "n_nodes": 6626,
+    "frac": 0.0113,
+    "median_best_cross_component_cos": 0.4094,
+    "p90_best_cross_component_cos": 0.7038
+   },
+   "iii_strict_containment": {
+    "signal": "a multi-token full name occurring as a contiguous token span of another component's name (both directions)",
+    "n_nodes_firing": 550,
+    "n_nodes": 6626,
+    "frac": 0.083
+   },
+   "iii_fuzzy": {
+    "signal": "difflib ratio >= 0.9 to a node in a different component",
+    "control_sample_n": 400,
+    "n_control_firing": 11,
+    "n_target_nodes": 765,
+    "n_target_nodes_firing": 10
+   },
+   "NAIVE_containment": {
+    "signal": "NAIVE substring containment either direction (NOT used to classify)",
+    "control_sample_n": 400,
+    "n_control_firing": 169,
+    "n_target_nodes": 765,
+    "n_target_nodes_firing": 286,
+    "why_excluded": "fires on 'lock' c 'heather locklear', 'nice' c 'mario monicelli' - a near-universal signal carries no identity information"
+   }
+  },
+  "identical_name_norm_cross_component_global": {
+   "n_norms": 1,
+   "examples": [
+    {
+     "name_norm": "sister fidelma",
+     "n_nodes": 2,
+     "comps": [
+      1498,
+      1499
+     ]
+    }
+   ]
+  },
+  "document_provenance_in_cache": {
+   "ents_meta_keys": [
+    "descr",
+    "id",
+    "name",
+    "types"
+   ],
+   "provenance_fields_found": [],
+   "available": false,
+   "note": "ents_meta.json carries only id/name/types/descr - NO per-entity document, chunk or source field, and no other r47/r50 cache carries one. Class (b) COVERAGE is UNDETERMINABLE FROM THIS CACHE; entity->document provenance lives only in Neo4j, which this FREE run may not touch. Components in b_coverage_UNDETERMINABLE are 'no identity twin found AND not tiny' - the coverage claim itself is NOT verified."
+  },
+  "examples_a_identity_split": [
+   {
+    "comp_id": 39,
+    "size": 35,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Two Brides and a Baby"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": {
+     "node": "Bronx",
+     "twin": "Bronx, New York",
+     "cos": 0.9808,
+     "twin_in_lcc": true
+    },
+    "strict_containment_example": {
+     "node": "Africa Movie Academy Awards",
+     "twin": "Academy Awards",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": {
+     "j": 5916,
+     "name": "4th Africa Movie Academy Awards",
+     "ratio": 0.931,
+     "twin_comp_size": 4,
+     "twin_in_lcc": false,
+     "from": "Africa Movie Academy Awards"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 1286,
+     "name": "Billy",
+     "from": "Billy Milano"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 65,
+    "size": 75,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "William the Silent",
+     "Maurice, Prince of Orange"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": {
+     "node": "Philip III of Nassau-Weilburg",
+     "twin": "Philip III of Nassau-Saarbr\u00fccken",
+     "cos": 0.911,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "Frederick Augustus, Prince of Nassau-Usingen",
+     "twin": "Prince of Nassau-Usingen",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2806,
+     "name": "Maurice",
+     "from": "Maurice, Prince of Orange"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 72,
+    "size": 22,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Muhammad bin Saud"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Muhammad bin Saud",
+     "twin": "Saud bin Abdul-Aziz bin Muhammad bin Saud",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 433,
+     "name": "Muhammad",
+     "from": "Muhammad bin Saud"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 427,
+    "size": 1,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "David Bradley (director)"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": {
+     "node": "David Bradley (director)",
+     "twin": "David Bradley",
+     "cos": 0.9457,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "David Bradley (director)",
+     "twin": "David Bradley",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1025,
+     "name": "Director",
+     "from": "David Bradley (director)"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 433,
+    "size": 6,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Talk About a Stranger"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": {
+     "node": "David Bradley",
+     "twin": "David Bradley (director)",
+     "cos": 0.9457,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "David Bradley",
+     "twin": "David Bradley (director)",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1992,
+     "name": "David Bradley (director)",
+     "from": "David Bradley"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 518,
+    "size": 3,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Pamela Ann Rymer"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "United States Court of Appeals for the Ninth Circuit",
+     "twin": "United States",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": {
+     "j": 2326,
+     "name": "United States Court of Appeals for the Fourth Circuit",
+     "ratio": 0.933,
+     "twin_comp_size": 5,
+     "twin_in_lcc": false,
+     "from": "United States Court of Appeals for the Ninth Circuit"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 87,
+     "name": "United States",
+     "from": "United States Court of Appeals for the Ninth Circuit"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 542,
+    "size": 6,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Phalitamsha"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "S. R. Puttanna Kanagal",
+     "twin": "Puttanna Kanagal",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2353,
+     "name": "Puttanna Kanagal",
+     "from": "S. R. Puttanna Kanagal"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 543,
+    "size": 1,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Puttanna Kanagal"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Puttanna Kanagal",
+     "twin": "S. R. Puttanna Kanagal",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2348,
+     "name": "S. R. Puttanna Kanagal",
+     "from": "Puttanna Kanagal"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 846,
+    "size": 14,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Museum of Croatian Archaeological Monuments"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": {
+     "j": 3799,
+     "name": "Croatian",
+     "ratio": 0.933,
+     "twin_comp_size": 1,
+     "twin_in_lcc": false,
+     "from": "Croatia"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 3712,
+     "name": "Museum",
+     "from": "Museum of Croatian Archaeological Monuments"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1000,
+    "size": 10,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Min Dikkha"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": {
+     "j": 3116,
+     "name": "Bengali",
+     "ratio": 0.923,
+     "twin_comp_size": 1,
+     "twin_in_lcc": false,
+     "from": "Bengal"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 4162,
+     "name": "King",
+     "from": "Kingdom of Mrauk U"
+    },
+    "identical_norm_examples": []
+   }
+  ],
+  "examples_b_undeterminable": [
+   {
+    "comp_id": 17,
+    "size": 8,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Aas Ka Panchhi"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 465,
+     "name": "Mar",
+     "from": "Mohan Kumar"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 20,
+    "size": 57,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Phoolwari",
+     "Vijay Bhatt"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3555,
+     "name": "Indra",
+     "from": "Pandit Indra"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 98,
+    "size": 9,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Blood Street",
+     "Leo Fong"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 581,
+     "name": "American",
+     "from": "Chinese American"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 176,
+    "size": 19,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Waiting for the Clouds",
+     "Ye\u015fim Ustao\u011flu"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6236,
+     "name": "Loud",
+     "from": "Waiting for the Clouds"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 191,
+    "size": 22,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Wrong Turn 5: Bloodlines",
+     "Declan O'Brien"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1234,
+     "name": "Mike",
+     "from": "Mike P. Nelson"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 261,
+    "size": 17,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Sisowath Kossamak",
+     "Norodom Suramarit"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6005,
+     "name": "Sam",
+     "from": "Sisowath Kossamak"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 287,
+    "size": 11,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "3 Dots"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1394,
+     "name": "Dots",
+     "from": "3 Dots"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 321,
+    "size": 16,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Mugain",
+     "Conchobar mac Nessa"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1566,
+     "name": "Ulster Cycle",
+     "from": "Ulster"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 330,
+    "size": 33,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "The Return of Swamp Thing",
+     "Jim Wynorski"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 683,
+     "name": "Jim",
+     "from": "Jim Wynorski"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 363,
+    "size": 7,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Dino Risi"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 465,
+     "name": "Mar",
+     "from": "Mario Monicelli"
+    },
+    "identical_norm_examples": []
+   }
+  ],
+  "examples_c_singleton_noise": [
+   {
+    "comp_id": 46,
+    "size": 3,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Nasamkhrali"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6005,
+     "name": "Sam",
+     "from": "Nasamkhrali"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 57,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "El Tonto",
+     "Charlie Day"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": false
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": null,
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 271,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Dying God"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": false
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": null,
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 364,
+    "size": 1,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "I'll Be Going Now"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": false
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": null,
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 630,
+    "size": 3,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Albert \u00c9douard Le Brethon de Caligny"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3798,
+     "name": "French",
+     "from": "French Navy"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 670,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Domenico Ravenna"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2738,
+     "name": "Ravenna",
+     "from": "Domenico Ravenna"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 818,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Karel Zich"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3201,
+     "name": "Karel",
+     "from": "Karel Zich"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1136,
+    "size": 1,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Juan Carlos Falc\u00f3n"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 4193,
+     "name": "Juan",
+     "from": "Juan Carlos Falc\u00f3n"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1235,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Andrea Bianchi",
+     "Malabimba \u2013 The Malicious Whore"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5184,
+     "name": "Ian",
+     "from": "Andrea Bianchi"
+    },
+    "identical_norm_examples": []
+   }
+  ],
+  "all_target_components": [
+   {
+    "comp_id": 17,
+    "size": 8,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Aas Ka Panchhi"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 465,
+     "name": "Mar",
+     "from": "Mohan Kumar"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 20,
+    "size": 57,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Phoolwari",
+     "Vijay Bhatt"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3555,
+     "name": "Indra",
+     "from": "Pandit Indra"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 39,
+    "size": 35,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Two Brides and a Baby"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": {
+     "node": "Bronx",
+     "twin": "Bronx, New York",
+     "cos": 0.9808,
+     "twin_in_lcc": true
+    },
+    "strict_containment_example": {
+     "node": "Africa Movie Academy Awards",
+     "twin": "Academy Awards",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": {
+     "j": 5916,
+     "name": "4th Africa Movie Academy Awards",
+     "ratio": 0.931,
+     "twin_comp_size": 4,
+     "twin_in_lcc": false,
+     "from": "Africa Movie Academy Awards"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 1286,
+     "name": "Billy",
+     "from": "Billy Milano"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 46,
+    "size": 3,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Nasamkhrali"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6005,
+     "name": "Sam",
+     "from": "Nasamkhrali"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 57,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "El Tonto",
+     "Charlie Day"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": false
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": null,
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 65,
+    "size": 75,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "William the Silent",
+     "Maurice, Prince of Orange"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": {
+     "node": "Philip III of Nassau-Weilburg",
+     "twin": "Philip III of Nassau-Saarbr\u00fccken",
+     "cos": 0.911,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "Frederick Augustus, Prince of Nassau-Usingen",
+     "twin": "Prince of Nassau-Usingen",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2806,
+     "name": "Maurice",
+     "from": "Maurice, Prince of Orange"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 72,
+    "size": 22,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Muhammad bin Saud"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Muhammad bin Saud",
+     "twin": "Saud bin Abdul-Aziz bin Muhammad bin Saud",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 433,
+     "name": "Muhammad",
+     "from": "Muhammad bin Saud"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 98,
+    "size": 9,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Blood Street",
+     "Leo Fong"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 581,
+     "name": "American",
+     "from": "Chinese American"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 176,
+    "size": 19,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Waiting for the Clouds",
+     "Ye\u015fim Ustao\u011flu"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6236,
+     "name": "Loud",
+     "from": "Waiting for the Clouds"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 191,
+    "size": 22,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Wrong Turn 5: Bloodlines",
+     "Declan O'Brien"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1234,
+     "name": "Mike",
+     "from": "Mike P. Nelson"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 261,
+    "size": 17,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Sisowath Kossamak",
+     "Norodom Suramarit"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6005,
+     "name": "Sam",
+     "from": "Sisowath Kossamak"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 271,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Dying God"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": false
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": null,
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 287,
+    "size": 11,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "3 Dots"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1394,
+     "name": "Dots",
+     "from": "3 Dots"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 321,
+    "size": 16,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Mugain",
+     "Conchobar mac Nessa"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1566,
+     "name": "Ulster Cycle",
+     "from": "Ulster"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 330,
+    "size": 33,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "The Return of Swamp Thing",
+     "Jim Wynorski"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 683,
+     "name": "Jim",
+     "from": "Jim Wynorski"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 363,
+    "size": 7,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Dino Risi"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 465,
+     "name": "Mar",
+     "from": "Mario Monicelli"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 364,
+    "size": 1,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "I'll Be Going Now"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": false
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": null,
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 399,
+    "size": 11,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Christ Walking on the Water",
+     "Georges M\u00e9li\u00e8s"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3353,
+     "name": "TER",
+     "from": "Christ Walking on the Water"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 427,
+    "size": 1,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "David Bradley (director)"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": {
+     "node": "David Bradley (director)",
+     "twin": "David Bradley",
+     "cos": 0.9457,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "David Bradley (director)",
+     "twin": "David Bradley",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1025,
+     "name": "Director",
+     "from": "David Bradley (director)"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 433,
+    "size": 6,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Talk About a Stranger"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": {
+     "node": "David Bradley",
+     "twin": "David Bradley (director)",
+     "cos": 0.9457,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "David Bradley",
+     "twin": "David Bradley (director)",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1992,
+     "name": "David Bradley (director)",
+     "from": "David Bradley"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 470,
+    "size": 8,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Georges Lautner",
+     "Salad by the Roots"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 39,
+     "name": "Venice, California",
+     "from": "Nice"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 510,
+    "size": 16,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Ludwig Elsbett"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 501,
+     "name": "Viktor",
+     "from": "Viktor Elsbett"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 518,
+    "size": 3,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Pamela Ann Rymer"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "United States Court of Appeals for the Ninth Circuit",
+     "twin": "United States",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": {
+     "j": 2326,
+     "name": "United States Court of Appeals for the Fourth Circuit",
+     "ratio": 0.933,
+     "twin_comp_size": 5,
+     "twin_in_lcc": false,
+     "from": "United States Court of Appeals for the Ninth Circuit"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 87,
+     "name": "United States",
+     "from": "United States Court of Appeals for the Ninth Circuit"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 542,
+    "size": 6,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Phalitamsha"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "S. R. Puttanna Kanagal",
+     "twin": "Puttanna Kanagal",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2353,
+     "name": "Puttanna Kanagal",
+     "from": "S. R. Puttanna Kanagal"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 543,
+    "size": 1,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Puttanna Kanagal"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Puttanna Kanagal",
+     "twin": "S. R. Puttanna Kanagal",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2348,
+     "name": "S. R. Puttanna Kanagal",
+     "from": "Puttanna Kanagal"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 561,
+    "size": 16,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Hywel Teifi Edwards"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6005,
+     "name": "Sam",
+     "from": "Menir Krishnasamy"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 608,
+    "size": 7,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Naked Tango"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3775,
+     "name": "tango",
+     "from": "Naked Tango"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 609,
+    "size": 16,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Levon Ashotovich Grigorian"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5184,
+     "name": "Ian",
+     "from": "Levon Ashotovich Grigorian"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 630,
+    "size": 3,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Albert \u00c9douard Le Brethon de Caligny"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3798,
+     "name": "French",
+     "from": "French Navy"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 651,
+    "size": 12,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "A Nest of Noblemen",
+     "Vladimir Gardin"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5871,
+     "name": "Anna",
+     "from": "Anna Karenina (1914 film)"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 670,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Domenico Ravenna"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2738,
+     "name": "Ravenna",
+     "from": "Domenico Ravenna"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 732,
+    "size": 7,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Hubert Mordek"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3200,
+     "name": "Karl",
+     "from": "Karlsbad-Langensteinbach"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 785,
+    "size": 6,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Swapan Saha"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1473,
+     "name": "Nydalens Compagnie",
+     "from": "Agni"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 818,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Karel Zich"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3201,
+     "name": "Karel",
+     "from": "Karel Zich"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 846,
+    "size": 14,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Museum of Croatian Archaeological Monuments"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": {
+     "j": 3799,
+     "name": "Croatian",
+     "ratio": 0.933,
+     "twin_comp_size": 1,
+     "twin_in_lcc": false,
+     "from": "Croatia"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 3712,
+     "name": "Museum",
+     "from": "Museum of Croatian Archaeological Monuments"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 936,
+    "size": 11,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Final Exam (1981 film)"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 4983,
+     "name": "1981",
+     "from": "Final Exam (1981 film)"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1000,
+    "size": 10,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Min Dikkha"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": {
+     "j": 3116,
+     "name": "Bengali",
+     "ratio": 0.923,
+     "twin_comp_size": 1,
+     "twin_in_lcc": false,
+     "from": "Bengal"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 4162,
+     "name": "King",
+     "from": "Kingdom of Mrauk U"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1004,
+    "size": 1,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Saw Thanda"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Saw Thanda",
+     "twin": "Saw Thanda Dewi",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3833,
+     "name": "Saw Thanda Dewi",
+     "from": "Saw Thanda"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1014,
+    "size": 9,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Inside the Room"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Inside the Room",
+     "twin": "The Room",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3844,
+     "name": "The Room",
+     "from": "Inside the Room"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1035,
+    "size": 5,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Crude Set Drama"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 2378,
+     "name": "drama",
+     "from": "Crude Set Drama"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1049,
+    "size": 15,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Return to Cabin by the Lake",
+     "Po-Chih Leong",
+     "Airheads",
+     "Michael Lehmann"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": {
+     "node": "Michael Lehmann",
+     "twin": "Michael Stephen Lehmann",
+     "cos": 0.9382,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 4132,
+     "name": "Michael",
+     "from": "Michael Lehmann"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1063,
+    "size": 6,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "A Romance of Seville"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": {
+     "j": 4000,
+     "name": "The Romance of Seville",
+     "ratio": 0.905,
+     "twin_comp_size": 1,
+     "twin_in_lcc": false,
+     "from": "A Romance of Seville"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 4001,
+     "name": "Seville",
+     "from": "A Romance of Seville"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1067,
+    "size": 7,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Blind Man's Eyes"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Blind Man's Eyes",
+     "twin": "Blind Man",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 4009,
+     "name": "Blind Man",
+     "from": "Blind Man's Eyes"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1088,
+    "size": 7,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Marjatta Raita"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 465,
+     "name": "Mar",
+     "from": "Marjatta Raita"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1099,
+    "size": 5,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Bruce Coulter"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Canadian Football Hall of Fame",
+     "twin": "Canadian football",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3353,
+     "name": "TER",
+     "from": "Bruce Coulter"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1136,
+    "size": 1,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Juan Carlos Falc\u00f3n"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 4193,
+     "name": "Juan",
+     "from": "Juan Carlos Falc\u00f3n"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1141,
+    "size": 8,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Nicholas the Small",
+     "Henry I of Zi\u0119bice"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5048,
+     "name": "Nicholas",
+     "from": "Nicholas the Small"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1169,
+    "size": 11,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Eustace William Ferguson"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Eustace William Ferguson",
+     "twin": "William Ferguson",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 781,
+     "name": "William",
+     "from": "Eustace William Ferguson"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1217,
+    "size": 10,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Cheryl Saban"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "United States Mission to the United Nations",
+     "twin": "United States",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6221,
+     "name": "Cheryl",
+     "from": "Cheryl Saban"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1221,
+    "size": 4,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Dmitry Grigorieff"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Georgetown University",
+     "twin": "Georgetown University Law Center",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 622,
+     "name": "Russia",
+     "from": "Saint Nicholas Russian Orthodox Cathedral of Washington D.C."
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1235,
+    "size": 2,
+    "class": "c_singleton_noise",
+    "carrier_names": [
+     "Andrea Bianchi",
+     "Malabimba \u2013 The Malicious Whore"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5184,
+     "name": "Ian",
+     "from": "Andrea Bianchi"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1249,
+    "size": 10,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Sibyl Hathaway",
+     "Francis William Beaumont"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Channel Islands",
+     "twin": "German occupation of the Channel Islands",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": {
+     "j": 4746,
+     "name": "Commander of the Order of the British Empire",
+     "ratio": 0.946,
+     "twin_comp_size": 3162,
+     "twin_in_lcc": true,
+     "from": "Dame Commander of the Order of the British Empire"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 781,
+     "name": "William",
+     "from": "Francis William Beaumont"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1300,
+    "size": 5,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Bruce M. Mitchell",
+     "45 Calibre Echo"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 4624,
+     "name": "Jack",
+     "from": "Jack Perrin"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1311,
+    "size": 12,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Socrates",
+     "Lamprocles"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 4825,
+     "name": "Socrates' trial",
+     "from": "Socrates"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1414,
+    "size": 5,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "The Korean Wedding Chest",
+     "Ulrike Ottinger"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Los Angeles Times",
+     "twin": "Los Angeles",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5013,
+     "name": "Korea",
+     "from": "The Korean Wedding Chest"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1415,
+    "size": 22,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Beasts of Prey",
+     "Kim Ki-young"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "United States Information Service",
+     "twin": "United States",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": {
+     "j": 2925,
+     "name": "12th Berlin International Film Festival",
+     "ratio": 0.932,
+     "twin_comp_size": 9,
+     "twin_in_lcc": false,
+     "from": "Berlin International Film Festival"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 1950,
+     "name": "South Korean Gaon International Digital Chart",
+     "from": "Korea"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1460,
+    "size": 18,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Make the World Move"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "R&B",
+     "twin": "U.S. R&B chart",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1712,
+     "name": "U.S. R&B chart",
+     "from": "R&B"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1498,
+    "size": 18,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Colg\u00fa mac Fa\u00edlbe Flaind",
+     "Fa\u00edlbe Flann mac \u00c1edo Duib"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": true,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Fa\u00edlbe Flann mac \u00c1edo Duib",
+     "twin": "\u00c1edo Duib",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": {
+     "j": 5364,
+     "name": "Cathal C\u00fa-cen-m\u00e1thair mac Cathail",
+     "ratio": 0.941,
+     "twin_comp_size": 1,
+     "twin_in_lcc": false,
+     "from": "Cathal C\u00fa- cen- m\u00e1thair mac Catha\u00edl"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 1563,
+     "name": "\u00c1ed",
+     "from": "Fa\u00edlbe Flann mac \u00c1edo Duib"
+    },
+    "identical_norm_examples": [
+     "sister fidelma"
+    ]
+   },
+   {
+    "comp_id": 1595,
+    "size": 18,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Ray Nazarro",
+     "Buckaroo from Powder River",
+     "The Lone Prairie",
+     "William Berke",
+     "The Glass Wall",
+     "Maxwell Shane"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": true,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": {
+     "node": "William Berke",
+     "twin": "William A. Berke",
+     "cos": 0.9089,
+     "twin_in_lcc": true
+    },
+    "strict_containment_example": {
+     "node": "Buckaroo from Powder River",
+     "twin": "Powder River",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": {
+     "j": 1013,
+     "name": "Toronto International Film Festival",
+     "ratio": 0.914,
+     "twin_comp_size": 3162,
+     "twin_in_lcc": true,
+     "from": "Locarno International Film Festival"
+    },
+    "naive_containment_example_NOT_USED": {
+     "j": 2627,
+     "name": "Iver",
+     "from": "Buckaroo from Powder River"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1602,
+    "size": 5,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Bertrand Tavernier",
+     "Beatrice (1987 film)"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 1834,
+     "name": "Bern",
+     "from": "Bernard- Pierre Donnadieu"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1608,
+    "size": 4,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "C\u00e9sar and Rosalie",
+     "Claude Sautet"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": false
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": null,
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1622,
+    "size": 22,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "Where Does It Hurt?",
+     "Rod Amateau"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 3353,
+     "name": "TER",
+     "from": "Peter Sellers"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1642,
+    "size": 8,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Hermann II, Landgrave of Hesse"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "Hermann II, Landgrave of Hesse",
+     "twin": "Hermann II",
+     "twin_in_lcc": true
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 60,
+     "name": "Hermann I",
+     "from": "Hermann II, Landgrave of Hesse"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1651,
+    "size": 1,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Do You Believe? (film)"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": true,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": {
+     "node": "Do You Believe? (film)",
+     "twin": "Do You Believe?",
+     "cos": 0.9681,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "Do You Believe? (film)",
+     "twin": "Do You Believe?",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5900,
+     "name": "Do You Believe?",
+     "from": "Do You Believe? (film)"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1659,
+    "size": 14,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "Jon Gunn"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": true,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": true,
+    "cos_twin_example": {
+     "node": "Do You Believe?",
+     "twin": "Do You Believe? (film)",
+     "cos": 0.9681,
+     "twin_in_lcc": false
+    },
+    "strict_containment_example": {
+     "node": "Do You Believe?",
+     "twin": "Do You Believe? (song)",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 5891,
+     "name": "Do You Believe? (song)",
+     "from": "Do You Believe?"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1723,
+    "size": 10,
+    "class": "a_identity_split",
+    "carrier_names": [
+     "The Notorious Miss Lisle"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": true,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": {
+     "node": "1905 book on theatrical makeup",
+     "twin": "Theatrical makeup",
+     "twin_in_lcc": false
+    },
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 6255,
+     "name": "Theatrical makeup",
+     "from": "1905 book on theatrical makeup"
+    },
+    "identical_norm_examples": []
+   },
+   {
+    "comp_id": 1814,
+    "size": 5,
+    "class": "b_coverage_UNDETERMINABLE",
+    "carrier_names": [
+     "I Like Only You",
+     "Pierre Montazel"
+    ],
+    "signals_component_level": {
+     "i_identical_name_norm": false,
+     "ii_titan_cos_ge_0.90": false,
+     "iii_strict_token_containment": false,
+     "iii_fuzzy_ratio_ge_0.90": false,
+     "NAIVE_containment_not_used": true
+    },
+    "signal_fires_on_carrier_node_itself": false,
+    "a_merge_would_join_to_LCC": false,
+    "cos_twin_example": null,
+    "strict_containment_example": null,
+    "fuzzy_twin_example": null,
+    "naive_containment_example_NOT_USED": {
+     "j": 465,
+     "name": "Mar",
+     "from": "Luis Mariano"
+    },
+    "identical_norm_examples": []
+   }
+  ]
+ },
+ "part_c_decisive_cross_tab": {
+  "checkpoint_schema": [
+   "arm",
+   "base_pass",
+   "pass",
+   "pid"
+  ],
+  "checkpoint_carries_decomposition_labels": false,
+  "recorded_rru_b10_decomposition": {
+   "rendered_answer_absent": 10,
+   "carrier_not_retrieved": 10
+  },
+  "n_rru_b10_failures": 20,
+  "reconstruction": {
+   "method": "offline replay of H620 decompose(): reset_region_union node set = dense@16 (Titan cache) u [anchors u PPR-from-UNFILTERED-anchors top-15]; the live rule buckets on the FIRST gold title, so the FIRST-title rule is the faithful replay",
+   "reconstructed_FIRST_title_rule_n": 10,
+   "reconstructed_ANY_title_rule_n": 13,
+   "recorded_carrier_not_retrieved_n": 10,
+   "FIRST_title_rule_matches_recorded_count": true,
+   "note": "the FIRST-title rule reproduces the recorded 10 EXACTLY, which is the honest control on the reconstruction; the ANY-title rule is the wider superset view and is reported separately, never blended"
+  },
+  "cross_tab_counts_out_of_n": {
+   "n": 10,
+   "cross_component": 0,
+   "same_component_not_retrieved": 0,
+   "carrier_absent_from_graph": 10
+  },
+  "wider_view_all_missing_carriers_of_all_20_failures": {
+   "carrier_absent_from_graph": 12,
+   "same_component_not_retrieved": 5,
+   "cross_component": 1
+  },
+  "absent_carrier_probe": {
+   "n_absent": 10,
+   "n_recoverable_as_name_variant": 7,
+   "axis_under_variant_repair": {
+    "already_retrieved_eval_join_artifact": 7,
+    "genuinely_absent_from_graph": 3
+   },
+   "detail": [
+    {
+     "pid": "1c0dd3b00bdc11eba7f7acde48001122",
+     "carrier": "Aleksander Koniecpolski (1620\u20131659)",
+     "title_norm": "aleksander koniecpolski (1620\u20131659)",
+     "paren_stripped": "aleksander koniecpolski",
+     "exact_after_paren_strip": true,
+     "exact_after_paren_strip_name": "Aleksander Koniecpolski",
+     "best_fuzzy_graph_name": {
+      "name": "Aleksander Koniecpolski",
+      "ratio": 0.793,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": {
+      "name": "Aleksander Koniecpolski",
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "in_dense16_seeds": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     "axis_under_variant_repair": "already_retrieved_eval_join_artifact"
+    },
+    {
+     "pid": "3a3c2efe0bdc11eba7f7acde48001122",
+     "carrier": "Beatrice I, Countess of Burgundy",
+     "title_norm": "beatrice i, countess of burgundy",
+     "paren_stripped": "beatrice i, countess of burgundy",
+     "exact_after_paren_strip": false,
+     "exact_after_paren_strip_name": null,
+     "best_fuzzy_graph_name": {
+      "name": "Joan II, Countess of Burgundy",
+      "ratio": 0.82,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": null,
+     "axis_under_variant_repair": "genuinely_absent_from_graph"
+    },
+    {
+     "pid": "0dfe41f60bdc11eba7f7acde48001122",
+     "carrier": "Come Dance with Me (song)",
+     "title_norm": "come dance with me (song)",
+     "paren_stripped": "come dance with me",
+     "exact_after_paren_strip": true,
+     "exact_after_paren_strip_name": "Come Dance With Me",
+     "best_fuzzy_graph_name": {
+      "name": "Come Dance With Me",
+      "ratio": 0.837,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": {
+      "name": "Come Dance With Me",
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "in_dense16_seeds": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     "axis_under_variant_repair": "already_retrieved_eval_join_artifact"
+    },
+    {
+     "pid": "b672c1ee0bdd11eba7f7acde48001122",
+     "carrier": "Inherent Vice (film)",
+     "title_norm": "inherent vice (film)",
+     "paren_stripped": "inherent vice",
+     "exact_after_paren_strip": true,
+     "exact_after_paren_strip_name": "Inherent Vice",
+     "best_fuzzy_graph_name": {
+      "name": "Inherent Vice (novel)",
+      "ratio": 0.829,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": {
+      "name": "Inherent Vice",
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "in_dense16_seeds": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     "axis_under_variant_repair": "already_retrieved_eval_join_artifact"
+    },
+    {
+     "pid": "62a9cd640bb011ebab90acde48001122",
+     "carrier": "John Ernest, Duke of Saxe-Eisenach",
+     "title_norm": "john ernest, duke of saxe-eisenach",
+     "paren_stripped": "john ernest, duke of saxe-eisenach",
+     "exact_after_paren_strip": false,
+     "exact_after_paren_strip_name": null,
+     "best_fuzzy_graph_name": {
+      "name": "John George I, Duke of Saxe-Eisenach",
+      "ratio": 0.886,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": null,
+     "axis_under_variant_repair": "genuinely_absent_from_graph"
+    },
+    {
+     "pid": "8f783c7a0bda11eba7f7acde48001122",
+     "carrier": "Joanna Elisabeth of Holstein-Gottorp",
+     "title_norm": "joanna elisabeth of holstein-gottorp",
+     "paren_stripped": "joanna elisabeth of holstein-gottorp",
+     "exact_after_paren_strip": false,
+     "exact_after_paren_strip_name": null,
+     "best_fuzzy_graph_name": {
+      "name": "Johanna Elisabeth of Holstein-Gottorp",
+      "ratio": 0.986,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": {
+      "name": "Johanna Elisabeth of Holstein-Gottorp",
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "in_dense16_seeds": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     "axis_under_variant_repair": "already_retrieved_eval_join_artifact"
+    },
+    {
+     "pid": "b642318c0bdd11eba7f7acde48001122",
+     "carrier": "Abdul-Aziz bin Muhammad",
+     "title_norm": "abdul-aziz bin muhammad",
+     "paren_stripped": "abdul-aziz bin muhammad",
+     "exact_after_paren_strip": false,
+     "exact_after_paren_strip_name": null,
+     "best_fuzzy_graph_name": {
+      "name": "Abdul Aziz bin Musa'id",
+      "ratio": 0.8,
+      "comp_size": 22,
+      "in_lcc": false
+     },
+     "variant_repair": null,
+     "axis_under_variant_repair": "genuinely_absent_from_graph"
+    },
+    {
+     "pid": "d18fc6640bda11eba7f7acde48001122",
+     "carrier": "Am I Wrong (\u00c9tienne de Cr\u00e9cy song)",
+     "title_norm": "am i wrong (\u00e9tienne de cr\u00e9cy song)",
+     "paren_stripped": "am i wrong",
+     "exact_after_paren_strip": true,
+     "exact_after_paren_strip_name": "Am I Wrong",
+     "best_fuzzy_graph_name": {
+      "name": "You Can No Longer Remain Silent",
+      "ratio": 0.308,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": {
+      "name": "Am I Wrong",
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "in_dense16_seeds": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     "axis_under_variant_repair": "already_retrieved_eval_join_artifact"
+    },
+    {
+     "pid": "3ab846860bde11eba7f7acde48001122",
+     "carrier": "Camille (1926 feature film)",
+     "title_norm": "camille (1926 feature film)",
+     "paren_stripped": "camille",
+     "exact_after_paren_strip": true,
+     "exact_after_paren_strip_name": "Camille",
+     "best_fuzzy_graph_name": {
+      "name": "Camille (1926 film)",
+      "ratio": 0.826,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": {
+      "name": "Camille",
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "in_dense16_seeds": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     "axis_under_variant_repair": "already_retrieved_eval_join_artifact"
+    },
+    {
+     "pid": "84c99c760bb011ebab90acde48001122",
+     "carrier": "Louis, Dauphin of France (son of Louis XV)",
+     "title_norm": "louis, dauphin of france (son of louis xv)",
+     "paren_stripped": "louis, dauphin of france",
+     "exact_after_paren_strip": true,
+     "exact_after_paren_strip_name": "Louis, Dauphin of France",
+     "best_fuzzy_graph_name": {
+      "name": "Film Fund of the Republic of Slovenia",
+      "ratio": 0.405,
+      "comp_size": 3162,
+      "in_lcc": true
+     },
+     "variant_repair": {
+      "name": "Louis, Dauphin of France",
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "in_dense16_seeds": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     "axis_under_variant_repair": "already_retrieved_eval_join_artifact"
+    }
+   ],
+   "note": "distinguishes 'never extracted' from 'extracted under a different surface form'; the latter is a carrier-naming/normalisation repair, not a graph-construction one. axis_under_variant_repair re-runs the decisive test against the variant node the repair would land on: 'already_retrieved_eval_join_artifact' means the node WAS in the probe's reset_region_union set and only the exact-title join missed it"
+  },
+  "implicated_components_of_cross_component_residuals": [],
+  "implicated_reparable_a_type": "0/0",
+  "per_probe_table_residuals": [
+   {
+    "pid": "1c0dd3b00bdc11eba7f7acde48001122",
+    "question": "Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Aleksander Koniecpolski (1620\u20131659)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Stanis\u0142aw Koniecpolski",
+      "in_graph": true,
+      "carrier_idx": 896,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 3,
+    "seed_comp_ids": [
+     0,
+     184,
+     1141
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Aleksander Koniecpolski"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "3a3c2efe0bdc11eba7f7acde48001122",
+    "question": "What nationality is Beatrice I, Countess Of Burgundy's husband?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Beatrice I, Countess of Burgundy",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Frederick I, Holy Roman Emperor",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     }
+    ],
+    "n_dense16_seed_components": 5,
+    "seed_comp_ids": [
+     0,
+     368,
+     384,
+     394,
+     395
+    ],
+    "anchor_comp_ids": [
+     0,
+     368
+    ],
+    "anchor_names": [
+     "Beatrice I",
+     "Countess of Burgundy"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "0dfe41f60bdc11eba7f7acde48001122",
+    "question": "Where was the performer of song Come Dance With Me (Song) born?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Come Dance with Me (song)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Frank Sinatra",
+      "in_graph": true,
+      "carrier_idx": 1885,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 9,
+    "seed_comp_ids": [
+     0,
+     65,
+     138,
+     151,
+     404,
+     414,
+     497,
+     933,
+     1460
+    ],
+    "anchor_comp_ids": [
+     0,
+     1768
+    ],
+    "anchor_names": [
+     "Come Dance With Me",
+     "Bodysong",
+     "Where Was I"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "b672c1ee0bdd11eba7f7acde48001122",
+    "question": "What is the place of birth of the composer of film Inherent Vice (Film)?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Inherent Vice (film)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Jonny Greenwood",
+      "in_graph": true,
+      "carrier_idx": 2084,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 1,
+    "seed_comp_ids": [
+     0
+    ],
+    "anchor_comp_ids": [
+     0,
+     255
+    ],
+    "anchor_names": [
+     "Composer",
+     "Inherent Vice"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "62a9cd640bb011ebab90acde48001122",
+    "question": "Who is the father-in-law of John Ernest, Duke Of Saxe-Eisenach?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "John Ernest, Duke of Saxe-Eisenach",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Christine of Hesse-Kassel (1578\u20131658)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     }
+    ],
+    "n_dense16_seed_components": 7,
+    "seed_comp_ids": [
+     0,
+     65,
+     678,
+     679,
+     686,
+     690,
+     1446
+    ],
+    "anchor_comp_ids": [
+     0,
+     1446
+    ],
+    "anchor_names": [
+     "Saxe-Eisenach",
+     "Ernest"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "8f783c7a0bda11eba7f7acde48001122",
+    "question": "Where was the husband of Joanna Elisabeth Of Holstein-Gottorp born?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph",
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Joanna Elisabeth of Holstein-Gottorp",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Christian August, Prince of Anhalt-Zerbst",
+      "in_graph": true,
+      "carrier_idx": 3414,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 4,
+    "seed_comp_ids": [
+     0,
+     879,
+     883,
+     889
+    ],
+    "anchor_comp_ids": [
+     879
+    ],
+    "anchor_names": [
+     "Holstein-Gottorp"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "b642318c0bdd11eba7f7acde48001122",
+    "question": "Where was the place of death of Abdul-Aziz Bin Muhammad's father?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph",
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Abdul-Aziz bin Muhammad",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Muhammad bin Saud",
+      "in_graph": true,
+      "carrier_idx": 3481,
+      "comp_id": 72,
+      "comp_size": 22,
+      "in_lcc": false,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 12,
+    "seed_comp_ids": [
+     72,
+     73,
+     261,
+     899,
+     900,
+     906,
+     908,
+     912,
+     913,
+     915,
+     916,
+     1000
+    ],
+    "anchor_comp_ids": [
+     73
+    ],
+    "anchor_names": [
+     "Muhammad"
+    ],
+    "seed_comps_include_lcc": false
+   },
+   {
+    "pid": "d18fc6640bda11eba7f7acde48001122",
+    "question": "What nationality is the performer of song Am I Wrong (\u00c9tienne De Cr\u00e9cy Song)?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Am I Wrong (\u00c9tienne de Cr\u00e9cy song)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "\u00c9tienne de Cr\u00e9cy",
+      "in_graph": true,
+      "carrier_idx": 4063,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 6,
+    "seed_comp_ids": [
+     0,
+     151,
+     196,
+     1202,
+     1333,
+     1516
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Am I Wrong",
+     "\u00c9tienne de Cr\u00e9cy"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "3ab846860bde11eba7f7acde48001122",
+    "question": "Where did the composer of film Camille (1926 Feature Film) die?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Camille (1926 feature film)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "William Axt",
+      "in_graph": true,
+      "carrier_idx": 5327,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 5,
+    "seed_comp_ids": [
+     0,
+     465,
+     781,
+     933,
+     1202
+    ],
+    "anchor_comp_ids": [
+     0,
+     255
+    ],
+    "anchor_names": [
+     "Camille",
+     "Composer",
+     "Camille (1926 film)"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "84c99c760bb011ebab90acde48001122",
+    "question": "Who is the maternal grandmother of Louis, Dauphin Of France (Son Of Louis Xv)?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph",
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Louis, Dauphin of France (son of Louis XV)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Marie Leszczy\u0144ska",
+      "in_graph": true,
+      "carrier_idx": 6465,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 1,
+    "seed_comp_ids": [
+     0
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Louise"
+    ],
+    "seed_comps_include_lcc": true
+   }
+  ],
+  "per_probe_table_all_rru_b10_failures": [
+   {
+    "pid": "f5e3b9ca0bdb11eba7f7acde48001122",
+    "question": "Who is the child of the performer of song Me And Bobby Mcgee?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_in_rru_set",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "none"
+    ],
+    "carriers": [
+     {
+      "carrier": "Me and Bobby McGee",
+      "in_graph": true,
+      "carrier_idx": 731,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Roger Miller",
+      "in_graph": true,
+      "carrier_idx": 734,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 2,
+    "seed_comp_ids": [
+     0,
+     146
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Me and Bobby McGee"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "1c0dd3b00bdc11eba7f7acde48001122",
+    "question": "Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Aleksander Koniecpolski (1620\u20131659)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Stanis\u0142aw Koniecpolski",
+      "in_graph": true,
+      "carrier_idx": 896,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 3,
+    "seed_comp_ids": [
+     0,
+     184,
+     1141
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Aleksander Koniecpolski"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "86508dc60bdc11eba7f7acde48001122",
+    "question": "Where was the composer of film Billy Elliot born?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_in_rru_set",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "none"
+    ],
+    "carriers": [
+     {
+      "carrier": "Billy Elliot",
+      "in_graph": true,
+      "carrier_idx": 1275,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Stephen Warbeck",
+      "in_graph": true,
+      "carrier_idx": 1298,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 1,
+    "seed_comp_ids": [
+     0
+    ],
+    "anchor_comp_ids": [
+     0,
+     255
+    ],
+    "anchor_names": [
+     "Billy Elliot",
+     "Composer"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "a1d9a65c0bd911eba7f7acde48001122",
+    "question": "Where was the place of death of the performer of song I Can'T See Myself Leaving You?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_in_rru_set",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "none"
+    ],
+    "carriers": [
+     {
+      "carrier": "I Can't See Myself Leaving You",
+      "in_graph": true,
+      "carrier_idx": 1708,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Aretha Franklin",
+      "in_graph": true,
+      "carrier_idx": 1675,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 7,
+    "seed_comp_ids": [
+     0,
+     346,
+     348,
+     349,
+     350,
+     351,
+     352
+    ],
+    "anchor_comp_ids": [],
+    "anchor_names": [],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "3a3c2efe0bdc11eba7f7acde48001122",
+    "question": "What nationality is Beatrice I, Countess Of Burgundy's husband?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Beatrice I, Countess of Burgundy",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Frederick I, Holy Roman Emperor",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     }
+    ],
+    "n_dense16_seed_components": 5,
+    "seed_comp_ids": [
+     0,
+     368,
+     384,
+     394,
+     395
+    ],
+    "anchor_comp_ids": [
+     0,
+     368
+    ],
+    "anchor_names": [
+     "Beatrice I",
+     "Countess of Burgundy"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "0dfe41f60bdc11eba7f7acde48001122",
+    "question": "Where was the performer of song Come Dance With Me (Song) born?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Come Dance with Me (song)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Frank Sinatra",
+      "in_graph": true,
+      "carrier_idx": 1885,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 9,
+    "seed_comp_ids": [
+     0,
+     65,
+     138,
+     151,
+     404,
+     414,
+     497,
+     933,
+     1460
+    ],
+    "anchor_comp_ids": [
+     0,
+     1768
+    ],
+    "anchor_names": [
+     "Come Dance With Me",
+     "Bodysong",
+     "Where Was I"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "b672c1ee0bdd11eba7f7acde48001122",
+    "question": "What is the place of birth of the composer of film Inherent Vice (Film)?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Inherent Vice (film)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Jonny Greenwood",
+      "in_graph": true,
+      "carrier_idx": 2084,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 1,
+    "seed_comp_ids": [
+     0
+    ],
+    "anchor_comp_ids": [
+     0,
+     255
+    ],
+    "anchor_names": [
+     "Composer",
+     "Inherent Vice"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "c5a00e860bda11eba7f7acde48001122",
+    "question": "Where did Sylvia Burka's husband die?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_in_rru_set",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "none"
+    ],
+    "carriers": [
+     {
+      "carrier": "Sylvia Burka",
+      "in_graph": true,
+      "carrier_idx": 2190,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Jocelyn Lovell",
+      "in_graph": true,
+      "carrier_idx": 2191,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 4,
+    "seed_comp_ids": [
+     0,
+     72,
+     1141,
+     1248
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Sylvia Burka"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "62a9cd640bb011ebab90acde48001122",
+    "question": "Who is the father-in-law of John Ernest, Duke Of Saxe-Eisenach?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "John Ernest, Duke of Saxe-Eisenach",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Christine of Hesse-Kassel (1578\u20131658)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     }
+    ],
+    "n_dense16_seed_components": 7,
+    "seed_comp_ids": [
+     0,
+     65,
+     678,
+     679,
+     686,
+     690,
+     1446
+    ],
+    "anchor_comp_ids": [
+     0,
+     1446
+    ],
+    "anchor_names": [
+     "Saxe-Eisenach",
+     "Ernest"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "cda459160bda11eba7f7acde48001122",
+    "question": "Who is the father of the director of film Palo Alto (2013 Film)?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Palo Alto (2013 film)",
+      "in_graph": true,
+      "carrier_idx": 2909,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Gia Coppola",
+      "in_graph": true,
+      "carrier_idx": 2878,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 6,
+    "seed_comp_ids": [
+     0,
+     202,
+     1278,
+     1293,
+     1349,
+     1505
+    ],
+    "anchor_comp_ids": [
+     0,
+     197
+    ],
+    "anchor_names": [
+     "Director",
+     "45 Fathers",
+     "Palo Alto"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "8f783c7a0bda11eba7f7acde48001122",
+    "question": "Where was the husband of Joanna Elisabeth Of Holstein-Gottorp born?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph",
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Joanna Elisabeth of Holstein-Gottorp",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Christian August, Prince of Anhalt-Zerbst",
+      "in_graph": true,
+      "carrier_idx": 3414,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 4,
+    "seed_comp_ids": [
+     0,
+     879,
+     883,
+     889
+    ],
+    "anchor_comp_ids": [
+     879
+    ],
+    "anchor_names": [
+     "Holstein-Gottorp"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "b642318c0bdd11eba7f7acde48001122",
+    "question": "Where was the place of death of Abdul-Aziz Bin Muhammad's father?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph",
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Abdul-Aziz bin Muhammad",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Muhammad bin Saud",
+      "in_graph": true,
+      "carrier_idx": 3481,
+      "comp_id": 72,
+      "comp_size": 22,
+      "in_lcc": false,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 12,
+    "seed_comp_ids": [
+     72,
+     73,
+     261,
+     899,
+     900,
+     906,
+     908,
+     912,
+     913,
+     915,
+     916,
+     1000
+    ],
+    "anchor_comp_ids": [
+     73
+    ],
+    "anchor_names": [
+     "Muhammad"
+    ],
+    "seed_comps_include_lcc": false
+   },
+   {
+    "pid": "f05423560bda11eba7f7acde48001122",
+    "question": "Where did Saw Thanda's husband die?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "cross_component"
+    ],
+    "carriers": [
+     {
+      "carrier": "Saw Thanda",
+      "in_graph": true,
+      "carrier_idx": 3839,
+      "comp_id": 1004,
+      "comp_size": 1,
+      "in_lcc": false,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Min Dikkha",
+      "in_graph": true,
+      "carrier_idx": 3821,
+      "comp_id": 1000,
+      "comp_size": 10,
+      "in_lcc": false,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": false
+     }
+    ],
+    "n_dense16_seed_components": 9,
+    "seed_comp_ids": [
+     0,
+     65,
+     72,
+     260,
+     261,
+     321,
+     1003,
+     1004,
+     1088
+    ],
+    "anchor_comp_ids": [
+     1004
+    ],
+    "anchor_names": [
+     "Saw Thanda"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "d18fc6640bda11eba7f7acde48001122",
+    "question": "What nationality is the performer of song Am I Wrong (\u00c9tienne De Cr\u00e9cy Song)?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Am I Wrong (\u00c9tienne de Cr\u00e9cy song)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "\u00c9tienne de Cr\u00e9cy",
+      "in_graph": true,
+      "carrier_idx": 4063,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 6,
+    "seed_comp_ids": [
+     0,
+     151,
+     196,
+     1202,
+     1333,
+     1516
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Am I Wrong",
+     "\u00c9tienne de Cr\u00e9cy"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "3bb9c0740bb011ebab90acde48001122",
+    "question": "Who is Sibyl Hathaway's child-in-law?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_in_rru_set",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "none"
+    ],
+    "carriers": [
+     {
+      "carrier": "Sibyl Hathaway",
+      "in_graph": true,
+      "carrier_idx": 4539,
+      "comp_id": 1249,
+      "comp_size": 10,
+      "in_lcc": false,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Francis William Beaumont",
+      "in_graph": true,
+      "carrier_idx": 4581,
+      "comp_id": 1249,
+      "comp_size": 10,
+      "in_lcc": false,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 5,
+    "seed_comp_ids": [
+     0,
+     261,
+     561,
+     1249,
+     1255
+    ],
+    "anchor_comp_ids": [
+     1249
+    ],
+    "anchor_names": [
+     "Sibyl Hathaway"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "3ab846860bde11eba7f7acde48001122",
+    "question": "Where did the composer of film Camille (1926 Feature Film) die?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph"
+    ],
+    "carriers": [
+     {
+      "carrier": "Camille (1926 feature film)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "William Axt",
+      "in_graph": true,
+      "carrier_idx": 5327,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 5,
+    "seed_comp_ids": [
+     0,
+     465,
+     781,
+     933,
+     1202
+    ],
+    "anchor_comp_ids": [
+     0,
+     255
+    ],
+    "anchor_names": [
+     "Camille",
+     "Composer",
+     "Camille (1926 film)"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "43eb7b380bde11eba7f7acde48001122",
+    "question": "What is the place of birth of the director of film Peter'S Friends?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_in_rru_set",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "none"
+    ],
+    "carriers": [
+     {
+      "carrier": "Peter's Friends",
+      "in_graph": true,
+      "carrier_idx": 6020,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Kenneth Branagh",
+      "in_graph": true,
+      "carrier_idx": 6023,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 9,
+    "seed_comp_ids": [
+     0,
+     106,
+     197,
+     202,
+     604,
+     933,
+     1014,
+     1622,
+     1683
+    ],
+    "anchor_comp_ids": [
+     0,
+     197,
+     485
+    ],
+    "anchor_names": [
+     "Director",
+     "Place of birth",
+     "Peter's Friends"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "748446060bdb11eba7f7acde48001122",
+    "question": "What nationality is the composer of song Make The World Move?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Make the World Move",
+      "in_graph": true,
+      "carrier_idx": 6188,
+      "comp_id": 1460,
+      "comp_size": 18,
+      "in_lcc": false,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Alex da Kid",
+      "in_graph": true,
+      "carrier_idx": 6210,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 2,
+    "seed_comp_ids": [
+     0,
+     1460
+    ],
+    "anchor_comp_ids": [
+     255
+    ],
+    "anchor_names": [
+     "Composer"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "84c99c760bb011ebab90acde48001122",
+    "question": "Who is the maternal grandmother of Louis, Dauphin Of France (Son Of Louis Xv)?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_not_retrieved",
+    "reconstructed_label_ANY_title_rule": "carrier_not_retrieved",
+    "axis_of_first_title": "carrier_absent_from_graph",
+    "axis_of_any_missing_titles": [
+     "carrier_absent_from_graph",
+     "same_component_not_retrieved"
+    ],
+    "carriers": [
+     {
+      "carrier": "Louis, Dauphin of France (son of Louis XV)",
+      "in_graph": false,
+      "carrier_idx": null,
+      "comp_id": null,
+      "comp_size": null,
+      "in_lcc": null,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": null
+     },
+     {
+      "carrier": "Marie Leszczy\u0144ska",
+      "in_graph": true,
+      "carrier_idx": 6465,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": false,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 1,
+    "seed_comp_ids": [
+     0
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Louise"
+    ],
+    "seed_comps_include_lcc": true
+   },
+   {
+    "pid": "f253a3040bdd11eba7f7acde48001122",
+    "question": "What is the place of birth of Princess Maria Of Greece And Denmark's mother?",
+    "answer_is_yesno": false,
+    "reconstructed_label_FIRST_title_rule": "carrier_in_rru_set",
+    "reconstructed_label_ANY_title_rule": "carrier_in_rru_set",
+    "axis_of_first_title": "same_component_not_retrieved",
+    "axis_of_any_missing_titles": [
+     "none"
+    ],
+    "carriers": [
+     {
+      "carrier": "Princess Maria of Greece and Denmark",
+      "in_graph": true,
+      "carrier_idx": 6538,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     },
+     {
+      "carrier": "Olga Constantinovna of Russia",
+      "in_graph": true,
+      "carrier_idx": 6496,
+      "comp_id": 0,
+      "comp_size": 3162,
+      "in_lcc": true,
+      "in_rru_node_set": true,
+      "comp_shared_with_seed_or_anchor": true
+     }
+    ],
+    "n_dense16_seed_components": 2,
+    "seed_comp_ids": [
+     0,
+     1794
+    ],
+    "anchor_comp_ids": [
+     0
+    ],
+    "anchor_names": [
+     "Princess Maria of Greece and Denmark"
+    ],
+    "seed_comps_include_lcc": true
+   }
+  ],
+  "small_n_note": "n=10. All figures are exact counts. No significance claim is made at this n."
+ },
+ "verdict": "ARM-DEAD-ON-PANEL",
+ "verdict_reason": "only 0/10 residuals are cross-component - the reach axis is not binding on this panel",
+ "script": "scripts/experiments/r55_h631_fragmentation_census.py"
+}

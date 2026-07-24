@@ -1,0 +1,81 @@
+{
+ "run_id": "20260713T233430Z",
+ "hypothesis": "R40x-H621",
+ "rungs": {
+  "scout": {
+   "reachable": true,
+   "n_entities": 304,
+   "distinct_norms": 304,
+   "colliding_norms": 0,
+   "collision_rate_norms": 0.0,
+   "collision_examples": {},
+   "n_docs": 50
+  },
+  "medium": {
+   "n_docs": 1000,
+   "n_entities": 6626,
+   "distinct_norms": 6624,
+   "colliding_norms": 2,
+   "collision_rate_norms": 0.000302,
+   "collision_examples": {
+    "hindi cinema": {
+     "n_entities": 2,
+     "names": [
+      "Hindi cinema"
+     ]
+    },
+    "sister fidelma": {
+     "n_entities": 2,
+     "names": [
+      "Sister Fidelma"
+     ]
+    }
+   },
+   "anchor_span_collision_rate": 0.0,
+   "n_resolved_anchor_span_norms": 171,
+   "anchor_collisions": {}
+  }
+ },
+ "scale_forecast": {
+  "assumptions": "entities/doc constant at the medium ratio; colliding-norm COUNT grows log-linearly in entity population fitted on the (scout, medium) points; full rung = 6,118 docs",
+  "ent_per_doc_medium": 6.63,
+  "full_entities_est": 40538,
+  "fit_points_(n_ent,colliding_norms)": [
+   [
+    304,
+    0
+   ],
+   [
+    6626,
+    2
+   ]
+  ],
+  "method": "degenerate (a rung has 0 collisions); linear colliding-count = medium_rate * full_entities (upper floor)",
+  "forecast_colliding_norms_full": 12.2,
+  "forecast_collision_rate_full": 0.000302,
+  "forecast_exact_rung_coverage_full": 0.9997
+ },
+ "tie_break": {
+  "policy_compared": "first-inserted (H597 name_row.setdefault) vs most-mentioned (highest degree)",
+  "n_colliding_anchor_spans": 0,
+  "note": "no anchor span resolves to multiple distinct medium entities - exact-match collision is empirically zero at the medium rung; tie-break policy is moot here"
+ },
+ "clauses": [
+  {
+   "clause": "scout reproduces the reset_region_union lift within +-5pp of medium",
+   "predicted": "within +-5pp",
+   "measured": "see scout block",
+   "holds": null,
+   "note": "scout rung yields ~5 held-in eligible questions (config comment: underpowered, zero flips) and has no dedicated gold screen artifact; the lift replay is NOT-SCORABLE - collision census is the scorable H621 deliverable"
+  },
+  {
+   "clause": "forecast collision rate at 6,118 docs keeps exact-rung coverage >= 70%",
+   "predicted": ">= 0.70",
+   "measured": 0.9997,
+   "holds": true
+  }
+ ],
+ "proposed_verdict": "CONFIRMED",
+ "script": "scripts/experiments/r50_h619_seedland_digs.py",
+ "artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h621-scale-collision-20260713T233430Z.json"
+}

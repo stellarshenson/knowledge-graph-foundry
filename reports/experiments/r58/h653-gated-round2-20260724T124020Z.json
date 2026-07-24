@@ -1,0 +1,62 @@
+{
+ "hypothesis": "R58-H653",
+ "run_id": "20260724T124020Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, from R57 atlas rows)",
+ "substrate": "medium 2wiki frozen H582 cache (6,626 entities); FREE numpy/scipy, no GPU/LLM/Neo4j/net; reuses r58_h651 build()",
+ "substrate_caveat": "frozen 6,626-entity cache, not the 7,575 live re-ingest",
+ "mechanism": "gate = first-hop gold node in round-1 region AND no bridge gold node in round-1 region (role composition only, H646 fence); round-2 = PPR reset from top-5 round-1 PPR-mass region nodes, top15, unioned into round-1",
+ "gate_role_source": "R57 atlas reasoning_role per carrier (evidence-triple pivot classification)",
+ "round2_top_carriers": 5,
+ "baseline_region_variant_JUDGED": {
+  "variant": "baseline_region_rru_b10",
+  "recorded_arm": "rru_b10",
+  "n_gate_fires": 5,
+  "gate_fire_rate": 0.0379,
+  "fired_pids": [
+   "f34d188608cb11ebbd93ac1f6bf848b6",
+   "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+   "cda459160bda11eba7f7acde48001122",
+   "a52e9e1908b711ebbd88ac1f6bf848b6",
+   "f253a3040bdd11eba7f7acde48001122"
+  ],
+  "flips_fail_to_pass_recorded": 0,
+  "flip_pids": [],
+  "regressions_pass_to_fail_recorded": 0,
+  "regression_pids": [],
+  "retrieval_level_flips": 0,
+  "retrieval_flip_pids": [],
+  "bridge_carriers_recovered": 0,
+  "bridge_recovered_pids": []
+ },
+ "h651_widened_region_variant": {
+  "variant": "h651_widened_region",
+  "recorded_arm": null,
+  "n_gate_fires": 1,
+  "gate_fire_rate": 0.0076,
+  "fired_pids": [
+   "f34d188608cb11ebbd93ac1f6bf848b6"
+  ],
+  "flips_fail_to_pass_recorded": 0,
+  "flip_pids": [],
+  "regressions_pass_to_fail_recorded": 0,
+  "regression_pids": [],
+  "retrieval_level_flips": 0,
+  "retrieval_flip_pids": [],
+  "bridge_carriers_recovered": 0,
+  "bridge_recovered_pids": []
+ },
+ "verdict_recommendation": "KILLED",
+ "bar": "CONFIRMED at gate fire <=30% AND >=3 net flips paired with zero regressions; KILLED at <=1 net flip OR any pass->fail drift regression",
+ "caveats": [
+  "gate consults GOLD role labels (atlas reasoning_role) - a deployable gate would infer roles from the question (LLM, deferred to a later wave); this is a heuristic-gate feasibility probe, its OUTPUT (flips) is measured on the frozen 132, it does not train on outcomes (no R50/leakage violation).",
+  "round-2 unions into round-1 => retrieval regressions structurally impossible; render drift (added nodes poisoning render at budget<1.0) is NOT simulable offline, carried as a caveat and the registered drift-KILL surface.",
+  "flip proxy is retrieval-level (fully-retrieved => pass at budget 1.0); render-absent probes are a disjoint bucket unaffected by round-2.",
+  "frozen 6,626-entity substrate, not the 7,575 live re-ingest."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h653-gated-round2-20260724T124020Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h653-gated-round2-20260724T124020Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r58/h653-gated-round2-20260724T124020Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r58_h653_gated_round2.py"
+ }
+}

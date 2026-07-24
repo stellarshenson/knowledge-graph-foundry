@@ -7,7 +7,12 @@ regime) or WORLD-KNOWLEDGE entity recall (reasoning-intensive, BRIGHT/ReasonRank
 regime; a small student needs a reasoning objective, not plain SFT).
 
 Method: reuse the r49_h570 render/scoring harness VERBATIM (paired comparability,
-H541). Per probe, gpt-oss-120b ranks the live rendered blocks TWICE:
+H541): toks / crit_pass / block_is_gold / llm_rank / select_at_budget / recall /
+build_centrality are imported from r49_h570_carrier_render. Block substrate comes
+from the shared R51 render cache (tmp/results/r51_render_cache-*.jsonl, built by
+r51_h608_oracles.py `render-cache` with the SAME H570 functions over READ-ONLY
+Foundry.probe; verified vs the H570 artifact: 132/132 ids, scorable 132/132,
+gold_blocks 86/86 identical). Per scorable probe gpt-oss-120b ranks the blocks TWICE:
   (1) natural blocks + natural question   (reproduces the 0.687 sanity anchor)
   (2) entity-anonymized blocks + anonymized question
 Anonymization: GLiNER (urchade/gliner_multi-v2.1) NER over question+blocks; each
@@ -26,24 +31,28 @@ ORIGINAL entity names / block indices -> identity-preserving under a bijective m
 so they are UNCHANGED natural-vs-anon by construction (reported to confirm flatness).
 
 Drop rule: a scorable probe is dropped from the paired test if NER coverage of the
-gold entities is INCOMPLETE - i.e. the raw gold string still survives in an
-anonymized gold block (leak). Drop count reported.
+gold entities is INCOMPLETE - i.e. a gold block STILL passes the gold test after
+anonymization (the raw gold string survived = leak). Drop count reported.
 
 Bars (registered): CONFIRMED (world knowledge NOT load-bearing; distillation
 feasible) if gpt-oss natural->anon recall drop <= 3pp. FLIP/KILL (reasoning-intensive;
 plain SFT insufficient) if drop >= 8pp while structural baselines stay flat.
 
-Small-model arm: deferred to H607 unless a text-instruct <=8B is trivially cached.
+Small-model arm: DEFERRED to H607 - no text-instruct <=8B cached (only VL/embedding
+models in ~/.cache/huggingface); standing up new serving infra is out of scope.
 
-Usage: CUDA_VISIBLE_DEVICES=2 python scripts/experiments/r51_h606_wk_mask.py [--limit N]
+Usage: CUDA_VISIBLE_DEVICES=2 python scripts/experiments/r51_h606_wk_mask.py \
+           [--cache tmp/results/r51_render_cache-<ts>.jsonl] [--limit N]
 Writes: reports/experiments/r51/h606-wk-mask-<ts>.json (+ .partial.jsonl)
 """
 
 import argparse
 import json
+import random
 import re
 import statistics
 import sys
+import zlib
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -51,15 +60,15 @@ from pathlib import Path
 sys.path.insert(0, "notebooks")
 sys.path.insert(0, "scripts/experiments")
 
-import r49_h570_carrier_render as h570  # noqa: E402  (verbatim render/scoring harness)
-from h158_measure import _norm, _present  # noqa: E402
-from r46_h499_screen import gold_titles, ingested_titles, load_slices  # noqa: E402
+import yaml  # noqa: E402
+from neo4j import GraphDatabase  # noqa: E402
 
-from knowledge_graph_foundry import load_settings  # noqa: E402
-from knowledge_graph_foundry.pipeline import Foundry  # noqa: E402
+import r49_h570_carrier_render as h570  # noqa: E402  (verbatim render/scoring harness)
+from h158_measure import _norm  # noqa: E402
 
 CONFIG = h570.CONFIG
 QUESTIONS = h570.QUESTIONS
+CACHE_GLOB = "tmp/results/r51_render_cache-*.jsonl"
 
 # GLiNER label set (multi-v2.1) and label -> type-consistent placeholder word.
 GLINER_LABELS = [
@@ -115,13 +124,11 @@ def build_anon_map(gliner, question: str, blocks: list[str]):
                 rec["canon"] = s
             first_pos.setdefault(key, pos)
             pos += 1
-    # assign placeholders: order by first appearance for stable, readable numbering
     ordered = sorted(surfaces.items(), key=lambda kv: first_pos[kv[0]])
     counters: Counter = Counter()
     surface2ph: dict[str, str] = {}
     records = []
     for key, rec in ordered:
-        # majority label, tiebreak by fixed priority
         best_label = max(rec["labels"].items(),
                          key=lambda kv: (kv[1], LABEL_PRIORITY.get(kv[0], -2)))[0]
         word = TYPE_WORD.get(best_label, "Entity")
@@ -143,122 +150,123 @@ def build_anon_map(gliner, question: str, blocks: list[str]):
     return anonymize, records
 
 
+def latest_cache() -> Path:
+    caches = sorted(Path(".").glob(CACHE_GLOB))
+    if not caches:
+        raise SystemExit(f"no render cache matching {CACHE_GLOB}; "
+                         "run r51_h608_oracles.py render-cache first")
+    return caches[-1]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--limit", type=int, default=0, help="dry-run: first N eligible probes")
+    ap.add_argument("--cache", type=Path, default=None,
+                    help="render cache jsonl (default: latest r51_render_cache-*)")
+    ap.add_argument("--limit", type=int, default=0, help="dry-run: first N cache rows")
     args = ap.parse_args()
+    cache_path = args.cache or latest_cache()
 
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     outdir = Path("reports/experiments/r51")
     outdir.mkdir(parents=True, exist_ok=True)
     partial = outdir / f"h606-wk-mask-{run_id}.partial.jsonl"
 
+    print(f"h606 {run_id}: cache={cache_path}", flush=True)
+    cache = [json.loads(line) for line in cache_path.open()]
+    if args.limit:
+        cache = cache[: args.limit]
+    questions = json.loads(QUESTIONS.read_text())
+    qmap = {q.get("_id"): q for q in questions if q.get("_id")}
+
     print(f"h606 {run_id}: loading GLiNER (gliner_multi-v2.1)...", flush=True)
     gliner, gdev = load_gliner()
     print(f"h606 {run_id}: GLiNER on {gdev}, threshold={GLINER_THRESHOLD}", flush=True)
 
-    questions = json.loads(QUESTIONS.read_text())
-    st = load_settings(CONFIG)
-    st.event_log = None
+    # centrality: read-only Cypher on the medium graph (H570 build_centrality verbatim)
+    cfg = yaml.safe_load(Path(CONFIG).read_text())["neo4j"]
+    driver = GraphDatabase.driver(cfg["uri"], auth=(cfg["user"], cfg["password"]))
+    with driver.session() as s:
+        deg, pr = h570.build_centrality(s)
+    driver.close()
+    print(f"h606 {run_id}: centrality over {len(deg)} entities", flush=True)
+    print(f"h606 {run_id}: {len(cache)} cached probes "
+          f"({sum(1 for c in cache if c.get('scorable'))} scorable)", flush=True)
 
     rows = []
-    with Foundry(st) as f:
-        with f.driver.session() as s:
-            deg, pr = h570.build_centrality(s)
-        print(f"h606 {run_id}: centrality over {len(deg)} entities", flush=True)
-        titles = ingested_titles(f, load_slices())
-        eligible = [
-            q for q in questions
-            if gold_titles(q) and all(t in titles for t in gold_titles(q))
-        ]
-        if args.limit:
-            eligible = eligible[: args.limit]
-        print(f"h606 {run_id}: {len(eligible)} eligible probes", flush=True)
-
-        with partial.open("a") as ckpt:
-            for k, q in enumerate(eligible):
-                qid = q.get("_id") or q["question"][:60]
-                try:
-                    res = f.probe(q["question"])
-                except Exception as exc:
-                    print(f"probe error {qid}: {exc}", flush=True)
-                    continue
-                blocks = res["context_lines"]
-                tok = [h570.toks(b) for b in blocks]
-                total = sum(tok)
-                base = h570.crit_pass(q, blocks)
-                gold = [i for i, b in enumerate(blocks) if h570.block_is_gold(q, b)]
-                row = {
-                    "id": qid,
-                    "yesno": (q.get("answer") or "").strip().lower() in ("yes", "no"),
-                    "n_blocks": len(blocks), "total_tokens": total,
-                    "base_pass": base, "n_gold": len(gold),
-                    "escalated": res["coverage"].get("escalated"),
-                }
-                if not (base and len(gold) >= 1 and total):
-                    row["scorable"] = False
-                    rows.append(row)
-                    ckpt.write(json.dumps(row) + "\n"); ckpt.flush()
-                    print(f"[{k+1}/{len(eligible)}] {qid} scorable=False "
-                          f"(base={base} n_gold={len(gold)})", flush=True)
-                    continue
-
-                budget = int(h570.BUDGET_FRAC * total)
-                names = [h570.block_name(b) for b in blocks]
-                deg_order = sorted(range(len(blocks)),
-                                   key=lambda i: (-(deg.get(_norm(names[i]), -1)
-                                                    if names[i] else -1), i))
-                pr_order = sorted(range(len(blocks)),
-                                  key=lambda i: (-(pr.get(_norm(names[i]), -1.0)
-                                                   if names[i] else -1.0), i))
-                import random as _random
-                import zlib as _zlib
-                rnd = _random.Random(_zlib.crc32(qid.encode()))
-                rand_order = list(range(len(blocks)))
-                rnd.shuffle(rand_order)
-
-                # anonymization (bijective, offline over question+blocks)
-                anonymize, amap = build_anon_map(gliner, q["question"], blocks)
-                anon_blocks = [anonymize(b) for b in blocks]
-                anon_q = anonymize(q["question"])
-                # NER-coverage / leak guard: a gold block that STILL reads gold after
-                # anonymization means the raw gold string survived -> incomplete NER
-                # coverage -> drop (uses block_is_gold as a leak DETECTOR only).
-                leaked = [g for g in gold if h570.block_is_gold(q, anon_blocks[g])]
-                ner_complete = len(leaked) == 0
-
-                # arms (structural computed from ORIGINAL names/indices -> identical
-                # for both variants; scored by ORIGINAL gold indices, V5 fence)
-                nat_order = h570.llm_rank(q["question"], blocks)
-                anon_order = h570.llm_rank(anon_q, anon_blocks)
-
-                def rec_of(order):
-                    return h570.recall(h570.select_at_budget(order, tok, budget), gold)
-
-                recalls = {
-                    "llm_natural": rec_of(nat_order),
-                    "llm_anon": rec_of(anon_order),
-                    "degree": rec_of(deg_order),
-                    "pagerank": rec_of(pr_order),
-                    "random": rec_of(rand_order),
-                }
-                row.update({
-                    "scorable": True, "budget_tokens": budget,
-                    "ner_complete": ner_complete, "n_leaked_gold": len(leaked),
-                    "n_entities_masked": len(amap),
-                    "recall": recalls,
-                    "llm_order_natural": nat_order, "llm_order_anon": anon_order,
-                    "gold_blocks": gold,
-                    "anon_map": [{"placeholder": r["placeholder"], "label": r["label"]}
-                                 for r in amap],
-                })
+    with partial.open("a") as ckpt:
+        for k, c in enumerate(cache):
+            qid = c["id"]
+            q = qmap.get(qid)
+            row = {"id": qid, "yesno": c["yesno"], "n_blocks": c["n_blocks"],
+                   "total_tokens": c["total_tokens"], "base_pass": c["base_pass"],
+                   "n_gold": c["n_gold"]}
+            if not (c.get("scorable") and q):
+                row["scorable"] = False
                 rows.append(row)
                 ckpt.write(json.dumps(row) + "\n"); ckpt.flush()
-                print(f"[{k+1}/{len(eligible)}] {qid} scorable "
-                      f"nat={recalls['llm_natural']} anon={recalls['llm_anon']} "
-                      f"deg={recalls['degree']} pr={recalls['pagerank']} "
-                      f"rnd={recalls['random']} ner_ok={ner_complete} "
-                      f"masked={len(amap)}", flush=True)
+                print(f"[{k+1}/{len(cache)}] {qid} scorable=False "
+                      f"(base={c['base_pass']} n_gold={c['n_gold']})", flush=True)
+                continue
+
+            blocks = [b["text"] for b in c["blocks"]]
+            tok = [h570.toks(b) for b in blocks]
+            total = sum(tok)
+            gold = c["gold_blocks"]
+            budget = int(h570.BUDGET_FRAC * total)
+
+            # structural arm orderings (H570 verbatim; ORIGINAL names -> identical
+            # for both variants by construction)
+            names = [h570.block_name(b) for b in blocks]
+            deg_order = sorted(range(len(blocks)),
+                               key=lambda i: (-(deg.get(_norm(names[i]), -1)
+                                                if names[i] else -1), i))
+            pr_order = sorted(range(len(blocks)),
+                              key=lambda i: (-(pr.get(_norm(names[i]), -1.0)
+                                               if names[i] else -1.0), i))
+            rnd = random.Random(zlib.crc32(qid.encode()))
+            rand_order = list(range(len(blocks)))
+            rnd.shuffle(rand_order)
+
+            # anonymization (bijective, offline over question+blocks)
+            anonymize, amap = build_anon_map(gliner, q["question"], blocks)
+            anon_blocks = [anonymize(b) for b in blocks]
+            anon_q = anonymize(q["question"])
+            # NER-coverage / leak guard: a gold block that STILL reads gold after
+            # anonymization means the raw gold string survived -> incomplete NER
+            # coverage -> drop from the paired test (leak DETECTOR only).
+            leaked = [g for g in gold if h570.block_is_gold(q, anon_blocks[g])]
+            ner_complete = len(leaked) == 0
+
+            nat_order = h570.llm_rank(q["question"], blocks)
+            anon_order = h570.llm_rank(anon_q, anon_blocks)
+
+            def rec_of(order):
+                return h570.recall(h570.select_at_budget(order, tok, budget), gold)
+
+            recalls = {
+                "llm_natural": rec_of(nat_order),
+                "llm_anon": rec_of(anon_order),
+                "degree": rec_of(deg_order),
+                "pagerank": rec_of(pr_order),
+                "random": rec_of(rand_order),
+            }
+            row.update({
+                "scorable": True, "budget_tokens": budget,
+                "ner_complete": ner_complete, "n_leaked_gold": len(leaked),
+                "n_entities_masked": len(amap),
+                "recall": recalls,
+                "llm_order_natural": nat_order, "llm_order_anon": anon_order,
+                "gold_blocks": gold,
+                "anon_map": [{"placeholder": r["placeholder"], "label": r["label"]}
+                             for r in amap],
+            })
+            rows.append(row)
+            ckpt.write(json.dumps(row) + "\n"); ckpt.flush()
+            print(f"[{k+1}/{len(cache)}] {qid} scorable "
+                  f"nat={recalls['llm_natural']} anon={recalls['llm_anon']} "
+                  f"deg={recalls['degree']} pr={recalls['pagerank']} "
+                  f"rnd={recalls['random']} ner_ok={ner_complete} "
+                  f"masked={len(amap)}", flush=True)
 
     # ---- aggregation ----
     scor = [r for r in rows if r.get("scorable")]
@@ -269,15 +277,13 @@ def main() -> None:
         return round(statistics.fmean(vals), 4) if vals else None
 
     arms = ("llm_natural", "llm_anon", "degree", "pagerank", "random")
-    # sanity: natural over ALL scorable (reproduces H570 0.687)
-    natural_all = mean_over(scor, "llm_natural")
+    natural_all = mean_over(scor, "llm_natural")  # sanity vs H570 0.687
     rpa_paired = {a: mean_over(paired, a) for a in arms}
+    rpa_all = {a: mean_over(scor, a) for a in arms}
 
     nat = rpa_paired["llm_natural"] or 0.0
     anon = rpa_paired["llm_anon"] or 0.0
     drop = round(nat - anon, 4)
-    deg_shift = round((mean_over(paired, "degree") or 0.0), 4)  # same both variants
-    rnd_shift = round((mean_over(paired, "random") or 0.0), 4)
 
     clauses = [
         {"clause": "gpt-oss natural reproduces H570 0.687 (sanity, all scorable)",
@@ -288,7 +294,10 @@ def main() -> None:
         {"clause": "FLIP/KILL guard: drop >= 8pp (world knowledge load-bearing)",
          "predicted": ">=0.08", "measured": drop, "holds": drop >= 0.08},
         {"clause": "structural baselines flat under mask (identity-preserving)",
-         "predicted": "unchanged", "measured": {"degree": deg_shift, "random": rnd_shift},
+         "predicted": "unchanged",
+         "measured": {"degree_paired": rpa_paired["degree"],
+                      "pagerank_paired": rpa_paired["pagerank"],
+                      "random_paired": rpa_paired["random"]},
          "holds": True},
     ]
     if drop <= 0.03:
@@ -300,22 +309,28 @@ def main() -> None:
 
     summary = {
         "run_id": run_id, "config": str(CONFIG), "hypothesis": "R51-H606",
-        "n_eligible": len(rows), "n_scorable": len(scor),
+        "render_cache": str(cache_path),
+        "n_cached": len(rows), "n_scorable": len(scor),
         "n_paired_ner_complete": len(paired),
         "n_dropped_incomplete_ner": len(scor) - len(paired),
         "gliner": {"model": "urchade/gliner_multi-v2.1", "device": gdev,
                    "threshold": GLINER_THRESHOLD, "labels": GLINER_LABELS},
         "budget_fraction": h570.BUDGET_FRAC,
         "natural_recall_all_scorable": natural_all,
+        "recall_at_budget_all_scorable": rpa_all,
         "recall_at_budget_paired": rpa_paired,
-        "natural_minus_anon": drop,
+        "natural_minus_anon_paired": drop,
         "small_model_arm": "DEFERRED_TO_H607 (no text-instruct <=8B cached; only "
-                           "VL/embedding models present -> would require new serving infra)",
+                           "VL/embedding models present -> new serving infra out of scope)",
         "structural_note": "degree/pagerank/random computed from ORIGINAL entity names "
-                            "and block indices; bijective mask is identity-preserving so "
-                            "these are UNCHANGED natural-vs-anon by construction.",
+                           "and block indices; bijective mask is identity-preserving so "
+                           "these are UNCHANGED natural-vs-anon by construction.",
         "scoring_fence_note": "V5: LLM returns block INDICES; scored by ORIGINAL gold "
                               "index and ORIGINAL token/budget costs, never anon surface.",
+        "substrate_note": "blocks from shared R51 render cache (built by "
+                          "r51_h608_oracles.py render-cache with the H570 functions, "
+                          "READ-ONLY Foundry.probe); verified vs H570 artifact: 132/132 "
+                          "ids, scorable 132/132, gold_blocks 86/86 identical.",
         "clauses": clauses,
         "proposed_verdict": verdict,
         "bars": {

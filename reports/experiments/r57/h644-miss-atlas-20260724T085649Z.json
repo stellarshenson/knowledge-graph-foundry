@@ -1,0 +1,783 @@
+{
+ "hypothesis": "R57-H644 + H645-H650",
+ "run_id": "20260724T085649Z",
+ "substrate": "medium 2wiki (6,626 entities), frozen H582 cache tmp/results/r47 + R50 H597 span cache; FREE numpy/scipy/rapidfuzz, no GPU/LLM/Neo4j/net",
+ "n_probes": 132,
+ "n_carrier_rows": 326,
+ "sanity_pins": {
+  "base_dense16_carrier_recall": {
+   "expected": 0.6012,
+   "measured": 0.6012,
+   "ok": true
+  },
+  "maxgap_adaptive_k_reach_all": {
+   "expected": 0.874,
+   "measured": 0.874,
+   "n": 127,
+   "ok": true
+  },
+  "join_r0": {
+   "expected": "288/326",
+   "measured": "288/326",
+   "ok": true
+  },
+  "join_v2": {
+   "expected": "313/326",
+   "measured": "313/326",
+   "ok": true
+  },
+  "join_v3": {
+   "expected": "314/326",
+   "measured": "314/326",
+   "ok": true
+  },
+  "components": {
+   "expected": "1830/LCC 3162/iso 1426",
+   "measured": "1830/LCC 3162/iso 1426",
+   "ok": true
+  }
+ },
+ "sanity_pins_ok": true,
+ "null_reason_summary": {
+  "alias_null": 314,
+  "dense_no_node": 12,
+  "traversal_no_node": 12,
+  "entity_no_node": 12
+ },
+ "hit_miss_marginals": {
+  "n_hit": 216,
+  "n_miss": 110,
+  "dense_raw_rank_full": {
+   "miss": {
+    "n": 98,
+    "median": 1050.0,
+    "mean": 1425.5,
+    "p25": 344.25,
+    "p75": 2035.25
+   },
+   "hit": {
+    "n": 216,
+    "median": 0.0,
+    "mean": 1.093,
+    "p25": 0.0,
+    "p75": 1.0
+   }
+  },
+  "dense_smoothed_minus_raw": {
+   "miss": {
+    "n": 98,
+    "median": -932.0,
+    "mean": -1320.908,
+    "p25": -1917.75,
+    "p75": -323.75
+   },
+   "hit": {
+    "n": 216,
+    "median": 2.0,
+    "mean": 3.361,
+    "p25": 0.0,
+    "p75": 5.0
+   }
+  },
+  "traversal_component_size": {
+   "miss": {
+    "n": 98,
+    "median": 3162.0,
+    "mean": 2070.163,
+    "p25": 18.0,
+    "p75": 3162.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 3162.0,
+    "mean": 2170.324,
+    "p25": 17.75,
+    "p75": 3162.0
+   }
+  },
+  "traversal_in_lcc": {
+   "miss": {
+    "n": 98,
+    "true": 64,
+    "frac_true": 0.6531
+   },
+   "hit": {
+    "n": 216,
+    "true": 148,
+    "frac_true": 0.6852
+   }
+  },
+  "traversal_hops_nearest_seed": {
+   "miss": {
+    "n": 94,
+    "median": 1.0,
+    "mean": 1.117,
+    "p25": 1.0,
+    "p75": 1.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 0.0,
+    "mean": 0.0,
+    "p25": 0.0,
+    "p75": 0.0
+   }
+  },
+  "traversal_dist_to_region_boundary": {
+   "miss": {
+    "n": 94,
+    "median": 0.0,
+    "mean": 0.117,
+    "p25": 0.0,
+    "p75": 0.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 0.0,
+    "mean": 0.0,
+    "p25": 0.0,
+    "p75": 0.0
+   }
+  },
+  "traversal_on_path": {
+   "miss": {
+    "n": 98,
+    "true": 92,
+    "frac_true": 0.9388
+   },
+   "hit": {
+    "n": 216,
+    "true": 216,
+    "frac_true": 1.0
+   }
+  },
+  "entity_degree": {
+   "miss": {
+    "n": 98,
+    "median": 5.0,
+    "mean": 7.316,
+    "p25": 2.0,
+    "p75": 10.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 5.0,
+    "mean": 5.917,
+    "p25": 3.0,
+    "p75": 8.0
+   }
+  },
+  "entity_descr_length": {
+   "miss": {
+    "n": 98,
+    "median": 65.0,
+    "mean": 71.469,
+    "p25": 42.5,
+    "p75": 93.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 59.5,
+    "mean": 66.921,
+    "p25": 24.75,
+    "p75": 103.25
+   }
+  },
+  "entity_descr_present": {
+   "miss": {
+    "n": 98,
+    "true": 84,
+    "frac_true": 0.8571
+   },
+   "hit": {
+    "n": 216,
+    "true": 176,
+    "frac_true": 0.8148
+   }
+  },
+  "entity_name_length": {
+   "miss": {
+    "n": 98,
+    "median": 14.0,
+    "mean": 14.592,
+    "p25": 12.0,
+    "p75": 16.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 17.0,
+    "mean": 18.153,
+    "p25": 13.0,
+    "p75": 21.25
+   }
+  },
+  "query_linked_anchor_count": {
+   "miss": {
+    "n": 110,
+    "median": 3.0,
+    "mean": 3.091,
+    "p25": 2.0,
+    "p75": 3.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 3.0,
+    "mean": 2.778,
+    "p25": 2.0,
+    "p75": 3.0
+   }
+  },
+  "query_hops_from_union": {
+   "miss": {
+    "n": 94,
+    "median": 1.0,
+    "mean": 1.106,
+    "p25": 1.0,
+    "p75": 1.0
+   },
+   "hit": {
+    "n": 216,
+    "median": 0.0,
+    "mean": 0.0,
+    "p25": 0.0,
+    "p75": 0.0
+   }
+  },
+  "linker_in_pool": {
+   "miss": {
+    "n": 98,
+    "true": 1,
+    "frac_true": 0.0102
+   },
+   "hit": {
+    "n": 216,
+    "true": 177,
+    "frac_true": 0.8194
+   }
+  },
+  "linker_kept_by_maxgap": {
+   "miss": {
+    "n": 1,
+    "true": 1,
+    "frac_true": 1.0
+   },
+   "hit": {
+    "n": 177,
+    "true": 162,
+    "frac_true": 0.9153
+   }
+  }
+ },
+ "h645_near_miss_shelf": {
+  "verdict": "KILLED",
+  "frac_rank_17_64": 0.051,
+  "n_dense_missed_with_node": 98,
+  "n_shelf_17_64": 5,
+  "n_deep_ge64": 93,
+  "bar": "CONFIRMED>=0.30, KILLED<0.15",
+  "rank_convention": "1-based rank 17..64 = 0-based 16..63"
+ },
+ "h646_tie_loss_census": {
+  "n_anchor_cases_gold_in_pool": 163,
+  "kept_by_maxgap": 147,
+  "table_of_cut_gold": {
+   "exact_tie_loss": 0,
+   "strictly_higher_outranked": 16,
+   "cut_adjacent_within+2": 8,
+   "cut_deep": 8
+  },
+  "perfect_tiebreak_probe_ceiling": {
+   "base_reach_num": 111,
+   "n_reach_pids": 127,
+   "perfect_reach_num": 112,
+   "probes_flipped_to_reach": 1,
+   "flipped_pids": [
+    "cda459160bda11eba7f7acde48001122"
+   ],
+   "note": "replay: every cut gold added to the max-gap anchor set, reset_region_union reachability recomputed; flips = probes newly all-carriers-reachable"
+  },
+  "cases_sample": [
+   {
+    "pid": "9fe6a6760baf11ebab90acde48001122",
+    "span": "Raghnall Mac Ruaidhr\u00ed",
+    "gold_idx": 434,
+    "gold_rank": 2,
+    "cut_k": 2,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   },
+   {
+    "pid": "1c0dd3b00bdc11eba7f7acde48001122",
+    "span": "Aleksander Koniecpolski",
+    "gold_idx": 896,
+    "gold_rank": 1,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   },
+   {
+    "pid": "84b691d8086a11ebbd5fac1f6bf848b6",
+    "span": "Dark River",
+    "gold_idx": 1005,
+    "gold_rank": 3,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "e311a3ba0bdc11eba7f7acde48001122",
+    "span": "Lisbeth Palme",
+    "gold_idx": 1370,
+    "gold_rank": 7,
+    "cut_k": 2,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "2084260e0bde11eba7f7acde48001122",
+    "span": "Theodore Salisbury Woolsey",
+    "gold_idx": 1587,
+    "gold_rank": 3,
+    "cut_k": 3,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   },
+   {
+    "pid": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "span": "The Blue Collar Worker And The Hairdresser",
+    "gold_idx": 2403,
+    "gold_rank": 2,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   },
+   {
+    "pid": "cda459160bda11eba7f7acde48001122",
+    "span": "Palo Alto",
+    "gold_idx": 2909,
+    "gold_rank": 1,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   },
+   {
+    "pid": "0d9251260baf11ebab90acde48001122",
+    "span": "Jean Tangye",
+    "gold_idx": 5388,
+    "gold_rank": 1,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   },
+   {
+    "pid": "d73fa07c0bdd11eba7f7acde48001122",
+    "span": "Alfonso P\u00e9rez De Guzm\u00e1n",
+    "gold_idx": 5550,
+    "gold_rank": 8,
+    "cut_k": 3,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "d73fa07c0bdd11eba7f7acde48001122",
+    "span": "Alfonso P\u00e9rez De Guzm\u00e1n",
+    "gold_idx": 5608,
+    "gold_rank": 6,
+    "cut_k": 3,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "d73fa07c0bdd11eba7f7acde48001122",
+    "span": "5Th Duke Of Medina Sidonia",
+    "gold_idx": 5608,
+    "gold_rank": 9,
+    "cut_k": 6,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "0016373a0bda11eba7f7acde48001122",
+    "span": "Hermann Ii",
+    "gold_idx": 5868,
+    "gold_rank": 6,
+    "cut_k": 2,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "0016373a0bda11eba7f7acde48001122",
+    "span": "Landgrave Of Hesse",
+    "gold_idx": 5868,
+    "gold_rank": 12,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "ccd086f80bdb11eba7f7acde48001122",
+    "span": "Do You Believe?",
+    "gold_idx": 5892,
+    "gold_rank": 3,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_deep"
+   },
+   {
+    "pid": "965e667e0bdd11eba7f7acde48001122",
+    "span": "Napier Sturt",
+    "gold_idx": 5954,
+    "gold_rank": 1,
+    "cut_k": 1,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   },
+   {
+    "pid": "965e667e0bdd11eba7f7acde48001122",
+    "span": "3Rd Baron Alington",
+    "gold_idx": 5955,
+    "gold_rank": 7,
+    "cut_k": 6,
+    "loss_class": "strictly_higher_outranked",
+    "cut_proximity": "cut_adjacent"
+   }
+  ]
+ },
+ "h647_boundary_proximity": {
+  "verdict": "KILLED",
+  "n_in_component_missed": 17,
+  "n_boundary_dist_1": 0,
+  "frac_boundary+1": 0.0,
+  "boundary_dist_histogram": {
+   "0": 15,
+   "3": 1,
+   "8": 1
+  },
+  "on_path": 15,
+  "off_path": 2,
+  "by_reasoning_role": {
+   "first-hop": {
+    "n": 3,
+    "n_boundary+1": 0,
+    "frac_boundary+1": 0.0,
+    "on_path": 2,
+    "off_path": 1
+   },
+   "bridge": {
+    "n": 12,
+    "n_boundary+1": 0,
+    "frac_boundary+1": 0.0,
+    "on_path": 12,
+    "off_path": 0
+   },
+   "terminal-answer": {
+    "n": 2,
+    "n_boundary+1": 0,
+    "frac_boundary+1": 0.0,
+    "on_path": 1,
+    "off_path": 1
+   }
+  },
+  "bar": "CONFIRMED>=0.50, KILLED<0.25",
+  "region_reconciliation": "'in-component missed' = carrier NOT in reset_region_union (the shipped best arm, PPR-top15 capped) yet its component is shared with a seed/anchor. Boundary distance is measured to the WIDER retrieved region seeds u 1-hop(seeds) u PPR-top15 (H644 axis def). A carrier at boundary-dist 0 is inside that 1-hop shell but outside the PPR-capped reset_region - so a full 1-hop expansion would already retrieve it; the loss is the PPR-top15 cap, not a missing walk hop",
+  "region_def": "seeds u 1-hop(seeds) u PPR-top15; boundary dist = BFS hops to nearest region node"
+ },
+ "h648_entity_surfaceability": {
+  "verdict": "KILLED",
+  "auc_descr_length": 0.4645,
+  "auc_degree": 0.4977,
+  "direction": "AUC = P(hit_feature > miss_feature); >0.5 => hits richer/higher",
+  "n_hit": 216,
+  "n_miss": 98,
+  "bar": "CONFIRMED>=0.65 either, KILLED<0.55 both"
+ },
+ "h649_query_insertion_geometry": {
+  "n_missed": 110,
+  "hops_from_union_le2": 92,
+  "deeper_gt2": 2,
+  "disconnected_or_absent": 16,
+  "note": "union = max-gap anchors u dense@16 seeds; disconnected includes absent-no-join carriers"
+ },
+ "h650_partition": {
+  "priority_order": [
+   "absent-from-graph",
+   "cross-component",
+   "render-bucket",
+   "tie-loss",
+   "near-miss-shelf",
+   "deep-dense-and-deep-walk",
+   "other-with-note"
+  ],
+  "priority_rationale": "Earlier class wins when a row matches several. Order = most-fundamental / upstream blocker first: (1) absent-from-graph - no node exists even after the mandatory v2 join, so nothing downstream can surface it (extraction defect); (2) cross-component - node exists but its component is disjoint from every seed and anchor component, an R52 structural wall no query-time walk crosses; (3) render-bucket - the carrier IS inside the reset_region_union node set (retrieval already succeeded) but the probe fails in the H620 render panel, so the loss is downstream of retrieval and its dense rank is moot; (4) tie-loss - the gold carrier sits in a span candidate pool but the max-gap linker cut picked a wrong entity, a named mechanism with a concrete pick-order fix; (5) near-miss-shelf - dense raw rank 17-64, the cheap rank-window lever; (6) deep-dense-and-deep-walk - dense rank>=64 AND not at region-boundary+1, genuinely deep on both channels; (7) other-with-note - residual, each carries a per-row note.",
+  "population": "BEST-ARM per-carrier RETRIEVAL misses: carrier not delivered into the reset_region_union region; carriers the walk recovers are successes and excluded. render-bucket reported separately at probe grain (see addendum).",
+  "n_dense_misses_for_reference": 110,
+  "n_dense_misses_recovered_by_walk": 77,
+  "render_bucket_probe_level_addendum": {
+   "best_arm": "rru_b10 (reset_region_union, render_budget=1.0)",
+   "rendered_answer_absent_probes": 10,
+   "carrier_not_retrieved_probes": 10,
+   "note": "render-bucket is a probe-level downstream stage; per-carrier attribution needs the live rru render path (not FREE). Reported here at probe grain from the H620 rru_b10 recorded decomposition. The per-carrier partition above covers RETRIEVAL misses only (carrier not in the reset_region_union region)."
+  },
+  "n_miss": 33,
+  "partition": {
+   "absent-from-graph": 12,
+   "other-with-note": 15,
+   "cross-component": 4,
+   "deep-dense-and-deep-walk": 2
+  },
+  "unclassified": 0,
+  "lands": true,
+  "secondary_class_counts": {
+   "deep-dense-and-deep-walk": 3,
+   "near-miss-shelf": 1
+  },
+  "rows_matching_multiple_classes": 4,
+  "overlap_note": "RIA-2004 softening: crisp partition uses the documented priority order; secondary_class_counts records every additional class a miss ALSO matches (a row can be both near-miss-shelf and tie-loss, etc.)",
+  "role_x_primary_class": {
+   "first-hop": {
+    "absent-from-graph": 11,
+    "other-with-note": 2,
+    "deep-dense-and-deep-walk": 1
+   },
+   "bridge": {
+    "other-with-note": 12,
+    "cross-component": 2
+   },
+   "terminal-answer": {
+    "absent-from-graph": 1,
+    "cross-component": 2,
+    "deep-dense-and-deep-walk": 1,
+    "other-with-note": 1
+   }
+  },
+  "other_notes": [
+   {
+    "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+    "carrier": "Clio Barnard",
+    "note": "dense_rank=1237, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "carrier": "Edwin L. Marin",
+    "note": "dense_rank=2458, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "carrier": "Lina Wertm\u00fcller",
+    "note": "dense_rank=2027, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "cda459160bda11eba7f7acde48001122",
+    "carrier": "Gia Coppola",
+    "note": "dense_rank=1293, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "8f783c7a0bda11eba7f7acde48001122",
+    "carrier": "Christian August, Prince of Anhalt-Zerbst",
+    "note": "dense_rank=119, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+    "carrier": "Charles Lamont",
+    "note": "dense_rank=481, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "a52e9e1908b711ebbd88ac1f6bf848b6",
+    "carrier": "R. G. Springsteen",
+    "note": "dense_rank=3992, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "90c8793c087411ebbd67ac1f6bf848b6",
+    "carrier": "Po-Chih Leong",
+    "note": "dense_rank=2849, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "594ca25608df11ebbda0ac1f6bf848b6",
+    "carrier": "George Pearson (filmmaker)",
+    "note": "dense_rank=4386, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "c68eb0be08e611ebbda5ac1f6bf848b6",
+    "carrier": "Gordon Flemyng",
+    "note": "dense_rank=836, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "81e0d683087c11ebbd6aac1f6bf848b6",
+    "carrier": "Claude Sautet",
+    "note": "dense_rank=536, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "5cbb015f087511ebbd67ac1f6bf848b6",
+    "carrier": "Rod Amateau",
+    "note": "dense_rank=336, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "d6e9771908dd11ebbd9eac1f6bf848b6",
+    "carrier": "Richard Sale (director)",
+    "note": "dense_rank=803, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "f253a3040bdd11eba7f7acde48001122",
+    "carrier": "Olga Constantinovna of Russia",
+    "note": "dense_rank=73, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   },
+   {
+    "probe": "8dcaaf24089811ebbd77ac1f6bf848b6",
+    "carrier": "William Keighley",
+    "note": "dense_rank=2427, boundary_dist=0, in_region=False, comp=same-as-seeds, in_pool=False"
+   }
+  ],
+  "split_half_stability": {
+   "absent-from-graph": {
+    "pooled": 12,
+    "half0_frac": 0.3125,
+    "half1_frac": 0.4118,
+    "pooled_wilson95": [
+     0.2219,
+     0.5338
+    ],
+    "halves_within_band": true
+   },
+   "cross-component": {
+    "pooled": 4,
+    "half0_frac": 0.25,
+    "half1_frac": 0.0,
+    "pooled_wilson95": [
+     0.0482,
+     0.2733
+    ],
+    "halves_within_band": false
+   },
+   "render-bucket": {
+    "pooled": 0,
+    "half0_frac": 0.0,
+    "half1_frac": 0.0,
+    "pooled_wilson95": [
+     0.0,
+     0.1043
+    ],
+    "halves_within_band": true
+   },
+   "tie-loss": {
+    "pooled": 0,
+    "half0_frac": 0.0,
+    "half1_frac": 0.0,
+    "pooled_wilson95": [
+     0.0,
+     0.1043
+    ],
+    "halves_within_band": true
+   },
+   "near-miss-shelf": {
+    "pooled": 0,
+    "half0_frac": 0.0,
+    "half1_frac": 0.0,
+    "pooled_wilson95": [
+     0.0,
+     0.1043
+    ],
+    "halves_within_band": true
+   },
+   "deep-dense-and-deep-walk": {
+    "pooled": 2,
+    "half0_frac": 0.0,
+    "half1_frac": 0.1176,
+    "pooled_wilson95": [
+     0.0168,
+     0.1961
+    ],
+    "halves_within_band": true
+   },
+   "other-with-note": {
+    "pooled": 15,
+    "half0_frac": 0.4375,
+    "half1_frac": 0.4706,
+    "pooled_wilson95": [
+     0.2984,
+     0.6201
+    ],
+    "halves_within_band": true
+   }
+  },
+  "split_half_note": "H540 bands: two half-fractions agree if |f0-f1| <= pooled Wilson-95 width"
+ },
+ "bridge_role_splits": {
+  "role_definitions": "bridge = evidence pivot (obj of one triple, subj of a later); first-hop = subject-only source; terminal-answer = object-only / last supporting fact; provenance stamped per row (evidence vs fallback_order)",
+  "role_counts_all_rows": {
+   "first-hop": 200,
+   "bridge": 119,
+   "terminal-answer": 7
+  },
+  "role_counts_miss": {
+   "bridge": 88,
+   "first-hop": 17,
+   "terminal-answer": 5
+  },
+  "role_counts_hit": {
+   "first-hop": 183,
+   "bridge": 31,
+   "terminal-answer": 2
+  },
+  "dense_hit_rate_by_role": {
+   "first-hop": 0.915,
+   "bridge": 0.2605,
+   "terminal-answer": 0.2857
+  },
+  "h647_boundary_by_role": {
+   "first-hop": {
+    "n": 3,
+    "n_boundary+1": 0,
+    "frac_boundary+1": 0.0,
+    "on_path": 2,
+    "off_path": 1
+   },
+   "bridge": {
+    "n": 12,
+    "n_boundary+1": 0,
+    "frac_boundary+1": 0.0,
+    "on_path": 12,
+    "off_path": 0
+   },
+   "terminal-answer": {
+    "n": 2,
+    "n_boundary+1": 0,
+    "frac_boundary+1": 0.0,
+    "on_path": 1,
+    "off_path": 1
+   }
+  },
+  "miss_role_breakdown": {
+   "first-hop": {
+    "n": 17,
+    "dense_hit_frac": 0.0,
+    "in_pool_frac": {
+     "n": 6,
+     "true": 0,
+     "frac_true": 0.0
+    }
+   },
+   "bridge": {
+    "n": 88,
+    "dense_hit_frac": 0.0,
+    "in_pool_frac": {
+     "n": 88,
+     "true": 1,
+     "frac_true": 0.0114
+    }
+   },
+   "terminal-answer": {
+    "n": 5,
+    "dense_hit_frac": 0.0,
+    "in_pool_frac": {
+     "n": 4,
+     "true": 0,
+     "frac_true": 0.0
+    }
+   }
+  }
+ },
+ "best_arm_definition": "reset_region_union with max-gap scored linker anchors (H623 detector:maxgap, lambda=0); reach_all reproduces 0.8740",
+ "rows_artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r57/h644-miss-atlas-rows-20260724T085649Z.jsonl",
+ "summary_artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r57/h644-miss-atlas-20260724T085649Z.json",
+ "script": "scripts/experiments/r57_h644_miss_atlas.py"
+}

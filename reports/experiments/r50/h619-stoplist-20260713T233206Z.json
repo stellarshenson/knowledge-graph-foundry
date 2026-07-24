@@ -1,0 +1,237 @@
+{
+ "run_id": "20260713T233206Z",
+ "hypothesis": "R40x-H619",
+ "harness_sanity": {
+  "unfiltered_rru_reach_all": 0.8661,
+  "h597_ref": 0.8661,
+  "reproduced": true,
+  "n_reach_probes": 127
+ },
+ "stoplist_lexicon": [
+  "author",
+  "authors",
+  "cause of death",
+  "child",
+  "children",
+  "citizenship",
+  "composer",
+  "composers",
+  "country",
+  "country of citizenship",
+  "country of origin",
+  "date of birth",
+  "date of death",
+  "daughter",
+  "director",
+  "directors",
+  "educated at",
+  "employer",
+  "employers",
+  "father",
+  "fathers",
+  "founded by",
+  "founder",
+  "founders",
+  "husband",
+  "inception",
+  "mother",
+  "mothers",
+  "nationality",
+  "parent",
+  "parents",
+  "performer",
+  "performers",
+  "place of birth",
+  "place of death",
+  "place of detention",
+  "producer",
+  "producers",
+  "publication date",
+  "publisher",
+  "publishers",
+  "sibling",
+  "siblings",
+  "son",
+  "spouse",
+  "spouses",
+  "wife",
+  "writer",
+  "writers"
+ ],
+ "lexicon_provenance": "2wiki off-probe evidence relation vocabulary + H597 wrong-pick census",
+ "n_spans_dropped": 72,
+ "dropped_span_histogram": {
+  "director": 46,
+  "composer": 6,
+  "performer": 5,
+  "country": 5,
+  "directors": 2,
+  "place of birth": 2,
+  "father": 2,
+  "date of death": 1,
+  "mother": 1,
+  "date of birth": 1,
+  "founder": 1
+ },
+ "reachability": {
+  "unfiltered": {
+   "all": 0.8661,
+   "bridge": 0.8511,
+   "n": 127
+  },
+  "filtered": {
+   "all": 0.874,
+   "bridge": 0.8617,
+   "n": 127
+  },
+  "delta_all_pp": 0.79,
+  "delta_bridge_pp": 1.06,
+  "gap_to_oracle_pp": 2.4
+ },
+ "offgold_census": {
+  "unfiltered": {
+   "gold": 142,
+   "off_gold": 125
+  },
+  "filtered": {
+   "gold": 142,
+   "off_gold": 60
+  },
+  "offgold_reduction_pct": 52.0,
+  "filtered_offgold_examples": [
+   {
+    "probe": "265daf200bdc11eba7f7acde48001122",
+    "name": "Maurice"
+   },
+   {
+    "probe": "1c0dd3b00bdc11eba7f7acde48001122",
+    "name": "Aleksander Koniecpolski"
+   },
+   {
+    "probe": "84b691d8086a11ebbd5fac1f6bf848b6",
+    "name": "Dark River"
+   },
+   {
+    "probe": "5cc01ab60bb011ebab90acde48001122",
+    "name": "Mother"
+   },
+   {
+    "probe": "3a3c2efe0bdc11eba7f7acde48001122",
+    "name": "Beatrice I"
+   },
+   {
+    "probe": "3a3c2efe0bdc11eba7f7acde48001122",
+    "name": "Countess of Burgundy"
+   },
+   {
+    "probe": "0dfe41f60bdc11eba7f7acde48001122",
+    "name": "Come Dance With Me"
+   },
+   {
+    "probe": "0dfe41f60bdc11eba7f7acde48001122",
+    "name": "Where Was I"
+   },
+   {
+    "probe": "0dfe41f60bdc11eba7f7acde48001122",
+    "name": "Bodysong"
+   },
+   {
+    "probe": "b672c1ee0bdd11eba7f7acde48001122",
+    "name": "Inherent Vice"
+   },
+   {
+    "probe": "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+    "name": "Blue collar worker"
+   },
+   {
+    "probe": "c9a769c608be11ebbd8aac1f6bf848b6",
+    "name": "TER"
+   },
+   {
+    "probe": "50e4a65c0bde11eba7f7acde48001122",
+    "name": "B Boy"
+   },
+   {
+    "probe": "50e4a65c0bde11eba7f7acde48001122",
+    "name": "Bodysong"
+   },
+   {
+    "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+    "name": "Illusions"
+   },
+   {
+    "probe": "b64f541e088d11ebbd70ac1f6bf848b6",
+    "name": "Swamp Thing (1982 film)"
+   },
+   {
+    "probe": "38da155f087511ebbd67ac1f6bf848b6",
+    "name": "Sir Thomas Wheate, 2nd Baronet"
+   },
+   {
+    "probe": "62a9cd640bb011ebab90acde48001122",
+    "name": "Saxe-Eisenach"
+   },
+   {
+    "probe": "62a9cd640bb011ebab90acde48001122",
+    "name": "Ernest"
+   },
+   {
+    "probe": "cda459160bda11eba7f7acde48001122",
+    "name": "Palo Alto"
+   },
+   {
+    "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+    "name": "Agni"
+   },
+   {
+    "probe": "0dc9691b087911ebbd67ac1f6bf848b6",
+    "name": "Run (2004 film)"
+   },
+   {
+    "probe": "a9e322b20bdc11eba7f7acde48001122",
+    "name": "Fortunella"
+   },
+   {
+    "probe": "8f783c7a0bda11eba7f7acde48001122",
+    "name": "Holstein-Gottorp"
+   },
+   {
+    "probe": "b642318c0bdd11eba7f7acde48001122",
+    "name": "Muhammad"
+   }
+  ]
+ },
+ "load_bearing_role_words": [],
+ "probes_gained_by_filter": [
+  "90c8793c087411ebbd67ac1f6bf848b6"
+ ],
+ "clauses": [
+  {
+   "clause": "filtered reset_region_union all-golds reachability >= 0.88",
+   "predicted": ">= 0.88",
+   "measured": "0.874 (unfiltered 0.8661, delta 0.79pp)",
+   "holds": false
+  },
+  {
+   "clause": "off-gold picks < 40 (from 125 unfiltered)",
+   "predicted": "< 40",
+   "measured": "60 (unfiltered 125)",
+   "holds": false
+  },
+  {
+   "clause": "zero paired reachability regressions (no load-bearing role-word)",
+   "predicted": 0,
+   "measured": 0,
+   "holds": true
+  },
+  {
+   "clause": "KILL: filtering loses reachability vs unfiltered",
+   "predicted": "kill if filtered < unfiltered",
+   "measured": "filtered 0.874 vs unfiltered 0.8661",
+   "holds": false
+  }
+ ],
+ "proposed_verdict": "INDETERMINATE",
+ "artifact": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h619-stoplist-20260713T233206Z.json",
+ "script": "scripts/experiments/r50_h619_seedland_digs.py"
+}

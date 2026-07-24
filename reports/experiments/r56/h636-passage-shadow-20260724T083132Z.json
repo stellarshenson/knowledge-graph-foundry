@@ -1,0 +1,125 @@
+{
+ "hypothesis": "R56-H636",
+ "title": "passage-recall shadow metric (peer-comparability instrument)",
+ "run_id": "20260724T083132Z",
+ "interpreter": "/opt/conda/bin/python",
+ "free_run_note": "offline numpy over tmp/results/r47 + R50 span/rru replay; the ONLY networked step is a READ-ONLY probe of the medium Neo4j instance for provenance",
+ "sanity": {
+  "dense16_carrier_recall": 0.6012,
+  "expected": 0.6012,
+  "reproduced": true,
+  "n_probes": 132,
+  "n_unique_carrier_nodes": 286
+ },
+ "carrier_census": {
+  "n_probes": 132,
+  "n_carrier_rows_total": 326,
+  "n_carrier_rows_in_graph": 288,
+  "n_unique_carrier_nodes": 286,
+  "dense16_carrier_recall": 0.6012
+ },
+ "neo4j_provenance_probe": {
+  "target_uri_config": "bolt://172.19.0.9:7687",
+  "def4_env_uri": "bolt://user-konrad.jelen-kgf-neo4j:7687",
+  "reachable": false,
+  "connected_uri": null,
+  "resolved_host_ip": "172.19.0.9",
+  "tcp_connect": "closed/timeout",
+  "connect_error": "ServiceUnavailable: Couldn't connect to 172.19.0.9:7687 (resolved to ('172.19.0.9:7687',)):\nTimed out trying to establish connection to ResolvedIPv4Address(('172.19.0.9', 7687))"
+ },
+ "provenance_coverage_carrier_nodes": {
+  "measured": null,
+  "frac": null,
+  "note": "this is the BAR-GATING metric. Requires a reachable Neo4j with an entity->chunk/document provenance edge. H631 proved the offline cache carries none."
+ },
+ "shadow_metric_FLOOR_name_identity_only": {
+  "WARNING": "NOT the peer-form shadow metric. With Neo4j unreachable there is no node->chunk provenance, so retrieved nodes map to documents ONLY by name identity (node name == context document title). This covers title-entity nodes only and collapses toward the carrier-join. Reported as a FLOOR / lower bound, never as the headline.",
+  "granularity": "DOCUMENT-TITLE (2wiki supporting_facts are (title, sent_idx); our nodes map to document titles, not sentences. HippoRAG reports PASSAGE granularity - stated explicitly, not equated).",
+  "gold_passage_definition": "unique supporting_fact document titles per probe",
+  "arms": {
+   "dense": {
+    "n_probes_scored": 132,
+    "passage_recall_at_k_ANY_gold_in_topk": {
+     "5": 0.8939,
+     "10": 0.8939,
+     "20": 0.8939
+    },
+    "passage_recall_at_k_ALL_golds_in_topk": {
+     "5": 0.3409,
+     "10": 0.3409,
+     "20": 0.3409
+    },
+    "mean_fraction_gold_titles_in_topk": {
+     "5": 0.6193,
+     "10": 0.6193,
+     "20": 0.6193
+    }
+   },
+   "rru": {
+    "n_probes_scored": 132,
+    "passage_recall_at_k_ANY_gold_in_topk": {
+     "5": 0.9394,
+     "10": 0.9394,
+     "20": 0.9394
+    },
+    "passage_recall_at_k_ALL_golds_in_topk": {
+     "5": 0.6136,
+     "10": 0.6667,
+     "20": 0.6667
+    },
+    "mean_fraction_gold_titles_in_topk": {
+     "5": 0.7992,
+     "10": 0.8239,
+     "20": 0.8239
+    }
+   }
+  }
+ },
+ "correlation_2x2_floor_vs_join": {
+  "definition": {
+   "carrier_join_pass": "ALL gold carrier titles present as nodes inside dense@16 (strict family join)",
+   "shadow_pass": "ANY gold document-title in top-16 retrieved DOC titles (name-identity floor map)",
+   "arm": "dense@16",
+   "k": 16
+  },
+  "join_pass__shadow_pass": 45,
+  "join_pass__shadow_fail": 0,
+  "join_fail__shadow_pass": 73,
+  "join_fail__shadow_fail": 14,
+  "shadow_pass_join_fail_pids": [
+   "2dc690ba0bdc11eba7f7acde48001122",
+   "a1cdb240085811ebbd5bac1f6bf848b6",
+   "6718770a087311ebbd66ac1f6bf848b6",
+   "551e024408a611ebbd7fac1f6bf848b6",
+   "33f51d7e0bde11eba7f7acde48001122",
+   "914b452c0bdc11eba7f7acde48001122",
+   "006d81bc0bde11eba7f7acde48001122",
+   "265daf200bdc11eba7f7acde48001122",
+   "1c0dd3b00bdc11eba7f7acde48001122",
+   "84b691d8086a11ebbd5fac1f6bf848b6",
+   "dcbee4b608b011ebbd85ac1f6bf848b6",
+   "2d8f3ebe0bda11eba7f7acde48001122",
+   "86508dc60bdc11eba7f7acde48001122",
+   "5cc01ab60bb011ebab90acde48001122",
+   "7cb81afc0bd911eba7f7acde48001122",
+   "f34d188608cb11ebbd93ac1f6bf848b6",
+   "9aa8008408de11ebbd9eac1f6bf848b6",
+   "3ce92df80bde11eba7f7acde48001122",
+   "3e3cd62a086211ebbd5dac1f6bf848b6",
+   "b672c1ee0bdd11eba7f7acde48001122"
+  ],
+  "join_pass_shadow_fail_pids": []
+ },
+ "peer_form_headline": {
+  "status": "WITHHELD",
+  "reason": "a peer-comparable recall@5/@10 headline is deliberately WITHHELD: the provenance-free floor is not peer-form (it credits only title nodes) and publishing it as recall@k would misrepresent the system against HippoRAG-class passage recall. The honest headline waits on the Neo4j provenance coverage half.",
+  "floor_dense_any_at_5_10": {
+   "5": 0.8939,
+   "10": 0.8939
+  },
+  "caveat_block": "GRANULARITY: HippoRAG/2wiki peer numbers are passage-recall; ours is document-title recall via name identity - a coarser and, absent provenance, non-comparable proxy. Do not place side by side with published passage recall until Neo4j node->chunk coverage is measured."
+ },
+ "verdict": "DEF-16-route (BLOCKED-INFRASTRUCTURE)",
+ "verdict_reason": "the medium Neo4j instance is UNREACHABLE from this execution container (different docker network); entity->chunk/document provenance - the only carrier of node->document coverage (H631) - cannot be inspected. Coverage is 0% from available substrate. The peer-form shadow REQUIRES this provenance; the offline name-identity FLOOR is reported but is NOT the instrument. Unblock: run from a container attached to the neo4j docker network, or restore the 20260712 medium dump onto a reachable instance.",
+ "script": "scripts/experiments/r56_h636_passage_shadow.py"
+}

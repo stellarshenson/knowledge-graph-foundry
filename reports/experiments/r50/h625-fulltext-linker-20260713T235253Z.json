@@ -1,0 +1,14 @@
+{
+ "run_id": "20260713T235253Z",
+ "hypothesis": "R40x-H625",
+ "proposed_verdict": "SKIPPED (substrate unavailable)",
+ "reason": [
+  "The DOGFOOD ledger container (user-konrad.jelen-kgf-ledger-neo4j, 172.19.0.10) is MID-INGEST-LOCKED: a KGFLock node id='ingest' is held (holder 67a40e2c1bd0:155621, ttl_ms 180000) and the KGFControl fsm_state='INITIALIZING'. The skip directive ('if mid-ingest-locked, SKIP - do not disturb the ingest') applies.",
+  "Independently, the ledger holds ZERO entity nodes: only 2 nodes exist (KGFControl + KGFLock). There is no name/description property surface to build a FULLTEXT index over, and no ledger entities for the self-query mechanics fallback.",
+  "The only index-DDL-permitted instance (ledger) is therefore unusable; medium/pilot are READ-ONLY (index DDL forbidden); populating the ledger is a data write (forbidden). No native full-text-vs-Python-ladder comparison is possible on the permitted substrate.",
+  "NO index was created and the initializing ingest was NOT disturbed."
+ ],
+ "consequence": "The native-index transfer claim is UNTESTED. Per H625's registered KILL branch, the Python ladder remains canonical regardless; the H623 result (elbow gate KILLED) means there is no calibrated gate for a native index to transfer anyway.",
+ "artifact": "reports/experiments/r50/h625-fulltext-linker-20260713T235253Z.json",
+ "script": "scripts/experiments/r50_h623_elbow_battery.py (H625 arm not run - substrate skip)"
+}

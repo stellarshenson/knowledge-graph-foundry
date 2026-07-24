@@ -1,0 +1,90 @@
+{
+ "hypothesis": "R56-H637",
+ "run_id": "20260724T084333Z",
+ "substrate": "medium 2wiki corpus (pilot-200 + medium-rows200-999 = 1,000 docs); isolated single-doc extraction, no speculative context",
+ "server": {
+  "declared": "http://localhost:8010/v1",
+  "actual_used": "http://localhost:8081/v1",
+  "model_served_id": "openai/gpt-oss-120b",
+  "deviation": "no server on :8010; only running gpt-oss-120b is a co-tenant's on :8081; GPU1 full so a second server would OOM. Identical model/weights, read-only use."
+ },
+ "params": {
+  "temperature": 0.0,
+  "recipe": "enumerate",
+  "split_entity_relation": true,
+  "gleaning_rounds_max": 2,
+  "purpose": "answer multi-hop questions over an open-domain encyclopedia corpus",
+  "ontology": "empty (fresh types) - each doc read cold",
+  "join_version": "goldjoin-v2",
+  "fuzz": 0.92
+ },
+ "denominator": 5,
+ "counts": {
+  "recovered_post_gleaning": 0,
+  "baseline_joinable_either_rep": 0,
+  "attributed_to_gleaning_specifically": 0
+ },
+ "verdict": "BLOCKED-INFRA",
+ "verdict_note": "NOT a scientific KILLED. All 5 extraction attempts failed on INFRASTRUCTURE: the only running gpt-oss-120b (a co-tenant's server on :8081) shut down at 10:50:22Z (its log: 'mode=abort, aborting in-flight requests count=1' - the in-flight request was this run's Beatrice stage-2 extract), and GPU1 - the only card large enough for gpt-oss-120b - was immediately repurposed to Qwen3-30B-A3B-Thinking-2507-FP8. No gpt-oss-120b server exists on :8010 or anywhere; no free GPU can host one; launching a second would OOM GPU1 and disrupt the co-tenant. The pre-registered bars require extraction evidence; connection failures are not evidence. Verdict deferred until a gpt-oss-120b server is available.",
+ "per_gold": [
+  {
+   "gold_title": "Beatrice I, Countess of Burgundy",
+   "pid": "3a3c2efe0bdc11eba7f7acde48001122",
+   "classification": "genuinely_absent",
+   "in_corpus": true,
+   "source_doc_title": "Beatrice I, Countess of Burgundy",
+   "n_chunks": 1,
+   "doc_chars": 315,
+   "error": "baseline failed: local-gpu engine failed: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    1 validation error for WireExtraction\n  Invalid JSON: EOF while parsing a value at line 1 column 0 [type=json_invalid, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid\n</exception>\n<completion>\n    ModelResponse(id='chatcmpl-816dc418802d6abe', created=1784883004, model='openai/gpt-oss-120b', object='chat.completion', system_fingerprint='vllm-0.25.1-43b4e389', choices=[Choices(finish_reason='stop', index=0, message=Message(content=None, role='assistant', tool_calls=None, function_call=None, reasoning_content='We need to extract entities and relationships for knowledge graph. Identify entity types: Person, Title, Place, maybe Position (e.g., Countess of Burgundy, Holy Roman Empress, Queen of Burgundy). Also maybe Event (coronation). But we need to discover types that serve purpose. Use PascalCase.\\n\\nFrom text: Beatrice I, Countess of Burgundy (person). Also \"Countess of Burgundy\" is a title. \"Holy Roman Empress\" title. \"Frederick Barbarossa\" person. \"Antipope Paschal III\" person. \"Rome\" place. \"Vienne\" place. \"Burgundy\" region (place). Also \"Queen of Burgundy\" title.\\n\\nRelationships: Beatrice I held title Countess of Burgundy from 1148 to 1184 (death). So relationship: Beatrice I -[HELD_TITLE]-> Countess of Burgundy, with properties maybe start_year, end_year. But schema for relationships only has source, target, type, description. No properties. So we can embed dates in description.\\n\\nAlso Beatrice I married Frederick Barbarossa: relationship MARRIED_TO.\\n\\nBeatrice I crowned empress by Antipop Paschal III in Rome on 1 Aug 1167: relationship CROWNED_BY (or CROWNED_IN?) Could be two relationships: Beatrice I -[CROWNED_BY]-> Antipope Paschal III (description includes date and place). Also Beatrice I -[CROWNED_IN]-> Rome (maybe). But we can capture one relationship: CROWNED_BY with description.\\n\\nAlso Beatrice I crowned as Queen of Burgundy at Vienne in Aug 1178: relationship CROWNED_AS (or ASSUMED_TITLE) but we already have title Queen of Burgundy. Could have relationship HELD_TITLE again with start date.\\n\\nAlso Frederick Barbarossa is Holy Roman Emperor (but not needed). But we can have relationship SPOUSE_OF.\\n\\nAlso Antipope Paschal III is an Antipope (title). Could be entity type Person with title Antipope.\\n\\nWe need to define entity types: Person, Title, Place, Region maybe.\\n\\nAdd properties: For persons: birth_year, death_date, maybe description.\\n\\nFor titles: maybe type Title.\\n\\nBut schema expects each entity to have name, types (array of strings), description, properties (key-value strings). So we can assign types.\\n\\nLet\\'s list entities:\\n\\n1. Beatrice I\\n   - types: Person\\n   - description: \"Beatrice I (1143 \u2013 15 November 1184) was Countess of Burgundy from 1148 until her death, and was also Holy Roman Empress by marriage to Frederick Barbarossa.\"\\n   - properties: birth_year: \"1143\", death_date: \"15 November 1184\"\\n\\n2. Countess of Burgundy\\n   - types: Title\\n   - description: \"Title held by Beatrice I from 1148 to 1184.\"\\n\\n3. Holy Roman Empress\\n   - types: Title\\n   - description: \"Title held by Beatrice I by marriage to Frederick Barbarossa.\"\\n\\n4. Frederick Barbarossa\\n   - types: Person\\n   - description: \"Holy Roman Emperor, husband of Beatrice I.\"\\n\\n5. Antipope Paschal III\\n   - types: Person\\n   - description: \"Antipope who crowned Beatrice I in Rome on 1 August 1167.\"\\n\\n6. Rome\\n   - types: Place\\n  ', provider_specific_fields={'reasoning': 'We need to extract entities and relationships for knowledge graph. Identify entity types: Person, Title, Place, maybe Position (e.g., Countess of Burgundy, Holy Roman Empress, Queen of Burgundy). Also maybe Event (coronation). But we need to discover types that serve purpose. Use PascalCase.\\n\\nFrom text: Beatrice I, Countess of Burgundy (person). Also \"Countess of Burgundy\" is a title. \"Holy Roman Empress\" title. \"Frederick Barbarossa\" person. \"Antipope Paschal III\" person. \"Rome\" place. \"Vienne\" place. \"Burgundy\" region (place). Also \"Queen of Burgundy\" title.\\n\\nRelationships: Beatrice I held title Countess of Burgundy from 1148 to 1184 (death). So relationship: Beatrice I -[HELD_TITLE]-> Countess of Burgundy, with properties maybe start_year, end_year. But schema for relationships only has source, target, type, description. No properties. So we can embed dates in description.\\n\\nAlso Beatrice I married Frederick Barbarossa: relationship MARRIED_TO.\\n\\nBeatrice I crowned empress by Antipop Paschal III in Rome on 1 Aug 1167: relationship CROWNED_BY (or CROWNED_IN?) Could be two relationships: Beatrice I -[CROWNED_BY]-> Antipope Paschal III (description includes date and place). Also Beatrice I -[CROWNED_IN]-> Rome (maybe). But we can capture one relationship: CROWNED_BY with description.\\n\\nAlso Beatrice I crowned as Queen of Burgundy at Vienne in Aug 1178: relationship CROWNED_AS (or ASSUMED_TITLE) but we already have title Queen of Burgundy. Could have relationship HELD_TITLE again with start date.\\n\\nAlso Frederick Barbarossa is Holy Roman Emperor (but not needed). But we can have relationship SPOUSE_OF.\\n\\nAlso Antipope Paschal III is an Antipope (title). Could be entity type Person with title Antipope.\\n\\nWe need to define entity types: Person, Title, Place, Region maybe.\\n\\nAdd properties: For persons: birth_year, death_date, maybe description.\\n\\nFor titles: maybe type Title.\\n\\nBut schema expects each entity to have name, types (array of strings), description, properties (key-value strings). So we can assign types.\\n\\nLet\\'s list entities:\\n\\n1. Beatrice I\\n   - types: Person\\n   - description: \"Beatrice I (1143 \u2013 15 November 1184) was Countess of Burgundy from 1148 until her death, and was also Holy Roman Empress by marriage to Frederick Barbarossa.\"\\n   - properties: birth_year: \"1143\", death_date: \"15 November 1184\"\\n\\n2. Countess of Burgundy\\n   - types: Title\\n   - description: \"Title held by Beatrice I from 1148 to 1184.\"\\n\\n3. Holy Roman Empress\\n   - types: Title\\n   - description: \"Title held by Beatrice I by marriage to Frederick Barbarossa.\"\\n\\n4. Frederick Barbarossa\\n   - types: Person\\n   - description: \"Holy Roman Emperor, husband of Beatrice I.\"\\n\\n5. Antipope Paschal III\\n   - types: Person\\n   - description: \"Antipope who crowned Beatrice I in Rome on 1 August 1167.\"\\n\\n6. Rome\\n   - types: Place\\n  ', 'refusal': None}), provider_specific_fields={'stop_reason': None, 'routed_experts': None, 'token_ids': None, 'native_finish_reason': 'abort'})], usage=Usage(completion_tokens=713, prompt_tokens=969, total_tokens=1682, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=None, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=None), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)), moderation=None, service_tier=None, prompt_logprobs=None, prompt_token_ids=None, prompt_text=None, kv_transfer_params=None, metrics=None)\n</completion>\n</generation>\n\n</failed_attempts>\n\n<last_exception>\n    litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.\n</last_exception>"
+  },
+  {
+   "gold_title": "John Ernest, Duke of Saxe-Eisenach",
+   "pid": "62a9cd640bb011ebab90acde48001122",
+   "classification": "genuinely_absent",
+   "in_corpus": true,
+   "source_doc_title": "John Ernest, Duke of Saxe-Eisenach",
+   "n_chunks": 1,
+   "doc_chars": 4888,
+   "error": "baseline failed: local-gpu engine failed: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error."
+  },
+  {
+   "gold_title": "Abdul-Aziz bin Muhammad",
+   "pid": "b642318c0bdd11eba7f7acde48001122",
+   "classification": "genuinely_absent",
+   "in_corpus": true,
+   "source_doc_title": "Abdul-Aziz bin Muhammad",
+   "n_chunks": 1,
+   "doc_chars": 236,
+   "error": "baseline failed: local-gpu engine failed: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error."
+  },
+  {
+   "gold_title": "Aleksander Koniecpolski (1620\u20131659)",
+   "pid": "1c0dd3b00bdc11eba7f7acde48001122",
+   "classification": "same_name_different_namesake",
+   "in_corpus": true,
+   "source_doc_title": "Aleksander Koniecpolski (1620\u20131659)",
+   "n_chunks": 1,
+   "doc_chars": 481,
+   "error": "baseline failed: local-gpu engine failed: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error."
+  },
+  {
+   "gold_title": "Louis, Dauphin of France (son of Louis XV)",
+   "pid": "84c99c760bb011ebab90acde48001122",
+   "classification": "same_name_different_namesake",
+   "in_corpus": true,
+   "source_doc_title": "Louis, Dauphin of France (son of Louis XV)",
+   "n_chunks": 1,
+   "doc_chars": 563,
+   "error": "baseline failed: local-gpu engine failed: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error."
+  }
+ ],
+ "script": "scripts/experiments/r56_h637_gleaning.py",
+ "spurious_computed_verdict": "KILLED",
+ "salvaged_observation": "The single call that reached the model (Beatrice I stage-2) returned reasoning_content in which gpt-oss explicitly identified 'Beatrice I' as a Person entity from the source chunk (entity #1 in its own enumeration) before the server aborted the generation without emitting the final JSON. SUGGESTIVE (n=1, no JSON, no join test, no gleaning) that the entity is extractable from its isolated source doc - i.e. the original miss may be ingest-context/variance, not un-extractable - but NOT verdict-grade.",
+ "server_state_at_block": {
+  "port_8010": "down (000)",
+  "port_8081": "down (000)",
+  "gpu1": "Qwen/Qwen3-30B-A3B-Thinking-2507-FP8 @0.9util (co-tenant)",
+  "gpt_oss_processes": 0
+ }
+}
