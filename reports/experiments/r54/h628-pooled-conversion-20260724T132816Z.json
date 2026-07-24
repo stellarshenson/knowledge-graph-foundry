@@ -1,0 +1,299 @@
+{
+ "hypothesis": "R54-H628",
+ "run_id": "20260724T132816Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, R57 atlas rows)",
+ "alpha_meanpool_r1": 0.6,
+ "substrate": "medium 2wiki frozen H582 cache tmp/results/r47 (6,626 entities) + R50 H597 span cache; FREE numpy/scipy, no GPU/LLM/Neo4j/net",
+ "substrate_caveat": "frozen 6,626-entity cache (NOT the 7,575-entity live re-ingest); matches the R57 atlas + H651 substrate for comparability",
+ "pins": {
+  "base_recall@16": 0.6012,
+  "base_pin": 0.6012,
+  "pooled_recall@16": 0.7147,
+  "pooled_pin": 0.7147,
+  "reset_region_reach_all": 0.874,
+  "reset_pin": 0.874,
+  "ok": true
+ },
+ "region_reconstruction": {
+  "narrow_matches_reset_region": true,
+  "wide_matches_reset_region_wide": true
+ },
+ "flip_reference": "recorded H620 rru_b10 pass map (dense+anchor+narrow region, render_budget=1.0); ref region = narrow reset_region",
+ "arms": {
+  "dense|anchors=off|narrow": {
+   "seed_source": "dense",
+   "anchors": false,
+   "widen": false,
+   "carrier_recall@16": 0.6012,
+   "reach_all": 0.622,
+   "reach_all_num": 79,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 73,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 2,
+    "flip_pids": [
+     "8f783c7a0bda11eba7f7acde48001122",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 30,
+    "regression_pids": [
+     "6718770a087311ebbd66ac1f6bf848b6",
+     "551e024408a611ebbd7fac1f6bf848b6",
+     "33f51d7e0bde11eba7f7acde48001122",
+     "914b452c0bdc11eba7f7acde48001122",
+     "006d81bc0bde11eba7f7acde48001122",
+     "265daf200bdc11eba7f7acde48001122",
+     "dcbee4b608b011ebbd85ac1f6bf848b6",
+     "2d8f3ebe0bda11eba7f7acde48001122",
+     "9aa8008408de11ebbd9eac1f6bf848b6",
+     "3f04140e08c311ebbd8dac1f6bf848b6",
+     "b64f541e088d11ebbd70ac1f6bf848b6",
+     "8e07f1f00bda11eba7f7acde48001122",
+     "b7f5f7200bdd11eba7f7acde48001122",
+     "0dc9691b087911ebbd67ac1f6bf848b6",
+     "0083038e0bde11eba7f7acde48001122",
+     "a9e322b20bdc11eba7f7acde48001122",
+     "fcdafe320bdb11eba7f7acde48001122",
+     "7d7237ac08a011ebbd78ac1f6bf848b6",
+     "48e6d06e086f11ebbd62ac1f6bf848b6",
+     "a457e11c0bdb11eba7f7acde48001122",
+     "63240f22089d11ebbd78ac1f6bf848b6",
+     "dfb1d2c8085611ebbd59ac1f6bf848b6",
+     "764446780bde11eba7f7acde48001122",
+     "bb97d66208ba11ebbd88ac1f6bf848b6",
+     "f1a794f20bdc11eba7f7acde48001122",
+     "47bb70600bde11eba7f7acde48001122",
+     "6cbb0ed6089911ebbd77ac1f6bf848b6",
+     "a431a93808d511ebbd98ac1f6bf848b6",
+     "36b8644508af11ebbd83ac1f6bf848b6",
+     "ccd086f80bdb11eba7f7acde48001122"
+    ],
+    "net": -28,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 84
+  },
+  "dense|anchors=off|wide": {
+   "seed_source": "dense",
+   "anchors": false,
+   "widen": true,
+   "carrier_recall@16": 0.6012,
+   "reach_all": 0.9606,
+   "reach_all_num": 122,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 116,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 3,
+    "flip_pids": [
+     "cda459160bda11eba7f7acde48001122",
+     "8f783c7a0bda11eba7f7acde48001122",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 3,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 115
+  },
+  "dense|anchors=on|narrow": {
+   "seed_source": "dense",
+   "anchors": true,
+   "widen": false,
+   "carrier_recall@16": 0.6012,
+   "reach_all": 0.874,
+   "reach_all_num": 111,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 104,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 0,
+    "flip_pids": [],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 0,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 112
+  },
+  "dense|anchors=on|wide": {
+   "seed_source": "dense",
+   "anchors": true,
+   "widen": true,
+   "carrier_recall@16": 0.6012,
+   "reach_all": 0.9606,
+   "reach_all_num": 122,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 116,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 3,
+    "flip_pids": [
+     "cda459160bda11eba7f7acde48001122",
+     "8f783c7a0bda11eba7f7acde48001122",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 3,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 115
+  },
+  "pooled|anchors=off|narrow": {
+   "seed_source": "pooled",
+   "anchors": false,
+   "widen": false,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.8819,
+   "reach_all_num": 112,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 108,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 3,
+    "flip_pids": [
+     "cda459160bda11eba7f7acde48001122",
+     "8f783c7a0bda11eba7f7acde48001122",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 5,
+    "regression_pids": [
+     "dcbee4b608b011ebbd85ac1f6bf848b6",
+     "9aa8008408de11ebbd9eac1f6bf848b6",
+     "402c6e0008c611ebbd90ac1f6bf848b6",
+     "63240f22089d11ebbd78ac1f6bf848b6",
+     "49ccfdfa08ce11ebbd94ac1f6bf848b6"
+    ],
+    "net": -2,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 110
+  },
+  "pooled|anchors=off|wide": {
+   "seed_source": "pooled",
+   "anchors": false,
+   "widen": true,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.9449,
+   "reach_all_num": 120,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 116,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 3,
+    "flip_pids": [
+     "cda459160bda11eba7f7acde48001122",
+     "8f783c7a0bda11eba7f7acde48001122",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 3,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 115
+  },
+  "pooled|anchors=on|narrow": {
+   "seed_source": "pooled",
+   "anchors": true,
+   "widen": false,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.8976,
+   "reach_all_num": 114,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 108,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 1,
+    "flip_pids": [
+     "cda459160bda11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 1,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 113
+  },
+  "pooled|anchors=on|wide": {
+   "seed_source": "pooled",
+   "anchors": true,
+   "widen": true,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.9606,
+   "reach_all_num": 122,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 116,
+   "flip_vs_recorded_rru_b10": {
+    "flips_fail_to_pass": 3,
+    "flip_pids": [
+     "cda459160bda11eba7f7acde48001122",
+     "8f783c7a0bda11eba7f7acde48001122",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 3,
+    "carrier_not_retrieved_ref": 10
+   },
+   "panel_pass_est": 115
+  }
+ },
+ "overlap_pooled_new_vs_incumbent_wide": {
+  "pooled_top16_new_carriers": 43,
+  "already_reachable_in_dense_anchor_wide": 43,
+  "pct_already_reachable": 100.0
+ },
+ "comparisons": {
+  "primary_anchors_on_wide": {
+   "label": "pooled vs dense, anchors ON, WIDE (primary, shipped region)",
+   "reach_all_delta_pp": 0.0,
+   "fully_retrieved_delta": 0,
+   "net_flips_pooled_over_dense": 0,
+   "pooled_reach": 0.9606,
+   "dense_reach": 0.9606,
+   "pooled_net_flips": 3,
+   "dense_net_flips": 3
+  },
+  "anchors_on_narrow": {
+   "label": "pooled vs dense, anchors ON, narrow",
+   "reach_all_delta_pp": 2.36,
+   "fully_retrieved_delta": 4,
+   "net_flips_pooled_over_dense": 1,
+   "pooled_reach": 0.8976,
+   "dense_reach": 0.874,
+   "pooled_net_flips": 1,
+   "dense_net_flips": 0
+  },
+  "standalone_wide": {
+   "label": "pooled vs dense, anchors OFF, WIDE (standalone)",
+   "reach_all_delta_pp": -1.57,
+   "fully_retrieved_delta": 0,
+   "net_flips_pooled_over_dense": 0,
+   "pooled_reach": 0.9449,
+   "dense_reach": 0.9606,
+   "pooled_net_flips": 3,
+   "dense_net_flips": 3
+  },
+  "standalone_narrow": {
+   "label": "pooled vs dense, anchors OFF, narrow (standalone)",
+   "reach_all_delta_pp": 25.99,
+   "fully_retrieved_delta": 35,
+   "net_flips_pooled_over_dense": 26,
+   "pooled_reach": 0.8819,
+   "dense_reach": 0.622,
+   "pooled_net_flips": -2,
+   "dense_net_flips": -28
+  }
+ },
+ "registered_bar": "reachability delta >= +3pts AND non-zero net flips at render_budget=1.0; KILLED at zero net flips AND flat reachability",
+ "verdict_recommendation": "KILLED",
+ "caveats": [
+  "flip sim is deterministic retrieval-level proxy vs the recorded rru_b10 arm (H651 pattern); a newly-retrieved probe could still land in the fixed render-absent bucket - reported as retrieval-level net flips, not a live re-render.",
+  "pooled seeds change the region, so regressions ARE possible and are counted (unlike H651 where the widened region was a strict superset).",
+  "render_budget 1.0 is the judged arm; crowd-out at 0.6 is not simulated offline.",
+  "frozen 6,626-entity substrate, not the 7,575 live re-ingest."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r54/h628-pooled-conversion-20260724T132816Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r54/h628-pooled-conversion-20260724T132816Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r54/h628-pooled-conversion-20260724T132816Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r54_h628_pooled_conversion.py"
+ }
+}

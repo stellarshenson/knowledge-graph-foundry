@@ -1,0 +1,121 @@
+{
+ "hypothesis": "R54-H629",
+ "run_id": "20260724T133024Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, R57 atlas rows)",
+ "alpha_meanpool_r1": 0.6,
+ "substrate": "medium 2wiki frozen H582 cache tmp/results/r47 (6,626 entities) + R50 H597 span cache; FREE numpy/scipy, no GPU/LLM/Neo4j/net",
+ "substrate_caveat": "frozen 6,626-entity cache (NOT the 7,575 live re-ingest)",
+ "pins": {
+  "base_recall@16": 0.6012,
+  "pooled_recall@16": 0.7147,
+  "reset_region_reach_all": 0.874,
+  "ok": true
+ },
+ "overlap_census": {
+  "P_pooled_recoveries": 49,
+  "A_anchor_recoveries": 45,
+  "intersection": 42,
+  "union": 52,
+  "overlap_jaccard": 0.8077,
+  "pooled_only_recoveries": 7,
+  "anchor_only_recoveries": 3,
+  "P_already_in_incumbent_wide": 49,
+  "of_P": 49,
+  "A_already_in_incumbent_wide": 45,
+  "of_A": 45,
+  "baseline": "dense seeds, anchors OFF, narrow region",
+  "note": "recovered = in_graph carrier reachable under the lever but not the baseline"
+ },
+ "narrow_region": {
+  "region": "narrow",
+  "pooled_lever_alone": {
+   "seed_source": "pooled",
+   "anchors": false,
+   "widen": false,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.8819,
+   "fully_retrieved_132": 108,
+   "net_flips_vs_rru_b10": -2,
+   "flips_pos": 3,
+   "flips_neg": 5
+  },
+  "anchor_lever_alone": {
+   "seed_source": "dense",
+   "anchors": true,
+   "widen": false,
+   "carrier_recall@16": 0.6012,
+   "reach_all": 0.874,
+   "fully_retrieved_132": 104,
+   "net_flips_vs_rru_b10": 0,
+   "flips_pos": 0,
+   "flips_neg": 0
+  },
+  "composed": {
+   "seed_source": "pooled",
+   "anchors": true,
+   "widen": false,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.8976,
+   "fully_retrieved_132": 108,
+   "net_flips_vs_rru_b10": 1,
+   "flips_pos": 1,
+   "flips_neg": 0
+  },
+  "composed_reach_over_best_single_pp": 1.57,
+  "composed_recall_over_best_single_pp": 0.0,
+  "composed_fr_over_best_single": 0
+ },
+ "widened_region_PRIMARY": {
+  "region": "wide",
+  "pooled_lever_alone": {
+   "seed_source": "pooled",
+   "anchors": false,
+   "widen": true,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.9449,
+   "fully_retrieved_132": 116,
+   "net_flips_vs_rru_b10": 3,
+   "flips_pos": 3,
+   "flips_neg": 0
+  },
+  "anchor_lever_alone": {
+   "seed_source": "dense",
+   "anchors": true,
+   "widen": true,
+   "carrier_recall@16": 0.6012,
+   "reach_all": 0.9606,
+   "fully_retrieved_132": 116,
+   "net_flips_vs_rru_b10": 3,
+   "flips_pos": 3,
+   "flips_neg": 0
+  },
+  "composed": {
+   "seed_source": "pooled",
+   "anchors": true,
+   "widen": true,
+   "carrier_recall@16": 0.7147,
+   "reach_all": 0.9606,
+   "fully_retrieved_132": 116,
+   "net_flips_vs_rru_b10": 3,
+   "flips_pos": 3,
+   "flips_neg": 0
+  },
+  "composed_reach_over_best_single_pp": 0.0,
+  "composed_recall_over_best_single_pp": 0.0,
+  "composed_fr_over_best_single": 0
+ },
+ "registered_bar": "overlap < 50% AND composed arm > max(single arms) by >= +3pts on carrier recall@16 AND reachability; KILLED if composed within noise of the better single arm",
+ "verdict_recommendation": "KILLED",
+ "reading": "carrier_recall@16 is a SEED-landing metric that only the pooled lever moves; anchor-reset does not change the top-16 seeds, so composed recall@16 == pooled recall@16 by construction and the recall clause cannot be won by composition. The live axis is reachability.",
+ "caveats": [
+  "recovered-carrier sets are reachability-based (carrier_idx in region) vs the narrow dense-standalone baseline; H628 already showed 100% of pooled top-16-new carriers sit inside the incumbent widened region.",
+  "flip proxy is retrieval-level vs recorded rru_b10 (H651 pattern).",
+  "frozen 6,626-entity substrate, not the 7,575 live re-ingest."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r54/h629-composition-20260724T133024Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r54/h629-composition-20260724T133024Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r54/h629-composition-20260724T133024Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r54_h629_composition.py"
+ }
+}

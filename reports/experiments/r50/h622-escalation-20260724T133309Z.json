@@ -1,0 +1,470 @@
+{
+ "hypothesis": "R50-H622",
+ "run_id": "20260724T133309Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (R57 atlas rows; H620 recorded pass maps)",
+ "substrate": "recorded H620 checkpoint rru/base pass maps (frozen 132 OFF panel) + r58_h651 substrate (anchors, atlas eff_idx, narrow/wide regions); FREE, no GPU/LLM/Neo4j/net",
+ "substrate_caveat": "frozen 6,626-entity cache; recorded H620 arms are the live-probe screen",
+ "pins": {
+  "base_b06_pass": 85,
+  "base_b10_pass": 92,
+  "rru_b10_pass": 112,
+  "ok": true
+ },
+ "flip_decomposition": {
+  "rru_b10_flips": 27,
+  "budget_only_no_walk": 7,
+  "budget_only_pids": [
+   "e6e38bc40bdd11eba7f7acde48001122",
+   "3ce92df80bde11eba7f7acde48001122",
+   "1dfaa6200bdd11eba7f7acde48001122",
+   "ccd086f80bdb11eba7f7acde48001122",
+   "965e667e0bdd11eba7f7acde48001122",
+   "f48667b80bda11eba7f7acde48001122",
+   "2b9528860bde11eba7f7acde48001122"
+  ],
+  "walk_dependent": 20,
+  "walk_dependent_pids": [
+   "2dc690ba0bdc11eba7f7acde48001122",
+   "33f51d7e0bde11eba7f7acde48001122",
+   "914b452c0bdc11eba7f7acde48001122",
+   "2d8f3ebe0bda11eba7f7acde48001122",
+   "7cb81afc0bd911eba7f7acde48001122",
+   "49b22d0a0bde11eba7f7acde48001122",
+   "78b10fb00bdc11eba7f7acde48001122",
+   "8e07f1f00bda11eba7f7acde48001122",
+   "b7f5f7200bdd11eba7f7acde48001122",
+   "0083038e0bde11eba7f7acde48001122",
+   "6b8402c40bdd11eba7f7acde48001122",
+   "a9e322b20bdc11eba7f7acde48001122",
+   "fcdafe320bdb11eba7f7acde48001122",
+   "e15d99380bdd11eba7f7acde48001122",
+   "a457e11c0bdb11eba7f7acde48001122",
+   "5ff291a80bda11eba7f7acde48001122",
+   "e7dc72940baf11ebab90acde48001122",
+   "764446780bde11eba7f7acde48001122",
+   "f1a794f20bdc11eba7f7acde48001122",
+   "bd9609880bdb11eba7f7acde48001122"
+  ],
+  "walk_flips_with_resolved_anchor": 20,
+  "h651_wide_extra_flips": 3,
+  "h651_wide_extra_pids": [
+   "cda459160bda11eba7f7acde48001122",
+   "8f783c7a0bda11eba7f7acde48001122",
+   "f253a3040bdd11eba7f7acde48001122"
+  ]
+ },
+ "trigger_definitions": {
+  "A_answer_absent": "escalate iff dense-first render (base_b10, budget 1.0, no walk) fails (== render-sim answer-block absent)",
+  "C_anchor_gated": "A AND the probe has resolved max-gap anchors",
+  "B_margin_frontier": "escalate iff answer-absent AND dense@16 max-gap confidence < tau"
+ },
+ "narrow_region": {
+  "always_walk_control": {
+   "walk_invocations": 132,
+   "walk_invocation_frac": 1.0,
+   "flips_preserved": 27,
+   "flip_target": 27,
+   "flips_preserved_frac": 1.0,
+   "flips_lost": 0,
+   "regressions_pass_to_fail": 0,
+   "regression_pids": [],
+   "budget_credited_flips_no_walk": 0,
+   "walk_credited_flips": 27,
+   "panel_pass": 112
+  },
+  "trigger_A_answer_absent": {
+   "walk_invocations": 40,
+   "walk_invocation_frac": 0.303,
+   "flips_preserved": 27,
+   "flip_target": 27,
+   "flips_preserved_frac": 1.0,
+   "flips_lost": 0,
+   "regressions_pass_to_fail": 0,
+   "regression_pids": [],
+   "budget_credited_flips_no_walk": 7,
+   "walk_credited_flips": 20,
+   "panel_pass": 112
+  },
+  "trigger_C_anchor_gated": {
+   "walk_invocations": 40,
+   "walk_invocation_frac": 0.303,
+   "flips_preserved": 27,
+   "flip_target": 27,
+   "flips_preserved_frac": 1.0,
+   "flips_lost": 0,
+   "regressions_pass_to_fail": 0,
+   "regression_pids": [],
+   "budget_credited_flips_no_walk": 7,
+   "walk_credited_flips": 20,
+   "panel_pass": 112
+  },
+  "trigger_B_margin_frontier": [
+   {
+    "tau": 0.0,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.05,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.1,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.15,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.2,
+    "walk_invocations": 1,
+    "flips_preserved": 7,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.25,
+    "walk_invocations": 2,
+    "flips_preserved": 7,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.3,
+    "walk_invocations": 4,
+    "flips_preserved": 7,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.35,
+    "walk_invocations": 8,
+    "flips_preserved": 8,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.4,
+    "walk_invocations": 14,
+    "flips_preserved": 9,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.45,
+    "walk_invocations": 19,
+    "flips_preserved": 12,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.5,
+    "walk_invocations": 22,
+    "flips_preserved": 12,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.55,
+    "walk_invocations": 24,
+    "flips_preserved": 13,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.6,
+    "walk_invocations": 26,
+    "flips_preserved": 15,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.65,
+    "walk_invocations": 27,
+    "flips_preserved": 15,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.7,
+    "walk_invocations": 27,
+    "flips_preserved": 15,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.75,
+    "walk_invocations": 28,
+    "flips_preserved": 16,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.8,
+    "walk_invocations": 32,
+    "flips_preserved": 19,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.85,
+    "walk_invocations": 34,
+    "flips_preserved": 21,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.9,
+    "walk_invocations": 35,
+    "flips_preserved": 22,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 0.95,
+    "walk_invocations": 40,
+    "flips_preserved": 27,
+    "flip_target": 27,
+    "regressions": 0
+   },
+   {
+    "tau": 1.0,
+    "walk_invocations": 40,
+    "flips_preserved": 27,
+    "flip_target": 27,
+    "regressions": 0
+   }
+  ]
+ },
+ "widened_region": {
+  "always_walk_control": {
+   "walk_invocations": 132,
+   "walk_invocation_frac": 1.0,
+   "flips_preserved": 30,
+   "flip_target": 30,
+   "flips_preserved_frac": 1.0,
+   "flips_lost": 0,
+   "regressions_pass_to_fail": 0,
+   "regression_pids": [],
+   "budget_credited_flips_no_walk": 0,
+   "walk_credited_flips": 30,
+   "panel_pass": 115
+  },
+  "trigger_A_answer_absent": {
+   "walk_invocations": 40,
+   "walk_invocation_frac": 0.303,
+   "flips_preserved": 30,
+   "flip_target": 30,
+   "flips_preserved_frac": 1.0,
+   "flips_lost": 0,
+   "regressions_pass_to_fail": 0,
+   "regression_pids": [],
+   "budget_credited_flips_no_walk": 7,
+   "walk_credited_flips": 23,
+   "panel_pass": 115
+  },
+  "trigger_C_anchor_gated": {
+   "walk_invocations": 40,
+   "walk_invocation_frac": 0.303,
+   "flips_preserved": 30,
+   "flip_target": 30,
+   "flips_preserved_frac": 1.0,
+   "flips_lost": 0,
+   "regressions_pass_to_fail": 0,
+   "regression_pids": [],
+   "budget_credited_flips_no_walk": 7,
+   "walk_credited_flips": 23,
+   "panel_pass": 115
+  },
+  "trigger_B_margin_frontier": [
+   {
+    "tau": 0.0,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.05,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.1,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.15,
+    "walk_invocations": 0,
+    "flips_preserved": 7,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.2,
+    "walk_invocations": 1,
+    "flips_preserved": 7,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.25,
+    "walk_invocations": 2,
+    "flips_preserved": 7,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.3,
+    "walk_invocations": 4,
+    "flips_preserved": 7,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.35,
+    "walk_invocations": 8,
+    "flips_preserved": 9,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.4,
+    "walk_invocations": 14,
+    "flips_preserved": 11,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.45,
+    "walk_invocations": 19,
+    "flips_preserved": 14,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.5,
+    "walk_invocations": 22,
+    "flips_preserved": 15,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.55,
+    "walk_invocations": 24,
+    "flips_preserved": 16,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.6,
+    "walk_invocations": 26,
+    "flips_preserved": 18,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.65,
+    "walk_invocations": 27,
+    "flips_preserved": 18,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.7,
+    "walk_invocations": 27,
+    "flips_preserved": 18,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.75,
+    "walk_invocations": 28,
+    "flips_preserved": 19,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.8,
+    "walk_invocations": 32,
+    "flips_preserved": 22,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.85,
+    "walk_invocations": 34,
+    "flips_preserved": 24,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.9,
+    "walk_invocations": 35,
+    "flips_preserved": 25,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 0.95,
+    "walk_invocations": 40,
+    "flips_preserved": 30,
+    "flip_target": 30,
+    "regressions": 0
+   },
+   {
+    "tau": 1.0,
+    "walk_invocations": 40,
+    "flips_preserved": 30,
+    "flip_target": 30,
+    "regressions": 0
+   }
+  ]
+ },
+ "registered_bar": "preserve >= 25/27 rru_b10 flips (>= 90%) AND zero pass->fail regressions on the 112-pass panel, at a measured reduction in walk invocations",
+ "headline": {
+  "narrow_trigger_A": {
+   "walk_invocations": 40,
+   "of_probes": 132,
+   "flips_preserved": "27/27",
+   "budget_only_no_walk": 7,
+   "walk_credited": 20,
+   "regressions": 0
+  },
+  "wide_trigger_A": {
+   "walk_invocations": 40,
+   "flips_preserved": "30/30",
+   "regressions": 0
+  }
+ },
+ "verdict_recommendation": "CONFIRMED",
+ "caveats": [
+  "trigger A ('escalate on dense-first answer-absent') is the natural dense-first ladder; it escalates every dense-first failure, so it preserves all walk flips but at the max sensible invocation count - the margin frontier (trigger B) prices cheaper triggers that trade flips.",
+  "regressions are structurally zero (base_b06 passes subset base_b10 and rru_b10 passes at budget 1.0); this is a property of the recorded arms, not a per-live-render check.",
+  "wide variant uses the H651 retrieval-level wide flips (+3) added on escalated probes; no recorded live rru-wide render exists.",
+  "frozen 6,626-entity substrate; recorded H620 arms are the live-probe screen at budget 1.0/0.6."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h622-escalation-20260724T133309Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h622-escalation-20260724T133309Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r50/h622-escalation-20260724T133309Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r50_h622_escalation_rung.py"
+ }
+}
