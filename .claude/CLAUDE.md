@@ -59,6 +59,10 @@ Knowledge Graph Builder CLI (`kg-builder-cli`) - a Python CLI tool for building 
 - Follow copier-data-science template conventions for directory structure
 - Keep `data/raw/` immutable - use `data/interim/` for transforms, `data/processed/` for final datasets
 
+## Orchestrator-First Session Policy (Reinforced)
+
+**MANDATORY**: per the global Orchestrator-First Session Policy (`~/.claude/CLAUDE.md`), the main session in this project is the ORCHESTRATOR: it clarifies with the user, registers hypotheses, primes specs, and adjudicates/records verdicts in the canonical docs. Execution (experiment runs, sweeps, research legwork, mechanical file work) is handed off to subagents (via `/claude-handoff` where available, else the Agent tool) after clarifications with the user settle scope and bars. Canonical-doc writes (experiments log, SOTA, defects, journal) stay coordinator-owned.
+
 ## Detached Compute Rule (Executor Survival)
 
 **MANDATORY for every executor agent running long computations** (LLM sweeps, ingests, gate batches, experiment chains):
