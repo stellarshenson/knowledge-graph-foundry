@@ -1,0 +1,335 @@
+{
+ "hypothesis": "R59-H657",
+ "run_id": "20260914T081730Z",
+ "registered_bar": "INSTRUMENT - no pass/fail. Deliverable = Delta percentile curve + below-certificate fractions at current and projected N, labelled a LOWER BOUND. Fails only if Delta cannot be computed.",
+ "verdict_recommendation": "INSTRUMENT-DELIVERED",
+ "git_head": "762f31ed216a47389ab7969627048759d7b28213",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, R57 atlas rows)",
+ "region_rule": "H651 widened (seeds u anchors u full 1-hop shell u PPR-top15) - not exercised by this arm",
+ "utc_timestamp": "20260914T081730Z",
+ "substrate": "frozen H582 entity prototype bank tmp/results/r47/titan_emb.npy (6626 x 1024 Titan vectors), l2-normalised; FREE numpy, no GPU/LLM/Neo4j/net",
+ "substrate_caveat": "frozen 6,626-entity cache (NOT the 7,575-entity live re-ingest); matches the R57 atlas / H651 / H628 substrate for comparability",
+ "pins": {
+  "dense16_carrier_recall": 0.6012,
+  "pin": 0.6012,
+  "ok": true
+ },
+ "bank": {
+  "N": 6626,
+  "dim": 1024,
+  "M_max_l2_norm_after_normalisation": 0.9999999999990002,
+  "zero_norm_rows": 0
+ },
+ "formula": "Delta_required(N, eps) = (1/beta) ln(2 (N-1) M / eps); eps=0.01, M=0.9999999999990002; observable Delta_i = 1 - cos(i, nearest OTHER prototype)",
+ "beta_sweep": {
+  "registered": [
+   1,
+   2,
+   4,
+   8,
+   16
+  ],
+  "extension": [
+   24,
+   32,
+   48,
+   64,
+   96,
+   128
+  ],
+  "extension_reason": "the registered sweep saturates at 100% below-certificate everywhere and prices neither H658 nor H663; the extension locates the beta range where the certificate discriminates"
+ },
+ "rung_projection": {
+  "ratio_r": 46,
+  "N_now": 6626,
+  "N_large": 304796,
+  "requirement_rise_ln_r": 3.828641,
+  "note": "requirement rises by ln(46)/beta = 3.8286/beta, independent of the data"
+ },
+ "delta_percentiles": {
+  "p1": 0.06181,
+  "p5": 0.152501,
+  "p10": 0.210227,
+  "p25": 0.318502,
+  "p50": 0.452279,
+  "p75": 0.584709,
+  "p90": 0.651316
+ },
+ "delta_stats": {
+  "min": 0.004987,
+  "max": 0.798506,
+  "mean": 0.44145,
+  "std": 0.166774,
+  "exact_duplicates_delta_lt_1e-6": 0,
+  "delta_lt_0.01": 2,
+  "delta_lt_0.05": 49,
+  "delta_lt_0.10": 142
+ },
+ "delta_left_tail_15": [
+  {
+   "idx": 5570,
+   "name": "Juan Alfonso P\u00e9rez de Guzm\u00e1n",
+   "delta": 0.004987,
+   "nearest_idx": 5550,
+   "nearest_name": "Juan Alfonso P\u00e9rez de Guzm\u00e1n, 3rd Duke of Medina Sidonia"
+  },
+  {
+   "idx": 5550,
+   "name": "Juan Alfonso P\u00e9rez de Guzm\u00e1n, 3rd Duke of Medina Sidonia",
+   "delta": 0.004987,
+   "nearest_idx": 5570,
+   "nearest_name": "Juan Alfonso P\u00e9rez de Guzm\u00e1n"
+  },
+  {
+   "idx": 3374,
+   "name": "Nantes \u2013 La Roche-sur-Yon via Sainte-Pazanne railway",
+   "delta": 0.010283,
+   "nearest_idx": 3352,
+   "nearest_name": "Nantes\u2013La Roche-sur-Yon via Sainte-Pazanne railway"
+  },
+  {
+   "idx": 3352,
+   "name": "Nantes\u2013La Roche-sur-Yon via Sainte-Pazanne railway",
+   "delta": 0.010283,
+   "nearest_idx": 3374,
+   "nearest_name": "Nantes \u2013 La Roche-sur-Yon via Sainte-Pazanne railway"
+  },
+  {
+   "idx": 1389,
+   "name": "R.G. Springsteen",
+   "delta": 0.012248,
+   "nearest_idx": 3581,
+   "nearest_name": "R. G. Springsteen"
+  },
+  {
+   "idx": 3581,
+   "name": "R. G. Springsteen",
+   "delta": 0.012248,
+   "nearest_idx": 1389,
+   "nearest_name": "R.G. Springsteen"
+  },
+  {
+   "idx": 4886,
+   "name": "Run (computer programming)",
+   "delta": 0.013952,
+   "nearest_idx": 4885,
+   "nearest_name": "Run (programming)"
+  },
+  {
+   "idx": 4885,
+   "name": "Run (programming)",
+   "delta": 0.013952,
+   "nearest_idx": 4886,
+   "nearest_name": "Run (computer programming)"
+  },
+  {
+   "idx": 6483,
+   "name": "Crown Prince Pavlos of Greece",
+   "delta": 0.015018,
+   "nearest_idx": 6534,
+   "nearest_name": "Pavlos, Crown Prince of Greece"
+  },
+  {
+   "idx": 6534,
+   "name": "Pavlos, Crown Prince of Greece",
+   "delta": 0.015018,
+   "nearest_idx": 6483,
+   "nearest_name": "Crown Prince Pavlos of Greece"
+  },
+  {
+   "idx": 186,
+   "name": "Bronx",
+   "delta": 0.019194,
+   "nearest_idx": 36,
+   "nearest_name": "Bronx, New York"
+  },
+  {
+   "idx": 36,
+   "name": "Bronx, New York",
+   "delta": 0.019194,
+   "nearest_idx": 186,
+   "nearest_name": "Bronx"
+  },
+  {
+   "idx": 6486,
+   "name": "Anne-Marie of Denmark",
+   "delta": 0.0217,
+   "nearest_idx": 6522,
+   "nearest_name": "Anne- Marie of Denmark"
+  },
+  {
+   "idx": 6522,
+   "name": "Anne- Marie of Denmark",
+   "delta": 0.0217,
+   "nearest_idx": 6486,
+   "nearest_name": "Anne-Marie of Denmark"
+  },
+  {
+   "idx": 5329,
+   "name": "The Bronx",
+   "delta": 0.025414,
+   "nearest_idx": 186,
+   "nearest_name": "Bronx"
+  }
+ ],
+ "certificate_by_beta": {
+  "1": {
+   "beta": 1,
+   "registered_sweep": true,
+   "delta_required_now": 14.096923,
+   "delta_required_large": 17.925712,
+   "requirement_rise": 3.828789,
+   "below_certificate_now_count": 6626,
+   "below_certificate_now_frac": 1.0,
+   "below_certificate_large_count": 6626,
+   "below_certificate_large_frac": 1.0,
+   "newly_below_at_large": 0
+  },
+  "2": {
+   "beta": 2,
+   "registered_sweep": true,
+   "delta_required_now": 7.048462,
+   "delta_required_large": 8.962856,
+   "requirement_rise": 1.914395,
+   "below_certificate_now_count": 6626,
+   "below_certificate_now_frac": 1.0,
+   "below_certificate_large_count": 6626,
+   "below_certificate_large_frac": 1.0,
+   "newly_below_at_large": 0
+  },
+  "4": {
+   "beta": 4,
+   "registered_sweep": true,
+   "delta_required_now": 3.524231,
+   "delta_required_large": 4.481428,
+   "requirement_rise": 0.957197,
+   "below_certificate_now_count": 6626,
+   "below_certificate_now_frac": 1.0,
+   "below_certificate_large_count": 6626,
+   "below_certificate_large_frac": 1.0,
+   "newly_below_at_large": 0
+  },
+  "8": {
+   "beta": 8,
+   "registered_sweep": true,
+   "delta_required_now": 1.762115,
+   "delta_required_large": 2.240714,
+   "requirement_rise": 0.478599,
+   "below_certificate_now_count": 6626,
+   "below_certificate_now_frac": 1.0,
+   "below_certificate_large_count": 6626,
+   "below_certificate_large_frac": 1.0,
+   "newly_below_at_large": 0
+  },
+  "16": {
+   "beta": 16,
+   "registered_sweep": true,
+   "delta_required_now": 0.881058,
+   "delta_required_large": 1.120357,
+   "requirement_rise": 0.239299,
+   "below_certificate_now_count": 6626,
+   "below_certificate_now_frac": 1.0,
+   "below_certificate_large_count": 6626,
+   "below_certificate_large_frac": 1.0,
+   "newly_below_at_large": 0
+  },
+  "24": {
+   "beta": 24,
+   "registered_sweep": false,
+   "delta_required_now": 0.587372,
+   "delta_required_large": 0.746905,
+   "requirement_rise": 0.159533,
+   "below_certificate_now_count": 5006,
+   "below_certificate_now_frac": 0.755509,
+   "below_certificate_large_count": 6603,
+   "below_certificate_large_frac": 0.996529,
+   "newly_below_at_large": 1597
+  },
+  "32": {
+   "beta": 32,
+   "registered_sweep": false,
+   "delta_required_now": 0.440529,
+   "delta_required_large": 0.560179,
+   "requirement_rise": 0.11965,
+   "below_certificate_now_count": 3171,
+   "below_certificate_now_frac": 0.478569,
+   "below_certificate_large_count": 4660,
+   "below_certificate_large_frac": 0.70329,
+   "newly_below_at_large": 1489
+  },
+  "48": {
+   "beta": 48,
+   "registered_sweep": false,
+   "delta_required_now": 0.293686,
+   "delta_required_large": 0.373452,
+   "requirement_rise": 0.079766,
+   "below_certificate_now_count": 1397,
+   "below_certificate_now_frac": 0.210836,
+   "below_certificate_large_count": 2320,
+   "below_certificate_large_frac": 0.350136,
+   "newly_below_at_large": 923
+  },
+  "64": {
+   "beta": 64,
+   "registered_sweep": false,
+   "delta_required_now": 0.220264,
+   "delta_required_large": 0.280089,
+   "requirement_rise": 0.059825,
+   "below_certificate_now_count": 748,
+   "below_certificate_now_frac": 0.112889,
+   "below_certificate_large_count": 1273,
+   "below_certificate_large_frac": 0.192122,
+   "newly_below_at_large": 525
+  },
+  "96": {
+   "beta": 96,
+   "registered_sweep": false,
+   "delta_required_now": 0.146843,
+   "delta_required_large": 0.186726,
+   "requirement_rise": 0.039883,
+   "below_certificate_now_count": 315,
+   "below_certificate_now_frac": 0.04754,
+   "below_certificate_large_count": 508,
+   "below_certificate_large_frac": 0.076668,
+   "newly_below_at_large": 193
+  },
+  "128": {
+   "beta": 128,
+   "registered_sweep": false,
+   "delta_required_now": 0.110132,
+   "delta_required_large": 0.140045,
+   "requirement_rise": 0.029912,
+   "below_certificate_now_count": 162,
+   "below_certificate_now_frac": 0.024449,
+   "below_certificate_large_count": 298,
+   "below_certificate_large_frac": 0.044974,
+   "newly_below_at_large": 136
+  }
+ },
+ "beta_thresholds": {
+  "beta_for_best_prototype_now": 17.6541,
+  "beta_for_best_prototype_large": 22.4491,
+  "beta_for_median_prototype_now": 31.1686,
+  "beta_for_median_prototype_large": 39.6342
+ },
+ "registered_prediction_reading": {
+  "rule": "registered: < 1% projected below-certificate = scale-safe on this axis; > 10% = the large rung needs a separation intervention before ingest",
+  "lowest_beta_with_projected_below_10pct": 96,
+  "lowest_beta_with_projected_below_1pct": null,
+  "registered_sweep_verdict": "every beta in the registered sweep {1,2,4,8,16} reads 100% below-certificate at BOTH N and 46N - saturated, so the registered sweep alone prices nothing",
+  "verdict_on_the_rule": "the projected fraction stays above 10% for every beta up to 96, first dropping under 10% at beta = 96; it never drops under 1% at any tested beta, so identity is NOT scale-safe on this axis at any beta this bank supports"
+ },
+ "LOWER_BOUND_LABEL": "EVERY below-certificate fraction reported here is a LOWER BOUND ON THE DAMAGE, not a prediction. The projection holds the SHAPE of the Delta distribution fixed and shifts only the requirement by ln(r)/beta. New documents add near-duplicate entities, which pushes the left tail DOWN faster than log N pushes the requirement UP, so the true large-rung below-certificate fraction is at least this large.",
+ "caveats": [
+  "The capacity theorems (N >= sqrt(p) c^((d-1)/4), 2^(d/2)) assume randomly chosen patterns and do NOT transfer to correlated text embeddings; only the Theorem-5 certificate is used here because it depends solely on observables.",
+  "Delta_i is one minus the runner-up cosine - the certificate adds margin-awareness and N-awareness, not an independent quantity (the H658 honest reduction).",
+  "The bank is entity prototypes as embedded by the shipped indexer ('{type}: {name} - {description[:200]}'), so Delta mixes name and description separation; it is not a name-identity statistic.",
+  "frozen 6,626-entity substrate, not the 7,575 live re-ingest."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h657-separation-forecast-20260914T081730Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h657-separation-forecast-20260914T081730Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h657-separation-forecast-20260914T081730Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r59_h657_separation_forecast.py"
+ }
+}

@@ -1,0 +1,127 @@
+{
+ "hypothesis": "R59-H660",
+ "run_id": "20260914T081658Z",
+ "git_head": "762f31ed216a47389ab7969627048759d7b28213",
+ "utc_timestamp": "20260914T081658Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, R57 atlas rows)",
+ "region_rule": "H651 widened: seeds u anchors u FULL 1-hop shell u PPR-top15",
+ "registered_bar": "GATE: H661 opens only on a non-trivial (b) - co-occurring, non-adjacent, cross-component pairs. If every co-occurring pair is already adjacent or intra-component, the overlay is recorded dead with no write.",
+ "pins": {
+  "dense16_carrier_recall": 0.6012,
+  "pin": 0.6012,
+  "frozen_substrate_components": {
+   "entities": 6626,
+   "edges_undirected": 5386,
+   "components": 1830,
+   "lcc_nodes": 3162,
+   "lcc_frac": 0.4772,
+   "isolated": 1426
+  },
+  "component_pins": {
+   "components": 1830,
+   "lcc_nodes": 3162,
+   "lcc_frac": 0.4772,
+   "isolated": 1426
+  },
+  "cross_component_gold_rows_found": 4,
+  "cross_component_gold_rows_expected": 4,
+  "ok": true
+ },
+ "cross_component_gold_rows": [
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Dino Risi",
+   "eff_idx": 1731,
+   "role": "bridge",
+   "component_id": 363,
+   "component_size": 7
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "David Bradley (director)",
+   "eff_idx": 1992,
+   "role": "terminal-answer",
+   "component_id": 427,
+   "component_size": 1
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Puttanna Kanagal",
+   "eff_idx": 2353,
+   "role": "bridge",
+   "component_id": 543,
+   "component_size": 1
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Min Dikkha",
+   "eff_idx": 3821,
+   "role": "terminal-answer",
+   "component_id": 1000,
+   "component_size": 10
+  }
+ ],
+ "neo4j_access": "READ-ONLY (MATCH / RETURN / CALL db.labels() only); no writes",
+ "verdict_recommendation": "PREMISE-FAILED",
+ "premise_failure": {
+  "what_is_missing": "the chunk -> entity mapping for the medium rung. It exists NOWHERE on disk in this repository: tmp/results/r47/ents_meta.json carries only ['descr','id','name','types'] (H631 recorded this explicitly), tmp/results/r47/edges.json and tmp/results/r50/edges_typed.json carry entity-entity pairs with no chunk field, and every prior script that computed the mapping pulled it live from Neo4j and persisted only aggregates.",
+  "blocker": "no Neo4j instance is reachable",
+  "uris_attempted": [
+   {
+    "uri": "bolt://172.21.0.6:7687",
+    "ok": false,
+    "error": "ServiceUnavailable: Couldn't connect to 172.21.0.6:7687 (resolved to ('172.21.0.6:7687',)):\nTimed out trying to establish connection to Reso"
+   },
+   {
+    "uri": "bolt://user-konrad.jelen-kgf-neo4j:7687",
+    "ok": false,
+    "error": "ServiceUnavailable: Failed to DNS resolve address user-konrad.jelen-kgf-neo4j:7687: [Errno -2] Name or service not known"
+   },
+   {
+    "uri": "bolt://172.19.0.101:7687",
+    "ok": false,
+    "error": "ServiceUnavailable: Couldn't connect to 172.19.0.101:7687 (resolved to ('172.19.0.101:7687',)):\nTimed out trying to establish connection to "
+   },
+   {
+    "uri": "bolt://172.19.0.9:7687",
+    "ok": false,
+    "error": "ServiceUnavailable: Couldn't connect to 172.19.0.9:7687 (resolved to ('172.19.0.9:7687',)):\nTimed out trying to establish connection to Reso"
+   },
+   {
+    "uri": "bolt://172.19.0.8:7687",
+    "ok": false,
+    "error": "ServiceUnavailable: Couldn't connect to 172.19.0.8:7687 (resolved to ('172.19.0.8:7687',)):\nTimed out trying to establish connection to Reso"
+   },
+   {
+    "uri": "bolt://localhost:7687",
+    "ok": false,
+    "error": "ServiceUnavailable: Couldn't connect to localhost:7687 (resolved to ('[::1]:7687', '127.0.0.1:7687')):\nFailed to establish connection to Res"
+   }
+  ],
+  "host_state": "no Neo4j container exists (docker ps -a lists only an unrelated onedrive bridge and a stopped alpine probe); the hub network that carried the .env hostname user-konrad.jelen-kgf-neo4j is gone; no neo4j image is cached locally",
+  "what_was_NOT_done": "no substitute was improvised. No (a), (b), (c) or w_assoc number is reported, because none is computable without the chunk -> entity sets.",
+  "resume_recipe": [
+   "restore the medium rung into a throwaway container from data/interim/dumps/20260713-neo4j-medium-2wiki-1000.dump (966 MB; 1,000 docs / 6,626 entities / 1,000 chunks / 7,534 questions; sidecar 20260713-neo4j-medium-2wiki-1000.md, recipe in data/interim/dumps/MANIFEST.md) - or bring the live 7,575-entity re-ingest back up",
+   "confirm the reached instance and its entity count (DEF-4: .env NEO4J_URI silently overrides config targets)",
+   "re-run: .venv/bin/python scripts/experiments/r59_h660_cooccurrence_census.py (it auto-discovers the instance from CANDIDATE_URIS; add the new URI to that list if it differs)"
+  ]
+ },
+ "what_reproduced_without_neo4j": {
+  "dense16_carrier_recall": 0.6012,
+  "frozen_substrate_component_census": {
+   "entities": 6626,
+   "edges_undirected": 5386,
+   "components": 1830,
+   "lcc_nodes": 3162,
+   "lcc_frac": 0.4772,
+   "isolated": 1426
+  },
+  "cross_component_gold_rows": 4
+ },
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h660-cooccurrence-census-20260914T081658Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h660-cooccurrence-census-20260914T081658Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h660-cooccurrence-census-20260914T081658Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r59_h660_cooccurrence_census.py"
+ }
+}

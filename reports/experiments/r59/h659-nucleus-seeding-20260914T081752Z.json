@@ -1,0 +1,626 @@
+{
+ "hypothesis": "R59-H659",
+ "run_id": "20260914T081752Z",
+ "git_head": "762f31ed216a47389ab7969627048759d7b28213",
+ "utc_timestamp": "20260914T081752Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, R57 atlas rows)",
+ "region_rule": "H651 widened: seeds u anchors u FULL 1-hop shell u PPR-top15",
+ "registered_bar": "CONFIRMED only on panel > 115/132 with ZERO pass-to-fail regressions; KILLED at <= 0 net flips.",
+ "verdict_recommendation": "KILLED",
+ "substrate": "medium 2wiki frozen H582 cache tmp/results/r47 (6,626 entities) + R50 H597 span cache; FREE numpy/scipy/rapidfuzz, no GPU/LLM/Neo4j/net",
+ "substrate_caveat": "frozen 6,626-entity cache (NOT the 7,575-entity live re-ingest); matches the R57 atlas / H651 / H628 substrate for comparability",
+ "pins": {
+  "base_recall@16": 0.6012,
+  "base_pin": 0.6012,
+  "pooled_recall@16": 0.7147,
+  "pooled_pin": 0.7147,
+  "reset_region_reach_all": 0.874,
+  "reset_pin": 0.874,
+  "panel_counts": {
+   "base_b06": 85,
+   "base_b10": 92,
+   "rru_b10": 112
+  },
+  "panel_pins": {
+   "base_b06": 85,
+   "base_b10": 92,
+   "rru_b10": 112
+  },
+  "widened_panel": 115,
+  "widened_panel_pin": 115,
+  "ok": true
+ },
+ "shipped_pipeline": "raw dense@16 seeds -> max-gap anchor reset -> H651 widened region -> render_budget 1.0 -> H622 escalation gate (trigger A); this arm replaces ONLY the seed source",
+ "reference": {
+  "region": "reset_region_wide (H651)",
+  "panel": 115,
+  "panel_source": "recorded H620 rru_b10 pass map (112) + H651's 3 widened flips",
+  "reach_all": 0.9606,
+  "fully_retrieved_132": 116
+ },
+ "nucleus_rule": {
+  "mass": 0.9,
+  "cap": 64,
+  "betas_registered": [
+   1,
+   2,
+   4,
+   8
+  ],
+  "betas_extension": [
+   12,
+   16,
+   24,
+   32
+  ],
+  "beta_calibrated": 18.3079,
+  "calibration": "median uncapped nucleus size == shipped k=16",
+  "extension_reason": "the registered sweep is fully cap-degenerate and would otherwise price nothing"
+ },
+ "controls": {
+  "control|fixed dense@16": {
+   "carrier_recall_at_arm_k": 0.6012,
+   "probes_with_k_below_16": 0,
+   "seeds_superset_of_dense16": true,
+   "reach_all": 0.9606,
+   "reach_all_num": 122,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 116,
+   "median_region_nodes": 48,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 0,
+    "flip_pids": [],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 0,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 115,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 0,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "fixed-k control",
+   "k": 16,
+   "degenerate": null
+  },
+  "control|fixed dense@64": {
+   "carrier_recall_at_arm_k": 0.6166,
+   "probes_with_k_below_16": 0,
+   "seeds_superset_of_dense16": true,
+   "reach_all": 0.9764,
+   "reach_all_num": 124,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 118,
+   "median_region_nodes": 166,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 1,
+    "flip_pids": [
+     "748446060bdb11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 1,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 116,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 1,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "fixed-k control",
+   "k": 64,
+   "degenerate": null
+  }
+ },
+ "arms": {
+  "nucleus|beta=1|mass=0.9|cap=64|DEGENERATE": {
+   "carrier_recall_at_arm_k": 0.6166,
+   "probes_with_k_below_16": 0,
+   "seeds_superset_of_dense16": true,
+   "reach_all": 0.9764,
+   "reach_all_num": 124,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 118,
+   "median_region_nodes": 166,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 1,
+    "flip_pids": [
+     "748446060bdb11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 1,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 116,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 1,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 1,
+   "registered_sweep": true,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 5916,
+    "min": 5906,
+    "max": 5923,
+    "p25": 5913,
+    "p75": 5918
+   },
+   "k_used": {
+    "median": 64,
+    "min": 64,
+    "max": 64
+   },
+   "cap_binds_probes": 132,
+   "cap_binds_frac": 1.0,
+   "degenerate_equals_fixed_dense_at_cap": true,
+   "shipped_top16_softmax_mass_median": 0.003201,
+   "shipped_top16_softmax_mass_min": 0.002928
+  },
+  "nucleus|beta=2|mass=0.9|cap=64|DEGENERATE": {
+   "carrier_recall_at_arm_k": 0.6166,
+   "probes_with_k_below_16": 0,
+   "seeds_superset_of_dense16": true,
+   "reach_all": 0.9764,
+   "reach_all_num": 124,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 118,
+   "median_region_nodes": 166,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 1,
+    "flip_pids": [
+     "748446060bdb11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 1,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 116,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 1,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 2,
+   "registered_sweep": true,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 5865,
+    "min": 5845,
+    "max": 5881,
+    "p25": 5859,
+    "p75": 5870
+   },
+   "k_used": {
+    "median": 64,
+    "min": 64,
+    "max": 64
+   },
+   "cap_binds_probes": 132,
+   "cap_binds_frac": 1.0,
+   "degenerate_equals_fixed_dense_at_cap": true,
+   "shipped_top16_softmax_mass_median": 0.004315,
+   "shipped_top16_softmax_mass_min": 0.00361
+  },
+  "nucleus|beta=4|mass=0.9|cap=64|DEGENERATE": {
+   "carrier_recall_at_arm_k": 0.6166,
+   "probes_with_k_below_16": 0,
+   "seeds_superset_of_dense16": true,
+   "reach_all": 0.9764,
+   "reach_all_num": 124,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 118,
+   "median_region_nodes": 166,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 1,
+    "flip_pids": [
+     "748446060bdb11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 1,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 116,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 1,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 4,
+   "registered_sweep": true,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 5751,
+    "min": 5698,
+    "max": 5788,
+    "p25": 5738,
+    "p75": 5764
+   },
+   "k_used": {
+    "median": 64,
+    "min": 64,
+    "max": 64
+   },
+   "cap_binds_probes": 132,
+   "cap_binds_frac": 1.0,
+   "degenerate_equals_fixed_dense_at_cap": true,
+   "shipped_top16_softmax_mass_median": 0.008257,
+   "shipped_top16_softmax_mass_min": 0.005717
+  },
+  "nucleus|beta=8|mass=0.9|cap=64|DEGENERATE": {
+   "carrier_recall_at_arm_k": 0.6166,
+   "probes_with_k_below_16": 0,
+   "seeds_superset_of_dense16": true,
+   "reach_all": 0.9764,
+   "reach_all_num": 124,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 118,
+   "median_region_nodes": 166,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 1,
+    "flip_pids": [
+     "748446060bdb11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 1,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 116,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 1,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 8,
+   "registered_sweep": true,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 5451,
+    "min": 4989,
+    "max": 5561,
+    "p25": 5400,
+    "p75": 5483
+   },
+   "k_used": {
+    "median": 64,
+    "min": 64,
+    "max": 64
+   },
+   "cap_binds_probes": 132,
+   "cap_binds_frac": 1.0,
+   "degenerate_equals_fixed_dense_at_cap": true,
+   "shipped_top16_softmax_mass_median": 0.044158,
+   "shipped_top16_softmax_mass_min": 0.018503
+  },
+  "nucleus|beta=12|mass=0.9|cap=64|DEGENERATE": {
+   "carrier_recall_at_arm_k": 0.6166,
+   "probes_with_k_below_16": 0,
+   "seeds_superset_of_dense16": true,
+   "reach_all": 0.9764,
+   "reach_all_num": 124,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 118,
+   "median_region_nodes": 166,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 1,
+    "flip_pids": [
+     "748446060bdb11eba7f7acde48001122"
+    ],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 1,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 116,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 1,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 12,
+   "registered_sweep": false,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 4782,
+    "min": 810,
+    "max": 5189,
+    "p25": 4334,
+    "p75": 4958
+   },
+   "k_used": {
+    "median": 64,
+    "min": 64,
+    "max": 64
+   },
+   "cap_binds_probes": 132,
+   "cap_binds_frac": 1.0,
+   "degenerate_equals_fixed_dense_at_cap": true,
+   "shipped_top16_softmax_mass_median": 0.251998,
+   "shipped_top16_softmax_mass_min": 0.069525
+  },
+  "nucleus|beta=16|mass=0.9|cap=64": {
+   "carrier_recall_at_arm_k": 0.6043,
+   "probes_with_k_below_16": 26,
+   "seeds_superset_of_dense16": false,
+   "reach_all": 0.9685,
+   "reach_all_num": 123,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 117,
+   "median_region_nodes": 156,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 0,
+    "flip_pids": [],
+    "regressions_pass_to_fail": 0,
+    "regression_pids": [],
+    "net": 0,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 115,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 0,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 16,
+   "registered_sweep": false,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 2125,
+    "min": 1,
+    "max": 4498,
+    "p25": 346,
+    "p75": 3219
+   },
+   "k_used": {
+    "median": 64,
+    "min": 1,
+    "max": 64
+   },
+   "cap_binds_probes": 104,
+   "cap_binds_frac": 0.7879,
+   "degenerate_equals_fixed_dense_at_cap": false,
+   "shipped_top16_softmax_mass_median": 0.730764,
+   "shipped_top16_softmax_mass_min": 0.229904
+  },
+  "nucleus|beta=18.3079|mass=0.9|cap=64": {
+   "carrier_recall_at_arm_k": 0.5798,
+   "probes_with_k_below_16": 65,
+   "seeds_superset_of_dense16": false,
+   "reach_all": 0.9606,
+   "reach_all_num": 122,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 116,
+   "median_region_nodes": 49,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 0,
+    "flip_pids": [],
+    "regressions_pass_to_fail": 1,
+    "regression_pids": [
+     "bdd526c4091811ebbdaeac1f6bf848b6"
+    ],
+    "net": -1,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 114,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 0,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 18.3079,
+   "registered_sweep": false,
+   "beta_is_calibrated": true,
+   "k_uncapped": {
+    "median": 16,
+    "min": 1,
+    "max": 3814,
+    "p25": 3,
+    "p75": 864
+   },
+   "k_used": {
+    "median": 16,
+    "min": 1,
+    "max": 64
+   },
+   "cap_binds_probes": 61,
+   "cap_binds_frac": 0.4621,
+   "degenerate_equals_fixed_dense_at_cap": false,
+   "shipped_top16_softmax_mass_median": 0.900812,
+   "shipped_top16_softmax_mass_min": 0.386233
+  },
+  "nucleus|beta=24|mass=0.9|cap=64": {
+   "carrier_recall_at_arm_k": 0.4816,
+   "probes_with_k_below_16": 129,
+   "seeds_superset_of_dense16": false,
+   "reach_all": 0.9291,
+   "reach_all_num": 118,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 112,
+   "median_region_nodes": 17,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 0,
+    "flip_pids": [],
+    "regressions_pass_to_fail": 4,
+    "regression_pids": [
+     "bdd526c4091811ebbdaeac1f6bf848b6",
+     "5cbb015f087511ebbd67ac1f6bf848b6",
+     "d6e9771908dd11ebbd9eac1f6bf848b6",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "net": -4,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 111,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 0,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 24,
+   "registered_sweep": false,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 2,
+    "min": 1,
+    "max": 400,
+    "p25": 1,
+    "p75": 2
+   },
+   "k_used": {
+    "median": 2,
+    "min": 1,
+    "max": 64
+   },
+   "cap_binds_probes": 2,
+   "cap_binds_frac": 0.0152,
+   "degenerate_equals_fixed_dense_at_cap": false,
+   "shipped_top16_softmax_mass_median": 0.99443,
+   "shipped_top16_softmax_mass_min": 0.740679
+  },
+  "nucleus|beta=32|mass=0.9|cap=64": {
+   "carrier_recall_at_arm_k": 0.4356,
+   "probes_with_k_below_16": 132,
+   "seeds_superset_of_dense16": false,
+   "reach_all": 0.8819,
+   "reach_all_num": 112,
+   "reach_all_den": 127,
+   "fully_retrieved_132": 106,
+   "median_region_nodes": 17,
+   "median_ref_region_nodes": 48,
+   "flips_vs_shipped_widened_panel": {
+    "flips_fail_to_pass": 0,
+    "flip_pids": [],
+    "regressions_pass_to_fail": 10,
+    "regression_pids": [
+     "bdd526c4091811ebbdaeac1f6bf848b6",
+     "b0ac0fc8087b11ebbd68ac1f6bf848b6",
+     "8f783c7a0bda11eba7f7acde48001122",
+     "a52e9e1908b711ebbd88ac1f6bf848b6",
+     "90c8793c087411ebbd67ac1f6bf848b6",
+     "63c16246095211ebbdaeac1f6bf848b6",
+     "81e0d683087c11ebbd6aac1f6bf848b6",
+     "5cbb015f087511ebbd67ac1f6bf848b6",
+     "d6e9771908dd11ebbd9eac1f6bf848b6",
+     "f253a3040bdd11eba7f7acde48001122"
+    ],
+    "net": -10,
+    "carrier_not_retrieved_ref": 7
+   },
+   "panel_est": 105,
+   "h622_gate": {
+    "trigger": "A (recorded dense-first render answers absent)",
+    "walk_invocations": 40,
+    "walk_invocation_frac": 0.303,
+    "arm_flips_inside_gate": 0,
+    "arm_flips_outside_gate": 0
+   },
+   "kind": "nucleus",
+   "beta": 32,
+   "registered_sweep": false,
+   "beta_is_calibrated": false,
+   "k_uncapped": {
+    "median": 1,
+    "min": 1,
+    "max": 15,
+    "p25": 1,
+    "p75": 2
+   },
+   "k_used": {
+    "median": 1,
+    "min": 1,
+    "max": 15
+   },
+   "cap_binds_probes": 0,
+   "cap_binds_frac": 0.0,
+   "degenerate_equals_fixed_dense_at_cap": false,
+   "shipped_top16_softmax_mass_median": 0.999897,
+   "shipped_top16_softmax_mass_min": 0.908458
+  }
+ },
+ "cap_degeneracy": {
+  "degenerate_arms": [
+   "nucleus|beta=12|mass=0.9|cap=64|DEGENERATE",
+   "nucleus|beta=1|mass=0.9|cap=64|DEGENERATE",
+   "nucleus|beta=2|mass=0.9|cap=64|DEGENERATE",
+   "nucleus|beta=4|mass=0.9|cap=64|DEGENERATE",
+   "nucleus|beta=8|mass=0.9|cap=64|DEGENERATE"
+  ],
+  "degenerate_arm_nets": {
+   "nucleus|beta=1|mass=0.9|cap=64|DEGENERATE": 1,
+   "nucleus|beta=2|mass=0.9|cap=64|DEGENERATE": 1,
+   "nucleus|beta=4|mass=0.9|cap=64|DEGENERATE": 1,
+   "nucleus|beta=8|mass=0.9|cap=64|DEGENERATE": 1,
+   "nucleus|beta=12|mass=0.9|cap=64|DEGENERATE": 1
+  },
+  "fixed_dense_at_cap_net": 1,
+  "identical_to_fixed_dense_at_cap": true,
+  "reading": "Every arm in the registered beta sweep hits the k=64 cap on all 132 probes, so it selects exactly the top 64 by score - fixed dense@64, not adaptive-k. Any movement in those arms is attributable to k=64 vs k=16, NOT to nucleus selection."
+ },
+ "best_non_degenerate_arm": {
+  "name": "nucleus|beta=16|mass=0.9|cap=64",
+  "panel": 115,
+  "net_flips": 0,
+  "regressions": 0
+ },
+ "verdict_rule": "a cap-degenerate arm is fixed dense@cap, not the registered adaptive-k mechanism, so it cannot carry the verdict; the verdict is taken over the non-degenerate arms only",
+ "caveats": [
+  "H540 discipline: at n=132 a 1-2 flip movement sits inside the band the registration's own V2 names (~+-8.5pp), so no single-flip result is a significance claim; exact counts and per-probe pid lists are given instead.",
+  "Flip evaluation is the deterministic retrieval-level proxy of H651/H628: a flip is a reference FAIL whose gold carriers were not all inside the reference region and are all inside the arm region at render_budget 1.0. Not a live re-render.",
+  "Nucleus seeds change the seed set, so pass-to-fail regressions ARE possible and are counted; where the arm's seed set is a superset of dense@16 the region is a superset and regressions are structurally impossible (flagged per arm).",
+  "The H622 gate is reported as a COST datum only. Its trigger reads the dense-first render, which under nucleus seeds cannot be re-simulated offline, so the trigger set is held at the recorded dense@16 base_b10 failures (40 probes).",
+  "carrier_recall_at_nucleus_k is NOT comparable head-to-head with the dense recall@16 pin when k > 16 - it is reported as a landing datum, never as a win.",
+  "frozen 6,626-entity substrate, not the 7,575 live re-ingest."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h659-nucleus-seeding-20260914T081752Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h659-nucleus-seeding-20260914T081752Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h659-nucleus-seeding-20260914T081752Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r59_h659_nucleus_seeding.py"
+ }
+}
