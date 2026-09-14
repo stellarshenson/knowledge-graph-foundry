@@ -61,6 +61,27 @@ Current substrate: the 2WikiMultihopQA benchmark ladder (nested rungs of 50 / 20
 
 One-line positioning: HippoRAG-2 is the retrieval blueprint KGF borrows (fuse inside PPR) without a persistent resolved graph; MS GraphRAG summarizes but cannot resolve identity; LightRAG is the cheap baseline; TrustGraph is a platform play with provenance but no measured self-repair; graphify is widest on inputs, thinnest on identity. KGF's differentiators are the rows nobody else fills: cured ontology, calibrated identity, certificates + repair, versioning, fingerprint caching.
 
+### External evaluation (2026-09-13)
+
+An independent evaluation compared KGF against HippoRAG 2, MS GraphRAG, LightRAG and graphify as the engine for a private multilingual legal-evidence corpus (729 documents, mixed PDF / DOCX / audio / image, batch arrival over years, answers traceable to a quotation and a page). The mechanisms that decided it, each checkable against the code - full account in [`ADVANTAGES.md`](ADVANTAGES.md):
+
+| Advantage | Mechanism | Where it lives |
+|---|---|---|
+| Assertion-level indexing | propositions embedded in their own index and seeded into PPR, on by default | `settings.py` (`QuestionSettings`) |
+| Multilingual entailment head | XNLI-trained mDeBERTa adjudicator, today vetoing merges above 0.5 | `resolution/identity_stack.py` |
+| Non-English corpora by configuration | `BAAI/bge-m3` passage channel on `local-gpu` | `ChannelEmbedding` |
+| Fully local inference path, measured | `local-gpu` / `claude-cli` engines; `e5-local` entity embeddings at parity with Titan (R47-H582b) | `LLMSettings`, `extraction/embeddings.py` |
+| Provenance to document and chunk | per-entity sources, event log, coverage certificates, gap ledger | graph control metanode |
+| Non-lossy bitemporal invalidation | `valid_to` set and never deleted, `_HISTORY` read, drift alarm at 0.2 | `graph/temporal.py` |
+| Statistically gated ontology growth | curing FSM on JSD < 0.02, Chao1 > 0.95, missing-mass UCB <= 0.05 | curing FSM |
+| Identity decoupled from type | one node carrying several role labels | resolver |
+| Incremental, restart-safe ingest | control metanode + idempotent resume (recorded at doc 966 of 1,000) | ingest lifecycle |
+| Certified context cost | conformal E[miss] <= 0.08 at ~1/4 of static render cost | escalation gate |
+| Failure register | RFM-1..9, defect log, 538+ ledgered hypotheses | `docs/recall-failure-modes.md` |
+
+Gaps the same evaluation surfaced: no admission gate on text extraction (17.6% of the evaluation corpus's PDFs carried no text layer and would enter silently as empty documents), no image path, and single-pass extraction carrier recall of 76.8% as the ceiling on everything above.
+
+
 ## Strengths and Weaknesses
 
 Strengths (each carries a recorded, reproducible measurement):
