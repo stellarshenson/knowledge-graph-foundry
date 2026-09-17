@@ -22,19 +22,26 @@ checked against the known census: 1,830 components, LCC 3,162 = 47.72%, 1,426 is
 Neo4j access is STRICTLY READ-ONLY: MATCH / RETURN / CALL db.labels() only. No writes to any
 instance, no GPU, no LLM, no network beyond the bolt connection.
 
-The chunk -> entity mapping exists NOWHERE on disk in this repository (H631 recorded that
-tmp/results/r47/ents_meta.json carries no provenance field; every prior script pulled the
-mapping live and persisted only aggregates). It is therefore an unavoidable Neo4j dependency.
-If no instance is reachable, this script writes a PREMISE-FAILED artifact carrying the FREE
-component pins plus the exact blocker and resume recipe, and produces NO census numbers -
-the arm stops rather than improvising a substitute.
+The chunk -> entity mapping was missing from disk at the first attempt (2026-09-14, PREMISE-
+FAILED): tmp/results/r47/ents_meta.json carries no provenance field and every prior script
+pulled the mapping live and persisted only aggregates. This run persists it to
+tmp/results/r47/chunk_entities.json, so every later FREE replay runs with --export-dir or
+straight off that cache and never needs a live instance again.
+
+Instance targeting is EXPLICIT (DEF-4: .env NEO4J_URI silently overrides config targets).
+--uri / --user / --password pin the instance; --export-dir runs fully offline from a
+read-only cypher-shell CSV export. Auto-discovery over CANDIDATE_URIS remains only as the
+no-argument fallback. Nothing in this script reads .env.
 
 Writes:
   reports/experiments/r59/h660-cooccurrence-census-<ts>.json
   reports/experiments/r59/h660-cooccurrence-census-<ts>.md    (brief)
   reports/experiments/r59/h660-cooccurrence-census-<ts>.checkpoint.jsonl
+  tmp/results/r47/chunk_entities.json                         (offline provenance cache)
 """
 
+import argparse
+import csv
 import json
 import subprocess
 import sys
@@ -53,8 +60,16 @@ import r47_h582_embedder_swap as H       # noqa: E402  (_norm)
 import r50_h619_seedland_digs as R50     # noqa: E402  (load_substrate)
 
 CACHE = ROOT / "tmp/results/r47"
+CHUNK_ENTS_CACHE = CACHE / "chunk_entities.json"
 OUT = ROOT / "reports/experiments/r59"
 ATLAS_ROWS = ROOT / "reports/experiments/r57/h644-miss-atlas-rows-20260724T085649Z.jsonl"
+
+# The pinned substrate (R52 close, H627, H631) is the entity-entity graph EXCLUDING the
+# SIMILAR_TO embedding layer: only that edge set reproduces 1,830 / 3,162 / 1,426 exactly,
+# and it is the adjacency the shipped walk traverses. SIMILAR_TO is reported as a
+# sensitivity, never folded into the primary number - R59-H660's own vet separates
+# co-occurrence in excess of expectation from the existing similarity edges.
+SOFT_LINK_TYPE = "SIMILAR_TO"
 
 JOIN_VERSION = "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, R57 atlas rows)"
 REGION_RULE = "H651 widened: seeds u anchors u FULL 1-hop shell u PPR-top15"
@@ -65,6 +80,8 @@ PIN_LCC_NODES = 3162
 PIN_LCC_FRAC = 0.4772
 PIN_ISOLATED = 1426
 PIN_BASE_RECALL = 0.6012
+PIN_ENTITIES = 6626
+PIN_EE_UNDIRECTED = 5386
 
 NEO4J_AUTH = ("neo4j", "kgfoundry")
 CONNECT_TIMEOUT = 8
@@ -109,7 +126,80 @@ def cross_component_gold_rows():
     return [r for r in rows if (r["traversal"] or {}).get("component_status") == "cross"]
 
 
-def connect(log):
+def _unquote(s):
+    s = s.strip()
+    return s[1:-1] if len(s) >= 2 and s[0] == '"' and s[-1] == '"' else s
+
+
+def _read_csv(path):
+    """cypher-shell --format plain rows: header line, then double-quoted string cells.
+    The separator is ", " - skipinitialspace is required or a comma inside a quoted name
+    splits the row."""
+    with open(path, newline="") as fh:
+        rows = list(csv.reader(fh, skipinitialspace=True))
+    return [[_unquote(c) for c in r] for r in rows[1:]]
+
+
+def read_export(d, log):
+    """Offline equivalent of pull_graph, over a read-only cypher-shell CSV export.
+
+    Expects entities.csv (eid), ee_edges.csv (a,b,type), chunk_entities.csv (cid,eid)
+    and chunk_meta.csv (cid,index,doc_id,text_len) produced by `cypher-shell --format
+    plain` against the target instance. Every exported column is an id or a relationship
+    type: cypher-shell escapes an embedded double quote as \\" rather than doubling it, so
+    two entity NAMES on this rung break CSV parsing. Names are therefore not exported -
+    they are read from ents_meta.json, whose id set is identical.
+    """
+    d = Path(d)
+    meta_name = {m["id"]: m["name"] for m in
+                 json.loads((CACHE / "ents_meta.json").read_text())}
+    ent_name = {r[0]: meta_name.get(r[0], "") for r in _read_csv(d / "entities.csv")}
+    ee_edges = [(a, b, t) for a, b, t in _read_csv(d / "ee_edges.csv") if a != b]
+    chunk_ents = defaultdict(set)
+    for cid, eid in _read_csv(d / "chunk_entities.csv"):
+        chunk_ents[cid].add(eid)
+    chunk_meta = {cid: {"index": int(idx), "doc_id": doc, "text_len": int(tl)}
+                  for cid, idx, doc, tl in _read_csv(d / "chunk_meta.csv")}
+    schema = {
+        "entity_count": len(ent_name),
+        "chunk_count": len(chunk_meta),
+        "mentioned_in_edges": sum(len(v) for v in chunk_ents.values()),
+        "entity_entity_rel_count": len(ee_edges),
+        "soft_link_edges": sum(1 for _, _, t in ee_edges if t == SOFT_LINK_TYPE),
+        "provenance_path": "Entity-[:MENTIONED_IN]->Chunk",
+        "source": f"read-only cypher-shell export {d}",
+    }
+    log(f"export: {schema['entity_count']} entities, {schema['chunk_count']} chunks, "
+        f"{schema['mentioned_in_edges']} MENTIONED_IN, "
+        f"{schema['entity_entity_rel_count']} entity-entity rels "
+        f"({schema['soft_link_edges']} {SOFT_LINK_TYPE})")
+    return schema, ent_name, ee_edges, dict(chunk_ents), chunk_meta
+
+
+def persist_chunk_entities(chunk_ents, chunk_meta, schema, uri, container, image, run_id):
+    """The process fix: the chunk -> entity mapping lands next to ents_meta.json so no
+    later FREE replay needs a live instance for it."""
+    payload = {
+        "_stamp": {
+            "hypothesis": "R59-H660", "run_id": run_id, "utc_timestamp": run_id,
+            "instance_uri": uri, "container": container, "image": image,
+            "git_head": git_head(), "provenance_path": schema["provenance_path"],
+            "entity_count": schema["entity_count"], "chunk_count": schema["chunk_count"],
+            "mentioned_in_edges": schema["mentioned_in_edges"],
+            "entity_entity_rel_count": schema["entity_entity_rel_count"],
+            "note": ("chunk id -> sorted entity ids, from "
+                     "(:Entity)-[:MENTIONED_IN]->(:Chunk) on the medium rung restored from "
+                     "data/interim/dumps/20260713-neo4j-medium-2wiki-1000.dump"),
+        },
+        "chunk_meta": chunk_meta,
+        "chunk_entities": {cid: sorted(es) for cid, es in sorted(chunk_ents.items())},
+    }
+    CHUNK_ENTS_CACHE.parent.mkdir(parents=True, exist_ok=True)
+    CHUNK_ENTS_CACHE.write_text(json.dumps(payload, indent=1))
+    return CHUNK_ENTS_CACHE
+
+
+def connect(log, uris, auth):
     """Return (driver, uri) for the first reachable instance, else (None, None)."""
     try:
         from neo4j import GraphDatabase
@@ -117,9 +207,9 @@ def connect(log):
         log(f"neo4j driver import failed: {e}")
         return None, None, []
     attempts = []
-    for uri in CANDIDATE_URIS:
+    for uri in uris:
         try:
-            d = GraphDatabase.driver(uri, auth=NEO4J_AUTH, connection_timeout=CONNECT_TIMEOUT)
+            d = GraphDatabase.driver(uri, auth=auth, connection_timeout=CONNECT_TIMEOUT)
             with d.session() as s:
                 s.run("MATCH (n) RETURN count(n) AS c").single()
             log(f"connected: {uri}")
@@ -144,6 +234,8 @@ def pull_graph(sess, log):
         "MATCH (:Entity)-[:MENTIONED_IN]->(:Chunk) RETURN count(*) AS c").single()["c"]
     schema["entity_entity_rel_count"] = sess.run(
         "MATCH (:Entity)-[r]->(:Entity) RETURN count(r) AS c").single()["c"]
+    schema["soft_link_edges"] = sess.run(
+        f"MATCH (:Entity)-[r:{SOFT_LINK_TYPE}]->(:Entity) RETURN count(r) AS c").single()["c"]
     schema["provenance_path"] = "Entity-[:MENTIONED_IN]->Chunk"
     log(f"schema: {schema['entity_count']} entities, {schema['chunk_count']} chunks, "
         f"{schema['mentioned_in_edges']} MENTIONED_IN, "
@@ -164,12 +256,35 @@ def pull_graph(sess, log):
                       "RETURN c.id AS cid, e.id AS eid"):
         chunk_ents[r["cid"]].add(r["eid"])
 
+    chunk_meta = {}
+    for r in sess.run("MATCH (c:Chunk) OPTIONAL MATCH (c)-[:PART_OF]->(d:KGFDocument) "
+                      "RETURN c.id AS cid, c.index AS idx, d.id AS doc, "
+                      "size(c.text) AS tl"):
+        chunk_meta[r["cid"]] = {"index": r["idx"], "doc_id": r["doc"],
+                                "text_len": r["tl"]}
+
     log(f"pulled {len(ent_name)} entity names, {len(ee_edges)} entity-entity edges, "
         f"{len(chunk_ents)} chunks with at least one entity")
-    return schema, ent_name, ee_edges, dict(chunk_ents)
+    return schema, ent_name, ee_edges, dict(chunk_ents), chunk_meta
+
+
+def parse_args(argv=None):
+    p = argparse.ArgumentParser(description="R59-H660 chunk-local co-occurrence census")
+    p.add_argument("--uri", help="bolt URI of the instance; pins the target (DEF-4). "
+                                 "Omit to fall back to CANDIDATE_URIS auto-discovery.")
+    p.add_argument("--user", default=NEO4J_AUTH[0])
+    p.add_argument("--password", default=NEO4J_AUTH[1])
+    p.add_argument("--export-dir", help="run offline from a read-only cypher-shell CSV "
+                                        "export instead of a bolt connection")
+    p.add_argument("--instance-label", default=None,
+                   help="how the instance was reached, recorded verbatim in the artifact")
+    p.add_argument("--container", default=None, help="container name, for the stamp")
+    p.add_argument("--image", default=None, help="image tag, for the stamp")
+    return p.parse_args(argv)
 
 
 def main():
+    args = parse_args()
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     OUT.mkdir(parents=True, exist_ok=True)
     log = lambda m: print(m, flush=True)  # noqa: E731
@@ -233,11 +348,22 @@ def main():
              "component_id": r["traversal"]["component_id"],
              "component_size": r["traversal"]["component_size"]} for r in xrows],
         "neo4j_access": "READ-ONLY (MATCH / RETURN / CALL db.labels() only); no writes",
+        "instance_targeting": ("EXPLICIT per DEF-4; .env is never read by this script"
+                               if (args.uri or args.export_dir)
+                               else "CANDIDATE_URIS auto-discovery fallback"),
     }
 
     # ============ Neo4j part ================================================
-    driver, uri, attempts = connect(log)
-    if driver is None:
+    if args.export_dir:
+        schema, ent_name, ee_edges, chunk_ents, chunk_meta = read_export(args.export_dir, log)
+        uri = args.uri or args.instance_label or f"offline export {args.export_dir}"
+        attempts = [{"uri": uri, "ok": True, "mode": "read-only cypher-shell export"}]
+        driver = None
+    else:
+        auth = (args.user, args.password)
+        uris = [args.uri] if args.uri else CANDIDATE_URIS
+        driver, uri, attempts = connect(log, uris, auth)
+    if driver is None and not args.export_dir:
         summ = dict(base)
         summ.update({
             "verdict_recommendation": "PREMISE-FAILED",
@@ -339,33 +465,56 @@ and a stopped alpine probe); the hub network carrying the `.env` hostname
         return
 
     # ---- live pull ---------------------------------------------------------
-    with driver.session() as sess:
-        schema, ent_name, ee_edges, chunk_ents = pull_graph(sess, log)
-    driver.close()
-    chk("schema", {"uri": uri, **{k: v for k, v in schema.items() if k != "labels"},
-                   "labels": schema["labels"]})
+    if driver is not None:
+        with driver.session() as sess:
+            schema, ent_name, ee_edges, chunk_ents, chunk_meta = pull_graph(sess, log)
+        driver.close()
+    chk("schema", {"uri": uri, **schema})
+
+    cache_path = persist_chunk_entities(chunk_ents, chunk_meta, schema, uri,
+                                        args.container, args.image, run_id)
+    log(f"persisted chunk -> entity mapping: {cache_path}")
+    chk("chunk_entities_cache", {"path": str(cache_path),
+                                 "chunks": len(chunk_ents),
+                                 "mentioned_in_edges": schema["mentioned_in_edges"]})
 
     # ---- components offline in networkx ------------------------------------
-    G = nx.Graph()
-    G.add_nodes_from(ent_name)
-    G.add_edges_from((a, b) for a, b, _ in ee_edges)
-    adjacent = set()
-    for a, b, _ in ee_edges:
-        adjacent.add((a, b) if a < b else (b, a))
-    comps = list(nx.connected_components(G))
-    comp_of = {}
-    for ci, cset in enumerate(comps):
-        for nid in cset:
-            comp_of[nid] = ci
-    sizes = sorted((len(c) for c in comps), reverse=True)
-    live_census = {"entities": G.number_of_nodes(),
-                   "edges_undirected": G.number_of_edges(),
-                   "components": len(comps), "lcc_nodes": sizes[0] if sizes else 0,
-                   "lcc_frac": round((sizes[0] if sizes else 0) / max(G.number_of_nodes(), 1), 4),
-                   "isolated": sum(1 for s in sizes if s == 1)}
-    log(f"live census: {live_census['components']} components, LCC {live_census['lcc_nodes']} "
-        f"({live_census['lcc_frac']}), isolated {live_census['isolated']}")
-    chk("live_component_census", live_census)
+    # PRIMARY graph excludes the SIMILAR_TO embedding layer: only that edge set reproduces
+    # the pinned 1,830 / 3,162 / 1,426, and it is the adjacency the shipped walk traverses.
+    def build(edges):
+        g = nx.Graph()
+        g.add_nodes_from(ent_name)
+        g.add_edges_from((a, b) for a, b, _ in edges)
+        adj = {(a, b) if a < b else (b, a) for a, b, _ in edges}
+        cmap = {}
+        for ci, cset in enumerate(nx.connected_components(g)):
+            for nid in cset:
+                cmap[nid] = ci
+        sz = sorted((len(c) for c in nx.connected_components(g)), reverse=True)
+        n = g.number_of_nodes()
+        cen = {"entities": n, "edges_undirected": g.number_of_edges(),
+               "components": len(sz), "lcc_nodes": sz[0] if sz else 0,
+               "lcc_frac": round((sz[0] if sz else 0) / max(n, 1), 4),
+               "isolated": sum(1 for s in sz if s == 1)}
+        return adj, cmap, cen
+
+    hard_edges = [e for e in ee_edges if e[2] != SOFT_LINK_TYPE]
+    adjacent, comp_of, live_census = build(hard_edges)
+    adjacent_any, comp_of_any, live_census_any = build(ee_edges)
+    live_census["pins_reproduce"] = (
+        live_census["entities"] == PIN_ENTITIES
+        and live_census["edges_undirected"] == PIN_EE_UNDIRECTED
+        and live_census["components"] == PIN_COMPONENTS
+        and live_census["lcc_nodes"] == PIN_LCC_NODES
+        and abs(live_census["lcc_frac"] - PIN_LCC_FRAC) < 1e-9
+        and live_census["isolated"] == PIN_ISOLATED)
+    log(f"live census (primary, no {SOFT_LINK_TYPE}): {live_census['components']} components, "
+        f"LCC {live_census['lcc_nodes']} ({live_census['lcc_frac']}), "
+        f"isolated {live_census['isolated']} - pins reproduce: {live_census['pins_reproduce']}")
+    log(f"live census (any type): {live_census_any['components']} components, "
+        f"LCC {live_census_any['lcc_nodes']} ({live_census_any['lcc_frac']}), "
+        f"isolated {live_census_any['isolated']}")
+    chk("live_component_census", {"primary": live_census, "any_type": live_census_any})
 
     # ---- chunk-local co-occurrence -----------------------------------------
     C = len(chunk_ents)
@@ -381,13 +530,18 @@ and a stopped alpine probe); the hub network carrying the `.env` hostname
 
     total_pairs = len(w_raw)
     a_pairs = {p: w for p, w in w_raw.items() if p not in adjacent}
-    b_pairs = {p: w for p, w in a_pairs.items()
-               if comp_of.get(p[0]) is not None and comp_of.get(p[1]) is not None
-               and comp_of[p[0]] != comp_of[p[1]]}
+    b_pairs = {p: w for p, w in a_pairs.items() if comp_of[p[0]] != comp_of[p[1]]}
+    a_pairs_any = {p: w for p, w in w_raw.items() if p not in adjacent_any}
+    b_pairs_any = {p: w for p, w in a_pairs_any.items()
+                   if comp_of_any[p[0]] != comp_of_any[p[1]]}
     log(f"co-occurring pairs: {total_pairs} total; (a) not-adjacent {len(a_pairs)}; "
         f"(b) not-adjacent AND cross-component {len(b_pairs)}")
+    log(f"sensitivity with {SOFT_LINK_TYPE} counted as adjacency: "
+        f"(a)={len(a_pairs_any)} (b)={len(b_pairs_any)}")
     chk("counts", {"cooccurring_pairs_total": total_pairs,
                    "a_not_adjacent": len(a_pairs), "b_cross_component": len(b_pairs),
+                   "a_not_adjacent_any_type": len(a_pairs_any),
+                   "b_cross_component_any_type": len(b_pairs_any),
                    "chunks_with_entities": C})
 
     # ---- (d) baseline-subtracted association weight on the (b) pairs --------
@@ -432,16 +586,24 @@ and a stopped alpine probe); the hub network carrying the `.env` hostname
         carrier_comp = comp_of.get(eid)
         joined = (carrier_comp is not None
                   and bool(b_by_comp.get(carrier_comp, set()) & seed_comps))
+        # stricter reading: a (b)-pair whose two endpoints ARE the carrier and a seed
+        direct = sorted(s for s in seeds
+                        if s and ((eid, s) if eid < s else (s, eid)) in b_pairs)
         gold_join.append({"probe": r["probe"], "carrier": r["carrier"],
                           "carrier_entity_id": eid, "carrier_component": carrier_comp,
                           "seed_components": sorted(seed_comps),
                           "joined_by_a_b_pair": joined,
+                          "direct_b_pair_with_seed": bool(direct),
+                          "direct_b_pair_seed_ids": direct,
                           "note": (None if eid in comp_of else
                                    "carrier node id not present in this instance "
                                    "(frozen-cache index -> live id mismatch)")})
     n_joined = sum(1 for g in gold_join if g["joined_by_a_b_pair"])
-    log(f"cross-component gold rows joined by at least one (b)-pair: {n_joined}/{len(xrows)}")
-    chk("gold_row_join", {"joined": n_joined, "of": len(xrows), "rows": gold_join})
+    n_direct = sum(1 for g in gold_join if g["direct_b_pair_with_seed"])
+    log(f"cross-component gold rows joined by at least one (b)-pair: {n_joined}/{len(xrows)} "
+        f"(component-level); direct carrier-seed (b)-pair: {n_direct}/{len(xrows)}")
+    chk("gold_row_join", {"joined": n_joined, "direct": n_direct, "of": len(xrows),
+                          "rows": gold_join})
 
     # ---- gate verdict -------------------------------------------------------
     gate_open = len(b_pairs) > 0
@@ -451,13 +613,17 @@ and a stopped alpine probe); the hub network carrying the `.env` hostname
     summ.update({
         "verdict_recommendation": verdict,
         "neo4j_uri_reached": uri,
+        "instance": {"uri": uri, "container": args.container, "image": args.image,
+                     "access": args.instance_label,
+                     "dump": "data/interim/dumps/20260713-neo4j-medium-2wiki-1000.dump"},
         "schema": schema,
         "live_component_census": live_census,
         "component_pin_check": {
-            "live_vs_frozen_note": ("the pins 1,830 / LCC 47.72% / 1,426 isolated are the FROZEN "
-                                    "6,626-entity substrate; a live re-ingest carries a different "
-                                    "entity count and need not match"),
-            "frozen": frozen, "live": live_census},
+            "note": ("the restored instance reproduces the frozen substrate EXACTLY once the "
+                     f"{SOFT_LINK_TYPE} embedding layer is excluded: same 6,626 entity ids, same "
+                     "5,386 undirected entity-entity edges, same 1,830 / 3,162 / 1,426. The "
+                     f"{SOFT_LINK_TYPE} layer is what the frozen cache dropped"),
+            "frozen": frozen, "live_primary": live_census, "live_any_type": live_census_any},
         "census": {
             "chunks_with_entities": C,
             "cooccurring_pairs_total": total_pairs,
@@ -465,14 +631,19 @@ and a stopped alpine probe); the hub network carrying the `.env` hostname
             "b_not_adjacent_AND_cross_component": len(b_pairs),
             "a_frac_of_total": round(len(a_pairs) / total_pairs, 6) if total_pairs else None,
             "b_frac_of_a": round(len(b_pairs) / len(a_pairs), 6) if a_pairs else None,
+            "sensitivity_soft_links_counted_as_adjacency": {
+                "a_not_already_adjacent": len(a_pairs_any),
+                "b_not_adjacent_AND_cross_component": len(b_pairs_any)},
         },
         "w_assoc": wa,
-        "cross_component_gold_row_join": {"joined": n_joined, "of": len(xrows),
-                                          "rows": gold_join},
+        "chunk_entities_cache": str(cache_path),
+        "cross_component_gold_row_join": {"joined": n_joined, "direct": n_direct,
+                                          "of": len(xrows), "rows": gold_join},
         "caveats": [
-            "Components are computed over entity-entity relationships of ANY type, matching the "
-            "shipped walk's adjacency; SIMILAR_TO soft links are included if present in the "
-            "instance and the count is reported in the schema block.",
+            f"PRIMARY adjacency and components exclude the {SOFT_LINK_TYPE} embedding layer: "
+            "only that edge set reproduces the pinned 1,830 / 3,162 / 1,426, and it is what the "
+            "shipped walk traverses. The literal any-type reading is reported alongside as a "
+            "sensitivity, never folded in.",
             "w_assoc uses the independence baseline E[w_raw] = f_u f_v / C; with C chunks and "
             "per-entity chunk frequencies mostly 1, the baseline is near zero and w_assoc is "
             "close to w_raw - stated so the number is not over-read.",
@@ -491,25 +662,34 @@ and a stopped alpine probe); the hub network carrying the `.env` hostname
 
     gold_md = "\n".join(
         f"| {g['carrier']} | {g['carrier_component']} | "
-        f"{'YES' if g['joined_by_a_b_pair'] else 'no'} | {g['note'] or '-'} |"
+        f"{'YES' if g['joined_by_a_b_pair'] else 'no'} | "
+        f"{'YES' if g['direct_b_pair_with_seed'] else 'no'} | {g['note'] or '-'} |"
         for g in gold_join)
     mp.write_text(f"""# R59-H660 chunk-local co-occurrence census - brief
 
 **Verdict recommendation: {verdict}** (run {run_id}, git {base['git_head'][:12]},
 join {JOIN_VERSION}, region rule: {REGION_RULE})
 
-Instance reached: `{uri}` - READ-ONLY (MATCH / RETURN / CALL db.labels() only).
+Instance: `{uri}`, container `{args.container}`, image `{args.image}`, restored from
+`data/interim/dumps/20260713-neo4j-medium-2wiki-1000.dump`. Access READ-ONLY
+(MATCH / RETURN only; no MERGE / CREATE / SET / DELETE, no APOC or GDS).
 {schema['entity_count']} entities, {schema['chunk_count']} chunks,
 {schema['mentioned_in_edges']} MENTIONED_IN edges,
-{schema['entity_entity_rel_count']} entity-entity relationships.
+{schema['entity_entity_rel_count']} entity-entity relationships
+(of which {schema.get('soft_link_edges', 0)} {SOFT_LINK_TYPE}).
 
 ## Pins
 - dense@16 carrier recall **{base_recall}** (pin {PIN_BASE_RECALL})
 - frozen-substrate components **{frozen['components']}** (pin {PIN_COMPONENTS}), LCC
   **{frozen['lcc_nodes']}** = **{frozen['lcc_frac']}** (pins {PIN_LCC_NODES} / {PIN_LCC_FRAC}),
   isolated **{frozen['isolated']}** (pin {PIN_ISOLATED})
-- live instance: **{live_census['components']}** components, LCC **{live_census['lcc_nodes']}**
-  = **{live_census['lcc_frac']}**, isolated **{live_census['isolated']}**
+- restored instance, primary graph (no {SOFT_LINK_TYPE}): **{live_census['components']}**
+  components, LCC **{live_census['lcc_nodes']}** = **{live_census['lcc_frac']}**, isolated
+  **{live_census['isolated']}**, {live_census['edges_undirected']} undirected edges -
+  pins reproduce exactly: **{live_census['pins_reproduce']}**
+- restored instance, any type (incl. {SOFT_LINK_TYPE}): **{live_census_any['components']}**
+  components, LCC **{live_census_any['lcc_nodes']}** = **{live_census_any['lcc_frac']}**,
+  isolated **{live_census_any['isolated']}**
 - the 4 cross-component residual gold rows located in the R57 atlas: **{len(xrows)}**
 
 ## Census (exact counts)
@@ -517,6 +697,9 @@ Instance reached: `{uri}` - READ-ONLY (MATCH / RETURN / CALL db.labels() only).
 - chunk-local co-occurring entity pairs, total: **{total_pairs}**
 - **(a)** co-occurring and NOT already adjacent: **{len(a_pairs)}**
 - **(b)** (a) AND the two entities in DIFFERENT components: **{len(b_pairs)}**
+
+Sensitivity, counting the {SOFT_LINK_TYPE} embedding layer as adjacency and as component
+structure: (a) = **{len(a_pairs_any)}**, (b) = **{len(b_pairs_any)}**.
 
 ## Baseline-subtracted association weight `w_assoc = w_raw - E[w_raw]`
 Baseline `E[w_raw] = f_u f_v / C` under independence given entity chunk-frequencies, C = {C}.
@@ -527,17 +710,26 @@ Baseline `E[w_raw] = f_u f_v / C` under independence given entity chunk-frequenc
 | (a) pairs | {wa['a_pairs'].get('n', 0)} | {wa['a_pairs'].get('min', '-')} | {wa['a_pairs'].get('p10', '-')} | {wa['a_pairs'].get('p50', '-')} | {wa['a_pairs'].get('p90', '-')} | {wa['a_pairs'].get('max', '-')} | {wa['a_pairs'].get('mean', '-')} | {wa['a_pairs'].get('positive_count', '-')} | {wa['a_pairs'].get('ge_0.9_count', '-')} |
 
 ## The 4 cross-component residual gold rows
-Joined to a seed component by at least one (b)-pair: **{n_joined}/{len(xrows)}**
+Carrier component joined to a seed component by at least one (b)-pair:
+**{n_joined}/{len(xrows)}**. Carrier itself co-mentioned with a seed by a (b)-pair:
+**{n_direct}/{len(xrows)}**.
 
-| carrier | carrier component | joined by a (b)-pair | note |
-|---|---|---|---|
+| carrier | carrier component | component joined | direct carrier-seed (b)-pair | note |
+|---|---|---|---|---|
 {gold_md}
 
 ## Gate
 Registered rule: H661 opens only on a non-trivial (b). (b) = **{len(b_pairs)}** -> **{verdict}**.
 
+## Process fix
+Chunk -> entity mapping persisted to `{cache_path}` ({len(chunk_ents)} chunks,
+{schema['mentioned_in_edges']} edges), stamped with instance, counts and UTC time. Later FREE
+replays read that cache and need no live instance.
+
 ## Caveats
-- components use entity-entity relationships of ANY type, matching the shipped walk's adjacency
+- primary adjacency and components exclude the {SOFT_LINK_TYPE} embedding layer; only that
+  edge set reproduces the pinned 1,830 / 3,162 / 1,426, and it is what the shipped walk
+  traverses. The literal any-type reading is reported as a sensitivity, never folded in
 - `w_assoc` uses the independence baseline; where per-entity chunk frequency is mostly 1 the
   baseline is near zero and `w_assoc` is close to `w_raw` - stated so it is not over-read
 - the 4 gold rows are indexed against the frozen 6,626-entity cache; unresolved ids under a
@@ -547,7 +739,7 @@ Registered rule: H661 opens only on a non-trivial (b). (b) = **{len(b_pairs)}** 
 """)
     cf.close()
     log(f"\nVERDICT {verdict} | (a)={len(a_pairs)} (b)={len(b_pairs)} "
-        f"gold rows joined {n_joined}/{len(xrows)}")
+        f"gold rows joined {n_joined}/{len(xrows)} (direct {n_direct}/{len(xrows)})")
     log(f"wrote {jp}")
 
 

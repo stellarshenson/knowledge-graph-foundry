@@ -61,25 +61,20 @@ Current substrate: the 2WikiMultihopQA benchmark ladder (nested rungs of 50 / 20
 
 One-line positioning: HippoRAG-2 is the retrieval blueprint KGF borrows (fuse inside PPR) without a persistent resolved graph; MS GraphRAG summarizes but cannot resolve identity; LightRAG is the cheap baseline; TrustGraph is a platform play with provenance but no measured self-repair; graphify is widest on inputs, thinnest on identity. KGF's differentiators are the rows nobody else fills: cured ontology, calibrated identity, certificates + repair, versioning, fingerprint caching.
 
-### External evaluation (2026-09-13)
+### Where those differences come from
 
-An independent evaluation compared KGF against HippoRAG 2, MS GraphRAG, LightRAG and graphify as the engine for a private multilingual legal-evidence corpus (729 documents, mixed PDF / DOCX / audio / image, batch arrival over years, answers traceable to a quotation and a page). The mechanisms that decided it, each checkable against the code - full account in [`ADVANTAGES.md`](ADVANTAGES.md):
+Each is a mechanism rather than a feature claim, named with the file that carries it so it can be checked against the code.
 
-| Advantage | Mechanism | Where it lives |
-|---|---|---|
-| Assertion-level indexing | propositions embedded in their own index and seeded into PPR, on by default | `settings.py` (`QuestionSettings`) |
-| Multilingual entailment head | XNLI-trained mDeBERTa adjudicator, today vetoing merges above 0.5 | `resolution/identity_stack.py` |
-| Non-English corpora by configuration | `BAAI/bge-m3` passage channel on `local-gpu` | `ChannelEmbedding` |
-| Fully local inference path, measured | `local-gpu` / `claude-cli` engines; `e5-local` entity embeddings at parity with Titan (R47-H582b) | `LLMSettings`, `extraction/embeddings.py` |
-| Provenance to document and chunk | per-entity sources, event log, coverage certificates, gap ledger | graph control metanode |
-| Non-lossy bitemporal invalidation | `valid_to` set and never deleted, `_HISTORY` read, drift alarm at 0.2 | `graph/temporal.py` |
-| Statistically gated ontology growth | curing FSM on JSD < 0.02, Chao1 > 0.95, missing-mass UCB <= 0.05 | curing FSM |
-| Identity decoupled from type | one node carrying several role labels | resolver |
-| Incremental, restart-safe ingest | control metanode + idempotent resume (recorded at doc 966 of 1,000) | ingest lifecycle |
-| Certified context cost | conformal E[miss] <= 0.08 at ~1/4 of static render cost | escalation gate |
-| Failure register | RFM-1..9, defect log, 538+ ledgered hypotheses | `docs/recall-failure-modes.md` |
+- **Purpose-driven construction** - a free-text purpose supplied at `kgf init` conditions extraction, seed normalization and type clustering (`extraction/extractor.py`, `ontology/seed.py`). Every other system in the table builds the same graph whatever the graph is for
+- **Cured, not fixed, not free** - the ontology stays fluid while documents buffer and freezes when convergence is demonstrated (JSD < 0.02, Chao1 coverage > 0.95, entropy delta < 0.01, Good-Turing missing-mass UCB <= 0.05), managed by the lifecycle FSM. HippoRAG-2, GraphRAG and LightRAG have no type system to converge; TrustGraph fixes one up front in RDF/OWL. Unbounded type growth on a heterogeneous corpus is the failure this addresses with evidence rather than a cap
+- **Identity is calibrated, and separate from type** - a Bayesian posterior over name similarity, description, embedding and co-occurrence, isotonically calibrated into merge / defer / block zones with an NLI veto, resolved transitively through union-find (`resolution/resolver.py`, `resolution/identity_stack.py`). Types are multi-label attributes of the node, so an entity holding several roles is one node with several labels. The alternatives merge on string or embedding similarity and fragment a multi-role entity by construction
+- **The indexed unit goes down to the assertion** - propositions carry their own embedding index and seed PPR directly, alongside ~7.5 generated questions per chunk (`graph/propositions.py`, `graph/questions.py`). HippoRAG-2 indexes phrases and passages, GraphRAG entities and community summaries, LightRAG entities and relations; GraphRAG's nearest equivalent, the claims pass, is off by default
+- **Invalidation is non-lossy and time is first class** - a superseding fact sets `valid_to` on the prior edge and never deletes it, with history queryable and default reads returning current edges (`graph/temporal.py`, the Graphiti/Zep bitemporal model). No other system in the table carries a temporal model at all, so a corpus whose facts change cannot be asked what it used to hold
+- **The graph audits and repairs itself** - per-document coverage certificates, a gap ledger, drift verdicts (warn / recure / rebuild) and repair-from-source, with lifecycle, ontology, calibration and buffers persisted in a graph control metanode so any session resumes from the graph alone (`graph/metanode.py`, `drift.py`). This is the core thesis and the row no alternative fills: TrustGraph offers explainability, graphify audit labels, neither a repair loop
+- **Cost is certified rather than tuned** - the context-escalation gate is fitted by conformal risk control with a distribution-free E[miss] <= 0.08, and the answer cache is keyed on a corpus fingerprint so it invalidates exactly when the graph mutates (`graph/gate_calibration.py`, `graph/answer_cache.py`). Elsewhere the equivalent knobs are hand-set thresholds and time-to-live guesses
+- **Engine and embedding space are pluggable, and multilingual by default** - extraction runs on a frontier API, the local `claude` CLI or an OpenAI-compatible local endpoint; retrieval channels pin their own embedding models, the passage channel defaulting to `BAAI/bge-m3` on local GPU, with `intfloat/e5-base-v2` at measured parity with Titan for entities (`settings.py`, `extraction/embeddings.py`). A corpus that cannot leave the building, or that is not in English, is a configuration rather than a port
 
-Gaps the same evaluation surfaced: no admission gate on text extraction (17.6% of the evaluation corpus's PDFs carried no text layer and would enter silently as empty documents), no image path, and single-pass extraction carrier recall of 76.8% as the ceiling on everything above.
+Where the others are ahead: KGF reads `pdf`, `docx`, `html`, `md` and `txt` with no check that a PDF carries a text layer and no path for image-only sources, so a scan enters as an empty document and an image is skipped. graphify remains the widest on input surface.
 
 
 ## Strengths and Weaknesses

@@ -2,6 +2,8 @@
 
 `[ ]` open, `[x]` fixed. Dated notes under each track how it evolved.
 
+Two categories share the list. A plain entry is a code defect. An entry tagged `FAILURE-MODE` is an evidenced way the system fails that is not one code fault - a measured class of misses with its cause, its owning lever and its evidence; `[x]` there means mitigated by a shipped lever or by doctrine. Failure modes were kept in `docs/recall-failure-modes.md` until 2026-09-14; that file is historical and new failure modes are recorded here.
+
 ## Contents
 
 - [DEF-1: Per-mention re-embedding on every document](#def-1-per-mention-re-embedding-on-every-document) - fixed
@@ -23,6 +25,17 @@
 - [DEF-17: fact-drift alarm threshold form unreachable for single-doc supersession events](#def-17-fact-drift-alarm-threshold-form-unreachable-for-single-doc-supersession-events) - open
 - [DEF-18: relation vocabulary ungoverned - proliferates with corpus while entity types are cured](#def-18-relation-vocabulary-ungoverned---proliferates-with-corpus-while-entity-types-are-cured) - open
 - [DEF-19: gold-carrier join is exact-title only - carrier-recall metric family biased pessimistically](#def-19-gold-carrier-join-is-exact-title-only---carrier-recall-metric-family-biased-pessimistically) - open
+- [DEF-20: retrieval-hop break - gold fact in the graph, walk never reaches the carrier](#def-20-retrieval-hop-break---gold-fact-in-the-graph-walk-never-reaches-the-carrier) - failure mode, open
+- [DEF-21: seed dilution by fixed-budget hybrid union](#def-21-seed-dilution-by-fixed-budget-hybrid-union) - failure mode, mitigated
+- [DEF-22: single-pass extraction variance drops gold carriers](#def-22-single-pass-extraction-variance-drops-gold-carriers) - failure mode, open
+- [DEF-23: absent-class omissions unrecoverable by re-extraction](#def-23-absent-class-omissions-unrecoverable-by-re-extraction) - failure mode, open
+- [DEF-24: elsewhere-class misses - fact present on a different carrier](#def-24-elsewhere-class-misses---fact-present-on-a-different-carrier) - failure mode, open
+- [DEF-25: artifact-class misses - probe and harness artifacts read as coverage gaps](#def-25-artifact-class-misses---probe-and-harness-artifacts-read-as-coverage-gaps) - failure mode, open
+- [DEF-26: reader-side loss - gold string in the rendered context, answer not produced](#def-26-reader-side-loss---gold-string-in-the-rendered-context-answer-not-produced) - failure mode, open
+- [DEF-27: coverage certificate blind to retrieval-class failures](#def-27-coverage-certificate-blind-to-retrieval-class-failures) - failure mode, open
+- [DEF-28: scale-growth probe regression](#def-28-scale-growth-probe-regression) - failure mode, open
+- [DEF-29: cross-component miss - answer entity on a separate island from every seed](#def-29-cross-component-miss---answer-entity-on-a-separate-island-from-every-seed) - failure mode, open
+- [DEF-30: region-cap miss - widened walk region cut off before the carrier](#def-30-region-cap-miss---widened-walk-region-cut-off-before-the-carrier) - failure mode, mitigated
 
 ### DEF-1: Per-mention re-embedding on every document
 
@@ -150,3 +163,72 @@
   - 2026-07-24 H632 CONFIRMED: hardened join `goldjoin-v2-20260724` validated - 25/38 rows resolve (r1 paren-strip 23, r2 fold 1, r3 fuzzy 1), ZERO false merges across 324 gold titles, zero exact rows remapped, all five verdict signs hold; restated pairs recorded in the experiments log + SOTA (base 0.6012 -> 0.6595, meanpool a0.6 0.7147 -> 0.7853, joinable-denominator 0.8179); correction: only 4 (not 7) of H620's 10 residuals were join artifacts - 2 variant matches were same-name-different-entity, 1 pending on a ladder-ordering defect (r1 matched a wrong namesake before the type-consistent node)
   - 2026-07-24 remaining before close: (1) pinned harnesses adopt goldjoin-v2 + stamp join version in every report (DEF-14 pattern); (2) type-consistency check before accepting an r1 paren-strip match (the `Camille` mis-order); (3) 4 ADJUDICATE-PENDING rows in the artifact's `pending_list` await human review
   - 2026-07-24 item (2) DONE + item (3) closed by H635: type gate shipped as `goldjoin-v3-20260724` (Camille resolved to the Film node, 0 new false merges, 25 v2 rows unchanged, 314/326 = 0.9632); of the 4 pending, 1 resolved and 3 correctly classified genuinely-absent (extraction recall, not join). Remaining before close: harness adoption of goldjoin-v3 + version stamps (item 1 only)
+
+### DEF-20: retrieval-hop break - gold fact in the graph, walk never reaches the carrier
+
+- [ ] FAILURE-MODE HIGH probe fails although the gold fact exists in the graph and would render; cause: retrieval seeds a neighbouring node and the walk never reaches the entity holding the answer - the chain breaks at the retrieval hop, not at coverage; levers: anchor-reset seeding (H583/H597, recovers 88% of the oracle reachability gap, shipped via H620/H622), widened walk region (H651); evidence: REG-2 `(Leopoldo Torres Rios)-[:CHILD]->(Leopoldo Torre Nilsson)`, R45 repair loop, R57 atlas; history `docs/recall-failure-modes.md` RFM-1
+  - 2026-07-12 detected in the R45 repair loop; 2026-07-13 registered as RFM-1
+  - 2026-07-14 anchor-reset seeding CONFIRMED (H597 reachability 0.622 -> 0.866; H620 converts to answered probes)
+  - 2026-09-14 mirrored here; the live residue of this class is the 2 deep-dense-and-deep-walk rows of the R57 partition
+
+### DEF-21: seed dilution by fixed-budget hybrid union
+
+- [x] FAILURE-MODE adding sparse seeds into a fixed top-k budget displaces dense hits and lowers recall (dense@16 0.854 > union@16 0.750 > rrf@8 0.646); cause: union and RRF compete for seed slots instead of fusing evidence; fix: DOCTRINE - new channels fuse inside the walk (reset-vector mass) or by learned convex combination, never compete for a seed slot; evidence: H53; history `docs/recall-failure-modes.md` RFM-2
+  - 2026-07-05 detected (H53), promoted to doctrine; carried by construction into R47 and R48 registrations
+  - 2026-09-14 mirrored here
+
+### DEF-22: single-pass extraction variance drops gold carriers
+
+- [ ] FAILURE-MODE HIGH the dominant identity and coverage root cause; cause: a single open-vocabulary LLM extraction pass averages 76.8% carrier recall with high run-to-run variance (H107), and 71% of same-type duplicate pairs trace to extraction variance rather than resolution; levers: canonicalization (H119), deterministic substrate (R47 GLiNER, H502-H505), speculative ingest context; evidence: H107 forensics, H260 census, external evaluation 2026-09-13 naming this the ceiling; history `docs/recall-failure-modes.md` RFM-3
+  - 2026-07-06 root-caused (H107 CONFIRMED); 2026-07-13 registered as RFM-3
+  - 2026-09-14 mirrored here; the Hopfield identity arms (H657/H658/H663) closed without moving it - the margin certificate is the shipped cosine screen re-parameterised, and the cured medium bank holds only 9 genuine surviving near-duplicate pairs
+
+### DEF-23: absent-class omissions unrecoverable by re-extraction
+
+- [ ] FAILURE-MODE HIGH facts truly absent from the graph stay absent through extractor re-rolls; cause: extraction omission is not sampling noise - a second pass through production `extract_chunk` recovered only 12/48 = 25% of unique absent facts (H450 REFUTED at a 30% bar); standing count: 12 of 326 gold carrier entities absent on the medium rung (H638 gauge 314/326; R57 atlas 12 of 33 retrieval misses), all located in-corpus; fix direction: repair from source with the gap ledger naming the target (R49 vector c), targeted gleaning pass H637 (blocked on GPU-1 since 2026-07-24); evidence: `reports/experiments/r45/pass2-20260712T102327Z.jsonl`, R57-H650; history `docs/recall-failure-modes.md` RFM-4
+  - 2026-07-12 H450 REFUTED; 2026-07-13 registered as RFM-4
+  - 2026-07-24 H637 substrate half: all 5 staged absent golds are in-corpus, one chunk each - pure extraction misses; LLM half BLOCKED-INFRA
+  - 2026-09-14 mirrored here; largest open class of the partition (12 of 33), the only lever pointed at it is H637
+
+### DEF-24: elsewhere-class misses - fact present on a different carrier
+
+- [ ] FAILURE-MODE probe targets entity A but the fact landed on entity B (sibling, series node or duplicate); cause: carrier placement at extraction and resolution diverges from where probes look; 8 of 17 R45 terminal misses; levers: H365 series-fragment merge and spec hoist (shipped, partial), carrier-selection fix (12 of 47 R45 repairs fell back to a largest-carrier heuristic); evidence: `reports/experiments/r45/adjudication-20260712T101552Z.md`; history `docs/recall-failure-modes.md` RFM-5
+  - 2026-07-12 detected as the largest terminal miss class of the repair loop; 2026-07-13 registered as RFM-5
+  - 2026-09-14 mirrored here
+
+### DEF-25: artifact-class misses - probe and harness artifacts read as coverage gaps
+
+- [ ] FAILURE-MODE probes fail for reasons that are not graph deficiencies (malformed probe, gold-string formatting, criterion mismatch, eval-join variants); cause: probe generation and string matching produce false negatives no repair can touch; 3 of 17 R45 terminal misses, and 26 of 38 non-joining gold rows on the medium rung were join artifacts (DEF-19); levers: document-grounded probe regeneration (H188), hardened gold-join v3 (H632/H635), certificate criterion audit; history `docs/recall-failure-modes.md` RFM-6
+  - 2026-07-12 detected in the R45 residue; 2026-07-13 registered as RFM-6
+  - 2026-07-24 the join half fixed by goldjoin-v3 (DEF-19); 2026-09-14 mirrored here
+
+### DEF-26: reader-side loss - gold string in the rendered context, answer not produced
+
+- [ ] FAILURE-MODE the gold string is in the rendered context but the reader or the grader fails on it; cause: two members - reader parse loss, and LLM paraphrase breaking verbatim gold-substring grading (H385: 17 of 19 probes read uncovered at both rungs); unreachable by any retrieval-side lever; history `docs/recall-failure-modes.md` RFM-7
+  - 2026-07-10 isolated at the composed-frontier close; 2026-07-13 registered as RFM-7
+  - 2026-07-12 the founding specimen P08 was reclassified (DEF-13): chunk-granularity retrieval loss, recovered by the question-node channel H371 - the paraphrase-grading member is the live one
+  - 2026-09-14 mirrored here
+
+### DEF-27: coverage certificate blind to retrieval-class failures
+
+- [ ] FAILURE-MODE MEDIUM the certificate adjudicates entity-column coverage and cannot see a probe that fails at the retrieval hop (DEF-20) or the reader hop (DEF-26) - a "covered" graph can still miss; cause: criterion is answer-in-context over rendered coverage with no seed-reachability column; compounded by instrument noise (same-graph spread 84.3 vs 88.9 at 25-doc probe scale); levers: seed-reachability certificate column, probe-scale-dependent reproducibility bands (R49 vectors a and b); DEF-16 is the code-defect sibling; history `docs/recall-failure-modes.md` RFM-8
+  - 2026-07-12 noise quantified; 2026-07-13 registered as RFM-8
+  - 2026-09-14 mirrored here
+
+### DEF-28: scale-growth probe regression
+
+- [ ] FAILURE-MODE a probe that passed at smaller graph scale flips to fail as the pile grows; 1 regression recorded across the 1,173-doc progressive trajectory; cause: unattributed - candidates are seed-rank displacement by new entities, resolution merges shifting carriers, context dilution; lever: attribution pass on the flipped probe (bench ladder campaign, task #83); evidence: `reports/experiments/bench/progressive-probe-trajectory.jsonl`; history `docs/recall-failure-modes.md` RFM-9
+  - 2026-07-13 detected during the medium ingest watch, registered as RFM-9
+  - 2026-09-14 mirrored here; attribution still pending
+
+### DEF-29: cross-component miss - answer entity on a separate island from every seed
+
+- [ ] FAILURE-MODE the graph is 1,830 connected components on the medium rung (largest 3,162 of 6,626 entities, 1,426 single-entity components) and a walk cannot leave the component it starts in, so no seeding rule, reset schedule or walk depth reaches an answer entity in another component; 4 of 33 retrieval misses (R57-H650: Dino Risi, David Bradley (director), Puttanna Kanagal, Min Dikkha); cause: the extractor emitted no relation between entities that are co-mentioned in one chunk, and the 164 embedding-similarity edges do not bridge them; lever: H661 hyperedge co-occurrence overlay - the H660 census found 22,910 co-mentioned entity pairs that sit in different components with no edge, and 3 of the 4 rows are bridgeable by one (Min Dikkha is not); evidence: `reports/experiments/r59/h660-cooccurrence-census-20260914T084903Z.json`, R57 atlas
+  - 2026-07-24 class isolated by the R57 atlas (4 rows, split-half unstable at n=4); R55-H631 had found the connectivity arm did not open on the earlier panel
+  - 2026-09-14 registered; H660 gate OPEN, H661 simulation awaits dispatch; realistic ceiling 4 rows on this rung
+
+### DEF-30: region-cap miss - widened walk region cut off before the carrier
+
+- [x] FAILURE-MODE the walk's region rule capped the candidate set before the answer entity entered it although it was reachable; 15 of 33 retrieval misses (R57-H647 exposed the mechanism, every per-row note named it); fix: H651 widened region (seeds, anchors, full 1-hop shell, PPR top-15), panel 112 -> 115 on the frozen 132; evidence: R57-H647, R58-H651
+  - 2026-07-24 class isolated by the R57 atlas as "other-with-note", all notes one mechanism
+  - 2026-09-14 registered retroactively and marked mitigated: H651 shipped; the adaptive-temperature form of the same rule (H659) was KILLED, so the fixed widened region is the final form

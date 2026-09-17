@@ -1,5 +1,8 @@
 # Recall Failure Modes - Knowledge Graph Foundry
 
+> [!NOTE]
+> Historical since 2026-09-14. Failure modes are recorded in [`docs/defects/defects.md`](defects/defects.md) under the `FAILURE-MODE` category; RFM-1 to RFM-9 are mirrored there as DEF-20 to DEF-28 and new ones are added there, not here.
+
 Standing register of detected, evidenced ways KGF fails to recall - not code defects, but tracked with the same formalism. `[ ]` open (unmitigated or under active work), `[x]` mitigated/retired (doctrine, shipped lever, or superseded). Each mode carries its evidence (hypothesis/probe IDs, result files) and the lever or round that owns the fix. IDs `RFM-N`, monotonic, never reused. Dated notes under each track how the mode evolved.
 
 ## Contents

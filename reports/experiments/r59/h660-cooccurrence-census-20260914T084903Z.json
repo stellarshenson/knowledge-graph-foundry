@@ -1,0 +1,265 @@
+{
+ "hypothesis": "R59-H660",
+ "run_id": "20260914T084903Z",
+ "git_head": "436476afa870e399ac6f7adeadde4477f4ff8279",
+ "utc_timestamp": "20260914T084903Z",
+ "join_version": "goldjoin-v3-typegate-20260724 (eff = v2 then v3 fall-through, R57 atlas rows)",
+ "region_rule": "H651 widened: seeds u anchors u FULL 1-hop shell u PPR-top15",
+ "registered_bar": "GATE: H661 opens only on a non-trivial (b) - co-occurring, non-adjacent, cross-component pairs. If every co-occurring pair is already adjacent or intra-component, the overlay is recorded dead with no write.",
+ "pins": {
+  "dense16_carrier_recall": 0.6012,
+  "pin": 0.6012,
+  "frozen_substrate_components": {
+   "entities": 6626,
+   "edges_undirected": 5386,
+   "components": 1830,
+   "lcc_nodes": 3162,
+   "lcc_frac": 0.4772,
+   "isolated": 1426
+  },
+  "component_pins": {
+   "components": 1830,
+   "lcc_nodes": 3162,
+   "lcc_frac": 0.4772,
+   "isolated": 1426
+  },
+  "cross_component_gold_rows_found": 4,
+  "cross_component_gold_rows_expected": 4,
+  "ok": true
+ },
+ "cross_component_gold_rows": [
+  {
+   "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+   "carrier": "Dino Risi",
+   "eff_idx": 1731,
+   "role": "bridge",
+   "component_id": 363,
+   "component_size": 7
+  },
+  {
+   "probe": "3ce92df80bde11eba7f7acde48001122",
+   "carrier": "David Bradley (director)",
+   "eff_idx": 1992,
+   "role": "terminal-answer",
+   "component_id": 427,
+   "component_size": 1
+  },
+  {
+   "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+   "carrier": "Puttanna Kanagal",
+   "eff_idx": 2353,
+   "role": "bridge",
+   "component_id": 543,
+   "component_size": 1
+  },
+  {
+   "probe": "f05423560bda11eba7f7acde48001122",
+   "carrier": "Min Dikkha",
+   "eff_idx": 3821,
+   "role": "terminal-answer",
+   "component_id": 1000,
+   "component_size": 10
+  }
+ ],
+ "neo4j_access": "READ-ONLY (MATCH / RETURN / CALL db.labels() only); no writes",
+ "instance_targeting": "EXPLICIT per DEF-4; .env is never read by this script",
+ "verdict_recommendation": "GATE-OPEN",
+ "neo4j_uri_reached": "bolt://localhost:7687 (inside container kgf-neo4j-medium-scratch)",
+ "instance": {
+  "uri": "bolt://localhost:7687 (inside container kgf-neo4j-medium-scratch)",
+  "container": "kgf-neo4j-medium-scratch",
+  "image": "neo4j:5.26.0",
+  "access": "docker exec kgf-neo4j-medium-scratch cypher-shell -a bolt://localhost:7687 -u neo4j; this session at 172.24.0.3 cannot route to 172.24.0.6:7687 - lab-to-lab TCP is dropped on stellars-tech-ai-workbench_hub_restricted_network and the host gateway is firewalled",
+  "dump": "data/interim/dumps/20260713-neo4j-medium-2wiki-1000.dump"
+ },
+ "schema": {
+  "entity_count": 6626,
+  "chunk_count": 1000,
+  "mentioned_in_edges": 8298,
+  "entity_entity_rel_count": 6021,
+  "soft_link_edges": 164,
+  "provenance_path": "Entity-[:MENTIONED_IN]->Chunk",
+  "source": "read-only cypher-shell export tmp/r59-h660/export"
+ },
+ "live_component_census": {
+  "entities": 6626,
+  "edges_undirected": 5386,
+  "components": 1830,
+  "lcc_nodes": 3162,
+  "lcc_frac": 0.4772,
+  "isolated": 1426,
+  "pins_reproduce": true
+ },
+ "component_pin_check": {
+  "note": "the restored instance reproduces the frozen substrate EXACTLY once the SIMILAR_TO embedding layer is excluded: same 6,626 entity ids, same 5,386 undirected entity-entity edges, same 1,830 / 3,162 / 1,426. The SIMILAR_TO layer is what the frozen cache dropped",
+  "frozen": {
+   "entities": 6626,
+   "edges_undirected": 5386,
+   "components": 1830,
+   "lcc_nodes": 3162,
+   "lcc_frac": 0.4772,
+   "isolated": 1426
+  },
+  "live_primary": {
+   "entities": 6626,
+   "edges_undirected": 5386,
+   "components": 1830,
+   "lcc_nodes": 3162,
+   "lcc_frac": 0.4772,
+   "isolated": 1426,
+   "pins_reproduce": true
+  },
+  "live_any_type": {
+   "entities": 6626,
+   "edges_undirected": 5504,
+   "components": 1754,
+   "lcc_nodes": 3204,
+   "lcc_frac": 0.4835,
+   "isolated": 1334
+  }
+ },
+ "census": {
+  "chunks_with_entities": 1000,
+  "cooccurring_pairs_total": 53952,
+  "a_not_already_adjacent": 48566,
+  "b_not_adjacent_AND_cross_component": 22910,
+  "a_frac_of_total": 0.900171,
+  "b_frac_of_a": 0.471729,
+  "sensitivity_soft_links_counted_as_adjacency": {
+   "a_not_already_adjacent": 48448,
+   "b_not_adjacent_AND_cross_component": 22100
+  }
+ },
+ "w_assoc": {
+  "b_pairs": {
+   "n": 22910,
+   "min": -0.749,
+   "p10": 0.99,
+   "p50": 0.999,
+   "p90": 0.999,
+   "max": 4.793,
+   "mean": 1.003963,
+   "positive_count": 22908,
+   "ge_0.5_count": 22908,
+   "ge_0.9_count": 22817
+  },
+  "a_pairs": {
+   "n": 48566,
+   "min": -0.809,
+   "p10": 0.989,
+   "p50": 0.999,
+   "p90": 0.999,
+   "max": 8.734,
+   "mean": 1.006609,
+   "positive_count": 48560,
+   "ge_0.5_count": 48547,
+   "ge_0.9_count": 48257
+  },
+  "baseline": "E[w_raw] = f_u f_v / C under independence given chunk-frequencies",
+  "C_chunks": 1000
+ },
+ "chunk_entities_cache": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/tmp/results/r47/chunk_entities.json",
+ "cross_component_gold_row_join": {
+  "joined": 3,
+  "direct": 2,
+  "of": 4,
+  "rows": [
+   {
+    "probe": "f34d188608cb11ebbd93ac1f6bf848b6",
+    "carrier": "Dino Risi",
+    "carrier_entity_id": "e_0251333ba9177c77",
+    "carrier_component": 28,
+    "seed_components": [
+     1,
+     173,
+     432,
+     546,
+     632,
+     1202,
+     1519
+    ],
+    "joined_by_a_b_pair": true,
+    "direct_b_pair_with_seed": true,
+    "direct_b_pair_seed_ids": [
+     "e_c4eb0aa9749fa1ae"
+    ],
+    "note": null
+   },
+   {
+    "probe": "3ce92df80bde11eba7f7acde48001122",
+    "carrier": "David Bradley (director)",
+    "carrier_entity_id": "e_6f3af5351ae531ea",
+    "carrier_component": 976,
+    "seed_components": [
+     1,
+     17,
+     199,
+     267,
+     484,
+     1059,
+     1153,
+     1376
+    ],
+    "joined_by_a_b_pair": true,
+    "direct_b_pair_with_seed": false,
+    "direct_b_pair_seed_ids": [],
+    "note": null
+   },
+   {
+    "probe": "02b62fce087211ebbd64ac1f6bf848b6",
+    "carrier": "Puttanna Kanagal",
+    "carrier_entity_id": "e_421f53eda55d9ac0",
+    "carrier_component": 632,
+    "seed_components": [
+     1,
+     89,
+     123,
+     212,
+     271,
+     410,
+     546,
+     1128
+    ],
+    "joined_by_a_b_pair": true,
+    "direct_b_pair_with_seed": true,
+    "direct_b_pair_seed_ids": [
+     "e_870b075402899918"
+    ],
+    "note": null
+   },
+   {
+    "probe": "f05423560bda11eba7f7acde48001122",
+    "carrier": "Min Dikkha",
+    "carrier_entity_id": "e_72f75c365aec37cd",
+    "carrier_component": 3,
+    "seed_components": [
+     1,
+     36,
+     49,
+     147,
+     222,
+     302,
+     581,
+     944,
+     1739
+    ],
+    "joined_by_a_b_pair": false,
+    "direct_b_pair_with_seed": false,
+    "direct_b_pair_seed_ids": [],
+    "note": null
+   }
+  ]
+ },
+ "caveats": [
+  "PRIMARY adjacency and components exclude the SIMILAR_TO embedding layer: only that edge set reproduces the pinned 1,830 / 3,162 / 1,426, and it is what the shipped walk traverses. The literal any-type reading is reported alongside as a sensitivity, never folded in.",
+  "w_assoc uses the independence baseline E[w_raw] = f_u f_v / C; with C chunks and per-entity chunk frequencies mostly 1, the baseline is near zero and w_assoc is close to w_raw - stated so the number is not over-read.",
+  "The 4 cross-component gold rows are indexed against the FROZEN 6,626-entity cache; if the reached instance is the 7,575-entity re-ingest, entity ids can fail to resolve and those rows are reported with an explicit note rather than dropped.",
+  "AAR's INDUCTIVE null stands: the published transductive gain came from co-occurrence as supporting facts FOR QUESTIONS, i.e. question supervision. This census measures generic textual co-occurrence, so a non-trivial (b) opens H661 but does not predict its size."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h660-cooccurrence-census-20260914T084903Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h660-cooccurrence-census-20260914T084903Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h660-cooccurrence-census-20260914T084903Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r59_h660_cooccurrence_census.py"
+ }
+}

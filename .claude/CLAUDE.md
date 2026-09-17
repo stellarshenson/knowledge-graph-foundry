@@ -88,5 +88,9 @@ Copier-data-science template is the skeleton (`.copier-answers.yml` present). Pe
 - **Dumps** - keeper Neo4j dumps + MANIFEST + sidecars in `data/interim/dumps/` (gitignored; sync to S3 via profile `stellars-tech`); a dump that is only a private experiment cache may stay in `tmp/`
 - **Notebooks** - project-local naming `<topic>_<hypothesisID>.ipynb` (NOT the template's `NN-initials-` scheme; retro-renaming would break append-only experiments-log links); tracked `.py` files in `notebooks/` are PINNED instruments (e.g. `h158_measure.py`) - never move them
 - **config/** - tracked project extension (pinned per-rung experiment configs)
-- **Canonical docs** - experiments log `docs/experiments/kgf-redesign-experiments.md`, SOTA `docs/kgf-sota.md`, defects `docs/defects/`, recall failure modes `docs/recall-failure-modes.md`, acc-crit `docs/acceptance-criteria/`
+- **Canonical docs** - experiments log `docs/experiments/kgf-redesign-experiments.md`, SOTA `docs/kgf-sota.md`, defects and failure modes `docs/defects/defects.md`, acc-crit `docs/acceptance-criteria/`
+
+## Failure Modes Are Defects (2026-09-14)
+
+A failure mode - an evidenced class of misses with a cause, an owning lever and evidence - is recorded in `docs/defects/defects.md` as a `DEF-N` entry whose checkbox line starts with `FAILURE-MODE`. Same numbering, same TOC, same dated notes as a code defect; `[x]` means a shipped lever or doctrine mitigates it. `docs/recall-failure-modes.md` is historical: RFM-1 to RFM-9 are mirrored there as DEF-20 to DEF-28, and nothing is appended to it. When a round isolates a miss class (an atlas partition, a residue census), register the entry in the same session as the verdict - the R57 atlas classes went unregistered for seven weeks.
 - **History** - pre-migration `results/` and `scripts/` paths in journal entries and git history are historical record, never rewritten; living docs were link-rewritten at migration (2026-07-13)

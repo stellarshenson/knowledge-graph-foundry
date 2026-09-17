@@ -1,0 +1,1021 @@
+{
+ "hypothesis": "R59-H658",
+ "run_id": "20260914T083726Z",
+ "utc_timestamp": "20260914T083726Z",
+ "git_head": "436476afa870e399ac6f7adeadde4477f4ff8279",
+ "join_version": "goldjoin-v3-typegate-20260724 (R56-H635; 314/326 carrier rows joined, 38 adjudicated)",
+ "registered_bar": "CONFIRMED if the certificate reduces FALSE merges at equal or better TRUE-MERGE count on the adjudicated set; KILLED if indistinguishable from the fixed threshold.",
+ "re_priced_form": "margin(m) = cos(m,p1) - cos(m,p2) >= tau, tau = ln(2(N-1)/eps)/beta, compared against the fixed global cosine AT MATCHED MERGE VOLUME on the same candidate set",
+ "fixed_rule_compared_against": "shipped global cosine screen ResolutionSettings.synonym_cluster_threshold = 0.82 (src/knowledge_graph_foundry/settings.py:95), applied in src/knowledge_graph_foundry/resolution/blocking.py::ann_candidates (lines 53-77); the decision behind it is calibrated posterior >= ResolutionSettings.merge_threshold = 0.6 (settings.py:90) at src/knowledge_graph_foundry/resolution/resolver.py:244. `cross_type_merge_threshold` and a 0.9 screen are NOT present in the shipped tree.",
+ "verdict": "PREMISE-FAILED",
+ "verdict_reason": "The DEF-19 v3 gold-join yields ZERO true-merge pairs. Exact counts: 312 gold entities join to 312 graph entities, 0 of them to two or more, so C(|E|,2) summed over gold entities is 0 and the adjudicated TRUE-MERGE surface is empty. The registered CONFIRMED clause ('reduces false merges at equal or better true-merge count') is unevaluable: the true-merge count is 0 for EVERY rule at EVERY threshold, so no rule can be shown to trade true merges for false ones and no rule can dominate on that axis. Mechanism: the join's graph side is the POST-RESOLUTION cured bank - 2 normalised names of 6626 nodes carry more than one node (4 nodes in total), and none of them is gold-joined - and the join itself is a title -> node function whose H632 false-merge guard forbids many-to-one. The empty surface is not an artifact of the ladder stopping early: the ALL extension (the gated ladder without stop-at-first-rung) raises the count only to 25, and hand review of all 21 of its multi-node sets rejects roughly half as same-name-DIFFERENT-entity (ordinals, generational suffixes, sequels, work-type variants), leaving 9 genuine pairs - still far under the 30-pair floor. SECONDARY READINGS (labelled, not the registered surface). (a) On STRICT the false-merge half IS adjudicable: at matched volume the margin rule produces fewer false merges at 2/5 tau points, and every per-tau difference is at most 3 merges on a 312-entity candidate set - mixed sign, no direction. (b) On the ADJUDICATED extension (9 hand-reviewed true-merge pairs from 21 multi-node sets, 21 reviewed) the margin rule dominates at 1/5 tau points. Both readings are indistinguishable-to-worse, never CONFIRMED.",
+ "pins": {
+  "dense16_carrier_recall": 0.6012,
+  "dense16_pin": 0.6012,
+  "delta_percentiles_measured": {
+   "p1": 0.0618,
+   "p50": 0.4523,
+   "p90": 0.6513
+  },
+  "delta_percentiles_pin": {
+   "p1": 0.0618,
+   "p50": 0.4523,
+   "p90": 0.6513
+  },
+  "bank_N": 6626,
+  "bank_dim": 1024,
+  "ok": true
+ },
+ "tau_ladder": {
+  "log_term_ln_2Nminus1_over_eps": 14.096923,
+  "N": 6626,
+  "eps": 0.01,
+  "rows": [
+   {
+    "beta": 48,
+    "tau": 0.293686,
+    "registered": false
+   },
+   {
+    "beta": 64,
+    "tau": 0.220264,
+    "registered": true
+   },
+   {
+    "beta": 96,
+    "tau": 0.146843,
+    "registered": true
+   },
+   {
+    "beta": 128,
+    "tau": 0.110132,
+    "registered": true
+   },
+   {
+    "beta": 192,
+    "tau": 0.073421,
+    "registered": false
+   }
+  ]
+ },
+ "substrate": "frozen H582 entity prototype bank tmp/results/r47/titan_emb.npy (6626 x 1024 Titan vectors), l2-normalised; FREE numpy, no GPU/LLM/Neo4j/net",
+ "surface_diagnostics": {
+  "carrier_rows": 326,
+  "distinct_gold_titles": 324,
+  "gold_titles_in_graph_exact": 286,
+  "gold_titles_absent": 38,
+  "v3_dispositions_over_the_38": {
+   "unresolved": 11,
+   "ACCEPTED": 26,
+   "ADJUDICATE-PENDING": 1
+  },
+  "v3_accepted_variant_rows": 26,
+  "bank_norms_with_more_than_one_node": 2,
+  "bank_nodes_in_such_norms": 4,
+  "strict_false_merge_guard_collisions": 0,
+  "all_ladder_nodes_dropped_by_guard": 1,
+  "all_multinode_sets": 21,
+  "all_multinode_sets_reviewed": 21,
+  "all_multinode_sets_unreviewed": [],
+  "bank_n": 6626
+ },
+ "surface_strict": {
+  "gold_entities_contributing": 312,
+  "graph_entities_labelled": 312,
+  "true_merge_pairs": 0,
+  "true_non_merge_pairs": 48516,
+  "label_set_size_distribution": {
+   "1": 312
+  },
+  "gold_entities_with_2plus_graph_entities": 0
+ },
+ "surface_all_unadjudicated": {
+  "gold_entities_contributing": 312,
+  "graph_entities_labelled": 335,
+  "true_merge_pairs": 25,
+  "true_non_merge_pairs": 55920,
+  "label_set_size_distribution": {
+   "1": 291,
+   "2": 19,
+   "3": 2
+  },
+  "gold_entities_with_2plus_graph_entities": 21
+ },
+ "surface_adjudicated": {
+  "gold_entities_contributing": 312,
+  "graph_entities_labelled": 321,
+  "true_merge_pairs": 9,
+  "true_non_merge_pairs": 51351,
+  "label_set_size_distribution": {
+   "1": 303,
+   "2": 9
+  },
+  "gold_entities_with_2plus_graph_entities": 9
+ },
+ "registered_surface": "strict",
+ "duplicate_sets_with_adjudication": [
+  {
+   "gold_norm": "albert iii, duke of bavaria",
+   "ladder_nodes": [
+    {
+     "idx": 5100,
+     "name": "Albert III, Duke of Bavaria",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 5126,
+     "name": "Albert I, Duke of Bavaria",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    5100
+   ],
+   "adjudication": "reject 5126 'Albert I, Duke of Bavaria' - different ordinal, different person"
+  },
+  {
+   "gold_norm": "billy elliot",
+   "ladder_nodes": [
+    {
+     "idx": 1275,
+     "name": "Billy Elliot",
+     "types": [
+      "Film",
+      "Title"
+     ]
+    },
+    {
+     "idx": 1309,
+     "name": "Billy Elliot (novel)",
+     "types": [
+      "Book"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1275
+   ],
+   "adjudication": "reject 1309 'Billy Elliot (novel)' [Book] - different work from the Film"
+  },
+  {
+   "gold_norm": "brother rat",
+   "ladder_nodes": [
+    {
+     "idx": 6563,
+     "name": "Brother Rat",
+     "types": [
+      "Film"
+     ]
+    },
+    {
+     "idx": 6564,
+     "name": "Brother Rat (play)",
+     "types": [
+      "Document"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    6563
+   ],
+   "adjudication": "reject 6564 'Brother Rat (play)' [Document] - different work from the Film"
+  },
+  {
+   "gold_norm": "christine of hesse-kassel (1578\u20131658)",
+   "ladder_nodes": [
+    {
+     "idx": 2789,
+     "name": "Christine of Hesse-Kassel",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 2816,
+     "name": "Christine of Hesse\u2011Kassel",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    2789,
+    2816
+   ],
+   "adjudication": "ACCEPT pair - hyphen/non-breaking-hyphen variant of one name; descriptions agree (House of Hesse noblewoman, wife of Johann Ernst of Saxe-Eisenach)"
+  },
+  {
+   "gold_norm": "david bradley (director)",
+   "ladder_nodes": [
+    {
+     "idx": 1992,
+     "name": "David Bradley (director)",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 2008,
+     "name": "David Bradley",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1992
+   ],
+   "adjudication": "PEND 2008 'David Bradley' - both nodes carry no description and the bare name is ambiguous between the director and the actor"
+  },
+  {
+   "gold_norm": "do you believe? (film)",
+   "ladder_nodes": [
+    {
+     "idx": 5892,
+     "name": "Do You Believe? (film)",
+     "types": [
+      "Film"
+     ]
+    },
+    {
+     "idx": 5900,
+     "name": "Do You Believe?",
+     "types": [
+      "Film"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    5892,
+    5900
+   ],
+   "adjudication": "ACCEPT pair - paren-strip disambiguator only, both typed Film"
+  },
+  {
+   "gold_norm": "john middleton murry",
+   "ladder_nodes": [
+    {
+     "idx": 1219,
+     "name": "John Middleton Murry Jr.",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 1224,
+     "name": "John Middleton Murry",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1224
+   ],
+   "adjudication": "reject 1219 'John Middleton Murry Jr.' - generational suffix, father and son are different people"
+  },
+  {
+   "gold_norm": "lisbeth palme",
+   "ladder_nodes": [
+    {
+     "idx": 1366,
+     "name": "Lisbeth Palme",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 1368,
+     "name": "Lisbet Palme",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1366,
+    1368
+   ],
+   "adjudication": "ACCEPT pair - node 1368 descr states 'Alternative spelling of Lisbeth Palme'"
+  },
+  {
+   "gold_norm": "marianus v of arborea",
+   "ladder_nodes": [
+    {
+     "idx": 5027,
+     "name": "Marianus V of Arborea",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 5077,
+     "name": "Marianus I of Arborea",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    5027
+   ],
+   "adjudication": "reject 5077 'Marianus I of Arborea' - different ordinal, different person"
+  },
+  {
+   "gold_norm": "mord em'ly",
+   "ladder_nodes": [
+    {
+     "idx": 4940,
+     "name": "Mord Em'ly",
+     "types": [
+      "Book"
+     ]
+    },
+    {
+     "idx": 4975,
+     "name": "Mord Em'ly (film)",
+     "types": [
+      "Film"
+     ]
+    },
+    {
+     "idx": 4976,
+     "name": "Mord Em'ly (novel)",
+     "types": [
+      "Book"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    4940,
+    4976
+   ],
+   "adjudication": "ACCEPT pair - both [Book], 1898 novel by William Pett Ridge; reject 4975 'Mord Em'ly (film)' [Film] - different work"
+  },
+  {
+   "gold_norm": "palo alto (2013 film)",
+   "ladder_nodes": [
+    {
+     "idx": 2884,
+     "name": "Palo Alto",
+     "types": [
+      "Film"
+     ]
+    },
+    {
+     "idx": 2909,
+     "name": "Palo Alto (2013 film)",
+     "types": [
+      "Film"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    2884,
+    2909
+   ],
+   "adjudication": "ACCEPT pair - both typed Film and both described as the 2013 film"
+  },
+  {
+   "gold_norm": "princess maria of greece and denmark",
+   "ladder_nodes": [
+    {
+     "idx": 6521,
+     "name": "Princess Alexia of Greece and Denmark",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 6538,
+     "name": "Princess Maria of Greece and Denmark",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    6538
+   ],
+   "adjudication": "reject 6521 'Princess Alexia of Greece and Denmark' - different given name, different person"
+  },
+  {
+   "gold_norm": "r. g. springsteen",
+   "ladder_nodes": [
+    {
+     "idx": 1389,
+     "name": "R.G. Springsteen",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 3581,
+     "name": "R. G. Springsteen",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1389,
+    3581
+   ],
+   "adjudication": "ACCEPT pair - punctuation-only variant 'R.G.' / 'R. G.' of one name"
+  },
+  {
+   "gold_norm": "raghnall mac ruaidhr\u00ed",
+   "ladder_nodes": [
+    {
+     "idx": 448,
+     "name": "Raghnall mac Ruaidhri",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 458,
+     "name": "Raghnall Mac Ruaidhr\u00ed",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    448,
+    458
+   ],
+   "adjudication": "ACCEPT pair - diacritic/case variant; descriptions agree (Lord of Garmoran / chief of Clann Ruaidhri)"
+  },
+  {
+   "gold_norm": "ryan adams",
+   "ladder_nodes": [
+    {
+     "idx": 671,
+     "name": "Ryan Adams",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 708,
+     "name": "Ryan Adams (album)",
+     "types": [
+      "Album"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    671
+   ],
+   "adjudication": "reject 708 'Ryan Adams (album)' [Album] - a work, not the Person"
+  },
+  {
+   "gold_norm": "sisowath kossamak",
+   "ladder_nodes": [
+    {
+     "idx": 1492,
+     "name": "Sisowath Kossamak",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 1514,
+     "name": "Sisowath Kosamak",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1492,
+    1514
+   ],
+   "adjudication": "ACCEPT pair - spelling variant; both describe the same Cambodian queen consort / queen mother"
+  },
+  {
+   "gold_norm": "the goose woman",
+   "ladder_nodes": [
+    {
+     "idx": 1053,
+     "name": "The Goose Woman",
+     "types": [
+      "Film"
+     ]
+    },
+    {
+     "idx": 1059,
+     "name": "The Goose Woman (short story)",
+     "types": [
+      "Book"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1053
+   ],
+   "adjudication": "reject 1059 'The Goose Woman (short story)' [Book] - different work from the Film"
+  },
+  {
+   "gold_norm": "theodore salisbury woolsey",
+   "ladder_nodes": [
+    {
+     "idx": 1583,
+     "name": "Theodore Salisbury Woolsey Jr.",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 1586,
+     "name": "Theodore Salisbury Woolsey",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 1589,
+     "name": "Theodore Salisbury Woolsey, Jr.",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    1586
+   ],
+   "adjudication": "reject 1583 and 1589 - both are 'Woolsey Jr.', the forestry son; the gold entity is the international-law professor"
+  },
+  {
+   "gold_norm": "track & field news",
+   "ladder_nodes": [
+    {
+     "idx": 5418,
+     "name": "Track& Field News",
+     "types": [
+      "Organization"
+     ]
+    },
+    {
+     "idx": 5440,
+     "name": "Track and Field News",
+     "types": [
+      "Organization"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    5418,
+    5440
+   ],
+   "adjudication": "ACCEPT pair - fold variant '&' / 'and' of one publication"
+  },
+  {
+   "gold_norm": "william berke",
+   "ladder_nodes": [
+    {
+     "idx": 5689,
+     "name": "William A. Berke",
+     "types": [
+      "Person"
+     ]
+    },
+    {
+     "idx": 5705,
+     "name": "William Berke",
+     "types": [
+      "Person"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    5705
+   ],
+   "adjudication": "PEND 5689 'William A. Berke' - middle initial; node 5705 carries no description, so the namesake reading cannot be excluded"
+  },
+  {
+   "gold_norm": "wizards of the lost kingdom",
+   "ladder_nodes": [
+    {
+     "idx": 3619,
+     "name": "Wizards of the Lost Kingdom",
+     "types": [
+      "Film"
+     ]
+    },
+    {
+     "idx": 3632,
+     "name": "Wizards of the Lost Kingdom II",
+     "types": [
+      "Film"
+     ]
+    }
+   ],
+   "adjudicated_keep": [
+    3619
+   ],
+   "adjudication": "reject 3632 'Wizards of the Lost Kingdom II' - sequel, different film"
+  }
+ ],
+ "comparison_strict": {
+  "rows": [
+   {
+    "beta": 48,
+    "tau": 0.293686,
+    "registered": false,
+    "margin": {
+     "accepted": 24,
+     "true_merges": 0,
+     "false_merges": 2,
+     "unlabelled_partner": 22
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 24,
+     "true_merges": 0,
+     "false_merges": 0,
+     "unlabelled_partner": 24
+    },
+    "fixed_theta": 0.864726,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 2,
+    "true_merge_delta_margin_minus_fixed": 0
+   },
+   {
+    "beta": 64,
+    "tau": 0.220264,
+    "registered": true,
+    "margin": {
+     "accepted": 43,
+     "true_merges": 0,
+     "false_merges": 3,
+     "unlabelled_partner": 40
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 43,
+     "true_merges": 0,
+     "false_merges": 2,
+     "unlabelled_partner": 41
+    },
+    "fixed_theta": 0.821885,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 1,
+    "true_merge_delta_margin_minus_fixed": 0
+   },
+   {
+    "beta": 96,
+    "tau": 0.146843,
+    "registered": true,
+    "margin": {
+     "accepted": 73,
+     "true_merges": 0,
+     "false_merges": 6,
+     "unlabelled_partner": 67
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 73,
+     "true_merges": 0,
+     "false_merges": 9,
+     "unlabelled_partner": 64
+    },
+    "fixed_theta": 0.760634,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": -3,
+    "true_merge_delta_margin_minus_fixed": 0
+   },
+   {
+    "beta": 128,
+    "tau": 0.110132,
+    "registered": true,
+    "margin": {
+     "accepted": 93,
+     "true_merges": 0,
+     "false_merges": 7,
+     "unlabelled_partner": 86
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 93,
+     "true_merges": 0,
+     "false_merges": 10,
+     "unlabelled_partner": 83
+    },
+    "fixed_theta": 0.725081,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": -3,
+    "true_merge_delta_margin_minus_fixed": 0
+   },
+   {
+    "beta": 192,
+    "tau": 0.073421,
+    "registered": false,
+    "margin": {
+     "accepted": 134,
+     "true_merges": 0,
+     "false_merges": 16,
+     "unlabelled_partner": 118
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 134,
+     "true_merges": 0,
+     "false_merges": 14,
+     "unlabelled_partner": 120
+    },
+    "fixed_theta": 0.666154,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 2,
+    "true_merge_delta_margin_minus_fixed": 0
+   }
+  ],
+  "shipped_operating_point": {
+   "accepted": 45,
+   "true_merges": 0,
+   "false_merges": 4,
+   "unlabelled_partner": 41,
+   "theta": 0.82
+  },
+  "candidate_set_size": 312,
+  "margin_stats": {
+   "min": 0.000131,
+   "median": 0.059836,
+   "max": 0.62403
+  },
+  "cos1_stats": {
+   "min": 0.241711,
+   "median": 0.62306,
+   "max": 0.995013
+  }
+ },
+ "comparison_all_unadjudicated": {
+  "rows": [
+   {
+    "beta": 48,
+    "tau": 0.293686,
+    "registered": false,
+    "margin": {
+     "accepted": 26,
+     "true_merges": 5,
+     "false_merges": 2,
+     "unlabelled_partner": 19
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 26,
+     "true_merges": 12,
+     "false_merges": 0,
+     "unlabelled_partner": 14
+    },
+    "fixed_theta": 0.895941,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 2,
+    "true_merge_delta_margin_minus_fixed": -7
+   },
+   {
+    "beta": 64,
+    "tau": 0.220264,
+    "registered": true,
+    "margin": {
+     "accepted": 46,
+     "true_merges": 7,
+     "false_merges": 3,
+     "unlabelled_partner": 36
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 46,
+     "true_merges": 16,
+     "false_merges": 2,
+     "unlabelled_partner": 28
+    },
+    "fixed_theta": 0.828814,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 1,
+    "true_merge_delta_margin_minus_fixed": -9
+   },
+   {
+    "beta": 96,
+    "tau": 0.146843,
+    "registered": true,
+    "margin": {
+     "accepted": 79,
+     "true_merges": 12,
+     "false_merges": 6,
+     "unlabelled_partner": 61
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 79,
+     "true_merges": 16,
+     "false_merges": 8,
+     "unlabelled_partner": 55
+    },
+    "fixed_theta": 0.768313,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": -2,
+    "true_merge_delta_margin_minus_fixed": -4
+   },
+   {
+    "beta": 128,
+    "tau": 0.110132,
+    "registered": true,
+    "margin": {
+     "accepted": 104,
+     "true_merges": 18,
+     "false_merges": 7,
+     "unlabelled_partner": 79
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 104,
+     "true_merges": 19,
+     "false_merges": 10,
+     "unlabelled_partner": 75
+    },
+    "fixed_theta": 0.728688,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": -3,
+    "true_merge_delta_margin_minus_fixed": -1
+   },
+   {
+    "beta": 192,
+    "tau": 0.073421,
+    "registered": false,
+    "margin": {
+     "accepted": 146,
+     "true_merges": 20,
+     "false_merges": 16,
+     "unlabelled_partner": 110
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 146,
+     "true_merges": 23,
+     "false_merges": 12,
+     "unlabelled_partner": 111
+    },
+    "fixed_theta": 0.671631,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 4,
+    "true_merge_delta_margin_minus_fixed": -3
+   }
+  ],
+  "shipped_operating_point": {
+   "accepted": 54,
+   "true_merges": 16,
+   "false_merges": 4,
+   "unlabelled_partner": 34,
+   "theta": 0.82
+  },
+  "candidate_set_size": 335,
+  "margin_stats": {
+   "min": 0.000131,
+   "median": 0.060296,
+   "max": 0.62403
+  },
+  "cos1_stats": {
+   "min": 0.241711,
+   "median": 0.632743,
+   "max": 0.995013
+  }
+ },
+ "comparison_adjudicated": {
+  "rows": [
+   {
+    "beta": 48,
+    "tau": 0.293686,
+    "registered": false,
+    "margin": {
+     "accepted": 24,
+     "true_merges": 1,
+     "false_merges": 2,
+     "unlabelled_partner": 21
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 24,
+     "true_merges": 6,
+     "false_merges": 0,
+     "unlabelled_partner": 18
+    },
+    "fixed_theta": 0.893827,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 2,
+    "true_merge_delta_margin_minus_fixed": -5
+   },
+   {
+    "beta": 64,
+    "tau": 0.220264,
+    "registered": true,
+    "margin": {
+     "accepted": 44,
+     "true_merges": 2,
+     "false_merges": 3,
+     "unlabelled_partner": 39
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 44,
+     "true_merges": 8,
+     "false_merges": 2,
+     "unlabelled_partner": 34
+    },
+    "fixed_theta": 0.827212,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 1,
+    "true_merge_delta_margin_minus_fixed": -6
+   },
+   {
+    "beta": 96,
+    "tau": 0.146843,
+    "registered": true,
+    "margin": {
+     "accepted": 76,
+     "true_merges": 5,
+     "false_merges": 6,
+     "unlabelled_partner": 65
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 76,
+     "true_merges": 8,
+     "false_merges": 9,
+     "unlabelled_partner": 59
+    },
+    "fixed_theta": 0.76199,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": -3,
+    "true_merge_delta_margin_minus_fixed": -3
+   },
+   {
+    "beta": 128,
+    "tau": 0.110132,
+    "registered": true,
+    "margin": {
+     "accepted": 98,
+     "true_merges": 8,
+     "false_merges": 7,
+     "unlabelled_partner": 83
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 98,
+     "true_merges": 8,
+     "false_merges": 10,
+     "unlabelled_partner": 80
+    },
+    "fixed_theta": 0.726462,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": -3,
+    "true_merge_delta_margin_minus_fixed": 0
+   },
+   {
+    "beta": 192,
+    "tau": 0.073421,
+    "registered": false,
+    "margin": {
+     "accepted": 139,
+     "true_merges": 9,
+     "false_merges": 16,
+     "unlabelled_partner": 114
+    },
+    "fixed_cosine_at_matched_volume": {
+     "accepted": 139,
+     "true_merges": 10,
+     "false_merges": 12,
+     "unlabelled_partner": 117
+    },
+    "fixed_theta": 0.666809,
+    "fixed_volume_tie_overshoot": 0,
+    "false_merge_delta_margin_minus_fixed": 4,
+    "true_merge_delta_margin_minus_fixed": -1
+   }
+  ],
+  "shipped_operating_point": {
+   "accepted": 49,
+   "true_merges": 8,
+   "false_merges": 4,
+   "unlabelled_partner": 37,
+   "theta": 0.82
+  },
+  "candidate_set_size": 321,
+  "margin_stats": {
+   "min": 0.000131,
+   "median": 0.060296,
+   "max": 0.62403
+  },
+  "cos1_stats": {
+   "min": 0.241711,
+   "median": 0.627582,
+   "max": 0.995013
+  }
+ },
+ "secondary_readings": "SECONDARY READINGS (labelled, not the registered surface). (a) On STRICT the false-merge half IS adjudicable: at matched volume the margin rule produces fewer false merges at 2/5 tau points, and every per-tau difference is at most 3 merges on a 312-entity candidate set - mixed sign, no direction. (b) On the ADJUDICATED extension (9 hand-reviewed true-merge pairs from 21 multi-node sets, 21 reviewed) the margin rule dominates at 1/5 tau points. Both readings are indistinguishable-to-worse, never CONFIRMED.",
+ "caveats": [
+  "Every count is paired: both rules score the SAME candidate set (one candidate merge m -> p1 per labelled graph entity) and differ only in the accept score.",
+  "The fixed-cosine comparator is the 0.82-class global embedding screen swept over theta; the shipped path additionally requires same-type blocking and the posterior/logistic decision, so these merge volumes are an UPPER BOUND on the shipped rule's.",
+  "The bank embeds '{type}: {name} - {description[:200]}', so cos and the margin mix name and description separation; neither is a name-identity statistic.",
+  "frozen 6,626-entity substrate, not the 7,575-entity live re-ingest.",
+  "'unlabelled_partner' accepts are merges onto a prototype the gold-join does not label; they are neither true nor false merges and are reported separately, never folded into either count."
+ ],
+ "artifacts": {
+  "json": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h658-margin-pinning-20260914T083726Z.json",
+  "brief": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h658-margin-pinning-20260914T083726Z.md",
+  "checkpoint": "/home/lab/workspace/learning/projects/knowledge-graph-foundry/reports/experiments/r59/h658-margin-pinning-20260914T083726Z.checkpoint.jsonl",
+  "script": "scripts/experiments/r59_h658_margin_pinning.py",
+  "log": "logs/r59-h658.log"
+ }
+}
